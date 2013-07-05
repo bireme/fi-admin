@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<div id="delete_confirm_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">      
+        <h3 id="myModalLabel">{% trans "Delete" %}</h3>
+    </div>
+
+    <div class="modal-body">
+        <p>{% trans "Are you sure to delete?" %}</p>
+    </div>
+    <div class="modal-footer">
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="delete_id" name="delete_id" value="" />
+
+            <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'No' %}</button>
+            <input type="submit" class="btn btn-primary delete" value="{% trans 'Yes' %}"></input>
+        </form>
+    </div>
+</div>

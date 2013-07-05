@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Edit Resource" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'main.views.resources' %}">{% trans "Resources" %}</a> <span class="divider">/</span></li>
+    {% if is_new %}<li>{% trans "New Resource" %}</li>
+    {% else %}<li>{% trans "Edit Resource" %}</li>{% endif %}
+{% endblock %}
+
+
+{% block content %}  
+<div class='header'>
+    <h2><i class='icon-star'></i>{% if is_new %}{% trans "New Resource" %}{% else %}{% trans "Edit Resource" %}{% endif %}</h2>
+</div>
+
+<div class='body'>
+
+    <form method="POST">{% csrf_token %}
+        <fieldset>
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                {{ field.label_tag }}
+                {{ field.errors }}
+                {{ field }}
+            {% endfor %}
+        </fieldset>
+
+        <div class="control-panel form-submit">
+            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+        </div>
+    </form>
+
+ 
+</div>
+{% endblock %}

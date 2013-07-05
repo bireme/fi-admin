@@ -1,0 +1,81 @@
+{% load i18n %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Bootstrap/CSS files -->
+        <link href="{% static "bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+        <link href="{% static "bootstrap/css/bootstrap-responsive.css" %}" rel="stylesheet">
+        <link href="{% static "fort-awesome/css/font-awesome.css" %}" rel="stylesheet">
+        <link href="{% static "css/screen.css" %}" rel="stylesheet">
+
+        <title>{% block title %}{% trans "LIS Administration" %}{% endblock %}</title>
+
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+        {% block extrahead %}{% endblock %}
+    </head>
+
+    <body>
+        <div class='mask'><img src='{% static "image/loading.gif" %}'></div>
+        <div class="wrap">
+
+            
+
+            {% block "body" %}
+                {% block top %}{% include 'menu.html' %}{% endblock %}
+
+                <ul class="breadcrumb">
+                    <li><a href="{% url 'main.views.dashboard' %}">Home</a> <span class="divider">/</span></li>
+                    {% block breadcrumb %}{% endblock %}
+                </ul>
+                
+
+                <div class="container-fluid content main">
+                    {% block content %}{% endblock %}
+                </div>
+            {% endblock %}
+
+            {% block footer %}
+            <div class='content' id="footer">
+                    <p>
+                        <img src="{% static "image/logo-BIREME.png" %}" title="BIREME/OPAS/OMS" />
+
+                        <b class="bireme">BIREME - OPAS - OMS</b><br>
+                        {% trans "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde" %}<br>
+                        {% trans "Rua Botucatu, 862 | cep: 04023-901 | São Paulo - SP | Tel: (55 11) 5576-9800 | Fax: (55 11) 5575-8868 " %}<br>
+                        <a href="http://new.paho.org/bireme" title="{% trans 'Site Institucional da Bireme' %}">http://new.paho.org/bireme</a><br>
+                        <small>v{% include 'version.txt' %} | <a target="_blank" href="http://github.com/bireme/lis-admin" title="{% trans "Project source on GitHub" %}">{% trans "code on github" %}</a></small>
+                    </p>
+            </div>
+            {% endblock %}
+
+        </div>
+
+        <!-- javascript files -->
+
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <script src="{% static "bootstrap/js/bootstrap-dropdown.js" %}"></script>
+        <script src="{% static "bootstrap/js/bootstrap-modal.js" %}"></script>
+        <script src="{% static "bootstrap/js/bootstrap-transition.js" %}"></script>
+        <script src="{% static "bootstrap/js/bootstrap-alert.js" %}"></script>
+        <script src="{% static "bootstrap/js/bootstrap-tab.js" %}"></script>
+        <script src="{% static "bootstrap/js/bootstrap-typeahead.js" %}"></script>
+        <script src="{% static "js/actions.js" %}"></script>
+        <script src="{% static "js/dashboard.js" %}"></script>
+        <script>
+            $(function(){
+                $(".errorlist").addClass('alert alert-error');
+            });
+        </script>
+
+        {% include "lang.html" %}
+        {% include "alert.html" %}
+
+        {% block extrajs %}{% endblock %}
+
+    </body>    
+</html>

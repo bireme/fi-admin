@@ -1,0 +1,264 @@
+body {
+    background-image: url(../image/background.png);
+}
+.spacer {
+    clear:both;
+}
+/* Wrapper for page content to push down footer */
+.wrap {
+    margin-bottom: 20px;    
+}
+ul.alert {
+    margin: 0 0 10px 0;
+}
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+    height: 120px;
+}
+#footer {
+    background-color: #f5f5f5;
+    padding: 20px 0 0 0;
+}
+#footer img {
+    float: left;
+    margin: 0 10px;
+}
+#footer small a {
+    color: #999;
+    text-decoration: underline;
+}
+#footer small a:hover {
+    text-decoration: none;
+}
+
+.content.login {
+    padding: 0;
+    width: 400px;
+    margin: 10% auto;
+}
+.navbar .logged {
+    margin: 5px 0 10px 15px;
+}
+#logo {
+    height: 70px;
+    background: url(../image/logo-BIREME.png) no-repeat center;
+    margin: 0 0 20px 0;
+}
+#logo span {
+    display: none;
+}
+#loginForm {
+    padding: 30px 0;
+}
+.form-signin {
+    max-width: 300px;
+    padding: 19px 29px 29px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+}
+
+.confirm_change textarea {
+    width: 98%;
+    height: 70px;
+}
+.block {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.block .line {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.block select {
+    width: 80%;
+    font-size: 17pt;
+    height: 50px;
+}
+.block textarea {
+    width: 100%;
+}
+.actions {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.actions .btn {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.input-prepend input, .input-append input {
+    margin-left: -5px !important;
+    margin-right: -5px !important;
+}
+.table th, .table td {
+    border-top: none;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.content {
+    margin: 10px 20px;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #666;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+.breadcrumb {
+    border-top: 1px solid #666;
+    border-left: 1px solid #666;
+    border-right: 1px solid #666;
+    margin: 70px 20px -10px 20px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    font-size: 11pt;
+}
+.main {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
+}
+
+#footer {
+    margin-top: 0 !important;
+}
+
+.header {
+    padding: 0 0 9px 0;
+    border-bottom: 1px solid #eee;
+    margin: 10px 0 50px 0;
+}
+h3.header { 
+    margin: 10px 0 20px 0;
+}
+.header .pull-right {
+    margin-top: -35px;
+}
+#menu i {
+    margin: 1px 3px 0 0;
+}
+.mask {
+    display:none;
+    position:fixed;
+    left:0;
+    top:0;
+    z-index:9000;
+    background-color:#fff;
+    width:100%;
+    height:100%;
+    opacity: 0.7;
+}
+.mask img {
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-top:-50px;
+    margin-left:-50px;
+}
+.box-alerts {
+    position: fixed;
+    bottom: 10px;
+    z-index: 9999;
+    right: 20px;
+    width: 500px;
+}
+#help {
+    font-size: 14pt;
+    margin-left: 40px;
+    margin-bottom: 50px;
+    border-left: 5px solid #eee;
+    padding: 10px 20px 10px 20px;
+    line-height: 140%;
+}
+.form-submit {
+    border-top: 1px solid #eee;
+    padding: 20px 0 0 0;
+    margin-top: 40px !important;
+}
+#help h3 {
+    font-size: 10pt;
+    font-weight: bold;
+    color: #ddd;
+    text-transform: uppercase;
+}
+/*tablees*/
+.table td {
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+.header h3 {
+    margin-top: 10px;
+    font-weight: normal;
+}
+.header i {
+    margin-right: 5px;
+}
+form i[class^="icon-"] {
+    margin-right: 4px;
+    margin-left: 4px;
+}
+form .field {
+    margin: 4px 0;
+}
+form .span12.field input {
+    width: 94%;
+}
+.item {
+    margin: 30px 0;
+    line-height: 160%;
+}
+.item h4 {
+    font-size: 120%;
+    margin: 16px 0 8px 0;
+}
+.item table {
+    margin-bottom: 70px;
+}
+.pagination {
+    text-align: center;
+    margin-top: 40px;
+}
+
+div[id^=tab] ul li {
+    list-style: none;
+}
+#tab-permissions ul li {
+    padding: 20px 0;
+    border-bottom: 1px solid #DDDDDD;
+}
+#tab-permissions .checkboxes {
+    margin: 5px 0;
+}
+#tab-permissions input[type=checkbox] {
+    margin-left: 15px;
+}
+#tab-permissions input[type=checkbox]:first-child {
+    margin-left: 0;
+}
+.field .btn {
+    margin-top: -8px;
+    margin-left: 5px;
+}
+.field label{
+    display: inline;
+}

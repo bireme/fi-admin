@@ -1,0 +1,17 @@
+{% if alert %}
+<script>
+    $(function(){
+        $('.alert').alert();
+        setTimeout(function() {
+            $('.box-alerts').fadeOut('slow');
+        }, 5000);  
+    });
+</script>
+
+<div class='box-alerts'>
+    <div class="alert {{ alerttype }}">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {{ alert }}
+    </div>
+</div>
+{% endif %}

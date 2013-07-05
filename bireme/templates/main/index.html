@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block "title" %}{% trans "Dashboard" %} | {{ block.super }}{% endblock %}
+
+{% block content %}    
+    
+    <!-- block alert -->
+    {% if request.GET.message and request.GET.type %}
+        <div class="alert alert-{{ request.GET.type }}">
+            <button class="close" data-dismiss="alert">×</button>
+            <strong>{% trans "Success!" %}</strong><br>
+            {{ request.GET.message }}
+        </div>
+    {% endif %}
+        
+    <!--  header -->
+    <div class='header'>
+        <h2><i class='icon-home'></i> Dashboard <small>{{ user.username }}</small></h2>
+    </div>    
+{% endblock %}

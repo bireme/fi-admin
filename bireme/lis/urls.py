@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -14,4 +15,21 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+
+    (r'^cookie-lang/?$', 'utils.views.cookie_lang'),
+
+    (r'^resources/?$', 'main.views.resources'),
+    (r'^resource/new/?$', 'main.views.new_resource'),
+    (r'^resource/edit/(?P<resource>\d+)/?$', 'main.views.edit_resource'),
+
+    (r'^$', 'main.views.dashboard'),
+
 )
+
+
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+        url(r'^rosetta/', include('rosetta.urls')),
+    )

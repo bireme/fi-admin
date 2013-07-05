@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans 'LIS Administration' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'LIS Administration' %}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block userlinks %}
+    <a href="{% url 'rosetta-home' %}">{% trans "Translations" %}</a> /
+    {{ block.super }}
+{% endblock %}

@@ -1,0 +1,16 @@
+body {
+    background-image: none;
+}
+
+.header {
+    border: none;
+    margin-bottom: 20px;
+}
+.header h2, .header h2 small {
+    font-size: 100%;
+}
+
+.table td {
+    line-height: 100%;
+    padding: 7px;
+}
