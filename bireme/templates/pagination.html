@@ -1,0 +1,32 @@
+{% if pagination.page.has_previous or pagination.page.has_next %}
+    <div class="pagination">
+        <ul>
+            {% if pagination.page.has_previous %}
+                <li>
+                    <a href="javascript: page('{{ pagination.page.previous_page_number }}')"><i class="icon-caret-left"></i></a>
+                </li>
+            {% else %}
+                <li class="disabled">
+                    <a href="#"><i class="icon-caret-left"></i></a>
+                </li>
+            {% endif %}
+
+            {% for page in pagination.paginator.page_range %}
+                <li class="{% if page == pagination.page.number %}active{% endif %}">
+                    <a href="javascript: page('{{ page }}')">{{ page }}</a>
+                </li>        
+            {% endfor %}
+
+            {% if pagination.page.has_next %}
+                <li>
+                    <a href="javascript: page('{{ pagination.page.next_page_number }}')"><i class="icon-caret-right"></i></a>
+                </li>
+            {% else %}
+                <li class="disabled">
+                    <a href="#"><i class="icon-caret-right"></i></a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>  
+{% endif %}

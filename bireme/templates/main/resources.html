@@ -59,12 +59,13 @@
                         <a href="#" id="{{ resource.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                     </td>
                 </tr>
-            {% endfor %}
-            
+            {% endfor %}            
         </tbody>
     </table>
      
-</div>  
+    {% include "pagination.html" %}
+ 
+</div>
 
 {% include "delete_confirm.html" %}
 

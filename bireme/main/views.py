@@ -46,6 +46,10 @@ def resources(request):
         else:
             actions[key] = ACTIONS[key]
 
+    page = 1
+    if actions['page'] and actions['page'] != '':
+        page = actions['page']
+
     resources = Resource.objects.filter(title__icontains=actions['s'])
 
     if not user.is_superuser:
@@ -55,8 +59,17 @@ def resources(request):
     if actions['order'] == "-":
         resources = resources.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
+    
+    # pagination
+    pagination = {}
+    paginator = Paginator(resources, settings.ITEMS_PER_PAGE)
+    pagination['paginator'] = paginator
+    pagination['page'] = paginator.page(page)
+    resources = pagination['page'].object_list
+
     output['resources'] = resources
     output['actions'] = actions
+    output['pagination'] = pagination
 
     return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
 
