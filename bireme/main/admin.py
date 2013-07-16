@@ -21,11 +21,19 @@ class SourceTypeAdmin(GenericAdmin):
     model = SourceType
     inlines = [SourceTypeLocalAdmin,]
 
+class DescriptorAdmin(admin.TabularInline):
+    model = Descriptor
+    fields = ('vocabulary','level', 'text')
+    list_display = ('vocabulary', 'text')
+    search_fields = ('code', 'text')
+    list_filter = ('vocabulary', )
+
 
 class ResourceAdmin(GenericAdmin):
     model = Resource
+    inlines = [DescriptorAdmin,]
 
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(SourceType, SourceTypeAdmin)
 admin.site.register(Topic, TopicAdmin)
-
+admin.site.register(Descriptor)

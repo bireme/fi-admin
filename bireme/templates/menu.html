@@ -10,7 +10,7 @@
                         <ul class="nav pull-left">
                             <li><a href="#" title="{% trans "Dashboard" %}"><i class="icon-home"></i> {% trans "Dashboard" %}</a></li>
                             
-                            <li><a href="{% url 'main.views.resources' %}" title=""><i class="icon-star"></i> {% trans "Resources" %}</a></li>
+                            <li><a href="{% url 'main.views.list_resources' %}" title=""><i class="icon-star"></i> {% trans "Resources" %}</a></li>
 
                             {% if user.is_superuser %}
                                 <li><a href="#" title=""><i class="icon-tag"></i> {% trans "Topics" %}</a></li>

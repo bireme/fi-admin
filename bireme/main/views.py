@@ -1,18 +1,22 @@
 #! coding: utf-8
 from django.shortcuts import redirect, render_to_response, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth import forms as auth_forms
-from django.contrib.auth.views import logout
-from django.http import Http404, HttpResponse
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import forms as auth_forms
+from django.contrib.auth.views import logout
+
+from django.utils.translation import ugettext_lazy as _
+from django.http import Http404, HttpResponse
 from django.template import RequestContext
+
 from utils.views import ACTIONS
 from django.conf import settings
 from datetime import datetime
 from models import *
 from forms import *
+
 import mimetypes
 import os
 
@@ -27,7 +31,7 @@ def dashboard(request):
     return render_to_response('main/index.html', output, context_instance=RequestContext(request))
 
 @login_required
-def resources(request):
+def list_resources(request):
 
     user = request.user
     output = {}
@@ -74,47 +78,41 @@ def resources(request):
     return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
 
 @login_required
-def edit_resource(request, resource):
+def create_edit_resource(request, **kwargs):
 
-    resource = get_object_or_404(Resource, id=resource)
+    resource_id = kwargs.get('resource_id')
+    resource = None
     output = {}
 
-    form = ResourceForm(instance=resource)
+    if resource_id:
+        resource = get_object_or_404(Resource, id=resource_id)
+    else:
+        resource = Resource(creator=request.user)
+        output['is_new'] = True
 
+    # save/update
     if request.POST:
         form = ResourceForm(request.POST, request.FILES, instance=resource)
-        if form.is_valid():
-            form.save()
-            output['alert'] = _("Resource successfully edited.")
-            output['alerttype'] = "alert-success"
-
-    output['form'] = form
-    output['resource'] = resource
-    
-    return render_to_response('main/edit-resource.html', output, context_instance=RequestContext(request))
-
-@login_required
-def new_resource(request):
-
-    output = {}
-
-    resource = Resource(creator=request.user)
-    form = ResourceForm(instance=resource)
-
-    if request.POST:
-        form = ResourceForm(request.POST, request.FILES, instance=resource)
+        formset = DescriptorFormSet(request.POST, instance=resource)
         
-        if form.is_valid():
+        if form.is_valid() and formset.is_valid():
             resource = form.save()
+            formset.save()
             output['alert'] = _("Resource successfully edited.")
             output['alerttype'] = "alert-success"
-            
 
-    output['is_new'] = True
+            return redirect('main.views.list_resources')
+    # new            
+    else:
+        form = ResourceForm(instance=resource)
+        formset = DescriptorFormSet(instance=resource)
+        
     output['form'] = form
+    output['formset'] = formset
     output['resource'] = resource
     
     return render_to_response('main/edit-resource.html', output, context_instance=RequestContext(request))
+
 
 @login_required
 def delete_resource(request, resource):

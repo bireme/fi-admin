@@ -4,7 +4,9 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.db import models
 
-from utils.models import Generic, LANGUAGES_CHOICES
+from utils.models import Generic
+
+from main import choices
 
 class SourceType(Generic):
 
@@ -25,7 +27,7 @@ class SourceTypeLocal(models.Model):
 
     topic = models.ForeignKey(SourceType, verbose_name=_("source type"))
     name = models.CharField(_("name"), max_length=255)
-    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
+    language = models.CharField(_("language"), max_length=10, choices=choices.LANGUAGES_CHOICES[1:])
 
 
 class Topic(Generic):
@@ -47,7 +49,7 @@ class TopicLocal(models.Model):
 
     topic = models.ForeignKey(Topic, verbose_name=_("topic"))
     name = models.CharField(_("name"), max_length=255)
-    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
+    language = models.CharField(_("language"), max_length=10, choices=choices.LANGUAGES_CHOICES[1:])
 
 
 class Resource(Generic):
@@ -76,21 +78,13 @@ class Resource(Generic):
     # author (315)
     author = models.CharField(_('author'), max_length=255, blank=True, null=True)
     # language of resource (317)
-    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES, blank=True, null=True)
+    language = models.CharField(_("language"), max_length=10, choices=choices.LANGUAGES_CHOICES, blank=True, null=True)
     # source type (318)
     source_type = models.ForeignKey(SourceType, verbose_name=_("source type"), blank=True, null=True)
     # lis type (302)
     topic = models.ForeignKey(Topic, verbose_name=_("lis type"), blank=True, null=True)
     # abstract (319)
     abstract = models.TextField(_("abstract"), blank=True, null=True)
-    # thesaurus
-    thesaurus = models.CharField(_('thesaurus'), max_length=150, blank=True, null=True)
-    # descriptors (323)
-    descriptors = models.TextField(_("descriptors"), blank=True, null=True)
-    # geographic descriptors (325)
-    geo_descriptors = models.TextField(_("geographic descriptors"), blank=True, null=True)
-    # local descriptors (326)
-    keywords = models.TextField(_("keywords"), blank=True, null=True)
     # time period (341)
     time_period_textual = models.CharField(_('author'), max_length=255, blank=True, null=True)
     # objective (361)
@@ -101,3 +95,17 @@ class Resource(Generic):
     def __unicode__(self):
         return unicode(self.title)
 
+
+class Descriptor(models.Model):
+    class Meta:
+        order_with_respect_to = 'resource'
+
+    resource = models.ForeignKey(Resource)
+    vocabulary = models.CharField(_('Vocabulary'), max_length=255,
+                        choices=choices.DESCRIPTOR_VOCABULARY)
+    level = models.CharField(_('Level'), max_length=64,
+                        choices=choices.DESCRIPTOR_LEVEL)    
+    text = models.CharField(_('Text'), max_length=255, blank=True)
+
+    def __unicode__(self):
+        return u'[%s] %s: %s' % (self.vocabulary, self.code, self.text)

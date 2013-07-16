@@ -242,19 +242,6 @@ form .span12.field input {
 div[id^=tab] ul li {
     list-style: none;
 }
-#tab-permissions ul li {
-    padding: 20px 0;
-    border-bottom: 1px solid #DDDDDD;
-}
-#tab-permissions .checkboxes {
-    margin: 5px 0;
-}
-#tab-permissions input[type=checkbox] {
-    margin-left: 15px;
-}
-#tab-permissions input[type=checkbox]:first-child {
-    margin-left: 0;
-}
 .field .btn {
     margin-top: -8px;
     margin-left: 5px;
@@ -262,3 +249,14 @@ div[id^=tab] ul li {
 .field label{
     display: inline;
 }
+
+.descriptor-row{
+    float:left; 
+    width: 100%;
+}
+
+.descriptor-row .descriptor-field{
+    float:left; 
+    padding: 7px; 
+}
+

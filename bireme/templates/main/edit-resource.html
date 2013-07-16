@@ -1,37 +1,83 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}{% trans "Edit Resource" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'main.views.resources' %}">{% trans "Resources" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'main.views.list_resources' %}">{% trans "Resources" %}</a> <span class="divider">/</span></li>
     {% if is_new %}<li>{% trans "New Resource" %}</li>
     {% else %}<li>{% trans "Edit Resource" %}</li>{% endif %}
 {% endblock %}
 
+{% block content %} 
 
-{% block content %}  
+
 <div class='header'>
     <h2><i class='icon-star'></i>{% if is_new %}{% trans "New Resource" %}{% else %}{% trans "Edit Resource" %}{% endif %}</h2>
 </div>
 
 <div class='body'>
 
-    <form method="POST">{% csrf_token %}
-        <fieldset>
-            {{ form.non_field_errors }}
-            {% for field in form %}
-                {{ field.label_tag }}
-                {{ field.errors }}
-                {{ field }}
-            {% endfor %}
-        </fieldset>
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Data" %}</a></li>
+        <li><a href="#tab-descriptors" data-toggle="tab">{% trans "Descriptors" %}</a></li>
+    </ul>
 
+    <form method="POST">
+        {% csrf_token %}
+ 
+        <div class="tab-content">
+            <div id="tab-data" class="tab-pane active">
+                    <fieldset>
+                        {{ form.non_field_errors }}
+                        {% for field in form %}
+                            {{ field.label_tag }}
+                            {{ field.errors }}
+                            {{ field }}
+                        {% endfor %}
+                    </fieldset>
+            </div>
+
+            <div id='tab-descriptors' class="tab-pane">
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    <div id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %}">
+                        {% for field in form %}                        
+                            <div class="descriptor-field">
+                                {% if field.name != 'id' and field.name != 'resource' %}{{ field.label_tag }}{% endif %}
+                                
+                                {{ field.errors }}
+                                {{ field }}                                 
+                            </div>
+                        {% endfor %}                    
+                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                    </div>
+                {% endfor %}
+            </div>        
+
+        </div>
         <div class="control-panel form-submit">
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
-        </div>
-    </form>
+        </div>            
 
- 
+    </form>
 </div>
+
 {% endblock %}
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+
+   <script type="text/javascript">
+       $(function() {
+            $('.descriptor-row').formset({
+                    addText : '{% trans "Add descriptor" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign',
+                    deleteCssClass : 'icon-minus-sign',
+                });
+       })
+   </script>
+{% endblock %}
+
