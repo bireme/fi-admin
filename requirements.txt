@@ -1,4 +1,5 @@
 Django==1.5.1
 Fabric==1.4.1
 django-rosetta==0.7.1
+django-tastypie==0.9.15
 biremelogin

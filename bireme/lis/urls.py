@@ -2,9 +2,13 @@ from django.conf.urls import patterns, include, url
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 
+from main.api import ResourceAPI
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
+resource_api = ResourceAPI()
 
 urlpatterns = patterns('',
     # Examples:
@@ -27,6 +31,8 @@ urlpatterns = patterns('',
 
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html'}, name='auth_login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'authentication/logout.html', 'next_page': '/'}, name='auth_logout'),
+
+    (r'^api/', include(resource_api.urls)),
 
     (r'^$', 'main.views.dashboard'),
 )

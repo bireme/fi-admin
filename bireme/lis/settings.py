@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 
     'django_extensions',
+    'tastypie',
     'rosetta',
 
     'biremelogin',

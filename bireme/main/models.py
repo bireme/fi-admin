@@ -101,7 +101,7 @@ class Descriptor(models.Model):
     class Meta:
         order_with_respect_to = 'resource'
 
-    resource = models.ForeignKey(Resource)
+    resource = models.ForeignKey(Resource, related_name='resources')
     vocabulary = models.CharField(_('Vocabulary'), max_length=255,
                         choices=choices.DESCRIPTOR_VOCABULARY)
     level = models.CharField(_('Level'), max_length=64,
@@ -109,4 +109,4 @@ class Descriptor(models.Model):
     text = models.CharField(_('Text'), max_length=255, blank=True)
 
     def __unicode__(self):
-        return u'[%s] %s: %s' % (self.vocabulary, self.code, self.text)
+        return u'[%s] %s' % (self.vocabulary, self.text)
