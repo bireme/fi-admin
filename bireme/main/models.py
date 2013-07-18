@@ -91,10 +91,11 @@ class Resource(Generic):
     objective = models.CharField(_('objective'), max_length=255, blank=True, null=True)
     # status (399)
     status = models.CharField(_('status'), max_length=2, choices=STATUS_CHOICES, blank=True, null=True)
+    # responsible cooperative center 
+    cooperative_center = models.CharField(_('cooperative center'), max_length=55, blank=True, null=True)
     
     def __unicode__(self):
         return unicode(self.title)
-
 
 class Descriptor(models.Model):
     class Meta:

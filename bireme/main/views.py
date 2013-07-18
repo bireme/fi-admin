@@ -18,6 +18,7 @@ from models import *
 from forms import *
 
 import mimetypes
+import simplejson
 import os
 
 #from decorators import *
@@ -37,8 +38,6 @@ def list_resources(request):
     output = {}
     delete_id = request.POST.get('delete_id')
 
-    print request.POST
-
     if delete_id:
         delete_resource(request, delete_id)
 
@@ -57,8 +56,10 @@ def list_resources(request):
     resources = Resource.objects.filter(title__icontains=actions['s'])
 
     if not user.is_superuser:
-        resources = resources.filter(responsible=user.profile.cooperative_center)
-
+        user_data = simplejson.loads(user.profile.data)
+        user_cc = user_data['cc']
+        resources = resources.filter(cooperative_center=user_cc, title__icontains=actions['s'])
+        
     resources = resources.order_by(actions["orderby"])
     if actions['order'] == "-":
         resources = resources.order_by("%s%s" % (actions["order"], actions["orderby"]))
@@ -92,7 +93,7 @@ def create_edit_resource(request, **kwargs):
 
     # save/update
     if request.POST:
-        form = ResourceForm(request.POST, request.FILES, instance=resource)
+        form = ResourceForm(request.POST, request.FILES, instance=resource, user=request.user)
         formset = DescriptorFormSet(request.POST, instance=resource)
         
         if form.is_valid() and formset.is_valid():
