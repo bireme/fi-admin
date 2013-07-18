@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.contrib.auth import views as auth_views
 from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
@@ -24,8 +25,10 @@ urlpatterns = patterns('',
     (r'^resource/new/?$', 'main.views.create_edit_resource'),
     (r'^resource/edit/(?P<resource_id>\d+)/?$', 'main.views.create_edit_resource'),
 
-    (r'^$', 'main.views.dashboard'),
+    url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html'}, name='auth_login'),
+    url(r'^logout/$', auth_views.logout, {'template_name': 'authentication/logout.html', 'next_page': '/'}, name='auth_logout'),
 
+    (r'^$', 'main.views.dashboard'),
 )
 
 

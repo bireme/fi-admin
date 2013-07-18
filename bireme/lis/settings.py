@@ -134,6 +134,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'rosetta',
 
+    'biremelogin',
+
     'main',
     'utils',
 )
@@ -168,9 +170,17 @@ LOGGING = {
 }
 
 
-
 ITEMS_PER_PAGE = 20
+LOGIN_URL = '/login/'
 
+DEFAULT_COOPERATIVE_CENTER = 'BR1.1'
+
+AUTHENTICATION_BACKENDS = (
+    'biremelogin.authenticate.EmailModelBackend',
+)
+
+BIREMELOGIN_BASE_URL = "http://accounts.teste.bireme.org"
+BIREMELOGIN_SERVICE = "LIS"
 
 try:
     from settings_local import *

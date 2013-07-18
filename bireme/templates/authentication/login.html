@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block "title" %}{% trans "Login" %} | {{ block.super }}{% endblock %}
+
+{% block extrajs %}
+    <script>
+        $(function(){
+            document.login.username.focus();
+            $('div.content').addClass('login')
+            $('.breadcrumb').hide();
+        });
+    </script>
+    {% if request.user.is_authenticated %}
+        <script>window.location = "{% url 'main.views.dashboard' %}"</script>
+    {% endif %}
+{% endblock %}
+
+{% block top %}{% endblock %}
+
+
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+
+    <div id="loginForm">
+        <div class="row">                        
+            <div class="logo" id="logo">
+                <h1><a href="" title="{% trans "LIS" %}"><span>{% trans "LIS" %}</span></a></h1>
+            </div>
+        </div>
+
+        <form class="form-signin" action="{% url 'django.contrib.auth.views.login' %}" method="post" name="login">
+            
+            {% csrf_token %}<input type="hidden" name="next" value="{% url 'main.views.dashboard' %}" />
+
+            <h2 class="form-signin-heading">{% trans "Login" %}</h2>
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-error">
+                    {{ form.non_field_errors.as_text  }}
+                </div>
+            {% endif %}
+
+            {{ form.username.errors }}
+            <input type="text" class="input-block-level" name="username" id="id_username" placeholder="Username or email">
+
+            {{ form.password.errors }}
+            <input type="password" class="input-block-level" placeholder="Password" name="password">
+
+            <button class="btn btn-large btn-primary" type="submit">{% trans "Login" %}</button>
+        </form>
+    </div> <!-- /#loginForm -->
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
