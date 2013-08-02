@@ -4,10 +4,10 @@ from fabric.api import env, local, settings, abort, run, cd
 from fabric.operations import local, put, sudo, get
 from fabric.context_managers import prefix
 
-env.appname = 'accounts'
+env.appname = 'lis-service'
 
 env.user = ''
-env.path = '/home/aplicacoes/' + env.appname + '/'
+env.path = ''
 env.rootpath = env.path + 'bireme/'
 env.gitpath = env.path + 'git/'
 env.virtualenv = env.path + 'env/'
@@ -18,15 +18,15 @@ except: pass
 
 def test():
     """Test server"""
-    env.hosts = ['ts01dx']
+    env.hosts = ['']
 
 def stage():
     """Stage server"""
-    env.hosts = ['hm01dx']
+    env.hosts = ['']
 
 def production():
     """Main server"""
-    env.hosts = ['pr20dx:8022']
+    env.hosts = ['']
 
 
 def requirements():
@@ -49,7 +49,7 @@ def restart_app():
     """
         Restarts remote wsgi.
     """
-    with cd(os.path.join(env.gitpath ,'tools')):
+    with cd(os.path.join(env.gitpath ,'fabric')):
         run("./restart.sh")
 
 def update_version_file():
@@ -58,15 +58,25 @@ def update_version_file():
         # traz o arquivo gerado da versão para minha máquina, e implementa a versão localmente
         get("templates/version.txt", "../bireme/templates")
 
-def update():
+def full_update():
     """
-        Atualiza código (git pull) e restart serviço
+        Requirements, git pull, touch 
     """
     with cd(env.gitpath):
         run("git pull")
 
     requirements()
-    #migrate()
+    migrate()
+    update_version_file()
+    restart_app()
+
+def update():
+    """
+        Git pull e touch 
+    """
+    with cd(env.gitpath):
+        run("git pull")
+
     update_version_file()
     restart_app()
 

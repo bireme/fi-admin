@@ -1,13 +1,19 @@
 from fabric.api import env
 
 env.user = ''
-env.path = '/home/aplicacoes/accounts/'
+env.path = '/home/aplicacoes-bvs/lis-service/'
 env.rootpath = env.path + 'bireme/'
 env.gitpath = env.path + 'git/'
 env.virtualenv = env.path + 'env/'
 
 def test():
-    env.hosts = ['ts01dx']
+    """Test server"""
+    env.hosts = ['ts']
 
-def homolog():
-    env.hosts = ['hm01dx']
+def stage():
+    """Stage server"""
+    env.hosts = ['hm']
+
+def production():
+    """Main server"""
+    env.hosts = ['pr']

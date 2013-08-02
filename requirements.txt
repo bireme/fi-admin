@@ -2,4 +2,8 @@ Django==1.5.1
 Fabric==1.4.1
 django-rosetta==0.7.1
 django-tastypie==0.9.15
-biremelogin
+django-haystack==2.1.0
+pysolr==3.1.0
+lxml==3.2.3
+simplejson=3.3.0
+#biremelogin
