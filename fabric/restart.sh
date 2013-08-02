@@ -1,1 +1,1 @@
-touch ../application.wsgi
+touch ../../application.wsgi

@@ -12,10 +12,6 @@ env.rootpath = env.path + 'bireme/'
 env.gitpath = env.path + 'git/'
 env.virtualenv = env.path + 'env/'
 
-# including local environment from fabric
-try: from environment import *
-except: pass
-
 def test():
     """Test server"""
     env.hosts = ['']
@@ -27,6 +23,10 @@ def stage():
 def production():
     """Main server"""
     env.hosts = ['']
+
+# including local environment from fabric
+try: from environment import *
+except: pass
 
 
 def requirements():
