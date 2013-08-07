@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Types" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "Types" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+<!--  header -->
+<div class='header'>
+    <h2><i class='icon-sitemap'></i> {% trans "Types" %}</h2>
+        <div class='pull-right'>
+            <a href="{% url 'main.views.create_edit_type' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Type" %}</a>
+        </div>
+</div>
+
+<div class='body'>
+    {% if actions.s %}
+        <div>
+            {% trans "Search" %}: <strong>{{ actions.s }}</strong> 
+            <a href="{% url 'main.views.list_types' %}">[{% trans "clear" %}]</a>
+        </div>
+    {% endif %}
+
+    <div class='pull-right'>
+        <div class="input-append">
+            <form name="search" onSubmit="return search();">
+                <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
+                <button class="btn" type="submit"><i class='icon-search'></i></button>
+            </form>
+        </div>
+    </div>
+
+    <table class='table'>
+        <thead>
+            <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+            <th><a href="javascript:orderby('name');" id="id_title">{% trans "Name" %}</a></th>
+            <th>{% trans "Actions" %}</th>
+        </thead>
+        <tbody>
+            {% for type in types %}
+                <tr>
+                    <td><a href="{% url 'main.views.create_edit_type' type.id %}">{{ type.id }}</a></td>
+                    <td>{{ type.name }}</td>
+                    <td>
+                        <a href="{% url 'main.views.create_edit_type' type.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                        <a href="#" id="{{ type.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                    </td>
+                </tr>
+            {% endfor %}            
+        </tbody>
+    </table>
+     
+    {% include "pagination.html" %}
+ 
+</div>
+
+{% include "delete_confirm.html" %}
+
+{% endblock %}

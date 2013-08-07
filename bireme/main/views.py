@@ -31,6 +31,8 @@ def dashboard(request):
 
     return render_to_response('main/index.html', output, context_instance=RequestContext(request))
 
+############ RESOURCES #############
+
 @login_required
 def list_resources(request):
 
@@ -126,3 +128,184 @@ def delete_resource(request, resource):
     output['alerttype'] = "alert-success"
 
     return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
+
+
+############ TOPICS #############
+
+@login_required
+def list_topics(request):
+
+    user = request.user
+    output = {}
+    delete_id = request.POST.get('delete_id')
+
+    if delete_id:
+        delete_topic(request, delete_id)
+
+    # getting action parameters
+    actions = {}
+    for key in ACTIONS.keys():
+        if request.REQUEST.get(key):
+            actions[key] = request.REQUEST.get(key)
+        else:
+            actions[key] = ACTIONS[key]
+
+    page = 1
+    if actions['page'] and actions['page'] != '':
+        page = actions['page']
+
+    topics = Topic.objects.filter(name__icontains=actions['s'])
+
+    topics = topics.order_by(actions["orderby"])
+    if actions['order'] == "-":
+        topics = topics.order_by("%s%s" % (actions["order"], actions["orderby"]))
+
+    
+    # pagination
+    pagination = {}
+    paginator = Paginator(topics, settings.ITEMS_PER_PAGE)
+    pagination['paginator'] = paginator
+    pagination['page'] = paginator.page(page)
+    topics = pagination['page'].object_list
+
+    output['topics'] = topics
+    output['actions'] = actions
+    output['pagination'] = pagination
+
+    return render_to_response('main/topics.html', output, context_instance=RequestContext(request))
+
+@login_required
+def create_edit_topic(request, **kwargs):
+
+    topic_id = kwargs.get('topic_id')
+    topic = None
+    output = {}
+
+    if topic_id:
+        topic = get_object_or_404(Topic, id=topic_id)
+    else:
+        topic = Topic(creator=request.user)
+        output['is_new'] = True
+
+    # save/update
+    if request.POST:
+        form = TopicForm(request.POST, request.FILES, instance=topic)
+        
+        if form.is_valid():
+            topic = form.save()
+            output['alert'] = _("Topic successfully edited.")
+            output['alerttype'] = "alert-success"
+
+            return redirect('main.views.list_topics')
+    # new            
+    else:
+        form = TopicForm(instance=topic)
+        
+    output['form'] = form
+    output['topic'] = topic
+    
+    return render_to_response('main/edit-topic.html', output, context_instance=RequestContext(request))
+
+
+@login_required
+def delete_topic(request, topic):
+
+    topic = get_object_or_404(Topic, id=topic)
+    output = {}
+
+    topic.delete()
+    output['alert'] = _("Topic deleted.")
+    output['alerttype'] = "alert-success"
+
+    return render_to_response('main/topics.html', output, context_instance=RequestContext(request))
+
+
+
+############ TYPES #############
+
+@login_required
+def list_types(request):
+
+    user = request.user
+    output = {}
+    delete_id = request.POST.get('delete_id')
+
+    if delete_id:
+        delete_type(request, delete_id)
+
+    # getting action parameters
+    actions = {}
+    for key in ACTIONS.keys():
+        if request.REQUEST.get(key):
+            actions[key] = request.REQUEST.get(key)
+        else:
+            actions[key] = ACTIONS[key]
+
+    page = 1
+    if actions['page'] and actions['page'] != '':
+        page = actions['page']
+
+    types = SourceType.objects.filter(name__icontains=actions['s'])
+
+    types = types.order_by(actions["orderby"])
+    if actions['order'] == "-":
+        types = types.order_by("%s%s" % (actions["order"], actions["orderby"]))
+
+    
+    # pagination
+    pagination = {}
+    paginator = Paginator(types, settings.ITEMS_PER_PAGE)
+    pagination['paginator'] = paginator
+    pagination['page'] = paginator.page(page)
+    types = pagination['page'].object_list
+
+    output['types'] = types
+    output['actions'] = actions
+    output['pagination'] = pagination
+
+    return render_to_response('main/types.html', output, context_instance=RequestContext(request))
+
+@login_required
+def create_edit_type(request, **kwargs):
+
+    type_id = kwargs.get('type_id')
+    type = None
+    output = {}
+
+    if type_id:
+        type = get_object_or_404(SourceType, id=type_id)
+    else:
+        type = SourceType(creator=request.user)
+        output['is_new'] = True
+
+    # save/update
+    if request.POST:
+        form = TypeForm(request.POST, request.FILES, instance=type)
+        
+        if form.is_valid():
+            type = form.save()
+            output['alert'] = _("Type successfully edited.")
+            output['alerttype'] = "alert-success"
+
+            return redirect('main.views.list_types')
+    # new            
+    else:
+        form = TypeForm(instance=type)
+        
+    output['form'] = form
+    output['type'] = type
+    
+    return render_to_response('main/edit-type.html', output, context_instance=RequestContext(request))
+
+
+@login_required
+def delete_topic(request, type):
+
+    type = get_object_or_404(SourceType, id=type)
+    output = {}
+
+    type.delete()
+    output['alert'] = _("Type deleted.")
+    output['alerttype'] = "alert-success"
+
+    return render_to_response('main/types.html', output, context_instance=RequestContext(request))

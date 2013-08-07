@@ -43,4 +43,18 @@ class DescriptorForm(forms.ModelForm):
         exclude = GENERIC_FIELDS
 
 
+class TopicForm(forms.ModelForm):
+
+    class Meta:
+        model = Topic
+        exclude = GENERIC_FIELDS
+
+class TypeForm(forms.ModelForm):
+
+    class Meta:
+        model = SourceType
+        exclude = GENERIC_FIELDS
+
+
+
 DescriptorFormSet = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1)

@@ -25,9 +25,21 @@ urlpatterns = patterns('',
 
     (r'^cookie-lang/?$', 'utils.views.cookie_lang'),
 
+    # Resources 
     (r'^resources/?$', 'main.views.list_resources'),
     (r'^resource/new/?$', 'main.views.create_edit_resource'),
     (r'^resource/edit/(?P<resource_id>\d+)/?$', 'main.views.create_edit_resource'),
+
+    # Topics 
+    (r'^topics/?$', 'main.views.list_topics'),
+    (r'^topic/new/?$', 'main.views.create_edit_topic'),
+    (r'^topic/edit/(?P<topic_id>\d+)/?$', 'main.views.create_edit_topic'),
+
+    # Types
+    (r'^types/?$', 'main.views.list_types'),
+    (r'^type/new/?$', 'main.views.create_edit_type'),
+    (r'^type/edit/(?P<type_id>\d+)/?$', 'main.views.create_edit_type'),
+
 
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html'}, name='auth_login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'authentication/logout.html', 'next_page': '/'}, name='auth_logout'),

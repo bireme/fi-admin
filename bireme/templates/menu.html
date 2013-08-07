@@ -13,8 +13,8 @@
                             <li><a href="{% url 'main.views.list_resources' %}" title=""><i class="icon-star"></i> {% trans "Resources" %}</a></li>
 
                             {% if user.is_superuser %}
-                                <li><a href="#" title=""><i class="icon-tag"></i> {% trans "Topics" %}</a></li>
-                                <li><a href="#" title=""><i class="icon-sitemap"></i> {% trans "Types" %}</a></li>
+                                <li><a href="{% url 'main.views.list_topics' %}" title=""><i class="icon-tag"></i> {% trans "Topics" %}</a></li>
+                                <li><a href="{% url 'main.views.list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Types" %}</a></li>
                                 <li><a href="{% url 'admin:index' %}" title=""><i class="icon-lock"></i> {% trans "Django Admin" %}</a></li>
                             {% endif %}
                         </ul>
