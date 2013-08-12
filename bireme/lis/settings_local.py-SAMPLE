@@ -11,6 +11,7 @@ DATABASES = {
 
 DEBUG = True
 
+SEARCH_SERVICE_URL = 'http://srv.bvsalud.org/'
 
 # Email
 EMAIL_HOST = ''

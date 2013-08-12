@@ -131,7 +131,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 
-    'django_extensions',
+    #'django_extensions',
+    'haystack',
     'tastypie',
     'rosetta',
 
@@ -170,6 +171,18 @@ LOGGING = {
     }
 }
 
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://localhost:8080/solr/lis'
+    },
+}
+
+# Haystack signal for automatic update of Solr index when the model is saved/updated
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+SEARCH_SERVICE_URL = 'http://localhost:8080/'
 
 ITEMS_PER_PAGE = 20
 LOGIN_URL = '/login/'
