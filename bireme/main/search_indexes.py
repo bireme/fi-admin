@@ -4,6 +4,7 @@ from main.models import Resource, Descriptor
 
 
 class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
     link = indexes.CharField(model_attr='link')
     abstract = indexes.CharField(model_attr='abstract')
