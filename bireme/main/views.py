@@ -25,7 +25,7 @@ import os
 
 @login_required
 def dashboard(request):
-    
+
     user = request.user
     output = {}
 
@@ -61,12 +61,12 @@ def list_resources(request):
         user_data = simplejson.loads(user.profile.data)
         user_cc = user_data['cc']
         resources = resources.filter(cooperative_center=user_cc, title__icontains=actions['s'])
-        
+
     resources = resources.order_by(actions["orderby"])
     if actions['order'] == "-":
         resources = resources.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
-    
+
     # pagination
     pagination = {}
     paginator = Paginator(resources, settings.ITEMS_PER_PAGE)
@@ -97,7 +97,7 @@ def create_edit_resource(request, **kwargs):
     if request.POST:
         form = ResourceForm(request.POST, request.FILES, instance=resource, user=request.user)
         formset = DescriptorFormSet(request.POST, instance=resource)
-        
+
         if form.is_valid() and formset.is_valid():
             resource = form.save()
             formset.save()
@@ -105,15 +105,16 @@ def create_edit_resource(request, **kwargs):
             output['alerttype'] = "alert-success"
 
             return redirect('main.views.list_resources')
-    # new            
+    # new
     else:
         form = ResourceForm(instance=resource)
         formset = DescriptorFormSet(instance=resource)
-        
+
     output['form'] = form
     output['formset'] = formset
     output['resource'] = resource
-    
+    output['settings'] = settings
+
     return render_to_response('main/edit-resource.html', output, context_instance=RequestContext(request))
 
 
@@ -160,7 +161,7 @@ def list_topics(request):
     if actions['order'] == "-":
         topics = topics.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
-    
+
     # pagination
     pagination = {}
     paginator = Paginator(topics, settings.ITEMS_PER_PAGE)
@@ -190,20 +191,20 @@ def create_edit_topic(request, **kwargs):
     # save/update
     if request.POST:
         form = TopicForm(request.POST, request.FILES, instance=topic)
-        
+
         if form.is_valid():
             topic = form.save()
             output['alert'] = _("Topic successfully edited.")
             output['alerttype'] = "alert-success"
 
             return redirect('main.views.list_topics')
-    # new            
+    # new
     else:
         form = TopicForm(instance=topic)
-        
+
     output['form'] = form
     output['topic'] = topic
-    
+
     return render_to_response('main/edit-topic.html', output, context_instance=RequestContext(request))
 
 
@@ -251,7 +252,7 @@ def list_types(request):
     if actions['order'] == "-":
         types = types.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
-    
+
     # pagination
     pagination = {}
     paginator = Paginator(types, settings.ITEMS_PER_PAGE)
@@ -281,20 +282,20 @@ def create_edit_type(request, **kwargs):
     # save/update
     if request.POST:
         form = TypeForm(request.POST, request.FILES, instance=type)
-        
+
         if form.is_valid():
             type = form.save()
             output['alert'] = _("Type successfully edited.")
             output['alerttype'] = "alert-success"
 
             return redirect('main.views.list_types')
-    # new            
+    # new
     else:
         form = TypeForm(instance=type)
-        
+
     output['form'] = form
     output['type'] = type
-    
+
     return render_to_response('main/edit-type.html', output, context_instance=RequestContext(request))
 
 

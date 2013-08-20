@@ -8,7 +8,7 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     title = indexes.CharField(model_attr='title')
     link = indexes.CharField(model_attr='link')
     abstract = indexes.CharField(model_attr='abstract')
-    topic = indexes.CharField(model_attr='topic')
+    #topic = indexes.CharField(model_attr='topic')
     tags = indexes.MultiValueField()
 
     def get_model(self):

@@ -10,7 +10,7 @@
     {% else %}<li>{% trans "Edit Resource" %}</li>{% endif %}
 {% endblock %}
 
-{% block content %} 
+{% block content %}
 
 
 <div class='header'>
@@ -26,7 +26,7 @@
 
     <form method="POST">
         {% csrf_token %}
- 
+
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
                     <fieldset>
@@ -43,23 +43,25 @@
                 {{ formset.management_form }}
                 {% for form in formset %}
                     <div id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %}">
-                        {% for field in form %}                        
+                        {% for field in form %}
                             <div class="descriptor-field">
                                 {% if field.name != 'id' and field.name != 'resource' %}{{ field.label_tag }}{% endif %}
-                                
+
                                 {{ field.errors }}
-                                {{ field }}                                 
+                                {{ field }}
+                                {% if field.name == 'text' %}<a href="#" onclick="javascript:decs_search('{{ field.html_name }}')";>DeCS Search</a>{% endif %}
+
                             </div>
-                        {% endfor %}                    
+                        {% endfor %}
                         {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                     </div>
                 {% endfor %}
-            </div>        
+            </div>
 
         </div>
         <div class="control-panel form-submit">
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
-        </div>            
+        </div>
 
     </form>
 </div>
@@ -70,14 +72,32 @@
    <script src="{% static 'js/jquery.formset.js' %}"></script>
 
    <script type="text/javascript">
-       $(function() {
+        var decs_field;
+
+        $(function() {
             $('.descriptor-row').formset({
                     addText : '{% trans "Add descriptor" %}',
                     deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign',
                     deleteCssClass : 'icon-minus-sign',
-                });
-       })
+            });
+
+            var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+            var eventer = window[eventMethod];
+            var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+            // Listen to message from child window
+            eventer(messageEvent,function(e) {
+                $('#id_' + decs_field).val(e.data);
+            },false);
+
+        })
+
+        function decs_search(field_name){
+            decs_field = field_name;
+            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang=pt', 'decslookup', 'width=800,height=600');
+        }
+
    </script>
 {% endblock %}
 
