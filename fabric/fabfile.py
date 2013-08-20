@@ -25,8 +25,10 @@ def production():
     env.hosts = ['']
 
 # including local environment from fabric
-try: from environment import *
-except: pass
+try: 
+    from environment import *
+except: 
+    pass
 
 
 def requirements():
