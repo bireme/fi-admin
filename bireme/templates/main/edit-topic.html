@@ -2,25 +2,25 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}{% trans "Edit Topic" %}{% endblock %}
+{% block title %}{% trans "Edit LIS Type" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'main.views.list_resources' %}">{% trans "Topic" %}</a> <span class="divider">/</span></li>
-    {% if is_new %}<li>{% trans "New Topic" %}</li>
-    {% else %}<li>{% trans "Edit Topic" %}</li>{% endif %}
+    <li><a href="{% url 'main.views.list_resources' %}">{% trans "LIS Type" %}</a> <span class="divider">/</span></li>
+    {% if is_new %}<li>{% trans "New LIS Type" %}</li>
+    {% else %}<li>{% trans "Edit LIS Type" %}</li>{% endif %}
 {% endblock %}
 
-{% block content %} 
+{% block content %}
 
 
 <div class='header'>
-    <h2><i class='icon-tag'></i>{% if is_new %}{% trans "New Topic" %}{% else %}{% trans "Edit Topic" %}{% endif %}</h2>
+    <h2><i class='icon-tag'></i>{% if is_new %}{% trans "New LIS Type" %}{% else %}{% trans "Edit LIS Type" %}{% endif %}</h2>
 </div>
 
 <div class='body'>
     <form method="POST">
         {% csrf_token %}
- 
+
         <fieldset>
             {{ form.non_field_errors }}
             {% for field in form %}

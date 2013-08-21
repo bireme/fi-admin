@@ -6,15 +6,15 @@
             <div class="navbar-inner">
                 <div class="container-fluid">
                     <div class="row-fluid top">
-                        
+
                         <ul class="nav pull-left">
                             <li><a href="#" title="{% trans "Dashboard" %}"><i class="icon-home"></i> {% trans "Dashboard" %}</a></li>
-                            
+
                             <li><a href="{% url 'main.views.list_resources' %}" title=""><i class="icon-star"></i> {% trans "Resources" %}</a></li>
 
                             {% if user.is_superuser %}
-                                <li><a href="{% url 'main.views.list_topics' %}" title=""><i class="icon-tag"></i> {% trans "Topics" %}</a></li>
-                                <li><a href="{% url 'main.views.list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Types" %}</a></li>
+                                <li><a href="{% url 'main.views.list_topics' %}" title=""><i class="icon-tag"></i> {% trans "LIS types" %}</a></li>
+                                <li><a href="{% url 'main.views.list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Source types" %}</a></li>
                                 <li><a href="{% url 'admin:index' %}" title=""><i class="icon-lock"></i> {% trans "Django Admin" %}</a></li>
                             {% endif %}
                         </ul>
@@ -22,7 +22,7 @@
                         <ul class="nav pull-right">
                             <li>
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_language">
-                                    <i class="icon-flag"></i> 
+                                    <i class="icon-flag"></i>
                                     {% if LANGUAGE_CODE == 'en' %}{% trans "English"|capfirst %}{% endif %}
                                     {% if LANGUAGE_CODE == 'es' %}{% trans "Spanish"|capfirst %}{% endif %}
                                     {% if LANGUAGE_CODE == 'pt-br' %}{% trans "Portuguese"|capfirst %}{% endif %}
@@ -31,7 +31,7 @@
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu_language">
                                     {% if LANGUAGE_CODE != "en" %}<li><a href="javascript: change_language('en')" title="{% trans 'English' %}">{% trans 'English'|capfirst %}</a></li>{% endif %}
                                     {% if LANGUAGE_CODE != "pt-br" %}<li><a href="javascript: change_language('pt-BR')" title="{% trans 'Portuguese' %}">{% trans 'Portuguese'|capfirst %}</a></li>{% endif %}
-                                    {% if LANGUAGE_CODE != "es" %}<li><a href="javascript: change_language('es')" title="{% trans 'Spanish' %}">{% trans 'Spanish'|capfirst %}</a></li>{% endif %}                                    
+                                    {% if LANGUAGE_CODE != "es" %}<li><a href="javascript: change_language('es')" title="{% trans 'Spanish' %}">{% trans 'Spanish'|capfirst %}</a></li>{% endif %}
                                 </ul>
                             </li>
                             <li>
@@ -48,4 +48,4 @@
         </div>
 
     {% endif %}
-{% endblock %}       
+{% endblock %}

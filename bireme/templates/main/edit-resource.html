@@ -49,9 +49,8 @@
 
                                 {{ field.errors }}
                                 {{ field }}
-                                {% if field.name == 'text' %}<a href="#" onclick="javascript:decs_search('{{ field.html_name }}')";>DeCS Search</a>{% endif %}
-
                             </div>
+                                {% if field.name == 'text' %}<a href="#" onclick="javascript:decs_search('{{ field.html_name }}')";>DeCS Search</a>{% endif %}
                         {% endfor %}
                         {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                     </div>

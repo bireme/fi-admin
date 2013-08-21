@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Types" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Source types" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li>{% trans "Types" %}</li>
+    <li>{% trans "Source types" %}</li>
 {% endblock %}
 
 
@@ -18,7 +18,7 @@
 
 <!--  header -->
 <div class='header'>
-    <h2><i class='icon-sitemap'></i> {% trans "Types" %}</h2>
+    <h2><i class='icon-sitemap'></i> {% trans "Source types" %}</h2>
         <div class='pull-right'>
             <a href="{% url 'main.views.create_edit_type' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Type" %}</a>
         </div>
@@ -27,7 +27,7 @@
 <div class='body'>
     {% if actions.s %}
         <div>
-            {% trans "Search" %}: <strong>{{ actions.s }}</strong> 
+            {% trans "Search" %}: <strong>{{ actions.s }}</strong>
             <a href="{% url 'main.views.list_types' %}">[{% trans "clear" %}]</a>
         </div>
     {% endif %}
@@ -57,12 +57,12 @@
                         <a href="#" id="{{ type.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                     </td>
                 </tr>
-            {% endfor %}            
+            {% endfor %}
         </tbody>
     </table>
-     
+
     {% include "pagination.html" %}
- 
+
 </div>
 
 {% include "delete_confirm.html" %}

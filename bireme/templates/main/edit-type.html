@@ -2,25 +2,25 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}{% trans "Edit Type" %}{% endblock %}
+{% block title %}{% trans "Edit Source type" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'main.views.list_types' %}">{% trans "Type" %}</a> <span class="divider">/</span></li>
-    {% if is_new %}<li>{% trans "New Type" %}</li>
-    {% else %}<li>{% trans "Edit Type" %}</li>{% endif %}
+    <li><a href="{% url 'main.views.list_types' %}">{% trans "Source type" %}</a> <span class="divider">/</span></li>
+    {% if is_new %}<li>{% trans "New Source type" %}</li>
+    {% else %}<li>{% trans "Edit Source type" %}</li>{% endif %}
 {% endblock %}
 
-{% block content %} 
+{% block content %}
 
 
 <div class='header'>
-    <h2><i class='icon-tag'></i>{% if is_new %}{% trans "New Type" %}{% else %}{% trans "Edit Type" %}{% endif %}</h2>
+    <h2><i class='icon-tag'></i>{% if is_new %}{% trans "New Source type" %}{% else %}{% trans "Edit Source type" %}{% endif %}</h2>
 </div>
 
 <div class='body'>
     <form method="POST">
         {% csrf_token %}
- 
+
         <fieldset>
             {{ form.non_field_errors }}
             {% for field in form %}
