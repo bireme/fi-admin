@@ -5,13 +5,13 @@ from models import *
 from utils.admin import GenericAdmin
 
 
-class TopicLocalAdmin(admin.TabularInline):
-    model = TopicLocal
+class ThematicAreaLocalAdmin(admin.TabularInline):
+    model = ThematicAreaLocal
     extra = 0
 
-class TopicAdmin(GenericAdmin):
-    model = Topic
-    inlines = [TopicLocalAdmin,]
+class ThematicAreaAdmin(GenericAdmin):
+    model = ThematicArea
+    inlines = [ThematicAreaLocalAdmin,]
 
 class SourceTypeLocalAdmin(admin.TabularInline):
     model = SourceTypeLocal
@@ -35,5 +35,5 @@ class ResourceAdmin(GenericAdmin):
 
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(SourceType, SourceTypeAdmin)
-admin.site.register(Topic, TopicAdmin)
+admin.site.register(ThematicArea, ThematicAreaAdmin)
 admin.site.register(Descriptor)

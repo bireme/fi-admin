@@ -31,7 +31,7 @@ def dashboard(request):
 
     return render_to_response('main/index.html', output, context_instance=RequestContext(request))
 
-############ RESOURCES #############
+############ Main table Resources #############
 
 @login_required
 def list_resources(request):
@@ -131,17 +131,17 @@ def delete_resource(request, resource):
     return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
 
 
-############ TOPICS #############
+############ Auxiliary table Thematic Area (LIS Type) #############
 
 @login_required
-def list_topics(request):
+def list_thematics(request):
 
     user = request.user
     output = {}
     delete_id = request.POST.get('delete_id')
 
     if delete_id:
-        delete_topic(request, delete_id)
+        delete_thematic(request, delete_id)
 
     # getting action parameters
     actions = {}
@@ -155,74 +155,78 @@ def list_topics(request):
     if actions['page'] and actions['page'] != '':
         page = actions['page']
 
-    topics = Topic.objects.filter(name__icontains=actions['s'])
+    thematics = ThematicArea.objects.filter(name__icontains=actions['s'])
 
-    topics = topics.order_by(actions["orderby"])
+    thematics = thematics.order_by(actions["orderby"])
     if actions['order'] == "-":
-        topics = topics.order_by("%s%s" % (actions["order"], actions["orderby"]))
+        thematics = thematic.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
 
     # pagination
     pagination = {}
-    paginator = Paginator(topics, settings.ITEMS_PER_PAGE)
+    paginator = Paginator(thematics, settings.ITEMS_PER_PAGE)
     pagination['paginator'] = paginator
     pagination['page'] = paginator.page(page)
-    topics = pagination['page'].object_list
+    thematics = pagination['page'].object_list
 
-    output['topics'] = topics
+    output['thematics'] = thematics
     output['actions'] = actions
     output['pagination'] = pagination
 
-    return render_to_response('main/topics.html', output, context_instance=RequestContext(request))
+    return render_to_response('main/thematics.html', output, context_instance=RequestContext(request))
 
 @login_required
-def create_edit_topic(request, **kwargs):
+def create_edit_thematic(request, **kwargs):
 
-    topic_id = kwargs.get('topic_id')
-    topic = None
+    thematic_id = kwargs.get('thematic_id')
+    thematic = None
     output = {}
 
-    if topic_id:
-        topic = get_object_or_404(Topic, id=topic_id)
+    if thematic_id:
+        thematic = get_object_or_404(ThematicArea, id=thematic_id)
     else:
-        topic = Topic(creator=request.user)
+        thematic = ThematicArea(creator=request.user)
         output['is_new'] = True
 
     # save/update
     if request.POST:
-        form = TopicForm(request.POST, request.FILES, instance=topic)
+        form = ThematicAreaForm(request.POST, request.FILES, instance=thematic)
+        formset = ThematicAreaTranslationFormSet(request.POST, instance=thematic)
 
-        if form.is_valid():
-            topic = form.save()
-            output['alert'] = _("Topic successfully edited.")
+        if form.is_valid() and formset.is_valid():
+            thematic = form.save()
+            formset.save()
+            output['alert'] = _("Thematic area successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('main.views.list_topics')
+            return redirect('main.views.list_thematics')
     # new
     else:
-        form = TopicForm(instance=topic)
+        form = ThematicAreaForm(instance=thematic)
+        formset = ThematicAreaTranslationFormSet(instance=thematic)
 
     output['form'] = form
-    output['topic'] = topic
+    output['formset'] = formset
+    output['thematic'] = thematic
 
-    return render_to_response('main/edit-topic.html', output, context_instance=RequestContext(request))
+    return render_to_response('main/edit-thematic.html', output, context_instance=RequestContext(request))
 
 
 @login_required
-def delete_topic(request, topic):
+def delete_thematic(request, thematic_id):
 
-    topic = get_object_or_404(Topic, id=topic)
+    thematic = get_object_or_404(ThematicArea, id=thematic_id)
     output = {}
 
-    topic.delete()
-    output['alert'] = _("Topic deleted.")
+    thematic.delete()
+
+    output['alert'] = _("Thematic area deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('main/topics.html', output, context_instance=RequestContext(request))
+    return render_to_response('main/thematics.html', output, context_instance=RequestContext(request))
 
 
-
-############ TYPES #############
+########## Auxiliary table Source Type ###########
 
 @login_required
 def list_types(request):
@@ -282,9 +286,11 @@ def create_edit_type(request, **kwargs):
     # save/update
     if request.POST:
         form = TypeForm(request.POST, request.FILES, instance=type)
+        formset = TypeTranslationFormSet(request.POST, instance=type)
 
-        if form.is_valid():
+        if form.is_valid() and formset.is_valid():
             type = form.save()
+            formset.save()
             output['alert'] = _("Type successfully edited.")
             output['alerttype'] = "alert-success"
 
@@ -292,15 +298,17 @@ def create_edit_type(request, **kwargs):
     # new
     else:
         form = TypeForm(instance=type)
+        formset = TypeTranslationFormSet(instance=type)
 
     output['form'] = form
+    output['formset'] = formset
     output['type'] = type
 
     return render_to_response('main/edit-type.html', output, context_instance=RequestContext(request))
 
 
 @login_required
-def delete_topic(request, type):
+def delete_type(request, type):
 
     type = get_object_or_404(SourceType, id=type)
     output = {}
@@ -310,3 +318,97 @@ def delete_topic(request, type):
     output['alerttype'] = "alert-success"
 
     return render_to_response('main/types.html', output, context_instance=RequestContext(request))
+
+############ Auxiliary table Source Languages #############
+
+@login_required
+def list_languages(request):
+
+    user = request.user
+    output = {}
+    delete_id = request.POST.get('delete_id')
+
+    if delete_id:
+        delete_language(request, delete_id)
+
+    # getting action parameters
+    actions = {}
+    for key in ACTIONS.keys():
+        if request.REQUEST.get(key):
+            actions[key] = request.REQUEST.get(key)
+        else:
+            actions[key] = ACTIONS[key]
+
+    page = 1
+    if actions['page'] and actions['page'] != '':
+        page = actions['page']
+
+    languages = SourceLanguage.objects.filter(name__icontains=actions['s'])
+
+    languages = languages.order_by(actions["orderby"])
+    if actions['order'] == "-":
+        languages = thematic.order_by("%s%s" % (actions["order"], actions["orderby"]))
+
+
+    # pagination
+    pagination = {}
+    paginator = Paginator(languages, settings.ITEMS_PER_PAGE)
+    pagination['paginator'] = paginator
+    pagination['page'] = paginator.page(page)
+    languages = pagination['page'].object_list
+
+    output['languages'] = languages
+    output['actions'] = actions
+    output['pagination'] = pagination
+
+    return render_to_response('main/languages.html', output, context_instance=RequestContext(request))
+
+@login_required
+def create_edit_language(request, **kwargs):
+
+    language_id = kwargs.get('language_id')
+    language = None
+    output = {}
+
+    if language_id:
+        language = get_object_or_404(SourceLanguage, id=language_id)
+    else:
+        language = SourceLanguage(creator=request.user)
+        output['is_new'] = True
+
+    # save/update
+    if request.POST:
+        form = LanguageForm(request.POST, request.FILES, instance=language)
+        formset = LanguageTranslationFormSet(request.POST, instance=language)
+
+        if form.is_valid() and formset.is_valid():
+            language = form.save()
+            formset.save()
+            output['alert'] = _("Language successfully edited.")
+            output['alerttype'] = "alert-success"
+
+            return redirect('main.views.list_languages')
+    # new
+    else:
+        form = LanguageForm(instance=language)
+        formset = LanguageTranslationFormSet(instance=language)
+
+    output['form'] = form
+    output['formset'] = formset
+    output['language'] = language
+
+    return render_to_response('main/edit-language.html', output, context_instance=RequestContext(request))
+
+
+@login_required
+def delete_thematic(request, thematic_id):
+
+    thematic = get_object_or_404(ThematicArea, id=thematic_id)
+    output = {}
+
+    thematic.delete()
+
+    output['alert'] = _("Thematic area deleted.")
+    output['alerttype'] = "alert-success"
+
+    return render_to_response('main/thematics.html', output, context_instance=RequestContext(request))

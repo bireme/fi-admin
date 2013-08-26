@@ -25,20 +25,26 @@ urlpatterns = patterns('',
 
     (r'^cookie-lang/?$', 'utils.views.cookie_lang'),
 
-    # Resources 
+    # Resources
     (r'^resources/?$', 'main.views.list_resources'),
     (r'^resource/new/?$', 'main.views.create_edit_resource'),
     (r'^resource/edit/(?P<resource_id>\d+)/?$', 'main.views.create_edit_resource'),
 
-    # Topics 
-    (r'^topics/?$', 'main.views.list_topics'),
-    (r'^topic/new/?$', 'main.views.create_edit_topic'),
-    (r'^topic/edit/(?P<topic_id>\d+)/?$', 'main.views.create_edit_topic'),
+    # Thematic areas
+    (r'^thematics/?$', 'main.views.list_thematics'),
+    (r'^thematic/new/?$', 'main.views.create_edit_thematic'),
+    (r'^thematic/edit/(?P<thematic_id>\d+)/?$', 'main.views.create_edit_thematic'),
 
-    # Types
+    # Source types
     (r'^types/?$', 'main.views.list_types'),
     (r'^type/new/?$', 'main.views.create_edit_type'),
     (r'^type/edit/(?P<type_id>\d+)/?$', 'main.views.create_edit_type'),
+
+
+    # Source languages
+    (r'^languages/?$', 'main.views.list_languages'),
+    (r'^language/new/?$', 'main.views.create_edit_language'),
+    (r'^language/edit/(?P<language_id>\d+)/?$', 'main.views.create_edit_language'),
 
 
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html'}, name='auth_login'),

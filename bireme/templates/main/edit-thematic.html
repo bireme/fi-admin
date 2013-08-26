@@ -2,19 +2,19 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}{% trans "Edit Source type" %}{% endblock %}
+{% block title %}{% trans "Edit Thematic Area" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'main.views.list_types' %}">{% trans "Source type" %}</a> <span class="divider">/</span></li>
-    {% if is_new %}<li>{% trans "New Source type" %}</li>
-    {% else %}<li>{% trans "Edit Source type" %}</li>{% endif %}
+    <li><a href="{% url 'main.views.list_thematics' %}">{% trans "Thematic Area" %}</a> <span class="divider">/</span></li>
+    {% if is_new %}<li>{% trans "New Thematic Area" %}</li>
+    {% else %}<li>{% trans "Edit Thematic Area" %}</li>{% endif %}
 {% endblock %}
 
 {% block content %}
 
 
 <div class='header'>
-    <h2><i class='icon-sitemap'></i>{% if is_new %}{% trans "New Source type" %}{% else %}{% trans "Edit Source type" %}{% endif %}</h2>
+    <h2><i class='icon-tag'></i>{% if is_new %}{% trans "New Thematic Area" %}{% else %}{% trans "Edit Thematic Area" %}{% endif %}</h2>
 </div>
 
 <div class='body'>
@@ -76,4 +76,3 @@
         })
    </script>
 {% endblock %}
-

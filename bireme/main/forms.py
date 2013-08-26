@@ -14,7 +14,7 @@ class ResourceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
-    
+
         return super(ResourceForm, self).__init__(*args, **kwargs)
 
 
@@ -26,7 +26,7 @@ class ResourceForm(forms.ModelForm):
                 user_cc = settings.DEFAULT_COOPERATIVE_CENTER
                 if not self.user.is_superuser:
                     user_data = simplejson.loads(self.user.profile.data)
-                    user_cc = user_data['cc']                
+                    user_cc = user_data['cc']
 
                 obj.cooperative_center = user_cc
         obj.save()
@@ -43,11 +43,29 @@ class DescriptorForm(forms.ModelForm):
         exclude = GENERIC_FIELDS
 
 
-class TopicForm(forms.ModelForm):
+class ThematicAreaForm(forms.ModelForm):
 
     class Meta:
-        model = Topic
+        model = ThematicArea
         exclude = GENERIC_FIELDS
+
+class ThematicAreaLocalForm(forms.ModelForm):
+
+    class Meta:
+        model = ThematicAreaLocal
+
+
+class LanguageForm(forms.ModelForm):
+
+    class Meta:
+        model = SourceLanguage
+        exclude = GENERIC_FIELDS
+
+class LanguageLocalForm(forms.ModelForm):
+
+    class Meta:
+        model = SourceLanguageLocal
+
 
 class TypeForm(forms.ModelForm):
 
@@ -56,5 +74,16 @@ class TypeForm(forms.ModelForm):
         exclude = GENERIC_FIELDS
 
 
+class TypeLocalForm(forms.ModelForm):
+
+    class Meta:
+        model = SourceTypeLocal
+
 
 DescriptorFormSet = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1)
+
+ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAreaLocal, form=ThematicAreaLocalForm, can_delete=True, extra=1)
+
+LanguageTranslationFormSet = inlineformset_factory(SourceLanguage, SourceLanguageLocal, can_delete=True, extra=1)
+
+TypeTranslationFormSet = inlineformset_factory(SourceType, SourceTypeLocal, can_delete=True, extra=1)

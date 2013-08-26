@@ -8,14 +8,17 @@
                     <div class="row-fluid top">
 
                         <ul class="nav pull-left">
-                            <li><a href="#" title="{% trans "Dashboard" %}"><i class="icon-home"></i> {% trans "Dashboard" %}</a></li>
+                            <li><a href="{% url 'main.views.dashboard' %}" title="{% trans "Dashboard" %}"><i class="icon-home"></i> {% trans "Dashboard" %}</a></li>
 
                             <li><a href="{% url 'main.views.list_resources' %}" title=""><i class="icon-star"></i> {% trans "Resources" %}</a></li>
 
                             {% if user.is_superuser %}
-                                <li><a href="{% url 'main.views.list_topics' %}" title=""><i class="icon-tag"></i> {% trans "LIS types" %}</a></li>
+                                <li><a href="{% url 'main.views.list_thematics' %}" title=""><i class="icon-tag"></i> {% trans "Thematic areas" %}</a></li>
                                 <li><a href="{% url 'main.views.list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Source types" %}</a></li>
+                                <li><a href="{% url 'main.views.list_languages' %}" title=""><i class="icon-flag"></i> {% trans "Source languages" %}</a></li>
+                                <!--
                                 <li><a href="{% url 'admin:index' %}" title=""><i class="icon-lock"></i> {% trans "Django Admin" %}</a></li>
+                                -->
                             {% endif %}
                         </ul>
 
@@ -34,12 +37,13 @@
                                     {% if LANGUAGE_CODE != "es" %}<li><a href="javascript: change_language('es')" title="{% trans 'Spanish' %}">{% trans 'Spanish'|capfirst %}</a></li>{% endif %}
                                 </ul>
                             </li>
+                            <!--
                             <li>
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_profile">
                                     <i class="icon-user"></i><i class="icon-caret-down"></i>
                                 </a>
                             </li>
-
+                            -->
                             <li><a href="{% url 'django.contrib.auth.views.logout' %}" title="Logout"><i class="icon-signout"></i></a></li>
                         </ul>
                     </div>

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "LIS types" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Source languages" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li>{% trans "LIS types" %}</li>
+    <li>{% trans "Source languages" %}</li>
 {% endblock %}
 
 
@@ -18,9 +18,9 @@
 
 <!--  header -->
 <div class='header'>
-    <h2><i class='icon-tag'></i> {% trans "LIS types" %}</h2>
+    <h2><i class='icon-flag'></i> {% trans "Source languages" %}</h2>
         <div class='pull-right'>
-            <a href="{% url 'main.views.create_edit_topic' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Topic" %}</a>
+            <a href="{% url 'main.views.create_edit_language' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Source Language" %}</a>
         </div>
 </div>
 
@@ -28,7 +28,7 @@
     {% if actions.s %}
         <div>
             {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-            <a href="{% url 'main.views.list_topics' %}">[{% trans "clear" %}]</a>
+            <a href="{% url 'main.views.list_languages' %}">[{% trans "clear" %}]</a>
         </div>
     {% endif %}
 
@@ -48,13 +48,13 @@
             <th>{% trans "Actions" %}</th>
         </thead>
         <tbody>
-            {% for topic in topics %}
+            {% for language in languages %}
                 <tr>
-                    <td><a href="{% url 'main.views.create_edit_topic' topic.id %}">{{ topic.id }}</a></td>
-                    <td>{{ topic.name }}</td>
+                    <td><a href="{% url 'main.views.create_edit_language' language.id %}">{{ language.id }}</a></td>
+                    <td>{{ language.name }}</td>
                     <td>
-                        <a href="{% url 'main.views.create_edit_topic' topic.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                        <a href="#" id="{{ topic.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                        <a href="{% url 'main.views.create_edit_language' language.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                        <a href="#" id="{{ language.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                     </td>
                 </tr>
             {% endfor %}

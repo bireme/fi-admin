@@ -29,7 +29,7 @@
 
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
-                    <fieldset>
+                    <fieldset id="metadata">
                         {{ form.non_field_errors }}
                         {% for field in form %}
                             {{ field.label_tag }}
@@ -40,21 +40,25 @@
             </div>
 
             <div id='tab-descriptors' class="tab-pane">
-                {{ formset.management_form }}
-                {% for form in formset %}
-                    <div id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %}">
-                        {% for field in form %}
-                            <div class="descriptor-field">
-                                {% if field.name != 'id' and field.name != 'resource' %}{{ field.label_tag }}{% endif %}
-
-                                {{ field.errors }}
-                                {{ field }}
-                            </div>
-                                {% if field.name == 'text' %}<a href="#" onclick="javascript:decs_search('{{ field.html_name }}')";>DeCS Search</a>{% endif %}
-                        {% endfor %}
-                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                    </div>
-                {% endfor %}
+                <fieldset id="descriptors">
+                    {{ formset.management_form }}
+                    {% for form in formset %}
+                        <div id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %}">
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            {% for field in form.visible_fields %}
+                                <span class="descriptor-field">
+                                    {{ field.errors }}
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                </span>
+                                    {% if field.name == 'text' %}<a href="#" onclick="javascript:decs_search('{{ field.html_name }}')";>DeCS Search</a>{% endif %}
+                            {% endfor %}
+                            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                        </div>
+                    {% endfor %}
+                </fieldset>
             </div>
 
         </div>
@@ -79,7 +83,10 @@
                     deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign',
                     deleteCssClass : 'icon-minus-sign',
+                    prefix: '{{ formset.prefix }}'
             });
+
+            $("#metadata").find("input[type=text], textarea").addClass("span6");
 
             var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
             var eventer = window[eventMethod];
