@@ -3,8 +3,8 @@
 
 {% block "title" %}{% trans "Dashboard" %} | {{ block.super }}{% endblock %}
 
-{% block content %}    
-    
+{% block content %}
+
     <!-- block alert -->
     {% if request.GET.message and request.GET.type %}
         <div class="alert alert-{{ request.GET.type }}">
@@ -13,9 +13,19 @@
             {{ request.GET.message }}
         </div>
     {% endif %}
-        
+
     <!--  header -->
     <div class='header'>
         <h2><i class='icon-home'></i> Dashboard <small>{{ user.username }}</small></h2>
-    </div>    
+    </div>
+
+    <div class="hero-unit">
+        <h3>{% trans "Recent actions" %}</h3>
+        <ul>
+        {% for action in recent_actions %}
+            <li>{{ action.action_time }} - {{ action }}</li>
+        {% endfor %}
+        </ul>
+
+    </div>
 {% endblock %}

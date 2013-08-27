@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth.views import logout
 
+from django.contrib.admin.models import LogEntry
+from django.contrib.contenttypes.models import ContentType
+
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
@@ -26,8 +29,12 @@ import os
 @login_required
 def dashboard(request):
 
-    user = request.user
+    recent_actions = LogEntry.objects.all()
+    print recent_actions
     output = {}
+
+    user = request.user
+    output['recent_actions'] = recent_actions
 
     return render_to_response('main/index.html', output, context_instance=RequestContext(request))
 
