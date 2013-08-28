@@ -8,12 +8,6 @@ from django.contrib.contenttypes.models import ContentType
 
 #from datetime import datetime
 
-LANGUAGES_CHOICES = (
-    ('en', 'English'), # default language
-    ('pt-br', 'Brazilian Portuguese'),
-    ('es', 'Spanish'),
-)
-
 class Generic(models.Model):
 
     def __init__(self, *args, **kwargs):
@@ -61,24 +55,3 @@ class Generic(models.Model):
         self.__initial = self._dict
 
 
-class Language(Generic):
-
-    class Meta:
-        verbose_name = _("language")
-        verbose_name_plural = _("languages")
-
-    name = models.CharField(_("name"), max_length=150)
-    code = models.CharField(_("code"), max_length=3)
-
-    def __unicode__(self):
-        return unicode(self.name)
-
-class LanguageLocal(models.Model):
-
-    class Meta:
-        verbose_name = _("translation")
-        verbose_name_plural = _("translations")
-
-    lang = models.ForeignKey(Language, verbose_name=_("language"))
-    name = models.CharField(_("name"), max_length=150)
-    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES[1:])

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-28 09:36-0300\n"
-"PO-Revision-Date: 2013-08-28 09:45-0300\n"
+"POT-Creation-Date: 2013-08-28 09:59-0300\n"
+"PO-Revision-Date: 2013-08-28 10:00-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,18 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
+
+#: main/choices.py:6 templates/menu.html:29 templates/menu.html.py:35
+msgid "English"
+msgstr "Inglês"
+
+#: main/choices.py:7 templates/menu.html:31 templates/menu.html.py:36
+msgid "Portuguese"
+msgstr "Português"
+
+#: main/choices.py:8 templates/menu.html:30 templates/menu.html.py:37
+msgid "Spanish"
+msgstr "Espanhol"
 
 #: main/choices.py:14
 msgid "General"
@@ -72,11 +84,11 @@ msgstr "Traduções"
 msgid "Source type"
 msgstr "Tipo de Fonte"
 
-#: main/models.py:31 utils/models.py:67 utils/models.py:82 utils/models.py:84
+#: main/models.py:31
 msgid "language"
 msgstr "idioma"
 
-#: main/models.py:32 utils/models.py:70 utils/models.py:83
+#: main/models.py:32
 msgid "name"
 msgstr "nome"
 
@@ -92,7 +104,6 @@ msgstr "Idiomas da fonte"
 
 #: main/models.py:62 main/models.py:77 main/models.py:116
 #: templates/main/edit-thematic.html:8
-#, fuzzy
 msgid "Thematic area"
 msgstr "Áreas temáticas"
 
@@ -265,18 +276,6 @@ msgstr "Tipos de fonte"
 msgid "Django Admin"
 msgstr ""
 
-#: templates/menu.html:29 templates/menu.html.py:35
-msgid "English"
-msgstr "Inglês"
-
-#: templates/menu.html:30 templates/menu.html.py:37
-msgid "Spanish"
-msgstr "Espanhol"
-
-#: templates/menu.html:31 templates/menu.html.py:36
-msgid "Portuguese"
-msgstr "Português"
-
 #: templates/authentication/login.html:4
 #: templates/authentication/login.html:36
 #: templates/authentication/login.html:50
@@ -349,13 +348,11 @@ msgstr "Adicionar descritor"
 
 #: templates/main/edit-thematic.html:5 templates/main/edit-thematic.html:10
 #: templates/main/edit-thematic.html:17
-#, fuzzy
 msgid "Edit Thematic area"
 msgstr "Editar Área Temática"
 
 #: templates/main/edit-thematic.html:9 templates/main/edit-thematic.html:17
 #: templates/main/thematics.html:23
-#, fuzzy
 msgid "New Thematic area"
 msgstr "Nova Área Temática"
 
@@ -410,29 +407,28 @@ msgstr "URL"
 msgid "New Source Type"
 msgstr "Novo Tipo de fonte"
 
-#: utils/models.py:26
+#: utils/models.py:20
 msgid "created"
 msgstr "criado"
 
-#: utils/models.py:27
+#: utils/models.py:21
 msgid "updated"
 msgstr "atualizado"
 
-#: utils/models.py:68
-msgid "languages"
-msgstr "idiomas"
+#~ msgid "Brazilian Portuguese"
+#~ msgstr "Português"
 
-#: utils/models.py:71
-msgid "code"
-msgstr "código"
+#~ msgid "languages"
+#~ msgstr "idiomas"
 
-#: utils/models.py:79
-msgid "translation"
-msgstr "tradução"
+#~ msgid "code"
+#~ msgstr "código"
 
-#: utils/models.py:80
-msgid "translations"
-msgstr "traduções"
+#~ msgid "translation"
+#~ msgstr "tradução"
+
+#~ msgid "translations"
+#~ msgstr "traduções"
 
 #~ msgid "Thematic Area"
 #~ msgstr "Área Temática"

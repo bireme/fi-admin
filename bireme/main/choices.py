@@ -3,9 +3,9 @@
 from django.utils.translation import ugettext_lazy as _
 
 LANGUAGES_CHOICES = (
-    ('en', 'English'), # default language 
-    ('pt-br', 'Brazilian Portuguese'),
-    ('es', 'Spanish'),
+    ('en', _('English')), # default language
+    ('pt-br', _('Portuguese')),
+    ('es', _('Spanish')),
 )
 
 ######################################################## Descriptor choices ###

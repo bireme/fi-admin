@@ -11,17 +11,5 @@ class GenericAdmin(admin.ModelAdmin):
             else:
                 obj.creator = request.user
                 obj.updater = request.user
-        obj.save()    
+        obj.save()
 
-
-
-class LanguageLocalAdmin(admin.TabularInline):
-    model = LanguageLocal
-    extra = 0
-
-class LanguageAdmin(GenericAdmin):
-    model = Language
-    inlines = [LanguageLocalAdmin,]
-
-
-admin.site.register(Language, LanguageAdmin)
