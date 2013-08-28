@@ -407,14 +407,14 @@ def create_edit_language(request, **kwargs):
 
 
 @login_required
-def delete_thematic(request, thematic_id):
+def delete_language(request, language_id):
 
-    thematic = get_object_or_404(ThematicArea, id=thematic_id)
+    language = get_object_or_404(SourceLanguage, id=language_id)
     output = {}
 
-    thematic.delete()
+    language.delete()
 
-    output['alert'] = _("Thematic area deleted.")
+    output['alert'] = _("Language deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('main/thematics.html', output, context_instance=RequestContext(request))
+    return render_to_response('main/languages.html', output, context_instance=RequestContext(request))
