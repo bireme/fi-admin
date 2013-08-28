@@ -1,0 +1,455 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-27 18:08-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: main/choices.py:14
+msgid "General"
+msgstr ""
+
+#: main/choices.py:15
+msgid "Specific"
+msgstr ""
+
+#: main/choices.py:16
+msgid "Geographic"
+msgstr ""
+
+#: main/choices.py:20
+msgid "DeCS: Health Sciences Descriptors"
+msgstr ""
+
+#: main/choices.py:21
+msgid "Keywords"
+msgstr ""
+
+#: main/models.py:15 main/models.py:30 main/models.py:114
+msgid "source type"
+msgstr ""
+
+#: main/models.py:16
+msgid "source types"
+msgstr ""
+
+#: main/models.py:18 main/models.py:31 main/models.py:42 main/models.py:55
+#: main/models.py:65 main/models.py:78 utils/models.py:67 utils/models.py:82
+#: utils/models.py:84
+msgid "language"
+msgstr ""
+
+#: main/models.py:19 main/models.py:32 main/models.py:43 main/models.py:56
+#: main/models.py:66 main/models.py:79 utils/models.py:70 utils/models.py:83
+msgid "name"
+msgstr ""
+
+#: main/models.py:27 main/models.py:51 main/models.py:74
+msgid "translation"
+msgstr ""
+
+#: main/models.py:28 main/models.py:52 main/models.py:75
+msgid "translations"
+msgstr ""
+
+#: main/models.py:39 main/models.py:112
+msgid "source language"
+msgstr ""
+
+#: main/models.py:40
+msgid "source languages"
+msgstr ""
+
+#: main/models.py:54
+msgid "source lang"
+msgstr ""
+
+#: main/models.py:62 main/models.py:77 main/models.py:116
+msgid "thematic area"
+msgstr ""
+
+#: main/models.py:63
+msgid "thematic areas"
+msgstr ""
+
+#: main/models.py:86
+msgid "resource"
+msgstr ""
+
+#: main/models.py:87
+msgid "resources"
+msgstr ""
+
+#: main/models.py:90
+msgid "Pending"
+msgstr ""
+
+#: main/models.py:91
+msgid "Admitted"
+msgstr ""
+
+#: main/models.py:92
+msgid "Refused"
+msgstr ""
+
+#: main/models.py:93
+msgid "Deleted"
+msgstr ""
+
+#: main/models.py:97
+msgid "status"
+msgstr ""
+
+#: main/models.py:100
+msgid "title"
+msgstr ""
+
+#: main/models.py:102
+msgid "link"
+msgstr ""
+
+#: main/models.py:104
+msgid "record source"
+msgstr ""
+
+#: main/models.py:106
+msgid "originator"
+msgstr ""
+
+#: main/models.py:108
+msgid "originator location"
+msgstr ""
+
+#: main/models.py:110 main/models.py:120
+msgid "author"
+msgstr ""
+
+#: main/models.py:118
+msgid "abstract"
+msgstr ""
+
+#: main/models.py:122
+msgid "objective"
+msgstr ""
+
+#: main/models.py:124
+msgid "cooperative center"
+msgstr ""
+
+#: main/models.py:136
+msgid "Vocabulary"
+msgstr ""
+
+#: main/models.py:138
+msgid "Level"
+msgstr ""
+
+#: main/models.py:140
+msgid "Text"
+msgstr ""
+
+#: main/views.py:110
+msgid "Resource successfully edited."
+msgstr ""
+
+#: main/views.py:134
+msgid "Resource deleted."
+msgstr ""
+
+#: main/views.py:205
+msgid "Thematic area successfully edited."
+msgstr ""
+
+#: main/views.py:229 main/views.py:417
+msgid "Thematic area deleted."
+msgstr ""
+
+#: main/views.py:300
+msgid "Type successfully edited."
+msgstr ""
+
+#: main/views.py:323
+msgid "Type deleted."
+msgstr ""
+
+#: main/views.py:393
+msgid "Language successfully edited."
+msgstr ""
+
+#: templates/base.html:16 templates/admin/base_site.html:4
+#: templates/admin/base_site.html.py:7
+msgid "LIS Administration"
+msgstr ""
+
+#: templates/base.html:48
+msgid "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
+msgstr ""
+
+#: templates/base.html:49
+msgid ""
+"Rua Botucatu, 862 | cep: 04023-901 | São Paulo - SP | Tel: (55 11) 5576-9800 "
+"| Fax: (55 11) 5575-8868 "
+msgstr ""
+
+#: templates/base.html:50
+msgid "Site Institucional da Bireme"
+msgstr ""
+
+#: templates/base.html:51
+msgid "Project source on GitHub"
+msgstr ""
+
+#: templates/base.html:51
+msgid "code on github"
+msgstr ""
+
+#: templates/delete_confirm.html:5
+msgid "Delete"
+msgstr ""
+
+#: templates/delete_confirm.html:9
+msgid "Are you sure to delete?"
+msgstr ""
+
+#: templates/delete_confirm.html:16
+msgid "No"
+msgstr ""
+
+#: templates/delete_confirm.html:17
+msgid "Yes"
+msgstr ""
+
+#: templates/menu.html:11 templates/main/index.html:4
+#: templates/main/index.html.py:19
+msgid "Dashboard"
+msgstr ""
+
+#: templates/menu.html:13 templates/main/edit-resource.html:8
+#: templates/main/resources.html:4 templates/main/resources.html.py:7
+#: templates/main/resources.html:21
+msgid "Resources"
+msgstr ""
+
+#: templates/menu.html:16 templates/main/thematics.html:4
+#: templates/main/thematics.html.py:7 templates/main/thematics.html:21
+msgid "Thematic areas"
+msgstr ""
+
+#: templates/menu.html:17 templates/main/types.html:4
+#: templates/main/types.html.py:7 templates/main/types.html:21
+msgid "Source types"
+msgstr ""
+
+#: templates/menu.html:18 templates/main/languages.html:4
+#: templates/main/languages.html.py:7 templates/main/languages.html:21
+msgid "Source languages"
+msgstr ""
+
+#: templates/menu.html:20
+msgid "Django Admin"
+msgstr ""
+
+#: templates/menu.html:29 templates/menu.html.py:35
+msgid "English"
+msgstr ""
+
+#: templates/menu.html:30 templates/menu.html.py:37
+msgid "Spanish"
+msgstr ""
+
+#: templates/menu.html:31 templates/menu.html.py:36
+msgid "Portuguese"
+msgstr ""
+
+#: templates/admin/base_site.html:13
+msgid "Translations"
+msgstr ""
+
+#: templates/authentication/login.html:4
+#: templates/authentication/login.html:36
+#: templates/authentication/login.html:50
+#: templates/authentication/logout.html:17
+msgid "Login"
+msgstr ""
+
+#: templates/authentication/login.html:28
+#: templates/authentication/logout.html:11
+msgid "LIS"
+msgstr ""
+
+#: templates/authentication/logout.html:16
+msgid "You are logged out. Please"
+msgstr ""
+
+#: templates/authentication/logout.html:17
+msgid "login"
+msgstr ""
+
+#: templates/authentication/logout.html:18
+msgid "again clicking below."
+msgstr ""
+
+#: templates/main/edit-language.html:5 templates/main/edit-language.html:10
+#: templates/main/edit-language.html:17
+msgid "Edit Language"
+msgstr ""
+
+#: templates/main/edit-language.html:8
+msgid "Language"
+msgstr ""
+
+#: templates/main/edit-language.html:9 templates/main/edit-language.html:17
+msgid "New Language"
+msgstr ""
+
+#: templates/main/edit-language.html:55 templates/main/edit-resource.html:66
+#: templates/main/edit-thematic.html:55 templates/main/edit-type.html:55
+msgid "Save"
+msgstr ""
+
+#: templates/main/edit-language.html:70 templates/main/edit-thematic.html:70
+#: templates/main/edit-type.html:70
+msgid "Add translation"
+msgstr ""
+
+#: templates/main/edit-language.html:71 templates/main/edit-resource.html:83
+#: templates/main/edit-thematic.html:71 templates/main/edit-type.html:71
+msgid "delete"
+msgstr ""
+
+#: templates/main/edit-resource.html:5 templates/main/edit-resource.html:10
+#: templates/main/edit-resource.html:17
+msgid "Edit Resource"
+msgstr ""
+
+#: templates/main/edit-resource.html:9 templates/main/edit-resource.html:17
+#: templates/main/resources.html:23
+msgid "New Resource"
+msgstr ""
+
+#: templates/main/edit-resource.html:23
+msgid "Data"
+msgstr ""
+
+#: templates/main/edit-resource.html:24
+msgid "Descriptors"
+msgstr ""
+
+#: templates/main/edit-resource.html:82
+msgid "Add descriptor"
+msgstr ""
+
+#: templates/main/edit-thematic.html:5 templates/main/edit-thematic.html:10
+#: templates/main/edit-thematic.html:17
+msgid "Edit Thematic Area"
+msgstr ""
+
+#: templates/main/edit-thematic.html:8
+msgid "Thematic Area"
+msgstr ""
+
+#: templates/main/edit-thematic.html:9 templates/main/edit-thematic.html:17
+#: templates/main/thematics.html:23
+msgid "New Thematic Area"
+msgstr ""
+
+#: templates/main/edit-type.html:5 templates/main/edit-type.html.py:10
+#: templates/main/edit-type.html:17
+msgid "Edit Source type"
+msgstr ""
+
+#: templates/main/edit-type.html:8
+msgid "Source type"
+msgstr ""
+
+#: templates/main/edit-type.html:9 templates/main/edit-type.html.py:17
+msgid "New Source type"
+msgstr ""
+
+#: templates/main/index.html:12
+msgid "Success!"
+msgstr ""
+
+#: templates/main/index.html:23
+msgid "Recent actions"
+msgstr ""
+
+#: templates/main/languages.html:23
+msgid "New Source Language"
+msgstr ""
+
+#: templates/main/languages.html:30 templates/main/languages.html.py:38
+#: templates/main/resources.html:30 templates/main/resources.html.py:38
+#: templates/main/thematics.html:30 templates/main/thematics.html.py:38
+#: templates/main/types.html:30 templates/main/types.html.py:38
+msgid "Search"
+msgstr ""
+
+#: templates/main/languages.html:31 templates/main/resources.html:31
+#: templates/main/thematics.html:31 templates/main/types.html:31
+msgid "clear"
+msgstr ""
+
+#: templates/main/languages.html:47 templates/main/thematics.html:47
+#: templates/main/types.html:47
+msgid "Name"
+msgstr ""
+
+#: templates/main/languages.html:48 templates/main/resources.html:49
+#: templates/main/thematics.html:48 templates/main/types.html:48
+msgid "Actions"
+msgstr ""
+
+#: templates/main/languages.html:57 templates/main/resources.html:59
+#: templates/main/thematics.html:57 templates/main/types.html:57
+msgid "Remove"
+msgstr ""
+
+#: templates/main/resources.html:47
+msgid "Title"
+msgstr ""
+
+#: templates/main/resources.html:48
+msgid "URL"
+msgstr ""
+
+#: templates/main/types.html:23
+msgid "New Source Type"
+msgstr ""
+
+#: utils/models.py:26
+msgid "created"
+msgstr ""
+
+#: utils/models.py:27
+msgid "updated"
+msgstr ""
+
+#: utils/models.py:68
+msgid "languages"
+msgstr ""
+
+#: utils/models.py:71
+msgid "code"
+msgstr ""
+
+#: utils/models.py:79
+msgid "language translation"
+msgstr ""
+
+#: utils/models.py:80
+msgid "language translations"
+msgstr ""

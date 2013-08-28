@@ -30,7 +30,6 @@ import os
 def dashboard(request):
 
     recent_actions = LogEntry.objects.all()
-    print recent_actions
     output = {}
 
     user = request.user

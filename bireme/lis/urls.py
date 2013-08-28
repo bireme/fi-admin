@@ -52,10 +52,15 @@ urlpatterns = patterns('',
 
     (r'^api/', include(resource_api.urls)),
 
+    #internationalization
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+    (r'^cookie-lang/?$', 'utils.views.cookie_lang'),
+
     (r'^$', 'main.views.dashboard'),
 )
 
 
+# messages translation
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += patterns('',
         url(r'^rosetta/', include('rosetta.urls')),

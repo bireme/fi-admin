@@ -76,8 +76,8 @@ class Language(Generic):
 class LanguageLocal(models.Model):
 
     class Meta:
-        verbose_name = _("language translation")
-        verbose_name_plural = _("language translations")
+        verbose_name = _("translation")
+        verbose_name_plural = _("translations")
 
     lang = models.ForeignKey(Language, verbose_name=_("language"))
     name = models.CharField(_("name"), max_length=150)
