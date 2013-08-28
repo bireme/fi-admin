@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-08-28 09:59-0300\n"
-"PO-Revision-Date: 2013-08-28 10:00-0300\n"
+"PO-Revision-Date: 2013-08-28 10:17-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,6 @@ msgid "name"
 msgstr "nome"
 
 #: main/models.py:39 main/models.py:54 main/models.py:112
-#, fuzzy
 msgid "Source language"
 msgstr "Idiomas da fonte"
 

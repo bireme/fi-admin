@@ -21,9 +21,9 @@
 
     <div class="hero-unit">
         <h3>{% trans "Recent actions" %}</h3>
-        <ul>
+        <ul class="unstyled">
         {% for action in recent_actions %}
-            <li>{{ action.action_time }} - {{ action }}</li>
+            <li><i class="icon-pencil"></i>{{ action.action_time }} - {{ action }}</li>
         {% endfor %}
         </ul>
 
