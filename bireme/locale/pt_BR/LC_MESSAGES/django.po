@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-05 09:56-0300\n"
-"PO-Revision-Date: 2013-09-05 09:57-0300\n"
+"POT-Creation-Date: 2013-09-05 10:25-0300\n"
+"PO-Revision-Date: 2013-09-05 10:25-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
@@ -59,138 +59,143 @@ msgstr "tipo de fonte"
 msgid "source types"
 msgstr "tipos de fonte"
 
-#: main/models.py:18 main/models.py:42 main/models.py:55 main/models.py:65
-#: main/models.py:78 templates/main/edit-language.html:8
+#: main/models.py:18 main/models.py:43 main/models.py:67
+msgid "Acronym"
+msgstr "Sigla"
+
+#: main/models.py:19 main/models.py:44 main/models.py:57 main/models.py:68
+#: main/models.py:81 templates/main/edit-language.html:8
 msgid "Language"
 msgstr "Idioma"
 
-#: main/models.py:19 main/models.py:43 main/models.py:56 main/models.py:66
-#: main/models.py:79 templates/main/languages.html:47
+#: main/models.py:20 main/models.py:45 main/models.py:58 main/models.py:69
+#: main/models.py:82 templates/main/languages.html:47
 #: templates/main/thematics.html:47 templates/main/types.html:47
 msgid "Name"
 msgstr "Nome"
 
-#: main/models.py:27 main/models.py:51 main/models.py:74
+#: main/models.py:28 main/models.py:53 main/models.py:77
 #, fuzzy
 msgid "Translation"
 msgstr "Traduções"
 
-#: main/models.py:28 main/models.py:52 main/models.py:75
-#: templates/admin/base_site.html:13
+#: main/models.py:29 main/models.py:54 main/models.py:78
+#: templates/admin/base_site.html:13 templates/main/edit-language.html:36
+#: templates/main/edit-thematic.html:36 templates/main/edit-type.html:36
 msgid "Translations"
 msgstr "Traduções"
 
-#: main/models.py:30 main/models.py:114 templates/main/edit-type.html:8
+#: main/models.py:31 main/models.py:117 templates/main/edit-type.html:8
 msgid "Source type"
 msgstr "Tipo de Fonte"
 
-#: main/models.py:31
+#: main/models.py:32
 msgid "language"
 msgstr "idioma"
 
-#: main/models.py:32
+#: main/models.py:33
 msgid "name"
 msgstr "nome"
 
-#: main/models.py:39 main/models.py:54 main/models.py:112
+#: main/models.py:40 main/models.py:56 main/models.py:115
 msgid "Source language"
 msgstr "Idiomas da fonte"
 
-#: main/models.py:40 templates/menu.html:18 templates/main/languages.html:4
+#: main/models.py:41 templates/menu.html:18 templates/main/languages.html:4
 #: templates/main/languages.html.py:7 templates/main/languages.html:21
 msgid "Source languages"
 msgstr "Idiomas da fonte"
 
-#: main/models.py:62 main/models.py:77 main/models.py:116
+#: main/models.py:64 main/models.py:80 main/models.py:119
 #: templates/main/edit-thematic.html:8
 msgid "Thematic area"
 msgstr "Áreas temáticas"
 
-#: main/models.py:63 templates/menu.html:16 templates/main/thematics.html:4
+#: main/models.py:65 templates/menu.html:16 templates/main/thematics.html:4
 #: templates/main/thematics.html.py:7 templates/main/thematics.html:21
 msgid "Thematic areas"
 msgstr "Áreas temáticas"
 
-#: main/models.py:86
+#: main/models.py:89
 #, fuzzy
 msgid "Resource"
 msgstr "Recurso"
 
-#: main/models.py:87 templates/menu.html:13
+#: main/models.py:90 templates/menu.html:13
 #: templates/main/edit-resource.html:8 templates/main/resources.html:4
 #: templates/main/resources.html.py:7 templates/main/resources.html:21
 msgid "Resources"
 msgstr "Recursos (Links)"
 
-#: main/models.py:90
+#: main/models.py:93
 msgid "Pending"
 msgstr "Pendente"
 
-#: main/models.py:91
+#: main/models.py:94
 msgid "Admitted"
 msgstr "Admitido"
 
-#: main/models.py:92
+#: main/models.py:95
 msgid "Refused"
 msgstr "Recusado"
 
-#: main/models.py:93
+#: main/models.py:96
 msgid "Deleted"
 msgstr "Apagado"
 
-#: main/models.py:97
+#: main/models.py:100
 msgid "Status"
 msgstr "Status"
 
-#: main/models.py:100 templates/main/resources.html:47
+#: main/models.py:103 templates/main/resources.html:47
 msgid "Title"
 msgstr "Título"
 
-#: main/models.py:102
+#: main/models.py:105
 msgid "Link"
 msgstr "Link"
 
-#: main/models.py:104
+#: main/models.py:107
 msgid "Record source"
 msgstr "Fonte do registro"
 
-#: main/models.py:106
+#: main/models.py:109
 msgid "Originator"
 msgstr "Originador"
 
-#: main/models.py:108
+#: main/models.py:111
 msgid "Originator location"
 msgstr "Local geográfico do originador"
 
-#: main/models.py:110
+#: main/models.py:113
 msgid "Author"
 msgstr "Autor"
 
-#: main/models.py:118
+#: main/models.py:121
 msgid "Abstract"
 msgstr "Resumo"
 
-#: main/models.py:120
+#: main/models.py:123
 msgid "Temporal range"
 msgstr "Alcance temporal"
 
-#: main/models.py:122
+#: main/models.py:125
 msgid "Objective"
 msgstr "Objetivos"
 
-#: main/models.py:124
+#: main/models.py:127
 msgid "Cooperative center"
 msgstr "Centro cooperante"
 
-#: main/models.py:140
+#: main/models.py:143
 msgid "Vocabulary"
 msgstr "Vocabulário"
 
-#: main/models.py:142
+#: main/models.py:145
 msgid "Level"
 msgstr "Nível"
 
-#: main/models.py:144
+#: main/models.py:147
 msgid "Text"
 msgstr "Texto"
 
@@ -238,8 +243,7 @@ msgstr "BIREME - OPAS - OMS"
 
 #: templates/base.html:48
 msgid "Latin-American and Caribbean Center on Health Sciences Information"
-msgstr ""
-"Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
+msgstr "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
 
 #: templates/base.html:50
 msgid "BIREME Institutional Site"
@@ -312,18 +316,18 @@ msgstr "Editar idioma"
 msgid "New Language"
 msgstr "Novo idioma"
 
-#: templates/main/edit-language.html:55 templates/main/edit-resource.html:70
-#: templates/main/edit-thematic.html:55 templates/main/edit-type.html:55
+#: templates/main/edit-language.html:56 templates/main/edit-resource.html:70
+#: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
 msgid "Save"
 msgstr "Gravar"
 
-#: templates/main/edit-language.html:70 templates/main/edit-thematic.html:70
-#: templates/main/edit-type.html:70
+#: templates/main/edit-language.html:71 templates/main/edit-thematic.html:71
+#: templates/main/edit-type.html:71
 msgid "Add translation"
 msgstr "Adicionar tradução"
 
-#: templates/main/edit-language.html:71 templates/main/edit-resource.html:87
-#: templates/main/edit-thematic.html:71 templates/main/edit-type.html:71
+#: templates/main/edit-language.html:72 templates/main/edit-resource.html:87
+#: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
 msgid "delete"
 msgstr "apagar"
 

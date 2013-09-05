@@ -15,6 +15,7 @@ class SourceType(Generic):
         verbose_name = _("source type")
         verbose_name_plural = _("source types")
 
+    acronym = models.CharField(_("Acronym"), max_length=25, blank=True, null=True)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 
@@ -39,6 +40,7 @@ class SourceLanguage(Generic):
         verbose_name = _("Source language")
         verbose_name_plural = _("Source languages")
 
+    acronym = models.CharField(_("Acronym"), max_length=25, blank=True, null=True)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 
@@ -62,6 +64,7 @@ class ThematicArea(Generic):
         verbose_name = _("Thematic area")
         verbose_name_plural = _("Thematic areas")
 
+    acronym = models.CharField(_("Acronym"), max_length=25, blank=True, null=True)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 

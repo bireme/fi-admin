@@ -33,6 +33,7 @@
         </fieldset>
 
         <fieldset>
+            <legend>{% trans "Translations" %}</legend>
             {{ formset.management_form }}
             {% for form in formset %}
                 <div  id="translation-{{ forloop.counter0 }}" class="well translation-row{% if form.errors %} error{% endif %}">
