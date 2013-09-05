@@ -15,16 +15,17 @@ from django.http import Http404, HttpResponse
 from django.template import RequestContext
 
 from utils.views import ACTIONS
+from utils.context_processors import additional_user_info
 from django.conf import settings
 from datetime import datetime
 from models import *
 from forms import *
 
 import mimetypes
-import simplejson
+
 import os
 
-#from decorators import *
+from decorators import *
 
 @login_required
 def dashboard(request):
@@ -63,15 +64,9 @@ def list_resources(request):
 
     resources = Resource.objects.filter(title__icontains=actions['s'])
 
-    if not user.is_superuser:
-        user_data = simplejson.loads(user.profile.data)
-        user_cc = user_data['cc']
-        resources = resources.filter(cooperative_center=user_cc, title__icontains=actions['s'])
-
     resources = resources.order_by(actions["orderby"])
     if actions['order'] == "-":
         resources = resources.order_by("%s%s" % (actions["order"], actions["orderby"]))
-
 
     # pagination
     pagination = {}
@@ -91,6 +86,8 @@ def create_edit_resource(request, **kwargs):
 
     resource_id = kwargs.get('resource_id')
     resource = None
+    form = None
+    formset = None
     output = {}
 
     if resource_id:
@@ -99,9 +96,12 @@ def create_edit_resource(request, **kwargs):
         resource = Resource(creator=request.user)
         output['is_new'] = True
 
+    user_data = additional_user_info(request)
+    user_data['is_owner'] = True if resource.creator_id == request.user.id else False
+
     # save/update
     if request.POST:
-        form = ResourceForm(request.POST, request.FILES, instance=resource, user=request.user)
+        form = ResourceForm(request.POST, request.FILES, instance=resource, user=request.user, user_data=user_data)
         formset = DescriptorFormSet(request.POST, instance=resource)
 
         if form.is_valid() and formset.is_valid():
@@ -111,9 +111,9 @@ def create_edit_resource(request, **kwargs):
             output['alerttype'] = "alert-success"
 
             return redirect('main.views.list_resources')
-    # new
+    # new/edit
     else:
-        form = ResourceForm(instance=resource)
+        form = ResourceForm(instance=resource, user_data=user_data)
         formset = DescriptorFormSet(instance=resource)
 
     output['form'] = form
@@ -130,7 +130,13 @@ def delete_resource(request, resource):
     resource = get_object_or_404(Resource, id=resource)
     output = {}
 
+    user_data = additional_user_info(request)
+
+    if user_data['user_role'] == 'doc' and resource.creator_id != user.id:
+        return HttpResponse('Unauthorized', status=401)
+
     resource.delete()
+
     output['alert'] = _("Resource deleted.")
     output['alerttype'] = "alert-success"
 
@@ -140,6 +146,7 @@ def delete_resource(request, resource):
 ############ Auxiliary table Thematic Area (LIS Type) #############
 
 @login_required
+@superuser_permission
 def list_thematics(request):
 
     user = request.user
@@ -182,6 +189,7 @@ def list_thematics(request):
     return render_to_response('main/thematics.html', output, context_instance=RequestContext(request))
 
 @login_required
+@superuser_permission
 def create_edit_thematic(request, **kwargs):
 
     thematic_id = kwargs.get('thematic_id')
@@ -219,6 +227,7 @@ def create_edit_thematic(request, **kwargs):
 
 
 @login_required
+@superuser_permission
 def delete_thematic(request, thematic_id):
 
     thematic = get_object_or_404(ThematicArea, id=thematic_id)
@@ -235,6 +244,7 @@ def delete_thematic(request, thematic_id):
 ########## Auxiliary table Source Type ###########
 
 @login_required
+@superuser_permission
 def list_types(request):
 
     user = request.user
@@ -277,6 +287,7 @@ def list_types(request):
     return render_to_response('main/types.html', output, context_instance=RequestContext(request))
 
 @login_required
+@superuser_permission
 def create_edit_type(request, **kwargs):
 
     type_id = kwargs.get('type_id')
@@ -314,6 +325,7 @@ def create_edit_type(request, **kwargs):
 
 
 @login_required
+@superuser_permission
 def delete_type(request, type):
 
     type = get_object_or_404(SourceType, id=type)
@@ -328,6 +340,7 @@ def delete_type(request, type):
 ############ Auxiliary table Source Languages #############
 
 @login_required
+@superuser_permission
 def list_languages(request):
 
     user = request.user
@@ -370,6 +383,7 @@ def list_languages(request):
     return render_to_response('main/languages.html', output, context_instance=RequestContext(request))
 
 @login_required
+@superuser_permission
 def create_edit_language(request, **kwargs):
 
     language_id = kwargs.get('language_id')
@@ -407,6 +421,7 @@ def create_edit_language(request, **kwargs):
 
 
 @login_required
+@superuser_permission
 def delete_language(request, language_id):
 
     language = get_object_or_404(SourceLanguage, id=language_id)
