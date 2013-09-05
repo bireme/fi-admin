@@ -23,7 +23,7 @@
         <div class='mask'><img src='{% static "image/loading.gif" %}'></div>
         <div class="wrap">
 
-            
+
 
             {% block "body" %}
                 {% block top %}{% include 'menu.html' %}{% endblock %}
@@ -32,7 +32,7 @@
                     <li><a href="{% url 'main.views.dashboard' %}">Home</a> <span class="divider">/</span></li>
                     {% block breadcrumb %}{% endblock %}
                 </ul>
-                
+
 
                 <div class="container-fluid content main">
                     {% block content %}{% endblock %}
@@ -44,11 +44,11 @@
                     <p>
                         <img src="{% static "image/logo-BIREME.png" %}" title="BIREME/OPAS/OMS" />
 
-                        <b class="bireme">BIREME - OPAS - OMS</b><br>
-                        {% trans "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde" %}<br>
-                        {% trans "Rua Botucatu, 862 | cep: 04023-901 | São Paulo - SP | Tel: (55 11) 5576-9800 | Fax: (55 11) 5575-8868 " %}<br>
-                        <a href="http://www.paho.org/bireme" title="{% trans 'Site Institucional da Bireme' %}">http://www.paho.org/bireme</a><br>
-                        <small>v{% include 'version.txt' %} | <a target="_blank" href="http://github.com/bireme/lis-admin" title="{% trans "Project source on GitHub" %}">{% trans "code on github" %}</a></small>
+                        <b class="bireme">{% trans "BIREME - PAHO - WHO" %}</b><br>
+                        {% trans "Latin-American and Caribbean Center on Health Sciences Information" %}<br>
+
+                        <a href="http://www.paho.org/bireme" title="{% trans 'BIREME Institutional Site' %}">http://www.paho.org/bireme</a><br>
+                        <small>v{% include 'version.txt' %} | <a target="_blank" href="http://github.com/bireme/lis-admin" title="{% trans "project source code" %}">{% trans "project source code" %}</a></small>
                     </p>
             </div>
             {% endblock %}
@@ -77,5 +77,5 @@
 
         {% block extrajs %}{% endblock %}
 
-    </body>    
+    </body>
 </html>

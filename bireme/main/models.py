@@ -117,7 +117,7 @@ class Resource(Generic):
     # abstract (319)
     abstract = models.TextField(_("Abstract"), blank=True, null=True)
     # time period (341)
-    time_period_textual = models.CharField(_('Author'), max_length=255, blank=True, null=True)
+    time_period_textual = models.CharField(_('Temporal range'), max_length=255, blank=True, null=True)
     # objective (361)
     objective = models.CharField(_('Objective'), max_length=255, blank=True, null=True)
     # responsible cooperative center

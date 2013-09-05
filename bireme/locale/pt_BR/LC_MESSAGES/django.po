@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-28 09:59-0300\n"
-"PO-Revision-Date: 2013-08-28 10:17-0300\n"
+"POT-Creation-Date: 2013-09-05 09:56-0300\n"
+"PO-Revision-Date: 2013-09-05 09:57-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -162,13 +162,17 @@ msgstr "Originador"
 msgid "Originator location"
 msgstr "Local geográfico do originador"
 
-#: main/models.py:110 main/models.py:120
+#: main/models.py:110
 msgid "Author"
 msgstr "Autor"
 
 #: main/models.py:118
 msgid "Abstract"
 msgstr "Resumo"
+
+#: main/models.py:120
+msgid "Temporal range"
+msgstr "Alcance temporal"
 
 #: main/models.py:122
 msgid "Objective"
@@ -178,15 +182,15 @@ msgstr "Objetivos"
 msgid "Cooperative center"
 msgstr "Centro cooperante"
 
-#: main/models.py:136
+#: main/models.py:140
 msgid "Vocabulary"
 msgstr "Vocabulário"
 
-#: main/models.py:138
+#: main/models.py:142
 msgid "Level"
 msgstr "Nível"
 
-#: main/models.py:140
+#: main/models.py:144
 msgid "Text"
 msgstr "Texto"
 
@@ -194,28 +198,33 @@ msgstr "Texto"
 msgid "Resource successfully edited."
 msgstr "Recurso editado com sucesso."
 
-#: main/views.py:134
+#: main/views.py:140
 msgid "Resource deleted."
 msgstr "Recurso apagado."
 
-#: main/views.py:205
+#: main/views.py:213
 msgid "Thematic area successfully edited."
 msgstr "Área temática editada com sucesso."
 
-#: main/views.py:229 main/views.py:417
+#: main/views.py:238
 msgid "Thematic area deleted."
 msgstr "Área Temática apagada"
 
-#: main/views.py:300
+#: main/views.py:311
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: main/views.py:323
+#: main/views.py:335
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
-#: main/views.py:393
+#: main/views.py:407
 msgid "Language successfully edited."
+msgstr "Idioma editado com sucesso."
+
+#: main/views.py:432
+#, fuzzy
+msgid "Language deleted."
 msgstr "Idioma editado com sucesso."
 
 #: templates/base.html:16 templates/admin/base_site.html:4
@@ -223,27 +232,22 @@ msgstr "Idioma editado com sucesso."
 msgid "LIS Administration"
 msgstr "LIS Administração"
 
-#: templates/base.html:48
-msgid "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
-msgstr ""
+#: templates/base.html:47
+msgid "BIREME - PAHO - WHO"
+msgstr "BIREME - OPAS - OMS"
 
-#: templates/base.html:49
-msgid ""
-"Rua Botucatu, 862 | cep: 04023-901 | São Paulo - SP | Tel: (55 11) 5576-9800"
-" | Fax: (55 11) 5575-8868 "
+#: templates/base.html:48
+msgid "Latin-American and Caribbean Center on Health Sciences Information"
 msgstr ""
+"Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
 
 #: templates/base.html:50
-msgid "Site Institucional da Bireme"
-msgstr ""
+msgid "BIREME Institutional Site"
+msgstr "Site institucional da BIREME"
 
 #: templates/base.html:51
-msgid "Project source on GitHub"
-msgstr ""
-
-#: templates/base.html:51
-msgid "code on github"
-msgstr "código no github"
+msgid "project source code"
+msgstr "código do projeto"
 
 #: templates/delete_confirm.html:5
 msgid "Delete"
@@ -273,7 +277,7 @@ msgstr "Tipos de fonte"
 
 #: templates/menu.html:20
 msgid "Django Admin"
-msgstr ""
+msgstr "Administrador Geral"
 
 #: templates/authentication/login.html:4
 #: templates/authentication/login.html:36
@@ -308,7 +312,7 @@ msgstr "Editar idioma"
 msgid "New Language"
 msgstr "Novo idioma"
 
-#: templates/main/edit-language.html:55 templates/main/edit-resource.html:66
+#: templates/main/edit-language.html:55 templates/main/edit-resource.html:70
 #: templates/main/edit-thematic.html:55 templates/main/edit-type.html:55
 msgid "Save"
 msgstr "Gravar"
@@ -318,7 +322,7 @@ msgstr "Gravar"
 msgid "Add translation"
 msgstr "Adicionar tradução"
 
-#: templates/main/edit-language.html:71 templates/main/edit-resource.html:83
+#: templates/main/edit-language.html:71 templates/main/edit-resource.html:87
 #: templates/main/edit-thematic.html:71 templates/main/edit-type.html:71
 msgid "delete"
 msgstr "apagar"
@@ -341,7 +345,7 @@ msgstr "Dados"
 msgid "Descriptors"
 msgstr "Descritores"
 
-#: templates/main/edit-resource.html:82
+#: templates/main/edit-resource.html:86
 msgid "Add descriptor"
 msgstr "Adicionar descritor"
 
@@ -393,8 +397,9 @@ msgstr "limpar"
 msgid "Actions"
 msgstr "Ações"
 
-#: templates/main/languages.html:57 templates/main/resources.html:59
-#: templates/main/thematics.html:57 templates/main/types.html:57
+#: templates/main/languages.html:57 templates/main/resources.html:61
+#: templates/main/resources.html.py:64 templates/main/thematics.html:57
+#: templates/main/types.html:57
 msgid "Remove"
 msgstr "Apagar"
 
@@ -407,12 +412,16 @@ msgid "New Source Type"
 msgstr "Novo Tipo de fonte"
 
 #: utils/models.py:20
-msgid "created"
+#, fuzzy
+msgid "created at"
 msgstr "criado"
 
 #: utils/models.py:21
 msgid "updated"
 msgstr "atualizado"
+
+#~ msgid "code on github"
+#~ msgstr "código no github"
 
 #~ msgid "Brazilian Portuguese"
 #~ msgstr "Português"

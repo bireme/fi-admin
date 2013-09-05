@@ -1,6 +1,7 @@
 *.log
 *.pot
 *.pyc
+*.sh
 settings_local.py
 database.db
 fabric/environment.py
