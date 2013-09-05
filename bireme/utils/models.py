@@ -17,10 +17,10 @@ class Generic(models.Model):
     class Meta:
         abstract = True
 
-    created = models.DateTimeField(_("created"), default=timezone.now())
-    updated = models.DateTimeField(_("updated"), default=timezone.now())
-    creator = models.ForeignKey(User, null=True, blank=True, related_name="+")
-    updater = models.ForeignKey(User, null=True, blank=True, related_name="+")
+    created = models.DateTimeField(_("created at"), default=timezone.now(), editable=False)
+    updated = models.DateTimeField(_("updated"), default=timezone.now(), editable=False)
+    creator = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
+    updater = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
 
     @property
     def diff(self):
