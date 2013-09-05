@@ -24,18 +24,22 @@
         <li><a href="#tab-descriptors" data-toggle="tab">{% trans "Descriptors" %}</a></li>
     </ul>
 
+
     <form method="POST">
         {% csrf_token %}
 
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
                     <fieldset id="metadata">
-                        {{ form.non_field_errors }}
-                        {% for field in form %}
-                            {{ field.label_tag }}
-                            {{ field.errors }}
-                            {{ field }}
-                        {% endfor %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            {{ form.non_field_errors }}
+                            {% for field in form.visible_fields %}
+                                {{ field.label_tag }}
+                                {{ field.errors }}
+                                {{ field }}
+                            {% endfor %}
                     </fieldset>
             </div>
 

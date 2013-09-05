@@ -94,7 +94,7 @@ class Resource(Generic):
     )
 
     # status (399)
-    status = models.CharField(_('Status'), max_length=2, choices=STATUS_CHOICES, blank=True, null=True)
+    status = models.CharField(_('Status'), max_length=2, choices=STATUS_CHOICES, blank=True, null=True, default=0)
 
     # title (311)
     title = models.CharField(_('Title'), max_length=255)
@@ -122,6 +122,10 @@ class Resource(Generic):
     objective = models.CharField(_('Objective'), max_length=255, blank=True, null=True)
     # responsible cooperative center
     cooperative_center = models.CharField(_('Cooperative center'), max_length=55, blank=True, null=True)
+
+
+    def get_fields(self):
+        return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]
 
     def __unicode__(self):
         return unicode(self.title)
