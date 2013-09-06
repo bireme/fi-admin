@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-06 14:40-0300\n"
-"PO-Revision-Date: 2013-09-06 15:46-0300\n"
+"POT-Creation-Date: 2013-09-06 16:12-0300\n"
+"PO-Revision-Date: 2013-09-06 16:12-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,15 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
-#: main/choices.py:6 templates/menu.html:29 templates/menu.html.py:35
+#: main/choices.py:6 templates/menu.html:31 templates/menu.html.py:37
 msgid "English"
 msgstr "Inglês"
 
-#: main/choices.py:7 templates/menu.html:31 templates/menu.html.py:36
+#: main/choices.py:7 templates/menu.html:33 templates/menu.html.py:38
 msgid "Portuguese"
 msgstr "Português"
 
-#: main/choices.py:8 templates/menu.html:30 templates/menu.html.py:37
+#: main/choices.py:8 templates/menu.html:32 templates/menu.html.py:39
 msgid "Spanish"
 msgstr "Espanhol"
 
@@ -97,7 +97,7 @@ msgstr "nome"
 msgid "Source language"
 msgstr "Idiomas da fonte"
 
-#: main/models.py:41 templates/menu.html:18 templates/main/languages.html:4
+#: main/models.py:41 templates/menu.html:20 templates/main/languages.html:4
 #: templates/main/languages.html.py:7 templates/main/languages.html:21
 msgid "Source languages"
 msgstr "Idiomas da fonte"
@@ -107,7 +107,7 @@ msgstr "Idiomas da fonte"
 msgid "Thematic area"
 msgstr "Áreas temáticas"
 
-#: main/models.py:65 templates/menu.html:16 templates/main/thematics.html:4
+#: main/models.py:65 templates/menu.html:18 templates/main/thematics.html:4
 #: templates/main/thematics.html.py:7 templates/main/thematics.html:21
 msgid "Thematic areas"
 msgstr "Áreas temáticas"
@@ -117,7 +117,7 @@ msgstr "Áreas temáticas"
 msgid "Resource"
 msgstr "Recurso"
 
-#: main/models.py:90 templates/menu.html:13
+#: main/models.py:90 templates/menu.html:15
 #: templates/main/edit-resource.html:8 templates/main/resources.html:4
 #: templates/main/resources.html.py:7 templates/main/resources.html:21
 msgid "Resources"
@@ -199,35 +199,35 @@ msgstr "Texto"
 msgid "Code"
 msgstr "Código"
 
-#: main/views.py:124
+#: main/views.py:125
 msgid "Resource successfully edited."
 msgstr "Recurso editado com sucesso."
 
-#: main/views.py:163
+#: main/views.py:164
 msgid "Resource deleted."
 msgstr "Recurso apagado."
 
-#: main/views.py:236
+#: main/views.py:237
 msgid "Thematic area successfully edited."
 msgstr "Área temática editada com sucesso."
 
-#: main/views.py:261
+#: main/views.py:262
 msgid "Thematic area deleted."
 msgstr "Área Temática apagada"
 
-#: main/views.py:334
+#: main/views.py:335
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: main/views.py:358
+#: main/views.py:359
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
-#: main/views.py:430
+#: main/views.py:431
 msgid "Language successfully edited."
 msgstr "Idioma editado com sucesso."
 
-#: main/views.py:455
+#: main/views.py:456
 #, fuzzy
 msgid "Language deleted."
 msgstr "Idioma editado com sucesso."
@@ -237,20 +237,20 @@ msgstr "Idioma editado com sucesso."
 msgid "LIS Administration"
 msgstr "LIS Administração"
 
-#: templates/base.html:47
+#: templates/base.html:44
 msgid "BIREME - PAHO - WHO"
 msgstr "BIREME - OPAS - OMS"
 
-#: templates/base.html:48
+#: templates/base.html:45
 msgid "Latin-American and Caribbean Center on Health Sciences Information"
 msgstr ""
 "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
 
-#: templates/base.html:50
+#: templates/base.html:47
 msgid "BIREME Institutional Site"
 msgstr "Site institucional da BIREME"
 
-#: templates/base.html:51
+#: templates/base.html:48
 msgid "project source code"
 msgstr "código do projeto"
 
@@ -270,19 +270,23 @@ msgstr "Não"
 msgid "Yes"
 msgstr "Sim"
 
-#: templates/menu.html:11 templates/main/index.html:4
+#: templates/menu.html:13 templates/main/index.html:4
 #: templates/main/index.html.py:19
 msgid "Dashboard"
 msgstr "Painel de controle"
 
-#: templates/menu.html:17 templates/main/types.html:4
+#: templates/menu.html:19 templates/main/types.html:4
 #: templates/main/types.html.py:7 templates/main/types.html:21
 msgid "Source types"
 msgstr "Tipos de fonte"
 
-#: templates/menu.html:20
+#: templates/menu.html:22
 msgid "Django Admin"
 msgstr "Administrador Geral"
+
+#: templates/menu.html:54
+msgid "Logout"
+msgstr "Sair do sistema"
 
 #: templates/authentication/login.html:4
 #: templates/authentication/login.html:36

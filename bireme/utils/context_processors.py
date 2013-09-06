@@ -18,4 +18,4 @@ def additional_user_info(request):
             user_role = 'admin'
             user_cc = 'br1.1'
 
-    return { 'user_role' : user_role, 'user_cc' : user_cc }
+    return { 'user_role' : user_role, 'user_cc' : user_cc, 'user_name' : user.username}

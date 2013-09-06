@@ -46,7 +46,15 @@
                                 </a>
                             </li>
                             -->
-                            <li><a href="{% url 'django.contrib.auth.views.logout' %}" title="Logout"><i class="icon-signout"></i></a></li>
+                            <li>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_user">{{ user_name }}
+                                </a>
+                                <ul class="dropdown-menu" role="user_menu" aria-labelledby="menu_user">
+                                    <a href="{% url 'django.contrib.auth.views.logout' %}" title="Logout">
+                                    {% trans 'Logout' %}
+                                    </a>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>
