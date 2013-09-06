@@ -11,6 +11,8 @@ from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.functional import curry
+
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 
@@ -88,6 +90,7 @@ def create_edit_resource(request, **kwargs):
     resource = None
     form = None
     formset = None
+    descriptor_list = None
     output = {}
 
     if resource_id:
@@ -106,7 +109,18 @@ def create_edit_resource(request, **kwargs):
 
         if form.is_valid() and formset.is_valid():
             resource = form.save()
+
+            # if documentalist process descriptors
+            if user_data['user_role'] == 'doc':
+                for f in formset:
+                    descriptor_obj = f.save(commit=False)
+                    # set status to pending and save user
+                    descriptor_obj.status = 0
+                    descriptor_obj.creator = request.user
+                    descriptor_obj.save()
+
             formset.save()
+
             output['alert'] = _("Resource successfully edited.")
             output['alerttype'] = "alert-success"
 
@@ -114,11 +128,20 @@ def create_edit_resource(request, **kwargs):
     # new/edit
     else:
         form = ResourceForm(instance=resource, user_data=user_data)
-        formset = DescriptorFormSet(instance=resource)
+
+        # if documentalist create a formset with descriptors created by the user
+        if user_data['user_role'] == 'doc' and not user_data['is_owner']:
+            descriptor_list = Descriptor.objects.filter(resource=resource, status=1)
+            pending_descriptor_from_user =  Descriptor.objects.filter(resource=resource, creator_id=request.user.id)
+
+            formset = DescriptorFormSetForDoc(instance=resource, queryset=pending_descriptor_from_user)
+        else:
+            formset = DescriptorFormSet(instance=resource)
 
     output['form'] = form
     output['formset'] = formset
     output['resource'] = resource
+    output['descriptor_list'] = descriptor_list
     output['settings'] = settings
 
     return render_to_response('main/edit-resource.html', output, context_instance=RequestContext(request))

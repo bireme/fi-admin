@@ -31,20 +31,39 @@
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
                     <fieldset id="metadata">
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                            {{ form.non_field_errors }}
-                            {% for field in form.visible_fields %}
-                                {{ field.label_tag }}
-                                {{ field.errors }}
-                                {{ field }}
-                            {% endfor %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {{ form.non_field_errors }}
+                        {% for field in form.visible_fields %}
+                            {{ field.label_tag }}
+                            {{ field.errors }}
+                            {{ field }}
+                        {% endfor %}
                     </fieldset>
             </div>
 
             <div id='tab-descriptors' class="tab-pane">
                 <fieldset id="descriptors">
+                    {% if descriptor_list %}
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <th>{% trans "Vocabulary" %}</th>
+                                <th>{% trans "Level" %}</th>
+                                <th>{% trans "Text" %}</th>
+                            </thead>
+                            <tbody>
+                            {% for descriptor in descriptor_list %}
+                                <tr>
+                                    <td>{{ descriptor.vocabulary }}</td>
+                                    <td>{{ descriptor.level }}</td>
+                                    <td>{{ descriptor.text }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+
                     {{ formset.management_form }}
                     {% for form in formset %}
                         <div id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %}">
@@ -57,8 +76,8 @@
                                     {{ field.label_tag }}
                                     {{ field }}
                                 </span>
-                                    {% if field.name == 'text' %}<a href="#" onclick="javascript:decs_search('{{ field.html_name }}')";>DeCS Search</a>{% endif %}
                             {% endfor %}
+                            <a href="#" onclick="javascript:decs_search('{{ field.html_name }}')";>DeCS Search</a>
                             {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                         </div>
                     {% endfor %}
@@ -91,6 +110,9 @@
             });
 
             $("#metadata").find("input[type=text], textarea").addClass("span6");
+
+            $("#descriptors").find("input[name$='code'], select").addClass("span2");
+
 
             var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
             var eventer = window[eventMethod];
