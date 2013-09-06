@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-05 10:25-0300\n"
-"PO-Revision-Date: 2013-09-05 10:25-0300\n"
+"POT-Creation-Date: 2013-09-06 14:40-0300\n"
+"PO-Revision-Date: 2013-09-06 14:41-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
@@ -36,18 +36,14 @@ msgid "General"
 msgstr "Geral"
 
 #: main/choices.py:15
-msgid "Specific"
-msgstr "Específico"
-
-#: main/choices.py:16
 msgid "Geographic"
 msgstr "Geográfico"
 
-#: main/choices.py:20
+#: main/choices.py:19
 msgid "DeCS: Health Sciences Descriptors"
 msgstr "DeCS: Descritores em Ciências da Saúde"
 
-#: main/choices.py:21
+#: main/choices.py:20
 msgid "Keywords"
 msgstr "Palavras-chave"
 
@@ -127,15 +123,15 @@ msgstr "Recurso"
 msgid "Resources"
 msgstr "Recursos (Links)"
 
-#: main/models.py:93
+#: main/models.py:93 main/models.py:141
 msgid "Pending"
 msgstr "Pendente"
 
-#: main/models.py:94
+#: main/models.py:94 main/models.py:142
 msgid "Admitted"
 msgstr "Admitido"
 
-#: main/models.py:95
+#: main/models.py:95 main/models.py:143
 msgid "Refused"
 msgstr "Recusado"
 
@@ -143,7 +139,7 @@ msgstr "Recusado"
 msgid "Deleted"
 msgstr "Apagado"
 
-#: main/models.py:100
+#: main/models.py:100 main/models.py:158
 msgid "Status"
 msgstr "Status"
 
@@ -187,47 +183,51 @@ msgstr "Objetivos"
 msgid "Cooperative center"
 msgstr "Centro cooperante"
 
-#: main/models.py:143
+#: main/models.py:150 templates/main/edit-resource.html:51
 msgid "Vocabulary"
 msgstr "Vocabulário"
 
-#: main/models.py:145
+#: main/models.py:152 templates/main/edit-resource.html:52
 msgid "Level"
 msgstr "Nível"
 
-#: main/models.py:147
+#: main/models.py:154 templates/main/edit-resource.html:53
 msgid "Text"
 msgstr "Texto"
 
-#: main/views.py:110
+#: main/models.py:156
+msgid "Code"
+msgstr "Código"
+
+#: main/views.py:124
 msgid "Resource successfully edited."
 msgstr "Recurso editado com sucesso."
 
-#: main/views.py:140
+#: main/views.py:163
 msgid "Resource deleted."
 msgstr "Recurso apagado."
 
-#: main/views.py:213
+#: main/views.py:236
 msgid "Thematic area successfully edited."
 msgstr "Área temática editada com sucesso."
 
-#: main/views.py:238
+#: main/views.py:261
 msgid "Thematic area deleted."
 msgstr "Área Temática apagada"
 
-#: main/views.py:311
+#: main/views.py:334
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: main/views.py:335
+#: main/views.py:358
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
-#: main/views.py:407
+#: main/views.py:430
 msgid "Language successfully edited."
 msgstr "Idioma editado com sucesso."
 
-#: main/views.py:432
+#: main/views.py:455
 #, fuzzy
 msgid "Language deleted."
 msgstr "Idioma editado com sucesso."
@@ -243,7 +243,8 @@ msgstr "BIREME - OPAS - OMS"
 
 #: templates/base.html:48
 msgid "Latin-American and Caribbean Center on Health Sciences Information"
-msgstr "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
+msgstr ""
+"Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
 
 #: templates/base.html:50
 msgid "BIREME Institutional Site"
@@ -316,7 +317,7 @@ msgstr "Editar idioma"
 msgid "New Language"
 msgstr "Novo idioma"
 
-#: templates/main/edit-language.html:56 templates/main/edit-resource.html:70
+#: templates/main/edit-language.html:56 templates/main/edit-resource.html:89
 #: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
 msgid "Save"
 msgstr "Gravar"
@@ -326,7 +327,7 @@ msgstr "Gravar"
 msgid "Add translation"
 msgstr "Adicionar tradução"
 
-#: templates/main/edit-language.html:72 templates/main/edit-resource.html:87
+#: templates/main/edit-language.html:72 templates/main/edit-resource.html:106
 #: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
 msgid "delete"
 msgstr "apagar"
@@ -349,7 +350,7 @@ msgstr "Dados"
 msgid "Descriptors"
 msgstr "Descritores"
 
-#: templates/main/edit-resource.html:86
+#: templates/main/edit-resource.html:105
 msgid "Add descriptor"
 msgstr "Adicionar descritor"
 
@@ -423,6 +424,9 @@ msgstr "criado"
 #: utils/models.py:21
 msgid "updated"
 msgstr "atualizado"
+
+#~ msgid "Specific"
+#~ msgstr "Específico"
 
 #~ msgid "code on github"
 #~ msgstr "código no github"

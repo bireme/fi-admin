@@ -12,7 +12,6 @@ LANGUAGES_CHOICES = (
 
 DESCRIPTOR_LEVEL = [
     ('general', _('General')),
-    ('specific', _('Specific')),
     ('geographic', _('Geographic')),
 ]
 

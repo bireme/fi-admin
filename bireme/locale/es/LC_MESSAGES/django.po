@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-05 10:25-0300\n"
+"POT-Creation-Date: 2013-09-06 14:40-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,18 +35,14 @@ msgid "General"
 msgstr ""
 
 #: main/choices.py:15
-msgid "Specific"
-msgstr ""
-
-#: main/choices.py:16
 msgid "Geographic"
 msgstr ""
 
-#: main/choices.py:20
+#: main/choices.py:19
 msgid "DeCS: Health Sciences Descriptors"
 msgstr ""
 
-#: main/choices.py:21
+#: main/choices.py:20
 msgid "Keywords"
 msgstr ""
 
@@ -124,15 +120,15 @@ msgstr ""
 msgid "Resources"
 msgstr ""
 
-#: main/models.py:93
+#: main/models.py:93 main/models.py:141
 msgid "Pending"
 msgstr ""
 
-#: main/models.py:94
+#: main/models.py:94 main/models.py:142
 msgid "Admitted"
 msgstr ""
 
-#: main/models.py:95
+#: main/models.py:95 main/models.py:143
 msgid "Refused"
 msgstr ""
 
@@ -140,7 +136,7 @@ msgstr ""
 msgid "Deleted"
 msgstr ""
 
-#: main/models.py:100
+#: main/models.py:100 main/models.py:158
 msgid "Status"
 msgstr ""
 
@@ -184,47 +180,51 @@ msgstr ""
 msgid "Cooperative center"
 msgstr ""
 
-#: main/models.py:143
+#: main/models.py:150 templates/main/edit-resource.html:51
 msgid "Vocabulary"
 msgstr ""
 
-#: main/models.py:145
+#: main/models.py:152 templates/main/edit-resource.html:52
 msgid "Level"
 msgstr ""
 
-#: main/models.py:147
+#: main/models.py:154 templates/main/edit-resource.html:53
 msgid "Text"
 msgstr ""
 
-#: main/views.py:110
+#: main/models.py:156
+msgid "Code"
+msgstr ""
+
+#: main/views.py:124
 msgid "Resource successfully edited."
 msgstr ""
 
-#: main/views.py:140
+#: main/views.py:163
 msgid "Resource deleted."
 msgstr ""
 
-#: main/views.py:213
+#: main/views.py:236
 msgid "Thematic area successfully edited."
 msgstr ""
 
-#: main/views.py:238
+#: main/views.py:261
 msgid "Thematic area deleted."
 msgstr ""
 
-#: main/views.py:311
+#: main/views.py:334
 msgid "Type successfully edited."
 msgstr ""
 
-#: main/views.py:335
+#: main/views.py:358
 msgid "Type deleted."
 msgstr ""
 
-#: main/views.py:407
+#: main/views.py:430
 msgid "Language successfully edited."
 msgstr ""
 
-#: main/views.py:432
+#: main/views.py:455
 msgid "Language deleted."
 msgstr ""
 
@@ -312,7 +312,7 @@ msgstr ""
 msgid "New Language"
 msgstr ""
 
-#: templates/main/edit-language.html:56 templates/main/edit-resource.html:70
+#: templates/main/edit-language.html:56 templates/main/edit-resource.html:89
 #: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
 msgid "Save"
 msgstr ""
@@ -322,7 +322,7 @@ msgstr ""
 msgid "Add translation"
 msgstr ""
 
-#: templates/main/edit-language.html:72 templates/main/edit-resource.html:87
+#: templates/main/edit-language.html:72 templates/main/edit-resource.html:106
 #: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
 msgid "delete"
 msgstr ""
@@ -345,7 +345,7 @@ msgstr ""
 msgid "Descriptors"
 msgstr ""
 
-#: templates/main/edit-resource.html:86
+#: templates/main/edit-resource.html:105
 msgid "Add descriptor"
 msgstr ""
 

@@ -54,16 +54,8 @@ class ResourceForm(forms.ModelForm):
         return obj
 
     class Meta:
-        model = Resource
+        model  =Resource
         exclude = ('cooperative_center',)
-
-
-
-class DescriptorForm(forms.ModelForm):
-    class Meta:
-        model = Descriptor
-        exclude = GENERIC_FIELDS
-
 
 class ThematicAreaForm(forms.ModelForm):
 
@@ -102,7 +94,12 @@ class TypeLocalForm(forms.ModelForm):
         model = SourceTypeLocal
 
 
+
+# definition of inline formsets
+
 DescriptorFormSet = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1)
+
+DescriptorFormSetForDoc = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1, exclude=('status'))
 
 ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAreaLocal, form=ThematicAreaLocalForm, can_delete=True, extra=1)
 
