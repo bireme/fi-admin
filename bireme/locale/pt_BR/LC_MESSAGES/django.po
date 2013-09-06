@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-09-06 14:40-0300\n"
-"PO-Revision-Date: 2013-09-06 14:41-0300\n"
+"PO-Revision-Date: 2013-09-06 15:46-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -121,7 +121,7 @@ msgstr "Recurso"
 #: templates/main/edit-resource.html:8 templates/main/resources.html:4
 #: templates/main/resources.html.py:7 templates/main/resources.html:21
 msgid "Resources"
-msgstr "Recursos (Links)"
+msgstr "Recursos"
 
 #: main/models.py:93 main/models.py:141
 msgid "Pending"

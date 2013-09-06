@@ -117,6 +117,7 @@ def create_edit_resource(request, **kwargs):
                     # set status to pending and save user
                     descriptor_obj.status = 0
                     descriptor_obj.creator = request.user
+                    descriptor_obj.resource_id = resource.id
                     descriptor_obj.save()
 
             formset.save()
@@ -130,7 +131,7 @@ def create_edit_resource(request, **kwargs):
         form = ResourceForm(instance=resource, user_data=user_data)
 
         # if documentalist create a formset with descriptors created by the user
-        if user_data['user_role'] == 'doc' and not user_data['is_owner']:
+        if user_data['user_role'] == 'doc':
             descriptor_list = Descriptor.objects.filter(resource=resource, status=1)
             pending_descriptor_from_user =  Descriptor.objects.filter(resource=resource, creator_id=request.user.id)
 
