@@ -133,7 +133,7 @@ def create_edit_resource(request, **kwargs):
         # if documentalist create a formset with descriptors created by the user
         if user_data['user_role'] == 'doc':
             descriptor_list = Descriptor.objects.filter(resource=resource, status=1)
-            pending_descriptor_from_user =  Descriptor.objects.filter(resource=resource, creator_id=request.user.id)
+            pending_descriptor_from_user =  Descriptor.objects.filter(resource=resource, creator_id=request.user.id, status=0)
 
             formset = DescriptorFormSetForDoc(instance=resource, queryset=pending_descriptor_from_user)
         else:
