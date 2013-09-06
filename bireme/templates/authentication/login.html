@@ -23,14 +23,14 @@
 {% block content %}
 
     <div id="loginForm">
-        <div class="row">                        
+        <div class="row">
             <div class="logo" id="logo">
-                <h1><a href="" title="{% trans "LIS" %}"><span>{% trans "LIS" %}</span></a></h1>
+                <h1><span>{% trans "LIS" %}</span></h1>
             </div>
         </div>
 
         <form class="form-signin" action="{% url 'django.contrib.auth.views.login' %}" method="post" name="login">
-            
+
             {% csrf_token %}<input type="hidden" name="next" value="{% url 'main.views.dashboard' %}" />
 
             <h2 class="form-signin-heading">{% trans "Login" %}</h2>
