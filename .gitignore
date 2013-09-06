@@ -6,3 +6,4 @@ settings_local.py
 database.db
 fabric/environment.py
 biremelogin
+bireme/templates/version.txt
