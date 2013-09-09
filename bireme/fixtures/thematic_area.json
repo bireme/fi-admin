@@ -1,0 +1,560 @@
+[
+{
+   "pk": 1,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LIBR10",
+       "name": "Equidad en Salud (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 2,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LIBR12",
+       "name": "Adolescencia (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 3,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR0",
+       "name": "LILACS (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 4,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR11",
+       "name": "Legislación de Salud (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 5,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR13",
+       "name": "Envejecimiento y salud (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 6,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR14",
+       "name": "Envelhecimento e Saúde (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 7,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR15",
+       "name": "Homeopatia (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 8,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR16",
+       "name": "Equidad y género (internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 9,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR17",
+       "name": "Occupational Health (International)",
+       "creator": 1
+   }
+},
+{
+   "pk": 10,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR18",
+       "name": "Ciências da Saúde (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 11,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR19",
+       "name": "Projetos (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 12,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR1",
+       "name": "Ciências da Saúde (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 13,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR20",
+       "name": "Ciencia y Salud (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 14,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR21",
+       "name": "Vaccinations (International)",
+       "creator": 1
+   }
+},
+{
+   "pk": 15,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR22",
+       "name": "Salud de la Familia (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 16,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR23.1",
+       "name": "Cervical Cancer - NCD (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 17,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR23",
+       "name": "NCD (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 18,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR24",
+       "name": "Vigilância Sanitária (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 19,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR25",
+       "name": "Comunicação Científica (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 20,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR26",
+       "name": "Enfermagem (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 21,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR27",
+       "name": "Odontologia (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 22,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR28",
+       "name": "Salud Mental (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 23,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR29",
+       "name": "Gestão do Conhecimento (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 24,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR2",
+       "name": "Ciencias de la Salud (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 25,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR30",
+       "name": "Toxicologia (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 26,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR31",
+       "name": "Psicologia (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 27,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR32",
+       "name": "Economia da Saúde (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 28,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR33",
+       "name": "Influenza Aviária (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 29,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR34",
+       "name": "SES-SP (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 30,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR35",
+       "name": "NUVIS-CE (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 31,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR36",
+       "name": "Nutrición (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 32,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR37",
+       "name": "Evidências (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 33,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR38",
+       "name": "RIPSA (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 34,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR39",
+       "name": "Determinantes Sociais da Saúde (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 35,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR3",
+       "name": "Multimedios de apoyo a la educación (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 36,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR40",
+       "name": "Atenção Primária à Saúde (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 37,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR41",
+       "name": "Ministério da Saúde (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 38,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR42",
+       "name": "TropIKA (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 39,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR43",
+       "name": "EVIPNet (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 40,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR44",
+       "name": "Acesso Aberto (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 41,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR45",
+       "name": "Pan-Amazônica (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 42,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR46",
+       "name": "Terminologia e Classificações em Saúde (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 43,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR47",
+       "name": "Influenza A H1N1 (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 44,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR48",
+       "name": "Belize (Nacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 45,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR49",
+       "name": "Desarrollo Sostenible y Salud (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 46,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR4",
+       "name": "Toxicología (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 47,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR50",
+       "name": "Educação em Ciências da Saúde (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 48,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR51",
+       "name": "Guyana (Nacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 49,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR52",
+       "name": "Guatemala (Nacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 50,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR53",
+       "name": "Haiti (Nacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 51,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR54",
+       "name": "Disaster Preparedness and Response (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 52,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR55",
+       "name": "Medicina Veterinária (Internacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 53,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR56",
+       "name": "Gensalud (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 54,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR57",
+       "name": "Bioética e Diplomacia em Saúde (Nacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 55,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR58",
+       "name": "Prevenção e Controle de Câncer (Nacional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 56,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR59",
+       "name": "SMS-SP (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 57,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR5",
+       "name": "Saúde Pública (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 58,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR6",
+       "name": "Adolescencia (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 59,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR7",
+       "name": "Envejecimiento (BR)",
+       "creator": 1
+   }
+},
+{
+   "pk": 60,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR8",
+       "name": "Saúde Pública (Regional)",
+       "creator": 1
+   }
+},
+{
+   "pk": 61,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR9",
+       "name": "WHO",
+       "creator": 1
+   }
+},
+{
+   "pk": 62,
+   "model": "main.thematicarea",
+   "fields": {
+       "acronym": "LISBR",
+       "name": "ITD (Internacional)",
+       "creator": 1
+   }
+}
+]

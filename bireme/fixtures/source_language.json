@@ -1,0 +1,62 @@
+[
+{
+   "pk": 1,
+   "model": "main.sourcelanguage",
+   "fields": {
+       "acronym": "De",
+       "language": "en",
+       "name": "German",
+       "creator": 1
+   }
+},
+{
+   "pk": 2,
+   "model": "main.sourcelanguage",
+   "fields": {
+       "acronym": "En",
+       "language": "en",
+       "name": "English",
+       "creator": 1
+   }
+},
+{
+   "pk": 3,
+   "model": "main.sourcelanguage",
+   "fields": {
+       "acronym": "Es",
+       "language": "en",
+       "name": "Spanish",
+       "creator": 1
+   }
+},
+{
+   "pk": 4,
+   "model": "main.sourcelanguage",
+   "fields": {
+       "acronym": "Fr",
+       "language": "en",
+       "name": "French",
+       "creator": 1
+   }
+},
+{
+   "pk": 5,
+   "model": "main.sourcelanguage",
+   "fields": {
+       "acronym": "It",
+       "language": "en",
+       "name": "Italian",
+       "creator": 1
+   }
+},
+{
+   "pk": 6,
+   "model": "main.sourcelanguage",
+   "fields": {
+       "acronym": "Pt",
+       "language": "en",
+       "name": "Portuguese",
+       "creator": 1
+   }
+}
+]

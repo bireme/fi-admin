@@ -1,0 +1,530 @@
+[
+{
+   "pk": 1,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Bancos de imágenes",
+       "creator": 1
+   }
+},
+{
+   "pk": 2,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Base de datos - bibliográfica",
+       "creator": 1
+   }
+},
+{
+   "pk": 3,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Base de datos - factual",
+       "creator": 1
+   }
+},
+{
+   "pk": 4,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Base de datos - numérica en salud",
+       "creator": 1
+   }
+},
+{
+   "pk": 5,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Base de datos - secuencias genéticas",
+       "creator": 1
+   }
+},
+{
+   "pk": 6,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Base de datos - substancias químicas",
+       "creator": 1
+   }
+},
+{
+   "pk": 7,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Base de datos - terminológica",
+       "creator": 1
+   }
+},
+{
+   "pk": 8,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Base de datos - texto completo",
+       "creator": 1
+   }
+},
+{
+   "pk": 9,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Bibliografía",
+       "creator": 1
+   }
+},
+{
+   "pk": 10,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Biblioteca Virtual",
+       "creator": 1
+   }
+},
+{
+   "pk": 11,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Blogs",
+       "creator": 1
+   }
+},
+{
+   "pk": 12,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Informes epidemiológicos",
+       "creator": 1
+   }
+},
+{
+   "pk": 13,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Centros de información",
+       "creator": 1
+   }
+},
+{
+   "pk": 14,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Comunidades en línea",
+       "creator": 1
+   }
+},
+{
+   "pk": 15,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Congresos, Seminarios, Reuniones",
+       "creator": 1
+   }
+},
+{
+   "pk": 16,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Cuestiones respondidas con frecuencia - FAQ",
+       "creator": 1
+   }
+},
+{
+   "pk": 17,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Cursos",
+       "creator": 1
+   }
+},
+{
+   "pk": 18,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Datos y Mapas epidemiológicos",
+       "creator": 1
+   }
+},
+{
+   "pk": 19,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Directorio - fuentes de información",
+       "creator": 1
+   }
+},
+{
+   "pk": 20,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Directorio - institucional",
+       "creator": 1
+   }
+},
+{
+   "pk": 21,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Directorio - personal",
+       "creator": 1
+   }
+},
+{
+   "pk": 22,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Directorio - proyectos",
+       "creator": 1
+   }
+},
+{
+   "pk": 23,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Educación a distancia",
+       "creator": 1
+   }
+},
+{
+   "pk": 24,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Educación a distancia - programas",
+       "creator": 1
+   }
+},
+{
+   "pk": 25,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Educación continuada - programas",
+       "creator": 1
+   }
+},
+{
+   "pk": 26,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Educación continuada a distancia",
+       "creator": 1
+   }
+},
+{
+   "pk": 27,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Folletos y Carteles",
+       "creator": 1
+   }
+},
+{
+   "pk": 28,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Gráficos, tablas e ilustraciones",
+       "creator": 1
+   }
+},
+{
+   "pk": 29,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Guías, manuales, orientaciones de uso",
+       "creator": 1
+   }
+},
+{
+   "pk": 30,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Hospital virtual",
+       "creator": 1
+   }
+},
+{
+   "pk": 31,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Hotsite",
+       "creator": 1
+   }
+},
+{
+   "pk": 32,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Indicadores de Salud",
+       "creator": 1
+   }
+},
+{
+   "pk": 33,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Indicadores económicos",
+       "creator": 1
+   }
+},
+{
+   "pk": 34,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Informaciones para el público",
+       "creator": 1
+   }
+},
+{
+   "pk": 35,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Legislación",
+       "creator": 1
+   }
+},
+{
+   "pk": 36,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Listas de discusión",
+       "creator": 1
+   }
+},
+{
+   "pk": 37,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Mapas",
+       "creator": 1
+   }
+},
+{
+   "pk": 38,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Mobile",
+       "creator": 1
+   }
+},
+{
+   "pk": 39,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Noticias",
+       "creator": 1
+   }
+},
+{
+   "pk": 40,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Objetos de Aprendizaje",
+       "creator": 1
+   }
+},
+{
+   "pk": 41,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Planes de preparación",
+       "creator": 1
+   }
+},
+{
+   "pk": 42,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Programas de apoyo a la decisión",
+       "creator": 1
+   }
+},
+{
+   "pk": 43,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Publicaciones electrónicas - anales de congreso",
+       "creator": 1
+   }
+},
+{
+   "pk": 44,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Publicaciones electrónicas - documento gubernamental",
+       "creator": 1
+   }
+},
+{
+   "pk": 45,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Publicaciones electrónicas - hipertextos",
+       "creator": 1
+   }
+},
+{
+   "pk": 46,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Publicaciones electrónicas - monografía",
+       "creator": 1
+   }
+},
+{
+   "pk": 47,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Publicaciones electrónicas - multimediales",
+       "creator": 1
+   }
+},
+{
+   "pk": 48,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Publicaciones electrónicas - revista",
+       "creator": 1
+   }
+},
+{
+   "pk": 49,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Publicaciones electrónicas - tesis",
+       "creator": 1
+   }
+},
+{
+   "pk": 50,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Recursos de editoriales",
+       "creator": 1
+   }
+},
+{
+   "pk": 51,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "RSS",
+       "creator": 1
+   }
+},
+{
+   "pk": 52,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Servicios - diseminacion selectiva de informacion",
+       "creator": 1
+   }
+},
+{
+   "pk": 53,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Servicios - suministro de copias de documentos",
+       "creator": 1
+   }
+},
+{
+   "pk": 54,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Sitios Web - institucional",
+       "creator": 1
+   }
+},
+{
+   "pk": 55,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Sitios Web - personal",
+       "creator": 1
+   }
+},
+{
+   "pk": 56,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Terminología",
+       "creator": 1
+   }
+},
+{
+   "pk": 57,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Twitter",
+       "creator": 1
+   }
+},
+{
+   "pk": 58,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Universidad virtual",
+       "creator": 1
+   }
+},
+{
+   "pk": 59,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Videos y audios",
+       "creator": 1
+   }
+},
+{
+   "pk": 60,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Policy brief",
+       "creator": 1
+   }
+},
+{
+   "pk": 61,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Rapid response",
+       "creator": 1
+   }
+},
+{
+   "pk": 62,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Research synthesis",
+       "creator": 1
+   }
+},
+{
+   "pk": 63,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Planes de intervención en salud",
+       "creator": 1
+   }
+},
+{
+   "pk": 64,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Templates",
+       "creator": 1
+   }
+},
+{
+   "pk": 65,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Relato de experiencia práctica ",
+       "creator": 1
+   }
+},
+{
+   "pk": 66,
+   "model": "main.sourcetype",
+   "fields": {
+       "name": "Redes sociales",
+       "creator": 1
+   }
+}
+]
