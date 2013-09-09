@@ -13,3 +13,14 @@ class GenericAdmin(admin.ModelAdmin):
                 obj.updater = request.user
         obj.save()
 
+
+class CountryLocalAdmin(admin.TabularInline):
+    model = CountryLocal
+    extra = 0
+
+class CountryAdmin(GenericAdmin):
+    model = Country
+    inlines = [CountryLocalAdmin,]
+    search_fields = list_display = ['code', 'name']
+
+admin.site.register(Country, CountryAdmin)
