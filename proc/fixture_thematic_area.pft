@@ -1,0 +1,16 @@
+'['/
+ (	   
+   '{',/
+	   if p(v300) then,
+		  c4,'"pk": ', f(iocc,1,0),','/
+	      c4,'"model": ','"main.thematicarea",',/
+	   fi,
+	   c4,'"fields": {',/
+	       c8,'"acronym": ','"',v300^c,'",'/	   
+	       c8,'"name": ','"',v300^t,if p(v300^a) then ' (',v300^a,')' fi,'",'/
+	       c8,'"creator": ','1'/
+	   c4,'}',/
+    '}'
+    if iocc = nocc(v300) then else ',' fi,/
+)
+']'/
