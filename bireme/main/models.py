@@ -103,18 +103,19 @@ class Resource(Generic):
     title = models.CharField(_('Title'), max_length=255)
     # link (351)
     link = models.URLField(_('Link'), max_length=255)
-    # source (305)
-    record_source = models.CharField(_('Record source'), max_length=255, blank=True, null=True)
+    # source (305) / used cooperative_center for register this information
+    # record_source = models.CharField(_('Record source'), max_length=255, blank=True, null=True)
+
     # originator (313)
-    originator = models.CharField(_('Originator'), max_length=255, blank=True, null=True)
+    originator = models.TextField(_('Originator'), max_length=255, blank=True, null=True)
     # originator_location
     originator_location = models.CharField(_('Originator location'), max_length=255, blank=True, null=True)
     # author (315)
-    author = models.CharField(_('Author'), max_length=255, blank=True, null=True)
+    author = models.TextField(_('Author'), max_length=255, blank=True, null=True)
     # language of resource (317)
-    language = models.ForeignKey(SourceLanguage, verbose_name=_("Source language"), blank=True, null=True)
+    source_language = models.ManyToManyField(SourceLanguage, verbose_name=_("Source language"), blank=True, null=True)
     # source type (318)
-    source_type = models.ForeignKey(SourceType, verbose_name=_("Source type"), blank=True, null=True)
+    source_type = models.ManyToManyField(SourceType, verbose_name=_("Source type"), blank=True, null=True)
     # lis type (302)
     thematic_areas = models.ForeignKey(ThematicArea, verbose_name=_("Thematic area"), blank=True, null=True)
     # abstract (319)
@@ -122,10 +123,9 @@ class Resource(Generic):
     # time period (341)
     time_period_textual = models.CharField(_('Temporal range'), max_length=255, blank=True, null=True)
     # objective (361)
-    objective = models.CharField(_('Objective'), max_length=255, blank=True, null=True)
+    objective = models.TextField(_('Objective'), max_length=255, blank=True, null=True)
     # responsible cooperative center
     cooperative_center = models.CharField(_('Cooperative center'), max_length=55, blank=True, null=True)
-
 
     def get_fields(self):
         return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]

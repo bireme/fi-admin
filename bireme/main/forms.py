@@ -19,6 +19,8 @@ class ResourceForm(forms.ModelForm):
 
         super(ResourceForm, self).__init__(*args, **kwargs)
 
+
+
         if self.user_data['user_role'] == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 
@@ -56,6 +58,11 @@ class ResourceForm(forms.ModelForm):
     class Meta:
         model  =Resource
         exclude = ('cooperative_center',)
+
+        source_language = forms.MultipleChoiceField()
+
+        source_type = forms.MultipleChoiceField()
+
 
 class ThematicAreaForm(forms.ModelForm):
 
