@@ -37,8 +37,10 @@
                         {{ form.non_field_errors }}
                         {% for field in form.visible_fields %}
                             {{ field.label_tag }}
+                            <p class="muted">{{ field.help_text }}</p>
                             {{ field.errors }}
                             {{ field }}
+
                         {% endfor %}
                     </fieldset>
             </div>

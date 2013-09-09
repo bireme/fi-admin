@@ -111,7 +111,7 @@ class Resource(Generic):
     # originator_location
     originator_location = models.CharField(_('Originator location'), max_length=255, blank=True, null=True)
     # author (315)
-    author = models.TextField(_('Author'), max_length=255, blank=True, null=True)
+    author = models.TextField(_('Authors'), max_length=255, blank=True, null=True, help_text=_("Enter one per line"))
     # language of resource (317)
     source_language = models.ManyToManyField(SourceLanguage, verbose_name=_("Source language"), blank=True, null=True)
     # source type (318)
