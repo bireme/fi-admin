@@ -112,6 +112,7 @@ def create_edit_resource(request, **kwargs):
 
         if form.is_valid() and formset_descriptor.is_valid() and formset_thematic.is_valid():
             resource = form.save()
+            form.save_m2m()
 
             # if documentalist process descriptors
             if user_data['user_role'] == 'doc':
