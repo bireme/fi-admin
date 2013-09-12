@@ -163,6 +163,7 @@ def create_edit_resource(request, **kwargs):
     output['descriptor_list'] = descriptor_list
     output['thematic_list'] = thematic_list
     output['settings'] = settings
+    output['user_data'] = user_data
 
     return render_to_response('main/edit-resource.html', output, context_instance=RequestContext(request))
 

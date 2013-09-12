@@ -155,7 +155,7 @@ class ResourceThematic(Generic):
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING, blank=True)
 
     def __unicode__(self):
-        return unicode(self.thematic_area)
+        return unicode(self.thematic_area.name)
 
 
 # Taxonomy table

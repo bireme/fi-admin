@@ -22,13 +22,6 @@ class ResourceForm(forms.ModelForm):
         if self.user_data['user_role'] == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 
-            if not self.user_data['is_owner']:
-                for name, field in self.fields.items():
-                    field.widget.attrs['readonly'] = True
-                    field.widget.original_value = getattr(self.instance, name)
-                    #if hasattr(field.widget, 'choices'):
-                        #field.widget = widgets.TextInput()
-
 
     def save(self, *args, **kwargs):
         obj = super(ResourceForm, self).save(commit=False)

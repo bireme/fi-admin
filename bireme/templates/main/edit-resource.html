@@ -31,18 +31,56 @@
 
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
-                    <fieldset id="metadata">
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
-                        {{ form.non_field_errors }}
-                        {% for field in form.visible_fields %}
-                            {{ field.label_tag }}
-                            <p class="muted">{{ field.help_text }}</p>
-                            {{ field.errors }}
-                            {{ field }}
-                        {% endfor %}
-                    </fieldset>
+                    {% if user_role == 'doc' and not user_data.is_owner and not is_new %}
+                        <div class="well">
+                            {% for field in form.visible_fields %}
+                                <blockquote>
+                                    <p><strong>{{ field.label }}</strong><p>
+                                    {% if field.name = 'link' %}
+                                        <p><a href="{{ field.value }}" target="_blank">{{ field.value }}</a></p>
+                                    {% elif field.name = 'source_language' %}
+                                        {% for sl in resource.source_language.all %}
+                                            <p>{{ sl }}</p>
+                                        {% endfor %}
+                                    {% elif field.name = 'source_type' %}
+                                        {% for st in resource.source_type.all %}
+                                            <p>{{ st }}</p>
+                                        {% endfor %}
+                                    {% else %}
+                                        <p>{{ field.value }}<p>
+                                    {% endif %}
+                                </blockquote>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+
+                        <fieldset id="metadata">
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            {{ form.non_field_errors }}
+                            {% for field in form.visible_fields %}
+                                {{ field.label_tag }}
+                                <p class="muted">{{ field.help_text }}</p>
+                                {{ field.errors }}
+                                {{ field }}
+                            {% endfor %}
+                        </fieldset>
+                    {% endif %}
+
+                    {% comment %}Display resource administrative information{% endcomment %}
+
+                    {% if resource.id %}
+                        <div class="alert">
+                            <p>{% trans "Resource created in" %}: <strong>{{ resource.created }}</strong> {% trans "by user" %}  <strong>{{ resource.creator.username }}</strong></p>
+                            <p>{% trans "Resource cooperative center" %}: <strong>{{ resource.cooperative_center }}</strong></p>
+                            {% if resource.updated %}
+                                <p>{% trans "Last edit in" %} <strong>{{ resource.updated }}</strong> </strong></p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
             </div>
 
             <div id='tab-descriptors' class="tab-pane">
@@ -141,9 +179,13 @@
                     </table>
                 </fieldset>
             </div>
-
         </div>
+
         <div class="control-panel form-submit">
+
+
+
+
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
         </div>
 
