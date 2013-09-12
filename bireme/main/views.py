@@ -89,8 +89,10 @@ def create_edit_resource(request, **kwargs):
     resource_id = kwargs.get('resource_id')
     resource = None
     form = None
-    formset = None
+    formset_descriptor = None
+    formset_thematic = None
     descriptor_list = None
+    thematic_list = None
     output = {}
 
     if resource_id:
@@ -105,22 +107,33 @@ def create_edit_resource(request, **kwargs):
     # save/update
     if request.POST:
         form = ResourceForm(request.POST, request.FILES, instance=resource, user=request.user, user_data=user_data)
-        formset = DescriptorFormSet(request.POST, instance=resource)
+        formset_descriptor = DescriptorFormSet(request.POST, instance=resource)
+        formset_thematic = ResourceThematicFormSet(request.POST, instance=resource)
 
-        if form.is_valid() and formset.is_valid():
+        if form.is_valid() and formset_descriptor.is_valid() and formset_thematic.is_valid():
             resource = form.save()
 
             # if documentalist process descriptors
             if user_data['user_role'] == 'doc':
-                for f in formset:
-                    descriptor_obj = f.save(commit=False)
+                for fd in formset_descriptor:
+                    descriptor_obj = fd.save(commit=False)
                     # set status to pending and save user
                     descriptor_obj.status = 0
                     descriptor_obj.creator = request.user
                     descriptor_obj.resource_id = resource.id
                     descriptor_obj.save()
 
-            formset.save()
+                for ft in formset_thematic:
+                    thematic_obj = ft.save(commit=False)
+                    # set status to pending and save user
+                    thematic_obj.status = 0
+                    thematic_obj.creator = request.user
+                    thematic_obj.resource_id = resource.id
+                    thematic_obj.save()
+
+
+            formset_descriptor.save()
+            formset_thematic.save()
 
             output['alert'] = _("Resource successfully edited.")
             output['alerttype'] = "alert-success"
@@ -132,17 +145,23 @@ def create_edit_resource(request, **kwargs):
 
         # if documentalist create a formset with descriptors created by the user
         if user_data['user_role'] == 'doc':
-            descriptor_list = Descriptor.objects.filter(resource=resource, status=1)
-            pending_descriptor_from_user =  Descriptor.objects.filter(resource=resource, creator_id=request.user.id, status=0)
+            descriptor_list = resource.descriptors.filter(status=1)
+            thematic_list = resource.thematics.filter(status=1)
+            pending_descriptor_from_user = resource.descriptors.filter(creator_id=request.user.id, status=0)
+            pending_thematic_from_user = resource.thematics.filter(creator_id=request.user.id, status=0)
 
-            formset = DescriptorFormSetForDoc(instance=resource, queryset=pending_descriptor_from_user)
+            formset_descriptor = DescriptorFormSetForDoc(instance=resource, queryset=pending_descriptor_from_user)
+            formset_thematic = ResourceThematicFormSetForDoc(instance=resource, queryset=pending_thematic_from_user)
         else:
-            formset = DescriptorFormSet(instance=resource)
+            formset_descriptor = DescriptorFormSet(instance=resource)
+            formset_thematic = ResourceThematicFormSet(instance=resource)
 
     output['form'] = form
-    output['formset'] = formset
+    output['formset_descriptor'] = formset_descriptor
+    output['formset_thematic'] = formset_thematic
     output['resource'] = resource
     output['descriptor_list'] = descriptor_list
+    output['thematic_list'] = thematic_list
     output['settings'] = settings
 
     return render_to_response('main/edit-resource.html', output, context_instance=RequestContext(request))

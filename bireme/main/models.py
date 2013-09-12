@@ -8,6 +8,10 @@ from utils.models import Generic
 
 from main import choices
 
+DECS = 'DeCS'
+GENERAL = 'general'
+PENDING = 0
+
 # Auxiliar table Type of source [318]
 class SourceType(Generic):
 
@@ -82,6 +86,7 @@ class ThematicAreaLocal(models.Model):
     name = models.CharField(_("Name"), max_length=255)
 
 
+
 # Main table
 class Resource(Generic):
 
@@ -90,14 +95,14 @@ class Resource(Generic):
         verbose_name_plural = _("Resources")
 
     STATUS_CHOICES = (
-        ('0', _('Pending')),
-        ('1', _('Admitted')),
-        ('2', _('Refused')),
-        ('3', _('Deleted')),
+        (0, _('Pending')),
+        (1, _('Admitted')),
+        (2, _('Refused')),
+        (3, _('Deleted')),
     )
 
     # status (399)
-    status = models.CharField(_('Status'), max_length=2, choices=STATUS_CHOICES, blank=True, null=True, default=0)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
 
     # title (311)
     title = models.CharField(_('Title'), max_length=255)
@@ -116,8 +121,7 @@ class Resource(Generic):
     source_language = models.ManyToManyField(SourceLanguage, verbose_name=_("Source language"), blank=True, null=True)
     # source type (318)
     source_type = models.ManyToManyField(SourceType, verbose_name=_("Source type"), blank=True, null=True)
-    # lis type (302)
-    thematic_areas = models.ForeignKey(ThematicArea, verbose_name=_("Thematic area"), blank=True, null=True)
+
     # abstract (319)
     abstract = models.TextField(_("Abstract"), blank=True, null=True)
     # time period (341)
@@ -134,28 +138,47 @@ class Resource(Generic):
         return unicode(self.title)
 
 
+# Relation resource -- thematic areas/ Field lis type (302)
+class ResourceThematic(Generic):
+    STATUS_CHOICES = (
+        (0, _('Pending')),
+        (1, _('Admitted')),
+        (2, _('Refused')),
+    )
+
+    class Meta:
+        verbose_name = _("Thematic area")
+        verbose_name_plural = _("Thematic areas")
+
+    resource = models.ForeignKey(Resource, related_name='thematics')
+    thematic_area = models.ForeignKey(ThematicArea, related_name='+')
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING, blank=True)
+
+    def __unicode__(self):
+        return unicode(self.thematic_area)
+
+
 # Taxonomy table
 class Descriptor(Generic):
-
     STATUS_CHOICES = (
-        ('0', _('Pending')),
-        ('1', _('Admitted')),
-        ('2', _('Refused')),
+        (0, _('Pending')),
+        (1, _('Admitted')),
+        (2, _('Refused')),
     )
 
     class Meta:
         order_with_respect_to = 'resource'
 
-    resource = models.ForeignKey(Resource, related_name='resources')
+    resource = models.ForeignKey(Resource, related_name='descriptors')
     vocabulary = models.CharField(_('Vocabulary'), max_length=255,
-                        choices=choices.DESCRIPTOR_VOCABULARY, default=0)
+                        choices=choices.DESCRIPTOR_VOCABULARY, default=DECS, blank=True)
     level = models.CharField(_('Level'), max_length=64,
-                        choices=choices.DESCRIPTOR_LEVEL, default=0)
+                        choices=choices.DESCRIPTOR_LEVEL, default=GENERAL)
     text = models.CharField(_('Text'), max_length=255, blank=True)
 
     code = models.CharField(_('Code'), max_length=25, blank=True)
 
-    status = models.CharField(_('Status'), max_length=2, choices=STATUS_CHOICES, blank=True, null=True, default=0)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING, blank=True)
 
     def __unicode__(self):
         return u'[%s] %s' % (self.vocabulary, self.text)

@@ -20,12 +20,13 @@
 <div class='body'>
 
     <ul class="nav nav-tabs" id='tab'>
-        <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Data" %}</a></li>
-        <li><a href="#tab-descriptors" data-toggle="tab">{% trans "Descriptors" %}</a></li>
+        <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
+        <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Descriptors" %}</a></li>
+        <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
     </ul>
 
 
-    <form method="POST">
+    <form method="POST" class="resource-form">
         {% csrf_token %}
 
         <div class="tab-content">
@@ -40,49 +41,104 @@
                             <p class="muted">{{ field.help_text }}</p>
                             {{ field.errors }}
                             {{ field }}
-
                         {% endfor %}
                     </fieldset>
             </div>
 
             <div id='tab-descriptors' class="tab-pane">
                 <fieldset id="descriptors">
-                    {% if descriptor_list %}
-                        <table class="table table-condensed table-striped">
-                            <thead>
-                                <th>{% trans "Vocabulary" %}</th>
-                                <th>{% trans "Level" %}</th>
-                                <th>{% trans "Text" %}</th>
-                            </thead>
-                            <tbody>
+                    <table class="table table-condensed table-striped">
+                        <thead>
+                            <th>{% trans "Vocabulary" %}</th>
+                            <th>{% trans "Level" %}</th>
+                            <th>{% trans "Text" %}</th>
+                            <th>{% trans "Code" %}</th>
+                            {% if user_role != 'doc' %}
+                                <th>{% trans "Status" %}</th>
+                            {% endif %}
+                            <th>{% trans "Actions" %}</th>
+                        </thead>
+                        <tbody>
+
+                        {% if descriptor_list %}
                             {% for descriptor in descriptor_list %}
                                 <tr>
                                     <td>{{ descriptor.vocabulary }}</td>
                                     <td>{{ descriptor.level }}</td>
                                     <td>{{ descriptor.text }}</td>
+                                    <td>{{ descriptor.code }}</td>
+                                    <td></td>
                                 </tr>
                             {% endfor %}
-                            </tbody>
-                        </table>
-                    {% endif %}
+                        {% endif %}
 
-                    {{ formset.management_form }}
-                    {% for form in formset %}
-                        <div id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %}">
+                        {{ formset_descriptor.management_form }}
+
+                        {% for form in formset_descriptor %}
+                            <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                {% for field in form.visible_fields %}
+                                    {% if field.name != 'DELETE' %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                    <a href="#" onclick="javascript:decs_search('{{ field.html_name }}')";><i class="icon-search"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+
+            <div id='tab-thematic' class="tab-pane">
+                <fieldset id="thematic">
+                    <table class="table table-condensed table-striped">
+                        <thead>
+                            <th>{% trans "Thematic area" %}</th>
+                            {% if user_role != 'doc' %}
+                                <th>{% trans "Status" %}</th>
+                            {% endif %}
+                            <th>{% trans "Actions" %}</th>
+                        </thead>
+                        <tbody>
+                        {% if thematic_list %}
+                            {% for thematic in thematic_list %}
+                                <tr>
+                                    <td colspan="2">{{ thematic }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ formset_thematic.management_form }}
+
+                        {% for form in formset_thematic %}
                             {% for hidden in form.hidden_fields %}
                                 {{ hidden }}
                             {% endfor %}
-                            {% for field in form.visible_fields %}
-                                <span class="descriptor-field">
-                                    {{ field.errors }}
-                                    {{ field.label_tag }}
-                                    {{ field }}
-                                </span>
-                            {% endfor %}
-                            <a href="#" onclick="javascript:decs_search('{{ field.html_name }}')";>DeCS Search</a>
-                            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                        </div>
-                    {% endfor %}
+                            <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for field in form.visible_fields %}
+                                    {% if field.name != 'DELETE' %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </fieldset>
             </div>
 
@@ -106,15 +162,18 @@
             $('.descriptor-row').formset({
                     addText : '{% trans "Add descriptor" %}',
                     deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign',
+                    addCssClass : 'icon-plus-sign btn',
                     deleteCssClass : 'icon-minus-sign',
-                    prefix: '{{ formset.prefix }}'
+                    prefix: '{{ formset_descriptor.prefix }}'
             });
 
-            $("#metadata").find("input[type=text], textarea, select").addClass("span6");
-
-            $("#descriptors").find("input[name$='code'], select").addClass("span2");
-
+            $('.thematic-row').formset({
+                    addText : '{% trans "Add thematic area" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'icon-minus-sign',
+                    prefix: '{{ formset_thematic.prefix }}'
+            });
 
             var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
             var eventer = window[eventMethod];

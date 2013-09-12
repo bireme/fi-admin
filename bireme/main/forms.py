@@ -19,8 +19,6 @@ class ResourceForm(forms.ModelForm):
 
         super(ResourceForm, self).__init__(*args, **kwargs)
 
-
-
         if self.user_data['user_role'] == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 
@@ -101,12 +99,24 @@ class TypeLocalForm(forms.ModelForm):
         model = SourceTypeLocal
 
 
+#def formfield_callback(field):
+#     self.fields[key].required = False
+#    if isinstance(field, models.ChoiceField) and field.name == 'target_field_name':
+#        return fields.ChoiceField(choices = SAMPLE_CHOICES_LIST, label='Sample Label')
+#    return field.formfield()
+
 
 # definition of inline formsets
 
 DescriptorFormSet = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1)
 
 DescriptorFormSetForDoc = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1, exclude=('status'))
+
+
+ResourceThematicFormSet = inlineformset_factory(Resource, ResourceThematic, can_delete=True, extra=1)
+
+ResourceThematicFormSetForDoc = inlineformset_factory(Resource, ResourceThematic, can_delete=True, extra=1, exclude=('status'))
+
 
 ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAreaLocal, form=ThematicAreaLocalForm, can_delete=True, extra=1)
 

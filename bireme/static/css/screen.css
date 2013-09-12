@@ -265,17 +265,38 @@ div[id^=tab] ul li {
     margin-top: -8px;
     margin-left: 5px;
 }
-.field label{
-    display: inline;
-}
 
-.descriptor-row{
+.resource-form  {
     float:left;
     width: 100%;
 }
 
-.descriptor-row .descriptor-field{
-    float:left;
-    padding: 7px;
+.formset-row a {
+    color: #333;
 }
+
+
+.formset-row a.icon-minus-sign {
+    color: #b94a48;
+}
+
+fieldset a.icon-plus-sign {
+    float: left;
+    margin: 15px 0 0 3px;
+    clear: both;
+    padding: 8px;
+}
+
+#metadata input[type=text], #metadata textarea, #metadata select{
+    width: 560px;
+};
+
+ #descriptors input[name$='code']{
+    width: 80px;
+ }
+
+#descriptors select {
+    width: 140px;
+ }
+
 
