@@ -21,6 +21,11 @@ class ResourceForm(forms.ModelForm):
 
         if self.user_data['user_role'] == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
+            '''
+            if not self.user_data['is_owner']:
+                for field in self.fields:
+                    self.fields[field].widget = widgets.HiddenInput()
+            '''
 
 
     def save(self, *args, **kwargs):
@@ -33,13 +38,13 @@ class ResourceForm(forms.ModelForm):
 
         # add cooperative center code to model for new records
         if self.user:
-            if not obj.cooperative_center:
+            if not obj.cooperative_center_code:
                 user_cc = settings.DEFAULT_COOPERATIVE_CENTER
                 if not self.user.is_superuser:
                     user_data = simplejson.loads(self.user.profile.data)
                     user_cc = user_data['cc']
 
-                obj.cooperative_center = user_cc
+                obj.cooperative_center_code = user_cc
 
         # save modifications
         obj.save()
@@ -48,7 +53,7 @@ class ResourceForm(forms.ModelForm):
 
     class Meta:
         model  =Resource
-        exclude = ('cooperative_center',)
+        exclude = ('cooperative_center_code',)
 
         source_language = forms.MultipleChoiceField()
 

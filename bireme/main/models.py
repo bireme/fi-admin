@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.db import models
 
-from utils.models import Generic
+from utils.models import Generic, Country
 
 from main import choices
 
@@ -108,13 +108,10 @@ class Resource(Generic):
     title = models.CharField(_('Title'), max_length=255)
     # link (351)
     link = models.URLField(_('Link'), max_length=255)
-    # source (305) / used cooperative_center for register this information
-    # record_source = models.CharField(_('Record source'), max_length=255, blank=True, null=True)
-
     # originator (313)
     originator = models.TextField(_('Originator'), max_length=255, blank=True, null=True)
-    # originator_location
-    originator_location = models.CharField(_('Originator location'), max_length=255, blank=True, null=True)
+    # originator_location (314)
+    originator_location = models.ManyToManyField(Country, verbose_name=_('Originator location'), blank=True, null=True)
     # author (315)
     author = models.TextField(_('Authors'), max_length=255, blank=True, null=True, help_text=_("Enter one per line"))
     # language of resource (317)
@@ -129,7 +126,7 @@ class Resource(Generic):
     # objective (361)
     objective = models.TextField(_('Objective'), max_length=255, blank=True, null=True)
     # responsible cooperative center
-    cooperative_center = models.CharField(_('Cooperative center'), max_length=55, blank=True, null=True)
+    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True, null=True)
 
     def get_fields(self):
         return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]
@@ -173,7 +170,7 @@ class Descriptor(Generic):
     vocabulary = models.CharField(_('Vocabulary'), max_length=255,
                         choices=choices.DESCRIPTOR_VOCABULARY, default=DECS, blank=True)
     level = models.CharField(_('Level'), max_length=64,
-                        choices=choices.DESCRIPTOR_LEVEL, default=GENERAL)
+                        choices=choices.DESCRIPTOR_LEVEL, default=GENERAL, blank=True)
     text = models.CharField(_('Text'), max_length=255, blank=True)
 
     code = models.CharField(_('Code'), max_length=25, blank=True)
