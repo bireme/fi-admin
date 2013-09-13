@@ -5,7 +5,7 @@
    "fields": {
        "acronym": "LIBR10",
        "name": "Equidad en Salud (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -14,7 +14,7 @@
    "fields": {
        "acronym": "LIBR12",
        "name": "Adolescencia (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -23,7 +23,7 @@
    "fields": {
        "acronym": "LISBR0",
        "name": "LILACS (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -32,7 +32,7 @@
    "fields": {
        "acronym": "LISBR11",
        "name": "Legislación de Salud (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -41,7 +41,7 @@
    "fields": {
        "acronym": "LISBR13",
        "name": "Envejecimiento y salud (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -50,7 +50,7 @@
    "fields": {
        "acronym": "LISBR14",
        "name": "Envelhecimento e Saúde (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -59,7 +59,7 @@
    "fields": {
        "acronym": "LISBR15",
        "name": "Homeopatia (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -68,7 +68,7 @@
    "fields": {
        "acronym": "LISBR16",
        "name": "Equidad y género (internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -77,7 +77,7 @@
    "fields": {
        "acronym": "LISBR17",
        "name": "Occupational Health (International)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -86,7 +86,7 @@
    "fields": {
        "acronym": "LISBR18",
        "name": "Ciências da Saúde (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -95,7 +95,7 @@
    "fields": {
        "acronym": "LISBR19",
        "name": "Projetos (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -104,7 +104,7 @@
    "fields": {
        "acronym": "LISBR1",
        "name": "Ciências da Saúde (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -113,7 +113,7 @@
    "fields": {
        "acronym": "LISBR20",
        "name": "Ciencia y Salud (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -122,7 +122,7 @@
    "fields": {
        "acronym": "LISBR21",
        "name": "Vaccinations (International)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -131,7 +131,7 @@
    "fields": {
        "acronym": "LISBR22",
        "name": "Salud de la Familia (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -140,7 +140,7 @@
    "fields": {
        "acronym": "LISBR23.1",
        "name": "Cervical Cancer - NCD (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -149,7 +149,7 @@
    "fields": {
        "acronym": "LISBR23",
        "name": "NCD (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -158,7 +158,7 @@
    "fields": {
        "acronym": "LISBR24",
        "name": "Vigilância Sanitária (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -167,7 +167,7 @@
    "fields": {
        "acronym": "LISBR25",
        "name": "Comunicação Científica (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -176,7 +176,7 @@
    "fields": {
        "acronym": "LISBR26",
        "name": "Enfermagem (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -185,7 +185,7 @@
    "fields": {
        "acronym": "LISBR27",
        "name": "Odontologia (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -194,7 +194,7 @@
    "fields": {
        "acronym": "LISBR28",
        "name": "Salud Mental (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -203,7 +203,7 @@
    "fields": {
        "acronym": "LISBR29",
        "name": "Gestão do Conhecimento (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -212,7 +212,7 @@
    "fields": {
        "acronym": "LISBR2",
        "name": "Ciencias de la Salud (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -221,7 +221,7 @@
    "fields": {
        "acronym": "LISBR30",
        "name": "Toxicologia (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -230,7 +230,7 @@
    "fields": {
        "acronym": "LISBR31",
        "name": "Psicologia (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -239,7 +239,7 @@
    "fields": {
        "acronym": "LISBR32",
        "name": "Economia da Saúde (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -248,7 +248,7 @@
    "fields": {
        "acronym": "LISBR33",
        "name": "Influenza Aviária (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -257,7 +257,7 @@
    "fields": {
        "acronym": "LISBR34",
        "name": "SES-SP (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -266,7 +266,7 @@
    "fields": {
        "acronym": "LISBR35",
        "name": "NUVIS-CE (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -275,7 +275,7 @@
    "fields": {
        "acronym": "LISBR36",
        "name": "Nutrición (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -284,7 +284,7 @@
    "fields": {
        "acronym": "LISBR37",
        "name": "Evidências (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -293,7 +293,7 @@
    "fields": {
        "acronym": "LISBR38",
        "name": "RIPSA (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -302,7 +302,7 @@
    "fields": {
        "acronym": "LISBR39",
        "name": "Determinantes Sociais da Saúde (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -311,7 +311,7 @@
    "fields": {
        "acronym": "LISBR3",
        "name": "Multimedios de apoyo a la educación (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -320,7 +320,7 @@
    "fields": {
        "acronym": "LISBR40",
        "name": "Atenção Primária à Saúde (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -329,7 +329,7 @@
    "fields": {
        "acronym": "LISBR41",
        "name": "Ministério da Saúde (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -338,7 +338,7 @@
    "fields": {
        "acronym": "LISBR42",
        "name": "TropIKA (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -347,7 +347,7 @@
    "fields": {
        "acronym": "LISBR43",
        "name": "EVIPNet (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -356,7 +356,7 @@
    "fields": {
        "acronym": "LISBR44",
        "name": "Acesso Aberto (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -365,7 +365,7 @@
    "fields": {
        "acronym": "LISBR45",
        "name": "Pan-Amazônica (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -374,7 +374,7 @@
    "fields": {
        "acronym": "LISBR46",
        "name": "Terminologia e Classificações em Saúde (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -383,7 +383,7 @@
    "fields": {
        "acronym": "LISBR47",
        "name": "Influenza A H1N1 (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -392,7 +392,7 @@
    "fields": {
        "acronym": "LISBR48",
        "name": "Belize (Nacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -401,7 +401,7 @@
    "fields": {
        "acronym": "LISBR49",
        "name": "Desarrollo Sostenible y Salud (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -410,7 +410,7 @@
    "fields": {
        "acronym": "LISBR4",
        "name": "Toxicología (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -419,7 +419,7 @@
    "fields": {
        "acronym": "LISBR50",
        "name": "Educação em Ciências da Saúde (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -428,7 +428,7 @@
    "fields": {
        "acronym": "LISBR51",
        "name": "Guyana (Nacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -437,7 +437,7 @@
    "fields": {
        "acronym": "LISBR52",
        "name": "Guatemala (Nacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -446,7 +446,7 @@
    "fields": {
        "acronym": "LISBR53",
        "name": "Haiti (Nacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -455,7 +455,7 @@
    "fields": {
        "acronym": "LISBR54",
        "name": "Disaster Preparedness and Response (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -464,7 +464,7 @@
    "fields": {
        "acronym": "LISBR55",
        "name": "Medicina Veterinária (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -473,7 +473,7 @@
    "fields": {
        "acronym": "LISBR56",
        "name": "Gensalud (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -482,7 +482,7 @@
    "fields": {
        "acronym": "LISBR57",
        "name": "Bioética e Diplomacia em Saúde (Nacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -491,7 +491,7 @@
    "fields": {
        "acronym": "LISBR58",
        "name": "Prevenção e Controle de Câncer (Nacional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -500,7 +500,7 @@
    "fields": {
        "acronym": "LISBR59",
        "name": "SMS-SP (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -509,7 +509,7 @@
    "fields": {
        "acronym": "LISBR5",
        "name": "Saúde Pública (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -518,7 +518,7 @@
    "fields": {
        "acronym": "LISBR6",
        "name": "Adolescencia (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -527,7 +527,7 @@
    "fields": {
        "acronym": "LISBR7",
        "name": "Envejecimiento (BR)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -536,7 +536,7 @@
    "fields": {
        "acronym": "LISBR8",
        "name": "Saúde Pública (Regional)",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -545,7 +545,7 @@
    "fields": {
        "acronym": "LISBR9",
        "name": "WHO",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -554,7 +554,7 @@
    "fields": {
        "acronym": "LISBR",
        "name": "ITD (Internacional)",
-       "creator": 1
+       "created_by": 1
    }
 }
 ]

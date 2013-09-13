@@ -1,15 +1,15 @@
 '['/
- (	   
+ (
    '{',/
 	   if p(v318) then,
 		  c4,'"pk": ', f(iocc,1,0),','/
 	      c4,'"model": ','"main.sourcetype",',/
 	   fi,
-	   c4,'"fields": {',/	       
+	   c4,'"fields": {',/
 	       c8,'"name": ','"',v318^e,'",'/
-	       c8,'"creator": ','1'/
+	       c8,'"created_by": ','1'/
 	   c4,'}',/
-    '}'	   
+    '}'
     if iocc = nocc(v318) then else ',' fi,/
 )
 ']'/

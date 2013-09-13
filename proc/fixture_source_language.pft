@@ -1,17 +1,17 @@
 '['/
- (	   
+ (
    '{',/
 	   if p(v317) then,
 		  c4,'"pk": ', f(iocc,1,0),','//
 	      c4,'"model": ','"main.sourcelanguage",',/
 	   fi,
 	   c4,'"fields": {',/
-	       c8,'"acronym": ','"',v317^c,'",'/	
+	       c8,'"acronym": ','"',v317^c,'",'/
 	       c8,'"language": ','"en",'/
 	       c8,'"name": ','"',v317^i,'",'/
-	       c8,'"creator": ','1'/
+	       c8,'"created_by": ','1'/
 	   c4,'}',/
-    '}'	   
+    '}'
     if iocc = nocc(v317) then else ',' fi,/
 )
 ']'/

@@ -6,7 +6,7 @@
        "acronym": "De",
        "language": "en",
        "name": "German",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -16,7 +16,7 @@
        "acronym": "En",
        "language": "en",
        "name": "English",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -26,7 +26,7 @@
        "acronym": "Es",
        "language": "en",
        "name": "Spanish",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -36,7 +36,7 @@
        "acronym": "Fr",
        "language": "en",
        "name": "French",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -46,7 +46,7 @@
        "acronym": "It",
        "language": "en",
        "name": "Italian",
-       "creator": 1
+       "created_by": 1
    }
 },
 {
@@ -56,7 +56,7 @@
        "acronym": "Pt",
        "language": "en",
        "name": "Portuguese",
-       "creator": 1
+       "created_by": 1
    }
 }
 ]

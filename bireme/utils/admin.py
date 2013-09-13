@@ -7,10 +7,10 @@ class GenericAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if hasattr(obj, 'updater') and hasattr(obj, 'creator'):
             if change:
-                obj.updater = request.user
+                obj.updated_by = request.user
             else:
-                obj.creator = request.user
-                obj.updater = request.user
+                obj.created_by = request.user
+                obj.updated_by = request.user
         obj.save()
 
 
