@@ -98,11 +98,11 @@ def create_edit_resource(request, **kwargs):
     if resource_id:
         resource = get_object_or_404(Resource, id=resource_id)
     else:
-        resource = Resource(creator=request.user)
+        resource = Resource(created_by=request.user)
         output['is_new'] = True
 
     user_data = additional_user_info(request)
-    user_data['is_owner'] = True if resource.creator_id == request.user.id else False
+    user_data['is_owner'] = True if resource.created_by_id == request.user.id else False
 
     # save/update
     if request.POST:
@@ -115,8 +115,10 @@ def create_edit_resource(request, **kwargs):
             form.save_m2m()
 
             # if documentalist process descriptors
+            '''
             if user_data['user_role'] == 'doc':
                 for fd in formset_descriptor:
+                    print "tenta salvar descritor"
                     descriptor_obj = fd.save(commit=False)
                     # set status to pending and save user
                     descriptor_obj.status = 0
@@ -125,13 +127,14 @@ def create_edit_resource(request, **kwargs):
                     descriptor_obj.save()
 
                 for ft in formset_thematic:
+                    print "tenta salvar tema"
                     thematic_obj = ft.save(commit=False)
                     # set status to pending and save user
                     thematic_obj.status = 0
                     thematic_obj.creator = request.user
                     thematic_obj.resource_id = resource.id
                     thematic_obj.save()
-
+            '''
 
             formset_descriptor.save()
             formset_thematic.save()
@@ -146,13 +149,14 @@ def create_edit_resource(request, **kwargs):
 
         # if documentalist create a formset with descriptors created by the user
         if user_data['user_role'] == 'doc':
-            descriptor_list = resource.descriptors.filter(status=1)
-            thematic_list = resource.thematics.filter(status=1)
-            pending_descriptor_from_user = resource.descriptors.filter(creator_id=request.user.id, status=0)
-            pending_thematic_from_user = resource.thematics.filter(creator_id=request.user.id, status=0)
+            descriptor_list = Descriptor.objects.filter(resource=resource).exclude(created_by_id=request.user.id)
+            thematic_list = ResourceThematic.objects.filter(resource=resource).exclude(created_by_id=request.user.id)
 
-            formset_descriptor = DescriptorFormSetForDoc(instance=resource, queryset=pending_descriptor_from_user)
-            formset_thematic = ResourceThematicFormSetForDoc(instance=resource, queryset=pending_thematic_from_user)
+            pending_descriptor_from_user = Descriptor.objects.filter(created_by_id=request.user.id, status=0)
+            pending_thematic_from_user = ResourceThematic.objects.filter(created_by_id=request.user.id, status=0)
+
+            formset_descriptor = DescriptorFormSet(instance=resource, queryset=pending_descriptor_from_user)
+            formset_thematic = ResourceThematicFormSet(instance=resource, queryset=pending_thematic_from_user)
         else:
             formset_descriptor = DescriptorFormSet(instance=resource)
             formset_thematic = ResourceThematicFormSet(instance=resource)
@@ -177,7 +181,7 @@ def delete_resource(request, resource):
 
     user_data = additional_user_info(request)
 
-    if user_data['user_role'] == 'doc' and resource.creator_id != user.id:
+    if user_data['user_role'] == 'doc' and resource.created_by_id != user.id:
         return HttpResponse('Unauthorized', status=401)
 
     resource.delete()
@@ -244,7 +248,7 @@ def create_edit_thematic(request, **kwargs):
     if thematic_id:
         thematic = get_object_or_404(ThematicArea, id=thematic_id)
     else:
-        thematic = ThematicArea(creator=request.user)
+        thematic = ThematicArea(created_by=request.user)
         output['is_new'] = True
 
     # save/update
@@ -342,7 +346,7 @@ def create_edit_type(request, **kwargs):
     if type_id:
         type = get_object_or_404(SourceType, id=type_id)
     else:
-        type = SourceType(creator=request.user)
+        type = SourceType(created_by=request.user)
         output['is_new'] = True
 
     # save/update
@@ -438,7 +442,7 @@ def create_edit_language(request, **kwargs):
     if language_id:
         language = get_object_or_404(SourceLanguage, id=language_id)
     else:
-        language = SourceLanguage(creator=request.user)
+        language = SourceLanguage(created_by=request.user)
         output['is_new'] = True
 
     # save/update
