@@ -23,10 +23,10 @@ class Generic(models.Model):
     class Meta:
         abstract = True
 
-    created = models.DateTimeField(_("created at"), default=timezone.now(), editable=False)
-    updated = models.DateTimeField(_("updated"), default=timezone.now(), editable=False)
-    creator = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
-    updater = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
+    created_time = models.DateTimeField(_("created at"), default=timezone.now(), editable=False)
+    updated_time = models.DateTimeField(_("updated"), default=timezone.now(), editable=False)
+    created_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
+    updated_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
 
     @property
     def diff(self):
@@ -55,8 +55,8 @@ class Generic(models.Model):
         return model_to_dict(self, fields=[field.name for field in
                              self._meta.fields])
 
+
     def save(self):
-        self.updated = timezone.now()
         super(Generic, self).save()
         self.__initial = self._dict
 
