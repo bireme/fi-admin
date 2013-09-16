@@ -38,7 +38,9 @@
                                 {{ field.errors }}
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'link' %}
+                                    {% if field.name = 'status' %}
+                                        <p></p>
+                                    {% elif field.name = 'link' %}
                                         <p><a href="{{ field.value }}" target="_blank">{{ field.value }}</a></p>
                                     {% elif field.name = 'source_language' %}
                                         {% for sl in resource.source_language.all %}
@@ -53,7 +55,7 @@
                                             <p>{{ ol }}</p>
                                         {% endfor %}
                                     {% else %}
-                                        <p>{{ field.value }}<p>
+                                        <p>{{ field.value|linebreaks }}<p>
                                     {% endif %}
                                 </blockquote>
                             {% endfor %}
@@ -67,7 +69,13 @@
                             {% endfor %}
                             {{ form.non_field_errors }}
                             {% for field in form.visible_fields %}
-                                {{ field.label_tag }}
+                                <label for="{{ field.auto_id }}">
+                                    {% if field.field.required %}
+                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                    {% else %}
+                                        {{ field.label }}
+                                    {% endif %}
+                                </label>
                                 <p class="muted">{{ field.help_text }}</p>
                                 {{ field.errors }}
                                 {{ field }}
@@ -124,7 +132,9 @@
                                     {{ hidden }}
                                 {% endfor %}
                                 {% for field in form.visible_fields %}
-                                    {% if field.name != 'DELETE' %}
+                                    {% if user_role == 'doc' and field.name == 'status' %}
+                                        {{ field.as_hidden }}
+                                    {% elif field.name != 'DELETE' %}
                                         <td>
                                             {{ field }}
                                             {{ field.errors }}
@@ -169,7 +179,9 @@
                             {% endfor %}
                             <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for field in form.visible_fields %}
-                                    {% if field.name != 'DELETE' %}
+                                    {% if user_role == 'doc' and field.name == 'status' %}
+                                        {{ field.as_hidden }}
+                                    {% elif field.name != 'DELETE' %}
                                         <td>
                                             {{ field }}
                                             {{ field.errors }}

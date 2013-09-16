@@ -299,4 +299,11 @@ fieldset a.icon-plus-sign {
     width: 140px;
  }
 
+span.required {
+    color: #000;
+    font-weight: bold;
+}
 
+span.required .mark{
+    color: #e32;
+}
