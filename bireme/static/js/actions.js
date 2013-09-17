@@ -45,3 +45,10 @@ function search() {
     form.s.value = document.search.s.value;
     form.submit();
 }
+
+function filter_owner(owner) {
+    var form = document.actions;
+    form.filter_owner.value = owner;
+    form.page.value = 1;
+    form.submit();
+}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-09 17:43-0300\n"
+"POT-Creation-Date: 2013-09-17 16:41-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,185 +49,189 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
-#: main/models.py:15
+#: main/models.py:19
 msgid "source type"
 msgstr ""
 
-#: main/models.py:16
+#: main/models.py:20
 msgid "source types"
 msgstr ""
 
-#: main/models.py:18 main/models.py:43 main/models.py:67
+#: main/models.py:22 main/models.py:47 main/models.py:71
 msgid "Acronym"
 msgstr ""
 
-#: main/models.py:19 main/models.py:44 main/models.py:57 main/models.py:68
-#: main/models.py:81 templates/main/edit-language.html:8
+#: main/models.py:23 main/models.py:48 main/models.py:61 main/models.py:72
+#: main/models.py:85 templates/main/edit-language.html:8
 msgid "Language"
 msgstr ""
 
-#: main/models.py:20 main/models.py:45 main/models.py:58 main/models.py:69
-#: main/models.py:82 templates/main/languages.html:47
+#: main/models.py:24 main/models.py:49 main/models.py:62 main/models.py:73
+#: main/models.py:86 templates/main/languages.html:47
 #: templates/main/thematics.html:47 templates/main/types.html:47
 msgid "Name"
 msgstr ""
 
-#: main/models.py:28 main/models.py:53 main/models.py:77
+#: main/models.py:32 main/models.py:57 main/models.py:81
 msgid "Translation"
 msgstr ""
 
-#: main/models.py:29 main/models.py:54 main/models.py:78
+#: main/models.py:33 main/models.py:58 main/models.py:82
 #: templates/admin/base_site.html:13 templates/main/edit-language.html:36
 #: templates/main/edit-thematic.html:36 templates/main/edit-type.html:36
 msgid "Translations"
 msgstr ""
 
-#: main/models.py:31 main/models.py:118 templates/main/edit-type.html:8
+#: main/models.py:35 main/models.py:119 templates/main/edit-type.html:8
 msgid "Source type"
 msgstr ""
 
-#: main/models.py:32 utils/models.py:84
+#: main/models.py:36 utils/models.py:84
 msgid "language"
 msgstr ""
 
-#: main/models.py:33 utils/models.py:71 utils/models.py:85
+#: main/models.py:37 utils/models.py:71 utils/models.py:85
 msgid "name"
 msgstr ""
 
-#: main/models.py:40 main/models.py:56 main/models.py:116
+#: main/models.py:44 main/models.py:60 main/models.py:117
 msgid "Source language"
 msgstr ""
 
-#: main/models.py:41 templates/menu.html:20 templates/main/languages.html:4
+#: main/models.py:45 templates/menu.html:20 templates/main/languages.html:4
 #: templates/main/languages.html.py:7 templates/main/languages.html:21
 msgid "Source languages"
 msgstr ""
 
-#: main/models.py:64 main/models.py:80 main/models.py:120
-#: templates/main/edit-thematic.html:8
+#: main/models.py:68 main/models.py:84 main/models.py:145
+#: templates/main/edit-resource.html:167 templates/main/edit-thematic.html:8
 msgid "Thematic area"
 msgstr ""
 
-#: main/models.py:65 templates/menu.html:18 templates/main/thematics.html:4
+#: main/models.py:69 main/models.py:146 templates/menu.html:18
+#: templates/main/edit-resource.html:25 templates/main/thematics.html:4
 #: templates/main/thematics.html.py:7 templates/main/thematics.html:21
 msgid "Thematic areas"
 msgstr ""
 
-#: main/models.py:89
+#: main/models.py:94
 msgid "Resource"
 msgstr ""
 
-#: main/models.py:90 templates/menu.html:15
+#: main/models.py:95 templates/menu.html:15
 #: templates/main/edit-resource.html:8 templates/main/resources.html:4
-#: templates/main/resources.html.py:7 templates/main/resources.html:21
+#: templates/main/resources.html.py:7 templates/main/resources.html:22
 msgid "Resources"
 msgstr ""
 
-#: main/models.py:93 main/models.py:141
+#: main/models.py:98 main/models.py:139 main/models.py:159
+#: templates/main/edit-resource.html:47
 msgid "Pending"
 msgstr ""
 
-#: main/models.py:94 main/models.py:142
+#: main/models.py:99 main/models.py:140 main/models.py:160
+#: templates/main/edit-resource.html:47
 msgid "Admitted"
 msgstr ""
 
-#: main/models.py:95 main/models.py:143
+#: main/models.py:100 main/models.py:141 main/models.py:161
 msgid "Refused"
 msgstr ""
 
-#: main/models.py:96
+#: main/models.py:101
 msgid "Deleted"
 msgstr ""
 
-#: main/models.py:100 main/models.py:158
+#: main/models.py:105 main/models.py:150 main/models.py:176
+#: templates/main/edit-resource.html:117 templates/main/edit-resource.html:169
 msgid "Status"
 msgstr ""
 
-#: main/models.py:103 templates/main/resources.html:47
+#: main/models.py:107 templates/main/resources.html:55
 msgid "Title"
 msgstr ""
 
-#: main/models.py:105
+#: main/models.py:109
 msgid "Link"
 msgstr ""
 
-#: main/models.py:110
+#: main/models.py:111
 msgid "Originator"
 msgstr ""
 
-#: main/models.py:112
+#: main/models.py:113
 msgid "Originator location"
 msgstr ""
 
-#: main/models.py:114
+#: main/models.py:115
 msgid "Authors"
 msgstr ""
 
-#: main/models.py:114
+#: main/models.py:115
 msgid "Enter one per line"
 msgstr ""
 
-#: main/models.py:122
+#: main/models.py:121
 msgid "Abstract"
 msgstr ""
 
-#: main/models.py:124
+#: main/models.py:123
 msgid "Temporal range"
 msgstr ""
 
-#: main/models.py:126
+#: main/models.py:125
 msgid "Objective"
 msgstr ""
 
-#: main/models.py:128
+#: main/models.py:127
 msgid "Cooperative center"
 msgstr ""
 
-#: main/models.py:150 templates/main/edit-resource.html:53
+#: main/models.py:168 templates/main/edit-resource.html:112
 msgid "Vocabulary"
 msgstr ""
 
-#: main/models.py:152 templates/main/edit-resource.html:54
+#: main/models.py:170 templates/main/edit-resource.html:113
 msgid "Level"
 msgstr ""
 
-#: main/models.py:154 templates/main/edit-resource.html:55
+#: main/models.py:172 templates/main/edit-resource.html:114
 msgid "Text"
 msgstr ""
 
-#: main/models.py:156
+#: main/models.py:174 templates/main/edit-resource.html:115
 msgid "Code"
 msgstr ""
 
-#: main/views.py:125
+#: main/views.py:147
 msgid "Resource successfully edited."
 msgstr ""
 
-#: main/views.py:164
+#: main/views.py:194
 msgid "Resource deleted."
 msgstr ""
 
-#: main/views.py:237
+#: main/views.py:267
 msgid "Thematic area successfully edited."
 msgstr ""
 
-#: main/views.py:262
+#: main/views.py:292
 msgid "Thematic area deleted."
 msgstr ""
 
-#: main/views.py:335
+#: main/views.py:365
 msgid "Type successfully edited."
 msgstr ""
 
-#: main/views.py:359
+#: main/views.py:389
 msgid "Type deleted."
 msgstr ""
 
-#: main/views.py:431
+#: main/views.py:461
 msgid "Language successfully edited."
 msgstr ""
 
-#: main/views.py:456
+#: main/views.py:486
 msgid "Language deleted."
 msgstr ""
 
@@ -319,7 +323,7 @@ msgstr ""
 msgid "New Language"
 msgstr ""
 
-#: templates/main/edit-language.html:56 templates/main/edit-resource.html:91
+#: templates/main/edit-language.html:56 templates/main/edit-resource.html:215
 #: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
 msgid "Save"
 msgstr ""
@@ -329,8 +333,9 @@ msgstr ""
 msgid "Add translation"
 msgstr ""
 
-#: templates/main/edit-language.html:72 templates/main/edit-resource.html:108
-#: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
+#: templates/main/edit-language.html:72 templates/main/edit-resource.html:232
+#: templates/main/edit-resource.html:240 templates/main/edit-thematic.html:72
+#: templates/main/edit-type.html:72
 msgid "delete"
 msgstr ""
 
@@ -340,20 +345,50 @@ msgid "Edit Resource"
 msgstr ""
 
 #: templates/main/edit-resource.html:9 templates/main/edit-resource.html:17
-#: templates/main/resources.html:23
+#: templates/main/resources.html:24
 msgid "New Resource"
 msgstr ""
 
 #: templates/main/edit-resource.html:23
-msgid "Data"
+msgid "Metadata"
 msgstr ""
 
 #: templates/main/edit-resource.html:24
 msgid "Descriptors"
 msgstr ""
 
-#: templates/main/edit-resource.html:107
+#: templates/main/edit-resource.html:37
+msgid "Identifier"
+msgstr ""
+
+#: templates/main/edit-resource.html:98
+msgid "Resource created in"
+msgstr ""
+
+#: templates/main/edit-resource.html:98 templates/main/edit-resource.html:101
+msgid "by user"
+msgstr ""
+
+#: templates/main/edit-resource.html:99
+msgid "Cooperative center code"
+msgstr ""
+
+#: templates/main/edit-resource.html:101
+msgid "Last edit in"
+msgstr ""
+
+#: templates/main/edit-resource.html:119 templates/main/edit-resource.html:171
+#: templates/main/languages.html:48 templates/main/resources.html:57
+#: templates/main/thematics.html:48 templates/main/types.html:48
+msgid "Actions"
+msgstr ""
+
+#: templates/main/edit-resource.html:231
 msgid "Add descriptor"
+msgstr ""
+
+#: templates/main/edit-resource.html:239
+msgid "Add thematic area"
 msgstr ""
 
 #: templates/main/edit-thematic.html:5 templates/main/edit-thematic.html:10
@@ -379,7 +414,19 @@ msgstr ""
 msgid "Success!"
 msgstr ""
 
-#: templates/main/index.html:23
+#: templates/main/index.html:26
+msgid "Lists"
+msgstr ""
+
+#: templates/main/index.html:28 templates/main/resources.html:30
+msgid "My resources"
+msgstr ""
+
+#: templates/main/index.html:29 templates/main/resources.html:31
+msgid "Network resources"
+msgstr ""
+
+#: templates/main/index.html:35
 msgid "Recent actions"
 msgstr ""
 
@@ -388,29 +435,24 @@ msgid "New Source language"
 msgstr ""
 
 #: templates/main/languages.html:30 templates/main/languages.html.py:38
-#: templates/main/resources.html:30 templates/main/resources.html.py:38
+#: templates/main/resources.html:38 templates/main/resources.html.py:46
 #: templates/main/thematics.html:30 templates/main/thematics.html.py:38
 #: templates/main/types.html:30 templates/main/types.html.py:38
 msgid "Search"
 msgstr ""
 
-#: templates/main/languages.html:31 templates/main/resources.html:31
+#: templates/main/languages.html:31 templates/main/resources.html:39
 #: templates/main/thematics.html:31 templates/main/types.html:31
 msgid "clear"
 msgstr ""
 
-#: templates/main/languages.html:48 templates/main/resources.html:49
-#: templates/main/thematics.html:48 templates/main/types.html:48
-msgid "Actions"
-msgstr ""
-
-#: templates/main/languages.html:57 templates/main/resources.html:61
-#: templates/main/resources.html.py:64 templates/main/thematics.html:57
+#: templates/main/languages.html:57 templates/main/resources.html:69
+#: templates/main/resources.html.py:72 templates/main/thematics.html:57
 #: templates/main/types.html:57
 msgid "Remove"
 msgstr ""
 
-#: templates/main/resources.html:48
+#: templates/main/resources.html:56
 msgid "URL"
 msgstr ""
 

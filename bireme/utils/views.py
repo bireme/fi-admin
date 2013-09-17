@@ -7,6 +7,7 @@ ACTIONS = {
     'order': '+',
     'page': 1,
     's': "",
+    'filter_owner': "",
 }
 
 def cookie_lang(request):

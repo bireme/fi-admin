@@ -10,6 +10,7 @@
 
 {% block content %}
 <form name="actions">
+    <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
     <input type="hidden" name="orderby" value="{{ actions.orderby }}">
     <input type="hidden" name="order" value="{{ actions.order }}">
     <input type="hidden" name="page" value="{{ actions.page }}">
@@ -25,51 +26,60 @@
 </div>
 
 <div class='body'>
-    {% if actions.s %}
-        <div>
-            {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-            <a href="{% url 'main.views.resources' %}">[{% trans "clear" %}]</a>
-        </div>
-    {% endif %}
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="{% if actions.filter_owner == user_id or not actions.filter_owner %}active{% endif %}"><a href="#tab-my" onclick="filter_owner('{{ user_id }}')" data-toggle="tab"><strong>{% trans "My resources" %}</strong></a></li>
+        <li class="{% if actions.filter_owner == '*' %}active{% endif %}"><a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab"><strong>{% trans "Network resources" %}</strong></a></li>        
+    </ul>
 
-    <div class='pull-right'>
-        <div class="input-append">
-            <form name="search" onSubmit="return search();">
-                <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
-                <button class="btn" type="submit"><i class='icon-search'></i></button>
-            </form>
+    <div class="tab-content">
+        <div class="tab-pane active">
+            {% if actions.s %}
+                <div>
+                    {% trans "Search" %}: <strong>{{ actions.s }}</strong>
+                    <a href="{% url 'main.views.resources' %}">[{% trans "clear" %}]</a>
+                </div>
+            {% endif %}
+
+            <div class='pull-right'>
+                <div class="input-append">
+                    <form name="search" onSubmit="return search();">
+                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
+                        <button class="btn" type="submit"><i class='icon-search'></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
+                    <th><a href="javascript:orderby('link');" id="id_link">{% trans "URL" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for resource in resources %}
+                        <tr>
+                            <td><a href="{% url 'main.views.create_edit_resource' resource.id %}">{{ resource.id }}</a></td>
+                            <td><span title="{{ resource.title }}">{{ resource.title|slice:"50" }}{% if resource.title|length > 50 %}...{% endif %}</span></td>
+                            <td><span title="{{ resource.link }}">{{ resource.link|slice:"50" }}{% if resource.link|length > 50 %}...{% endif %}</span></td>
+                            <td>
+                                <a href="{% url 'main.views.create_edit_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                {% if user_role = 'doc' %}
+                                    {% if resource.created_by_id = user.id %}
+                                        <a href="#" id="{{ resource.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="#" id="{{ resource.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination.html" %}
         </div>
     </div>
-
-    <table class='table'>
-        <thead>
-            <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
-            <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
-            <th><a href="javascript:orderby('link');" id="id_link">{% trans "URL" %}</a></th>
-            <th>{% trans "Actions" %}</th>
-        </thead>
-        <tbody>
-            {% for resource in resources %}
-                <tr>
-                    <td><a href="{% url 'main.views.create_edit_resource' resource.id %}">{{ resource.id }}</a></td>
-                    <td>{{ resource.title }}</td>
-                    <td>{{ resource.link }}</td>
-                    <td>
-                        <a href="{% url 'main.views.create_edit_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                        {% if user_role = 'doc' %}
-                            {% if resource.creator_id = user.id %}
-                                <a href="#" id="{{ resource.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
-                            {% endif %}
-                        {% else %}
-                            <a href="#" id="{{ resource.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    {% include "pagination.html" %}
 
 </div>
 

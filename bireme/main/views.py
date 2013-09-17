@@ -32,7 +32,7 @@ from decorators import *
 @login_required
 def dashboard(request):
 
-    recent_actions = LogEntry.objects.all()
+    recent_actions = LogEntry.objects.all()[:20]
     output = {}
 
     user = request.user
@@ -69,6 +69,11 @@ def list_resources(request):
     resources = resources.order_by(actions["orderby"])
     if actions['order'] == "-":
         resources = resources.order_by("%s%s" % (actions["order"], actions["orderby"]))
+
+    if actions['filter_owner'] != "*":
+        resources = resources.filter(created_by=request.user)
+    else:
+        resources = resources.exclude(created_by=request.user)
 
     # pagination
     pagination = {}
