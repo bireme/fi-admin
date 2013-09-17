@@ -26,7 +26,7 @@
                 {% block top %}{% include 'menu.html' %}{% endblock %}
 
                 <ul class="breadcrumb">
-                    <li><a href="{% url 'main.views.dashboard' %}">Home</a> <span class="divider">/</span></li>
+                    <li><a href="{% url 'main.views.dashboard' %}">{% trans 'Home' %}</a> <span class="divider">/</span></li>
                     {% block breadcrumb %}{% endblock %}
                 </ul>
 

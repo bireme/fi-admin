@@ -54,6 +54,7 @@
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
                     <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
                     <th><a href="javascript:orderby('link');" id="id_link">{% trans "URL" %}</a></th>
+                    <th><a href="javascript:orderby('link');" id="id_link">{% trans "Status" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
                 <tbody>
@@ -62,6 +63,13 @@
                             <td><a href="{% url 'main.views.create_edit_resource' resource.id %}">{{ resource.id }}</a></td>
                             <td><span title="{{ resource.title }}">{{ resource.title|slice:"50" }}{% if resource.title|length > 50 %}...{% endif %}</span></td>
                             <td><span title="{{ resource.link }}">{{ resource.link|slice:"50" }}{% if resource.link|length > 50 %}...{% endif %}</span></td>
+                            <td>
+                                {% if resource.status == 0 %}
+                                    <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                {% else %}
+                                    <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% endif %}
+                            </td>
                             <td>
                                 <a href="{% url 'main.views.create_edit_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                                 {% if user_role = 'doc' %}

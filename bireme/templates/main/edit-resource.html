@@ -33,15 +33,22 @@
             <div id="tab-data" class="tab-pane active">
                     {% if user_role == 'doc' and not user_data.is_owner and not is_new %}
                         <div class="well">
+                            <blockquote>
+                                <p><strong>{% trans 'Identifier' %}</strong><p>
+                                <p>{{ resource.id }}</p>
+                            </blockquote>
+
                             {% for field in form %}
                                 {{ field.as_hidden }}
                                 {{ field.errors }}
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
                                     {% if field.name = 'status' %}
-                                        <p></p>
+                                        <p>{% if field.value == 0 %}{% trans 'Pending' %}{% else %}{% trans 'Admitted' %}{% endif %}</p>
                                     {% elif field.name = 'link' %}
-                                        <p><a href="{{ field.value }}" target="_blank">{{ field.value }}</a></p>
+                                        {% for link in field.value.splitlines %}
+                                            <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
+                                        {% endfor %}
                                     {% elif field.name = 'source_language' %}
                                         {% for sl in resource.source_language.all %}
                                             <p>{{ sl }}</p>

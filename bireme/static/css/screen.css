@@ -307,3 +307,11 @@ span.required {
 span.required .mark{
     color: #e32;
 }
+
+.status-ok{
+    color: green;
+}
+
+.status-pending{
+    color: orange;
+}
