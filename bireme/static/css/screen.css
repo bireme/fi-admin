@@ -313,7 +313,7 @@ span.required .mark{
 }
 
 .status-pending{
-    color: orange;
+    color: #e66f00;
 }
 
 .count{

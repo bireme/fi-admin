@@ -29,6 +29,14 @@
                   <li><a href="{% url 'main.views.list_resources' %}/?filter_owner=*"><span class="count">{{ network_resources_count }}</span> {% trans 'Network resources' %}</a></li>
                 </ul>
             </div>
+            <div class="well sidebar-nav">
+                <h3>{% trans "Status" %}</h3>
+                <ul class="nav nav-list">                  
+                  <li><span class="count ">{{ pending_resource_count }}</span> <span class="status-pending">{% trans 'Pending' %}</span></li>
+                  <li><span class="count">{{ approved_resource_count }}</span> <span class="status-ok">{% trans 'Admitted' %}</span></li>
+                </ul>
+            </div>
+
         </div>
         <div class="span6">
             <div class="well sidebar-nav">

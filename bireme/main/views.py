@@ -39,10 +39,14 @@ def dashboard(request):
     
     my_resources_count = Resource.objects.filter(created_by=request.user).count()
     network_resource_count = Resource.objects.exclude(created_by=request.user).count()
+    pending_resource_count = Resource.objects.filter(status=0).count()
+    approved_resource_count = Resource.objects.filter(status=1).count()
 
     output['recent_actions'] = recent_actions
     output['my_resources_count'] = my_resources_count
     output['network_resources_count'] = network_resource_count
+    output['pending_resource_count'] = pending_resource_count
+    output['approved_resource_count'] = approved_resource_count
 
     return render_to_response('main/index.html', output, context_instance=RequestContext(request))
 
