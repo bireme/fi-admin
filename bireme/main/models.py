@@ -19,7 +19,7 @@ class SourceType(Generic):
         verbose_name = _("source type")
         verbose_name_plural = _("source types")
 
-    acronym = models.CharField(_("Acronym"), max_length=25, blank=True, null=True)
+    acronym = models.CharField(_("Acronym"), max_length=25, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 
@@ -44,7 +44,7 @@ class SourceLanguage(Generic):
         verbose_name = _("Source language")
         verbose_name_plural = _("Source languages")
 
-    acronym = models.CharField(_("Acronym"), max_length=25, blank=True, null=True)
+    acronym = models.CharField(_("Acronym"), max_length=25, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 
@@ -68,7 +68,7 @@ class ThematicArea(Generic):
         verbose_name = _("Thematic area")
         verbose_name_plural = _("Thematic areas")
 
-    acronym = models.CharField(_("Acronym"), max_length=25, blank=True, null=True)
+    acronym = models.CharField(_("Acronym"), max_length=25, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 
@@ -112,7 +112,7 @@ class Resource(Generic):
     # originator_location (314)
     originator_location = models.ManyToManyField(Country, verbose_name=_('Originator location'), blank=False)
     # author (315)
-    author = models.TextField(_('Authors'), max_length=255, blank=True, null=True, help_text=_("Enter one per line"))
+    author = models.TextField(_('Authors'), max_length=255, blank=True, help_text=_("Enter one per line"))
     # language of resource (317)
     source_language = models.ManyToManyField(SourceLanguage, verbose_name=_("Source language"), blank=False)
     # source type (318)
@@ -120,11 +120,11 @@ class Resource(Generic):
     # abstract (319)
     abstract = models.TextField(_("Abstract"), blank=False)
     # time period (341)
-    time_period_textual = models.CharField(_('Temporal range'), max_length=255, blank=True, null=True)
+    time_period_textual = models.CharField(_('Temporal range'), max_length=255, blank=True)
     # objective (361)
-    objective = models.TextField(_('Objective'), max_length=255, blank=True, null=True)
+    objective = models.TextField(_('Objective'), max_length=255, blank=True)
     # responsible cooperative center
-    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True, null=True)
+    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
     def get_fields(self):
         return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]
