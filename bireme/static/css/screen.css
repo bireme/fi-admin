@@ -315,3 +315,11 @@ span.required .mark{
 .status-pending{
     color: orange;
 }
+
+.count{
+    width: 35px;
+    font-size: 18px;
+    text-align: right;
+    float: left;
+    margin-right: 10px;
+}

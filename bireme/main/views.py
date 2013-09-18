@@ -35,8 +35,14 @@ def dashboard(request):
     recent_actions = LogEntry.objects.all()[:20]
     output = {}
 
-    user = request.user
+    user = request.user    
+    
+    my_resources_count = Resource.objects.filter(created_by=request.user).count()
+    network_resource_count = Resource.objects.exclude(created_by=request.user).count()
+
     output['recent_actions'] = recent_actions
+    output['my_resources_count'] = my_resources_count
+    output['network_resources_count'] = network_resource_count
 
     return render_to_response('main/index.html', output, context_instance=RequestContext(request))
 

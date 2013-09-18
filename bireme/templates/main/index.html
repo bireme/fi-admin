@@ -25,8 +25,8 @@
             <div class="well sidebar-nav">
                 <h3>{% trans "Lists" %}</h3>
                 <ul class="nav nav-list">                  
-                  <li><a href="{% url 'main.views.list_resources' %}">{% trans 'My resources' %}</a></li>
-                  <li><a href="{% url 'main.views.list_resources' %}/?filter_owner=*">{% trans 'Network resources' %}</a></li>
+                  <li><a href="{% url 'main.views.list_resources' %}"><span class="count">{{ my_resources_count }}</span> {% trans 'My resources' %}</a></li>
+                  <li><a href="{% url 'main.views.list_resources' %}/?filter_owner=*"><span class="count">{{ network_resources_count }}</span> {% trans 'Network resources' %}</a></li>
                 </ul>
             </div>
         </div>
