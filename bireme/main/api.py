@@ -1,3 +1,4 @@
+# coding: utf-8
 from django.conf import settings
 from django.conf.urls.defaults import *
 
@@ -6,7 +7,7 @@ from tastypie.utils import trailing_slash
 from tastypie import fields
 import models
 import requests
-
+import urllib
 
 class ResourceAPI(ModelResource):
     # descriptors relationship 
@@ -29,14 +30,17 @@ class ResourceAPI(ModelResource):
         self.throttle_check(request)        
 
         q = request.GET.get('q', '')
+        fq = request.GET.get('fq', '')
+        start = request.GET.get('start', '')
+        count = request.GET.get('count', '')
 
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': 'lis', 'col': 'main','op': 'search', 
-                    'output': 'site', 'lang': 'pt', 'q': q }
+                    'output': 'site', 'lang': 'pt', 'q': q , 'fq': fq,  'start': start, 'count': count}
 
-        r = requests.get(search_url, params=search_params)
+        r = requests.post(search_url, data=search_params)
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
