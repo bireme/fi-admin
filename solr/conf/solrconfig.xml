@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
+
+  <luceneMatchVersion>LUCENE_36</luceneMatchVersion>
+
+  <directoryFactory name="DirectoryFactory"
+                    class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
+
+  <indexConfig />
+
+  <!-- The default high-performance update handler -->
+  <updateHandler class="solr.DirectUpdateHandler2" />
+
+  <query>
+    <!-- Max Boolean Clauses
+
+         Maximum number of clauses in each BooleanQuery,  an exception
+         is thrown if exceeded.
+
+         ** WARNING **
+
+         This option actually modifies a global Lucene property that
+         will affect all SolrCores.  If multiple solrconfig.xml files
+         disagree on this property, the value at any given moment will
+         be based on the last SolrCore to be initialized.
+
+      -->
+    <maxBooleanClauses>1024</maxBooleanClauses>
+
+    <filterCache class="solr.FastLRUCache"
+                 size="512"
+                 initialSize="512"
+                 autowarmCount="0"/>
+
+    <queryResultCache class="solr.LRUCache"
+                     size="512"
+                     initialSize="512"
+                     autowarmCount="0"/>
+
+    <documentCache class="solr.LRUCache"
+                   size="512"
+                   initialSize="512"
+                   autowarmCount="0"/>
+
+   <enableLazyFieldLoading>true</enableLazyFieldLoading>
+
+   <queryResultWindowSize>20</queryResultWindowSize>
+
+   <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+
+   <listener event="newSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <!--
+           <lst><str name="q">solr</str><str name="sort">price asc</str></lst>
+           <lst><str name="q">rocks</str><str name="sort">weight asc</str></lst>
+          -->
+      </arr>
+   </listener>
+
+   <listener event="firstSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <lst>
+          <str name="q">salud</str>
+        </lst>
+      </arr>
+   </listener>
+
+   <useColdSearcher>false</useColdSearcher>
+
+   <maxWarmingSearchers>2</maxWarmingSearchers>
+
+  </query>
+
+  <requestDispatcher>
+    <requestParsers enableRemoteStreaming="false"
+                    multipartUploadLimitInKB="2048000" />
+
+
+    <httpCaching never304="true" />
+  </requestDispatcher>
+
+  <requestHandler name="/select" class="solr.SearchHandler">
+    <!-- default values for query parameters can be specified, these
+         will be overridden by parameters in the request
+      -->
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+     </lst>
+
+     <lst name="invariants">
+         <str name="facet">true</str>
+         <str name="facet.field">descriptors</str>
+         <str name="facet.limit">10</str>
+         <str name="facet.mincount">1</str>
+     </lst>
+  </requestHandler>
+
+
+  <requestHandler name="/related" class="solr.MoreLikeThisHandler">
+     <lst name="defaults">
+       <str name="echoParams">explicit</str>
+       <str name="fl">*,score</str>
+       <str name="mlt.count">10</str>
+       <str name="mlt.mintf">1</str>
+       <str name="mlt.mindf">2</str>
+       <str name="mlt.minwl">3</str>
+       <str name="mlt.maxqt">100</str>
+       <str name="mlt.fl">ti,ab,mh</str>
+     </lst>
+
+     <lst name="invariants">
+         <str name="mlt.match.include">true</str>
+     </lst>
+  </requestHandler>
+
+  <requestHandler name="/update"
+                  class="solr.XmlUpdateRequestHandler">
+  </requestHandler>
+
+
+  <!-- Admin Handlers
+
+       Admin Handlers - This will register all the standard admin
+       RequestHandlers.
+    -->
+  <requestHandler name="/admin/"
+                  class="solr.admin.AdminHandlers" />
+
+  <!-- This single handler is equivalent to the following... -->
+  <!--
+     <requestHandler name="/admin/luke"       class="solr.admin.LukeRequestHandler" />
+     <requestHandler name="/admin/system"     class="solr.admin.SystemInfoHandler" />
+     <requestHandler name="/admin/plugins"    class="solr.admin.PluginInfoHandler" />
+     <requestHandler name="/admin/threads"    class="solr.admin.ThreadDumpHandler" />
+     <requestHandler name="/admin/properties" class="solr.admin.PropertiesRequestHandler" />
+     <requestHandler name="/admin/file"       class="solr.admin.ShowFileRequestHandler" >
+    -->
+
+  <!-- ping/healthcheck -->
+  <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
+    <lst name="invariants">
+      <str name="q">solrpingquery</str>
+    </lst>
+    <lst name="defaults">
+      <str name="echoParams">all</str>
+    </lst>
+  </requestHandler>
+
+  <!-- Echo the request contents back to the client -->
+  <requestHandler name="/debug/dump" class="solr.DumpRequestHandler" >
+    <lst name="defaults">
+     <str name="echoParams">explicit</str>
+     <str name="echoHandler">true</str>
+    </lst>
+  </requestHandler>
+
+  <queryResponseWriter name="json" class="solr.JSONResponseWriter">
+     <!-- For the purposes of the tutorial, JSON responses are written as
+      plain text so that they are easy to read in *any* browser.
+      If you expect a MIME type of "application/json" just remove this override.
+     -->
+    <str name="content-type">text/plain; charset=UTF-8</str>
+  </queryResponseWriter>
+
+  <!-- Legacy config for the admin interface -->
+  <admin>
+    <defaultQuery>*:*</defaultQuery>
+
+    <!-- configure a healthcheck file for servers behind a
+         loadbalancer
+      -->
+    <!--
+       <healthcheck type="file">server-enabled</healthcheck>
+      -->
+  </admin>
+
+</config>
