@@ -153,7 +153,7 @@ class ResourceThematic(Generic):
         return unicode(self.thematic_area.name)
 
 
-# Taxonomy table
+# DeCS descriptors table
 class Descriptor(Generic):
     STATUS_CHOICES = (
         (0, _('Pending')),
@@ -165,10 +165,6 @@ class Descriptor(Generic):
         order_with_respect_to = 'resource'
 
     resource = models.ForeignKey(Resource, related_name='descriptors')
-    vocabulary = models.CharField(_('Vocabulary'), max_length=255,
-                        choices=choices.DESCRIPTOR_VOCABULARY, default=DECS, blank=True)
-    level = models.CharField(_('Level'), max_length=64,
-                        choices=choices.DESCRIPTOR_LEVEL, default=GENERAL, blank=True)
     text = models.CharField(_('Text'), max_length=255, blank=True)
 
     code = models.CharField(_('Code'), max_length=25, blank=True)
