@@ -248,7 +248,7 @@
                 var decs_data = e.data;
                 var pipe_pos = decs_data.lastIndexOf('|');
                 var decs_text = decs_data.substring(0, pipe_pos);
-                var decs_code = '^d' + decs_data.substring(pipe_pos+1);
+                var decs_code = decs_data.substring(pipe_pos+1);
 
                 var decs_row = decs_field.replace( /[A-Za-z$-]/g, '');
                 $('#id_descriptors-' + decs_row + '-code').val(decs_code);

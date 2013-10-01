@@ -16,7 +16,7 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_descriptors(self, obj):
         # Since we're using a M2M relationship with a complex lookup,
         # we can prepare the list here.
-        return [descriptor.code for descriptor in Descriptor.objects.filter(resource=obj.id)]
+        return ["^d%s" % descriptor.code for descriptor in Descriptor.objects.filter(resource=obj.id)]
 
 
     def index_queryset(self, using=None):
