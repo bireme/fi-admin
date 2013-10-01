@@ -56,7 +56,6 @@ class ResourceForm(forms.ModelForm):
         exclude = ('cooperative_center_code',)
 
         source_language = forms.MultipleChoiceField()
-
         source_type = forms.MultipleChoiceField()
 
 
@@ -107,6 +106,8 @@ class TypeLocalForm(forms.ModelForm):
 # definition of inline formsets
 
 DescriptorFormSet = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1)
+
+KeywordFormSet = inlineformset_factory(Resource, Keyword, can_delete=True, extra=1)
 
 ResourceThematicFormSet = inlineformset_factory(Resource, ResourceThematic, can_delete=True, extra=1)
 

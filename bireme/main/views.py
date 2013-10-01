@@ -106,8 +106,10 @@ def create_edit_resource(request, **kwargs):
     form = None
     formset_descriptor = None
     formset_thematic = None
-    descriptor_list = None
-    thematic_list = None
+    formset_keyword  = None
+    descriptor_list  = None
+    keyword_list     = None
+    thematic_list    = None
     output = {}
 
     if resource_id:
@@ -123,13 +125,15 @@ def create_edit_resource(request, **kwargs):
     if request.POST:
         form = ResourceForm(request.POST, request.FILES, instance=resource, user=request.user, user_data=user_data)
         formset_descriptor = DescriptorFormSet(request.POST, instance=resource)
-        formset_thematic = ResourceThematicFormSet(request.POST, instance=resource)
+        formset_keyword    = KeywordFormSet(request.POST, instance=resource)
+        formset_thematic   = ResourceThematicFormSet(request.POST, instance=resource)
 
-        if form.is_valid() and formset_descriptor.is_valid() and formset_thematic.is_valid():
+        if form.is_valid() and formset_descriptor.is_valid() and formset_keyword.is_valid() and formset_thematic.is_valid():
             resource = form.save()
             form.save_m2m()
 
             formset_descriptor.save()
+            formset_keyword.save()
             formset_thematic.save()
 
             output['alert'] = _("Resource successfully edited.")
@@ -142,23 +146,29 @@ def create_edit_resource(request, **kwargs):
 
         # if documentalist create a formset with descriptors created by the user
         if user_data['user_role'] == 'doc':
-            descriptor_list = Descriptor.objects.filter(resource=resource).exclude(created_by_id=request.user.id)
-            thematic_list = ResourceThematic.objects.filter(resource=resource).exclude(created_by_id=request.user.id)
+            descriptor_list = Descriptor.objects.filter(resource=resource).exclude(created_by_id=request.user.id, status=0)
+            keyword_list = Keyword.objects.filter(resource=resource).exclude(created_by_id=request.user.id, status=0)
+            thematic_list = ResourceThematic.objects.filter(resource=resource).exclude(created_by_id=request.user.id, status=0)
 
             pending_descriptor_from_user = Descriptor.objects.filter(created_by_id=request.user.id, status=0)
+            pending_keyword_from_user = Keyword.objects.filter(created_by_id=request.user.id, status=0)
             pending_thematic_from_user = ResourceThematic.objects.filter(created_by_id=request.user.id, status=0)
 
             formset_descriptor = DescriptorFormSet(instance=resource, queryset=pending_descriptor_from_user)
+            formset_keyword  = KeywordFormSet(instance=resource, queryset=pending_keyword_from_user)
             formset_thematic = ResourceThematicFormSet(instance=resource, queryset=pending_thematic_from_user)
         else:
             formset_descriptor = DescriptorFormSet(instance=resource)
+            formset_keyword  = KeywordFormSet(instance=resource)            
             formset_thematic = ResourceThematicFormSet(instance=resource)
 
     output['form'] = form
     output['formset_descriptor'] = formset_descriptor
+    output['formset_keyword']  = formset_keyword
     output['formset_thematic'] = formset_thematic
     output['resource'] = resource
     output['descriptor_list'] = descriptor_list
+    output['keyword_list'] = keyword_list
     output['thematic_list'] = thematic_list
     output['settings'] = settings
     output['user_data'] = user_data
@@ -169,6 +179,7 @@ def create_edit_resource(request, **kwargs):
 @login_required
 def delete_resource(request, resource):
 
+    user = request.user
     resource = get_object_or_404(Resource, id=resource)
     output = {}
 

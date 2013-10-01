@@ -166,10 +166,28 @@ class Descriptor(Generic):
 
     resource = models.ForeignKey(Resource, related_name='descriptors')
     text = models.CharField(_('Text'), max_length=255, blank=True)
-
     code = models.CharField(_('Code'), max_length=25, blank=True)
-
-    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING, blank=True)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
 
     def __unicode__(self):
-        return u'[%s] %s' % (self.vocabulary, self.text)
+        return self.text
+
+
+# Keywords table
+class Keyword(Generic):
+    STATUS_CHOICES = (
+        (0, _('Pending')),
+        (1, _('Admitted')),
+        (2, _('Refused')),
+    )
+
+    class Meta:
+        order_with_respect_to = 'resource'
+
+    resource = models.ForeignKey(Resource, related_name='keywords')
+    text = models.CharField(_('Text'), max_length=255, blank=True)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
+    user_recomendation = models.BooleanField(_('User recomendation?'))
+
+    def __unicode__(self):
+        return self.text

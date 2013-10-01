@@ -295,9 +295,13 @@ fieldset a.icon-plus-sign {
     width: 80px;
  }
 
-#descriptors select {
+#descriptors select, #keywords select {
     width: 140px;
  }
+
+.placeholder-style{
+    color: #999999;
+}
 
 span.required {
     color: #000;
