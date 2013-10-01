@@ -1,10 +1,11 @@
 from django.db import models
 from django.forms.models import model_to_dict
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.models import User
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.contrib.contenttypes.models import ContentType
+
 
 #from datetime import datetime
 
@@ -71,8 +72,12 @@ class Country(Generic):
     name = models.CharField(_('name'), max_length=255)
 
     def __unicode__(self):
-        return unicode(self.name)
-
+        lang_code = get_language()
+        translation = CountryLocal.objects.filter(country=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
 
 class CountryLocal(models.Model):
 

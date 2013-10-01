@@ -1,5 +1,5 @@
 #! coding: utf-8
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.db import models
@@ -24,7 +24,13 @@ class SourceType(Generic):
     name = models.CharField(_("Name"), max_length=255)
 
     def __unicode__(self):
-        return unicode(self.name)
+        lang_code = get_language()
+        translation = SourceTypeLocal.objects.filter(source_type=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
 
 class SourceTypeLocal(models.Model):
 
@@ -49,7 +55,12 @@ class SourceLanguage(Generic):
     name = models.CharField(_("Name"), max_length=255)
 
     def __unicode__(self):
-        return unicode(self.name)
+        lang_code = get_language()
+        translation = SourceLanguageLocal.objects.filter(source_language=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
 
 class SourceLanguageLocal(models.Model):
 
@@ -73,7 +84,12 @@ class ThematicArea(Generic):
     name = models.CharField(_("Name"), max_length=255)
 
     def __unicode__(self):
-        return unicode(self.name)
+        lang_code = get_language()
+        translation = ThematicAreaLocal.objects.filter(thematic_area=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
 
 class ThematicAreaLocal(models.Model):
 
