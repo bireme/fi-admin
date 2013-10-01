@@ -129,28 +129,6 @@ def create_edit_resource(request, **kwargs):
             resource = form.save()
             form.save_m2m()
 
-            # if documentalist process descriptors
-            '''
-            if user_data['user_role'] == 'doc':
-                for fd in formset_descriptor:
-                    print "tenta salvar descritor"
-                    descriptor_obj = fd.save(commit=False)
-                    # set status to pending and save user
-                    descriptor_obj.status = 0
-                    descriptor_obj.creator = request.user
-                    descriptor_obj.resource_id = resource.id
-                    descriptor_obj.save()
-
-                for ft in formset_thematic:
-                    print "tenta salvar tema"
-                    thematic_obj = ft.save(commit=False)
-                    # set status to pending and save user
-                    thematic_obj.status = 0
-                    thematic_obj.creator = request.user
-                    thematic_obj.resource_id = resource.id
-                    thematic_obj.save()
-            '''
-
             formset_descriptor.save()
             formset_thematic.save()
 

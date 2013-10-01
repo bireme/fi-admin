@@ -108,13 +108,7 @@ class TypeLocalForm(forms.ModelForm):
 
 DescriptorFormSet = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1)
 
-DescriptorFormSetForDoc = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1, exclude=('status'))
-
-
 ResourceThematicFormSet = inlineformset_factory(Resource, ResourceThematic, can_delete=True, extra=1)
-
-ResourceThematicFormSetForDoc = inlineformset_factory(Resource, ResourceThematic, can_delete=True, extra=1, exclude=('status'))
-
 
 ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAreaLocal, form=ThematicAreaLocalForm, can_delete=True, extra=1)
 
