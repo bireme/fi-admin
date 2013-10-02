@@ -138,14 +138,21 @@
    <field name="originator_location" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="author" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="source_language" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="source_language_display" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="source_type" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="source_type_display" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="thematic_area" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="thematic_area_display" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="abstract" type="text" indexed="true" stored="true"/>
    <field name="time_period_textual" type="string" indexed="false" stored="true"/>
    <field name="objective" type="text" indexed="true" stored="true"/>
    <field name="cooperative_center_code" type="string" indexed="true" stored="true"/>
-   
+   <field name="created_date" type="string" indexed="false" stored="true"/>
+     
    <field name="descriptors" type="decs_code" indexed="true" stored="true" multiValued="true"/>
    <field name="keywords" type="text" indexed="true" stored="true" multiValued="true"/>
+
+   <field name="status" type="int" indexed="true" stored="true" multiValued="false"/>
 
    <!-- Dynamic field definitions -->
    <dynamicField name="*" type="ignored" multiValued="true"/>
