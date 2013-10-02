@@ -23,6 +23,15 @@ class SourceType(Generic):
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = SourceTypeLocal.objects.filter(source_type=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+        
+        return translation_list
+
     def __unicode__(self):
         lang_code = get_language()
         translation = SourceTypeLocal.objects.filter(source_type=self.id, language=lang_code)
@@ -54,6 +63,15 @@ class SourceLanguage(Generic):
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = SourceLanguageLocal.objects.filter(source_language=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+        
+        return translation_list
+
     def __unicode__(self):
         lang_code = get_language()
         translation = SourceLanguageLocal.objects.filter(source_language=self.id, language=lang_code)
@@ -61,6 +79,7 @@ class SourceLanguage(Generic):
             return translation[0].name
         else:
             return self.name
+    
 
 class SourceLanguageLocal(models.Model):
 
@@ -82,6 +101,15 @@ class ThematicArea(Generic):
     acronym = models.CharField(_("Acronym"), max_length=25, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
+
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = ThematicAreaLocal.objects.filter(thematic_area=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+        
+        return translation_list
 
     def __unicode__(self):
         lang_code = get_language()
