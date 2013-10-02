@@ -133,15 +133,22 @@
 
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
    <field name="title" type="text" indexed="true" stored="true"/>
-   <field name="link" type="string" indexed="false" stored="true"/>
+   <field name="link" type="string" indexed="false" stored="true" multiValued="true"/>
+   <field name="originator" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="originator_location" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="author" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="source_language" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="source_type" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="abstract" type="text" indexed="true" stored="true"/>
+   <field name="time_period_textual" type="string" indexed="false" stored="true"/>
    <field name="objective" type="text" indexed="true" stored="true"/>
+   <field name="cooperative_center_code" type="string" indexed="true" stored="true"/>
+   
    <field name="descriptors" type="decs_code" indexed="true" stored="true" multiValued="true"/>
+   <field name="keywords" type="text" indexed="true" stored="true" multiValued="true"/>
 
    <!-- Dynamic field definitions -->
-   <dynamicField name="ab_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
-   <dynamicField name="ti_*"  type="text" indexed="false" stored="true"  multiValued="true"/>
-   <dynamicField name="*"     type="ignored"                             multiValued="true"/>
+   <dynamicField name="*" type="ignored" multiValued="true"/>
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
@@ -158,7 +165,11 @@
  <solrQueryParser defaultOperator="AND"/>
 
  <copyField source="title" dest="text"/>
+ <copyField source="originator" dest="text"/>
+ <copyField source="author" dest="text"/>
  <copyField source="abstract" dest="text"/>
  <copyField source="objective" dest="text"/>
+ <copyField source="descriptors" dest="text"/>
+ <copyField source="keywords" dest="text"/>
  
 </schema>
