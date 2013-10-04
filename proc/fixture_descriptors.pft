@@ -1,0 +1,39 @@
+if mfn=1 then '['/ fi,
+ (	   
+	if p(v323) then,
+		/* check if is descriptor/qualifier */
+		if instr(v323,'/') > 0 then,
+			proc('d9991a9991#',left(v323,instr(v323,'/')-1),'#'),
+			proc('d9992a9992#',mid(v323,instr(v323,'/'),size(v323)),'#'),
+		else,
+			proc('d9991d9992a9991#',v323,'#'),
+		fi,
+		
+		if l(['decs']v9991[1]) <> 0 then,
+		   '{',/
+				c4,'"model": ','"main.descriptor",',/
+				c4,'"pk": ', mfn(0),f(iocc,1,0),','/
+				c4,'"fields": {',/
+					c8,'"resource": ',mfn(0),',',/    
+					c8,'"text": ','"', v323, '",'/
+					c8,'"code": ','"',ref( l(['decs']v9991[1]),'^d',mfn(0) ), ref( l(['decs']v9992[1]),'^s',mfn(0) ) ,'",'/
+					c8,'"status": ','1,'/           
+					c8,'"created_by": ','1'/
+				c4,'}',/
+			'},'/
+		else,
+		   '{',/
+				c4,'"model": ','"main.keyword",',/
+				c4,'"pk": ', mfn(0),f(iocc,1,0),','/
+				c4,'"fields": {',/
+					c8,'"resource": ',mfn(0),',',/    
+					c8,'"text": ','"', v323, '",'/
+					c8,'"status": ','1,'/           
+					c8,'"created_by": ','1'/
+				c4,'}',/
+			'},'/
+		fi,
+    fi,
+)
+if mfn=MAXMFN then ']'/ fi,
+
