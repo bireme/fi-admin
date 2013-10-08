@@ -210,7 +210,7 @@ class Descriptor(Generic):
 
     resource = models.ForeignKey(Resource, related_name='descriptors')
     text = models.CharField(_('Text'), max_length=255, blank=True)
-    code = models.CharField(_('Code'), max_length=25, blank=True)
+    code = models.CharField(_('Code'), max_length=50, blank=True)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
 
     def __unicode__(self):
