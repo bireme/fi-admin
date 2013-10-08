@@ -185,7 +185,7 @@ def delete_resource(request, resource):
 
     user_data = additional_user_info(request)
 
-    if user_data['user_role'] == 'doc' and resource.created_by_id != user.id:
+    if resource.created_by_id != user.id:
         return HttpResponse('Unauthorized', status=401)
 
     resource.delete()

@@ -72,11 +72,7 @@
                             </td>
                             <td>
                                 <a href="{% url 'main.views.create_edit_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if user_role = 'doc' %}
-                                    {% if resource.created_by_id = user.id %}
-                                        <a href="#" id="{{ resource.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
-                                    {% endif %}
-                                {% else %}
+                                {% if resource.created_by_id = user.id %}
                                     <a href="#" id="{{ resource.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>
