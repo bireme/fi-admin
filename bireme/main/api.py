@@ -34,6 +34,12 @@ class ResourceAPI(ModelResource):
         start = request.GET.get('start', '')
         count = request.GET.get('count', '')
 
+        # filter result by approved resources (status=1)
+        if fq != '':
+            fq = 'status:1 AND %s' % fq
+        else:
+            fq = 'status:1'
+
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
