@@ -54,7 +54,7 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         return [ "|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(resource=obj.id) ]
 
     def prepare_descriptors(self, obj):
-        return ["^d%s" % descriptor.code for descriptor in Descriptor.objects.filter(resource=obj.id, status=1)]
+        return [descriptor.code for descriptor in Descriptor.objects.filter(resource=obj.id, status=1)]
 
     def prepare_keywords(self, obj):
         return [keyword.text for keyword in Keyword.objects.filter(resource=obj.id, status=1)]
