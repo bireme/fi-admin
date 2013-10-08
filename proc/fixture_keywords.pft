@@ -3,10 +3,10 @@ if mfn=1 then '['/ fi,
 	if p(v326) then,
 	   '{',/
 			c4,'"model": ','"main.keyword",',/
-			c4,'"pk": ', '1',mfn(0),f(iocc,1,0),','/
+			c4,'"pk": ', '9999',mfn(0),f(iocc,1,0),','/
 			c4,'"fields": {',/
 				c8,'"resource": ',mfn(0),',',/    
-				c8,'"text": ','"', v323, '",'/
+				c8,'"text": ','"', v326, '",'/
 				c8,'"status": ','1,'/           
 				c8,'"created_by": ','1'/
 			c4,'}',/
