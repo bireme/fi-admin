@@ -148,9 +148,11 @@
    <field name="objective" type="text" indexed="true" stored="true"/>
    <field name="cooperative_center_code" type="string" indexed="true" stored="true"/>
    <field name="created_date" type="string" indexed="false" stored="true"/>
-     
-   <field name="descriptors" type="decs_code" indexed="true" stored="true" multiValued="true"/>
-   <field name="keywords" type="text" indexed="true" stored="true" multiValued="true"/>
+   
+   <field name="descriptor" type="decs_keyword" indexed="true" stored="true" multiValued="true"/>  
+   
+   <field name="descriptor_filter" type="decs_code" indexed="true" stored="true" multiValued="true"/>
+   <field name="keyword" type="text" indexed="true" stored="true" multiValued="true"/>
 
    <field name="status" type="int" indexed="true" stored="true" multiValued="false"/>
 
@@ -176,7 +178,8 @@
  <copyField source="author" dest="text"/>
  <copyField source="abstract" dest="text"/>
  <copyField source="objective" dest="text"/>
- <copyField source="descriptors" dest="text"/>
- <copyField source="keywords" dest="text"/>
+ <copyField source="descriptor" dest="text"/>
+ <copyField source="keyword" dest="text"/>
  
+ <copyField source="descriptor" dest="descriptor_filter"/>
 </schema>

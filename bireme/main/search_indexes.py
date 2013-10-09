@@ -18,8 +18,8 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     abstract = indexes.CharField(model_attr='abstract')
     objective = indexes.CharField(model_attr='objective')
     time_period_textual = indexes.CharField(model_attr='time_period_textual')
-    descriptors = indexes.MultiValueField()
-    keywords = indexes.MultiValueField()
+    descriptor = indexes.MultiValueField()
+    keyword = indexes.MultiValueField()
     status = indexes.IntegerField(model_attr='status')
     created_date = indexes.CharField()
 
@@ -53,10 +53,10 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_thematic_area_display(self, obj):
         return [ "|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(resource=obj.id) ]
 
-    def prepare_descriptors(self, obj):
+    def prepare_descriptor(self, obj):
         return [descriptor.code for descriptor in Descriptor.objects.filter(resource=obj.id, status=1)]
 
-    def prepare_keywords(self, obj):
+    def prepare_keyword(self, obj):
         return [keyword.text for keyword in Keyword.objects.filter(resource=obj.id, status=1)]
 
     def prepare_created_date(self, obj):
