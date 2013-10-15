@@ -165,6 +165,7 @@ INSTALLED_APPS = (
 
     'main',
     'utils',
+    'suggest',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -207,9 +208,12 @@ HAYSTACK_CONNECTIONS = {
 # Haystack signal for automatic update of Solr index when the model is saved/updated
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-SEARCH_SERVICE_URL = 'http://localhost:8080/'
+#SEARCH_SERVICE_URL = 'http://ts01dx:8080/'
+SEARCH_SERVICE_URL = 'http://localhost:8081/'
 
 DECS_LOOKUP_SERVICE = 'http://search.bvsalud.org/portal/decs-locator/?mode=dataentry'
+
+RECAPTCHA_PRIVATE_KEY = ''
 
 ITEMS_PER_PAGE = 20
 LOGIN_URL = '/login/'

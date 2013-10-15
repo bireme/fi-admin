@@ -47,6 +47,11 @@ urlpatterns = patterns('',
     (r'^language/edit/(?P<language_id>\d+)/?$', 'main.views.create_edit_language'),
 
 
+    # Suggest
+    (r'^suggest-resource/?$', 'suggest.views.suggest_resource'),
+
+
+    # Login/Logout
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html'}, name='auth_login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'authentication/logout.html', 'next_page': '/'}, name='auth_logout'),
 

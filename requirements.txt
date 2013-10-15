@@ -8,4 +8,5 @@ lxml==3.2.3
 cssselect==0.8
 simplejson==3.3.0
 requests==1.2.3
+recaptcha-client
 #biremelogin
