@@ -109,17 +109,22 @@
                     <table class="table table-condensed table-striped span8">
                         <thead>
                             <th>{% trans "Descriptors" %}</th>
-                            {% if user_role != 'doc' %}
-                                <th>{% trans "Status" %}</th>
-                            {% endif %}
-                            <th>{% trans "Actions" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th></th>
                         </thead>
                         <tbody>
 
                         {% if descriptor_list %}
                             {% for descriptor in descriptor_list %}
                                 <tr>
-                                    <td>{{ descriptor.text }}</td>                                    
+                                    <td>{{ descriptor.text }}</td>
+                                    <td>
+                                        {% if descriptor.status == 0 %}
+                                            <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                        {% else %}
+                                            <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                        {% endif %}
+                                    </td>
                                     <td></td>
                                 </tr>
                             {% endfor %}
@@ -135,6 +140,7 @@
                                 {% for field in form.visible_fields %}                                    
                                     {% if user_role == 'doc' and field.name == 'status' %}
                                         <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                        <td></td>
                                     {% elif field.name == 'code' %}
                                         {{ field.as_hidden }}
                                     {% elif field.name == 'text' %}                                        
@@ -169,13 +175,9 @@
                     <table class="table table-condensed table-striped span8">
                         <thead>
                             <th>{% trans "Keywords" %}</th>
-                            {% if keyword_list %}
-                                <th>{% trans "User recomendation?" %}</th>
-                            {% endif %}
-                            {% if user_role != 'doc' %}
-                                <th>{% trans "Status" %}</th>
-                            {% endif %}
-                            <th>{% trans "Actions" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Suggestion" %}?</th>
+                            <th></th>
                         </thead>
                         <tbody>
 
@@ -183,7 +185,19 @@
                             {% for keyword in keyword_list %}
                                 <tr>
                                     <td>{{ keyword.text }}</td>
-                                    <td>{{ keyword.user_recommendation }}</td>
+                                    <td>
+                                        {% if keyword.status == 0 %}
+                                            <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                        {% else %}
+                                            <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align: center">
+                                        {% if keyword.user_recomendation %}
+                                            <span title="{% trans 'Suggested' %}"><i class="icon-thumbs-up"></i></span>
+                                        {% endif %}
+                                    </td>
+                                    <td></td>
                                 </tr>
                             {% endfor %}
                         {% endif %}
@@ -198,8 +212,14 @@
                                 {% for field in form.visible_fields %}                                    
                                     {% if user_role == 'doc' and field.name == 'status' %}
                                         <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                        <td></td>
                                     {% elif field.name == 'user_recomendation' %}
-                                        {{ field.as_hidden }}
+                                        {{ field.as_hidden }}                                        
+                                        <td style="text-align: center">
+                                            {% if field.value == True %}
+                                                <span title="{% trans 'Suggested' %}"><i class="icon-thumbs-up"></i></span>
+                                            {% endif %}
+                                        </td>
                                     {% elif field.name != 'DELETE' %}
                                         <td class="span6">
                                             {{ field }}

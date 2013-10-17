@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.admin.models import LogEntry
 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.html import escape
 from recaptcha.client import captcha
 
 from django.http import Http404, HttpResponse
@@ -20,10 +21,11 @@ from utils.views import ACTIONS
 from django.conf import settings
 from datetime import datetime
 from models import *
+from main.models import Resource, Keyword
 from forms import *
 
-
 import os
+import json
 
 @csrf_exempt
 def suggest_resource(request, **kwargs):
@@ -146,3 +148,33 @@ def delete_resource(request, resource):
     output['alerttype'] = "alert-success"
 
     return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
+
+
+
+@csrf_exempt
+def suggest_tag(request, **kwargs):
+
+    resource = None
+    response = None
+    sucess = True
+    
+    resource_id = escape(request.POST.get('resource_id'))
+    suggest_tag = escape(request.POST.get('tags'))
+
+    try:
+        resource = Resource.objects.get(pk=resource_id)
+    except Resource.DoesNotExist:    
+        sucess = False
+
+    if resource != None:
+        for tag in suggest_tag.split(','):
+            keyword = Keyword(resource=resource, text=tag.strip(), user_recomendation=True)
+            keyword.save()
+
+
+    response = HttpResponse(sucess)  
+    response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Methods"] = "POST"
+    response["Access-Control-Allow-Headers"] = "*" 
+    
+    return response
