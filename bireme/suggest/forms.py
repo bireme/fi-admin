@@ -8,7 +8,7 @@ class SuggestResourceForm(forms.ModelForm):
 
     class Meta:
         model = SuggestResource
-        fields = ['title', 'link',]
+        #fields = ['title', 'link', 'comments', 'keywords']
 
 
     def clean_title(self):

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Resources" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Suggested resources" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
     <li>{% trans "Resources" %}</li>
@@ -10,7 +10,6 @@
 
 {% block content %}
 <form name="actions">
-    <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
     <input type="hidden" name="orderby" value="{{ actions.orderby }}">
     <input type="hidden" name="order" value="{{ actions.order }}">
     <input type="hidden" name="page" value="{{ actions.page }}">
@@ -19,17 +18,10 @@
 
 <!--  header -->
 <div class='header'>
-    <h2><i class='icon-star'></i> {% trans "Resources" %}</h2>
-        <div class='pull-right'>
-            <a href="{% url 'main.views.create_edit_resource' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Resource" %}</a>
-        </div>
+    <h2><i class='icon-thumbs-up'></i> {% trans "Suggested Resources" %}</h2>
 </div>
 
-<div class='body'>
-    <ul class="nav nav-tabs" id='tab'>
-        <li class="{% if actions.filter_owner == user_id or not actions.filter_owner %}active{% endif %}"><a href="#tab-my" onclick="filter_owner('{{ user_id }}')" data-toggle="tab"><strong>{% trans "My resources" %}</strong></a></li>
-        <li class="{% if actions.filter_owner == '*' %}active{% endif %}"><a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab"><strong>{% trans "Network resources" %}</strong></a></li>        
-    </ul>
+<div class='body'>    
 
     <div class="tab-content">
         <div class="tab-pane active">
@@ -54,15 +46,19 @@
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
                     <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
                     <th><a href="javascript:orderby('link');" id="id_link">{% trans "URL" %}</a></th>
+                    <th><a href="javascript:orderby('date');" id="id_date">{% trans "Date" %}</a></th>
                     <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
                 <tbody>
                     {% for resource in resources %}
                         <tr>
-                            <td><a href="{% url 'main.views.create_edit_resource' resource.id %}">{{ resource.id }}</a></td>
+                            <td><a href="{% url 'suggest.views.edit_suggested_resource' resource.id %}">{{ resource.id }}</a></td>
                             <td><span title="{{ resource.title }}">{{ resource.title|slice:"50" }}{% if resource.title|length > 50 %}...{% endif %}</span></td>
                             <td><span title="{{ resource.link }}">{{ resource.link|slice:"50" }}{% if resource.link|length > 50 %}...{% endif %}</span></td>
+                            <td>
+                                {{ resource.created_time|date:"d/m/y@f" }}
+                            </td>
                             <td>
                                 {% if resource.status == 0 %}
                                     <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
@@ -71,10 +67,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'main.views.create_edit_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if resource.created_by_id = user.id %}
-                                    <a href="#" id="{{ resource.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
-                                {% endif %}
+                                <a href="{% url 'suggest.views.edit_suggested_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                             </td>
                         </tr>
                     {% endfor %}

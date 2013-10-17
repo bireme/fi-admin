@@ -93,7 +93,7 @@
                     {% comment %}Display resource administrative information{% endcomment %}
 
                     {% if resource.id %}
-                        <div class="alert">
+                        <div class="alert alert-info">
                             <p>{% trans "Resource created in" %}: <strong>{{ resource.created_time }}</strong> {% trans "by user" %}  <strong>{{ resource.created_by.username }}</strong></p>
                             <p>{% trans "Cooperative center code" %}: <strong>{{ resource.cooperative_center_code }}</strong></p>
                             {% if resource.updated_by %}

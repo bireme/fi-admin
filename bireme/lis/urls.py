@@ -49,7 +49,8 @@ urlpatterns = patterns('',
 
     # Suggest
     (r'^suggest-resource/?$', 'suggest.views.suggest_resource'),
-
+    (r'^suggested-resources/?$', 'suggest.views.list_suggested_resources'),
+    (r'^suggested-resource/edit/(?P<resource_id>\d+)/?$', 'suggest.views.edit_suggested_resource'),
 
     # Login/Logout
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html'}, name='auth_login'),

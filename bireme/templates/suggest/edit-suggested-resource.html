@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Edit Suggested Resource" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'suggest.views.list_suggested_resources' %}">{% trans "Suggested resources" %}</a> <span class="divider">/</span></li>
+    <li>{% trans "Edit Resource" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-thumbs-up'></i>{% trans "Edit Suggested Resource" %}</h2>
+</div>
+
+<div class='body'>
+
+    <form method="POST" class="resource-form">
+        {% csrf_token %}
+
+        <div class="tab-content">
+            <div id="tab-data" class="tab-pane active">
+                <fieldset id="metadata">
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {{ form.non_field_errors }}
+                    {% for field in form.visible_fields %}
+                        <label for="{{ field.auto_id }}">
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+                        <p class="muted">{{ field.help_text }}</p>
+                        {{ field.errors }}
+                        {{ field }}
+                    {% endfor %}
+                </fieldset>
+
+                {% comment %}Display resource administrative information{% endcomment %}
+
+                <div class="alert alert-info">
+                    <p>{% trans "Posted on" %}: <strong>{{ resource.created_time|date:"d/m/y@f" }}</strong></p>
+                </div>
+
+            </div>
+
+            <div class="control-panel form-submit">
+                <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
