@@ -17,7 +17,11 @@ if mfn=1 then '['/ fi,
             if p(v341) then c8,'"time_period_textual": ','"',v341,'",'/, fi,
             if p(v361) then c8,'"objective": ','"',v361,'",'/, fi,
             c8,'"cooperative_center_code": ','"BR1.1",'/
-            
+
+
+            if p(v391) then c8,'"created_time": ','"', v391.4'-'v391*4.2'-'v391*6.2 , 'T09:00:00-03:00",'/, fi,
+            if p(v393) then c8,'"updated_time": ','"', v393.4'-'v393*4.2'-'v393*6.2 , 'T09:00:00-03:00",'/, fi,
+
             c8,'"created_by": ','1'/
        c4,'}',/
     '}'    
