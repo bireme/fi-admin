@@ -33,6 +33,7 @@ class ResourceAPI(ModelResource):
         fq = request.GET.get('fq', '')
         start = request.GET.get('start', '')
         count = request.GET.get('count', '')
+        sort = request.GET.get('sort', 'created_date desc')
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -44,7 +45,7 @@ class ResourceAPI(ModelResource):
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': 'lis', 'col': 'main','op': 'search', 
-                    'output': 'site', 'lang': 'pt', 'q': q , 'fq': fq,  'start': start, 'count': count}
+                    'output': 'site', 'lang': 'pt', 'q': q , 'fq': fq,  'start': start, 'count': count, 'sort': sort}
 
         r = requests.post(search_url, data=search_params)
 
