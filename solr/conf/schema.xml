@@ -147,7 +147,8 @@
    <field name="time_period_textual" type="string" indexed="false" stored="true"/>
    <field name="objective" type="text" indexed="true" stored="true"/>
    <field name="cooperative_center_code" type="string" indexed="true" stored="true"/>
-   <field name="created_date" type="string" indexed="false" stored="true"/>
+   <field name="created_date" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="updated_date" type="string" indexed="true" stored="true" multiValued="false"/>
    
    <field name="descriptor" type="decs_keyword" indexed="true" stored="true" multiValued="true"/>  
    

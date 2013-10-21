@@ -4,7 +4,7 @@ from django.conf import settings
 # form actions
 ACTIONS = {
     'orderby': 'id',
-    'order': '+',
+    'order': '-',
     'page': 1,
     's': "",
     'filter_owner': "",

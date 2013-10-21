@@ -22,6 +22,7 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     keyword = indexes.MultiValueField()
     status = indexes.IntegerField(model_attr='status')
     created_date = indexes.CharField()
+    updated_date = indexes.CharField()
 
     def get_model(self):
         return Resource
@@ -60,7 +61,10 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         return [keyword.text for keyword in Keyword.objects.filter(resource=obj.id, status=1)]
 
     def prepare_created_date(self, obj):
-        return obj.created_time.strftime('%d/%m/%Y')
+        return obj.created_time.strftime('%Y%m%d')
+
+    def prepare_updated_date(self, obj):
+        return obj.updated_time.strftime('%Y%m%d')
 
 
     def index_queryset(self, using=None):

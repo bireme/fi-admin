@@ -36,7 +36,7 @@
             {% if actions.s %}
                 <div>
                     {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-                    <a href="{% url 'main.views.resources' %}">[{% trans "clear" %}]</a>
+                    <a href="{% url 'main.views.list_resources' %}">[{% trans "clear" %}]</a>
                 </div>
             {% endif %}
 
@@ -54,6 +54,7 @@
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
                     <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
                     <th><a href="javascript:orderby('link');" id="id_link">{% trans "URL" %}</a></th>
+                    <th><a href="javascript:orderby('updated_time');" id="id_date">{% trans "Update date" %}</a></th>
                     <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
@@ -63,6 +64,9 @@
                             <td><a href="{% url 'main.views.create_edit_resource' resource.id %}">{{ resource.id }}</a></td>
                             <td><span title="{{ resource.title }}">{{ resource.title|slice:"50" }}{% if resource.title|length > 50 %}...{% endif %}</span></td>
                             <td><span title="{{ resource.link }}">{{ resource.link|slice:"50" }}{% if resource.link|length > 50 %}...{% endif %}</span></td>
+                            <td>
+                                {{ resource.updated_time|date:"d/m/y" }}
+                            </td>
                             <td>
                                 {% if resource.status == 0 %}
                                     <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
