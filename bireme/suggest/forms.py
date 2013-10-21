@@ -8,8 +8,12 @@ class SuggestResourceForm(forms.ModelForm):
 
     class Meta:
         model = SuggestResource
-        #fields = ['title', 'link', 'comments', 'keywords']
 
+
+class ExternalSuggestResourceForm(forms.ModelForm):
+    class Meta:
+        model = SuggestResource
+        exclude = ('status',)
 
     def clean_title(self):
         data = self.cleaned_data['title']

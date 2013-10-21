@@ -36,7 +36,7 @@ def suggest_resource(request, **kwargs):
     
     suggest = SuggestResource()
    
-    form = SuggestResourceForm(request.POST, instance=suggest)
+    form = ExternalSuggestResourceForm(request.POST, instance=suggest)
 
     # talk to the reCAPTCHA service  
     captcha_response = captcha.submit(  

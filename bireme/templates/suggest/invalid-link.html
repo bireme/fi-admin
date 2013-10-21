@@ -30,7 +30,7 @@
            <ul>           
            {% for field in form %}
                 {% if field.errors %}
-                    <li>{{ field.value }}         
+                    <li>{{ field.name }} : {{ field.value }}        
                         <div class="alert alert-error">
                         {% for error in field.errors %}
                             {{ error|escape }}

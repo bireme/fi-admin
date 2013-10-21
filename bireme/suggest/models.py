@@ -26,9 +26,9 @@ class SuggestResource(models.Model):
     # link (351)
     link = models.URLField(_('Link'), blank=False)
 
-    comments = models.TextField(_('Comments'), blank=True)
+    abstract = models.TextField(_('abstract'), blank=True)
 
-    keywords = models.CharField(_('Keywords'), max_length=255, blank=True)
+    keywords = models.TextField(_('Keywords'), blank=True)
 
     administrative_comments = models.TextField(_('Administrative comments'), blank=True)
 
