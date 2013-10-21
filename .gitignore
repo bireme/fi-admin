@@ -4,6 +4,7 @@
 *.sh
 settings_local.py
 database.db
+database.old
 fabric/environment.py
 biremelogin
 bireme/templates/version.txt
