@@ -12,7 +12,7 @@ if mfn=1 then '['/ fi,
             c8,'"originator_location": ','[30],',/
             if p(v315) then c8,'"author": ','"',(v315+|\r\n|),'",'/, fi,            
             if p(v317) then c8,'"source_language": ','[',(v317+|, |),'],',/, fi,
-            c8,'"source_type": ','[1],',/
+            if p(v318) then c8,'"source_type": ','[',(if size(v318) > 3 then '999' else v318+|, | fi),'],',/, fi,
             if p(v319) then c8,'"abstract": ','"',v319,'",'/, fi,
             if p(v341) then c8,'"time_period_textual": ','"',v341,'",'/, fi,
             if p(v361) then c8,'"objective": ','"',v361,'",'/, fi,

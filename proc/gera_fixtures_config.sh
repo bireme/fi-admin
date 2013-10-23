@@ -10,7 +10,8 @@ mx seq=g_source_language.seq create=g_source_language -all now
 
 # gizmo for source type
 mx config from=3 count=1 "pft=(if p(v318) then v318^e,'|',f(iocc,1,0) fi/)" now > g_source_type.seq
-mx seq=g_source_type.seq create=g_source_type -all now
+
+mx seq=g_source_type.seq gizmo=gansna,1 create=g_source_type -all now
 
 
 # convert to utf8
