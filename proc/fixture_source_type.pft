@@ -7,9 +7,20 @@
 	   fi,
 	   c4,'"fields": {',/	       
 	       c8,'"name": ','"',v318^e,'",'/
-	       c8,'"creator": ','1'/
+	       c8,'"created_by": ','1'/
 	   c4,'}',/
-    '}'	   
-    if iocc = nocc(v318) then else ',' fi,/
+    '},'
 )
+
+/* create a record for invalid values */
+
+'{',/
+	c4,'"pk": 999,'/
+	c4,'"model": ','"main.sourcetype",',/
+	c4,'"fields": {',/	       
+	   c8,'"name": ','"Other",'/
+	   c8,'"created_by": ','1'/
+	c4,'}',/
+'}',/
+
 ']'/
