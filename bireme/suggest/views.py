@@ -53,7 +53,6 @@ def suggest_resource(request, **kwargs):
         template = 'suggest/invalid-link.html'
         output['form'] = form
         output['captcha_error'] = captcha_response.error_code
-        print form.errors
     
     return render_to_response(template, output, context_instance=RequestContext(request))
 

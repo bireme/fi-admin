@@ -225,7 +225,7 @@ def list_thematics(request):
 
     thematics = thematics.order_by(actions["orderby"])
     if actions['order'] == "-":
-        thematics = thematic.order_by("%s%s" % (actions["order"], actions["orderby"]))
+        thematics = thematics.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
 
     # pagination
@@ -419,7 +419,7 @@ def list_languages(request):
 
     languages = languages.order_by(actions["orderby"])
     if actions['order'] == "-":
-        languages = thematic.order_by("%s%s" % (actions["order"], actions["orderby"]))
+        languages = languages.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
 
     # pagination
