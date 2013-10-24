@@ -7,6 +7,7 @@
 	   fi,
 	   c4,'"fields": {',/	       
 	       c8,'"name": ','"',v318^e,'",'/
+	       c8,'"language": ','"es",'/
 	       c8,'"created_by": ','1'/
 	   c4,'}',/
     '},'
@@ -18,7 +19,8 @@
 	c4,'"pk": 999,'/
 	c4,'"model": ','"main.sourcetype",',/
 	c4,'"fields": {',/	       
-	   c8,'"name": ','"Other",'/
+	   c8,'"name": ','"Otros",'/
+	   c8,'"language": ','"es",'/
 	   c8,'"created_by": ','1'/
 	c4,'}',/
 '}',/

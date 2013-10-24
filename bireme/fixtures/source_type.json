@@ -4,6 +4,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Bancos de imágenes",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -11,6 +12,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Base de datos - bibliográfica",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -18,6 +20,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Base de datos - factual",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -25,6 +28,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Base de datos - numérica en salud",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -32,6 +36,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Base de datos - secuencias genéticas",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -39,6 +44,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Base de datos - substancias químicas",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -46,6 +52,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Base de datos - terminológica",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -53,6 +60,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Base de datos - texto completo",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -60,6 +68,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Bibliografía",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -67,6 +76,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Biblioteca Virtual",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -74,6 +84,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Blogs",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -81,6 +92,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Informes epidemiológicos",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -88,6 +100,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Centros de información",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -95,6 +108,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Comunidades en línea",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -102,6 +116,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Congresos, Seminarios, Reuniones",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -109,6 +124,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Cuestiones respondidas con frecuencia - FAQ",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -116,6 +132,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Cursos",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -123,6 +140,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Datos y Mapas epidemiológicos",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -130,6 +148,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Directorio - fuentes de información",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -137,6 +156,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Directorio - institucional",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -144,6 +164,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Directorio - personal",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -151,6 +172,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Directorio - proyectos",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -158,6 +180,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Educación a distancia",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -165,6 +188,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Educación a distancia - programas",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -172,6 +196,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Educación continuada - programas",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -179,6 +204,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Educación continuada a distancia",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -186,6 +212,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Folletos y Carteles",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -193,6 +220,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Gráficos, tablas e ilustraciones",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -200,6 +228,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Guías, manuales, orientaciones de uso",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -207,6 +236,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Hospital virtual",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -214,6 +244,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Hotsite",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -221,6 +252,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Indicadores de Salud",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -228,6 +260,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Indicadores económicos",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -235,6 +268,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Informaciones para el público",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -242,6 +276,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Legislación",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -249,6 +284,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Listas de discusión",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -256,6 +292,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Mapas",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -263,6 +300,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Mobile",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -270,6 +308,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Noticias",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -277,6 +316,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Objetos de Aprendizaje",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -284,6 +324,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Planes de preparación",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -291,6 +332,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Programas de apoyo a la decisión",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -298,6 +340,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Publicaciones electrónicas - anales de congreso",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -305,6 +348,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Publicaciones electrónicas - documento gubernamental",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -312,6 +356,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Publicaciones electrónicas - hipertextos",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -319,6 +364,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Publicaciones electrónicas - monografía",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -326,6 +372,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Publicaciones electrónicas - multimediales",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -333,6 +380,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Publicaciones electrónicas - revista",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -340,6 +388,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Publicaciones electrónicas - tesis",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -347,6 +396,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Recursos de editoriales",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -354,6 +404,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "RSS",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -361,6 +412,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Servicios - diseminacion selectiva de informacion",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -368,6 +420,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Servicios - suministro de copias de documentos",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -375,6 +428,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Sitios Web - institucional",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -382,6 +436,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Sitios Web - personal",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -389,6 +444,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Terminología",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -396,6 +452,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Twitter",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -403,6 +460,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Universidad virtual",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -410,6 +468,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Videos y audios",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -417,6 +476,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Policy brief",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -424,6 +484,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Rapid response",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -431,6 +492,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Research synthesis",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -438,6 +500,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Planes de intervención en salud",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -445,6 +508,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Templates",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -452,6 +516,7 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Relato de experiencia práctica ",
+       "language": "es",
        "created_by": 1
    }
 },{
@@ -459,13 +524,15 @@
    "model": "main.sourcetype",
    "fields": {
        "name": "Redes sociales",
+       "language": "es",
        "created_by": 1
    }
 },{
    "pk": 999,
    "model": "main.sourcetype",
    "fields": {
-       "name": "Other",
+       "name": "Otros",
+       "language": "es",
        "created_by": 1
    }
 }
