@@ -1,0 +1,1542 @@
+[
+{
+   "model": "main.resourcethematic",
+   "pk": 999911,
+   "fields": {
+       "resource": 1,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999912,
+   "fields": {
+       "resource": 1,
+       "thematic_area": "21",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999913,
+   "fields": {
+       "resource": 1,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999914,
+   "fields": {
+       "resource": 1,
+       "thematic_area": "33",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999915,
+   "fields": {
+       "resource": 1,
+       "thematic_area": "54",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999916,
+   "fields": {
+       "resource": 1,
+       "thematic_area": "57",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999917,
+   "fields": {
+       "resource": 1,
+       "thematic_area": "60",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999918,
+   "fields": {
+       "resource": 1,
+       "thematic_area": "62",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999921,
+   "fields": {
+       "resource": 2,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999922,
+   "fields": {
+       "resource": 2,
+       "thematic_area": "13",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999923,
+   "fields": {
+       "resource": 2,
+       "thematic_area": "19",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999924,
+   "fields": {
+       "resource": 2,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999925,
+   "fields": {
+       "resource": 2,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999926,
+   "fields": {
+       "resource": 2,
+       "thematic_area": "33",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999927,
+   "fields": {
+       "resource": 2,
+       "thematic_area": "40",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999931,
+   "fields": {
+       "resource": 3,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999932,
+   "fields": {
+       "resource": 3,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999933,
+   "fields": {
+       "resource": 3,
+       "thematic_area": "52",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999941,
+   "fields": {
+       "resource": 4,
+       "thematic_area": "2",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999942,
+   "fields": {
+       "resource": 4,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999943,
+   "fields": {
+       "resource": 4,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999951,
+   "fields": {
+       "resource": 5,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999952,
+   "fields": {
+       "resource": 5,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999953,
+   "fields": {
+       "resource": 5,
+       "thematic_area": "52",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999961,
+   "fields": {
+       "resource": 6,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999962,
+   "fields": {
+       "resource": 6,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999963,
+   "fields": {
+       "resource": 6,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999964,
+   "fields": {
+       "resource": 6,
+       "thematic_area": "38",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999965,
+   "fields": {
+       "resource": 6,
+       "thematic_area": "41",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999966,
+   "fields": {
+       "resource": 6,
+       "thematic_area": "60",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999971,
+   "fields": {
+       "resource": 7,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999972,
+   "fields": {
+       "resource": 7,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999973,
+   "fields": {
+       "resource": 7,
+       "thematic_area": "41",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999974,
+   "fields": {
+       "resource": 7,
+       "thematic_area": "52",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999981,
+   "fields": {
+       "resource": 8,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999982,
+   "fields": {
+       "resource": 8,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 999991,
+   "fields": {
+       "resource": 9,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999101,
+   "fields": {
+       "resource": 10,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999111,
+   "fields": {
+       "resource": 11,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999121,
+   "fields": {
+       "resource": 12,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999131,
+   "fields": {
+       "resource": 13,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999141,
+   "fields": {
+       "resource": 14,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999151,
+   "fields": {
+       "resource": 15,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999161,
+   "fields": {
+       "resource": 16,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999171,
+   "fields": {
+       "resource": 17,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999181,
+   "fields": {
+       "resource": 18,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999191,
+   "fields": {
+       "resource": 19,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999201,
+   "fields": {
+       "resource": 20,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999202,
+   "fields": {
+       "resource": 20,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999203,
+   "fields": {
+       "resource": 20,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999204,
+   "fields": {
+       "resource": 20,
+       "thematic_area": "47",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999211,
+   "fields": {
+       "resource": 21,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999212,
+   "fields": {
+       "resource": 21,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999213,
+   "fields": {
+       "resource": 21,
+       "thematic_area": "26",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999221,
+   "fields": {
+       "resource": 22,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999222,
+   "fields": {
+       "resource": 22,
+       "thematic_area": "25",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999223,
+   "fields": {
+       "resource": 22,
+       "thematic_area": "46",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999224,
+   "fields": {
+       "resource": 22,
+       "thematic_area": "52",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999231,
+   "fields": {
+       "resource": 23,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999232,
+   "fields": {
+       "resource": 23,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999241,
+   "fields": {
+       "resource": 24,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999242,
+   "fields": {
+       "resource": 24,
+       "thematic_area": "21",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999243,
+   "fields": {
+       "resource": 24,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999251,
+   "fields": {
+       "resource": 25,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999252,
+   "fields": {
+       "resource": 25,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999253,
+   "fields": {
+       "resource": 25,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999254,
+   "fields": {
+       "resource": 25,
+       "thematic_area": "54",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999255,
+   "fields": {
+       "resource": 25,
+       "thematic_area": "57",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999256,
+   "fields": {
+       "resource": 25,
+       "thematic_area": "60",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999261,
+   "fields": {
+       "resource": 26,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999262,
+   "fields": {
+       "resource": 26,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999263,
+   "fields": {
+       "resource": 26,
+       "thematic_area": "38",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999271,
+   "fields": {
+       "resource": 27,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999272,
+   "fields": {
+       "resource": 27,
+       "thematic_area": "33",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999281,
+   "fields": {
+       "resource": 28,
+       "thematic_area": "57",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999291,
+   "fields": {
+       "resource": 29,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999292,
+   "fields": {
+       "resource": 29,
+       "thematic_area": "14",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999293,
+   "fields": {
+       "resource": 29,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999294,
+   "fields": {
+       "resource": 29,
+       "thematic_area": "33",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999295,
+   "fields": {
+       "resource": 29,
+       "thematic_area": "57",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999296,
+   "fields": {
+       "resource": 29,
+       "thematic_area": "60",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999301,
+   "fields": {
+       "resource": 30,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999302,
+   "fields": {
+       "resource": 30,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999303,
+   "fields": {
+       "resource": 30,
+       "thematic_area": "33",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999304,
+   "fields": {
+       "resource": 30,
+       "thematic_area": "57",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999305,
+   "fields": {
+       "resource": 30,
+       "thematic_area": "60",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999311,
+   "fields": {
+       "resource": 31,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999312,
+   "fields": {
+       "resource": 31,
+       "thematic_area": "21",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999313,
+   "fields": {
+       "resource": 31,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999314,
+   "fields": {
+       "resource": 31,
+       "thematic_area": "33",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999315,
+   "fields": {
+       "resource": 31,
+       "thematic_area": "57",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999316,
+   "fields": {
+       "resource": 31,
+       "thematic_area": "60",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999321,
+   "fields": {
+       "resource": 32,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999322,
+   "fields": {
+       "resource": 32,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999323,
+   "fields": {
+       "resource": 32,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999331,
+   "fields": {
+       "resource": 33,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999332,
+   "fields": {
+       "resource": 33,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999333,
+   "fields": {
+       "resource": 33,
+       "thematic_area": "47",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999341,
+   "fields": {
+       "resource": 34,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999342,
+   "fields": {
+       "resource": 34,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999343,
+   "fields": {
+       "resource": 34,
+       "thematic_area": "41",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999344,
+   "fields": {
+       "resource": 34,
+       "thematic_area": "47",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999351,
+   "fields": {
+       "resource": 35,
+       "thematic_area": "47",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999361,
+   "fields": {
+       "resource": 36,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999362,
+   "fields": {
+       "resource": 36,
+       "thematic_area": "38",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999371,
+   "fields": {
+       "resource": 37,
+       "thematic_area": "10",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999372,
+   "fields": {
+       "resource": 37,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999373,
+   "fields": {
+       "resource": 37,
+       "thematic_area": "13",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999374,
+   "fields": {
+       "resource": 37,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999375,
+   "fields": {
+       "resource": 37,
+       "thematic_area": "47",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999381,
+   "fields": {
+       "resource": 38,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999382,
+   "fields": {
+       "resource": 38,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999391,
+   "fields": {
+       "resource": 39,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999392,
+   "fields": {
+       "resource": 39,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999393,
+   "fields": {
+       "resource": 39,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999394,
+   "fields": {
+       "resource": 39,
+       "thematic_area": "47",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999401,
+   "fields": {
+       "resource": 40,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999402,
+   "fields": {
+       "resource": 40,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999411,
+   "fields": {
+       "resource": 41,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999412,
+   "fields": {
+       "resource": 41,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999413,
+   "fields": {
+       "resource": 41,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999421,
+   "fields": {
+       "resource": 42,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999422,
+   "fields": {
+       "resource": 42,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999431,
+   "fields": {
+       "resource": 43,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999432,
+   "fields": {
+       "resource": 43,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999441,
+   "fields": {
+       "resource": 44,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999442,
+   "fields": {
+       "resource": 44,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999451,
+   "fields": {
+       "resource": 45,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999452,
+   "fields": {
+       "resource": 45,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999453,
+   "fields": {
+       "resource": 45,
+       "thematic_area": "29",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999454,
+   "fields": {
+       "resource": 45,
+       "thematic_area": "33",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999455,
+   "fields": {
+       "resource": 45,
+       "thematic_area": "57",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999456,
+   "fields": {
+       "resource": 45,
+       "thematic_area": "60",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999461,
+   "fields": {
+       "resource": 46,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999462,
+   "fields": {
+       "resource": 46,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999463,
+   "fields": {
+       "resource": 46,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999471,
+   "fields": {
+       "resource": 47,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999472,
+   "fields": {
+       "resource": 47,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999481,
+   "fields": {
+       "resource": 48,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999482,
+   "fields": {
+       "resource": 48,
+       "thematic_area": "13",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999483,
+   "fields": {
+       "resource": 48,
+       "thematic_area": "19",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999484,
+   "fields": {
+       "resource": 48,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999491,
+   "fields": {
+       "resource": 49,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999492,
+   "fields": {
+       "resource": 49,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999493,
+   "fields": {
+       "resource": 49,
+       "thematic_area": "33",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999494,
+   "fields": {
+       "resource": 49,
+       "thematic_area": "41",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999495,
+   "fields": {
+       "resource": 49,
+       "thematic_area": "57",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999496,
+   "fields": {
+       "resource": 49,
+       "thematic_area": "60",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999501,
+   "fields": {
+       "resource": 50,
+       "thematic_area": "12",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999502,
+   "fields": {
+       "resource": 50,
+       "thematic_area": "13",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999503,
+   "fields": {
+       "resource": 50,
+       "thematic_area": "24",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999504,
+   "fields": {
+       "resource": 50,
+       "thematic_area": "35",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999505,
+   "fields": {
+       "resource": 50,
+       "thematic_area": "41",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.resourcethematic",
+   "pk": 9999506,
+   "fields": {
+       "resource": 50,
+       "thematic_area": "47",
+       "status": 1,
+       "created_by": 1
+   }
+}
+]
