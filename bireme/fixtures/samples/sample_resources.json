@@ -1,0 +1,950 @@
+[
+{
+   "pk": 1,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "DATASUS",
+       "link": "http://www.datasus.gov.br",
+       "originator": "Brasil. Ministério da Saúde. Secretaria Executiva. Sistema Único de Saúde. Departamento de Informação e Informática - DATASUS.",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [54],
+       "abstract": "Informações sobre o Sistema Único de Saúde (SUS) do Ministério da Saúde. Contém apresentação e objetivos, permite download de softwares para criar tabelas, dados numéricos, produtos e serviços, cadastramento de planos de saúde, Consórcio de Componentes de software para Sistemas de Informação em Saúde.",
+       "objective": "Prover os órgãos do SUS de sistemas de informação e suporte de informática necessários ao processo de planejamento, operação e controle do Sistema Único de Saúde, através da manutenção de bases de dados nacionais, apoio e consultoria na implantação de sistemas e coordenação das atividades de informática inerentes ao funcionamento integrado dos mesmos.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-01-07T09:00:00-03:00",
+       "updated_time": "2012-05-31T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 2,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "SciELO: Scientific Electronic Library",
+       "link": "http://www.scielo.org/\r\nhttp://www.scielo.org/php/index.php?lang=pt\r\nhttp://www.scielo.org/php/index.php?lang=es\r\nhttp://www.scielo.org/php/index.php?lang=en",
+       "originator": "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde - BIREME\r\nOrganização Pan-Americana da Saúde\r\nFundação de Amparo a Pesquisa do Estado de São Paulo\r\nFAPESP",
+       "originator_location": [30],
+       "source_language": [2, 3, 6],
+       "source_type": [48],
+       "abstract": "SciELO é uma biblioteca virtual que abrange uma coleção selecionada de periódicos científicos brasileiros. A SciELO é a aplicação de um projeto de pesquisa da Fundação de Amparo à Pesquisa do Estado de São Paulo - FAPESP, em parceria com o Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde - BIREME. O site descreve os antecedentes, objetivos e métodos do projeto, bem como o seu desenvolvimento.",
+       "time_period_textual": "2008",
+       "objective": "O Projeto tem por objetivo o desenvolvimento de uma metodologia comum para a preparação, armazenamento, disseminação e avaliação da produção científica em formato eletrônico.O objetivo deste site é implementar uma biblioteca eletrônica que possa proporcionar um amplo acesso a coleções de periódicos como um todo, aos fascículos de cada título de periódico, assim como aos textos completos dos artigos. O acesso aos títulos dos periódicos e aos artigos pode ser feito através de índices e de formulários de busca",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-01-08T09:00:00-03:00",
+       "updated_time": "2013-03-22T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 3,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Acta Cirúrgica Brasileira",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0102-8650&lng=en&nrm=iso",
+       "originator": "Sociedade Brasileira para o Desenvolvimento da Pesquisa em Cirurgia",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [48],
+       "abstract": "Revista publicada pela Sociedade Brasileira para o Desenvolvimento da Pesquisa em Cirurgia para divulgação científica de artigos em pesquisa básica e aplicada em cirurgia, novas técnicas cirúrgicas, revisões relacionadas à pesquisa em cirurgia, artigos sobre o ensino e avanços em cirurgia. Disponível gratuitamente. Coleção eletrônica inicia em 1998",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-01-08T09:00:00-03:00",
+       "updated_time": "2011-11-24T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 4,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Brazilian Journal of Medical and Biological Research",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0100-879X&lng=en&nrm=iso",
+       "originator": "Associação Brasileira de Divulgação Científica",
+       "originator_location": [30],
+       "source_language": [2],
+       "source_type": [48],
+       "abstract": "Artigos que representam resultados de pesquisa inédita e que contribuam significativamente para o progresso do conhecimento em ciências médicas e biológicas. Disponível gratuitamente. Coleção eletrônica inicia em 1997",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-01-08T09:00:00-03:00",
+       "updated_time": "2008-02-12T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 5,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Genetics and Molecular Biology",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=1415-4757&lng=en&nrm=iso",
+       "originator": "Sociedade Brasileira de Genética",
+       "originator_location": [30],
+       "source_language": [2],
+       "source_type": [48],
+       "abstract": "A Genetics and Molecular Biology é a nova revista publicada quadrimestralmente pela Sociedade Brasileira de Genética (Brazilian Genetics Society), em substituição ao Brazilian Journal of Genetics. Disponível gratuitamente. Publicação eletrônica inicia em 1998",
+       "objective": "Seu objetivo é publicar os resultados de pesquisas inéditas em evolução, genética, biologia molecular e suas aplicações no desenvolvimento de plantas, animais e bem-estar humano.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-01-08T09:00:00-03:00",
+       "updated_time": "2011-11-24T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 6,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Memórias do Instituto Oswaldo Cruz",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0074-0276&lng=en&nrm=iso",
+       "originator": "Brasil. Ministério da Saúde. Instituto Oswaldo Cruz",
+       "originator_location": [30],
+       "source_language": [2],
+       "source_type": [48],
+       "abstract": "Revista internacional de pesquisas biológicas e  biomédicas publicadas a cada dois meses pelo Instituto Oswaldo Cruz e incentiva contribuições originais de cientistas pesquisadores de todo o mundo. Disponível gratuitamente. Publicação eletrônica inicia em 1997.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-01-08T09:00:00-03:00",
+       "updated_time": "2009-02-26T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 7,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Brazilian Journal of Genetics",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0100-8455&lng=en&nrm=iso",
+       "originator": "Sociedade Brasiliera de Genética",
+       "originator_location": [30],
+       "source_language": [2],
+       "source_type": [48],
+       "abstract": "A Brazilian Journal of Genetics (título paralelo é Revista Brasileira de Genética) foi publicada pela Sociedade Brasileira de Genética entre 1978 e 1997, vol. 1 ao vol. 20. Em 1998, a revista muda seu título para Genetics and Molecular Biology, mantendo a seqüência de sua numeração, ou seja, inicia em março de 1998, vol. 21, número 1. A Brazilian Journal of Genetics, revista quadrimestral, tem por objetivo publicar os resultados de pesquisas originais nas áreas de evolução e genética, bem como sua aplicação no aperfeiçoamento de plantas, animais e do bem-estar de seres humanos. É indexada por: Current Contents / Life Sciences; Science Citation Index; Biological Abstracts; Excerpta Medica; Genetics Abstracts; Animal Breeding Abstracts; Plant Breeding Abstracts; Chemical Abstracts; Referativnyi Zhurnal (Abstracts Journal, Russia); Periódica (México). Apresenta resumos em português e inglês. Disponível gratuitamente. Publicação eletrônica inicia em 1997",
+       "objective": "Publicar os resultados de pesquisas originais nas áreas de evolução e genética, bem como sua aplicação no aperfeiçoamento de plantas, animais e do bem-estar de seres humanos",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-19T09:00:00-03:00",
+       "updated_time": "2010-10-01T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 8,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Ciência e Tecnologia de Alimentos",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0101-2061&lng=en&nrm=iso",
+       "originator": "Sociedade Brasileira de Ciência e Tecnologia de Alimentos",
+       "originator_location": [30],
+       "source_language": [2, 6],
+       "source_type": [48],
+       "abstract": "Ciência e Tecnologia de Alimentos, de periodicidade quadrimestral, é publicada pela Sociedade Brasileira de Ciência e Tecnologia de Alimentos, com o objetivo de divulgar artigos e comunicações científicas na área de alimentos. O título abreviado da revista é Ci. Tecnol. Aliment., forma que deve ser usada em bibliografias, notas de rodapé, referências e legendas bibliográficas. Os artigos publicados pela revista são resumidos ou indexados em: Food Science and Technology Abstracts (FSTA); CAB International; Agriris; Chemical Abstracts; Peri. Apresenta resumos em português e inglês. Disponível gratuitamente. Publicação eletrônica inicia em 1997",
+       "objective": "Publicar artigos e comunicações científicas na área de alimentos",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-19T09:00:00-03:00",
+       "updated_time": "2007-01-15T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 9,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Mestrado Profissionalizante InCor para Médicos de Família.",
+       "link": "http://www.uol.com.br/intramed/incor/med_familia/mestr_fam.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Cinicas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso profissionalizante para médicos de família elaborado através de leitura de resumos dos artigos das principais revistas da área pertencentes ao acervo da Biblioteca do InCor; artigos publicados pela equipe InCor; teses defendidas pelo InCor; trabalhos apresentados pelo InCor. Diagnósticos. Discussão de casos. Artigos de revisão com questões de auto avaliação. Segunda opinião sobre casos cínicos e revisões. Telemedicina. Estudos multicêntricos. Testes presenciais. Dissertação final. Créditos.Custo:R$1500,00 por mês",
+       "objective": "Reciclar médicos de família e clínicos gerais em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-03T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 10,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Educação Médica Continuada InCor em Cardiologia",
+       "link": "http://www.uol.com.br/intramed/incor/ensino/emc_cardio.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Clinicas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso de educação médica continuada em cardiologia elaborado através de leitura dos resumos dos artigos das principais revistas de cardiologia pertencentes ao acervo da Biblioteca do InCor; artigos publicados pela equipe do InCor; teses defendidas pelo InCor; trabalhos apresentados pelo InCor. Diagnósticos de radiografias, ultrassonografias, tomografias e ressonâncias e ECG. Segunda oponião sobre casos clínicos e revisões. Telemedicina. Custo: R$30,00 por mês",
+       "objective": "Reciclar cardiologistas em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-03T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 11,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Mestrado Profissionalizante InCor em Cardiologia",
+       "link": "http://www.uol.com.br/intramed/incor/ensino/mestrado.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso de mestrado em cardiologia elaborado através de leitura dos resumos dos artigos das principais revistas de cardiologia pertencentes ao acervo da Biblioteca do InCor; artigos publicados pela equipe do InCor; teses defendidas pelo InCor; trabalhos apresentados pelo InCor em Congressos nacionais e internacionais. Discussão de casos anátomo-clínicos cirurgicos. Outras formas de atualização: cursos e conferências do InCor online, vídeos realizados pela equipe do InCor.Artigos de revisão com questionários de auto avaliação. Segunda opinião sobre revisões e casos clínicos. Telemedicina. Estudos multicêntricos. Testes presenciais. Dissertação final. Créditos. Custo: R$1500,00 por mês",
+       "objective": "Reciclar cardiologistas em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-03T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 12,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Educação Médica a Distância InCor em Cardiologia",
+       "link": "http://www.uol.com.br/intramed/incor/ensino/emd_cardio.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Clínicas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso de educação médica a distância em cardiologia elaborado através de leitura de resumos dos artigos das principais revistas de cardiologia pertencentes ao acervo da Biblioteca do InCor. Artigos publicados pela epquipe do InCor. Teses defendidas pelo InCor. Trabalhos apresentados pelo InCor em Congressos Nacionais e Internacionais. Diagnósticos de radiografias, ultrassonografias, tomografias e ressonâncias e ECG. Discussão de casos anátomo-clínicos, cirurgicos. Cursos e conferências do InCor online. Vídeos realizados pela equipe do InCor. Artigos de revisão com questionários de auto avaliação. Segunda opinião sobre casos clínicos e revisões. Telemedicina. Estudos multicêntricos. Custo: R$130,00 por mês",
+       "objective": "Reciclar cardiologistas em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-03T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 13,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Educação Médica Continuada InCor em Clínica Geral",
+       "link": "http://www.uol.com.br/intramed/incor/ensino/emc_clinica.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Clinícas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso de educação médica continuada para clínicos gerais elaborado através de leitura de resumos dos artigos das principais revistas  da área pertencentes ao acervo da Biblioteca do InCor. Artigos Publicados pela equipe do InCor. Teses defendidas pelo InCor. Trabalhos apresentados pelo InCor em Congressos Nacionais e Internacionais. Diagnósticos de radiografias, ultrassonografias, tomografias e ressonâncias e ECG. Segunda opinião relativas às revisões e sobre casos clínicos. Telemedicina. Custo:R$30,00 por mês",
+       "objective": "Reciclar clínicos gerais em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-03T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 14,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Educação Médica a distância InCor em Clínica Geral",
+       "link": "http://www.uol.com.br/intramed/incor/ensino/emd_clinica.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Clinicas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso de educação médica a distância para médicos clínicos gerais elaborado através de leitura dos resumos dos artigos das principais revistas da área pertencentes ao acervo da Biblioteca do InCor. Artigos publicados pela equipe do InCor. Teses defendidas no InCor. Trabalhos apresentados pelo InCor em Congressos Nacionais e Internacionais. Diagnóstico de radiografias, ultrassonografias e ressonâncias e ECG.Discussão de casos anátomo-clínicos cirúrgicosde diversas patologias. Cursos e conferências do InCor online. Vídeos realizados pela equipe do InCor. Artigos de revisão com questionários de auto-avaliação. Segunda opinião relativa às revisões e sobre casos clínicos. Telemedicina.Custo:R$130,00 por mês",
+       "objective": "Reciclar clínicos gerais em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-04T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 15,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Educação Médica a distância InCor para Médicos de família",
+       "link": "http://www.uol.com.br/intramed/incor/med_familia/emdfamilia.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Clínicas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso de educação médica a distância para médicos de família elaborado através de leitura dos resumos das principais revistas da área pertencentes ao acervo da Biblioteca do InCor; artigos publicados pela equipe do InCor; teses defendidas no InCor; trabalhos apresentados pelo InCor em Congressos Nacionais e Internacionais. Diagnósticos de radiografias, ultrassonografias, tomografias e ressonâncias e ECG. Discussão de casos anátomo-clínicos cirúrgicos. Cursos e conferências do InCor on line. Vídeos médicos realizados com a equipe do InCor. Artigos de revisão com Questionários de auto-avaliação. Segunda opinião sobre casos clínicos e revisões. Telemedicina. Estudos multicêntricos. Custo:R$130,00 por mês",
+       "objective": "Reciclar médicos clínicos gerais em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-05T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 16,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Educação Médica Continuada InCor na área de Saúde",
+       "link": "http://www.uol.com.br/intramed/incor/ensino/ensino.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Clínicas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso de educação médica continuada na área de saúde dirigido a profissionais das áreas de: Nutrição, Enfermagem, Enfermagem em UTI, Condicionamento físico e Psicologia. O conteúdo baseia-se na atualização através da leitura dos resumos dos artigos das principais revistas nacionais e internacionais de cada área; trabalhos da equipe do InCor. Custo: R$20,00 por mês. Não há créditos",
+       "objective": "Reciclar nutricionistas, enfermeiros, psicólogos e fisioterapeutas em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-05T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 17,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Educação Médica Continuada InCor na área de Saúde",
+       "link": "http://www.uol.com.br/intramed/incor/ensino/ensino.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Clinicas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso de educação médica continuada na área de saúde dirigido a profissionais das áreas de: Nutrição, Enfermagem, Enfermagem em UTI, Condicionamento físico e Psicologia. O conteúdo do curso baseia-se na atualizacão através da leitura dos resumos dos artigos das principais revistas nacionais e internacionais de cada área; dos trabalhos da equipe do InCor;  exercícios práticos; revisões e discussões de casos clínicos. Custo: R$50,00 por mês",
+       "objective": "Reciclar nutricionistas, enfermeiros, psicólogos e fisioterapeutas em suas praticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-05T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 18,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Mestrado Profissionalizante na área de Sáude",
+       "link": "http://www.uol.com.br/intramed/incor/ensino/ensino.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Clínicas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Mestrado profissionalizante na área de saúde dirigido aos profissionais das áreas de: Nutrição, Enfermagem, Condicionamento físico e Psicologia. O conteúdo do curso baseia-se na atualizacão através da leitura dos resumos dos artigos das principais revistas nacionais e internacionais de cada área; dos trabalhos da equipe do InCor; exercícios práticos; revisões e discussões de casos clínicos; testes presenciais e dissertação final. Custo: R$1200,00 por mês",
+       "objective": "Reciclar nutricionistas, enfermeiros, psicólogos e fisioterapeutas em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-10T09:00:00-03:00",
+       "updated_time": "2000-01-24T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 19,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Educação Médica Continuada InCor pra Médicos de Família",
+       "link": "http://www.uol.com.br/intramed/incor/ensino/ensino.htm",
+       "originator": "Instituto do Coração\r\nInCor\r\nHospital das Clínicas\r\nFaculdade de Medicina\r\nUniversidade de São Paulo",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [999],
+       "abstract": "Curso de educação médica continuada para médicos de família elaborado através de leitura dos resumos dos artigos das principais revistas da área pertencentes ao acervo da Biblioteca do InCor; artigos publicados pela equipe do InCor; teses defendidas pelo InCor; trabalhos apresentados pelo InCor em Congressos. Diagnósticos de radiografias, ultrassonografias e ressonâncias e ECG. Segunda opinião sobre casos clínicos e revisões. Telemedicina. Custo: R$30,00 po mês",
+       "objective": "Reciclar médicos de família e clínicos gerias em suas práticas diárias",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-10T09:00:00-03:00",
+       "updated_time": "1999-06-30T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 20,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "UNIFESP Virtual.",
+       "link": "http://www.virtual.epm.br/home/index.htm",
+       "originator": "Universidade Federal de São Paulo. Escola Paulista de Medicina. Departamento de Informática em Saúde. UNIFESP. EPM. DIS",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [58],
+       "abstract": "Ambiente de ensino para prover conhecimento na área da Saúde, apoiado pelo uso de tecnologias de informação, computação e telecomunicação, permitindo o aprendizado a distância.",
+       "objective": "Criar um ambiente de aprendizado para promover o conhecimento na área da saúde através do ensino a distância.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-19T09:00:00-03:00",
+       "updated_time": "2009-11-19T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 21,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Revista Psicologia USP",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0103-6564&lng=pt&nrm=iso",
+       "originator": "Universidade de São Paulo. Instituto de Psicologia",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [48],
+       "abstract": "Apresenta artigos de reflexão e ensaios com ênfase a tópicos clássicos da Psicologia como Memória, Família, Consciência, Saúde Mental, Inconsciente e Alteridade. Disponível gratuitamente. Publicação eletrônica semestral iniciada em 1997. Editada desde 1990.",
+       "objective": "Publicar trabalhos originais e inéditos que contribuam para o conhecimento e desenvolvimento da Psicologia e ciências afins.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-18T09:00:00-03:00",
+       "updated_time": "2007-11-21T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 22,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Journal of Venomous Animals and Toxins.",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0104-7930&lng=en&nrm=iso",
+       "originator": "Universidade Estadual Paulista. Centro de Estudos de Venenos e Animais Peçonhentos - UNESP / CEVAP",
+       "originator_location": [30],
+       "source_language": [2],
+       "source_type": [48],
+       "abstract": "Revista eletrônica interdisciplinar, semestral, em Inglês, dedicada à pesquisa de diferentes aspectos dos venenos e derivados dos animais peçonhentos. Publicação eletrônica iniciada em 1995.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-19T09:00:00-03:00",
+       "updated_time": "2011-09-02T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 23,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Revista Brasileira de Cirurgia Cardiovascular",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0102-7638&lng=en&nrm=iso",
+       "originator": "Sociedade Brasileira de Cirurgia Cardiovascular",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [48],
+       "abstract": "RBCCV é o órgão oficial da Sociedade Brasileira de Cirurgia Cardiovascular(SBCCV), associação que surgiu em 1969 como Departamento de Cirurgia Cardiovascular da Sociedade Brasileira de Cardiologia (SBC), congregando os cirurgiões cardiovasculares do Brasil, e tendo como seu presidente o Prof. E. J. Zerbini, e como secretário geral o Prof. Adib D. Jatene. De 1987 a 1991 a revista foi quadrimestral e, de 1992 até o presente, é publicada trimestralmente (quatro por ano), e distribuída gratuitamente a todos os membros da Sociedade. Disponível gratuitamente. Publicação eletrônica inicia em 1997",
+       "objective": "Sua finalidade precípua é a publicação de trabalhos representativos em cirurgia cardiovascular, incluindo textos originais, pioneiros, de pesquisa, atualização, relatos de caso e também a experiência apresentada no Congresso Nacional de Cirurgia Cardíaca",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-22T09:00:00-03:00",
+       "updated_time": "2007-01-02T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 24,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Revista de Odontologia da Universidade de São Paulo",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0103-0663&lng=en&nrm=iso",
+       "originator": "Universidade de São Paulo\r\nFaculdade de Odontologia",
+       "originator_location": [30],
+       "source_language": [2, 6],
+       "source_type": [48],
+       "abstract": "É publicada trimestralmente em janeiro, abril, julho e outubro pela Faculdade de Odontologia da Universidade de São Paulo, com o objetivo de publicar trabalhos de pesquisa básica e aplicada e artigos de divulgação e de atualização. Publicada desde 1987, o título abreviado da revista é Rev. Odontol. Univ. São Paulo, forma que deve ser usada em bibliografias, notas de rodapé, referências e legendas bibliográficas. Disponível gratuitamente. Publicação eletrônica inicia em 1997",
+       "objective": "Publicar trabalhos de pesquisa básica e aplicada, bem como artigos de divulgação e de atualização científica",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-23T09:00:00-03:00",
+       "updated_time": "2007-01-15T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 25,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Revista de Saúde Pública",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0034-8910&lng=en&nrm=iso",
+       "originator": "Universidade de São Paulo. Faculdade de Saúde Pública",
+       "originator_location": [30],
+       "source_language": [2, 6],
+       "source_type": [48],
+       "abstract": "Publica resultados de pesquisas originais, revisões, comentários e notas científicas. É especializada no campo da saúde pública, nas várias áreas multidisciplinares que a compõem, com ênfase em epidemiologia. Iniciada em 1967, é publicada bimestralmente. Publicação eletrônica iniciada em 1997.",
+       "objective": "Publicar resultados de pesquisas originais, revisões, comentários e notas científicas no campo da saúde pública, com ênfase em epidemiologia",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-22T09:00:00-03:00",
+       "updated_time": "2011-07-25T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 26,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Revista do Instituto de Medicina Tropical de São Paulo",
+       "link": "http://www.scielo.br/scielo.php?script=sci_serial&pid=0036-4665&lng=en&nrm=iso",
+       "originator": "Instituto de Medicina Tropical",
+       "originator_location": [30],
+       "source_language": [2],
+       "source_type": [48],
+       "abstract": "Criada em 1959 pelo professor Luiz Rey, seu editor até 1964 quando foi sucedido pelo Prof. Carlos da Silva Lacaz. O professor Thales de Brito tornou-se o editor em setembro de 1985, e em 1996, juntou-se a ele o professor Dr. Pedro Paulo Chieffi como editor associado. Publicada em inglês, a revista é dedicada principalmente a divulgar artigos que tratem de pesquisa em doenças tropicais e ciências relacionadas. A revista, que tem periodicidade bimestral, sendo publicada sem interrupção desde 1959, é distribuída aos principais centros de pesquisa brasileiros e internacionais, e também a universidades, hospitais etc., constituindo-se uma das mais antigas publicações brasileiras na área. Rev. Inst. Med. Trop. São Paulo é a abreviatura do título da revista para ser usada em referências, bibliografias, notas de rodapé e legendas bibliográficas. Disponivel gratuitamente. Versão eletrônica tem início em 1997",
+       "objective": "Publicar artigos de pesquisa nas áreas de doenças tropicais e ciências relacionadas",
+       "cooperative_center_code": "BR1.1",
+       "updated_time": "2009-02-26T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 27,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Sistema Único de Saúde",
+       "link": "http://w3.datasus.gov.br/datasus/index.php\r\nhttp://www.datasus.gov.br/",
+       "originator": "Brasil. Ministério da Saúde. Sistema Único de Saúde. Departamento de Informática",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [54],
+       "abstract": "Site institucional de responsabilidade do Departamento de Informática do SUS, DATASUS para viabilização de informação coletada e tratada para subsidiar o Sistema Único de Saúde (SUS) do Ministério da Saúde. Dividido em seções como: apresentação - contendo a missão e objetivos; informações de saúde - indicadores e dados básicos do Brasil referentes a mortalidade, imunizações, nascidos vivos, saúde bucal, morbidade hospitalar, rede ambulatorial, rede hospitalar, população residente, alfabetização, abastecimento de água, instalações sanitárias, coleta de lixo; produtos e serviços para subsidiar a criação do SIS - Sistema Nacional de Informação em Saúde; bases de dados - consultas ao BDAIH; setor para transferência de arquivos por FTP; Consórcio de componentes de software para sistemas de informação em saúde; Rede Naional de informações em Saúde; Sistema de registro de planos ou seguros de saúde",
+       "objective": "Sendo um órgão de informática de âmbito nacional, representa papel importante como centro tecnológico de suporte técnico e normativo para a montagem dos sistemas de informática e informação da Saúde. Suas extensões regionais constituem a linha de frente no suporte técnico às Secretarias Estaduais e Municipais de Saúde. Sua missão é: Prover os órgãos do SUS de sistemas de informação e suporte de informática necessários ao processo de planejamento, operação e controle do Sistema Único de Saúde, através da manutenção de bases de dados nacionais, apoio e consultoria na implantação de sistemas e coordenação das atividades de informática inerentes ao funcionamento integrado dos mesmos",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-23T09:00:00-03:00",
+       "updated_time": "2009-08-11T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 28,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Informações sobre mortalidade",
+       "link": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sim/cnv/obtuf.def",
+       "originator": "Brasil. Ministério da Saúde. Secretaria Executiva. SUS. DATASUS",
+       "originator_location": [30],
+       "author": "Sistema de Informações de Mortalidade. SIM",
+       "source_language": [6],
+       "source_type": [4, 32],
+       "abstract": "Apresenta informações de mortalidade divididas em duas seções: de 1979 a 1995 e a partir de 1996, com informações fornecidas pelo CENEPI da FUNASA, possibilita a tabulação de dados através das variáveis: óbitos por residência; óbitos por ocorrência; ano do óbito; sexo; faixa etária; faixa etária no padrão OPAS; faixa etária menores de 1 ano; local de residência ou ocorrência; causa CID BR; causa CAP CID. Permite tabulação nacional ou por estado e municípios a partir de 1979.",
+       "objective": "Elaboração do Anuário Estatístico de Mortalidade",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-26T09:00:00-03:00",
+       "updated_time": "2012-04-19T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 29,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Imunizações: doses aplicadas e cobertura",
+       "link": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?pni/cnv/dpniuf.def\r\nhttp://tabnet.datasus.gov.br/cgi/deftohtm.exe?pni/cnv/cpniuf.def",
+       "originator": "Brasil. Ministério da Saúde. Secretaria Executiva. SUS. DATASUS",
+       "originator_location": [30],
+       "author": "Fundação Nacional de Saúde. Coordenação de Imunizações e Auto-suficiência em Imunobiológicos. Programa Nacional de Imunizações",
+       "source_language": [6],
+       "source_type": [4, 18],
+       "abstract": "Possibilita a tabulação de dados com variáveis de: doses aplicadas, cobertura, ano, local, tipo de imunos, tipo de dose, faixa etária. Permite tabulação nacional ou por estado e municípios a partir de 1995. Outras formas de obtenção dos dados:  publicação do anuário estatístico; CD-ROM contendo a base de dados a partir de 1995; solicitação de tabulações especiais.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-02-26T09:00:00-03:00",
+       "updated_time": "2008-12-04T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 30,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Nascidos vivos",
+       "link": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sinasc/cnv/nvuf.def",
+       "originator": "Brasil. Ministério da Saúde. Secretaria Executiva. SUS. DATASUS",
+       "originator_location": [30],
+       "author": "Fundação Nacional de Saúde. Centro Nacional de Epidemiologia. Coordenação de Informação e Análise de Situação de Saúde. Sistema de Informações sobre Nascidos Vivos. SINASC",
+       "source_language": [6],
+       "source_type": [4, 18],
+       "abstract": "Permite tabulação nacional ou por estado e municípios através das variáveis: nascimento por residência da mãe, por ocorrência, local de residência e de ocorrência, ano, faixa etária da mãe, sexo, tipo de parto, local de ocorrência, tempo de gestação, tipo de parto, tipo de gravidez, peso ao nascer. Outras formas de obtenção dos dados: anuário estatístico; CD-ROM contendo a base de dados a partir de 1995; tabulações especiais solicitadas",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-05-12T09:00:00-03:00",
+       "updated_time": "2007-08-14T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 31,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Levantamento epidemiológico em saúde bucal: cárie dental",
+       "link": "http://tabnet.datasus.gov.br/cgi/sbucal/sbdescr.htm",
+       "originator": "Brasil. Ministério da Saúde. Secretaria Executiva. SUS. DATASUS",
+       "originator_location": [30],
+       "author": "Coordenação de Saúde Bucal",
+       "source_language": [6],
+       "source_type": [4, 18],
+       "abstract": "Possibilita as seguintes variáveis para tabulação: por região e Unidade da Federação, idade, sexo, crianças examinadas, dentes examinados, número CPO, índice CPO, número CPO-0, porcentagem de CPO cariados, restaurados, extraídos, extração indicada, número CEO, índice CEO, número CEO-0, índice CPO xx, risco xx, dente xx.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-04-08T09:00:00-03:00",
+       "updated_time": "2008-12-04T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 32,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Curso de Especialização em Ortopedia Oncológica",
+       "link": "http://www.virtual.epm.br/home/apreorto.htm",
+       "originator": "Universidade Federal de São Paulo. Escola Paulista de Medicina. Departamento de Informática em Saúde. UNIFESP. EPM. DIS",
+       "originator_location": [30],
+       "author": "Jesus-Garcia Filho, Reynaldo, coord.",
+       "source_language": [6],
+       "source_type": [26],
+       "abstract": "O curso é composto por 6 temas referentes aos diferentes capítulos da Ortopedia Oncológica. O modelo pedagógico adotado é do Ensino Baseado em Problemas, PBL. Número de vagas: 20. Duração do curso: 2 meses. Oferece certificado.",
+       "objective": "Capacitar o aluno para atuar adequadamente no diagnóstico e no tratamento dos tumores ósseos.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-03-05T09:00:00-03:00",
+       "updated_time": "2001-03-26T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 33,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "IV Curso de Especialização em Nutrição em Saúde Pública.",
+       "link": "http://www.virtual.epm.br/cursos/nutrica.htm",
+       "originator": "Universidade Federal de São Paulo. Escola Paulista de Medicina. Pós Graduação em Nutrição. Departamento de Informática em Saúde. UNIFESP/EPM",
+       "originator_location": [30],
+       "author": "Sigulem, Dirce Maria, coord.",
+       "source_language": [6],
+       "source_type": [24],
+       "abstract": "O curso está estruturado em 7 temas principais da área de Nutrição em Saúde Pública. O modelo pedagógico do curso é o Aprendizado Baseado em Problemas. Inclui os recursos e tecnologias utilizados na educação a distância. O curso é gratuito e no final será realizada uma avaliação presencial.",
+       "time_period_textual": "Duração do curso: 4 meses a partir de 2002",
+       "objective": "Capacitar os profissionais a atuar de forma adequada na área de Nutrição em Saúde Pública.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-03-09T09:00:00-03:00",
+       "updated_time": "2011-03-04T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 34,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Programa Educacional em Multimídia na Internet de Biologia Molecular",
+       "link": "http://www.virtual.epm.br/cursos/biomol/biom.htm",
+       "originator": "Universidade Federal de São Paulo. Escola Paulista de Medicina. Departamento de Informática em Saúde. UNIFESP/EPM",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [25, 47],
+       "abstract": "Material suplementar a cursos curriculares com ambiente de aprendizado para fornecer conhecimento na área da Saúde através do uso de tecnologias informação, computação e telecomunicação no ensino a distância. Conteúdo teórico em formato multimídia: hipertextos, animações e sons. Estrutura aberta (não necessita de inscrição e senha). Ritmo livre de estudo.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-03-10T09:00:00-03:00",
+       "updated_time": "2011-03-04T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 35,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Programa Educacional em Multimídia na Internet de Genética",
+       "link": "http://www.virtual.epm.br/cursos/genetica/genetica.htm",
+       "originator": "Universidade Federal de São Paulo. Escola Paulista de Medicina. Departamento de Informática em Saúde. UNIFESP/EPM",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [47],
+       "abstract": "Material suplementar a cursos curriculares que visa a criação de um ambiente de aprendizado para fornecer conhecimento na área de Saúde através do uso de tecnologias do ensino a distância. Conteúdo teórico em formato multimídia: hipertextos, animações e sons. Estrutura aberta (não necessita de inscrição e senha) e ritmo livre de estudo.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-03-10T09:00:00-03:00",
+       "updated_time": "2011-03-04T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 36,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "TV UNIFESP",
+       "link": "http://dgi.unifesp.br/comunicacao/tv.php?tp=8&mdo=1",
+       "originator": "Universidade Federal de São Paulo. Escola Paulista de Medicina. UNIFESP. EPM",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [34, 58],
+       "abstract": "A TV UNIFESP/EPM faz parte do Canal Universitário de São Paulo, CNU, com três programas: VIDA, ESTUDIO VIDA e CHECK-UP. Possibilita visualizar a programação, o horário do Canal Universitário e a lista de todas as Fitas de vídeo que compõe os programas. É possivel também visualizar os programas através da intranet da UNIFESP ou da internet utilizando o programa Real Player.",
+       "objective": "Oferecer ao telespectador um panorama da área de ciências da saúde, informando e educando, oferecendo dicas e prevenindo doenças",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-04-08T09:00:00-03:00",
+       "updated_time": "2013-01-08T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 37,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Educação continuada a distância na área médica",
+       "link": "http://www.virtual.epm.br/cursos/aulas/index.htm",
+       "originator": "Universidade Federal de São Paulo. Escola Paulista de Medicina. Departamento de Informática em Saúde. UNIFESP/EPM",
+       "originator_location": [30],
+       "author": "Sigulem, Daniel",
+       "source_language": [6],
+       "source_type": [47],
+       "abstract": "Palestra sobre educação médica continuada a distância ministrada pelo Prof. Dr. Daniel Sigulem. Apresentação online de 33 slides em Power Point. Descreve conceitos, evolução, histórico e experiencias da UNIFESP com a educação a distância.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-03-16T09:00:00-03:00",
+       "updated_time": "2009-11-24T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 38,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Cardnet",
+       "link": "http://www.cardnet.tche.br/cardiologia/Templates/",
+       "originator": "Instituto de Cardiologia do RS. Fundação Universitária de Cardiologia. Programa de Pós-Graduação.",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [54, 26, 46],
+       "abstract": "O site é mantido pelo programa de pós-graduação do Instituto e contém informações referentes a cardiologia na internet: cursos, imagens, eventos, cirurgias cardiacas.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-03-19T09:00:00-03:00",
+       "updated_time": "2005-02-14T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 39,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Repositório de Informática na Educação na UFRGS",
+       "link": "http://penta.ufrgs.br/edu/home_edu.htm",
+       "originator": "Universidade Federal do Rio Grande do Sul",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [26],
+       "abstract": "O Site aborda o tema da Informática na Educação enfocando as áreas de educação a distância, teleducação, o computador na educação e utilização dos recursos multimídia na Internet para educação.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-03-29T09:00:00-03:00",
+       "updated_time": "2011-03-02T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 40,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Laboratório de Imagem Biológica",
+       "link": "http://acd.ufrj.br/LabImgBio/labimgbi.htm",
+       "originator": "Universidade Federal do Rio de Janeiro. Instituto de Ciências Biomédicas. Departamento de Histologia e Embriologia",
+       "originator_location": [30],
+       "author": "Costa, Manoel Luis, coord.\r\nMermelstein, Claudia dos Santos, coord.",
+       "source_language": [6],
+       "source_type": [1],
+       "abstract": "Inclui pesquisa e produção de material didático ligado à imagem biológica (principalmente em biologia celular, histologia e embriologia). Possui programas interativos e um banco de imagens digitais de histologia de tecidos e órgãos diversos, com a descrição detalhada de cada imagem.",
+       "objective": "Pesquisa e produção de material didático ligado à imagem biológica.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-04-08T09:00:00-03:00",
+       "updated_time": "2004-03-25T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 41,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Aplicações do computador na educação médica: curso de pós-graduação",
+       "link": "http://www.nib.unicamp.br/cursos/fm993/index.html",
+       "originator": "Universidade Estadual de Campinas. Faculdade de Ciências Médicas. UNICAMP. NIB",
+       "originator_location": [30],
+       "author": "Sabbatini, Renato M.E., coord.\r\nVolpe, Roberta M. colab.\r\nCardoso, Silvia Helena colab.",
+       "source_language": [6],
+       "source_type": [23],
+       "abstract": "O curso abrange todas as aplicações e recursos do computador no ensino médico: internet, multimídia, livros eletrônicos, atlas, tutoriais, simulação de modelos, simulações clínicas. Coloca à disposição dos alunos vários recursos online.  É elaborado através de tutoria a distância.",
+       "objective": "Apresentar uma visão abrangente das aplicações da informática na educação médica",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-04-06T09:00:00-03:00",
+       "updated_time": "2004-09-08T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 42,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Telemedicina e educação a distância no Brasil",
+       "link": "http://www.nib.unicamp.br/slides/telemed/index.htm",
+       "originator": "Universidade Estadual de Campinas. Núcleo de Informática Biomédica. Central de Aulas e Palestras Online. UNICAMP. NIB",
+       "originator_location": [30],
+       "author": "Sabbatini, Renato M.E.",
+       "source_language": [6],
+       "source_type": [47],
+       "abstract": "Palestra ministrada no Seminário:         Telemedicina: no Brasil, o Futuro é Hoje. São Paulo, 19 de novembro de 1998. Apresentação online de 47 slides em Power Point.O autor descreve sobre os diversos recursos disponíveis através da telemedicina.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-04-07T09:00:00-03:00",
+       "updated_time": "2003-08-26T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 43,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Recursos de informação em genética médica na internet",
+       "link": "http://www.nib.unicamp.br/slides/genetica/index.htm",
+       "originator": "Universidade Estadual de Campinas. Núcleo de Informática Biomédica. Central de Aulas e Palestra Online. UNICAMP",
+       "originator_location": [30],
+       "author": "Sabbatini, Renato M.E.",
+       "source_language": [6],
+       "source_type": [47],
+       "abstract": "Palestra proferida na I Jornada de Educação Médica Continuada do Departamento de Genética Médica da Faculdade de Ciências Médicas daUNICAMP, 1998. Apresentação de 36 slides em Power Point. O autor descreve os diversos recursos e fontes de informação nacionais e estangeiras disponíveis na internet.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-04-07T09:00:00-03:00",
+       "updated_time": "2003-08-26T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 44,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Internet na educação médica.",
+       "link": "http://www.nib.unicamp.br/slides/internet-educ/index.htm",
+       "originator": "Universidade Estadual de Campinas. Núcleo de Informática Biomédica. Central de Aulas e Palestras Online. UNICAMP",
+       "originator_location": [30],
+       "author": "Sabbatini, Renato M.E.\r\nCardoso, Silvia Helena",
+       "source_language": [6],
+       "source_type": [47],
+       "abstract": "Aula para o Curso de Informática aplicada à educação médica. Apresentação online de 12 slides em Power Point. Os autores descrevem as diversas ferramentas disponíveis na Internet para a educação a distância: correio eletrônico, listas de distribuição e hipermídia.",
+       "time_period_textual": "Aula apresentada em 25/08/1997",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-04-08T09:00:00-03:00",
+       "updated_time": "2003-08-26T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 45,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Morbidade hospitalar do SUS por local de internação",
+       "link": "http://tabnet.datasus.gov.br/cgi/sih/midescr.htm",
+       "originator": "Brasil. Ministério da Saúde. Secretaria Executiva. SUS. DATASUS",
+       "originator_location": [30],
+       "author": "Sistema de Informações Hospitalares",
+       "source_language": [6],
+       "source_type": [4, 18],
+       "abstract": "Apresenta dados de morbidade hospitalar por internação hospitalar e seus aspectos, entre eles, unidade de federação, sexo, faixa etária, média de permanência e óbitos.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-04-08T09:00:00-03:00",
+       "updated_time": "2007-08-14T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 46,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Multimídia no ensino.",
+       "link": "http://www.nib.unicamp.br/slides/multimidia/index.htm",
+       "originator": "Universidade Estadual de Campinas. Núcleo de Informática Biomédica. Central de Aulas e Palestras Online. UNICAMP. NIB",
+       "originator_location": [30],
+       "author": "Volpe, Roberta Mazzariol",
+       "source_language": [6],
+       "source_type": [45],
+       "abstract": "Apresentação online de 72 slides através do Power Point. Descreve e mostra as vantagens e desvantagens de diversos recursos multimídia que podem ser utilizados na educação. Avalia softwares, interfaces, sistemas e formas de apresentação.",
+       "time_period_textual": "Aula apresentada em 18/09/1997",
+       "cooperative_center_code": "BR1.1",
+       "updated_time": "2001-06-20T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 47,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "The Virtual Hospital and Distance Education in Medicine",
+       "link": "http://www.nib.unicamp.br/slides/hvpres_i/index.htm",
+       "originator": "Universidade Estadual de Campinas. Núcleo de Informática Biomédica. Central de Aulas e Palestras. UNICAMP",
+       "originator_location": [30],
+       "author": "Sabbatini, Renato M.E.",
+       "source_language": [2],
+       "source_type": [47],
+       "abstract": "Palestra sobre o Hospital Virtual brasileiro, serviços oferecidos e tipos de usuarios atendidos. Contem 39 slides em Power Point, apresentada em novembro de 1998.O autor descreve também sobre as ferramentas utilizadas e recursos disponíveis na educação a distância.",
+       "cooperative_center_code": "BR1.1",
+       "created_time": "1999-04-09T09:00:00-03:00",
+       "updated_time": "2003-08-26T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 48,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Curso de metodologia científica",
+       "link": "http://www.nib.unicamp.br/cursos/metodologia/",
+       "originator": "Universidade Estadual de Campinas. Núcleo de Informática Biomédica. UNICAMP",
+       "originator_location": [30],
+       "author": "Sabbatini, Renato M.E., coord.\r\nCardoso, Silvia Helena, coord.",
+       "source_language": [6],
+       "source_type": [24],
+       "abstract": "Curso de extensão para alunos de graduação da UNICAMP sobre os elementos básicos da metodologia científica e suas etapas, elaboração de um projeto de pesquisa, redação do trabalho científico, apresentação de posters em congresso e apresentação oral.",
+       "objective": "Introduzir noções e práticas de metodologia de pesquisa científica a todos os estagiários iniciantes da graduação e pós-graduação do Núcleo de Informática Biomédica da UNICAMP.",
+       "cooperative_center_code": "BR1.1",
+       "updated_time": "2006-07-11T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 49,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Dados de aids no Brasil (Banco de dados)",
+       "link": "http://www.aids.gov.br/final/dados/dados_aids.asp",
+       "originator": "Ministério da Saúde. Secretaria de Vigilância em Saúde - SVS. Programa Nacional de DST e AIDS",
+       "originator_location": [30],
+       "author": "Sistema Nacional de Agravos de Notificação - SINAN\r\nSistema de Controle de Informações Laboratoriais - SISCEL\r\nSistema de Informações sobre Mortalidade - SIM",
+       "source_language": [6],
+       "source_type": [4, 18],
+       "abstract": "Disponibiliza banco de dados com os casos de AIDS de acordo com números provenientes do Sistema Nacional de Agravos de Notificação (SINAN), Sistema de Controle de Informações Laboratoriais (SISCEL) e Sistema de Informações sobre Mortalidade (SIM). O sistema possibilita criação de tabela por estados com a aplicação de diversas variáveis como: período e faixa etária.",
+       "time_period_textual": "De 1980 -",
+       "cooperative_center_code": "BR1.1",
+       "updated_time": "2010-10-27T09:00:00-03:00",
+       "created_by": 1
+   }
+},
+{
+   "pk": 50,
+   "model": "main.resource",
+   "fields": {
+       "status": 1,
+       "title": "Laboratório de Tecnologias Cognitivas",
+       "link": "http://acd.ufrj.br/nutes/Home%20LTC/LTC.html",
+       "originator": "Universidade Federal do Rio de Janeiro. Núcleo de Tecnologia Educacional para a Saúde. Centro de Ciências da Saúde. UFRJ/NUTES",
+       "originator_location": [30],
+       "source_language": [6],
+       "source_type": [54],
+       "abstract": "O Laboratório de Tecnologias Cognitivas atua na capacitação docente para o desenvolvimento e utilização de sistemas interativos no ensino das ciências da saúde e de pesquisadores para a investigação sobre processos de construção e utilização desses recursos.",
+       "objective": "Pesquisar, desenvolver e difundir o uso de sistemas interativos e de diversas abordagens na representação e na estruturação do conhecimento aplicadas ao processo educacional no campo das ciências das saúde, priorizando as seguintes áreas: estudos sobre a integração de diferentes meios e estruturas de representação do conhecimento (modelos não-lineares de organização da informação) em programas educativos (multimídia, hipermídia e simulações) e aprendizagem colaborativa (através de redes de comunicação).",
+       "cooperative_center_code": "BR1.1",
+       "updated_time": "2009-11-24T09:00:00-03:00",
+       "created_by": 1
+   }
+}
+]

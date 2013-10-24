@@ -1,0 +1,2565 @@
+[
+{
+   "model": "main.descriptor",
+   "pk": 11,
+   "fields": {
+       "resource": 1,
+       "text": "Órgãos do Sistema de Saúde",
+       "code": "^d6458",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 12,
+   "fields": {
+       "resource": 1,
+       "text": "Órgãos Estatais de Desenvolvimento e Planejamento em Saúde",
+       "code": "^d13605",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 13,
+   "fields": {
+       "resource": 1,
+       "text": "Saúde Pública",
+       "code": "^d28455",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 14,
+   "fields": {
+       "resource": 1,
+       "text": "Estatísticas de Saúde",
+       "code": "^d28440",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 21,
+   "fields": {
+       "resource": 2,
+       "text": "Periódicos",
+       "code": "^d9709",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 22,
+   "fields": {
+       "resource": 2,
+       "text": "Serviços de Informação",
+       "code": "^d7432",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 23,
+   "fields": {
+       "resource": 2,
+       "text": "Periódicos Eletrônicos",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 24,
+   "fields": {
+       "resource": 2,
+       "text": "Artigo de Revista",
+       "code": "^d29635",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 25,
+   "fields": {
+       "resource": 2,
+       "text": "Comunicación Científica",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 26,
+   "fields": {
+       "resource": 2,
+       "text": "Portais de Acesso a Revistas Científicas",
+       "code": "^d50125",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 27,
+   "fields": {
+       "resource": 2,
+       "text": "Revistas Eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 31,
+   "fields": {
+       "resource": 3,
+       "text": "Cirurgia/educação",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 32,
+   "fields": {
+       "resource": 3,
+       "text": "Cirurgia/tendências",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 33,
+   "fields": {
+       "resource": 3,
+       "text": "Técnicas operatórias/métodos",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 34,
+   "fields": {
+       "resource": 3,
+       "text": "Técnicas operatórias/tendências",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 35,
+   "fields": {
+       "resource": 3,
+       "text": "Pesquisa",
+       "code": "^d12527",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 36,
+   "fields": {
+       "resource": 3,
+       "text": "Cumunicación científica",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 37,
+   "fields": {
+       "resource": 3,
+       "text": "Revistas Eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 38,
+   "fields": {
+       "resource": 3,
+       "text": "Sociedades Médicas",
+       "code": "^d13339",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 41,
+   "fields": {
+       "resource": 4,
+       "text": "Medicina",
+       "code": "^d8678",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 42,
+   "fields": {
+       "resource": 4,
+       "text": "Ciencias Biológicas",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 43,
+   "fields": {
+       "resource": 4,
+       "text": "Comunicación científica",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 44,
+   "fields": {
+       "resource": 4,
+       "text": "Revistas Eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 45,
+   "fields": {
+       "resource": 4,
+       "text": "Pesquisa Biomédica",
+       "code": "^d37673",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 51,
+   "fields": {
+       "resource": 5,
+       "text": "Genética",
+       "code": "^d5957",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 52,
+   "fields": {
+       "resource": 5,
+       "text": "Genética Bioquímica",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 53,
+   "fields": {
+       "resource": 5,
+       "text": "Genética Médica",
+       "code": "^d5962",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 54,
+   "fields": {
+       "resource": 5,
+       "text": "Biologia Molecular",
+       "code": "^d9157",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 55,
+   "fields": {
+       "resource": 5,
+       "text": "Medicina Veterinaria",
+       "code": "^d15134",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 56,
+   "fields": {
+       "resource": 5,
+       "text": "Biotecnologia",
+       "code": "^d19089",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 57,
+   "fields": {
+       "resource": 5,
+       "text": "Engenharia Genética",
+       "code": "^d24386",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 58,
+   "fields": {
+       "resource": 5,
+       "text": "Revistas eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 59,
+   "fields": {
+       "resource": 5,
+       "text": "Sociedades Médicas",
+       "code": "^d13339",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 61,
+   "fields": {
+       "resource": 6,
+       "text": "Doenças transmissíveis",
+       "code": "^d28582",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 62,
+   "fields": {
+       "resource": 6,
+       "text": "Epidemiologia",
+       "code": "^d28566",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 63,
+   "fields": {
+       "resource": 6,
+       "text": "Saúde pública",
+       "code": "^d28455",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 64,
+   "fields": {
+       "resource": 6,
+       "text": "Revistas eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 71,
+   "fields": {
+       "resource": 7,
+       "text": "Genética",
+       "code": "^d5957",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 72,
+   "fields": {
+       "resource": 7,
+       "text": "Genética Bioquímica",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 73,
+   "fields": {
+       "resource": 7,
+       "text": "Genética Médica",
+       "code": "^d5962",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 74,
+   "fields": {
+       "resource": 7,
+       "text": "Biologia Molecular",
+       "code": "^d9157",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 75,
+   "fields": {
+       "resource": 7,
+       "text": "Medicina Veterinaria",
+       "code": "^d15134",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 76,
+   "fields": {
+       "resource": 7,
+       "text": "Biotecnologia",
+       "code": "^d19089",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 77,
+   "fields": {
+       "resource": 7,
+       "text": "Engenharia Genética",
+       "code": "^d24386",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 78,
+   "fields": {
+       "resource": 7,
+       "text": "Revistas eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 81,
+   "fields": {
+       "resource": 8,
+       "text": "Alimentos",
+       "code": "^d5639",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 82,
+   "fields": {
+       "resource": 8,
+       "text": "Tecnologia de alimentos",
+       "code": "^d5664",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 83,
+   "fields": {
+       "resource": 8,
+       "text": "Manipulação de alimentos",
+       "code": "^d5650",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 84,
+   "fields": {
+       "resource": 8,
+       "text": "Produção de alimentos",
+       "code": "^d24458",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 85,
+   "fields": {
+       "resource": 8,
+       "text": "Revistas eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 91,
+   "fields": {
+       "resource": 9,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 92,
+   "fields": {
+       "resource": 9,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 93,
+   "fields": {
+       "resource": 9,
+       "text": "Educação de pós graduação",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 94,
+   "fields": {
+       "resource": 9,
+       "text": "Médicos clínicos gerais/educ",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 101,
+   "fields": {
+       "resource": 10,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 102,
+   "fields": {
+       "resource": 10,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 103,
+   "fields": {
+       "resource": 10,
+       "text": "Cardiologia/educ",
+       "code": "^d2353",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 111,
+   "fields": {
+       "resource": 11,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 112,
+   "fields": {
+       "resource": 11,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 113,
+   "fields": {
+       "resource": 11,
+       "text": "Educação de pós graduação em medicina",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 114,
+   "fields": {
+       "resource": 11,
+       "text": "Cardiologia/educ",
+       "code": "^d2353",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 121,
+   "fields": {
+       "resource": 12,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 122,
+   "fields": {
+       "resource": 12,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 123,
+   "fields": {
+       "resource": 12,
+       "text": "Cardiologia/educ",
+       "code": "^d2353",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 131,
+   "fields": {
+       "resource": 13,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 132,
+   "fields": {
+       "resource": 13,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 133,
+   "fields": {
+       "resource": 13,
+       "text": "Clínica geral/educ",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 141,
+   "fields": {
+       "resource": 14,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 142,
+   "fields": {
+       "resource": 14,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 143,
+   "fields": {
+       "resource": 14,
+       "text": "Clínica geral/educ",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 151,
+   "fields": {
+       "resource": 15,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 152,
+   "fields": {
+       "resource": 15,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 153,
+   "fields": {
+       "resource": 15,
+       "text": "Médicos clínicos gerais/educ",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 161,
+   "fields": {
+       "resource": 16,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 162,
+   "fields": {
+       "resource": 16,
+       "text": "Educação em saúde",
+       "code": "^d28480",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 163,
+   "fields": {
+       "resource": 16,
+       "text": "Educação contínua em enfermagem",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 164,
+   "fields": {
+       "resource": 16,
+       "text": "Psicologia/educ",
+       "code": "^d12021",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 165,
+   "fields": {
+       "resource": 16,
+       "text": "Nutricao/educ",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 166,
+   "fields": {
+       "resource": 16,
+       "text": "Fisioterapia/educ",
+       "code": "^d36319",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 171,
+   "fields": {
+       "resource": 17,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 172,
+   "fields": {
+       "resource": 17,
+       "text": "Educação em saúde",
+       "code": "^d28480",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 173,
+   "fields": {
+       "resource": 17,
+       "text": "Educação contínua em enfermagem",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 174,
+   "fields": {
+       "resource": 17,
+       "text": "Psicologia/educ",
+       "code": "^d12021",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 175,
+   "fields": {
+       "resource": 17,
+       "text": "Nutrição/educ",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 176,
+   "fields": {
+       "resource": 17,
+       "text": "/educa/educa/educ",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 181,
+   "fields": {
+       "resource": 18,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 182,
+   "fields": {
+       "resource": 18,
+       "text": "Educação em saúde",
+       "code": "^d28480",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 183,
+   "fields": {
+       "resource": 18,
+       "text": "Educação contínua em enfermagem",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 184,
+   "fields": {
+       "resource": 18,
+       "text": "Educação de pós-graduação",
+       "code": "^d4568",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 185,
+   "fields": {
+       "resource": 18,
+       "text": "Psicologia/educ",
+       "code": "^d12021",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 186,
+   "fields": {
+       "resource": 18,
+       "text": "Nutrição/educ",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 187,
+   "fields": {
+       "resource": 18,
+       "text": "Fisioterapia/educ",
+       "code": "^d36319",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 191,
+   "fields": {
+       "resource": 19,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 192,
+   "fields": {
+       "resource": 19,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 193,
+   "fields": {
+       "resource": 19,
+       "text": "Médicos clínicos gerais/educ",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 201,
+   "fields": {
+       "resource": 20,
+       "text": "Universidades virtuais",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 202,
+   "fields": {
+       "resource": 20,
+       "text": "Educação médica",
+       "code": "^d4569",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 203,
+   "fields": {
+       "resource": 20,
+       "text": "Educação à distância",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 211,
+   "fields": {
+       "resource": 21,
+       "text": "Psicologia",
+       "code": "^d12021",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 212,
+   "fields": {
+       "resource": 21,
+       "text": "Processos mentais",
+       "code": "^d8776",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 213,
+   "fields": {
+       "resource": 21,
+       "text": "Memória",
+       "code": "^d8738",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 214,
+   "fields": {
+       "resource": 21,
+       "text": "Psicologia social",
+       "code": "^d12030",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 215,
+   "fields": {
+       "resource": 21,
+       "text": "Consciência",
+       "code": "^d3262",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 216,
+   "fields": {
+       "resource": 21,
+       "text": "Teoria psicológica",
+       "code": "^d12019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 217,
+   "fields": {
+       "resource": 21,
+       "text": "Inconsciente (Psicologia)",
+       "code": "^d14872",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 218,
+   "fields": {
+       "resource": 21,
+       "text": "Saúde da família",
+       "code": "^d28468",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 221,
+   "fields": {
+       "resource": 22,
+       "text": "Toxicologia",
+       "code": "^d14509",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 222,
+   "fields": {
+       "resource": 22,
+       "text": "Animais venenosos",
+       "code": "^d845",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 223,
+   "fields": {
+       "resource": 22,
+       "text": "Toxinas",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 224,
+   "fields": {
+       "resource": 22,
+       "text": "Alergia e imunologia",
+       "code": "^d488",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 225,
+   "fields": {
+       "resource": 22,
+       "text": "Técnicas imunológicas",
+       "code": "^d29208",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 226,
+   "fields": {
+       "resource": 22,
+       "text": "Venenos",
+       "code": "^d11472",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 227,
+   "fields": {
+       "resource": 22,
+       "text": "Antivenenos",
+       "code": "^d23091",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 228,
+   "fields": {
+       "resource": 22,
+       "text": "Mordeduras e picadas/terapia",
+       "code": "^d1758^s22067",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 229,
+   "fields": {
+       "resource": 22,
+       "text": "Mordeduras e picadas/prevenção & controle",
+       "code": "^d1758^s22054",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 231,
+   "fields": {
+       "resource": 23,
+       "text": "Cirurgia torácica",
+       "code": "^d14290",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 232,
+   "fields": {
+       "resource": 23,
+       "text": "Procedimentos cirúrgicos cardiacos",
+       "code": "^d13884",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 233,
+   "fields": {
+       "resource": 23,
+       "text": "Procedimentos cirúrgicos cardiovasculares",
+       "code": "^d13884",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 234,
+   "fields": {
+       "resource": 23,
+       "text": "Revistas eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 241,
+   "fields": {
+       "resource": 24,
+       "text": "Medicina bucal",
+       "code": "^d33129",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 242,
+   "fields": {
+       "resource": 24,
+       "text": "Odontologia",
+       "code": "^d3828",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 243,
+   "fields": {
+       "resource": 24,
+       "text": "Odontopediatria",
+       "code": "^d30898",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 244,
+   "fields": {
+       "resource": 24,
+       "text": "Saúde bucal",
+       "code": "^d28452",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 245,
+   "fields": {
+       "resource": 24,
+       "text": "logiaologiaologiaologia",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 246,
+   "fields": {
+       "resource": 24,
+       "text": "Revistas eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 251,
+   "fields": {
+       "resource": 25,
+       "text": "Saúde Pública",
+       "code": "^d28455",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 252,
+   "fields": {
+       "resource": 25,
+       "text": "Epidemiologia",
+       "code": "^d28566",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 253,
+   "fields": {
+       "resource": 25,
+       "text": "Revistas eletrônicas",
+       "code": "^d50107",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 261,
+   "fields": {
+       "resource": 26,
+       "text": "Medicina tropical",
+       "code": "^d14733",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 262,
+   "fields": {
+       "resource": 26,
+       "text": "Doenças parasitárias",
+       "code": "^d10461",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 263,
+   "fields": {
+       "resource": 26,
+       "text": "asônicasônicasônicas",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 271,
+   "fields": {
+       "resource": 27,
+       "text": "Administração em saúde pública",
+       "code": "^d12070",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 272,
+   "fields": {
+       "resource": 27,
+       "text": "Administração de serviços de saúde",
+       "code": "^d17099",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 273,
+   "fields": {
+       "resource": 27,
+       "text": "Administração pública",
+       "code": "^d16701",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 274,
+   "fields": {
+       "resource": 27,
+       "text": "Programas nacionais de saúde",
+       "code": "^d9508",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 275,
+   "fields": {
+       "resource": 27,
+       "text": "Indicadores de Saúde",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 276,
+   "fields": {
+       "resource": 27,
+       "text": "Estatísticas vitais",
+       "code": "^d28618",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 277,
+   "fields": {
+       "resource": 27,
+       "text": "Estatísticas sanitárias",
+       "code": "^d32395",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 278,
+   "fields": {
+       "resource": 27,
+       "text": "Estatísticas hospitalares",
+       "code": "^d28585",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 279,
+   "fields": {
+       "resource": 27,
+       "text": "Estatísticas de serviços de saúde",
+       "code": "^d28586",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 2710,
+   "fields": {
+       "resource": 27,
+       "text": "SUS(BR)",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 281,
+   "fields": {
+       "resource": 28,
+       "text": "Mortalidade",
+       "code": "^d28632",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 282,
+   "fields": {
+       "resource": 28,
+       "text": "delidadelidadelidadelidadelidade",
+       "code": "^d28418",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 283,
+   "fields": {
+       "resource": 28,
+       "text": "indicadores de saúde",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 284,
+   "fields": {
+       "resource": 28,
+       "text": "Saúde pública",
+       "code": "^d28455",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 291,
+   "fields": {
+       "resource": 29,
+       "text": "Indicadores de Saúde",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 292,
+   "fields": {
+       "resource": 29,
+       "text": "Programas de vacinação/estatística e dados numéricos",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 293,
+   "fields": {
+       "resource": 29,
+       "text": "Imunização/estatística & dados numéricos",
+       "code": "^d29482^s22083",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 294,
+   "fields": {
+       "resource": 29,
+       "text": "Vacinas e imunização",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 295,
+   "fields": {
+       "resource": 29,
+       "text": "Saúde pública",
+       "code": "^d28455",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 296,
+   "fields": {
+       "resource": 29,
+       "text": "Medicamentos",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 297,
+   "fields": {
+       "resource": 29,
+       "text": "Vacinas",
+       "code": "^d23123",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 298,
+   "fields": {
+       "resource": 29,
+       "text": "Insumos",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 301,
+   "fields": {
+       "resource": 30,
+       "text": "Indicadores de Saúde",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 302,
+   "fields": {
+       "resource": 30,
+       "text": "Estatísticas Vitais",
+       "code": "^d28618",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 303,
+   "fields": {
+       "resource": 30,
+       "text": "Coeficiente de Natalidade",
+       "code": "^d28258",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 304,
+   "fields": {
+       "resource": 30,
+       "text": "Neonatologia/estatísticas & dados numéricos",
+       "code": "^d9552",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 305,
+   "fields": {
+       "resource": 30,
+       "text": "Recém-Nascido",
+       "code": "^d22226",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 306,
+   "fields": {
+       "resource": 30,
+       "text": "Saúde Pública",
+       "code": "^d28455",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 307,
+   "fields": {
+       "resource": 30,
+       "text": "Demografia",
+       "code": "^d27982",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 311,
+   "fields": {
+       "resource": 31,
+       "text": "Indicadores de saúde",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 312,
+   "fields": {
+       "resource": 31,
+       "text": "Levantamentos de saúde bucal",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 313,
+   "fields": {
+       "resource": 31,
+       "text": "Cárie dentária/epidemiologia",
+       "code": "^d3745^s22080",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 314,
+   "fields": {
+       "resource": 31,
+       "text": "Brasil/epidemiologia",
+       "code": "^d1963^s22080",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 315,
+   "fields": {
+       "resource": 31,
+       "text": "Saúde pública",
+       "code": "^d28455",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 321,
+   "fields": {
+       "resource": 32,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 322,
+   "fields": {
+       "resource": 32,
+       "text": "Educação médica",
+       "code": "^d4569",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 323,
+   "fields": {
+       "resource": 32,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 324,
+   "fields": {
+       "resource": 32,
+       "text": "Ortopedia/educação",
+       "code": "^d10162^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 325,
+   "fields": {
+       "resource": 32,
+       "text": "Oncologia/educação",
+       "code": "^d8662^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 326,
+   "fields": {
+       "resource": 32,
+       "text": "Aprendizado baseado em problemas",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 327,
+   "fields": {
+       "resource": 32,
+       "text": "Ensino por computador",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 331,
+   "fields": {
+       "resource": 33,
+       "text": "Nutrição/educação",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 332,
+   "fields": {
+       "resource": 33,
+       "text": "Saúde Pública/educação",
+       "code": "^d28455^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 333,
+   "fields": {
+       "resource": 33,
+       "text": "Aprendizado baseado em problemas",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 341,
+   "fields": {
+       "resource": 34,
+       "text": "Biologia molecular/educação",
+       "code": "^d9157^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 342,
+   "fields": {
+       "resource": 34,
+       "text": "Dna",
+       "code": "^d22152",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 343,
+   "fields": {
+       "resource": 34,
+       "text": "Replicação de dna",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 344,
+   "fields": {
+       "resource": 34,
+       "text": "Ciclo celular",
+       "code": "^d2488",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 351,
+   "fields": {
+       "resource": 35,
+       "text": "Genética/educação",
+       "code": "^d5957^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 352,
+   "fields": {
+       "resource": 35,
+       "text": "Cromossomos humanos",
+       "code": "^d2926",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 353,
+   "fields": {
+       "resource": 35,
+       "text": "Núcleo celular",
+       "code": "^d2502",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 354,
+   "fields": {
+       "resource": 35,
+       "text": "Genoma humano",
+       "code": "^d24691",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 355,
+   "fields": {
+       "resource": 35,
+       "text": "DNA",
+       "code": "^d22152",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 356,
+   "fields": {
+       "resource": 35,
+       "text": "Aberrações cromossômicas",
+       "code": "^d2918",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 357,
+   "fields": {
+       "resource": 35,
+       "text": "Hemoglobinopatias",
+       "code": "^d6603",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 361,
+   "fields": {
+       "resource": 36,
+       "text": "Educação em saúde",
+       "code": "^d28480",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 362,
+   "fields": {
+       "resource": 36,
+       "text": "Televisão",
+       "code": "^d14068",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 363,
+   "fields": {
+       "resource": 36,
+       "text": "Meios de comunicação",
+       "code": "^d3177",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 364,
+   "fields": {
+       "resource": 36,
+       "text": "Laciencia",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 371,
+   "fields": {
+       "resource": 37,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 372,
+   "fields": {
+       "resource": 37,
+       "text": "Educação médica contínuada",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 373,
+   "fields": {
+       "resource": 37,
+       "text": "Educação médica",
+       "code": "^d4569",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 381,
+   "fields": {
+       "resource": 38,
+       "text": "Cardiologia/educação",
+       "code": "^d2353^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 382,
+   "fields": {
+       "resource": 38,
+       "text": "Informática médica",
+       "code": "^d19243",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 383,
+   "fields": {
+       "resource": 38,
+       "text": "Cirurgia cardiaca",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 391,
+   "fields": {
+       "resource": 39,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 392,
+   "fields": {
+       "resource": 39,
+       "text": "Educação contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 393,
+   "fields": {
+       "resource": 39,
+       "text": "Instrução por computador",
+       "code": "^d29234",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 394,
+   "fields": {
+       "resource": 39,
+       "text": "Multimídia",
+       "code": "^d33195",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 395,
+   "fields": {
+       "resource": 39,
+       "text": "Internet",
+       "code": "^d33921",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 401,
+   "fields": {
+       "resource": 40,
+       "text": "Embriologia/educação",
+       "code": "^d27995^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 402,
+   "fields": {
+       "resource": 40,
+       "text": "Histologia/educação",
+       "code": "^d6812^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 403,
+   "fields": {
+       "resource": 40,
+       "text": "Biologia molecular/educação",
+       "code": "^d9157^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 404,
+   "fields": {
+       "resource": 40,
+       "text": "Crescimento e desenvolvimento do embrião/educação",
+       "code": "^d38857^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 405,
+   "fields": {
+       "resource": 40,
+       "text": "Processamento de imagem assistida por computador",
+       "code": "^d19200",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 411,
+   "fields": {
+       "resource": 41,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 412,
+   "fields": {
+       "resource": 41,
+       "text": "Educação de pós-graduação em medicina",
+       "code": "^d4571",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 413,
+   "fields": {
+       "resource": 41,
+       "text": "Educação médica",
+       "code": "^d4569",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 414,
+   "fields": {
+       "resource": 41,
+       "text": "Instrução por computador",
+       "code": "^d29234",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 415,
+   "fields": {
+       "resource": 41,
+       "text": "Internet",
+       "code": "^d33921",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 421,
+   "fields": {
+       "resource": 42,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 422,
+   "fields": {
+       "resource": 42,
+       "text": "Educação médica contínua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 423,
+   "fields": {
+       "resource": 42,
+       "text": "Telemedicina",
+       "code": "^d30481",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 424,
+   "fields": {
+       "resource": 42,
+       "text": "Brasil",
+       "code": "^d1963",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 431,
+   "fields": {
+       "resource": 43,
+       "text": "Genética/educação",
+       "code": "^d5957^s22019",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 441,
+   "fields": {
+       "resource": 44,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 442,
+   "fields": {
+       "resource": 44,
+       "text": "Educação médica",
+       "code": "^d4569",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 443,
+   "fields": {
+       "resource": 44,
+       "text": "Internet",
+       "code": "^d33921",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 451,
+   "fields": {
+       "resource": 45,
+       "text": "Morbidade",
+       "code": "^d28631",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 452,
+   "fields": {
+       "resource": 45,
+       "text": "Hospitais",
+       "code": "^d6917",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 453,
+   "fields": {
+       "resource": 45,
+       "text": "Indicadores de Saúde",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 454,
+   "fields": {
+       "resource": 45,
+       "text": "Saúde Pública",
+       "code": "^d28455",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 461,
+   "fields": {
+       "resource": 46,
+       "text": "Multimídia",
+       "code": "^d33195",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 462,
+   "fields": {
+       "resource": 46,
+       "text": "Instrução por computador",
+       "code": "^d29234",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 471,
+   "fields": {
+       "resource": 47,
+       "text": "Hospitais virtuais",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 472,
+   "fields": {
+       "resource": 47,
+       "text": "Educação a distância",
+       "code": "^d33919",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 481,
+   "fields": {
+       "resource": 48,
+       "text": "Projetos de pesquisa",
+       "code": "^d12528",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 482,
+   "fields": {
+       "resource": 48,
+       "text": "Apoyo a la formacion profesional",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 483,
+   "fields": {
+       "resource": 48,
+       "text": "Metodología",
+       "code": "^d50224",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 484,
+   "fields": {
+       "resource": 48,
+       "text": "Documentos dereferencia",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 491,
+   "fields": {
+       "resource": 49,
+       "text": "Indicadores de Saúde",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 492,
+   "fields": {
+       "resource": 49,
+       "text": "Síndrome de Imunodeficiência Adquirida/epidemiologia",
+       "code": "^d28932^s22080",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 493,
+   "fields": {
+       "resource": 49,
+       "text": "Saúde Pública",
+       "code": "^d28455",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 501,
+   "fields": {
+       "resource": 50,
+       "text": "Educação médica continua",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 502,
+   "fields": {
+       "resource": 50,
+       "text": "Educação médica",
+       "code": "^d4569",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 503,
+   "fields": {
+       "resource": 50,
+       "text": "Tecnologia educacional",
+       "code": "^d32764",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 504,
+   "fields": {
+       "resource": 50,
+       "text": "Multimídia",
+       "code": "^d33195",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.descriptor",
+   "pk": 505,
+   "fields": {
+       "resource": 50,
+       "text": "Instrução por computador",
+       "code": "^d29234",
+       "status": 1,
+       "created_by": 1
+   }
+}
+]

@@ -1,0 +1,132 @@
+[
+{
+   "model": "main.keyword",
+   "pk": 999911,
+   "fields": {
+       "resource": 1,
+       "text": "ITD",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999912,
+   "fields": {
+       "resource": 1,
+       "text": "LEGIS",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999913,
+   "fields": {
+       "resource": 1,
+       "text": "SALUD",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999914,
+   "fields": {
+       "resource": 1,
+       "text": "PLANGEST",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999915,
+   "fields": {
+       "resource": 1,
+       "text": "PSF",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999916,
+   "fields": {
+       "resource": 1,
+       "text": "ORGOV",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999917,
+   "fields": {
+       "resource": 1,
+       "text": "ORGADMIN",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999918,
+   "fields": {
+       "resource": 1,
+       "text": "SECMUN",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999919,
+   "fields": {
+       "resource": 1,
+       "text": "SISINF",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 9999110,
+   "fields": {
+       "resource": 1,
+       "text": "POLPUB",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999921,
+   "fields": {
+       "resource": 2,
+       "text": "ITD",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999922,
+   "fields": {
+       "resource": 2,
+       "text": "POLPUB",
+       "status": 1,
+       "created_by": 1
+   }
+},
+{
+   "model": "main.keyword",
+   "pk": 999923,
+   "fields": {
+       "resource": 2,
+       "text": "BIBVIRT",
+       "status": 1,
+       "created_by": 1
+   }
+}
+]

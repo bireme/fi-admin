@@ -1,0 +1,319 @@
+!ID 0
+!v001!192
+!v002!065
+!v011!asc
+!v021!asc
+!v050!A grave
+!v059!versao 1.0a^d20080317
+!ID 0
+!v001!193
+!v002!065
+!v011!asc
+!v021!asc
+!v050!A agudo
+!ID 0
+!v001!194
+!v002!065
+!v011!asc
+!v021!asc
+!v050!A circu
+!ID 0
+!v001!195
+!v002!065
+!v011!asc
+!v021!asc
+!v050!A til
+!ID 0
+!v001!196
+!v002!065
+!v011!asc
+!v021!asc
+!v050!A trema
+!ID 0
+!v001!197
+!v002!065
+!v011!asc
+!v021!asc
+!v050!A bola
+!ID 0
+!v001!199
+!v002!067
+!v011!asc
+!v021!asc
+!v050!Cedilha
+!ID 0
+!v001!200
+!v002!069
+!v011!asc
+!v021!asc
+!v050!E grave
+!ID 0
+!v001!201
+!v002!069
+!v011!asc
+!v021!asc
+!v050!E agudo
+!ID 0
+!v001!202
+!v002!069
+!v011!asc
+!v021!asc
+!v050!E circu
+!ID 0
+!v001!203
+!v002!069
+!v011!asc
+!v021!asc
+!v050!E trema
+!ID 0
+!v001!204
+!v002!073
+!v011!asc
+!v021!asc
+!v050!I grave
+!ID 0
+!v001!205
+!v002!073
+!v011!asc
+!v021!asc
+!v050!I agudo
+!ID 0
+!v001!206
+!v002!073
+!v011!asc
+!v021!asc
+!v050!I circu
+!ID 0
+!v001!207
+!v002!073
+!v011!asc
+!v021!asc
+!v050!I trema
+!ID 0
+!v001!209
+!v002!078
+!v011!asc
+!v021!asc
+!v050!N til
+!ID 0
+!v001!210
+!v002!079
+!v011!asc
+!v021!asc
+!v050!O grave
+!ID 0
+!v001!211
+!v002!079
+!v011!asc
+!v021!asc
+!v050!O agudo
+!ID 0
+!v001!212
+!v002!079
+!v011!asc
+!v021!asc
+!v050!O circu
+!ID 0
+!v001!213
+!v002!079
+!v011!asc
+!v021!asc
+!v050!O til
+!ID 0
+!v001!214
+!v002!079
+!v011!asc
+!v021!asc
+!v050!O trema
+!ID 0
+!v001!217
+!v002!085
+!v011!asc
+!v021!asc
+!v050!U grave
+!ID 0
+!v001!218
+!v002!085
+!v011!asc
+!v021!asc
+!v050!U agudo
+!ID 0
+!v001!219
+!v002!085
+!v011!asc
+!v021!asc
+!v050!U circu
+!ID 0
+!v001!220
+!v002!085
+!v011!asc
+!v021!asc
+!v050!U trema
+!ID 0
+!v001!221
+!v002!089
+!v011!asc
+!v021!asc
+!v050!Y agudo
+!ID 0
+!v001!224
+!v002!097
+!v011!asc
+!v021!asc
+!v050!a grave
+!ID 0
+!v001!225
+!v002!097
+!v011!asc
+!v021!asc
+!v050!a agudo
+!ID 0
+!v001!226
+!v002!097
+!v011!asc
+!v021!asc
+!v050!a circu
+!ID 0
+!v001!227
+!v002!097
+!v011!asc
+!v021!asc
+!v050!a til
+!ID 0
+!v001!228
+!v002!097
+!v011!asc
+!v021!asc
+!v050!a trema
+!ID 0
+!v001!229
+!v002!097
+!v011!asc
+!v021!asc
+!v050!a bola
+!ID 0
+!v001!231
+!v002!099
+!v011!asc
+!v021!asc
+!v050!cedilha
+!ID 0
+!v001!232
+!v002!101
+!v011!asc
+!v021!asc
+!v050!e grave
+!ID 0
+!v001!233
+!v002!101
+!v011!asc
+!v021!asc
+!v050!e agudo
+!ID 0
+!v001!234
+!v002!101
+!v011!asc
+!v021!asc
+!v050!e circu
+!ID 0
+!v001!235
+!v002!101
+!v011!asc
+!v021!asc
+!v050!e trema
+!ID 0
+!v001!236
+!v002!105
+!v011!asc
+!v021!asc
+!v050!i grave
+!ID 0
+!v001!237
+!v002!105
+!v011!asc
+!v021!asc
+!v050!i agudo
+!ID 0
+!v001!238
+!v002!105
+!v011!asc
+!v021!asc
+!v050!i circu
+!ID 0
+!v001!239
+!v002!105
+!v011!asc
+!v021!asc
+!v050!i trema
+!ID 0
+!v001!241
+!v002!110
+!v011!asc
+!v021!asc
+!v050!n til
+!ID 0
+!v001!242
+!v002!111
+!v011!asc
+!v021!asc
+!v050!o grave
+!ID 0
+!v001!243
+!v002!111
+!v011!asc
+!v021!asc
+!v050!o agudo
+!ID 0
+!v001!244
+!v002!111
+!v011!asc
+!v021!asc
+!v050!o circu
+!ID 0
+!v001!245
+!v002!111
+!v011!asc
+!v021!asc
+!v050!o til
+!ID 0
+!v001!246
+!v002!111
+!v011!asc
+!v021!asc
+!v050!o trema
+!ID 0
+!v001!249
+!v002!117
+!v011!asc
+!v021!asc
+!v050!u grave
+!ID 0
+!v001!250
+!v002!117
+!v011!asc
+!v021!asc
+!v050!u agudo
+!ID 0
+!v001!251
+!v002!117
+!v011!asc
+!v021!asc
+!v050!u circu
+!ID 0
+!v001!252
+!v002!117
+!v011!asc
+!v021!asc
+!v050!u trema
+!ID 0
+!v001!253
+!v002!121
+!v011!asc
+!v021!asc
+!v050!y agudo
+!ID 0
+!v001!255
+!v002!121
+!v011!asc
+!v021!asc
+!v050!y trema
