@@ -52,3 +52,12 @@ function filter_owner(owner) {
     form.page.value = 1;
     form.submit();
 }
+
+function change_type(type) {
+    var form = document.actions;
+    form.type.value = type;
+    form.page.value = 1;
+    form.submit();
+}
+
+

@@ -14,7 +14,7 @@
 
                             <li><a href="{% url 'main.views.list_resources' %}" title=""><i class="icon-star"></i> {% trans "Resources" %}</a></li>
 
-                            <li><a href="{% url 'suggest.views.list_suggested_resources' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggested resources" %}</a></li>
+                            <li><a href="{% url 'suggest.views.list_suggested_resources' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggestions" %}</a></li>
 
                             {% if user.is_superuser %}
                                 <li><a href="{% url 'main.views.list_thematics' %}" title=""><i class="icon-tag"></i> {% trans "Thematic areas" %}</a></li>

@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Suggestions" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "Resources" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type="hidden" name="type" value="{{ actions.type }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+<!--  header -->
+<div class='header'>
+    <h2><i class='icon-thumbs-up'></i> {% trans "Suggestions" %}</h2>
+</div>
+
+<div class='body'>    
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}"><a href="#tab-resources" onclick="change_type('resources')" data-toggle="tab"><strong>{% trans "Resources" %}</strong></a></li>
+        <li class="{% if actions.type == 'keywords'%}active{% endif %}"><a href="#tab-keywords" onclick="change_type('keywords')" data-toggle="tab"><strong>{% trans "Keywords" %}</strong></a></li>        
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane {% if actions.type == 'resources' or not actions.type %}active{% endif %}" id="tab-resources">
+            {% if actions.s %}
+                <div>
+                    {% trans "Search" %}: <strong>{{ actions.s }}</strong>
+                    <a href="{% url 'main.views.resources' %}">[{% trans "clear" %}]</a>
+                </div>
+            {% endif %}
+
+            <div class='pull-right'>
+                <div class="input-append">
+                    <form name="search" onSubmit="return search();">
+                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
+                        <button class="btn" type="submit"><i class='icon-search'></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
+                    <th><a href="javascript:orderby('link');" id="id_link">{% trans "URL" %}</a></th>
+                    <th><a href="javascript:orderby('date');" id="id_date">{% trans "Date" %}</a></th>
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for resource in suggestions %}
+                        <tr>
+                            <td><a href="{% url 'suggest.views.edit_suggested_resource' resource.id %}">{{ resource.id }}</a></td>
+                            <td><span title="{{ resource.title }}">{{ resource.title|slice:"50" }}{% if resource.title|length > 50 %}...{% endif %}</span></td>
+                            <td><span title="{{ resource.link }}">{{ resource.link|slice:"50" }}{% if resource.link|length > 50 %}...{% endif %}</span></td>
+                            <td>
+                                {{ resource.created_time|date:"d/m/y@f" }}
+                            </td>
+                            <td>
+                                {% if resource.status == 0 %}
+                                    <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                {% else %}
+                                    <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'suggest.views.edit_suggested_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination.html" %}
+        </div>
+
+        <div class="tab-pane {% if actions.type == 'keywords'%}active{% endif %}" id="tab-keywords">
+            {% if actions.s %}
+                <div>
+                    {% trans "Search" %}: <strong>{{ actions.s }}</strong>
+                    <a href="{% url 'main.views.resources' %}">[{% trans "clear" %}]</a>
+                </div>
+            {% endif %}
+
+            <div class='pull-right'>
+                <div class="input-append">
+                    <form name="search" onSubmit="return search();">
+                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
+                        <button class="btn" type="submit"><i class='icon-search'></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th><a href="javascript:orderby('keyword');" id="id_title">{% trans "Keyword" %}</a></th>
+                    <th><a href="javascript:orderby('resource');" id="id_link">{% trans "Resource" %}</a></th>
+                    <th><a href="javascript:orderby('date');" id="id_date">{% trans "Date" %}</a></th>
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for keyword in suggestions %}
+                        <tr>
+                            <td><a href="{% url 'main.views.create_edit_resource' keyword.resource.id %}#tag-descriptors">{{ keyword.id }}</a></td>
+                            <td><span title="{{ keyword.text }}">{{ keyword.text|slice:"30" }}{% if keyword.text|length > 30 %}...{% endif %}</span></td>
+                            <td><span title="{{ keyword.resource }}">{{ keyword.resource|slice:"120" }}{% if keyword.resource|length > 120 %}...{% endif %}</span></td>
+                            <td>
+                                {{ keyword.created_time|date:"d/m/y@f" }}
+                            </td>
+                            <td>
+                                {% if keyword.status == 0 %}
+                                    <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                {% else %}
+                                    <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'main.views.create_edit_resource' keyword.resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination.html" %}
+        </div>
+
+    </div>
+
+</div>
+
+{% include "delete_confirm.html" %}
+
+{% endblock %}

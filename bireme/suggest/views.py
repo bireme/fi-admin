@@ -62,6 +62,7 @@ def list_suggested_resources(request):
     user = request.user
     output = {}
     delete_id = request.POST.get('delete_id')
+    suggestions = None
 
     if delete_id:
         delete_resource(request, delete_id)
@@ -78,24 +79,28 @@ def list_suggested_resources(request):
     if actions['page'] and actions['page'] != '':
         page = actions['page']
 
-    resources = SuggestResource.objects.filter(title__icontains=actions['s'])
+    if actions['type'] and actions['type'] == 'keywords':
+        suggestions = Keyword.objects.filter(user_recomendation=True, status=0, text__icontains=actions['s'])
+    else:
+        suggestions = SuggestResource.objects.filter(title__icontains=actions['s'])
 
-    resources = resources.order_by(actions["orderby"])
+
+    suggestions = suggestions.order_by(actions["orderby"])
     if actions['order'] == "-":
-        resources = resources.order_by("%s%s" % (actions["order"], actions["orderby"]))
+        suggestions = suggestions.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
     # pagination
     pagination = {}
-    paginator = Paginator(resources, settings.ITEMS_PER_PAGE)
+    paginator = Paginator(suggestions, settings.ITEMS_PER_PAGE)
     pagination['paginator'] = paginator
     pagination['page'] = paginator.page(page)
-    resources = pagination['page'].object_list
+    suggestions = pagination['page'].object_list
 
-    output['resources'] = resources
+    output['suggestions'] = suggestions
     output['actions'] = actions
     output['pagination'] = pagination
 
-    return render_to_response('suggest/resources.html', output, context_instance=RequestContext(request))
+    return render_to_response('suggest/resources-keywords.html', output, context_instance=RequestContext(request))
 
 @login_required
 def edit_suggested_resource(request, **kwargs):

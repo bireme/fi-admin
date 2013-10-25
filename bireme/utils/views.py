@@ -6,6 +6,7 @@ ACTIONS = {
     'orderby': 'id',
     'order': '-',
     'page': 1,
+    'type': "",
     's': "",
     'filter_owner': "",
 }
