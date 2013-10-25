@@ -21,6 +21,7 @@ from utils.context_processors import additional_user_info
 from django.conf import settings
 from datetime import datetime
 from models import *
+from suggest.models import *
 from forms import *
 
 import mimetypes
@@ -42,11 +43,17 @@ def dashboard(request):
     pending_resource_count = Resource.objects.filter(status=0).count()
     approved_resource_count = Resource.objects.filter(status=1).count()
 
+    suggestions_keyword_count  = Keyword.objects.filter(user_recomendation=True, status=0).count()
+    suggestions_resource_count = SuggestResource.objects.filter(status=0).count()
+
+
     output['recent_actions'] = recent_actions
     output['my_resources_count'] = my_resources_count
     output['network_resources_count'] = network_resource_count
     output['pending_resource_count'] = pending_resource_count
     output['approved_resource_count'] = approved_resource_count
+    output['suggestions_keyword_count'] = suggestions_keyword_count
+    output['suggestions_resource_count'] = suggestions_resource_count
 
     return render_to_response('main/index.html', output, context_instance=RequestContext(request))
 

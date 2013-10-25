@@ -23,7 +23,7 @@
     <div class="row">
         <div class="span4">
             <div class="well sidebar-nav">
-                <h3>{% trans "Lists" %}</h3>
+                <h3>{% trans "Resources" %}</h3>
                 <ul class="nav nav-list">                  
                   <li><a href="{% url 'main.views.list_resources' %}"><span class="count">{{ my_resources_count }}</span> {% trans 'My resources' %}</a></li>
                   <li><a href="{% url 'main.views.list_resources' %}/?filter_owner=*"><span class="count">{{ network_resources_count }}</span> {% trans 'Network resources' %}</a></li>
@@ -34,6 +34,14 @@
                 <ul class="nav nav-list">                  
                   <li><span class="count ">{{ pending_resource_count }}</span> <span class="status-pending">{% trans 'Pending' %}</span></li>
                   <li><span class="count">{{ approved_resource_count }}</span> <span class="status-ok">{% trans 'Admitted' %}</span></li>
+                </ul>
+            </div>
+
+            <div class="well sidebar-nav">
+                <h3>{% trans "Suggestions" %}</h3>
+                <ul class="nav nav-list">                  
+                  <li><a href="{% url 'suggest.views.list_suggested_resources' %}"><span class="count">{{ suggestions_resource_count }}</span> {% trans 'Resources' %}</a></li>
+                  <li><a href="{% url 'suggest.views.list_suggested_resources' %}/?type=keywords"><span class="count">{{ suggestions_keyword_count }}</span> {% trans 'Keywords' %}</a></li>
                 </ul>
             </div>
 

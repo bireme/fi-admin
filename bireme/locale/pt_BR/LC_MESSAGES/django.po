@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-17 18:05-0300\n"
-"PO-Revision-Date: 2013-10-17 18:05-0300\n"
+"POT-Creation-Date: 2013-10-25 12:30-0200\n"
+"PO-Revision-Date: 2013-10-25 12:30-0200\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
@@ -47,7 +47,8 @@ msgid "DeCS: Health Sciences Descriptors"
 msgstr "DeCS: Descritores em Ciências da Saúde"
 
 #: main/choices.py:20 suggest/models.py:31
-#: templates/main/edit-resource.html:178
+#: templates/main/edit-resource.html:178 templates/main/index.html:44
+#: templates/suggest/resources-keywords.html:28
 msgid "Keywords"
 msgstr "Palavras-chave"
 
@@ -116,30 +117,34 @@ msgstr "Áreas temáticas"
 msgid "Thematic areas"
 msgstr "Áreas temáticas"
 
-#: main/models.py:138
+#: main/models.py:138 templates/suggest/resources-keywords.html:106
 msgid "Resource"
 msgstr "Recurso"
 
 #: main/models.py:139 templates/menu.html:15
-#: templates/main/edit-resource.html:8 templates/main/resources.html:4
+#: templates/main/edit-resource.html:8 templates/main/index.html:26
+#: templates/main/index.html.py:43 templates/main/resources.html:4
 #: templates/main/resources.html.py:7 templates/main/resources.html:22
-#: templates/suggest/resources.html:7
+#: templates/suggest/resources-keywords.html:7
+#: templates/suggest/resources-keywords.html:27
 msgid "Resources"
 msgstr "Recursos"
 
 #: main/models.py:142 main/models.py:183 main/models.py:203 main/models.py:223
 #: suggest/models.py:16 templates/main/edit-resource.html:47
 #: templates/main/edit-resource.html:124 templates/main/edit-resource.html:191
-#: templates/main/index.html:35 templates/main/resources.html:68
-#: templates/suggest/resources.html:64
+#: templates/main/index.html:35 templates/main/resources.html:72
+#: templates/suggest/resources-keywords.html:69
+#: templates/suggest/resources-keywords.html:122
 msgid "Pending"
 msgstr "Pendente"
 
 #: main/models.py:143 main/models.py:184 main/models.py:204 main/models.py:224
 #: suggest/models.py:17 templates/main/edit-resource.html:47
 #: templates/main/edit-resource.html:126 templates/main/edit-resource.html:193
-#: templates/main/index.html:36 templates/main/resources.html:70
-#: templates/suggest/resources.html:66
+#: templates/main/index.html:36 templates/main/resources.html:74
+#: templates/suggest/resources-keywords.html:71
+#: templates/suggest/resources-keywords.html:124
 msgid "Admitted"
 msgstr "Admitido"
 
@@ -155,13 +160,14 @@ msgstr "Apagado"
 #: main/models.py:149 main/models.py:194 main/models.py:214 main/models.py:233
 #: suggest/models.py:23 templates/main/edit-resource.html:113
 #: templates/main/edit-resource.html:179 templates/main/edit-resource.html:248
-#: templates/main/index.html:33 templates/main/resources.html:57
-#: templates/suggest/resources.html:50
+#: templates/main/index.html:33 templates/main/resources.html:58
+#: templates/suggest/resources-keywords.html:55
+#: templates/suggest/resources-keywords.html:108
 msgid "Status"
 msgstr "Status"
 
 #: main/models.py:151 suggest/models.py:25 templates/main/resources.html:55
-#: templates/suggest/resources.html:47
+#: templates/suggest/resources-keywords.html:52
 msgid "Title"
 msgstr "Título"
 
@@ -213,39 +219,39 @@ msgstr "Código"
 msgid "User recomendation?"
 msgstr "Recomendação de usuário?"
 
-#: main/views.py:139 suggest/views.py:118
+#: main/views.py:146 suggest/views.py:122
 msgid "Resource successfully edited."
 msgstr "Recurso editado com sucesso."
 
-#: main/views.py:193 suggest/views.py:147
+#: main/views.py:200 suggest/views.py:151
 msgid "Resource deleted."
 msgstr "Recurso apagado."
 
-#: main/views.py:266
+#: main/views.py:273
 msgid "Thematic area successfully edited."
 msgstr "Área temática editada com sucesso."
 
-#: main/views.py:291
+#: main/views.py:298
 msgid "Thematic area deleted."
 msgstr "Área Temática apagada"
 
-#: main/views.py:364
+#: main/views.py:371
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: main/views.py:388
+#: main/views.py:395
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
-#: main/views.py:460
+#: main/views.py:467
 msgid "Language successfully edited."
 msgstr "Idioma editado com sucesso."
 
-#: main/views.py:485
+#: main/views.py:492
 msgid "Language deleted."
 msgstr "Idioma apagado."
 
-#: suggest/forms.py:18
+#: suggest/forms.py:22
 msgid "Title too short"
 msgstr "Título muito curto"
 
@@ -253,15 +259,13 @@ msgstr "Título muito curto"
 msgid "Suggested resource"
 msgstr "Recurso sugerido"
 
-#: suggest/models.py:13 templates/menu.html:17
-#: templates/suggest/edit-suggested-resource.html:8
-#: templates/suggest/resources.html:4
+#: suggest/models.py:13 templates/suggest/edit-suggested-resource.html:8
 msgid "Suggested resources"
 msgstr "Recursos sugeridos"
 
 #: suggest/models.py:29
-msgid "Comments"
-msgstr "Comentários"
+msgid "abstract"
+msgstr "Resumo"
 
 #: suggest/models.py:33
 msgid "Administrative comments"
@@ -288,8 +292,7 @@ msgstr "BIREME - OPAS - OMS"
 #: templates/base.html:45 templates/suggest/invalid-link.html:59
 #: templates/suggest/thanks.html:37
 msgid "Latin-American and Caribbean Center on Health Sciences Information"
-msgstr ""
-"Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
+msgstr "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
 
 #: templates/base.html:47 templates/suggest/invalid-link.html:61
 #: templates/suggest/thanks.html:39
@@ -321,6 +324,12 @@ msgstr "Sim"
 #: templates/main/index.html.py:19
 msgid "Dashboard"
 msgstr "Painel de controle"
+
+#: templates/menu.html:17 templates/main/index.html:41
+#: templates/suggest/resources-keywords.html:4
+#: templates/suggest/resources-keywords.html:22
+msgid "Suggestions"
+msgstr "Sugestões"
 
 #: templates/menu.html:21 templates/main/types.html:4
 #: templates/main/types.html.py:7 templates/main/types.html:21
@@ -429,13 +438,6 @@ msgstr "Última edição realizada em"
 msgid "Descriptors"
 msgstr "Descritores"
 
-#: templates/main/edit-resource.html:114 templates/main/edit-resource.html:181
-#: templates/main/edit-resource.html:250 templates/main/languages.html:48
-#: templates/main/resources.html:58 templates/main/thematics.html:48
-#: templates/main/types.html:48 templates/suggest/resources.html:51
-msgid "Actions"
-msgstr "Ações"
-
 #: templates/main/edit-resource.html:152
 msgid "Select by search"
 msgstr "Selecione pela pesquisa"
@@ -447,6 +449,13 @@ msgstr "Sugestão"
 #: templates/main/edit-resource.html:198 templates/main/edit-resource.html:221
 msgid "Suggested"
 msgstr "Sugerido"
+
+#: templates/main/edit-resource.html:250 templates/main/languages.html:48
+#: templates/main/resources.html:59 templates/main/thematics.html:48
+#: templates/main/types.html:48 templates/suggest/resources-keywords.html:56
+#: templates/suggest/resources-keywords.html:109
+msgid "Actions"
+msgstr "Ações"
 
 #: templates/main/edit-resource.html:306
 msgid "Add descriptor"
@@ -483,10 +492,6 @@ msgstr "Novo Tipo de Fonte"
 msgid "Success!"
 msgstr "Sucesso!"
 
-#: templates/main/index.html:26
-msgid "Lists"
-msgstr "Listas"
-
 #: templates/main/index.html:28 templates/main/resources.html:30
 msgid "My resources"
 msgstr "Meus recursos"
@@ -495,7 +500,7 @@ msgstr "Meus recursos"
 msgid "Network resources"
 msgstr "Recursos da rede"
 
-#: templates/main/index.html:43
+#: templates/main/index.html:51
 msgid "Recent actions"
 msgstr "Ações recentes"
 
@@ -507,24 +512,33 @@ msgstr "Novo Idioma de Fonte"
 #: templates/main/resources.html:38 templates/main/resources.html.py:46
 #: templates/main/thematics.html:30 templates/main/thematics.html.py:38
 #: templates/main/types.html:30 templates/main/types.html.py:38
-#: templates/suggest/resources.html:30 templates/suggest/resources.html:38
+#: templates/suggest/resources-keywords.html:35
+#: templates/suggest/resources-keywords.html:43
+#: templates/suggest/resources-keywords.html:88
+#: templates/suggest/resources-keywords.html:96
 msgid "Search"
 msgstr "Pesquisa"
 
 #: templates/main/languages.html:31 templates/main/resources.html:39
 #: templates/main/thematics.html:31 templates/main/types.html:31
-#: templates/suggest/resources.html:31
+#: templates/suggest/resources-keywords.html:36
+#: templates/suggest/resources-keywords.html:89
 msgid "clear"
 msgstr "limpar"
 
-#: templates/main/languages.html:57 templates/main/resources.html:76
+#: templates/main/languages.html:57 templates/main/resources.html:80
 #: templates/main/thematics.html:57 templates/main/types.html:57
 msgid "Remove"
 msgstr "Apagar"
 
-#: templates/main/resources.html:56 templates/suggest/resources.html:48
+#: templates/main/resources.html:56
+#: templates/suggest/resources-keywords.html:53
 msgid "URL"
 msgstr "URL"
+
+#: templates/main/resources.html:57
+msgid "Update date"
+msgstr "Data de atualização"
 
 #: templates/main/types.html:23
 msgid "New Source Type"
@@ -560,13 +574,14 @@ msgstr "Códio de segurança (captcha) inválido"
 msgid "Back"
 msgstr "Voltar"
 
-#: templates/suggest/resources.html:21
-msgid "Suggested Resources"
-msgstr "Recurso sugerido"
-
-#: templates/suggest/resources.html:49
+#: templates/suggest/resources-keywords.html:54
+#: templates/suggest/resources-keywords.html:107
 msgid "Date"
 msgstr "Data"
+
+#: templates/suggest/resources-keywords.html:105
+msgid "Keyword"
+msgstr "Palavra-chave"
 
 #: templates/suggest/thanks.html:27
 msgid "Thank you"
@@ -591,6 +606,15 @@ msgstr "código"
 #: utils/models.py:88
 msgid "country"
 msgstr "país"
+
+#~ msgid "Comments"
+#~ msgstr "Comentários"
+
+#~ msgid "Lists"
+#~ msgstr "Listas"
+
+#~ msgid "Suggested Resources"
+#~ msgstr "Recurso sugerido"
 
 #~ msgid "User recomendation"
 #~ msgstr "Recomendação de usuário?"
