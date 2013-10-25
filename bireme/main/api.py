@@ -33,7 +33,9 @@ class ResourceAPI(ModelResource):
         fq = request.GET.get('fq', '')
         start = request.GET.get('start', '')
         count = request.GET.get('count', '')
-        sort = request.GET.get('sort', 'created_date desc')
+        op = request.GET.get('op', 'search')
+        id = request.GET.get('id', '')
+        sort = request.GET.get('sort', 'created_date desc')        
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -44,10 +46,10 @@ class ResourceAPI(ModelResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'lis', 'col': 'main','op': 'search', 
-                    'output': 'site', 'lang': 'pt', 'q': q , 'fq': fq,  'start': start, 'count': count, 'sort': sort}
+        search_params = {'site': 'lis', 'col': 'main','op': op,'output': 'site', 'lang': 'pt', 
+                    'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
 
-        r = requests.post(search_url, data=search_params)
+        r = requests.post(search_url, data=search_params)        
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())

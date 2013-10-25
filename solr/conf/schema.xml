@@ -133,7 +133,7 @@
 
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
    <field name="title" type="text" indexed="true" stored="true" termVectors="true"/>
-   <field name="link" type="string" indexed="false" stored="true" multiValued="true" termVectors="true"/>
+   <field name="link" type="string" indexed="false" stored="true" multiValued="true"/>
    <field name="originator" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="originator_location" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="author" type="text" indexed="true" stored="true" multiValued="true"/>
