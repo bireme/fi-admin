@@ -148,7 +148,7 @@ class Resource(Generic):
     # status (399)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
     # title (311)
-    title = models.CharField(_('Title'), max_length=255, blank=False)
+    title = models.CharField(_('Title'), max_length=510, blank=False)
     # link (351)
     link = models.TextField(_('Link'), blank=False)
     # originator (313)

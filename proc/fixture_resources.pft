@@ -5,22 +5,22 @@ if mfn=1 then '['/ fi,
           c4,'"model": ','"main.resource",',/
        fi,
        c4,'"fields": {',/
-            c8,'"status": ','1,',/    
+            c8,'"status": ', v399,',',/    
             c8,'"title": ','"',v311,'",'/
             c8,'"link": ','"',(v351+|\r\n|),'",'/
             if p(v313) then c8,'"originator": ','"',(v313+|\r\n|),'",'/, fi,
             c8,'"originator_location": ','[30],',/
             if p(v315) then c8,'"author": ','"',(v315+|\r\n|),'",'/, fi,            
-            if p(v317) then c8,'"source_language": ','[',(v317+|, |),'],',/, fi,
-            if p(v318) then c8,'"source_type": ','[',(if size(v318) > 3 then '999' else v318+|, | fi),'],',/, fi,
+            if p(v317) then c8,'"source_language": ','[',(if val(v317) > 0 then, if iocc > 1 then ', ' fi, v317 fi),'],',/, fi,
+            if p(v318) then c8,'"source_type": ','[',(if p(v318) then, if iocc > 1 then ', ' fi, if size(v318) > 3 then '999' else v318 fi,fi),'],',/, fi,
             if p(v319) then c8,'"abstract": ','"',v319,'",'/, fi,
             if p(v341) then c8,'"time_period_textual": ','"',v341,'",'/, fi,
             if p(v361) then c8,'"objective": ','"',v361,'",'/, fi,
             c8,'"cooperative_center_code": ','"BR1.1",'/
 
 
-            if p(v391) then c8,'"created_time": ','"', v391.4'-'v391*4.2'-'v391*6.2 , 'T09:00:00-03:00",'/, fi,
-            if p(v393) then c8,'"updated_time": ','"', v393.4'-'v393*4.2'-'v393*6.2 , 'T09:00:00-03:00",'/, fi,
+            if p(v391) and val(v391)>0 then c8,'"created_time": ','"', v391.4'-'v391*4.2'-'v391*6.2 , 'T09:00:00-03:00",'/, fi,
+            if p(v393) and val(v393)>0 then c8,'"updated_time": ','"', v393.4'-'v393*4.2'-'v393*6.2 , 'T09:00:00-03:00",'/, fi,
 
             c8,'"created_by": ','1'/
        c4,'}',/
