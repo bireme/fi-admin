@@ -152,7 +152,7 @@
    
    <field name="descriptor" type="decs_keyword" indexed="true" stored="true" multiValued="true" termVectors="true"/>  
    
-   <field name="descriptor_filter" type="decs_code" indexed="true" stored="true" multiValued="true"/>
+   <field name="descriptor_filter" type="decs_code" indexed="true" stored="false" multiValued="true"/>
    <field name="keyword" type="text" indexed="true" stored="true" multiValued="true"/>
 
    <field name="status" type="int" indexed="true" stored="true" multiValued="false"/>

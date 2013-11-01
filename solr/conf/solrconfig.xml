@@ -91,7 +91,7 @@
      <lst name="invariants">
          <str name="facet">true</str>
          <str name="facet.field">descriptor_filter</str>
-         <str name="facet.limit">10</str>
+         <str name="facet.limit">20</str>
          <str name="facet.mincount">1</str>
      </lst>
   </requestHandler>
