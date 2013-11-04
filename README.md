@@ -1,4 +1,4 @@
-lis-admin
+fi-admin
 =========
 
-Administration interface and API for LIS (Health Information Locator)  application
+Administration interface and API for Information Sources
