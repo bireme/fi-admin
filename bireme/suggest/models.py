@@ -32,7 +32,7 @@ class SuggestResource(models.Model):
 
     administrative_comments = models.TextField(_('Administrative comments'), blank=True)
 
-    created_time = models.DateTimeField(_("created at"), default=timezone.now(), editable=False)
+    created_time = models.DateTimeField(_("created at"), auto_now_add=True, editable=False)
 
     def __unicode__(self):
         return self.title

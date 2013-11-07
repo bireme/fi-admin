@@ -24,8 +24,8 @@ class Generic(models.Model):
     class Meta:
         abstract = True
 
-    created_time = models.DateTimeField(_("created at"), default=timezone.now(), editable=False)
-    updated_time = models.DateTimeField(_("updated"), default=timezone.now(), editable=False)
+    created_time = models.DateTimeField(_("created at"), auto_now_add=True, editable=False)
+    updated_time = models.DateTimeField(_("updated"), auto_now=True, editable=False)
     created_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
     updated_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
 
