@@ -1,30 +1,41 @@
+{% load i18n %}
+
 {% if pagination.page.has_previous or pagination.page.has_next %}
     <div class="pagination">
         <ul>
             {% if pagination.page.has_previous %}
                 <li>
+                    <a href="javascript: page('1')"><i class="icon-step-backward"></i></a>
+                </li>
+                <li>
                     <a href="javascript: page('{{ pagination.page.previous_page_number }}')"><i class="icon-caret-left"></i></a>
                 </li>
-            {% else %}
+            {% else %}            
+                <li class="disabled">
+                    <a href="#"><i class="icon-step-backward"></i></a>
+                </li>            
                 <li class="disabled">
                     <a href="#"><i class="icon-caret-left"></i></a>
                 </li>
             {% endif %}
 
-            {% for page in pagination.paginator.page_range %}
-                <li class="{% if page == pagination.page.number %}active{% endif %}">
-                    <a href="javascript: page('{{ page }}')">{{ page }}</a>
-                </li>        
-            {% endfor %}
+            <li><a href="" class="active">{% trans "Page" %} {{ pagination.page.number }} {% trans "of" %} {{ pagination.paginator.num_pages }}</a></li>
+
 
             {% if pagination.page.has_next %}
                 <li>
                     <a href="javascript: page('{{ pagination.page.next_page_number }}')"><i class="icon-caret-right"></i></a>
                 </li>
+                <li>
+                    <a href="javascript: page('{{ pagination.paginator.num_pages }}')"><i class="icon-step-forward"></i></a>
+                </li>                
             {% else %}
                 <li class="disabled">
                     <a href="#"><i class="icon-caret-right"></i></a>
                 </li>
+                <li class="disabled">
+                    <a href="#"><i class="icon-step-forward"></i></a>
+                </li>                
             {% endif %}
 
         </ul>

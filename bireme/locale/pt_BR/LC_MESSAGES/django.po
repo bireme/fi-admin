@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-25 12:30-0200\n"
-"PO-Revision-Date: 2013-10-25 12:30-0200\n"
+"POT-Creation-Date: 2013-11-08 13:40-0200\n"
+"PO-Revision-Date: 2013-11-08 13:42-0200\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
@@ -117,7 +117,7 @@ msgstr "Áreas temáticas"
 msgid "Thematic areas"
 msgstr "Áreas temáticas"
 
-#: main/models.py:138 templates/suggest/resources-keywords.html:106
+#: main/models.py:138 templates/suggest/resources-keywords.html:109
 msgid "Resource"
 msgstr "Recurso"
 
@@ -134,8 +134,8 @@ msgstr "Recursos"
 #: suggest/models.py:16 templates/main/edit-resource.html:47
 #: templates/main/edit-resource.html:124 templates/main/edit-resource.html:191
 #: templates/main/index.html:35 templates/main/resources.html:72
-#: templates/suggest/resources-keywords.html:69
-#: templates/suggest/resources-keywords.html:122
+#: templates/suggest/resources-keywords.html:70
+#: templates/suggest/resources-keywords.html:125
 msgid "Pending"
 msgstr "Pendente"
 
@@ -143,8 +143,8 @@ msgstr "Pendente"
 #: suggest/models.py:17 templates/main/edit-resource.html:47
 #: templates/main/edit-resource.html:126 templates/main/edit-resource.html:193
 #: templates/main/index.html:36 templates/main/resources.html:74
-#: templates/suggest/resources-keywords.html:71
-#: templates/suggest/resources-keywords.html:124
+#: templates/suggest/resources-keywords.html:72
+#: templates/suggest/resources-keywords.html:127
 msgid "Admitted"
 msgstr "Admitido"
 
@@ -161,13 +161,13 @@ msgstr "Apagado"
 #: suggest/models.py:23 templates/main/edit-resource.html:113
 #: templates/main/edit-resource.html:179 templates/main/edit-resource.html:248
 #: templates/main/index.html:33 templates/main/resources.html:58
-#: templates/suggest/resources-keywords.html:55
-#: templates/suggest/resources-keywords.html:108
+#: templates/suggest/resources-keywords.html:56
+#: templates/suggest/resources-keywords.html:111
 msgid "Status"
 msgstr "Status"
 
 #: main/models.py:151 suggest/models.py:25 templates/main/resources.html:55
-#: templates/suggest/resources-keywords.html:52
+#: templates/suggest/resources-keywords.html:53
 msgid "Title"
 msgstr "Título"
 
@@ -275,10 +275,9 @@ msgstr "Comentários administrativos"
 msgid "created at"
 msgstr "criado em"
 
-#: templates/base.html:16 templates/admin/base_site.html:4
-#: templates/admin/base_site.html.py:7
-msgid "LIS Administration"
-msgstr "LIS Administração"
+#: templates/base.html:16
+msgid "FI Administration"
+msgstr "FI Administração"
 
 #: templates/base.html:29
 msgid "Home"
@@ -292,7 +291,8 @@ msgstr "BIREME - OPAS - OMS"
 #: templates/base.html:45 templates/suggest/invalid-link.html:59
 #: templates/suggest/thanks.html:37
 msgid "Latin-American and Caribbean Center on Health Sciences Information"
-msgstr "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
+msgstr ""
+"Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
 
 #: templates/base.html:47 templates/suggest/invalid-link.html:61
 #: templates/suggest/thanks.html:39
@@ -343,6 +343,18 @@ msgstr "Administrador Geral"
 #: templates/menu.html:56
 msgid "Logout"
 msgstr "Sair do sistema"
+
+#: templates/pagination.html:22
+msgid "Page"
+msgstr "Página"
+
+#: templates/pagination.html:22
+msgid "of"
+msgstr "de"
+
+#: templates/admin/base_site.html:4 templates/admin/base_site.html.py:7
+msgid "LIS Administration"
+msgstr "LIS Administração"
 
 #: templates/authentication/login.html:4
 #: templates/authentication/login.html:36
@@ -452,8 +464,8 @@ msgstr "Sugerido"
 
 #: templates/main/edit-resource.html:250 templates/main/languages.html:48
 #: templates/main/resources.html:59 templates/main/thematics.html:48
-#: templates/main/types.html:48 templates/suggest/resources-keywords.html:56
-#: templates/suggest/resources-keywords.html:109
+#: templates/main/types.html:48 templates/suggest/resources-keywords.html:57
+#: templates/suggest/resources-keywords.html:112
 msgid "Actions"
 msgstr "Ações"
 
@@ -512,17 +524,17 @@ msgstr "Novo Idioma de Fonte"
 #: templates/main/resources.html:38 templates/main/resources.html.py:46
 #: templates/main/thematics.html:30 templates/main/thematics.html.py:38
 #: templates/main/types.html:30 templates/main/types.html.py:38
-#: templates/suggest/resources-keywords.html:35
-#: templates/suggest/resources-keywords.html:43
-#: templates/suggest/resources-keywords.html:88
-#: templates/suggest/resources-keywords.html:96
+#: templates/suggest/resources-keywords.html:36
+#: templates/suggest/resources-keywords.html:44
+#: templates/suggest/resources-keywords.html:91
+#: templates/suggest/resources-keywords.html:99
 msgid "Search"
 msgstr "Pesquisa"
 
 #: templates/main/languages.html:31 templates/main/resources.html:39
 #: templates/main/thematics.html:31 templates/main/types.html:31
-#: templates/suggest/resources-keywords.html:36
-#: templates/suggest/resources-keywords.html:89
+#: templates/suggest/resources-keywords.html:37
+#: templates/suggest/resources-keywords.html:92
 msgid "clear"
 msgstr "limpar"
 
@@ -532,7 +544,7 @@ msgid "Remove"
 msgstr "Apagar"
 
 #: templates/main/resources.html:56
-#: templates/suggest/resources-keywords.html:53
+#: templates/suggest/resources-keywords.html:54
 msgid "URL"
 msgstr "URL"
 
@@ -574,12 +586,12 @@ msgstr "Códio de segurança (captcha) inválido"
 msgid "Back"
 msgstr "Voltar"
 
-#: templates/suggest/resources-keywords.html:54
-#: templates/suggest/resources-keywords.html:107
+#: templates/suggest/resources-keywords.html:55
+#: templates/suggest/resources-keywords.html:110
 msgid "Date"
 msgstr "Data"
 
-#: templates/suggest/resources-keywords.html:105
+#: templates/suggest/resources-keywords.html:108
 msgid "Keyword"
 msgstr "Palavra-chave"
 
