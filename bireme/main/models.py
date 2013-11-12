@@ -1,6 +1,9 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
+
 from datetime import datetime
 from django.db import models
 
@@ -189,7 +192,10 @@ class ResourceThematic(Generic):
         verbose_name = _("Thematic area")
         verbose_name_plural = _("Thematic areas")
 
-    resource = models.ForeignKey(Resource, related_name='thematics')
+    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, related_name='thematics')
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+
     thematic_area = models.ForeignKey(ThematicArea, related_name='+')
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING, blank=True)
 
@@ -205,10 +211,10 @@ class Descriptor(Generic):
         (2, _('Refused')),
     )
 
-    class Meta:
-        order_with_respect_to = 'resource'
+    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, related_name='descriptors')
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
 
-    resource = models.ForeignKey(Resource, related_name='descriptors')
     text = models.CharField(_('Text'), max_length=255, blank=True)
     code = models.CharField(_('Code'), max_length=50, blank=True)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
@@ -225,10 +231,10 @@ class Keyword(Generic):
         (2, _('Refused')),
     )
 
-    class Meta:
-        order_with_respect_to = 'resource'
+    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, related_name='keywords')
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
 
-    resource = models.ForeignKey(Resource, related_name='keywords')
     text = models.CharField(_('Text'), max_length=255, blank=True)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
     user_recomendation = models.BooleanField(_('User recomendation?'))

@@ -2,6 +2,8 @@ import datetime
 from haystack import indexes
 from main.models import Resource, Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
 
+from django.contrib.contenttypes.models import ContentType
+
 
 class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -49,16 +51,16 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         return [ "|".join( source_type.get_translations() ) for source_type in SourceType.objects.filter(resource=obj.id) ]
 
     def prepare_thematic_area(self, obj):
-        return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(resource=obj.id) ]
+        return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
 
     def prepare_thematic_area_display(self, obj):
-        return [ "|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(resource=obj.id) ]
+        return [ "|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
 
     def prepare_descriptor(self, obj):
-        return [descriptor.code for descriptor in Descriptor.objects.filter(resource=obj.id, status=1)]
+        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
 
     def prepare_keyword(self, obj):
-        return [keyword.text for keyword in Keyword.objects.filter(resource=obj.id, status=1)]
+        return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
 
     def prepare_created_date(self, obj):
         return obj.created_time.strftime('%Y%m%d')

@@ -128,6 +128,8 @@ def create_edit_resource(request, **kwargs):
     user_data = additional_user_info(request)
     user_data['is_owner'] = True if resource.created_by_id == request.user.id else False
 
+    ct = ContentType.objects.get_for_model(resource)
+
     # save/update
     if request.POST:
         form = ResourceForm(request.POST, request.FILES, instance=resource, user=request.user, user_data=user_data)
@@ -153,9 +155,9 @@ def create_edit_resource(request, **kwargs):
 
         # if documentalist create a formset with descriptors created by the user
         if user_data['user_role'] == 'doc':
-            descriptor_list = Descriptor.objects.filter(resource=resource).exclude(created_by_id=request.user.id, status=0)
-            keyword_list = Keyword.objects.filter(resource=resource).exclude(created_by_id=request.user.id, status=0)
-            thematic_list = ResourceThematic.objects.filter(resource=resource).exclude(created_by_id=request.user.id, status=0)
+            descriptor_list = Descriptor.objects.filter(object_id=resource.id, content_type=ct).exclude(created_by_id=request.user.id, status=0)
+            keyword_list = Keyword.objects.filter(object_id=resource.id, content_type=ct).exclude(created_by_id=request.user.id, status=0)
+            thematic_list = ResourceThematic.objects.filter(object_id=resource.id, content_type=ct).exclude(created_by_id=request.user.id, status=0)
 
             pending_descriptor_from_user = Descriptor.objects.filter(created_by_id=request.user.id, status=0)
             pending_keyword_from_user = Keyword.objects.filter(created_by_id=request.user.id, status=0)

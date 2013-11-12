@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.forms.models import inlineformset_factory
+from django.contrib.contenttypes.generic import generic_inlineformset_factory
+
 from django.forms import widgets
 from django.conf import settings
 from django import forms
@@ -96,20 +98,11 @@ class TypeLocalForm(forms.ModelForm):
         model = SourceTypeLocal
 
 
-#def formfield_callback(field):
-#     self.fields[key].required = False
-#    if isinstance(field, models.ChoiceField) and field.name == 'target_field_name':
-#        return fields.ChoiceField(choices = SAMPLE_CHOICES_LIST, label='Sample Label')
-#    return field.formfield()
-
-
 # definition of inline formsets
 
-DescriptorFormSet = inlineformset_factory(Resource, Descriptor, can_delete=True, extra=1)
-
-KeywordFormSet = inlineformset_factory(Resource, Keyword, can_delete=True, extra=1)
-
-ResourceThematicFormSet = inlineformset_factory(Resource, ResourceThematic, can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, can_delete=True, extra=1)
+KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
 
 ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAreaLocal, form=ThematicAreaLocalForm, can_delete=True, extra=1)
 
