@@ -14,7 +14,8 @@ if mfn=1 then '['/ fi,
 				c4,'"model": ','"main.descriptor",',/				
 				c4,'"pk": ', 'null,'/     	/* avoid PK duplication use auto-increment on load */
 				c4,'"fields": {',/
-					c8,'"resource": ',mfn(0),',',/    
+					c8,'"object_id": ',mfn(0),',',/
+					c8,'"content_type": ', '15,',/
 					c8,'"text": ','"', v323, '",'/
 					c8,'"code": ','"',ref( l(['decs']v9991[1]),'^d',mfn(0) ), ref( l(['decs']v9992[1]),'^s',mfn(0) ) ,'",'/
 					c8,'"status": ','1,'/           
@@ -26,7 +27,8 @@ if mfn=1 then '['/ fi,
 				c4,'"model": ','"main.keyword",',/
 				c4,'"pk": ', 'null,'/      /* avoid PK duplication use auto-increment on load */
 				c4,'"fields": {',/
-					c8,'"resource": ',mfn(0),',',/    
+					c8,'"object_id": ',mfn(0),',',/    
+					c8,'"content_type": ', '15,',/
 					c8,'"text": ','"', v323, '",'/
 					c8,'"status": ','1,'/           
 					c8,'"created_by": ','1'/

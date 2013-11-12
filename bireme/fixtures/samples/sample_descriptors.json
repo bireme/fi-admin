@@ -1,9 +1,10 @@
 [
 {
    "model": "main.descriptor",
-   "pk": 11,
+   "pk": null,
    "fields": {
-       "resource": 1,
+       "object_id": 1,
+       "content_type": 15,
        "text": "Órgãos do Sistema de Saúde",
        "code": "^d6458",
        "status": 1,
@@ -12,9 +13,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 12,
+   "pk": null,
    "fields": {
-       "resource": 1,
+       "object_id": 1,
+       "content_type": 15,
        "text": "Órgãos Estatais de Desenvolvimento e Planejamento em Saúde",
        "code": "^d13605",
        "status": 1,
@@ -23,9 +25,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 13,
+   "pk": null,
    "fields": {
-       "resource": 1,
+       "object_id": 1,
+       "content_type": 15,
        "text": "Saúde Pública",
        "code": "^d28455",
        "status": 1,
@@ -34,9 +37,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 14,
+   "pk": null,
    "fields": {
-       "resource": 1,
+       "object_id": 1,
+       "content_type": 15,
        "text": "Estatísticas de Saúde",
        "code": "^d28440",
        "status": 1,
@@ -45,9 +49,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 21,
+   "pk": null,
    "fields": {
-       "resource": 2,
+       "object_id": 2,
+       "content_type": 15,
        "text": "Periódicos",
        "code": "^d9709",
        "status": 1,
@@ -56,9 +61,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 22,
+   "pk": null,
    "fields": {
-       "resource": 2,
+       "object_id": 2,
+       "content_type": 15,
        "text": "Serviços de Informação",
        "code": "^d7432",
        "status": 1,
@@ -67,9 +73,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 23,
+   "pk": null,
    "fields": {
-       "resource": 2,
+       "object_id": 2,
+       "content_type": 15,
        "text": "Periódicos Eletrônicos",
        "status": 1,
        "created_by": 1
@@ -77,9 +84,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 24,
+   "pk": null,
    "fields": {
-       "resource": 2,
+       "object_id": 2,
+       "content_type": 15,
        "text": "Artigo de Revista",
        "code": "^d29635",
        "status": 1,
@@ -88,9 +96,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 25,
+   "pk": null,
    "fields": {
-       "resource": 2,
+       "object_id": 2,
+       "content_type": 15,
        "text": "Comunicación Científica",
        "status": 1,
        "created_by": 1
@@ -98,9 +107,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 26,
+   "pk": null,
    "fields": {
-       "resource": 2,
+       "object_id": 2,
+       "content_type": 15,
        "text": "Portais de Acesso a Revistas Científicas",
        "code": "^d50125",
        "status": 1,
@@ -109,9 +119,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 27,
+   "pk": null,
    "fields": {
-       "resource": 2,
+       "object_id": 2,
+       "content_type": 15,
        "text": "Revistas Eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -120,9 +131,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 31,
+   "pk": null,
    "fields": {
-       "resource": 3,
+       "object_id": 3,
+       "content_type": 15,
        "text": "Cirurgia/educação",
        "status": 1,
        "created_by": 1
@@ -130,9 +142,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 32,
+   "pk": null,
    "fields": {
-       "resource": 3,
+       "object_id": 3,
+       "content_type": 15,
        "text": "Cirurgia/tendências",
        "status": 1,
        "created_by": 1
@@ -140,9 +153,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 33,
+   "pk": null,
    "fields": {
-       "resource": 3,
+       "object_id": 3,
+       "content_type": 15,
        "text": "Técnicas operatórias/métodos",
        "status": 1,
        "created_by": 1
@@ -150,9 +164,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 34,
+   "pk": null,
    "fields": {
-       "resource": 3,
+       "object_id": 3,
+       "content_type": 15,
        "text": "Técnicas operatórias/tendências",
        "status": 1,
        "created_by": 1
@@ -160,9 +175,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 35,
+   "pk": null,
    "fields": {
-       "resource": 3,
+       "object_id": 3,
+       "content_type": 15,
        "text": "Pesquisa",
        "code": "^d12527",
        "status": 1,
@@ -171,9 +187,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 36,
+   "pk": null,
    "fields": {
-       "resource": 3,
+       "object_id": 3,
+       "content_type": 15,
        "text": "Cumunicación científica",
        "status": 1,
        "created_by": 1
@@ -181,9 +198,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 37,
+   "pk": null,
    "fields": {
-       "resource": 3,
+       "object_id": 3,
+       "content_type": 15,
        "text": "Revistas Eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -192,9 +210,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 38,
+   "pk": null,
    "fields": {
-       "resource": 3,
+       "object_id": 3,
+       "content_type": 15,
        "text": "Sociedades Médicas",
        "code": "^d13339",
        "status": 1,
@@ -203,9 +222,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 41,
+   "pk": null,
    "fields": {
-       "resource": 4,
+       "object_id": 4,
+       "content_type": 15,
        "text": "Medicina",
        "code": "^d8678",
        "status": 1,
@@ -214,9 +234,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 42,
+   "pk": null,
    "fields": {
-       "resource": 4,
+       "object_id": 4,
+       "content_type": 15,
        "text": "Ciencias Biológicas",
        "status": 1,
        "created_by": 1
@@ -224,9 +245,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 43,
+   "pk": null,
    "fields": {
-       "resource": 4,
+       "object_id": 4,
+       "content_type": 15,
        "text": "Comunicación científica",
        "status": 1,
        "created_by": 1
@@ -234,9 +256,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 44,
+   "pk": null,
    "fields": {
-       "resource": 4,
+       "object_id": 4,
+       "content_type": 15,
        "text": "Revistas Eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -245,9 +268,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 45,
+   "pk": null,
    "fields": {
-       "resource": 4,
+       "object_id": 4,
+       "content_type": 15,
        "text": "Pesquisa Biomédica",
        "code": "^d37673",
        "status": 1,
@@ -256,9 +280,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 51,
+   "pk": null,
    "fields": {
-       "resource": 5,
+       "object_id": 5,
+       "content_type": 15,
        "text": "Genética",
        "code": "^d5957",
        "status": 1,
@@ -267,9 +292,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 52,
+   "pk": null,
    "fields": {
-       "resource": 5,
+       "object_id": 5,
+       "content_type": 15,
        "text": "Genética Bioquímica",
        "status": 1,
        "created_by": 1
@@ -277,9 +303,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 53,
+   "pk": null,
    "fields": {
-       "resource": 5,
+       "object_id": 5,
+       "content_type": 15,
        "text": "Genética Médica",
        "code": "^d5962",
        "status": 1,
@@ -288,9 +315,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 54,
+   "pk": null,
    "fields": {
-       "resource": 5,
+       "object_id": 5,
+       "content_type": 15,
        "text": "Biologia Molecular",
        "code": "^d9157",
        "status": 1,
@@ -299,9 +327,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 55,
+   "pk": null,
    "fields": {
-       "resource": 5,
+       "object_id": 5,
+       "content_type": 15,
        "text": "Medicina Veterinaria",
        "code": "^d15134",
        "status": 1,
@@ -310,9 +339,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 56,
+   "pk": null,
    "fields": {
-       "resource": 5,
+       "object_id": 5,
+       "content_type": 15,
        "text": "Biotecnologia",
        "code": "^d19089",
        "status": 1,
@@ -321,9 +351,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 57,
+   "pk": null,
    "fields": {
-       "resource": 5,
+       "object_id": 5,
+       "content_type": 15,
        "text": "Engenharia Genética",
        "code": "^d24386",
        "status": 1,
@@ -332,9 +363,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 58,
+   "pk": null,
    "fields": {
-       "resource": 5,
+       "object_id": 5,
+       "content_type": 15,
        "text": "Revistas eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -343,9 +375,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 59,
+   "pk": null,
    "fields": {
-       "resource": 5,
+       "object_id": 5,
+       "content_type": 15,
        "text": "Sociedades Médicas",
        "code": "^d13339",
        "status": 1,
@@ -354,9 +387,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 61,
+   "pk": null,
    "fields": {
-       "resource": 6,
+       "object_id": 6,
+       "content_type": 15,
        "text": "Doenças transmissíveis",
        "code": "^d28582",
        "status": 1,
@@ -365,9 +399,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 62,
+   "pk": null,
    "fields": {
-       "resource": 6,
+       "object_id": 6,
+       "content_type": 15,
        "text": "Epidemiologia",
        "code": "^d28566",
        "status": 1,
@@ -376,9 +411,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 63,
+   "pk": null,
    "fields": {
-       "resource": 6,
+       "object_id": 6,
+       "content_type": 15,
        "text": "Saúde pública",
        "code": "^d28455",
        "status": 1,
@@ -387,9 +423,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 64,
+   "pk": null,
    "fields": {
-       "resource": 6,
+       "object_id": 6,
+       "content_type": 15,
        "text": "Revistas eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -398,9 +435,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 71,
+   "pk": null,
    "fields": {
-       "resource": 7,
+       "object_id": 7,
+       "content_type": 15,
        "text": "Genética",
        "code": "^d5957",
        "status": 1,
@@ -409,9 +447,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 72,
+   "pk": null,
    "fields": {
-       "resource": 7,
+       "object_id": 7,
+       "content_type": 15,
        "text": "Genética Bioquímica",
        "status": 1,
        "created_by": 1
@@ -419,9 +458,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 73,
+   "pk": null,
    "fields": {
-       "resource": 7,
+       "object_id": 7,
+       "content_type": 15,
        "text": "Genética Médica",
        "code": "^d5962",
        "status": 1,
@@ -430,9 +470,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 74,
+   "pk": null,
    "fields": {
-       "resource": 7,
+       "object_id": 7,
+       "content_type": 15,
        "text": "Biologia Molecular",
        "code": "^d9157",
        "status": 1,
@@ -441,9 +482,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 75,
+   "pk": null,
    "fields": {
-       "resource": 7,
+       "object_id": 7,
+       "content_type": 15,
        "text": "Medicina Veterinaria",
        "code": "^d15134",
        "status": 1,
@@ -452,9 +494,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 76,
+   "pk": null,
    "fields": {
-       "resource": 7,
+       "object_id": 7,
+       "content_type": 15,
        "text": "Biotecnologia",
        "code": "^d19089",
        "status": 1,
@@ -463,9 +506,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 77,
+   "pk": null,
    "fields": {
-       "resource": 7,
+       "object_id": 7,
+       "content_type": 15,
        "text": "Engenharia Genética",
        "code": "^d24386",
        "status": 1,
@@ -474,9 +518,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 78,
+   "pk": null,
    "fields": {
-       "resource": 7,
+       "object_id": 7,
+       "content_type": 15,
        "text": "Revistas eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -485,9 +530,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 81,
+   "pk": null,
    "fields": {
-       "resource": 8,
+       "object_id": 8,
+       "content_type": 15,
        "text": "Alimentos",
        "code": "^d5639",
        "status": 1,
@@ -496,9 +542,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 82,
+   "pk": null,
    "fields": {
-       "resource": 8,
+       "object_id": 8,
+       "content_type": 15,
        "text": "Tecnologia de alimentos",
        "code": "^d5664",
        "status": 1,
@@ -507,9 +554,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 83,
+   "pk": null,
    "fields": {
-       "resource": 8,
+       "object_id": 8,
+       "content_type": 15,
        "text": "Manipulação de alimentos",
        "code": "^d5650",
        "status": 1,
@@ -518,9 +566,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 84,
+   "pk": null,
    "fields": {
-       "resource": 8,
+       "object_id": 8,
+       "content_type": 15,
        "text": "Produção de alimentos",
        "code": "^d24458",
        "status": 1,
@@ -529,9 +578,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 85,
+   "pk": null,
    "fields": {
-       "resource": 8,
+       "object_id": 8,
+       "content_type": 15,
        "text": "Revistas eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -540,9 +590,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 91,
+   "pk": null,
    "fields": {
-       "resource": 9,
+       "object_id": 9,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -550,9 +601,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 92,
+   "pk": null,
    "fields": {
-       "resource": 9,
+       "object_id": 9,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -561,9 +613,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 93,
+   "pk": null,
    "fields": {
-       "resource": 9,
+       "object_id": 9,
+       "content_type": 15,
        "text": "Educação de pós graduação",
        "status": 1,
        "created_by": 1
@@ -571,9 +624,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 94,
+   "pk": null,
    "fields": {
-       "resource": 9,
+       "object_id": 9,
+       "content_type": 15,
        "text": "Médicos clínicos gerais/educ",
        "status": 1,
        "created_by": 1
@@ -581,9 +635,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 101,
+   "pk": null,
    "fields": {
-       "resource": 10,
+       "object_id": 10,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -591,9 +646,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 102,
+   "pk": null,
    "fields": {
-       "resource": 10,
+       "object_id": 10,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -602,20 +658,22 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 103,
+   "pk": null,
    "fields": {
-       "resource": 10,
+       "object_id": 10,
+       "content_type": 15,
        "text": "Cardiologia/educ",
-       "code": "^d2353",
+       "code": "^d2353^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.keyword",
-   "pk": 111,
+   "pk": null,
    "fields": {
-       "resource": 11,
+       "object_id": 11,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -623,9 +681,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 112,
+   "pk": null,
    "fields": {
-       "resource": 11,
+       "object_id": 11,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -634,9 +693,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 113,
+   "pk": null,
    "fields": {
-       "resource": 11,
+       "object_id": 11,
+       "content_type": 15,
        "text": "Educação de pós graduação em medicina",
        "status": 1,
        "created_by": 1
@@ -644,20 +704,22 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 114,
+   "pk": null,
    "fields": {
-       "resource": 11,
+       "object_id": 11,
+       "content_type": 15,
        "text": "Cardiologia/educ",
-       "code": "^d2353",
+       "code": "^d2353^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.keyword",
-   "pk": 121,
+   "pk": null,
    "fields": {
-       "resource": 12,
+       "object_id": 12,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -665,9 +727,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 122,
+   "pk": null,
    "fields": {
-       "resource": 12,
+       "object_id": 12,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -676,20 +739,22 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 123,
+   "pk": null,
    "fields": {
-       "resource": 12,
+       "object_id": 12,
+       "content_type": 15,
        "text": "Cardiologia/educ",
-       "code": "^d2353",
+       "code": "^d2353^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.keyword",
-   "pk": 131,
+   "pk": null,
    "fields": {
-       "resource": 13,
+       "object_id": 13,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -697,9 +762,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 132,
+   "pk": null,
    "fields": {
-       "resource": 13,
+       "object_id": 13,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -708,9 +774,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 133,
+   "pk": null,
    "fields": {
-       "resource": 13,
+       "object_id": 13,
+       "content_type": 15,
        "text": "Clínica geral/educ",
        "status": 1,
        "created_by": 1
@@ -718,9 +785,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 141,
+   "pk": null,
    "fields": {
-       "resource": 14,
+       "object_id": 14,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -728,9 +796,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 142,
+   "pk": null,
    "fields": {
-       "resource": 14,
+       "object_id": 14,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -739,9 +808,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 143,
+   "pk": null,
    "fields": {
-       "resource": 14,
+       "object_id": 14,
+       "content_type": 15,
        "text": "Clínica geral/educ",
        "status": 1,
        "created_by": 1
@@ -749,9 +819,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 151,
+   "pk": null,
    "fields": {
-       "resource": 15,
+       "object_id": 15,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -760,9 +831,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 152,
+   "pk": null,
    "fields": {
-       "resource": 15,
+       "object_id": 15,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -770,9 +842,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 153,
+   "pk": null,
    "fields": {
-       "resource": 15,
+       "object_id": 15,
+       "content_type": 15,
        "text": "Médicos clínicos gerais/educ",
        "status": 1,
        "created_by": 1
@@ -780,9 +853,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 161,
+   "pk": null,
    "fields": {
-       "resource": 16,
+       "object_id": 16,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -791,9 +865,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 162,
+   "pk": null,
    "fields": {
-       "resource": 16,
+       "object_id": 16,
+       "content_type": 15,
        "text": "Educação em saúde",
        "code": "^d28480",
        "status": 1,
@@ -802,9 +877,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 163,
+   "pk": null,
    "fields": {
-       "resource": 16,
+       "object_id": 16,
+       "content_type": 15,
        "text": "Educação contínua em enfermagem",
        "status": 1,
        "created_by": 1
@@ -812,20 +888,22 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 164,
+   "pk": null,
    "fields": {
-       "resource": 16,
+       "object_id": 16,
+       "content_type": 15,
        "text": "Psicologia/educ",
-       "code": "^d12021",
+       "code": "^d12021^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.keyword",
-   "pk": 165,
+   "pk": null,
    "fields": {
-       "resource": 16,
+       "object_id": 16,
+       "content_type": 15,
        "text": "Nutricao/educ",
        "status": 1,
        "created_by": 1
@@ -833,20 +911,22 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 166,
+   "pk": null,
    "fields": {
-       "resource": 16,
+       "object_id": 16,
+       "content_type": 15,
        "text": "Fisioterapia/educ",
-       "code": "^d36319",
+       "code": "^d36319^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.descriptor",
-   "pk": 171,
+   "pk": null,
    "fields": {
-       "resource": 17,
+       "object_id": 17,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -855,9 +935,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 172,
+   "pk": null,
    "fields": {
-       "resource": 17,
+       "object_id": 17,
+       "content_type": 15,
        "text": "Educação em saúde",
        "code": "^d28480",
        "status": 1,
@@ -866,9 +947,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 173,
+   "pk": null,
    "fields": {
-       "resource": 17,
+       "object_id": 17,
+       "content_type": 15,
        "text": "Educação contínua em enfermagem",
        "status": 1,
        "created_by": 1
@@ -876,40 +958,45 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 174,
+   "pk": null,
    "fields": {
-       "resource": 17,
+       "object_id": 17,
+       "content_type": 15,
        "text": "Psicologia/educ",
-       "code": "^d12021",
+       "code": "^d12021^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.keyword",
-   "pk": 175,
+   "pk": null,
    "fields": {
-       "resource": 17,
+       "object_id": 17,
+       "content_type": 15,
        "text": "Nutrição/educ",
        "status": 1,
        "created_by": 1
    }
 },
 {
-   "model": "main.keyword",
-   "pk": 176,
+   "model": "main.descriptor",
+   "pk": null,
    "fields": {
-       "resource": 17,
-       "text": "/educa/educa/educ",
+       "object_id": 17,
+       "content_type": 15,
+       "text": "Fisioterapia/educ",
+       "code": "^d36319^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.descriptor",
-   "pk": 181,
+   "pk": null,
    "fields": {
-       "resource": 18,
+       "object_id": 18,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -918,9 +1005,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 182,
+   "pk": null,
    "fields": {
-       "resource": 18,
+       "object_id": 18,
+       "content_type": 15,
        "text": "Educação em saúde",
        "code": "^d28480",
        "status": 1,
@@ -929,9 +1017,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 183,
+   "pk": null,
    "fields": {
-       "resource": 18,
+       "object_id": 18,
+       "content_type": 15,
        "text": "Educação contínua em enfermagem",
        "status": 1,
        "created_by": 1
@@ -939,9 +1028,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 184,
+   "pk": null,
    "fields": {
-       "resource": 18,
+       "object_id": 18,
+       "content_type": 15,
        "text": "Educação de pós-graduação",
        "code": "^d4568",
        "status": 1,
@@ -950,20 +1040,22 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 185,
+   "pk": null,
    "fields": {
-       "resource": 18,
+       "object_id": 18,
+       "content_type": 15,
        "text": "Psicologia/educ",
-       "code": "^d12021",
+       "code": "^d12021^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.keyword",
-   "pk": 186,
+   "pk": null,
    "fields": {
-       "resource": 18,
+       "object_id": 18,
+       "content_type": 15,
        "text": "Nutrição/educ",
        "status": 1,
        "created_by": 1
@@ -971,20 +1063,22 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 187,
+   "pk": null,
    "fields": {
-       "resource": 18,
+       "object_id": 18,
+       "content_type": 15,
        "text": "Fisioterapia/educ",
-       "code": "^d36319",
+       "code": "^d36319^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.keyword",
-   "pk": 191,
+   "pk": null,
    "fields": {
-       "resource": 19,
+       "object_id": 19,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -992,9 +1086,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 192,
+   "pk": null,
    "fields": {
-       "resource": 19,
+       "object_id": 19,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -1003,9 +1098,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 193,
+   "pk": null,
    "fields": {
-       "resource": 19,
+       "object_id": 19,
+       "content_type": 15,
        "text": "Médicos clínicos gerais/educ",
        "status": 1,
        "created_by": 1
@@ -1013,9 +1109,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 201,
+   "pk": null,
    "fields": {
-       "resource": 20,
+       "object_id": 20,
+       "content_type": 15,
        "text": "Universidades virtuais",
        "status": 1,
        "created_by": 1
@@ -1023,9 +1120,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 202,
+   "pk": null,
    "fields": {
-       "resource": 20,
+       "object_id": 20,
+       "content_type": 15,
        "text": "Educação médica",
        "code": "^d4569",
        "status": 1,
@@ -1034,9 +1132,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 203,
+   "pk": null,
    "fields": {
-       "resource": 20,
+       "object_id": 20,
+       "content_type": 15,
        "text": "Educação à distância",
        "status": 1,
        "created_by": 1
@@ -1044,9 +1143,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 211,
+   "pk": null,
    "fields": {
-       "resource": 21,
+       "object_id": 21,
+       "content_type": 15,
        "text": "Psicologia",
        "code": "^d12021",
        "status": 1,
@@ -1055,9 +1155,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 212,
+   "pk": null,
    "fields": {
-       "resource": 21,
+       "object_id": 21,
+       "content_type": 15,
        "text": "Processos mentais",
        "code": "^d8776",
        "status": 1,
@@ -1066,9 +1167,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 213,
+   "pk": null,
    "fields": {
-       "resource": 21,
+       "object_id": 21,
+       "content_type": 15,
        "text": "Memória",
        "code": "^d8738",
        "status": 1,
@@ -1076,21 +1178,22 @@
    }
 },
 {
-   "model": "main.descriptor",
-   "pk": 214,
+   "model": "main.keyword",
+   "pk": null,
    "fields": {
-       "resource": 21,
-       "text": "Psicologia social",
-       "code": "^d12030",
+       "object_id": 21,
+       "content_type": 15,
+       "text": "ocialsocialsocial",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.descriptor",
-   "pk": 215,
+   "pk": null,
    "fields": {
-       "resource": 21,
+       "object_id": 21,
+       "content_type": 15,
        "text": "Consciência",
        "code": "^d3262",
        "status": 1,
@@ -1099,9 +1202,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 216,
+   "pk": null,
    "fields": {
-       "resource": 21,
+       "object_id": 21,
+       "content_type": 15,
        "text": "Teoria psicológica",
        "code": "^d12019",
        "status": 1,
@@ -1110,9 +1214,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 217,
+   "pk": null,
    "fields": {
-       "resource": 21,
+       "object_id": 21,
+       "content_type": 15,
        "text": "Inconsciente (Psicologia)",
        "code": "^d14872",
        "status": 1,
@@ -1121,9 +1226,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 218,
+   "pk": null,
    "fields": {
-       "resource": 21,
+       "object_id": 21,
+       "content_type": 15,
        "text": "Saúde da família",
        "code": "^d28468",
        "status": 1,
@@ -1132,9 +1238,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 221,
+   "pk": null,
    "fields": {
-       "resource": 22,
+       "object_id": 22,
+       "content_type": 15,
        "text": "Toxicologia",
        "code": "^d14509",
        "status": 1,
@@ -1143,9 +1250,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 222,
+   "pk": null,
    "fields": {
-       "resource": 22,
+       "object_id": 22,
+       "content_type": 15,
        "text": "Animais venenosos",
        "code": "^d845",
        "status": 1,
@@ -1154,9 +1262,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 223,
+   "pk": null,
    "fields": {
-       "resource": 22,
+       "object_id": 22,
+       "content_type": 15,
        "text": "Toxinas",
        "status": 1,
        "created_by": 1
@@ -1164,9 +1273,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 224,
+   "pk": null,
    "fields": {
-       "resource": 22,
+       "object_id": 22,
+       "content_type": 15,
        "text": "Alergia e imunologia",
        "code": "^d488",
        "status": 1,
@@ -1175,9 +1285,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 225,
+   "pk": null,
    "fields": {
-       "resource": 22,
+       "object_id": 22,
+       "content_type": 15,
        "text": "Técnicas imunológicas",
        "code": "^d29208",
        "status": 1,
@@ -1186,9 +1297,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 226,
+   "pk": null,
    "fields": {
-       "resource": 22,
+       "object_id": 22,
+       "content_type": 15,
        "text": "Venenos",
        "code": "^d11472",
        "status": 1,
@@ -1197,9 +1309,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 227,
+   "pk": null,
    "fields": {
-       "resource": 22,
+       "object_id": 22,
+       "content_type": 15,
        "text": "Antivenenos",
        "code": "^d23091",
        "status": 1,
@@ -1208,9 +1321,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 228,
+   "pk": null,
    "fields": {
-       "resource": 22,
+       "object_id": 22,
+       "content_type": 15,
        "text": "Mordeduras e picadas/terapia",
        "code": "^d1758^s22067",
        "status": 1,
@@ -1219,9 +1333,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 229,
+   "pk": null,
    "fields": {
-       "resource": 22,
+       "object_id": 22,
+       "content_type": 15,
        "text": "Mordeduras e picadas/prevenção & controle",
        "code": "^d1758^s22054",
        "status": 1,
@@ -1230,9 +1345,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 231,
+   "pk": null,
    "fields": {
-       "resource": 23,
+       "object_id": 23,
+       "content_type": 15,
        "text": "Cirurgia torácica",
        "code": "^d14290",
        "status": 1,
@@ -1240,21 +1356,22 @@
    }
 },
 {
-   "model": "main.descriptor",
-   "pk": 232,
+   "model": "main.keyword",
+   "pk": null,
    "fields": {
-       "resource": 23,
+       "object_id": 23,
+       "content_type": 15,
        "text": "Procedimentos cirúrgicos cardiacos",
-       "code": "^d13884",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.descriptor",
-   "pk": 233,
+   "pk": null,
    "fields": {
-       "resource": 23,
+       "object_id": 23,
+       "content_type": 15,
        "text": "Procedimentos cirúrgicos cardiovasculares",
        "code": "^d13884",
        "status": 1,
@@ -1263,9 +1380,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 234,
+   "pk": null,
    "fields": {
-       "resource": 23,
+       "object_id": 23,
+       "content_type": 15,
        "text": "Revistas eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -1274,9 +1392,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 241,
+   "pk": null,
    "fields": {
-       "resource": 24,
+       "object_id": 24,
+       "content_type": 15,
        "text": "Medicina bucal",
        "code": "^d33129",
        "status": 1,
@@ -1285,9 +1404,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 242,
+   "pk": null,
    "fields": {
-       "resource": 24,
+       "object_id": 24,
+       "content_type": 15,
        "text": "Odontologia",
        "code": "^d3828",
        "status": 1,
@@ -1296,9 +1416,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 243,
+   "pk": null,
    "fields": {
-       "resource": 24,
+       "object_id": 24,
+       "content_type": 15,
        "text": "Odontopediatria",
        "code": "^d30898",
        "status": 1,
@@ -1307,9 +1428,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 244,
+   "pk": null,
    "fields": {
-       "resource": 24,
+       "object_id": 24,
+       "content_type": 15,
        "text": "Saúde bucal",
        "code": "^d28452",
        "status": 1,
@@ -1317,20 +1439,23 @@
    }
 },
 {
-   "model": "main.keyword",
-   "pk": 245,
+   "model": "main.descriptor",
+   "pk": null,
    "fields": {
-       "resource": 24,
-       "text": "logiaologiaologiaologia",
+       "object_id": 24,
+       "content_type": 15,
+       "text": "Educação em odontologia",
+       "code": "^d4564",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.descriptor",
-   "pk": 246,
+   "pk": null,
    "fields": {
-       "resource": 24,
+       "object_id": 24,
+       "content_type": 15,
        "text": "Revistas eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -1339,9 +1464,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 251,
+   "pk": null,
    "fields": {
-       "resource": 25,
+       "object_id": 25,
+       "content_type": 15,
        "text": "Saúde Pública",
        "code": "^d28455",
        "status": 1,
@@ -1350,9 +1476,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 252,
+   "pk": null,
    "fields": {
-       "resource": 25,
+       "object_id": 25,
+       "content_type": 15,
        "text": "Epidemiologia",
        "code": "^d28566",
        "status": 1,
@@ -1361,9 +1488,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 253,
+   "pk": null,
    "fields": {
-       "resource": 25,
+       "object_id": 25,
+       "content_type": 15,
        "text": "Revistas eletrônicas",
        "code": "^d50107",
        "status": 1,
@@ -1372,9 +1500,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 261,
+   "pk": null,
    "fields": {
-       "resource": 26,
+       "object_id": 26,
+       "content_type": 15,
        "text": "Medicina tropical",
        "code": "^d14733",
        "status": 1,
@@ -1383,9 +1512,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 262,
+   "pk": null,
    "fields": {
-       "resource": 26,
+       "object_id": 26,
+       "content_type": 15,
        "text": "Doenças parasitárias",
        "code": "^d10461",
        "status": 1,
@@ -1393,20 +1523,23 @@
    }
 },
 {
-   "model": "main.keyword",
-   "pk": 263,
+   "model": "main.descriptor",
+   "pk": null,
    "fields": {
-       "resource": 26,
-       "text": "asônicasônicasônicas",
+       "object_id": 26,
+       "content_type": 15,
+       "text": "Revistas eletrônicas",
+       "code": "^d50107",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.descriptor",
-   "pk": 271,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "Administração em saúde pública",
        "code": "^d12070",
        "status": 1,
@@ -1415,9 +1548,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 272,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "Administração de serviços de saúde",
        "code": "^d17099",
        "status": 1,
@@ -1426,9 +1560,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 273,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "Administração pública",
        "code": "^d16701",
        "status": 1,
@@ -1437,9 +1572,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 274,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "Programas nacionais de saúde",
        "code": "^d9508",
        "status": 1,
@@ -1448,9 +1584,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 275,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "Indicadores de Saúde",
        "status": 1,
        "created_by": 1
@@ -1458,9 +1595,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 276,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "Estatísticas vitais",
        "code": "^d28618",
        "status": 1,
@@ -1469,9 +1607,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 277,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "Estatísticas sanitárias",
        "code": "^d32395",
        "status": 1,
@@ -1480,9 +1619,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 278,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "Estatísticas hospitalares",
        "code": "^d28585",
        "status": 1,
@@ -1491,9 +1631,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 279,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "Estatísticas de serviços de saúde",
        "code": "^d28586",
        "status": 1,
@@ -1502,9 +1643,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 2710,
+   "pk": null,
    "fields": {
-       "resource": 27,
+       "object_id": 27,
+       "content_type": 15,
        "text": "SUS(BR)",
        "status": 1,
        "created_by": 1
@@ -1512,9 +1654,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 281,
+   "pk": null,
    "fields": {
-       "resource": 28,
+       "object_id": 28,
+       "content_type": 15,
        "text": "Mortalidade",
        "code": "^d28632",
        "status": 1,
@@ -1523,10 +1666,11 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 282,
+   "pk": null,
    "fields": {
-       "resource": 28,
-       "text": "delidadelidadelidadelidadelidade",
+       "object_id": 28,
+       "content_type": 15,
+       "text": "Indicadores de morbi-mortalidade",
        "code": "^d28418",
        "status": 1,
        "created_by": 1
@@ -1534,9 +1678,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 283,
+   "pk": null,
    "fields": {
-       "resource": 28,
+       "object_id": 28,
+       "content_type": 15,
        "text": "indicadores de saúde",
        "status": 1,
        "created_by": 1
@@ -1544,9 +1689,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 284,
+   "pk": null,
    "fields": {
-       "resource": 28,
+       "object_id": 28,
+       "content_type": 15,
        "text": "Saúde pública",
        "code": "^d28455",
        "status": 1,
@@ -1555,9 +1701,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 291,
+   "pk": null,
    "fields": {
-       "resource": 29,
+       "object_id": 29,
+       "content_type": 15,
        "text": "Indicadores de Saúde",
        "status": 1,
        "created_by": 1
@@ -1565,9 +1712,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 292,
+   "pk": null,
    "fields": {
-       "resource": 29,
+       "object_id": 29,
+       "content_type": 15,
        "text": "Programas de vacinação/estatística e dados numéricos",
        "status": 1,
        "created_by": 1
@@ -1575,9 +1723,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 293,
+   "pk": null,
    "fields": {
-       "resource": 29,
+       "object_id": 29,
+       "content_type": 15,
        "text": "Imunização/estatística & dados numéricos",
        "code": "^d29482^s22083",
        "status": 1,
@@ -1586,9 +1735,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 294,
+   "pk": null,
    "fields": {
-       "resource": 29,
+       "object_id": 29,
+       "content_type": 15,
        "text": "Vacinas e imunização",
        "status": 1,
        "created_by": 1
@@ -1596,9 +1746,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 295,
+   "pk": null,
    "fields": {
-       "resource": 29,
+       "object_id": 29,
+       "content_type": 15,
        "text": "Saúde pública",
        "code": "^d28455",
        "status": 1,
@@ -1607,9 +1758,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 296,
+   "pk": null,
    "fields": {
-       "resource": 29,
+       "object_id": 29,
+       "content_type": 15,
        "text": "Medicamentos",
        "status": 1,
        "created_by": 1
@@ -1617,9 +1769,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 297,
+   "pk": null,
    "fields": {
-       "resource": 29,
+       "object_id": 29,
+       "content_type": 15,
        "text": "Vacinas",
        "code": "^d23123",
        "status": 1,
@@ -1628,9 +1781,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 298,
+   "pk": null,
    "fields": {
-       "resource": 29,
+       "object_id": 29,
+       "content_type": 15,
        "text": "Insumos",
        "status": 1,
        "created_by": 1
@@ -1638,9 +1792,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 301,
+   "pk": null,
    "fields": {
-       "resource": 30,
+       "object_id": 30,
+       "content_type": 15,
        "text": "Indicadores de Saúde",
        "status": 1,
        "created_by": 1
@@ -1648,9 +1803,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 302,
+   "pk": null,
    "fields": {
-       "resource": 30,
+       "object_id": 30,
+       "content_type": 15,
        "text": "Estatísticas Vitais",
        "code": "^d28618",
        "status": 1,
@@ -1659,9 +1815,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 303,
+   "pk": null,
    "fields": {
-       "resource": 30,
+       "object_id": 30,
+       "content_type": 15,
        "text": "Coeficiente de Natalidade",
        "code": "^d28258",
        "status": 1,
@@ -1670,9 +1827,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 304,
+   "pk": null,
    "fields": {
-       "resource": 30,
+       "object_id": 30,
+       "content_type": 15,
        "text": "Neonatologia/estatísticas & dados numéricos",
        "code": "^d9552",
        "status": 1,
@@ -1681,9 +1839,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 305,
+   "pk": null,
    "fields": {
-       "resource": 30,
+       "object_id": 30,
+       "content_type": 15,
        "text": "Recém-Nascido",
        "code": "^d22226",
        "status": 1,
@@ -1692,9 +1851,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 306,
+   "pk": null,
    "fields": {
-       "resource": 30,
+       "object_id": 30,
+       "content_type": 15,
        "text": "Saúde Pública",
        "code": "^d28455",
        "status": 1,
@@ -1703,9 +1863,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 307,
+   "pk": null,
    "fields": {
-       "resource": 30,
+       "object_id": 30,
+       "content_type": 15,
        "text": "Demografia",
        "code": "^d27982",
        "status": 1,
@@ -1714,9 +1875,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 311,
+   "pk": null,
    "fields": {
-       "resource": 31,
+       "object_id": 31,
+       "content_type": 15,
        "text": "Indicadores de saúde",
        "status": 1,
        "created_by": 1
@@ -1724,9 +1886,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 312,
+   "pk": null,
    "fields": {
-       "resource": 31,
+       "object_id": 31,
+       "content_type": 15,
        "text": "Levantamentos de saúde bucal",
        "status": 1,
        "created_by": 1
@@ -1734,9 +1897,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 313,
+   "pk": null,
    "fields": {
-       "resource": 31,
+       "object_id": 31,
+       "content_type": 15,
        "text": "Cárie dentária/epidemiologia",
        "code": "^d3745^s22080",
        "status": 1,
@@ -1745,9 +1909,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 314,
+   "pk": null,
    "fields": {
-       "resource": 31,
+       "object_id": 31,
+       "content_type": 15,
        "text": "Brasil/epidemiologia",
        "code": "^d1963^s22080",
        "status": 1,
@@ -1756,9 +1921,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 315,
+   "pk": null,
    "fields": {
-       "resource": 31,
+       "object_id": 31,
+       "content_type": 15,
        "text": "Saúde pública",
        "code": "^d28455",
        "status": 1,
@@ -1767,9 +1933,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 321,
+   "pk": null,
    "fields": {
-       "resource": 32,
+       "object_id": 32,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -1778,9 +1945,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 322,
+   "pk": null,
    "fields": {
-       "resource": 32,
+       "object_id": 32,
+       "content_type": 15,
        "text": "Educação médica",
        "code": "^d4569",
        "status": 1,
@@ -1789,9 +1957,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 323,
+   "pk": null,
    "fields": {
-       "resource": 32,
+       "object_id": 32,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -1799,9 +1968,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 324,
+   "pk": null,
    "fields": {
-       "resource": 32,
+       "object_id": 32,
+       "content_type": 15,
        "text": "Ortopedia/educação",
        "code": "^d10162^s22019",
        "status": 1,
@@ -1810,9 +1980,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 325,
+   "pk": null,
    "fields": {
-       "resource": 32,
+       "object_id": 32,
+       "content_type": 15,
        "text": "Oncologia/educação",
        "code": "^d8662^s22019",
        "status": 1,
@@ -1821,9 +1992,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 326,
+   "pk": null,
    "fields": {
-       "resource": 32,
+       "object_id": 32,
+       "content_type": 15,
        "text": "Aprendizado baseado em problemas",
        "status": 1,
        "created_by": 1
@@ -1831,9 +2003,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 327,
+   "pk": null,
    "fields": {
-       "resource": 32,
+       "object_id": 32,
+       "content_type": 15,
        "text": "Ensino por computador",
        "status": 1,
        "created_by": 1
@@ -1841,9 +2014,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 331,
+   "pk": null,
    "fields": {
-       "resource": 33,
+       "object_id": 33,
+       "content_type": 15,
        "text": "Nutrição/educação",
        "status": 1,
        "created_by": 1
@@ -1851,9 +2025,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 332,
+   "pk": null,
    "fields": {
-       "resource": 33,
+       "object_id": 33,
+       "content_type": 15,
        "text": "Saúde Pública/educação",
        "code": "^d28455^s22019",
        "status": 1,
@@ -1862,9 +2037,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 333,
+   "pk": null,
    "fields": {
-       "resource": 33,
+       "object_id": 33,
+       "content_type": 15,
        "text": "Aprendizado baseado em problemas",
        "status": 1,
        "created_by": 1
@@ -1872,9 +2048,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 341,
+   "pk": null,
    "fields": {
-       "resource": 34,
+       "object_id": 34,
+       "content_type": 15,
        "text": "Biologia molecular/educação",
        "code": "^d9157^s22019",
        "status": 1,
@@ -1883,9 +2060,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 342,
+   "pk": null,
    "fields": {
-       "resource": 34,
+       "object_id": 34,
+       "content_type": 15,
        "text": "Dna",
        "code": "^d22152",
        "status": 1,
@@ -1894,9 +2072,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 343,
+   "pk": null,
    "fields": {
-       "resource": 34,
+       "object_id": 34,
+       "content_type": 15,
        "text": "Replicação de dna",
        "status": 1,
        "created_by": 1
@@ -1904,9 +2083,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 344,
+   "pk": null,
    "fields": {
-       "resource": 34,
+       "object_id": 34,
+       "content_type": 15,
        "text": "Ciclo celular",
        "code": "^d2488",
        "status": 1,
@@ -1915,9 +2095,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 351,
+   "pk": null,
    "fields": {
-       "resource": 35,
+       "object_id": 35,
+       "content_type": 15,
        "text": "Genética/educação",
        "code": "^d5957^s22019",
        "status": 1,
@@ -1926,9 +2107,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 352,
+   "pk": null,
    "fields": {
-       "resource": 35,
+       "object_id": 35,
+       "content_type": 15,
        "text": "Cromossomos humanos",
        "code": "^d2926",
        "status": 1,
@@ -1937,9 +2119,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 353,
+   "pk": null,
    "fields": {
-       "resource": 35,
+       "object_id": 35,
+       "content_type": 15,
        "text": "Núcleo celular",
        "code": "^d2502",
        "status": 1,
@@ -1948,9 +2131,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 354,
+   "pk": null,
    "fields": {
-       "resource": 35,
+       "object_id": 35,
+       "content_type": 15,
        "text": "Genoma humano",
        "code": "^d24691",
        "status": 1,
@@ -1959,9 +2143,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 355,
+   "pk": null,
    "fields": {
-       "resource": 35,
+       "object_id": 35,
+       "content_type": 15,
        "text": "DNA",
        "code": "^d22152",
        "status": 1,
@@ -1970,9 +2155,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 356,
+   "pk": null,
    "fields": {
-       "resource": 35,
+       "object_id": 35,
+       "content_type": 15,
        "text": "Aberrações cromossômicas",
        "code": "^d2918",
        "status": 1,
@@ -1981,9 +2167,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 357,
+   "pk": null,
    "fields": {
-       "resource": 35,
+       "object_id": 35,
+       "content_type": 15,
        "text": "Hemoglobinopatias",
        "code": "^d6603",
        "status": 1,
@@ -1992,9 +2179,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 361,
+   "pk": null,
    "fields": {
-       "resource": 36,
+       "object_id": 36,
+       "content_type": 15,
        "text": "Educação em saúde",
        "code": "^d28480",
        "status": 1,
@@ -2003,9 +2191,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 362,
+   "pk": null,
    "fields": {
-       "resource": 36,
+       "object_id": 36,
+       "content_type": 15,
        "text": "Televisão",
        "code": "^d14068",
        "status": 1,
@@ -2014,9 +2203,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 363,
+   "pk": null,
    "fields": {
-       "resource": 36,
+       "object_id": 36,
+       "content_type": 15,
        "text": "Meios de comunicação",
        "code": "^d3177",
        "status": 1,
@@ -2025,9 +2215,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 364,
+   "pk": null,
    "fields": {
-       "resource": 36,
+       "object_id": 36,
+       "content_type": 15,
        "text": "Laciencia",
        "status": 1,
        "created_by": 1
@@ -2035,9 +2226,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 371,
+   "pk": null,
    "fields": {
-       "resource": 37,
+       "object_id": 37,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -2046,9 +2238,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 372,
+   "pk": null,
    "fields": {
-       "resource": 37,
+       "object_id": 37,
+       "content_type": 15,
        "text": "Educação médica contínuada",
        "status": 1,
        "created_by": 1
@@ -2056,9 +2249,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 373,
+   "pk": null,
    "fields": {
-       "resource": 37,
+       "object_id": 37,
+       "content_type": 15,
        "text": "Educação médica",
        "code": "^d4569",
        "status": 1,
@@ -2067,9 +2261,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 381,
+   "pk": null,
    "fields": {
-       "resource": 38,
+       "object_id": 38,
+       "content_type": 15,
        "text": "Cardiologia/educação",
        "code": "^d2353^s22019",
        "status": 1,
@@ -2078,9 +2273,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 382,
+   "pk": null,
    "fields": {
-       "resource": 38,
+       "object_id": 38,
+       "content_type": 15,
        "text": "Informática médica",
        "code": "^d19243",
        "status": 1,
@@ -2089,9 +2285,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 383,
+   "pk": null,
    "fields": {
-       "resource": 38,
+       "object_id": 38,
+       "content_type": 15,
        "text": "Cirurgia cardiaca",
        "status": 1,
        "created_by": 1
@@ -2099,9 +2296,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 391,
+   "pk": null,
    "fields": {
-       "resource": 39,
+       "object_id": 39,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -2110,9 +2308,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 392,
+   "pk": null,
    "fields": {
-       "resource": 39,
+       "object_id": 39,
+       "content_type": 15,
        "text": "Educação contínua",
        "status": 1,
        "created_by": 1
@@ -2120,9 +2319,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 393,
+   "pk": null,
    "fields": {
-       "resource": 39,
+       "object_id": 39,
+       "content_type": 15,
        "text": "Instrução por computador",
        "code": "^d29234",
        "status": 1,
@@ -2131,9 +2331,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 394,
+   "pk": null,
    "fields": {
-       "resource": 39,
+       "object_id": 39,
+       "content_type": 15,
        "text": "Multimídia",
        "code": "^d33195",
        "status": 1,
@@ -2142,9 +2343,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 395,
+   "pk": null,
    "fields": {
-       "resource": 39,
+       "object_id": 39,
+       "content_type": 15,
        "text": "Internet",
        "code": "^d33921",
        "status": 1,
@@ -2153,9 +2355,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 401,
+   "pk": null,
    "fields": {
-       "resource": 40,
+       "object_id": 40,
+       "content_type": 15,
        "text": "Embriologia/educação",
        "code": "^d27995^s22019",
        "status": 1,
@@ -2164,9 +2367,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 402,
+   "pk": null,
    "fields": {
-       "resource": 40,
+       "object_id": 40,
+       "content_type": 15,
        "text": "Histologia/educação",
        "code": "^d6812^s22019",
        "status": 1,
@@ -2175,9 +2379,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 403,
+   "pk": null,
    "fields": {
-       "resource": 40,
+       "object_id": 40,
+       "content_type": 15,
        "text": "Biologia molecular/educação",
        "code": "^d9157^s22019",
        "status": 1,
@@ -2185,21 +2390,22 @@
    }
 },
 {
-   "model": "main.descriptor",
-   "pk": 404,
+   "model": "main.keyword",
+   "pk": null,
    "fields": {
-       "resource": 40,
+       "object_id": 40,
+       "content_type": 15,
        "text": "Crescimento e desenvolvimento do embrião/educação",
-       "code": "^d38857^s22019",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.descriptor",
-   "pk": 405,
+   "pk": null,
    "fields": {
-       "resource": 40,
+       "object_id": 40,
+       "content_type": 15,
        "text": "Processamento de imagem assistida por computador",
        "code": "^d19200",
        "status": 1,
@@ -2208,9 +2414,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 411,
+   "pk": null,
    "fields": {
-       "resource": 41,
+       "object_id": 41,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -2219,9 +2426,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 412,
+   "pk": null,
    "fields": {
-       "resource": 41,
+       "object_id": 41,
+       "content_type": 15,
        "text": "Educação de pós-graduação em medicina",
        "code": "^d4571",
        "status": 1,
@@ -2230,9 +2438,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 413,
+   "pk": null,
    "fields": {
-       "resource": 41,
+       "object_id": 41,
+       "content_type": 15,
        "text": "Educação médica",
        "code": "^d4569",
        "status": 1,
@@ -2241,9 +2450,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 414,
+   "pk": null,
    "fields": {
-       "resource": 41,
+       "object_id": 41,
+       "content_type": 15,
        "text": "Instrução por computador",
        "code": "^d29234",
        "status": 1,
@@ -2252,9 +2462,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 415,
+   "pk": null,
    "fields": {
-       "resource": 41,
+       "object_id": 41,
+       "content_type": 15,
        "text": "Internet",
        "code": "^d33921",
        "status": 1,
@@ -2263,9 +2474,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 421,
+   "pk": null,
    "fields": {
-       "resource": 42,
+       "object_id": 42,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -2274,9 +2486,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 422,
+   "pk": null,
    "fields": {
-       "resource": 42,
+       "object_id": 42,
+       "content_type": 15,
        "text": "Educação médica contínua",
        "status": 1,
        "created_by": 1
@@ -2284,9 +2497,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 423,
+   "pk": null,
    "fields": {
-       "resource": 42,
+       "object_id": 42,
+       "content_type": 15,
        "text": "Telemedicina",
        "code": "^d30481",
        "status": 1,
@@ -2295,9 +2509,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 424,
+   "pk": null,
    "fields": {
-       "resource": 42,
+       "object_id": 42,
+       "content_type": 15,
        "text": "Brasil",
        "code": "^d1963",
        "status": 1,
@@ -2306,9 +2521,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 431,
+   "pk": null,
    "fields": {
-       "resource": 43,
+       "object_id": 43,
+       "content_type": 15,
        "text": "Genética/educação",
        "code": "^d5957^s22019",
        "status": 1,
@@ -2317,9 +2533,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 441,
+   "pk": null,
    "fields": {
-       "resource": 44,
+       "object_id": 44,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -2328,9 +2545,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 442,
+   "pk": null,
    "fields": {
-       "resource": 44,
+       "object_id": 44,
+       "content_type": 15,
        "text": "Educação médica",
        "code": "^d4569",
        "status": 1,
@@ -2339,9 +2557,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 443,
+   "pk": null,
    "fields": {
-       "resource": 44,
+       "object_id": 44,
+       "content_type": 15,
        "text": "Internet",
        "code": "^d33921",
        "status": 1,
@@ -2350,9 +2569,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 451,
+   "pk": null,
    "fields": {
-       "resource": 45,
+       "object_id": 45,
+       "content_type": 15,
        "text": "Morbidade",
        "code": "^d28631",
        "status": 1,
@@ -2361,9 +2581,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 452,
+   "pk": null,
    "fields": {
-       "resource": 45,
+       "object_id": 45,
+       "content_type": 15,
        "text": "Hospitais",
        "code": "^d6917",
        "status": 1,
@@ -2372,9 +2593,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 453,
+   "pk": null,
    "fields": {
-       "resource": 45,
+       "object_id": 45,
+       "content_type": 15,
        "text": "Indicadores de Saúde",
        "status": 1,
        "created_by": 1
@@ -2382,9 +2604,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 454,
+   "pk": null,
    "fields": {
-       "resource": 45,
+       "object_id": 45,
+       "content_type": 15,
        "text": "Saúde Pública",
        "code": "^d28455",
        "status": 1,
@@ -2393,9 +2616,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 461,
+   "pk": null,
    "fields": {
-       "resource": 46,
+       "object_id": 46,
+       "content_type": 15,
        "text": "Multimídia",
        "code": "^d33195",
        "status": 1,
@@ -2404,9 +2628,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 462,
+   "pk": null,
    "fields": {
-       "resource": 46,
+       "object_id": 46,
+       "content_type": 15,
        "text": "Instrução por computador",
        "code": "^d29234",
        "status": 1,
@@ -2415,9 +2640,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 471,
+   "pk": null,
    "fields": {
-       "resource": 47,
+       "object_id": 47,
+       "content_type": 15,
        "text": "Hospitais virtuais",
        "status": 1,
        "created_by": 1
@@ -2425,9 +2651,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 472,
+   "pk": null,
    "fields": {
-       "resource": 47,
+       "object_id": 47,
+       "content_type": 15,
        "text": "Educação a distância",
        "code": "^d33919",
        "status": 1,
@@ -2436,9 +2663,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 481,
+   "pk": null,
    "fields": {
-       "resource": 48,
+       "object_id": 48,
+       "content_type": 15,
        "text": "Projetos de pesquisa",
        "code": "^d12528",
        "status": 1,
@@ -2447,9 +2675,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 482,
+   "pk": null,
    "fields": {
-       "resource": 48,
+       "object_id": 48,
+       "content_type": 15,
        "text": "Apoyo a la formacion profesional",
        "status": 1,
        "created_by": 1
@@ -2457,9 +2686,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 483,
+   "pk": null,
    "fields": {
-       "resource": 48,
+       "object_id": 48,
+       "content_type": 15,
        "text": "Metodología",
        "code": "^d50224",
        "status": 1,
@@ -2468,9 +2698,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 484,
+   "pk": null,
    "fields": {
-       "resource": 48,
+       "object_id": 48,
+       "content_type": 15,
        "text": "Documentos dereferencia",
        "status": 1,
        "created_by": 1
@@ -2478,9 +2709,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 491,
+   "pk": null,
    "fields": {
-       "resource": 49,
+       "object_id": 49,
+       "content_type": 15,
        "text": "Indicadores de Saúde",
        "status": 1,
        "created_by": 1
@@ -2488,20 +2720,22 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 492,
+   "pk": null,
    "fields": {
-       "resource": 49,
+       "object_id": 49,
+       "content_type": 15,
        "text": "Síndrome de Imunodeficiência Adquirida/epidemiologia",
-       "code": "^d28932^s22080",
+       "code": "^d29364^s22080",
        "status": 1,
        "created_by": 1
    }
 },
 {
    "model": "main.descriptor",
-   "pk": 493,
+   "pk": null,
    "fields": {
-       "resource": 49,
+       "object_id": 49,
+       "content_type": 15,
        "text": "Saúde Pública",
        "code": "^d28455",
        "status": 1,
@@ -2510,9 +2744,10 @@
 },
 {
    "model": "main.keyword",
-   "pk": 501,
+   "pk": null,
    "fields": {
-       "resource": 50,
+       "object_id": 50,
+       "content_type": 15,
        "text": "Educação médica continua",
        "status": 1,
        "created_by": 1
@@ -2520,9 +2755,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 502,
+   "pk": null,
    "fields": {
-       "resource": 50,
+       "object_id": 50,
+       "content_type": 15,
        "text": "Educação médica",
        "code": "^d4569",
        "status": 1,
@@ -2531,9 +2767,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 503,
+   "pk": null,
    "fields": {
-       "resource": 50,
+       "object_id": 50,
+       "content_type": 15,
        "text": "Tecnologia educacional",
        "code": "^d32764",
        "status": 1,
@@ -2542,9 +2779,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 504,
+   "pk": null,
    "fields": {
-       "resource": 50,
+       "object_id": 50,
+       "content_type": 15,
        "text": "Multimídia",
        "code": "^d33195",
        "status": 1,
@@ -2553,9 +2791,10 @@
 },
 {
    "model": "main.descriptor",
-   "pk": 505,
+   "pk": null,
    "fields": {
-       "resource": 50,
+       "object_id": 50,
+       "content_type": 15,
        "text": "Instrução por computador",
        "code": "^d29234",
        "status": 1,

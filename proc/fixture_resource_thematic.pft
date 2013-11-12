@@ -5,7 +5,8 @@ if mfn=1 then '['/ fi,
 			c4,'"model": ','"main.resourcethematic",',/
 			c4,'"pk": ', 'null,'/
 			c4,'"fields": {',/
-				c8,'"resource": ',mfn(0),',',/    
+				c8,'"object_id": ',mfn(0),',',/
+				c8,'"content_type": ', '15,',/				
 				c8,'"thematic_area": ','"', v302^c, '",'/
 				c8,'"status": ','1,'/           
 				c8,'"created_by": ','1'/
