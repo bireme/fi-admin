@@ -100,6 +100,8 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '*3434mncic=m$-439jwsjll2327e+!_aq7xl)=cp9f@uedtjq'
 
+DATE_INPUT_FORMATS = ('%d/%m/%Y')
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -164,8 +166,9 @@ INSTALLED_APPS = (
     'biremelogin',
 
     'main',
-    'utils',
+    'events',
     'suggest',
+    'utils',
 )
 
 # A sample logging configuration. The only tangible logging

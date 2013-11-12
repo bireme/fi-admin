@@ -30,6 +30,12 @@ urlpatterns = patterns('',
     (r'^resource/new/?$', 'main.views.create_edit_resource'),
     (r'^resource/edit/(?P<resource_id>\d+)/?$', 'main.views.create_edit_resource'),
 
+    # Events
+    (r'^events/?$', 'events.views.list_events'),
+    (r'^event/new/?$', 'events.views.create_edit_event'),
+    (r'^event/edit/(?P<event_id>\d+)/?$', 'events.views.create_edit_event'),
+
+
     # Thematic areas
     (r'^thematics/?$', 'main.views.list_thematics'),
     (r'^thematic/new/?$', 'main.views.create_edit_thematic'),
@@ -51,6 +57,8 @@ urlpatterns = patterns('',
     (r'^suggest-resource/?$', 'suggest.views.suggest_resource'),
     (r'^suggested-resources/?$', 'suggest.views.list_suggested_resources'),
     (r'^suggested-resource/edit/(?P<resource_id>\d+)/?$', 'suggest.views.edit_suggested_resource'),
+
+    (r'^suggested-resource/create-resource-from-suggestion/(?P<suggestion_id>\d+)/?$', 'suggest.views.create_resource_from_suggestion'),
 
     (r'^suggest-tag/?$', 'suggest.views.suggest_tag'),
 

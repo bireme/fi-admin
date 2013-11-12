@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Events" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "Events" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+<!--  header -->
+<div class='header'>
+    <h2><i class='icon-calendar'></i> {% trans "Events" %}</h2>
+        <div class='pull-right'>
+            <a href="{% url 'events.views.create_edit_event' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Event" %}</a>
+        </div>
+</div>
+
+<div class='body'>
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="{% if actions.filter_owner == user_id or not actions.filter_owner %}active{% endif %}"><a href="#tab-my" onclick="filter_owner('{{ user_id }}')" data-toggle="tab"><strong>{% trans "My events" %}</strong></a></li>
+        <li class="{% if actions.filter_owner == '*' %}active{% endif %}"><a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab"><strong>{% trans "Network events" %}</strong></a></li>        
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active">
+            {% if actions.s %}
+                <div>
+                    {% trans "Search" %}: <strong>{{ actions.s }}</strong>
+                    <a href="{% url 'events.views.list_events' %}">[{% trans "clear" %}]</a>
+                </div>
+            {% endif %}
+
+            <div class='pull-right'>
+                <div class="input-append">
+                    <form name="search" onSubmit="return search();">
+                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
+                        <button class="btn" type="submit"><i class='icon-search'></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
+                    <th><a href="javascript:orderby('start_date');" id="id_start_date">{% trans "Start date" %}</a></th>
+                    <th><a href="javascript:orderby('end_date');" id="id_end_date">{% trans "End date" %}</a></th>
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <td><a href="{% url 'events.views.create_edit_event' event.id %}">{{ event.id }}</a></td>
+                            <td><span title="{{ event.title }}">{{ event.title|slice:"50" }}{% if event.title|length > 50 %}...{% endif %}</span></td>
+                            <td>
+                                {{ event.start_date|date:"d/m/y" }}
+                            </td>
+                            <td>
+                                {{ event.end_date|date:"d/m/y" }}
+                            </td>
+                            <td>
+                                {% if event.status == 0 %}
+                                    <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                {% else %}
+                                    <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'events.views.create_edit_event' event.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                {% if event.created_by_id = user.id %}
+                                    <a href="#" id="{{ event.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination.html" %}
+        </div>
+    </div>
+
+</div>
+
+{% include "delete_confirm.html" %}
+
+{% endblock %}
