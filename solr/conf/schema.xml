@@ -130,10 +130,26 @@
    <!-- haystack control fields -->
    <field name="django_ct" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="django_id" type="string" indexed="true" stored="true" multiValued="false"/>
-
+   
+   <!-- common fields -->
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+   <field name="type" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
    <field name="title" type="text" indexed="true" stored="true" termVectors="true"/>
    <field name="link" type="string" indexed="false" stored="true" multiValued="true"/>
+
+   <field name="thematic_area" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="thematic_area_display" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="created_date" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="updated_date" type="string" indexed="true" stored="true" multiValued="false"/>
+
+   <field name="descriptor" type="decs_keyword" indexed="true" stored="true" multiValued="true" termVectors="true"/>  
+   <field name="descriptor_filter" type="decs_code" indexed="true" stored="false" multiValued="true"/>
+   <field name="keyword" type="text" indexed="true" stored="true" multiValued="true"/>
+
+   <field name="cooperative_center_code" type="string" indexed="true" stored="true"/>
+   <field name="status" type="int" indexed="true" stored="true" multiValued="false"/>
+
+   <!-- resources -->
    <field name="originator" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="originator_location" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="author" type="text" indexed="true" stored="true" multiValued="true"/>
@@ -141,21 +157,14 @@
    <field name="source_language_display" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="source_type" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="source_type_display" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="thematic_area" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="thematic_area_display" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="abstract" type="text" indexed="true" stored="true" termVectors="true"/>
    <field name="time_period_textual" type="string" indexed="false" stored="true"/>
    <field name="objective" type="text" indexed="true" stored="true" termVectors="true"/>
-   <field name="cooperative_center_code" type="string" indexed="true" stored="true"/>
-   <field name="created_date" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="updated_date" type="string" indexed="true" stored="true" multiValued="false"/>
-   
-   <field name="descriptor" type="decs_keyword" indexed="true" stored="true" multiValued="true" termVectors="true"/>  
-   
-   <field name="descriptor_filter" type="decs_code" indexed="true" stored="false" multiValued="true"/>
-   <field name="keyword" type="text" indexed="true" stored="true" multiValued="true"/>
 
-   <field name="status" type="int" indexed="true" stored="true" multiValued="false"/>
+   <!-- events -->
+   <field name="start_date" type="date" indexed="true" stored="true" multiValued="false"/>
+   <field name="end_date" type="date" indexed="true" stored="true" multiValued="false"/>
+   
 
    <!-- Dynamic field definitions -->
    <dynamicField name="*" type="ignored" multiValued="true"/>
