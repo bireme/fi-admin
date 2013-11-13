@@ -5,18 +5,18 @@ from django.conf.urls.defaults import *
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 from tastypie import fields
-import models
+
+from  events.models import Event
+
 import requests
 import urllib
 
-class ResourceAPI(ModelResource):
-    # descriptors relationship 
-    descriptors = fields.ToManyField('main.api.DescriptorResource', 'resources', related_name='resource', full=True, null=True)
+class EventResource(ModelResource):
 
     class Meta:
-        queryset = models.Resource.objects.all()
+        queryset = Event.objects.all()
         allowed_methods = ['get']
-        resource_name = 'resource'
+        resource_name = 'event'
 
     def prepend_urls(self):
         return [
@@ -39,14 +39,14 @@ class ResourceAPI(ModelResource):
 
         # filter result by approved resources (status=1)
         if fq != '':
-            fq = 'status:1 AND %s' % fq
+            fq = '(status:1 AND django_ct:events.event) AND %s' % fq
         else:
-            fq = 'status:1'
+            fq = '(status:1 AND django_ct:events.event)'
 
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'lis', 'col': 'main','op': op,'output': 'site', 'lang': 'pt', 
+        search_params = {'site': 'fiadmin', 'col': 'main','op': op,'output': 'site', 'lang': 'pt', 
                     'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
 
         r = requests.post(search_url, data=search_params)        
@@ -54,9 +54,3 @@ class ResourceAPI(ModelResource):
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
         
-class DescriptorResource(ModelResource):    
-    resource = fields.ToOneField('main.api.ResourceAPI', 'resource')
-
-    class Meta:
-        queryset = models.Descriptor.objects.all()
-        resource_name = 'descriptor'

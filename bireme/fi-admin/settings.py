@@ -164,11 +164,13 @@ INSTALLED_APPS = (
     'rosetta',
 
     'biremelogin',
-
+    
+    'api',
     'main',
     'events',
-    'suggest',
+    'suggest',    
     'utils',
+
 )
 
 # A sample logging configuration. The only tangible logging
@@ -204,7 +206,7 @@ LOGGING = {
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://localhost:8080/solr/lis'
+        'URL': 'http://localhost:8080/solr/fiadmin'
     },
 }
 
