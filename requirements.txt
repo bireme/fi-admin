@@ -5,7 +5,7 @@ django-tastypie==0.9.15
 django-haystack==2.1.0
 pysolr==3.1.0
 lxml==3.2.3
-cssselect==0.8
+cssselect==0.9.1
 simplejson==3.3.0
 requests==1.2.3
 recaptcha-client
