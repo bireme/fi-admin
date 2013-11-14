@@ -163,7 +163,14 @@
    <!-- events -->
    <field name="start_date" type="date" indexed="true" stored="true" multiValued="false"/>
    <field name="end_date" type="date" indexed="true" stored="true" multiValued="false"/>
+   <field name="city" type="text" indexed="true" stored="true"/>
+   <field name="country" type="text" indexed="true" stored="true"/>
+   <field name="contact_email" type="string" indexed="false" stored="true"/>
+   <field name="contact_info" type="text" indexed="true" stored="true"/>
    
+   <field name="official_language" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="official_language_display" type="string" indexed="true" stored="true" multiValued="true"/>
+
 
    <!-- Dynamic field definitions -->
    <dynamicField name="*" type="ignored" multiValued="true"/>
