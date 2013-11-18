@@ -47,7 +47,7 @@ class LinkResource(ModelResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'lis', 'col': 'main','op': op,'output': 'site', 'lang': 'pt', 
+        search_params = {'site': 'fiadmin', 'col': 'main','op': op,'output': 'site', 'lang': 'pt', 
                     'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
 
         r = requests.post(search_url, data=search_params)        
