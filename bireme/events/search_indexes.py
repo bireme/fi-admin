@@ -16,6 +16,9 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
 
     start_date = indexes.DateTimeField(model_attr='start_date')
     end_date = indexes.DateTimeField(model_attr='end_date')
+    
+    contact_email = indexes.CharField(model_attr='contact_email')
+    contact_info = indexes.CharField()
 
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
@@ -46,6 +49,11 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_keyword(self, obj):
         return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
+
+    def prepare_contact_info(self, obj):
+        if obj.contact_info:
+            return "<br/>".join(obj.contact_info.split("\n"))
+
 
     def prepare_created_date(self, obj):
         if obj.created_time:
