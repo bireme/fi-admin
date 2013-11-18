@@ -19,8 +19,18 @@ if mfn=1 then '['/ fi,
             c8,'"cooperative_center_code": ','"BR1.1",'/
 
 
-            if p(v391) and val(v391)>0 then c8,'"created_time": ','"', v391.4'-'v391*4.2'-'v391*6.2 , 'T09:00:00-03:00",'/, fi,
-            if p(v393) and val(v393)>0 then c8,'"updated_time": ','"', v393.4'-'v393*4.2'-'v393*6.2 , 'T09:00:00-03:00",'/, fi,
+            if p(v391) and val(v391)>0 then 
+				c8,'"created_time": ','"', v391.4'-'v391*4.2'-'v391*6.2 , 'T09:00:00-03:00",'/, 
+			else,
+				if p(v393) and val(v393)>0 then 
+					c8,'"created_time": ','"', v393.4'-'v393*4.2'-'v393*6.2 , 'T09:00:00-03:00",'/, 
+				else,				
+					c8,'"created_time": ','"2013-11-11T09:00:00-03:00",'/, 
+				fi,	
+			fi,
+            if p(v393) and val(v393)>0 then 
+				c8,'"updated_time": ','"', v393.4'-'v393*4.2'-'v393*6.2 , 'T09:00:00-03:00",'/, 
+			fi,
 
             c8,'"created_by": ','1'/
        c4,'}',/
