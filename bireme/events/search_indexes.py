@@ -11,6 +11,9 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     title = indexes.CharField(model_attr='title')
     link = indexes.CharField(model_attr='link')
 
+    city = indexes.CharField(model_attr='city')
+    country = indexes.CharField(model_attr='country')
+
     start_date = indexes.DateTimeField(model_attr='start_date')
     end_date = indexes.DateTimeField(model_attr='end_date')
 
@@ -25,6 +28,13 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Event
 
+
+    def prepare_official_language(self, obj):
+        return [ source_language.acronym for source_language in SourceLanguage.objects.filter(event=obj.id) ]
+
+    def prepare_official_language_display(self, obj):
+        return [ "|".join( source_language.get_translations() ) for source_language in SourceLanguage.objects.filter(event=obj.id) ]
+
     def prepare_thematic_area(self, obj):
         return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
 
@@ -38,10 +48,12 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
         return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
 
     def prepare_created_date(self, obj):
-        return obj.created_time.strftime('%Y%m%d')
+        if obj.created_time:
+            return obj.created_time.strftime('%Y%m%d')
 
     def prepare_updated_date(self, obj):
-        return obj.updated_time.strftime('%Y%m%d')
+        if obj.updated_time:
+            return obj.updated_time.strftime('%Y%m%d')
 
 
     def index_queryset(self, using=None):

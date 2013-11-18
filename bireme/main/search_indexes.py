@@ -63,10 +63,12 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
 
     def prepare_created_date(self, obj):
-        return obj.created_time.strftime('%Y%m%d')
+        if obj.created_time:        
+            return obj.created_time.strftime('%Y%m%d')
 
     def prepare_updated_date(self, obj):
-        return obj.updated_time.strftime('%Y%m%d')
+        if obj.updated_time:
+            return obj.updated_time.strftime('%Y%m%d')
 
 
     def index_queryset(self, using=None):
