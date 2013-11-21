@@ -17,6 +17,7 @@ from django.http import Http404, HttpResponse
 from django.template import RequestContext
 
 from utils.views import ACTIONS
+from utils.context_processors import additional_user_info
 
 from django.conf import settings
 from datetime import datetime
@@ -151,8 +152,29 @@ def delete_resource(request, resource):
     output['alert'] = _("Resource deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
+    return render_to_response('suggest/resources-keywords.html', output, context_instance=RequestContext(request))
 
+
+@login_required
+def create_resource_from_suggestion(request, suggestion_id):
+
+    user = request.user
+    suggestion = get_object_or_404(SuggestResource, id=suggestion_id)
+    output = {}
+
+    user_data = additional_user_info(request)
+
+    resource = Resource(title=suggestion.title, link=suggestion.link, 
+        abstract=suggestion.abstract, created_by=request.user)
+    resource.save();
+
+    suggestion.status = 1
+    suggestion.save();
+
+    output['alert'] = _("Resource created.")
+    output['alerttype'] = "alert-success"
+
+    return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
 
 
 @csrf_exempt
@@ -172,7 +194,7 @@ def suggest_tag(request, **kwargs):
 
     if resource != None:
         for tag in suggest_tag.split(','):
-            keyword = Keyword(resource=resource, text=tag.strip(), user_recomendation=True)
+            keyword = Keyword(content_object=resource, text=tag.strip(), user_recomendation=True)
             keyword.save()
 
 
