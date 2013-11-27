@@ -23,6 +23,8 @@ from datetime import datetime
 from models import *
 from forms import *
 
+from main.decorators import *
+
 import mimetypes
 
 import os
@@ -172,3 +174,100 @@ def delete_event(request, event_id):
     output['alerttype'] = "alert-success"
 
     return render_to_response('events/events.html', output, context_instance=RequestContext(request))
+
+
+########## Auxiliary table event type ###########
+
+@login_required
+@superuser_permission
+def list_types(request):
+
+    user = request.user
+    output = {}
+    delete_id = request.POST.get('delete_id')
+
+    if delete_id:
+        delete_type(request, delete_id)
+
+    # getting action parameters
+    actions = {}
+    for key in ACTIONS.keys():
+        if request.REQUEST.get(key):
+            actions[key] = request.REQUEST.get(key)
+        else:
+            actions[key] = ACTIONS[key]
+
+    page = 1
+    if actions['page'] and actions['page'] != '':
+        page = actions['page']
+
+    types = EventType.objects.filter(name__icontains=actions['s'])
+
+    types = types.order_by(actions["orderby"])
+    if actions['order'] == "-":
+        types = types.order_by("%s%s" % (actions["order"], actions["orderby"]))
+
+
+    # pagination
+    pagination = {}
+    paginator = Paginator(types, settings.ITEMS_PER_PAGE)
+    pagination['paginator'] = paginator
+    pagination['page'] = paginator.page(page)
+    types = pagination['page'].object_list
+
+    output['types'] = types
+    output['actions'] = actions
+    output['pagination'] = pagination
+
+    return render_to_response('events/types.html', output, context_instance=RequestContext(request))
+
+@login_required
+@superuser_permission
+def create_edit_type(request, **kwargs):
+
+    type_id = kwargs.get('type_id')
+    type = None
+    output = {}
+
+    if type_id:
+        type = get_object_or_404(EventType, id=type_id)
+    else:
+        type = EventType(created_by=request.user)
+        output['is_new'] = True
+
+    # save/update
+    if request.POST:
+        form = TypeForm(request.POST, request.FILES, instance=type)
+        formset = TypeTranslationFormSet(request.POST, instance=type)
+
+        if form.is_valid() and formset.is_valid():
+            type = form.save()
+            formset.save()
+            output['alert'] = _("Type successfully edited.")
+            output['alerttype'] = "alert-success"
+
+            return redirect('events.views.list_types')
+    # new
+    else:
+        form = TypeForm(instance=type)
+        formset = TypeTranslationFormSet(instance=type)
+
+    output['form'] = form
+    output['formset'] = formset
+    output['type'] = type
+
+    return render_to_response('events/edit-type.html', output, context_instance=RequestContext(request))
+
+
+@login_required
+@superuser_permission
+def delete_type(request, type):
+
+    type = get_object_or_404(EventType, id=type)
+    output = {}
+
+    type.delete()
+    output['alert'] = _("Type deleted.")
+    output['alerttype'] = "alert-success"
+
+    return render_to_response('events/types.html', output, context_instance=RequestContext(request))

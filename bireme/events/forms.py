@@ -55,6 +55,11 @@ class EventForm(forms.ModelForm):
         event_type = forms.MultipleChoiceField()
 
 
+class TypeForm(forms.ModelForm):
+
+    class Meta:
+        model = EventType
+
 
 # definition of inline formsets
 
@@ -64,3 +69,4 @@ KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1
 
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
 
+TypeTranslationFormSet = inlineformset_factory(EventType, EventTypeLocal, can_delete=True, extra=1)

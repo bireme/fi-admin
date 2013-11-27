@@ -19,9 +19,19 @@
                             <li><a href="{% url 'suggest.views.list_suggested_resources' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggestions" %}</a></li>
 
                             {% if user.is_superuser %}
-                                <li><a href="{% url 'main.views.list_thematics' %}" title=""><i class="icon-tag"></i> {% trans "Thematic areas" %}</a></li>
-                                <li><a href="{% url 'main.views.list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Source types" %}</a></li>
-                                <li><a href="{% url 'main.views.list_languages' %}" title=""><i class="icon-flag"></i> {% trans "Source languages" %}</a></li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_control_tables">
+                                        <i class="icon-list"></i>
+                                        {% trans "Controlled lists"%}
+                                        <i class="icon-caret-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu_control_tables">
+                                        <li><a href="{% url 'main.views.list_thematics' %}" title=""><i class="icon-tag"></i> {% trans "Thematic areas" %}</a></li>
+                                        <li><a href="{% url 'main.views.list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Source types" %}</a></li>
+                                        <li><a href="{% url 'events.views.list_types' %}" title=""><i class="icon-calendar"></i> {% trans "Event types" %}</a></li>
+                                        <li><a href="{% url 'main.views.list_languages' %}" title=""><i class="icon-flag"></i> {% trans "Languages" %}</a></li>
+                                    </ul>
+                                </li>
                                 <!--
                                 <li><a href="{% url 'admin:index' %}" title=""><i class="icon-lock"></i> {% trans "Django Admin" %}</a></li>
                                 -->

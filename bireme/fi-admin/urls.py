@@ -48,6 +48,11 @@ urlpatterns = patterns('',
     (r'^type/new/?$', 'main.views.create_edit_type'),
     (r'^type/edit/(?P<type_id>\d+)/?$', 'main.views.create_edit_type'),
 
+    # Event types
+    (r'^event-types/?$', 'events.views.list_types'),
+    (r'^event-type/new/?$', 'events.views.create_edit_type'),
+    (r'^event-type/edit/(?P<type_id>\d+)/?$', 'events.views.create_edit_type'),
+
 
     # Source languages
     (r'^languages/?$', 'main.views.list_languages'),
