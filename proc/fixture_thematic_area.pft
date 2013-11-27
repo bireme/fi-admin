@@ -8,7 +8,8 @@
 	   c4,'"fields": {',/
 	       c8,'"acronym": ','"',v300^c,'",'/	   
 	       c8,'"name": ','"',v300^t,if p(v300^a) then ' (',v300^a,')' fi,'",'/
-	       c8,'"created_by": ','1'/
+	       c8,'"created_by": ','1,'/
+           c8,'"created_time": "2013-11-01T09:00:00-03:00"'
 	   c4,'}',/
     '}'
     if iocc = nocc(v300) then else ',' fi,/
