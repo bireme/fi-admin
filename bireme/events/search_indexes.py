@@ -22,6 +22,7 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
 
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
+    event_type = indexes.MultiValueField()
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
     status = indexes.IntegerField(model_attr='status')
@@ -37,6 +38,9 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_official_language_display(self, obj):
         return [ "|".join( source_language.get_translations() ) for source_language in SourceLanguage.objects.filter(event=obj.id) ]
+
+    def prepare_event_type(self, obj):
+        return [ "|".join( event_type.get_translations() ) for event_type in EventType.objects.filter(event=obj.id) ]
 
     def prepare_thematic_area(self, obj):
         return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]

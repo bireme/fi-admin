@@ -71,7 +71,7 @@ class Event(Generic):
     city = models.CharField(_('City'), max_length=125, blank=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
 
-    source_type = models.ManyToManyField(EventType, verbose_name=_("Event type"), blank=False)
+    event_type = models.ManyToManyField(EventType, verbose_name=_("Event type"), blank=False)
     official_language = models.ManyToManyField('main.SourceLanguage', verbose_name=_("Official languages"), blank=True, null=True)
 
     contact_email = models.EmailField(_('Contact email'), blank=True)
