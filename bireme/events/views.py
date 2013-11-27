@@ -165,10 +165,10 @@ def delete_event(request, event_id):
 
     user_data = additional_user_info(request)
 
-    if resource.created_by_id != user.id:
+    if event.created_by_id != user.id:
         return HttpResponse('Unauthorized', status=401)
 
-    resource.delete()
+    event.delete()
 
     output['alert'] = _("Event deleted.")
     output['alerttype'] = "alert-success"

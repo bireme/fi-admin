@@ -1,7 +1,7 @@
 import datetime
 from haystack import indexes
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
-from events.models import Event
+from events.models import Event, EventType
 
 from django.contrib.contenttypes.models import ContentType
 
