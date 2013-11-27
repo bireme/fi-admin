@@ -1,0 +1,17 @@
+if mfn=1 then '['/ fi,
+
+	'{',/
+
+	   c4,'"pk": ', 'null,'/
+	   c4,'"model": ','"events.eventtypelocal",',/
+
+	   c4,'"fields": {',/
+		   c8,'"event_type": ','"',f(mfn,1,0),'",'/
+		   c8,'"name": ','"',v2,'",'/
+		   c8,'"language": ','"',v5021,'"'/
+	   c4,'}',/
+	'}'
+
+    if mfn=MAXMFN-1 then else ',' fi,/
+
+if mfn=MAXMFN-1 then ']'/ fi,

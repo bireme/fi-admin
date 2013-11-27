@@ -1,0 +1,178 @@
+[
+{
+   "pk": 1,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0001",
+       "name": "Symposium",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 2,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0002",
+       "name": "Congress",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 3,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0003",
+       "name": "Seminar",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 4,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0004",
+       "name": "Forum",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 5,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0005",
+       "name": "Meeting",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 6,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0006",
+       "name": "Conference",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 7,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0007",
+       "name": "Meeting",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 8,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0008",
+       "name": "Speech",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 9,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0009",
+       "name": "Fair and exhibitions",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 10,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0010 ",
+       "name": "Prize and awardships",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 11,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0011",
+       "name": "Convention",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 12,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0012",
+       "name": "Journey",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 13,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0013",
+       "name": "Round table",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 14,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0014",
+       "name": "Colloquium",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 15,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0015",
+       "name": "Panel",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+},
+{
+   "pk": 16,
+   "model": "events.eventtype",
+   "fields": {
+       "acronym": "TE0016",
+       "name": "Workshop",
+       "language": "en",
+       "created_by": 1,
+       "created_time": "2013-11-01T09:00:00-03:00"
+   }
+}
+]

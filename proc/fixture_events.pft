@@ -1,0 +1,30 @@
+if mfn=1 then '['/ fi,
+   '{',/
+       if p(v317) then,
+          c4,'"pk": ', f(mfn,1,0),','//
+          c4,'"model": ','"events.event",',/
+       fi,
+       c4,'"fields": {',/
+            c8,'"status": 1,',/    
+            c8,'"title": ','"',v501,'",'/
+            if p(v505) then c8,'"link": ','"',v505,'",'/  fi,
+            if p(v710) then c8,'"city": ','"',v710,'",'/  fi,
+            
+            c8,'"start_date": ','"',v507.4'-'v507*4.2'-'v507*6.2'",'/,
+            c8,'"end_date": ','"',v509.4'-'v509*4.2'-'v509*6.2,'",'/,
+
+			if p(v760) then c8,'"contact_email": ','"',v760,'",'/  fi,
+			if p(v555) then c8,'"contact_info": ','"',(v555+|\r\n|),'",'/  fi,
+			
+			if p(v900) then c8,'"observations": ','"',(v900+|\r\n|),'",'/ fi,
+			
+
+			c8,'"created_time": ','"2013-11-11T09:00:00-03:00",'/, 			
+            c8,'"cooperative_center_code": ','"BR1.1",'/
+            c8,'"created_by": ','1'/
+            
+       c4,'}',/
+    '}'    
+    if mfn=MAXMFN-1 then else ',' fi,/
+
+if mfn=MAXMFN-1 then ']'/ fi,
