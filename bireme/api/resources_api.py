@@ -40,9 +40,9 @@ class LinkResource(ModelResource):
 
         # filter result by approved resources (status=1)
         if fq != '':
-            fq = 'status:1 AND %s' % fq
+            fq = '(status:1 AND django_ct:main.resource) AND %s' % fq
         else:
-            fq = 'status:1'
+            fq = '(status:1 AND django_ct:main.resource)'
 
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
