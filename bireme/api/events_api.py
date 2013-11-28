@@ -43,15 +43,15 @@ class EventResource(ModelResource):
         else:
             fq = '(status:1 AND django_ct:events.event)'
 
-        # if empty query return only next events
+        # if empty query return only next events        
         if q == '':
-            fq = "({0} AND start_date:[NOW TO *])".format(fq)
-
+            fq = '(%s AND start_date:[NOW TO *])' % fq
+        
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': 'fiadmin', 'col': 'main','op': op,'output': 'site', 'lang': 'pt', 
-                    'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
+                    'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id, 'sort': sort}
 
         r = requests.post(search_url, data=search_params)        
 
