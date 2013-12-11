@@ -229,7 +229,7 @@ AUTHENTICATION_BACKENDS = (
     'biremelogin.authenticate.EmailModelBackend',
 )
 
-BIREMELOGIN_BASE_URL = "http://accounts.teste.bireme.org"
+BIREMELOGIN_BASE_URL = "http://accounts.bireme.org"
 BIREMELOGIN_SERVICE = "LIS"
 
 try:
