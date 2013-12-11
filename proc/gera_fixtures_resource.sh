@@ -7,7 +7,7 @@ mx1660 lis_clean pft=@fixture_descriptors.pft gizmo=gizmo_fixture lw=8000 now > 
 
 mx lis_clean pft=@fixture_keywords.pft gizmo=gizmo_fixture lw=8000 now > keywords_iso.json
 
-mx lis_clean pft=@fixture_resource_thematic.pft gizmo=gizmo_fixture gizmo=g_thematic_area,302 lw=8000 now > resource_thematic_iso.json
+mx1660 lis_clean pft=@fixture_resource_thematic.pft gizmo=gizmo_fixture gizmo=g_thematic_area,302 lw=8000 now > resource_thematic_iso.json
 
 # convert to utf8
 
