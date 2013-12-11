@@ -82,7 +82,3 @@ def update():
     update_version_file()
     restart_app()
 
-def update_production():
-
-    with cd(os.path.join(env.gitpath, 'fabric')):
-        run("fab production update")

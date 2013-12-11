@@ -10,8 +10,8 @@ from main.choices import LANGUAGES_CHOICES
 class EventType(Generic):
 
     class Meta:
-        verbose_name = _("event type")
-        verbose_name_plural = _("event types")
+        verbose_name = _("Event type")
+        verbose_name_plural = _("Event types")
 
     acronym = models.CharField(_("Acronym"), max_length=25, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
@@ -77,6 +77,7 @@ class Event(Generic):
     contact_email = models.EmailField(_('Contact email'), blank=True)
     contact_info = models.TextField(_("Information for contact"), blank=True)
     observations = models.TextField(_("Observations"), blank=True)
+    target_groups = models.TextField(_("Target groups"), blank=True)
 
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)

@@ -206,7 +206,7 @@ LOGGING = {
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://localhost:8080/solr/fiadmin'
+        'URL': 'http://localhost:8080/solr/fi'
     },
 }
 

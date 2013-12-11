@@ -9,25 +9,21 @@ from django.contrib.contenttypes.models import ContentType
 class EventIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
-    link = indexes.CharField(model_attr='link')
-
-    city = indexes.CharField(model_attr='city')
-    country = indexes.CharField(model_attr='country')
-
+    link = indexes.CharField(model_attr='link', null=True)
+    city = indexes.CharField(model_attr='city', null=True)
+    country = indexes.CharField(model_attr='country', null=True)
     start_date = indexes.DateTimeField(model_attr='start_date')
     end_date = indexes.DateTimeField(model_attr='end_date')
-    
-    contact_email = indexes.CharField(model_attr='contact_email')
+    contact_email = indexes.CharField(model_attr='contact_email', null=True)
     contact_info = indexes.CharField()
-
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
     event_type = indexes.MultiValueField()
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
-    status = indexes.IntegerField(model_attr='status')
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
+    status = indexes.IntegerField(model_attr='status')
 
     def get_model(self):
         return Event
