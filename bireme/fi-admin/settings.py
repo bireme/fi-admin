@@ -213,8 +213,7 @@ HAYSTACK_CONNECTIONS = {
 # Haystack signal for automatic update of Solr index when the model is saved/updated
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-#SEARCH_SERVICE_URL = 'http://ts01dx:8080/'
-SEARCH_SERVICE_URL = 'http://localhost:8081/'
+SEARCH_SERVICE_URL = 'http://srv.bvsalud.org/'
 
 DECS_LOOKUP_SERVICE = 'http://search.bvsalud.org/portal/decs-locator/?mode=dataentry'
 
