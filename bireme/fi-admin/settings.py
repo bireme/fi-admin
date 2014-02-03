@@ -168,7 +168,8 @@ INSTALLED_APPS = (
     'api',
     'main',
     'events',
-    'suggest',    
+    'suggest', 
+    'error_reporting',
     'utils',
 
 )

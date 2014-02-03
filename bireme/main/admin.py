@@ -2,6 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 
 from models import *
+from error_reporting.models import ErrorReport
 from utils.admin import GenericAdmin
 
 
@@ -21,8 +22,13 @@ class SourceTypeAdmin(GenericAdmin):
     model = SourceType
     inlines = [SourceTypeLocalAdmin,]
 
-class DescriptorAdmin(admin.TabularInline):
+class DescriptorAdmin(generic.GenericTabularInline):
     model = Descriptor
+    extra = 1
+
+
+class KeywordAdmin(generic.GenericTabularInline):
+    model = Keyword
     extra = 1
 
 
@@ -31,9 +37,15 @@ class ResourceThematicAdmin(admin.TabularInline):
     extra = 1
 
 
+class ErrorReportAdmin(generic.GenericTabularInline):
+    model = ErrorReport
+    extra = 1
+
+
 class ResourceAdmin(GenericAdmin):
     model = Resource
-    inlines = [DescriptorAdmin, ResourceThematicAdmin]
+    inlines = [DescriptorAdmin, KeywordAdmin, ErrorReportAdmin,]
+    
 
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(SourceType, SourceTypeAdmin)

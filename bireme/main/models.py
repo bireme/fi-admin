@@ -155,11 +155,11 @@ class Resource(Generic):
     # link (351)
     link = models.TextField(_('Link'), blank=False)
     # originator (313)
-    originator = models.TextField(_('Originator'), max_length=255, blank=False)
+    originator = models.TextField(_('Originator'), blank=False)
     # originator_location (314)
     originator_location = models.ManyToManyField(Country, verbose_name=_('Originator location'), blank=False)
     # author (315)
-    author = models.TextField(_('Authors'), max_length=255, blank=True, help_text=_("Enter one per line"))
+    author = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
     # language of resource (317)
     source_language = models.ManyToManyField(SourceLanguage, verbose_name=_("Source language"), blank=False)
     # source type (318)
@@ -169,7 +169,7 @@ class Resource(Generic):
     # time period (341)
     time_period_textual = models.CharField(_('Temporal range'), max_length=255, blank=True)
     # objective (361)
-    objective = models.TextField(_('Objective'), max_length=255, blank=True)
+    objective = models.TextField(_('Objective'), blank=True)
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 

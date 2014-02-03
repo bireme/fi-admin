@@ -69,6 +69,9 @@ urlpatterns = patterns('',
 
     (r'^suggest-tag/?$', 'suggest.views.suggest_tag'),
 
+    # Suggest
+    (r'^error-reporting/?$', 'error_reporting.views.list_error_report'),
+
 
     # Login/Logout
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html'}, name='auth_login'),
