@@ -44,7 +44,8 @@ class ErrorReportAdmin(generic.GenericTabularInline):
 
 class ResourceAdmin(GenericAdmin):
     model = Resource
-    list_display = ('id','__unicode__', 'link', 'cooperative_center_code', 'status')
+    list_display = ('id','title', 'link', 'cooperative_center_code', 'status')
+    search_fields = ['id', 'title']
     inlines = [DescriptorAdmin, KeywordAdmin, ErrorReportAdmin,]
     
 
