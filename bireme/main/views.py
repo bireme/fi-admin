@@ -23,6 +23,7 @@ from datetime import datetime
 from models import *
 from suggest.models import *
 from forms import *
+from error_reporting.forms import ErrorReportForm
 
 import mimetypes
 
@@ -111,6 +112,7 @@ def create_edit_resource(request, **kwargs):
     resource_id = kwargs.get('resource_id')
     resource = None
     form = None
+    form_error_report = None
     formset_descriptor = None
     formset_thematic = None
     formset_keyword  = None
@@ -153,6 +155,8 @@ def create_edit_resource(request, **kwargs):
     else:
         form = ResourceForm(instance=resource, user_data=user_data)
 
+        form_error_report = ErrorReportForm()
+
         # if documentalist create a formset with descriptors created by the user
         if user_data['user_role'] == 'doc':
             descriptor_list = Descriptor.objects.filter(object_id=resource.id, content_type=ct).exclude(created_by_id=request.user.id, status=0)
@@ -175,6 +179,9 @@ def create_edit_resource(request, **kwargs):
     output['formset_descriptor'] = formset_descriptor
     output['formset_keyword']  = formset_keyword
     output['formset_thematic'] = formset_thematic
+    output['form_error_report'] = form_error_report
+    output['content_type'] = ct.id
+
     output['resource'] = resource
     output['descriptor_list'] = descriptor_list
     output['keyword_list'] = keyword_list

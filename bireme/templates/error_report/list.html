@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Error report" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "Resources" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type="hidden" name="type" value="{{ actions.type }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+<!--  header -->
+<div class='header'>
+    <h2><i class='icon-thumbs-up'></i> {% trans "Error reports" %}</h2>
+</div>
+
+<div class='body'>    
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}"><a href="#tab-resources" onclick="change_type('resources')" data-toggle="tab"><strong>{% trans "Resources" %}</strong></a></li>
+        <li class="{% if actions.type == 'eventsevents'%}active{% endif %}"><a href="#tab-eventsevents" onclick="change_type('eventsevents')" data-toggle="tab"><strong>{% trans "Events" %}</strong></a></li>        
+    </ul>
+    
+    {% if actions.type == 'resources' or not actions.type %}
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab-resources">
+            {% if actions.s %}
+                <div>
+                    {% trans "Search" %}: <strong>{{ actions.s }}</strong>
+                    <a href="{% url 'error_reporting.views.list' %}">[{% trans "clear" %}]</a>
+                </div>
+            {% endif %}
+
+            <div class='pull-right'>
+                <div class="input-append">
+                    <form name="search" onSubmit="return search();">
+                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
+                        <button class="btn" type="submit"><i class='icon-search'></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">ID {% trans "Resource" %}</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Description" %}</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Resource" %}</a></th>
+                    <th><a href="javascript:orderby('date');" id="id_date">{% trans "Date" %}</a></th>
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for report in error_reports %}
+                        <tr>
+                            <td><a href="{% url 'error_reporting.views.edit_error_report' report.pk %}">{{ report.object_id }}</a></td>
+                            <td><span title="{{ report.description }}">{{ report.description|slice:"100" }}{% if report.description|length > 100 %}...{% endif %}</span></td>
+                            <td>{{ report.content_object.title|slice:"50" }}{% if report.content_object.title|length > 50 %}...{% endif %}</td>
+                            <td>
+                                {{ report.created_time|date:"d/m/y@f" }}
+                            </td>
+                            <td>
+                                {% if report.status == 0 %}
+                                    <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                {% else %}
+                                    <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'error_reporting.views.edit_error_report' report.pk %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination.html" %}
+          </div>
+        {%endif%}
+        
+        {% if actions.type == 'events'%}
+          <div class="tab-pane active" id="tab-events">
+            {% if actions.s %}
+                <div>
+                    {% trans "Search" %}: <strong>{{ actions.s }}</strong>
+                    <a href="{% url 'main.views.resources' %}">[{% trans "clear" %}]</a>
+                </div>
+            {% endif %}
+
+            <div class='pull-right'>
+                <div class="input-append">
+                    <form name="search" onSubmit="return search();">
+                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
+                        <button class="btn" type="submit"><i class='icon-search'></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Description" %}</a></th>
+                    <th><a href="javascript:orderby('date');" id="id_date">{% trans "Date" %}</a></th>
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for report in error_reports %}
+                        <tr>
+                            <td><a href="{% url 'main.views.create_edit_resource' report.object_id %}">{{ report.object_id }}</a></td>
+                            <td><span title="{{ report.description }}">{{ report.description|slice:"100" }}{% if report.descriptione|length > 100 %}...{% endif %}</span></td>
+                            <td>
+                                {{ resource.created_time|date:"d/m/y@f" }}
+                            </td>
+                            <td>
+                                {% if report.status == 0 %}
+                                    <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                {% else %}
+                                    <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'main.views.create_edit_resource' report.object_id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination.html" %}
+          </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% include "delete_confirm.html" %}
+
+{% endblock %}

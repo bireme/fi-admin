@@ -3,11 +3,13 @@ from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.generic import GenericRelation
 
 from datetime import datetime
 from django.db import models
 
 from utils.models import Generic, Country
+from error_reporting.models import ErrorReport
 
 from main import choices
 
@@ -172,6 +174,9 @@ class Resource(Generic):
     objective = models.TextField(_('Objective'), blank=True)
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
+
+
+    error_reports = GenericRelation(ErrorReport)
 
     def get_fields(self):
         return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]

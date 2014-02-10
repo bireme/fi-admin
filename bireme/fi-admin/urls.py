@@ -69,8 +69,10 @@ urlpatterns = patterns('',
 
     (r'^suggest-tag/?$', 'suggest.views.suggest_tag'),
 
-    # Suggest
+    # Error reporting
     (r'^error-reporting/?$', 'error_reporting.views.list_error_report'),
+    (r'^error-reporting/new/?$', 'error_reporting.views.create_error_report'),
+    (r'^error-reporting/edit/(?P<report_id>\d+)/?$', 'error_reporting.views.edit_error_report'),
 
 
     # Login/Logout

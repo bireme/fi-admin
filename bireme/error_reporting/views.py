@@ -23,7 +23,7 @@ from django.conf import settings
 from datetime import datetime
 from models import *
 from main.models import Resource, Keyword
-#from forms import *
+from forms import *
 
 import os
 import json
@@ -34,7 +34,7 @@ def list_error_report(request):
     user = request.user
     output = {}
     delete_id = request.POST.get('delete_id')
-    error_report = None
+    error_reports = None
 
     if delete_id:
         delete_error_report(request, delete_id)
@@ -51,36 +51,64 @@ def list_error_report(request):
     if actions['page'] and actions['page'] != '':
         page = actions['page']
 
-    error_report = ErrorReport.objects.filter(title__icontains=actions['s'])
+    ct = ContentType.objects.get_for_model(Resource)
 
+    if actions['type'] and actions['type'] == 'events':
+        ct = ContentType.objects.get_for_model(Event)
+        error_reports = ErrorReport.objects.filter(content_type=ct, object_id__icontains=actions['s'])
+    else:
+        ct = ContentType.objects.get_for_model(Resource)
+        error_reports = ErrorReport.objects.filter(content_type=ct, object_id__icontains=actions['s'])
 
-    error_report = error_report.order_by(actions["orderby"])
+    print error_reports[0].content_type
+
+    error_reports = error_reports.order_by(actions["orderby"])
     if actions['order'] == "-":
-        error_report = error_report.order_by("%s%s" % (actions["order"], actions["orderby"]))
+        error_reports = error_reports.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
     # pagination
     pagination = {}
-    paginator = Paginator(error_report, settings.ITEMS_PER_PAGE)
+    paginator = Paginator(error_reports, settings.ITEMS_PER_PAGE)
     pagination['paginator'] = paginator
     pagination['page'] = paginator.page(page)
-    error_report = pagination['page'].object_list
+    error_reports = pagination['page'].object_list
 
-    output['error_report'] = error_report
+    output['error_reports'] = error_reports
     output['actions'] = actions
     output['pagination'] = pagination
 
     return render_to_response('error_report/list.html', output, context_instance=RequestContext(request))
 
-'''
+
+@login_required
+def create_error_report(request, **kwargs):
+
+    error_report = None
+    form = None
+
+    object_id = escape(request.POST.get('object_id'))
+    content_type = escape(request.POST.get('content_type'))
+
+    error_report = ErrorReport(object_id=object_id, content_type_id=content_type)   
+    form = ErrorReportForm(request.POST, instance=error_report)
+    error_report = form.save()
+
+    return redirect('main.views.create_edit_resource', resource_id=object_id)
+
+
 @login_required
 def edit_error_report(request, **kwargs):
 
-    error_report_id = kwargs.get('error_report_id')
+    report_id = kwargs.get('report_id')
     error_report = None
     form = None
     output = {}
 
-    error_report = get_object_or_404(ErrorReport, id=error_report_id)
+    if report_id:
+        error_report = get_object_or_404(ErrorReport, id=report_id)
+    else:
+        error_report = ErrorReport(created_by=request.user)
+        output['is_new'] = True
 
     # save/update
     if request.POST:
@@ -92,7 +120,7 @@ def edit_error_report(request, **kwargs):
             output['alert'] = _("Report successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('error_report.views.list_error_report')
+            return redirect('error_reporting.views.list_error_report')
     # new/edit
     else:
         form = ErrorReportForm(instance=error_report)
@@ -101,7 +129,7 @@ def edit_error_report(request, **kwargs):
     output['error_report'] = error_report
     output['settings'] = settings
 
-    return render_to_response('error_reporting/edit.html', output, context_instance=RequestContext(request))
+    return render_to_response('error_report/edit.html', output, context_instance=RequestContext(request))
 
 
 @login_required
@@ -123,4 +151,3 @@ def delete_error_report(request, error_report_id):
 
     return render_to_response('error_reporting/list.html', output, context_instance=RequestContext(request))
 
-'''

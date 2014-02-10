@@ -17,6 +17,9 @@
                             <li><a href="{% url 'events.views.list_events' %}" title=""><i class="icon-calendar"></i> {% trans "Events" %}</a></li>
 
                             <li><a href="{% url 'suggest.views.list_suggested_resources' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggestions" %}</a></li>
+                            
+                            <li><a href="{% url 'error_reporting.views.list_error_report' %}" title=""><i class="icon-warning-sign"></i> {% trans "Error reports" %}</a></li>
+                            
 
                             {% if user.is_superuser %}
                                 <li class="dropdown">

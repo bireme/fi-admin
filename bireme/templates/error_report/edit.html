@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Edit error report" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'error_reporting.views.list_error_report' %}">{% trans "Error Report" %}</a> <span class="divider">/</span></li>
+    <li>{% trans "Edit error report" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-warning-sign'></i>{% trans "Edit error report" %}</h2>
+    <div class="pull-right">
+        <a href="{% url 'main.views.create_edit_resource' error_report.object_id %}" target="_blank"><button class="btn btn-info btn-large">{% trans "Edit resource of this report" %}</button></a>
+    </div>
+</div>
+
+<div class='body'>
+
+    <form method="POST" class="report-form">
+        {% csrf_token %}
+
+        <div class="tab-content">
+            <div id="tab-data" class="tab-pane active">
+
+                <fieldset id="metadata">
+                    <h3>{{ error_report.content_object.title }}</h3>
+
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {{ form.non_field_errors }}
+                    {% for field in form.visible_fields %}
+                        <label for="{{ field.auto_id }}">
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+                        <p class="muted">{{ field.help_text }}</p>
+                        {{ field.errors }}
+                        {{ field }}
+                    {% endfor %}
+                </fieldset>
+
+                {% comment %}Display administrative information{% endcomment %}
+
+                <div class="alert alert-info">
+                    <p>{% trans "Posted on" %}: <strong>{{ error_report.created_time|date:"d/m/y@f" }}</strong></p>
+                </div>
+
+            </div>
+
+            <div class="control-panel form-submit">                
+                <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
