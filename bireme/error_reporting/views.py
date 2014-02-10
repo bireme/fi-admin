@@ -132,6 +132,33 @@ def edit_error_report(request, **kwargs):
     return render_to_response('error_report/edit.html', output, context_instance=RequestContext(request))
 
 
+@csrf_exempt
+def external_error_report(request, **kwargs):
+
+    error_report = None
+    response = None
+    sucess = True
+
+    resource_id = escape(request.POST.get('resource_id'))
+    content_type = ContentType.objects.get_for_model(Resource)
+
+    error_report = ErrorReport(object_id=resource_id, content_type=content_type, status=0)   
+    form = ExternalErrorReportForm(request.POST, instance=error_report)
+
+    if form.is_valid():
+        sucess = True
+        error_report = form.save()
+    else:
+        sucess = False
+
+    response = HttpResponse(sucess)  
+    response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Methods"] = "POST"
+    response["Access-Control-Allow-Headers"] = "*" 
+    
+    return response
+
+
 @login_required
 def delete_error_report(request, error_report_id):
 

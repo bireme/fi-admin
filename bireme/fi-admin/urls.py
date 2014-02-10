@@ -73,6 +73,8 @@ urlpatterns = patterns('',
     (r'^error-reporting/?$', 'error_reporting.views.list_error_report'),
     (r'^error-reporting/new/?$', 'error_reporting.views.create_error_report'),
     (r'^error-reporting/edit/(?P<report_id>\d+)/?$', 'error_reporting.views.edit_error_report'),
+    # External error report
+    (r'^report-error/?$', 'error_reporting.views.external_error_report'),
 
 
     # Login/Logout

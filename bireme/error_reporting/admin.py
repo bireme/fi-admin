@@ -7,6 +7,7 @@ from utils.admin import GenericAdmin
 
 class ErrorReportAdmin(GenericAdmin):
     model = ErrorReport
+    list_display = ('code', 'description', 'status', 'created_time')
     extra = 0
 
 

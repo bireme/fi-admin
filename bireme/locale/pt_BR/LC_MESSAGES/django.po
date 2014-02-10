@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 12:37-0200\n"
-"PO-Revision-Date: 2013-11-27 12:54-0200\n"
+"POT-Creation-Date: 2014-02-10 18:19-0200\n"
+"PO-Revision-Date: 2014-02-10 18:29-0200\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,50 +19,134 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
-#: events/models.py:13
-msgid "event type"
+#: error_reporting/models.py:14 templates/error_report/list.html:4
+#: templates/main/edit-resource.html:314
+msgid "Error report"
+msgstr "Informe de erro"
+
+#: error_reporting/models.py:15 templates/menu.html:21
+#: templates/error_report/list.html:22 templates/main/edit-resource.html:106
+msgid "Error reports"
+msgstr "Informes de erro"
+
+#: error_reporting/models.py:18 events/models.py:57 main/models.py:147
+#: main/models.py:191 main/models.py:214 main/models.py:234
+#: suggest/models.py:16 templates/error_report/list.html:70
+#: templates/error_report/list.html:123 templates/events/edit-event.html:47
+#: templates/events/edit-event.html:124 templates/events/edit-event.html:191
+#: templates/events/events.html:74 templates/main/edit-resource.html:46
+#: templates/main/edit-resource.html:139 templates/main/edit-resource.html:206
+#: templates/main/index.html:35 templates/main/resources.html:72
+#: templates/suggest/edit-suggested-resource.html:42
+#: templates/suggest/resources-keywords.html:70
+#: templates/suggest/resources-keywords.html:125
+msgid "Pending"
+msgstr "Pendente"
+
+#: error_reporting/models.py:19
+msgid "Fixed"
+msgstr "Corrigido"
+
+#: error_reporting/models.py:20
+msgid "Invalid"
+msgstr "Inválido"
+
+#: error_reporting/models.py:21
+msgid "SPAM"
+msgstr "SPAM"
+
+#: error_reporting/models.py:25
+msgid "Invalid link"
+msgstr "Link inválido"
+
+#: error_reporting/models.py:26
+msgid "Bad content"
+msgstr "Conteúdo inapropriado"
+
+#: error_reporting/models.py:27
+msgid "Duplicated"
+msgstr "Duplicado"
+
+#: error_reporting/models.py:28
+msgid "Other"
+msgstr "Outro"
+
+#: error_reporting/models.py:35 events/models.py:63 main/models.py:154
+#: main/models.py:205 main/models.py:225 main/models.py:244
+#: suggest/models.py:23 templates/error_report/list.html:56
+#: templates/error_report/list.html:110 templates/events/edit-event.html:113
+#: templates/events/edit-event.html:179 templates/events/edit-event.html:248
+#: templates/events/events.html:58 templates/main/edit-resource.html:128
+#: templates/main/edit-resource.html:194 templates/main/edit-resource.html:263
+#: templates/main/index.html:33 templates/main/resources.html:58
+#: templates/suggest/resources-keywords.html:56
+#: templates/suggest/resources-keywords.html:111
+msgid "Status"
+msgstr "Status"
+
+#: error_reporting/models.py:36
+msgid "Error type"
+msgstr "Tipo de erro"
+
+#: error_reporting/models.py:37 templates/error_report/list.html:53
+#: templates/error_report/list.html:108
+msgid "Description"
+msgstr "Descrição"
+
+#: error_reporting/models.py:38
+msgid "New link"
+msgstr "Novo link"
+
+#: error_reporting/views.py:120
+msgid "Report successfully edited."
+msgstr "Informe editado com sucesso."
+
+#: error_reporting/views.py:176
+msgid "Report deleted."
+msgstr "Informe apagado."
+
+#: events/models.py:13 events/models.py:44 events/models.py:74
+#: templates/events/edit-type.html:8
+msgid "Event type"
 msgstr "Tipo de evento"
 
-#: events/models.py:14
-msgid "event types"
+#: events/models.py:14 templates/menu.html:34 templates/events/types.html:4
+#: templates/events/types.html.py:7 templates/events/types.html:21
+msgid "Event types"
 msgstr "Tipos de evento"
 
-#: events/models.py:16 main/models.py:25 main/models.py:65 main/models.py:104
+#: events/models.py:16 main/models.py:27 main/models.py:67 main/models.py:106
 msgid "Acronym"
 msgstr "Sigla"
 
-#: events/models.py:17 main/models.py:26 main/models.py:66 main/models.py:94
-#: main/models.py:105 main/models.py:132 templates/main/edit-language.html:8
+#: events/models.py:17 main/models.py:28 main/models.py:68 main/models.py:96
+#: main/models.py:107 main/models.py:134 templates/main/edit-language.html:8
 msgid "Language"
 msgstr "Idioma"
 
-#: events/models.py:18 main/models.py:27 main/models.py:67 main/models.py:95
-#: main/models.py:106 main/models.py:133 templates/events/types.html:47
+#: events/models.py:18 main/models.py:29 main/models.py:69 main/models.py:97
+#: main/models.py:108 main/models.py:135 templates/events/types.html:47
 #: templates/main/languages.html:47 templates/main/thematics.html:47
 #: templates/main/types.html:47
 msgid "Name"
 msgstr "Nome"
 
-#: events/models.py:41 main/models.py:50 main/models.py:90 main/models.py:128
+#: events/models.py:41 main/models.py:52 main/models.py:92 main/models.py:130
 msgid "Translation"
 msgstr "Tradução"
 
-#: events/models.py:42 main/models.py:51 main/models.py:91 main/models.py:129
+#: events/models.py:42 main/models.py:53 main/models.py:93 main/models.py:131
 #: templates/admin/base_site.html:13 templates/events/edit-type.html:36
 #: templates/main/edit-language.html:36 templates/main/edit-thematic.html:36
 #: templates/main/edit-type.html:36
 msgid "Translations"
 msgstr "Traduções"
 
-#: events/models.py:44 events/models.py:74 templates/events/edit-type.html:8
-msgid "Event type"
-msgstr "Tipo de evento"
-
-#: events/models.py:45 main/models.py:54 utils/models.py:89
+#: events/models.py:45 main/models.py:56 utils/models.py:89
 msgid "language"
 msgstr "idioma"
 
-#: events/models.py:46 main/models.py:55 utils/models.py:72 utils/models.py:90
+#: events/models.py:46 main/models.py:57 utils/models.py:72 utils/models.py:90
 msgid "name"
 msgstr "nome"
 
@@ -71,30 +155,19 @@ msgid "Event"
 msgstr "Evento"
 
 #: events/models.py:54 templates/menu.html:17
-#: templates/events/edit-event.html:8 templates/events/events.html:4
-#: templates/events/events.html.py:7 templates/events/events.html:22
+#: templates/error_report/list.html:28 templates/events/edit-event.html:8
+#: templates/events/events.html:4 templates/events/events.html.py:7
+#: templates/events/events.html:22
 msgid "Events"
 msgstr "Eventos"
 
-#: events/models.py:57 main/models.py:145 main/models.py:186
-#: main/models.py:209 main/models.py:229 suggest/models.py:16
-#: templates/events/edit-event.html:47 templates/events/edit-event.html:124
-#: templates/events/edit-event.html:191 templates/events/events.html:74
-#: templates/main/edit-resource.html:47 templates/main/edit-resource.html:124
-#: templates/main/edit-resource.html:191 templates/main/index.html:35
-#: templates/main/resources.html:72
-#: templates/suggest/edit-suggested-resource.html:42
-#: templates/suggest/resources-keywords.html:70
-#: templates/suggest/resources-keywords.html:125
-msgid "Pending"
-msgstr "Pendente"
-
-#: events/models.py:58 main/models.py:146 main/models.py:187
-#: main/models.py:210 main/models.py:230 suggest/models.py:17
+#: events/models.py:58 main/models.py:148 main/models.py:192
+#: main/models.py:215 main/models.py:235 suggest/models.py:17
+#: templates/error_report/list.html:72 templates/error_report/list.html:125
 #: templates/events/edit-event.html:47 templates/events/edit-event.html:126
 #: templates/events/edit-event.html:193 templates/events/events.html:76
-#: templates/main/edit-resource.html:47 templates/main/edit-resource.html:126
-#: templates/main/edit-resource.html:193 templates/main/index.html:36
+#: templates/main/edit-resource.html:46 templates/main/edit-resource.html:141
+#: templates/main/edit-resource.html:208 templates/main/index.html:36
 #: templates/main/resources.html:74
 #: templates/suggest/edit-suggested-resource.html:42
 #: templates/suggest/resources-keywords.html:72
@@ -102,28 +175,16 @@ msgstr "Pendente"
 msgid "Admitted"
 msgstr "Admitido"
 
-#: events/models.py:59 main/models.py:147 main/models.py:188
-#: main/models.py:211 main/models.py:231 suggest/models.py:18
+#: events/models.py:59 main/models.py:149 main/models.py:193
+#: main/models.py:216 main/models.py:236 suggest/models.py:18
 msgid "Refused"
 msgstr "Recusado"
 
-#: events/models.py:60 main/models.py:148 suggest/models.py:19
+#: events/models.py:60 main/models.py:150 suggest/models.py:19
 msgid "Deleted"
 msgstr "Apagado"
 
-#: events/models.py:63 main/models.py:152 main/models.py:200
-#: main/models.py:220 main/models.py:239 suggest/models.py:23
-#: templates/events/edit-event.html:113 templates/events/edit-event.html:179
-#: templates/events/edit-event.html:248 templates/events/events.html:58
-#: templates/main/edit-resource.html:113 templates/main/edit-resource.html:179
-#: templates/main/edit-resource.html:248 templates/main/index.html:33
-#: templates/main/resources.html:58
-#: templates/suggest/resources-keywords.html:56
-#: templates/suggest/resources-keywords.html:111
-msgid "Status"
-msgstr "Status"
-
-#: events/models.py:65 main/models.py:154 suggest/models.py:25
+#: events/models.py:65 main/models.py:156 suggest/models.py:25
 #: templates/events/events.html:55 templates/main/resources.html:55
 #: templates/suggest/resources-keywords.html:53
 msgid "Title"
@@ -141,7 +202,7 @@ msgstr "dia/mês/ano"
 msgid "End date"
 msgstr "Data de término"
 
-#: events/models.py:69 main/models.py:156 suggest/models.py:27
+#: events/models.py:69 main/models.py:158 suggest/models.py:27
 msgid "Link"
 msgstr "Link"
 
@@ -169,7 +230,11 @@ msgstr "Informação de contato"
 msgid "Observations"
 msgstr "Observações"
 
-#: events/models.py:82 main/models.py:174
+#: events/models.py:80
+msgid "Target groups"
+msgstr "Público alvo"
+
+#: events/models.py:83 main/models.py:176
 msgid "Cooperative center"
 msgstr "Centro cooperante"
 
@@ -181,25 +246,25 @@ msgstr "Evento editado com sucesso."
 msgid "Event deleted."
 msgstr "Evento apagado."
 
-#: events/views.py:246 main/views.py:373
+#: events/views.py:246 main/views.py:380
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: events/views.py:270 main/views.py:397
+#: events/views.py:270 main/views.py:404
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
-#: main/choices.py:6 templates/menu.html:45 templates/menu.html.py:51
+#: main/choices.py:6 templates/menu.html:48 templates/menu.html.py:54
 #: utils/models.py:13
 msgid "English"
 msgstr "Inglês"
 
-#: main/choices.py:7 templates/menu.html:47 templates/menu.html.py:52
+#: main/choices.py:7 templates/menu.html:50 templates/menu.html.py:55
 #: utils/models.py:14
 msgid "Portuguese"
 msgstr "Português"
 
-#: main/choices.py:8 templates/menu.html:46 templates/menu.html.py:53
+#: main/choices.py:8 templates/menu.html:49 templates/menu.html.py:56
 #: utils/models.py:15
 msgid "Spanish"
 msgstr "Espanhol"
@@ -217,50 +282,53 @@ msgid "DeCS: Health Sciences Descriptors"
 msgstr "DeCS: Descritores em Ciências da Saúde"
 
 #: main/choices.py:20 suggest/models.py:31
-#: templates/events/edit-event.html:178 templates/main/edit-resource.html:178
+#: templates/events/edit-event.html:178 templates/main/edit-resource.html:193
 #: templates/main/index.html:44 templates/suggest/resources-keywords.html:28
 msgid "Keywords"
 msgstr "Palavras-chave"
 
-#: main/models.py:22
+#: main/models.py:24
 msgid "source type"
 msgstr "tipo de fonte"
 
-#: main/models.py:23
+#: main/models.py:25
 msgid "source types"
 msgstr "tipos de fonte"
 
-#: main/models.py:53 main/models.py:166 templates/main/edit-type.html:8
+#: main/models.py:55 main/models.py:168 templates/main/edit-type.html:8
 msgid "Source type"
 msgstr "Tipo de Fonte"
 
-#: main/models.py:62 main/models.py:93 main/models.py:164
+#: main/models.py:64 main/models.py:95 main/models.py:166
 msgid "Source language"
 msgstr "Idiomas da fonte"
 
-#: main/models.py:63 templates/main/languages.html:4
+#: main/models.py:65 templates/main/languages.html:4
 #: templates/main/languages.html.py:7 templates/main/languages.html:21
 msgid "Source languages"
 msgstr "Idiomas da fonte"
 
-#: main/models.py:101 main/models.py:131 main/models.py:192
-#: templates/events/edit-event.html:246 templates/main/edit-resource.html:246
+#: main/models.py:103 main/models.py:133 main/models.py:197
+#: templates/events/edit-event.html:246 templates/main/edit-resource.html:261
 #: templates/main/edit-thematic.html:8
 msgid "Thematic area"
 msgstr "Áreas temáticas"
 
-#: main/models.py:102 main/models.py:193 templates/menu.html:29
-#: templates/events/edit-event.html:25 templates/main/edit-resource.html:25
+#: main/models.py:104 main/models.py:198 templates/menu.html:32
+#: templates/events/edit-event.html:25 templates/main/edit-resource.html:24
 #: templates/main/thematics.html:4 templates/main/thematics.html.py:7
 #: templates/main/thematics.html:21
 msgid "Thematic areas"
 msgstr "Áreas temáticas"
 
-#: main/models.py:141 templates/suggest/resources-keywords.html:109
+#: main/models.py:143 templates/error_report/list.html:52
+#: templates/error_report/list.html:54
+#: templates/suggest/resources-keywords.html:109
 msgid "Resource"
 msgstr "Recurso"
 
-#: main/models.py:142 templates/menu.html:15
+#: main/models.py:144 templates/menu.html:15
+#: templates/error_report/list.html:7 templates/error_report/list.html:27
 #: templates/main/edit-resource.html:8 templates/main/index.html:26
 #: templates/main/index.html.py:43 templates/main/resources.html:4
 #: templates/main/resources.html.py:7 templates/main/resources.html:22
@@ -269,67 +337,67 @@ msgstr "Recurso"
 msgid "Resources"
 msgstr "Recursos"
 
-#: main/models.py:158
+#: main/models.py:160
 msgid "Originator"
 msgstr "Originador"
 
-#: main/models.py:160
+#: main/models.py:162
 msgid "Originator location"
 msgstr "Local geográfico do originador"
 
-#: main/models.py:162
+#: main/models.py:164
 msgid "Authors"
 msgstr "Autores"
 
-#: main/models.py:162
+#: main/models.py:164
 msgid "Enter one per line"
 msgstr "Insira um por linha"
 
-#: main/models.py:168
+#: main/models.py:170
 msgid "Abstract"
 msgstr "Resumo"
 
-#: main/models.py:170
+#: main/models.py:172
 msgid "Temporal range"
 msgstr "Alcance temporal"
 
-#: main/models.py:172
+#: main/models.py:174
 msgid "Objective"
 msgstr "Objetivos"
 
-#: main/models.py:218 main/models.py:238
+#: main/models.py:223 main/models.py:243
 msgid "Text"
 msgstr "Texto"
 
-#: main/models.py:219
+#: main/models.py:224
 msgid "Code"
 msgstr "Código"
 
-#: main/models.py:240
+#: main/models.py:245
 msgid "User recomendation?"
 msgstr "Recomendação de usuário?"
 
-#: main/views.py:148 suggest/views.py:123
+#: main/views.py:150 suggest/views.py:123
 msgid "Resource successfully edited."
 msgstr "Recurso editado com sucesso."
 
-#: main/views.py:202 suggest/views.py:152
+#: main/views.py:209 suggest/views.py:152
 msgid "Resource deleted."
 msgstr "Recurso apagado."
 
-#: main/views.py:275
+#: main/views.py:282
 msgid "Thematic area successfully edited."
 msgstr "Área temática editada com sucesso."
 
-#: main/views.py:300
+#: main/views.py:307
 msgid "Thematic area deleted."
 msgstr "Área Temática apagada"
 
-#: main/views.py:469
+#: main/views.py:476
 msgid "Language successfully edited."
 msgstr "Idioma editado com sucesso."
 
-#: main/views.py:494
+#: main/views.py:501
 msgid "Language deleted."
 msgstr "Idioma apagado."
 
@@ -417,29 +485,24 @@ msgstr "Painel de controle"
 msgid "Suggestions"
 msgstr "Sugestões"
 
-#: templates/menu.html:25
+#: templates/menu.html:28
 msgid "Controlled lists"
 msgstr "Listas controladas"
 
-#: templates/menu.html:30 templates/main/types.html:4
+#: templates/menu.html:33 templates/main/types.html:4
 #: templates/main/types.html.py:7 templates/main/types.html:21
 msgid "Source types"
 msgstr "Tipos de fonte"
 
-#: templates/menu.html:31 templates/events/types.html:4
-#: templates/events/types.html.py:7 templates/events/types.html:21
-msgid "Event types"
-msgstr "Tipos de evento"
-
-#: templates/menu.html:32
+#: templates/menu.html:35
 msgid "Languages"
 msgstr "Idiomas"
 
-#: templates/menu.html:36
+#: templates/menu.html:39
 msgid "Django Admin"
 msgstr "Administrador Geral"
 
-#: templates/menu.html:68
+#: templates/menu.html:71
 msgid "Logout"
 msgstr "Sair do sistema"
 
@@ -480,6 +543,72 @@ msgstr "faça login"
 msgid "again clicking below."
 msgstr "novamente clicando abaixo"
 
+#: templates/error_report/edit.html:5 templates/error_report/edit.html.py:9
+#: templates/error_report/edit.html:15
+msgid "Edit error report"
+msgstr "Editar informe de erro"
+
+#: templates/error_report/edit.html:8
+msgid "Error Report"
+msgstr "Informe de erro"
+
+#: templates/error_report/edit.html:17
+msgid "Edit resource of this report"
+msgstr "Editar o recurso deste informe"
+
+#: templates/error_report/edit.html:54
+#: templates/suggest/edit-suggested-resource.html:92
+msgid "Posted on"
+msgstr "Enviado em"
+
+#: templates/error_report/edit.html:60 templates/events/edit-event.html:290
+#: templates/events/edit-type.html:56 templates/main/edit-language.html:56
+#: templates/main/edit-resource.html:305 templates/main/edit-resource.html:343
+#: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
+#: templates/suggest/edit-suggested-resource.html:99
+msgid "Save"
+msgstr "Gravar"
+
+#: templates/error_report/list.html:36 templates/error_report/list.html:44
+#: templates/error_report/list.html:91 templates/error_report/list.html:99
+#: templates/events/events.html:38 templates/events/events.html.py:46
+#: templates/events/types.html:30 templates/events/types.html.py:38
+#: templates/main/languages.html:30 templates/main/languages.html.py:38
+#: templates/main/resources.html:38 templates/main/resources.html.py:46
+#: templates/main/thematics.html:30 templates/main/thematics.html.py:38
+#: templates/main/types.html:30 templates/main/types.html.py:38
+#: templates/suggest/resources-keywords.html:36
+#: templates/suggest/resources-keywords.html:44
+#: templates/suggest/resources-keywords.html:91
+#: templates/suggest/resources-keywords.html:99
+msgid "Search"
+msgstr "Pesquisa"
+
+#: templates/error_report/list.html:37 templates/error_report/list.html:92
+#: templates/events/events.html:39 templates/events/types.html:31
+#: templates/main/languages.html:31 templates/main/resources.html:39
+#: templates/main/thematics.html:31 templates/main/types.html:31
+#: templates/suggest/resources-keywords.html:37
+#: templates/suggest/resources-keywords.html:92
+msgid "clear"
+msgstr "limpar"
+
+#: templates/error_report/list.html:55 templates/error_report/list.html:109
+#: templates/suggest/resources-keywords.html:55
+#: templates/suggest/resources-keywords.html:110
+msgid "Date"
+msgstr "Data"
+
+#: templates/error_report/list.html:57 templates/error_report/list.html:111
+#: templates/events/edit-event.html:250 templates/events/events.html:59
+#: templates/events/types.html:48 templates/main/edit-resource.html:265
+#: templates/main/languages.html:48 templates/main/resources.html:59
+#: templates/main/thematics.html:48 templates/main/types.html:48
+#: templates/suggest/resources-keywords.html:57
+#: templates/suggest/resources-keywords.html:112
+msgid "Actions"
+msgstr "Ações"
+
 #: templates/events/edit-event.html:5 templates/events/edit-event.html:10
 #: templates/events/edit-event.html:17
 msgid "Edit Event"
@@ -490,15 +619,15 @@ msgstr "Editar evento"
 msgid "New Event"
 msgstr "Novo evento"
 
-#: templates/events/edit-event.html:23 templates/main/edit-resource.html:23
+#: templates/events/edit-event.html:23 templates/main/edit-resource.html:22
 msgid "Metadata"
 msgstr "Metadados"
 
-#: templates/events/edit-event.html:24 templates/main/edit-resource.html:24
+#: templates/events/edit-event.html:24 templates/main/edit-resource.html:23
 msgid "Indexing"
 msgstr "Indexação"
 
-#: templates/events/edit-event.html:37 templates/main/edit-resource.html:37
+#: templates/events/edit-event.html:37 templates/main/edit-resource.html:36
 #: templates/suggest/edit-suggested-resource.html:32
 msgid "Identifier"
 msgstr "Identificador"
@@ -520,56 +649,40 @@ msgstr "Código Centro Cooperante"
 msgid "Last edit in"
 msgstr "Última edição realizada em"
 
-#: templates/events/edit-event.html:112 templates/main/edit-resource.html:112
+#: templates/events/edit-event.html:112 templates/main/edit-resource.html:127
 msgid "Descriptors"
 msgstr "Descritores"
 
-#: templates/events/edit-event.html:152 templates/main/edit-resource.html:152
+#: templates/events/edit-event.html:152 templates/main/edit-resource.html:167
 msgid "Select by search"
 msgstr "Selecione pela pesquisa"
 
-#: templates/events/edit-event.html:180 templates/main/edit-resource.html:180
+#: templates/events/edit-event.html:180 templates/main/edit-resource.html:195
 msgid "Suggestion"
 msgstr "Sugestão"
 
 #: templates/events/edit-event.html:198 templates/events/edit-event.html:221
-#: templates/main/edit-resource.html:198 templates/main/edit-resource.html:221
+#: templates/main/edit-resource.html:213 templates/main/edit-resource.html:236
 msgid "Suggested"
 msgstr "Sugerido"
 
-#: templates/events/edit-event.html:250 templates/events/events.html:59
-#: templates/events/types.html:48 templates/main/edit-resource.html:250
-#: templates/main/languages.html:48 templates/main/resources.html:59
-#: templates/main/thematics.html:48 templates/main/types.html:48
-#: templates/suggest/resources-keywords.html:57
-#: templates/suggest/resources-keywords.html:112
-msgid "Actions"
-msgstr "Ações"
-
-#: templates/events/edit-event.html:290 templates/events/edit-type.html:56
-#: templates/main/edit-language.html:56 templates/main/edit-resource.html:290
-#: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
-#: templates/suggest/edit-suggested-resource.html:99
-msgid "Save"
-msgstr "Gravar"
-
-#: templates/events/edit-event.html:306 templates/main/edit-resource.html:306
+#: templates/events/edit-event.html:306 templates/main/edit-resource.html:358
 msgid "Add descriptor"
 msgstr "Adicionar descritor"
 
 #: templates/events/edit-event.html:307 templates/events/edit-event.html:316
 #: templates/events/edit-event.html:325 templates/events/edit-type.html:72
-#: templates/main/edit-language.html:72 templates/main/edit-resource.html:307
-#: templates/main/edit-resource.html:316 templates/main/edit-resource.html:325
+#: templates/main/edit-language.html:72 templates/main/edit-resource.html:359
+#: templates/main/edit-resource.html:368 templates/main/edit-resource.html:377
 #: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
 msgid "delete"
 msgstr "apagar"
 
-#: templates/events/edit-event.html:315 templates/main/edit-resource.html:315
+#: templates/events/edit-event.html:315 templates/main/edit-resource.html:367
 msgid "Add keyword"
 msgstr "Adicionar palavra-chave"
 
-#: templates/events/edit-event.html:324 templates/main/edit-resource.html:324
+#: templates/events/edit-event.html:324 templates/main/edit-resource.html:376
 msgid "Add thematic area"
 msgstr "Adicionar área temática"
 
@@ -596,27 +709,6 @@ msgstr "Meus eventos"
 msgid "Network events"
 msgstr "Eventos da rede"
 
-#: templates/events/events.html:38 templates/events/events.html.py:46
-#: templates/events/types.html:30 templates/events/types.html.py:38
-#: templates/main/languages.html:30 templates/main/languages.html.py:38
-#: templates/main/resources.html:38 templates/main/resources.html.py:46
-#: templates/main/thematics.html:30 templates/main/thematics.html.py:38
-#: templates/main/types.html:30 templates/main/types.html.py:38
-#: templates/suggest/resources-keywords.html:36
-#: templates/suggest/resources-keywords.html:44
-#: templates/suggest/resources-keywords.html:91
-#: templates/suggest/resources-keywords.html:99
-msgid "Search"
-msgstr "Pesquisa"
-
-#: templates/events/events.html:39 templates/events/types.html:31
-#: templates/main/languages.html:31 templates/main/resources.html:39
-#: templates/main/thematics.html:31 templates/main/types.html:31
-#: templates/suggest/resources-keywords.html:37
-#: templates/suggest/resources-keywords.html:92
-msgid "clear"
-msgstr "limpar"
-
 #: templates/events/events.html:82 templates/events/types.html:57
 #: templates/main/languages.html:57 templates/main/resources.html:80
 #: templates/main/thematics.html:57 templates/main/types.html:57
@@ -633,12 +725,12 @@ msgid "New Language"
 msgstr "Novo idioma"
 
 #: templates/main/edit-resource.html:5 templates/main/edit-resource.html:10
-#: templates/main/edit-resource.html:17
+#: templates/main/edit-resource.html:16
 #: templates/suggest/edit-suggested-resource.html:9
 msgid "Edit Resource"
 msgstr "Editar Recurso"
 
-#: templates/main/edit-resource.html:9 templates/main/edit-resource.html:17
+#: templates/main/edit-resource.html:9 templates/main/edit-resource.html:16
 #: templates/main/resources.html:24
 msgid "New Resource"
 msgstr "Novo Recurso"
@@ -646,6 +738,14 @@ msgstr "Novo Recurso"
 #: templates/main/edit-resource.html:98
 msgid "Resource created in"
 msgstr "Recurso criado em"
+
+#: templates/main/edit-resource.html:116
+msgid "Add new error report"
+msgstr "Informar um erro"
+
+#: templates/main/edit-resource.html:342
+msgid "Cancel"
+msgstr "Cancelar"
 
 #: templates/main/edit-thematic.html:5 templates/main/edit-thematic.html:10
 #: templates/main/edit-thematic.html:17
@@ -707,11 +807,7 @@ msgstr "Editar Recurso Sugerido"
 #: templates/suggest/edit-suggested-resource.html:17
 #: templates/suggest/edit-suggested-resource.html:98
 msgid "Create a new Resource using this suggestion"
-msgstr ""
-
-#: templates/suggest/edit-suggested-resource.html:92
-msgid "Posted on"
-msgstr "Enviado em"
+msgstr "Criar um novo Recurso usando esta sugestão"
 
 #: templates/suggest/invalid-link.html:27
 msgid "Ops!"
@@ -733,11 +829,6 @@ msgstr "Códio de segurança (captcha) inválido"
 #: templates/suggest/invalid-link.html:51 templates/suggest/thanks.html:29
 msgid "Back"
 msgstr "Voltar"
-
-#: templates/suggest/resources-keywords.html:55
-#: templates/suggest/resources-keywords.html:110
-msgid "Date"
-msgstr "Data"
 
 #: templates/suggest/resources-keywords.html:108
 msgid "Keyword"
@@ -766,6 +857,12 @@ msgstr "código"
 #: utils/models.py:88
 msgid "country"
 msgstr "país"
+
+#~ msgid "event type"
+#~ msgstr "Tipo de evento"
+
+#~ msgid "event types"
+#~ msgstr "Tipos de evento"
 
 #~ msgid "New Event Type"
 #~ msgstr "Novo tipo de evento"

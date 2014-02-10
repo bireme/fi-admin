@@ -14,13 +14,5 @@ class ErrorReportForm(forms.ModelForm):
 class ExternalErrorReportForm(forms.ModelForm):
     class Meta:
         model = ErrorReport
-        exclude = ('status',)
+        exclude = ('status','object_id','content_type',)
 
-    def clean_title(self):
-        data = self.cleaned_data['title']
-
-        if len(data) < 5:
-            raise forms.ValidationError( _("Title too short") )
-
-        # Always return the cleaned data, whether you have changed it or not.
-        return data

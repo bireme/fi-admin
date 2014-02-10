@@ -16,9 +16,9 @@ class ErrorReport(Generic):
 
     STATUS_CHOICES = (
         (0, _('Pending')),
-        (1, _('Admitted')),
-        (2, _('Refused')),
-        (3, _('Deleted')),
+        (1, _('Fixed')),
+        (2, _('Invalid')),
+        (3, _('SPAM')),
     )
 
     ERROR_CHOICES = (
