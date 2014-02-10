@@ -1,11 +1,17 @@
 if mfn=1 then '['/ fi,
- (	   
+
+if left(v311,11) <> 'IDDUPLICADO' then,
+
+   /* LIS ID (only numeric part) */
+   proc('d9301a9301!',mid(v301,instr(v301,'-')+1,size(v301)),'!'),
+
+  (	   
 	if p(v326) then,
 	   '{',/
 			c4,'"model": ','"main.keyword",',/
 			c4,'"pk": ', 'null,'/        /* avoid PK duplication use auto-increment on load */
 			c4,'"fields": {',/
-				c8,'"object_id": ',mfn(0),',',/
+				c8,'"object_id": ',v9301[1],',',/
 				c8,'"content_type": ', '15,',/
 				c8,'"text": ','"', v326, '",'/
 				c8,'"status": ','1,'/   
@@ -14,6 +20,7 @@ if mfn=1 then '['/ fi,
 			c4,'}',/
 		'},'/
     fi,
-)
+  )
+fi,
 if mfn=MAXMFN-1 then ']'/ fi,
 

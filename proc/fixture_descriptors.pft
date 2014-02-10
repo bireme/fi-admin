@@ -1,5 +1,11 @@
 if mfn=1 then '['/ fi,
- (	   
+
+if left(v311,11) <> 'IDDUPLICADO' then,
+
+   /* LIS ID (only numeric part) */
+   proc('d9301a9301!',mid(v301,instr(v301,'-')+1,size(v301)),'!'),
+
+  (	   
 	if p(v323) then,
 		/* check if is descriptor/qualifier */
 		if instr(v323,'/') > 0 then,
@@ -14,7 +20,7 @@ if mfn=1 then '['/ fi,
 				c4,'"model": ','"main.descriptor",',/				
 				c4,'"pk": ', 'null,'/     	/* avoid PK duplication use auto-increment on load */
 				c4,'"fields": {',/
-					c8,'"object_id": ',mfn(0),',',/
+					c8,'"object_id": ',v9301[1],',',/
 					c8,'"content_type": ', '15,',/
 					c8,'"text": ','"', v323, '",'/
 					c8,'"code": ','"',ref( l(['decs']v9991[1]),'^d',mfn(0) ), ref( l(['decs']v9992[1]),'^s',mfn(0) ) ,'",'/
@@ -28,7 +34,7 @@ if mfn=1 then '['/ fi,
 				c4,'"model": ','"main.keyword",',/
 				c4,'"pk": ', 'null,'/      /* avoid PK duplication use auto-increment on load */
 				c4,'"fields": {',/
-					c8,'"object_id": ',mfn(0),',',/    
+					c8,'"object_id": ',v9301[1],',',/
 					c8,'"content_type": ', '15,',/
 					c8,'"text": ','"', v323, '",'/
 					c8,'"status": ','1,'/   
@@ -38,6 +44,7 @@ if mfn=1 then '['/ fi,
 			'},'/
 		fi,
     fi,
-)
+  )
+fi,
 if mfn=MAXMFN-1 then ']'/ fi,
 

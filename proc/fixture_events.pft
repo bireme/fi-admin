@@ -18,7 +18,7 @@ if mfn=1 then '['/ fi,
             if p(v710) then c8,'"city": ','"',v710,'",'/  fi,
             if p(v740) and val(v740) > 0 then c8,'"country": ',f(val(v740),1,0),','/, fi,
             
-            if p(v760) then c8,'"contact_email": ','"',v760[1],'",'/  fi,
+            if p(v760) then c8,'"contact_email": ','"',left(v760[1],instr(v760,' ')-1),'",'/  fi,
             if p(v900) then c8,'"observations": ','"',(v900+|\r\n|),'",'/ fi,
             
             c8,'"created_time": ','"2013-11-11T09:00:00-03:00",'/,          
