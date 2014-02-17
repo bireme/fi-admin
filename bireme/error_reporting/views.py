@@ -60,8 +60,6 @@ def list_error_report(request):
         ct = ContentType.objects.get_for_model(Resource)
         error_reports = ErrorReport.objects.filter(content_type=ct, object_id__icontains=actions['s'])
 
-    print error_reports[0].content_type
-
     error_reports = error_reports.order_by(actions["orderby"])
     if actions['order'] == "-":
         error_reports = error_reports.order_by("%s%s" % (actions["order"], actions["orderby"]))
