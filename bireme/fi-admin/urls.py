@@ -84,6 +84,7 @@ urlpatterns = patterns('',
     #(r'^api/', include(resource_api.urls), include(event_api.urls)),
     (r'^api/', include(link_resource.urls)),
     (r'^api/', include(event_resource.urls)),
+    (r'^api/lis-old/search/', 'api.lis_old_api.search'),
 
     #internationalization
     url(r'^i18n/', include('django.conf.urls.i18n')),

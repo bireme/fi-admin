@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<iyp version="0.3">
+    <prolog mfn="1">
+       <Isis_Total>
+          <occ>{{ total }}</occ>
+       </Isis_Total>
+       <showing-from>
+          <occ>{{ from }}</occ>
+       </showing-from>
+       <showing-to>
+          <occ>{{ to }}</occ>
+       </showing-to>
+       <page>
+          <occ>{{ page }}</occ>
+       </page>
+       <backward-navigation>
+            <occ nav-page="{{ page|add:"- 1" }}" nav-status="V"></occ>
+            <occ nav-page="{{ page_navigation_prev_block }}" nav-status="V"></occ>
+            <occ nav-page="1" nav-status="V"></occ>
+       </backward-navigation>       
+       <page-navigation>
+       {% for occ_page in page_navigation %}
+           <occ nav-page="{{occ_page}}" nav-status="{% if occ_page == page %}C{% else %}V{% endif %}"></occ>
+       {% endfor %}
+       </page-navigation>
+       <forward-navigation>
+           <occ nav-page="{{ page|add:"1" }}" nav-status="V"></occ>
+           <occ nav-page="{{ page_navigation_next_block }}" nav-status="V"></occ>
+           <occ nav-page="{{ page_navigation_last_page }}" nav-status="V"></occ>
+       </forward-navigation>       
+       <newexpr>
+           <occ>{{ expr }}</occ>
+       </newexpr>   
+       <connector>
+          <occ>AND</occ>
+       </connector>
+    </prolog>
+
+    {% for doc in result.diaServerResponse.0.response.docs %}
+        <browse id="{{ doc.id }}">
+           <Isis_Current>
+              <occ>{{ forloop.counter0|add:from }}</occ>
+           </Isis_Current>
+           <Isis_Total>
+              <occ>{{ total }}</occ>
+           </Isis_Total>
+           <title>
+              <occ>{{ doc.title }}</occ>
+           </title>
+           <language>
+              <occ i="Portuguese" e="Portugués" p="Português"></occ>
+           </language>
+           <abstract>
+              <occ>{{ doc.abstract }}</occ>
+           </abstract>
+           <href>
+                {% for link in doc.link %}
+                    <occ>{{ link }}</occ>
+                {% endfor %}
+           </href>
+        </browse>
+    {% endfor %}
+</iyp>
