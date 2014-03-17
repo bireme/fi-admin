@@ -7,12 +7,14 @@ if left(v311,11) <> 'IDDUPLICADO' then,
 
   (	   
 	if p(v323) then,
+		proc('d9990<9990 0>',v323,'</9990>')
+		proc('Ggansna,9990')
 		/* check if is descriptor/qualifier */
 		if instr(v323,'/') > 0 then,
-			proc('d9991a9991~',left(v323,instr(v323,'/')-1),'~'),
-			proc('d9992a9992~',mid(v323,instr(v323,'/'),size(v323)),'~'),
+			proc('d9991a9991~',left(v9990[1],instr(v323,'/')-1),'~'),
+			proc('d9992a9992~',mid(v9990[1],instr(v323,'/'),size(v323)),'~'),
 		else,
-			proc('d9991d9992a9991~',v323,'~'),
+			proc('d9991d9992a9991~',v9990[1],'~'),
 		fi,
 		
 		if l(['decs']v9991[1]) <> 0 then,
