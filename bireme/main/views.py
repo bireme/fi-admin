@@ -12,6 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from django.utils.translation import ugettext_lazy as _
 from django.utils.functional import curry
+from django.db.models import Q
 
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
@@ -82,7 +83,10 @@ def list_resources(request):
     if actions['page'] and actions['page'] != '':
         page = actions['page']
 
-    resources = Resource.objects.filter(title__icontains=actions['s'])
+    if actions['s'].isdigit():
+        resources = Resource.objects.filter( pk=int(actions['s']) )
+    else:
+        resources = Resource.objects.filter( Q(title__icontains=actions['s']) | Q(link__icontains=actions['s']) )
 
     resources = resources.order_by(actions["orderby"])
     if actions['order'] == "-":
