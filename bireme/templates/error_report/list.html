@@ -24,8 +24,22 @@
 
 <div class='body'>    
     <ul class="nav nav-tabs" id='tab'>
-        <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}"><a href="#tab-resources" onclick="change_type('resources')" data-toggle="tab"><strong>{% trans "Resources" %}</strong></a></li>
-        <li class="{% if actions.type == 'eventsevents'%}active{% endif %}"><a href="#tab-eventsevents" onclick="change_type('eventsevents')" data-toggle="tab"><strong>{% trans "Events" %}</strong></a></li>        
+        <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}">
+            <a href="#tab-resources" onclick="change_type('resources')" data-toggle="tab">
+                <strong>{% trans "Resources" %}</strong>
+                {% if actions.type == 'resources' or not actions.type %}
+                    <span class="badge badge-info">{{ pagination.paginator.count }}</span>
+                {% endif %}
+            </a>
+        </li>
+        <li class="{% if actions.type == 'events' %}active{% endif %}">
+            <a href="#tab-events" onclick="change_type('events')" data-toggle="tab">
+                <strong>{% trans "Events" %}</strong>
+                {% if actions.type == 'events' %}
+                    <span class="badge badge-info">{{ pagination.paginator.count }}</span>
+                {% endif %}                
+            </a>
+        </li>        
     </ul>
     
     {% if actions.type == 'resources' or not actions.type %}
@@ -34,13 +48,14 @@
             {% if actions.s %}
                 <div>
                     {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-                    <a href="{% url 'error_reporting.views.list' %}">[{% trans "clear" %}]</a>
+                    <a href="{% url 'error_reporting.views.list_error_report' %}">[{% trans "clear" %}]</a>
                 </div>
             {% endif %}
 
             <div class='pull-right'>
                 <div class="input-append">
-                    <form name="search" onSubmit="return search();">
+                    <form name="search">
+                        <input type="hidden" name="type" value="resources"/>                        
                         <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
                         <button class="btn" type="submit"><i class='icon-search'></i></button>
                     </form>
@@ -89,13 +104,14 @@
             {% if actions.s %}
                 <div>
                     {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-                    <a href="{% url 'main.views.resources' %}">[{% trans "clear" %}]</a>
+                    <a href="{% url 'error_reporting.views.list_error_report' %}">[{% trans "clear" %}]</a>
                 </div>
             {% endif %}
 
             <div class='pull-right'>
                 <div class="input-append">
-                    <form name="search" onSubmit="return search();">
+                    <form name="search">
+                        <input type="hidden" name="type" value="events"/>
                         <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
                         <button class="btn" type="submit"><i class='icon-search'></i></button>
                     </form>

@@ -23,6 +23,7 @@ from django.conf import settings
 from datetime import datetime
 from models import *
 from main.models import Resource, Keyword
+from events.models import Event
 from forms import *
 
 import os
