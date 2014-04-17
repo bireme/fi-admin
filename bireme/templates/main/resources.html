@@ -27,8 +27,21 @@
 
 <div class='body'>
     <ul class="nav nav-tabs" id='tab'>
-        <li class="{% if actions.filter_owner == user_id or not actions.filter_owner %}active{% endif %}"><a href="#tab-my" onclick="filter_owner('{{ user_id }}')" data-toggle="tab"><strong>{% trans "My resources" %}</strong></a></li>
-        <li class="{% if actions.filter_owner == '*' %}active{% endif %}"><a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab"><strong>{% trans "Network resources" %}</strong></a></li>        
+        <li class="{% if actions.filter_owner == user_id or not actions.filter_owner %}active{% endif %}">
+            <a href="#tab-my" onclick="filter_owner('{{ user_id }}')" data-toggle="tab">
+            <strong>{% trans "My resources" %}</strong>
+            {% if actions.filter_owner == user_id or not actions.filter_owner %}
+                <span class="badge badge-info">{{ pagination.paginator.count }}</span>
+            {% endif %}
+            </a>
+        </li>
+        <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
+            <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
+               <strong>{% trans "Network resources" %}</strong>
+               {% if  actions.filter_owner == '*' %}
+                   <span class="badge badge-info">{{ pagination.paginator.count }}</span>
+               {% endif %}
+            </a></li>        
     </ul>
 
     <div class="tab-content">
@@ -42,13 +55,16 @@
 
             <div class='pull-right'>
                 <div class="input-append">
-                    <form name="search" onSubmit="return search();">
+                    <form name="search">
+                        {% if actions.filter_owner == '*' %}
+                            <input type="hidden" name="filter_owner" value="*"/>
+                        {% endif %}
                         <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
                         <button class="btn" type="submit"><i class='icon-search'></i></button>
                     </form>
                 </div>
             </div>
-
+            Total: 
             <table class='table'>
                 <thead>
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>

@@ -101,7 +101,7 @@
                             {% endif %}
                         </div>
 
-                        {% if resource.error_reports %}
+                        {% if resource.error_reports.all %}
                             <strong>{% trans "Error reports" %}</strong>
                             <div class="alert alert-error">
                                 <ul>
