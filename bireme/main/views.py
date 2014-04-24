@@ -22,6 +22,7 @@ from utils.context_processors import additional_user_info
 from django.conf import settings
 from datetime import datetime
 from models import *
+from events.models import Event
 from suggest.models import *
 from forms import *
 from error_reporting.forms import ErrorReportForm
@@ -41,9 +42,9 @@ def dashboard(request):
     user = request.user    
     
     my_resources_count = Resource.objects.filter(created_by=request.user).count()
-    network_resource_count = Resource.objects.exclude(created_by=request.user).count()
-    pending_resource_count = Resource.objects.filter(status=0).count()
-    approved_resource_count = Resource.objects.filter(status=1).count()
+    all_resource_count = Resource.objects.all().count()
+    my_events_count = Event.objects.filter(created_by=request.user).count()
+    all_events_count = Event.objects.all().count()
 
     suggestions_keyword_count  = Keyword.objects.filter(user_recomendation=True, status=0).count()
     suggestions_resource_count = SuggestResource.objects.filter(status=0).count()
@@ -51,9 +52,9 @@ def dashboard(request):
 
     output['recent_actions'] = recent_actions
     output['my_resources_count'] = my_resources_count
-    output['network_resources_count'] = network_resource_count
-    output['pending_resource_count'] = pending_resource_count
-    output['approved_resource_count'] = approved_resource_count
+    output['all_resources_count'] = all_resource_count
+    output['my_events_count'] = my_events_count
+    output['all_events_count'] = all_events_count
     output['suggestions_keyword_count'] = suggestions_keyword_count
     output['suggestions_resource_count'] = suggestions_resource_count
 
@@ -92,10 +93,14 @@ def list_resources(request):
     if actions['order'] == "-":
         resources = resources.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
-    if actions['filter_owner'] != "*":
+    user_data = additional_user_info(request)
+
+    if actions['filter_owner'] == "network":        
+        resources = resources.filter(cooperative_center_code__in=user_data['network'])
+    elif actions['filter_owner'] != "*":
         resources = resources.filter(created_by=request.user)
     else:
-        resources = resources.exclude(created_by=request.user)
+        resources = resources.all()
 
     # pagination
     pagination = {}
