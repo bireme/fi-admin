@@ -51,16 +51,19 @@ def list_events(request):
     if actions['page'] and actions['page'] != '':
         page = actions['page']
 
+    user_data = additional_user_info(request)
     events = Event.objects.filter(title__icontains=actions['s'])
 
     events = events.order_by(actions["orderby"])
     if actions['order'] == "-":
         events = events.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
-    if actions['filter_owner'] != "*":
+    if actions['filter_owner'] == "network":        
+        events = events.filter(cooperative_center_code__in=user_data['network'])
+    elif actions['filter_owner'] != "*":
         events = events.filter(created_by=request.user)
     else:
-        events = events.exclude(created_by=request.user)
+        events = events.all()
 
     # pagination
     pagination = {}

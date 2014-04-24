@@ -8,14 +8,16 @@ def additional_user_info(request):
     user = request.user
     user_role = ''
     user_cc = ''
+    user_network = ''
 
     if user.is_authenticated():
         if not user.is_superuser:
             user_data = simplejson.loads(user.profile.data)
             user_role = user_data['role'][0]
             user_cc = user_data['cc']
+            user_network = user_data['ccs']
         else:
             user_role = 'admin'
             user_cc = 'br1.1'
 
-    return { 'user_role' : user_role, 'user_cc' : user_cc, 'user_name' : user.username, 'user_id' : str(user.id)}
+    return { 'user_role' : user_role, 'user_cc' : user_cc, 'network' : user_network, 'user_name' : user.username, 'user_id' : str(user.id)}

@@ -35,9 +35,17 @@
             {% endif %}
             </a>
         </li>
+        <li class="{% if actions.filter_owner == 'network' %}active{% endif %}">
+            <a href="#tab-network" onclick="filter_owner('network')" data-toggle="tab">
+                <strong>{% trans "Events of my network" %}</strong>
+               {% if  actions.filter_owner == 'network' %}
+                   <span class="badge badge-info">{{ pagination.paginator.count }}</span>
+               {% endif %}                
+            </a>
+        </li>
         <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
             <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
-                <strong>{% trans "Network events" %}</strong>
+                <strong>{% trans "All events" %}</strong>
                {% if  actions.filter_owner == '*' %}
                    <span class="badge badge-info">{{ pagination.paginator.count }}</span>
                {% endif %}                
@@ -59,6 +67,8 @@
                     <form name="search">
                         {% if actions.filter_owner == '*' %}
                             <input type="hidden" name="filter_owner" value="*"/>
+                        {% elif actions.filter_owner == 'network' %}
+                            <input type="hidden" name="filter_owner" value="network"/>
                         {% endif %}
 
                         <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
