@@ -62,6 +62,12 @@
                 </div>
             {% endif %}
 
+            {% if actions.filter_owner == 'network' and user_data.networks %}
+                <div class='pull-left'>
+                    {% trans "Networks" %} : {{ user_data.networks|join:", " }}
+                </div>
+            {% endif %}
+            
             <div class='pull-right'>
                 <div class="input-append">
                     <form name="search">
@@ -75,7 +81,7 @@
                     </form>
                 </div>
             </div>
-            Total: 
+
             <table class='table'>
                 <thead>
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
