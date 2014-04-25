@@ -51,7 +51,7 @@
                 <h3>{% trans "Recent actions" %}</h3>
                 <ul class="unstyled">                
                     {% for action in recent_actions %}
-                        <li><i class="icon-pencil"></i> {{ action.action_time }} - {{ action }}</li>
+                        <li><i class="icon-pencil"></i> {{ action.action_time }} - {{ action }} {{ action.user }}</li>
                     {% endfor %}
                 </ul>        
             </div>
