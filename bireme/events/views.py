@@ -59,7 +59,7 @@ def list_events(request):
         events = events.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
     if actions['filter_owner'] == "network":        
-        events = events.filter(cooperative_center_code__in=user_data['network'])
+        events = events.filter(cooperative_center_code__in=user_data['ccs'])
     elif actions['filter_owner'] != "*":
         events = events.filter(created_by=request.user)
     else:
@@ -75,6 +75,7 @@ def list_events(request):
     output['events'] = events
     output['actions'] = actions
     output['pagination'] = pagination
+    output['user_data'] = user_data
 
     return render_to_response('events/events.html', output, context_instance=RequestContext(request))
 

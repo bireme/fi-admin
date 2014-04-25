@@ -96,7 +96,7 @@ def list_resources(request):
     user_data = additional_user_info(request)
 
     if actions['filter_owner'] == "network":        
-        resources = resources.filter(cooperative_center_code__in=user_data['network'])
+        resources = resources.filter(cooperative_center_code__in=user_data['ccs'])
     elif actions['filter_owner'] != "*":
         resources = resources.filter(created_by=request.user)
     else:
@@ -112,6 +112,7 @@ def list_resources(request):
     output['resources'] = resources
     output['actions'] = actions
     output['pagination'] = pagination
+    output['user_data'] = user_data
 
     return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
 
