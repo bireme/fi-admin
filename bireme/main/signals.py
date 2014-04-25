@@ -6,11 +6,14 @@ from django.db.models.signals import post_save
 
 from models import Resource, Descriptor
 
+# Add entry to default django log table (logentry) the create/update of a resource via FI-Admin interface
 @receiver(post_save, sender=Resource)
 def register_action(sender, instance, signal, created, **kwargs):
 
-    LogEntry.objects.log_action(
-            user_id = instance.created_by_id,
+    # Avoid log of first import data (old system data migration)
+    if instance.created_by_id or instance.updated_by_id:
+        LogEntry.objects.log_action(
+            user_id = instance.created_by_id if created else instance.updated_by_id,
             content_type_id = ContentType.objects.get_for_model(instance).pk,
             object_id = instance.pk,
             object_repr = unicode(instance.title),
