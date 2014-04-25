@@ -1,1 +1,40 @@
-[{"pk": 1, "model": "auth.user", "fields": {"username": "admin", "first_name": "", "last_name": "", "is_active": true, "is_superuser": true, "is_staff": true, "last_login": "2013-06-24T14:57:13.915Z", "groups": [], "user_permissions": [], "password": "pbkdf2_sha256$10000$2xcbA3jUT0sF$3Bi0jdKPbo1hx9pXM9Prb8C9Fz+Lbp3lD0Q0xE6Elgs=", "email": "admin@localhost.com", "date_joined": "2013-06-24T14:57:13.915Z"}}]
+[
+  {
+    "pk": 1,
+    "model": "auth.user",
+    "fields": {
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2013-06-24T14:57:13.915Z",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$10000$2xcbA3jUT0sF$3Bi0jdKPbo1hx9pXM9Prb8C9Fz+Lbp3lD0Q0xE6Elgs=",
+      "email": "admin@localhost.com",
+      "date_joined": "2013-06-24T14:57:13.915Z"
+    }
+  },
+
+  {
+    "pk": 2,
+    "model": "auth.user",
+    "fields": {
+      "username": "import",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2013-06-24T14:57:13.915Z",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$10000$2xcbA3jUT0sF$3Bi0jdKPbo1hx9pXM9Prb8C9Fz+Lbp3lD0Q0xE6Elgs=",
+      "email": "import@localhost.com",
+      "date_joined": "2013-06-24T14:57:13.915Z"
+    }
+  }
+
+]

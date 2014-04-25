@@ -37,7 +37,7 @@ if mfn=1 then '['/ fi,
     				c8,'"updated_time": ','"', v393.4'-'v393*4.2'-'v393*6.2 , 'T09:00:00-03:00",'/, 
     			fi,
 
-                c8,'"created_by": ','1'/
+                c8,'"created_by": ','2'/
            c4,'}',/
         '}'
         if mfn=MAXMFN-1 then else ',' fi,/
@@ -58,7 +58,7 @@ if mfn=1 then '['/ fi,
                 c8,'"description": ','"', mid(v305,instr(v305,'-')+2,size(v305)) , '",'/                
                 
                 c8,'"created_time": "2013-12-01T09:00:00-03:00",'/        
-                c8,'"created_by": ','1'/
+                c8,'"created_by": ','2'/
             c4,'}',/
         '}'
         if mfn=MAXMFN-1 then else ',' fi,/
