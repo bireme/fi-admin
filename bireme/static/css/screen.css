@@ -320,6 +320,10 @@ span.required .mark{
     color: #e66f00;
 }
 
+.status-del{
+    color: #e32;
+}
+
 .count{
     width: 80px;
     font-size: 18px;
