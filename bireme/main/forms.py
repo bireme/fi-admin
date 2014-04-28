@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.forms.models import inlineformset_factory
-from django.contrib.contenttypes.generic import generic_inlineformset_factory
+from django.contrib.contenttypes.generic import generic_inlineformset_factory, BaseGenericInlineFormSet
 
 from django.forms import widgets
 from django.conf import settings
@@ -98,11 +98,44 @@ class TypeLocalForm(forms.ModelForm):
         model = SourceTypeLocal
 
 
+class DescriptorRequired(BaseGenericInlineFormSet):
+    def clean(self):        
+        # get forms that actually have valid data
+        count = 0
+        for form in self.forms:
+            try:
+                if form.cleaned_data and form.cleaned_data.get('DELETE') == False:
+                    count += 1
+            except AttributeError:
+                # annoyingly, if a subform is invalid Django explicity raises
+                # an AttributeError for cleaned_data
+                pass
+        if count < 1:
+            raise forms.ValidationError( _('You must have at least one descriptor'), code='invalid')
+
+
+class ResourceThematicRequired(BaseGenericInlineFormSet):
+    def clean(self):        
+        # get forms that actually have valid data
+        count = 0
+        for form in self.forms:
+            try:
+                if form.cleaned_data and form.cleaned_data.get('DELETE') == False:
+                    count += 1
+            except AttributeError:
+                # annoyingly, if a subform is invalid Django explicity raises
+                # an AttributeError for cleaned_data
+                pass
+        if count < 1:
+            raise forms.ValidationError( _('You must have at least one thematic area'), code='invalid')
+
+
+
 # definition of inline formsets
 
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1)
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired, can_delete=True, extra=1)
 
 ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAreaLocal, form=ThematicAreaLocalForm, can_delete=True, extra=1)
 

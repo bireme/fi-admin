@@ -17,6 +17,9 @@
 </div>
 
 <div class='body'>
+    
+    {{ formset_descriptor.non_form_errors }}
+    {{ formset_thematic.non_form_errors }}
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
@@ -147,7 +150,7 @@
 
                         {{ formset_descriptor.management_form }}
 
-                        {% for form in formset_descriptor %}
+                        {% for form in formset_descriptor %}                            
                             <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
@@ -219,7 +222,7 @@
 
                         {{ formset_keyword.management_form }}
 
-                        {% for form in formset_keyword %}
+                        {% for form in formset_keyword %}                            
                             <tr id="keyword-{{ forloop.counter0 }}" class="keyword-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
