@@ -10,6 +10,8 @@ from django.utils.translation import ugettext_lazy as _
 from models import *
 from main.models import Descriptor, Keyword, ResourceThematic
 
+from utils.forms import DescriptorRequired, ResourceThematicRequired
+
 import simplejson
 
 class EventForm(forms.ModelForm):
@@ -63,10 +65,10 @@ class TypeForm(forms.ModelForm):
 
 # definition of inline formsets
 
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1)
 
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired, can_delete=True, extra=1)
 
 TypeTranslationFormSet = inlineformset_factory(EventType, EventTypeLocal, can_delete=True, extra=1)

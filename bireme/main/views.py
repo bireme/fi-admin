@@ -149,7 +149,13 @@ def create_edit_resource(request, **kwargs):
         formset_keyword    = KeywordFormSet(request.POST, instance=resource)
         formset_thematic   = ResourceThematicFormSet(request.POST, instance=resource)
 
-        if form.is_valid() and formset_descriptor.is_valid() and formset_keyword.is_valid() and formset_thematic.is_valid():
+        # run all validation before for display formset errors at form
+        form_valid = form.is_valid()
+        formset_descriptor_valid = formset_descriptor.is_valid()        
+        formset_keyword_valid  = formset_keyword.is_valid()
+        formset_thematic_valid = formset_thematic.is_valid()
+
+        if form_valid and formset_descriptor_valid and formset_keyword_valid and formset_thematic_valid:
             resource = form.save()
             form.save_m2m()
 

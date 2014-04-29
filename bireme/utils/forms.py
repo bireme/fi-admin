@@ -1,5 +1,8 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
+
+from django.contrib.contenttypes.generic import BaseGenericInlineFormSet
 
 class SpanWidget(forms.Widget):
     '''Renders a value wrapped in a <span> tag.
@@ -107,3 +110,35 @@ class DisableableSelectWidget(forms.Select):
         return u'<option value="%s"%s%s>%s</option>' % (
             escape(option_value), selected_html, disabled_html,
             conditional_escape(force_unicode(option_label)))
+
+
+class DescriptorRequired(BaseGenericInlineFormSet):
+    def clean(self):        
+        # get forms that actually have valid data
+        count = 0
+        for form in self.forms:
+            try:
+                if form.cleaned_data and form.cleaned_data.get('DELETE') == False:
+                    count += 1
+            except AttributeError:
+                # annoyingly, if a subform is invalid Django explicity raises
+                # an AttributeError for cleaned_data
+                pass
+        if count < 1:
+            raise forms.ValidationError( _('You must have at least one descriptor'), code='invalid')
+
+
+class ResourceThematicRequired(BaseGenericInlineFormSet):
+    def clean(self):        
+        # get forms that actually have valid data
+        count = 0
+        for form in self.forms:
+            try:
+                if form.cleaned_data and form.cleaned_data.get('DELETE') == False:
+                    count += 1
+            except AttributeError:
+                # annoyingly, if a subform is invalid Django explicity raises
+                # an AttributeError for cleaned_data
+                pass
+        if count < 1:
+            raise forms.ValidationError( _('You must have at least one thematic area'), code='invalid')

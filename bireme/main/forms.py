@@ -9,6 +9,8 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from models import *
 
+from utils.forms import DescriptorRequired, ResourceThematicRequired
+
 import simplejson
 
 GENERIC_FIELDS = ()
@@ -96,38 +98,6 @@ class TypeLocalForm(forms.ModelForm):
 
     class Meta:
         model = SourceTypeLocal
-
-
-class DescriptorRequired(BaseGenericInlineFormSet):
-    def clean(self):        
-        # get forms that actually have valid data
-        count = 0
-        for form in self.forms:
-            try:
-                if form.cleaned_data and form.cleaned_data.get('DELETE') == False:
-                    count += 1
-            except AttributeError:
-                # annoyingly, if a subform is invalid Django explicity raises
-                # an AttributeError for cleaned_data
-                pass
-        if count < 1:
-            raise forms.ValidationError( _('You must have at least one descriptor'), code='invalid')
-
-
-class ResourceThematicRequired(BaseGenericInlineFormSet):
-    def clean(self):        
-        # get forms that actually have valid data
-        count = 0
-        for form in self.forms:
-            try:
-                if form.cleaned_data and form.cleaned_data.get('DELETE') == False:
-                    count += 1
-            except AttributeError:
-                # annoyingly, if a subform is invalid Django explicity raises
-                # an AttributeError for cleaned_data
-                pass
-        if count < 1:
-            raise forms.ValidationError( _('You must have at least one thematic area'), code='invalid')
 
 
 

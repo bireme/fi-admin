@@ -19,6 +19,9 @@
 
 <div class='body'>
 
+    {{ formset_descriptor.non_form_errors }}
+    {{ formset_thematic.non_form_errors }}
+
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
