@@ -54,6 +54,9 @@ def list_events(request):
     user_data = additional_user_info(request)
     events = Event.objects.filter(title__icontains=actions['s'])
 
+    if actions['filter_status'] != '':
+        events = events.filter(status=actions['filter_status'])
+
     events = events.order_by(actions["orderby"])
     if actions['order'] == "-":
         events = events.order_by("%s%s" % (actions["order"], actions["orderby"]))

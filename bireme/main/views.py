@@ -89,6 +89,10 @@ def list_resources(request):
     else:
         resources = Resource.objects.filter( Q(title__icontains=actions['s']) | Q(link__icontains=actions['s']) )
 
+    if actions['filter_status'] != '':
+        resources = resources.filter(status=actions['filter_status'])
+
+
     resources = resources.order_by(actions["orderby"])
     if actions['order'] == "-":
         resources = resources.order_by("%s%s" % (actions["order"], actions["orderby"]))
@@ -101,6 +105,7 @@ def list_resources(request):
         resources = resources.filter(created_by=request.user)
     else:
         resources = resources.all()
+
 
     # pagination
     pagination = {}

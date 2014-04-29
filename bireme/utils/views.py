@@ -9,6 +9,7 @@ ACTIONS = {
     'type': "",
     's': "",
     'filter_owner': "",
+    'filter_status': "",
 }
 
 def cookie_lang(request):
