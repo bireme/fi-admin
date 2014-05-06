@@ -28,7 +28,7 @@ if left(v311,11) <> 'IDDUPLICADO' then,
 					c8,'"code": ','"',ref( l(['decs']v9991[1]),'^d',mfn(0) ), ref( l(['decs']v9992[1]),'^s',mfn(0) ) ,'",'/
 					c8,'"status": ','1,'/
                     c8,'"created_time": "2013-12-01T09:00:00-03:00",'/
-					c8,'"created_by": ','1'/
+					c8,'"created_by": ','2'/
 				c4,'}',/
 			'},'/
 		else,
@@ -41,7 +41,7 @@ if left(v311,11) <> 'IDDUPLICADO' then,
 					c8,'"text": ','"', v323, '",'/
 					c8,'"status": ','1,'/   
                     c8,'"created_time": "2013-12-01T09:00:00-03:00",'/        
-					c8,'"created_by": ','1'/
+					c8,'"created_by": ','2'/
 				c4,'}',/
 			'},'/
 		fi,

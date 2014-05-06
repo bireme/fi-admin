@@ -16,7 +16,7 @@ if left(v311,11) <> 'IDDUPLICADO' then,
 				c8,'"thematic_area": ','"', v302^c, '",'/
 				c8,'"status": ','1,'/
                 c8,'"created_time": "2013-12-01T09:00:00-03:00",'/
-				c8,'"created_by": ','1'/
+				c8,'"created_by": ','2'/
 			c4,'}',/
 		'},'/
     fi,
