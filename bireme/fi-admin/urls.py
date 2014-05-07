@@ -78,7 +78,7 @@ urlpatterns = patterns('',
 
 
     # Login/Logout
-    url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html'}, name='auth_login'),
+    url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html', 'extra_context':{'BIREMELOGIN_BASE_URL': settings.BIREMELOGIN_BASE_URL}}, name='auth_login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'authentication/logout.html', 'next_page': '/'}, name='auth_logout'),
 
     #(r'^api/', include(resource_api.urls), include(event_api.urls)),

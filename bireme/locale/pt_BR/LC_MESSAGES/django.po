@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-07 11:18-0300\n"
-"PO-Revision-Date: 2014-05-07 11:20-0300\n"
+"POT-Creation-Date: 2014-05-07 11:54-0300\n"
+"PO-Revision-Date: 2014-05-07 11:54-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -536,6 +536,10 @@ msgstr "Login"
 #: templates/suggest/invalid-link.html:16 templates/suggest/thanks.html:16
 msgid "LIS"
 msgstr "LIS"
+
+#: templates/authentication/login.html:52
+msgid "Forgot your password?"
+msgstr "Esqueceu sua senha?"
 
 #: templates/authentication/logout.html:16
 msgid "You are logged out. Please"
