@@ -18,6 +18,11 @@
 
 <div class='body'>
     
+    {% if form.errors %}
+        <ul class="errorlist alert alert-error">
+            <li>{% trans "Please check required fields" %}</li>
+        </ul>        
+    {% endif %}
     {{ formset_descriptor.non_form_errors }}
     {{ formset_thematic.non_form_errors }}
 
