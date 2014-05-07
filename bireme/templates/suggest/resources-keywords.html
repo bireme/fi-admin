@@ -114,9 +114,9 @@
                 <tbody>
                     {% for keyword in suggestions %}
                         <tr>
-                            <td><a href="{% url 'main.views.create_edit_resource' keyword.resource.id %}#tag-descriptors">{{ keyword.id }}</a></td>
+                            <td><a href="{% url 'main.views.create_edit_resource' keyword.object_id %}#tab-descriptors">{{ keyword.id }}</a></td>
                             <td><span title="{{ keyword.text }}">{{ keyword.text|slice:"30" }}{% if keyword.text|length > 30 %}...{% endif %}</span></td>
-                            <td><span title="{{ keyword.resource }}">{{ keyword.resource|slice:"120" }}{% if keyword.resource|length > 120 %}...{% endif %}</span></td>
+                            <td><span title="{{ keyword.resource }}">{{ keyword.content_object.title|slice:"120" }}{% if keyword.content_object.title|length > 120 %}...{% endif %}</span></td>
                             <td>
                                 {{ keyword.created_time|date:"d/m/y@f" }}
                             </td>
@@ -128,7 +128,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'main.views.create_edit_resource' keyword.resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                <a href="{% url 'main.views.create_edit_resource' keyword.object_id %}#tab-descriptors" class='btn btn-mini'><i class='icon-pencil'></i></a>
                             </td>
                         </tr>
                     {% endfor %}
