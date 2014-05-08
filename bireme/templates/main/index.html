@@ -40,8 +40,8 @@
             <div class="well sidebar-nav">
                 <h3>{% trans "Suggestions" %}</h3>
                 <ul class="nav nav-list">                  
-                  <li><a href="{% url 'suggest.views.list_suggested_resources' %}"><span class="count">{{ suggestions_resource_count }}</span> {% trans 'Resources' %}</a></li>
-                  <li><a href="{% url 'suggest.views.list_suggested_resources' %}/?type=keywords"><span class="count">{{ suggestions_keyword_count }}</span> {% trans 'Keywords' %}</a></li>
+                  <li><a href="{% url 'suggest.views.list_suggestions' %}"><span class="count">{{ suggestions_resource_count }}</span> {% trans 'Resources' %}</a></li>
+                  <li><a href="{% url 'suggest.views.list_suggestions' %}/?type=keywords"><span class="count">{{ suggestions_keyword_count }}</span> {% trans 'Keywords' %}</a></li>
                 </ul>
             </div>
 

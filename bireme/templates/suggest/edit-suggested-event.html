@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Edit Suggested Event" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'suggest.views.list_suggestions' %}">{% trans "Suggested resources" %}</a> <span class="divider">/</span></li>
+    <li>{% trans "Edit Event" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-thumbs-up'></i>{% trans "Edit Suggested Event" %}</h2>
+    <!--div class="pull-right">
+        <a href="{% url 'suggest.views.create_resource_from_suggestion' suggest.id %}"><button class="btn btn-info btn-large">{% trans "Create a new Event using this suggestion" %}</button></a>
+    </div-->
+</div>
+
+<div class='body'>
+
+    <form method="POST" class="resource-form">
+        {% csrf_token %}
+
+        <div class="tab-content">
+            <div id="tab-data" class="tab-pane active">
+
+                <fieldset id="metadata">
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {{ form.non_field_errors }}
+                    {% for field in form.visible_fields %}
+                        <label for="{{ field.auto_id }}">
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+                        <p class="muted">{{ field.help_text }}</p>
+                        {{ field.errors }}
+                        {{ field }}
+                    {% endfor %}
+                </fieldset>
+
+                {% comment %}Display administrative information{% endcomment %}
+
+                <div class="alert alert-info">
+                    <p>{% trans "Posted on" %}: <strong>{{ suggest.created_time|date:"d/m/y@f" }}</strong></p>
+                </div>
+
+            </div>
+
+            <div class="control-panel form-submit">                
+                <!--button class="btn btn-info btn-large">{% trans "Create a new Resource using this suggestion" %}</button-->
+                <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+

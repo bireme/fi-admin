@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Suggested Resource" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'suggest.views.list_suggested_resources' %}">{% trans "Suggested resources" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'suggest.views.list_suggestions' %}">{% trans "Suggested resources" %}</a> <span class="divider">/</span></li>
     <li>{% trans "Edit Resource" %}</li>
 {% endblock %}
 
@@ -13,6 +13,9 @@
 
 <div class='header'>
     <h2><i class='icon-thumbs-up'></i>{% trans "Edit Suggested Resource" %}</h2>
+    <!--div class="pull-right">
+        <a href="{% url 'suggest.views.create_resource_from_suggestion' resource.id %}"><button class="btn btn-info btn-large">{% trans "Create a new Resource using this suggestion" %}</button></a>
+    </div-->
 </div>
 
 <div class='body'>
@@ -22,25 +25,66 @@
 
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
-                <fieldset id="metadata">
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-                    {{ form.non_field_errors }}
-                    {% for field in form.visible_fields %}
-                        <label for="{{ field.auto_id }}">
-                            {% if field.field.required %}
-                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                            {% else %}
-                                {{ field.label }}
-                            {% endif %}
-                        </label>
-                        <p class="muted">{{ field.help_text }}</p>
-                        {{ field.errors }}
-                        {{ field }}
-                    {% endfor %}
-                </fieldset>
 
+                {% if status is_new %}
+                    <div class="well">
+                        <blockquote>
+                            <p><strong>{% trans 'Identifier' %}</strong><p>
+                            <p>{{ resource.id }}</p>
+                        </blockquote>
+
+                        {% for field in form %}
+                            {{ field.as_hidden }}
+                            {{ field.errors }}
+                            <blockquote>
+                                <p><strong>{{ field.label }}</strong><p>
+                                {% if field.name = 'status' %}
+                                    <p>{% if field.value == 0 %}{% trans 'Pending' %}{% else %}{% trans 'Admitted' %}{% endif %}</p>
+                                {% elif field.name = 'link' %}
+                                    {% for link in field.value.splitlines %}
+                                        <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
+                                    {% endfor %}
+                                {% elif field.name = 'source_language' %}
+                                    {% for sl in resource.source_language.all %}
+                                        <p>{{ sl }}</p>
+                                    {% endfor %}
+                                {% elif field.name = 'source_type' %}
+                                    {% for st in resource.source_type.all %}
+                                        <p>{{ st }}</p>
+                                    {% endfor %}
+                                {% elif field.name = 'originator_location' %}
+                                    {% for ol in resource.originator_location.all %}
+                                        <p>{{ ol }}</p>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>{{ field.value|linebreaks }}<p>
+                                {% endif %}
+                            </blockquote>
+                        {% endfor %}
+                    </div>
+
+                {% else %}
+                    <fieldset id="metadata">
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {{ form.non_field_errors }}
+                        {% for field in form.visible_fields %}
+                            <label for="{{ field.auto_id }}">
+                                {% if field.field.required %}
+                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                {% else %}
+                                    {{ field.label }}
+                                {% endif %}
+                            </label>
+                            <p class="muted">{{ field.help_text }}</p>
+                            {{ field.errors }}
+                            {{ field }}
+                        {% endfor %}
+                    </fieldset>
+
+                {% endif %}
+                
                 {% comment %}Display resource administrative information{% endcomment %}
 
                 <div class="alert alert-info">
@@ -49,7 +93,8 @@
 
             </div>
 
-            <div class="control-panel form-submit">
+            <div class="control-panel form-submit">                
+                <!--button class="btn btn-info btn-large">{% trans "Create a new Resource using this suggestion" %}</button-->
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             </div>
         </div>

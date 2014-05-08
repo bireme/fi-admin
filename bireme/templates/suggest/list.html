@@ -26,19 +26,13 @@
     <ul class="nav nav-tabs" id='tab'>
         <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}"><a href="#tab-resources" onclick="change_type('resources')" data-toggle="tab"><strong>{% trans "Resources" %}</strong></a></li>
         <li class="{% if actions.type == 'keywords'%}active{% endif %}"><a href="#tab-keywords" onclick="change_type('keywords')" data-toggle="tab"><strong>{% trans "Keywords" %}</strong></a></li>        
+        <li class="{% if actions.type == 'events' %}active{% endif %}"><a href="#tab-events" onclick="change_type('events')" data-toggle="tab"><strong>{% trans "Events" %}</strong></a></li>
     </ul>
     
     {% if actions.type == 'resources' or not actions.type %}
       <div class="tab-content">
         <div class="tab-pane active" id="tab-resources">
-            {% if actions.s %}
-                <div>
-                    {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-                    <a href="{% url 'main.views.resources' %}">[{% trans "clear" %}]</a>
-                </div>
-            {% endif %}
-
-            <div class='pull-right'>
+            <div class='pull-left'>
                 <div class="input-append">
                     <form name="search" onSubmit="return search();">
                         <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
@@ -86,14 +80,7 @@
         
         {% if actions.type == 'keywords'%}
           <div class="tab-pane active" id="tab-keywords">
-            {% if actions.s %}
-                <div>
-                    {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-                    <a href="{% url 'main.views.resources' %}">[{% trans "clear" %}]</a>
-                </div>
-            {% endif %}
-
-            <div class='pull-right'>
+            <div class='pull-left'>
                 <div class="input-append">
                     <form name="search" onSubmit="return search();">
                         <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
@@ -138,6 +125,54 @@
             {% include "pagination.html" %}
           </div>
         {% endif %}
+
+
+        {% if actions.type == 'events'%}
+          <div class="tab-pane active" id="tab-keywords">
+            <div class='pull-left'>
+                <div class="input-append">
+                    <form name="search" onSubmit="return search();">
+                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
+                        <button class="btn" type="submit"><i class='icon-search'></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
+                    <th><a href="javascript:orderby('date');" id="id_date">{% trans "Date" %}</a></th>
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for event in suggestions %}
+                        <tr>
+                            <td><a href="{% url 'suggest.views.edit_suggested_event' event.id %}#tab-descriptors">{{ event.id }}</a></td>
+                            <td><span title="{{ event.title }}">{{ event.title|slice:"30" }}{% if event.title|length > 30 %}...{% endif %}</span></td>
+                            <td>
+                                {{ event.created_time|date:"d/m/y@f" }}
+                            </td>
+                            <td>
+                                {% if event.status == 0 %}
+                                    <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                {% else %}
+                                    <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'suggest.views.edit_suggested_event' event.id %}#tab-descriptors" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination.html" %}
+          </div>
+        {% endif %}
+
 
     </div>
 

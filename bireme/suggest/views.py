@@ -58,7 +58,7 @@ def suggest_resource(request, **kwargs):
     return render_to_response(template, output, context_instance=RequestContext(request))
 
 @login_required
-def list_suggested_resources(request):
+def list_suggestions(request):
 
     user = request.user
     output = {}
@@ -82,6 +82,8 @@ def list_suggested_resources(request):
 
     if actions['type'] and actions['type'] == 'keywords':
         suggestions = Keyword.objects.filter(user_recomendation=True, status=0, text__icontains=actions['s'])
+    elif actions['type'] == 'events':
+        suggestions = SuggestEvent.objects.filter(title__icontains=actions['s'])
     else:
         suggestions = SuggestResource.objects.filter(title__icontains=actions['s'])
 
@@ -101,7 +103,7 @@ def list_suggested_resources(request):
     output['actions'] = actions
     output['pagination'] = pagination
 
-    return render_to_response('suggest/resources-keywords.html', output, context_instance=RequestContext(request))
+    return render_to_response('suggest/list.html', output, context_instance=RequestContext(request))
 
 @login_required
 def edit_suggested_resource(request, **kwargs):
@@ -123,7 +125,7 @@ def edit_suggested_resource(request, **kwargs):
             output['alert'] = _("Resource successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('suggest.views.list_suggested_resources')
+            return redirect('suggest.views.list_suggestions')
     # new/edit
     else:
         form = SuggestResourceForm(instance=resource)
@@ -133,26 +135,6 @@ def edit_suggested_resource(request, **kwargs):
     output['settings'] = settings
 
     return render_to_response('suggest/edit-suggested-resource.html', output, context_instance=RequestContext(request))
-
-
-@login_required
-def delete_resource(request, resource):
-
-    user = request.user
-    resource = get_object_or_404(Resource, id=resource)
-    output = {}
-
-    user_data = additional_user_info(request)
-
-    if resource.created_by_id != user.id:
-        return HttpResponse('Unauthorized', status=401)
-
-    resource.delete()
-
-    output['alert'] = _("Resource deleted.")
-    output['alerttype'] = "alert-success"
-
-    return render_to_response('suggest/resources-keywords.html', output, context_instance=RequestContext(request))
 
 
 @login_required
@@ -204,3 +186,67 @@ def suggest_tag(request, **kwargs):
     response["Access-Control-Allow-Headers"] = "*" 
     
     return response
+
+
+@csrf_exempt
+def suggest_event(request, **kwargs):
+
+    suggest = None
+    output = {}
+    template = ''
+    
+    suggest = SuggestEvent()   
+   
+    form = ExternalSuggestEventForm(request.POST, instance=suggest)
+
+    # talk to the reCAPTCHA service  
+    captcha_response = captcha.submit(  
+        request.POST.get('recaptcha_challenge_field'),  
+        request.POST.get('recaptcha_response_field'),  
+        settings.RECAPTCHA_PRIVATE_KEY,  
+        request.META['REMOTE_ADDR'],)  
+
+
+    if form.is_valid() and captcha_response.is_valid:
+        template = 'suggest/thanks.html'
+        suggest = form.save()
+        output['type'] = 'event'
+    else:
+        template = 'suggest/invalid-link.html'
+        output['form'] = form
+        output['captcha_error'] = captcha_response.error_code
+    
+    return render_to_response(template, output, context_instance=RequestContext(request))
+
+
+@login_required
+def edit_suggested_event(request, **kwargs):
+
+    suggest_id = kwargs.get('suggest_id')
+    suggest = None
+    form = None
+    output = {}
+
+    suggest = get_object_or_404(SuggestEvent, id=suggest_id)
+
+    # save/update
+    if request.POST:
+        form = SuggestEventForm(request.POST, request.FILES, instance=suggest)
+
+        if form.is_valid():
+            suggest = form.save()
+
+            output['alert'] = _("Event successfully edited.")
+            output['alerttype'] = "alert-success"
+
+            return redirect('suggest.views.list_suggestions')
+    # new/edit
+    else:
+        form = SuggestEventForm(instance=suggest)
+
+    output['form'] = form
+    output['suggest'] = suggest
+    output['settings'] = settings
+
+    return render_to_response('suggest/edit-suggested-event.html', output, context_instance=RequestContext(request))
+

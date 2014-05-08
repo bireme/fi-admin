@@ -62,12 +62,15 @@ urlpatterns = patterns('',
 
     # Suggest
     (r'^suggest-resource/?$', 'suggest.views.suggest_resource'),
-    (r'^suggested-resources/?$', 'suggest.views.list_suggested_resources'),
+    (r'^suggested-resources/?$', 'suggest.views.list_suggestions'),
     (r'^suggested-resource/edit/(?P<resource_id>\d+)/?$', 'suggest.views.edit_suggested_resource'),
 
     (r'^suggested-resource/create-resource-from-suggestion/(?P<suggestion_id>\d+)/?$', 'suggest.views.create_resource_from_suggestion'),
 
     (r'^suggest-tag/?$', 'suggest.views.suggest_tag'),
+
+    (r'^suggest-event/?$', 'suggest.views.suggest_event'),
+    (r'^suggested-event/edit/(?P<suggest_id>\d+)/?$', 'suggest.views.edit_suggested_event'),
 
     # Error reporting
     (r'^error-reporting/?$', 'error_reporting.views.list_error_report'),

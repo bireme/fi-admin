@@ -25,8 +25,12 @@
 
        <div class="hero-unit">
            <h1>{% trans 'Thank you' %}</h1>
-           <p>{% trans 'Your suggestion will be evaluated and if approved will be included in the Health Information Locator' %}</p>
-           <p><a href="javascript:history.back()" class="btn btn-primary btn-large">&laquo; {% trans 'Back' %}</a></p>
+            {% if type = 'event' %}
+                <p>{% trans 'Your suggestion will be evaluated and if approved will be included in the Events Directory' %}</p>
+            {% else %}
+                <p>{% trans 'Your suggestion will be evaluated and if approved will be included in the Health Information Locator' %}</p>
+            {% endif %}
+            <p><a href="javascript:history.back()" class="btn btn-primary btn-large">&laquo; {% trans 'Back' %}</a></p>
        </div>
 
         <div class='content' id="footer">
