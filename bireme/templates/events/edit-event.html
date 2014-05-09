@@ -259,9 +259,7 @@
                     <table class="table table-condensed table-striped">
                         <thead>
                             <th>{% trans "Thematic area" %}</th>
-                            {% if user_role != 'doc' %}
-                                <th>{% trans "Status" %}</th>
-                            {% endif %}
+                            <th>{% trans "Status" %}</th>
                             <th>{% trans "Actions" %}</th>
                         </thead>
                         <tbody>
@@ -290,6 +288,7 @@
                                         </td>
                                     {% endif %}
                                 {% endfor %}
+                                <td><!-- status --></td>
                                 <td>
                                     {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                                 </td>
