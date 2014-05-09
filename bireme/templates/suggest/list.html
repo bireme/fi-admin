@@ -114,8 +114,12 @@
                             <td>
                                 {% if keyword.status == 0 %}
                                     <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                                {% else %}
+                                {% elif keyword.status == 1 %}
                                     <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% elif keyword.status == 2 %}
+                                    <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
+                                {% elif keyword.status == 3 %}
+                                    <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
                                 {% endif %}
                             </td>
                             <td>
@@ -161,8 +165,12 @@
                             <td>
                                 {% if event.status == 0 %}
                                     <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                                {% else %}
+                                {% elif event.status == 1 %}
                                     <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% elif event.status == 2 %}
+                                    <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
+                                {% elif event.status == 3 %}
+                                    <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
                                 {% endif %}
                             </td>
                             <td>
