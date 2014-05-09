@@ -144,8 +144,12 @@
                                     <td>
                                         {% if descriptor.status == 0 %}
                                             <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                                        {% else %}
+                                        {% elif descriptor.status == 1 %}
                                             <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                        {% elif descriptor.status == 2 %}
+                                            <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
+                                        {% elif descriptor.status == 3 %}
+                                            <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
                                         {% endif %}
                                     </td>
                                     <td></td>
@@ -211,8 +215,12 @@
                                     <td>
                                         {% if keyword.status == 0 %}
                                             <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                                        {% else %}
+                                        {% elif keyword.status == 1 %}
                                             <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                        {% elif keyword.status == 2 %}
+                                            <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
+                                        {% elif keyword.status == 3 %}
+                                            <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
                                         {% endif %}
                                     </td>
                                     <td style="text-align: center">
@@ -263,19 +271,28 @@
 
             <div id='tab-thematic' class="tab-pane">
                 <fieldset id="thematic">
-                    <table class="table table-condensed table-striped">
+                    <table class="table table-condensed table-striped span8">
                         <thead>
                             <th>{% trans "Thematic area" %}</th>
-                            {% if user_role != 'doc' %}
-                                <th>{% trans "Status" %}</th>
-                            {% endif %}
+                            <th>{% trans "Status" %}
                             <th>{% trans "Actions" %}</th>
                         </thead>
                         <tbody>
                         {% if thematic_list %}
                             {% for thematic in thematic_list %}
                                 <tr>
-                                    <td colspan="2">{{ thematic }}</td>
+                                    <td>{{ thematic }}</td>
+                                    <td>
+                                        {% if thematic.status == 0 %}
+                                            <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                        {% elif thematic.status == 1 %}
+                                            <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                        {% elif thematic.status == 2 %}
+                                            <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
+                                        {% elif thematic.status == 3 %}
+                                            <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
+                                        {% endif %}
+                                    </td>                                    
                                 </tr>
                             {% endfor %}
                         {% endif %}
@@ -296,7 +313,7 @@
                                             {{ field.errors }}
                                         </td>
                                     {% endif %}
-                                {% endfor %}
+                                {% endfor %}                                
                                 <td>
                                     {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                                 </td>
