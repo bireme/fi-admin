@@ -63,8 +63,8 @@ class Event(Generic):
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
 
     title = models.CharField(_('Title'), max_length=455, blank=False)
-    start_date = models.DateField(_('Start date'), help_text=_('day/month/year'))
-    end_date = models.DateField(_('End date'), help_text=_('day/month/year'))
+    start_date = models.DateField(_('Start date'), help_text='DD/MM/YYYY')
+    end_date = models.DateField(_('End date'), help_text='DD/MM/YYYY')
 
     link = models.URLField(_('Link'), blank=True)
    
