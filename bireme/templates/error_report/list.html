@@ -83,8 +83,12 @@
                             <td>
                                 {% if report.status == 0 %}
                                     <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                                {% else %}
-                                    <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% elif report.status == 1 %}
+                                    <span title="{% trans 'Fixed' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                {% elif report.status == 2 %}
+                                    <span title="{% trans 'Invalid' %}"><i class="icon-ban-circle status-del"></i></span>
+                                {% elif report.status == 3 %}
+                                    <span title="{% trans 'SPAM' %}"><i class="icon-minus-sign status-del"></i></span>
                                 {% endif %}
                             </td>
                             <td>
