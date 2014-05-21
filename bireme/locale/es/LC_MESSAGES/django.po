@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-09 11:56-0300\n"
-"PO-Revision-Date: 2014-05-08 16:44-0300\n"
+"POT-Creation-Date: 2014-05-21 10:22-0300\n"
+"PO-Revision-Date: 2014-05-21 10:25-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Error report"
 msgstr "Informe de error"
 
-#: error_reporting/models.py:15 templates/menu.html:21
+#: error_reporting/models.py:15 templates/menu.html:22
 #: templates/error_report/list.html:22 templates/main/edit-resource.html:114
 msgid "Error reports"
 msgstr "Informe de errores"
@@ -32,26 +32,26 @@ msgstr "Informe de errores"
 #: error_reporting/models.py:18 events/models.py:57 main/models.py:147
 #: main/models.py:191 main/models.py:214 main/models.py:234
 #: suggest/models.py:16 suggest/models.py:48
-#: templates/error_report/list.html:85 templates/error_report/list.html:139
+#: templates/error_report/list.html:85 templates/error_report/list.html:143
 #: templates/events/edit-event.html:55 templates/events/edit-event.html:132
 #: templates/events/edit-event.html:203 templates/events/events.html:72
 #: templates/events/events.html.py:110 templates/main/edit-resource.html:54
 #: templates/main/edit-resource.html:147 templates/main/edit-resource.html:218
 #: templates/main/edit-resource.html:288 templates/main/resources.html:72
 #: templates/main/resources.html.py:108 templates/suggest/list.html:64
-#: templates/suggest/list.html.py:116 templates/suggest/list.html:163
+#: templates/suggest/list.html.py:116 templates/suggest/list.html:167
 msgid "Pending"
 msgstr "Pendiente"
 
-#: error_reporting/models.py:19
+#: error_reporting/models.py:19 templates/error_report/list.html:87
 msgid "Fixed"
 msgstr "Corregido"
 
-#: error_reporting/models.py:20
+#: error_reporting/models.py:20 templates/error_report/list.html:89
 msgid "Invalid"
 msgstr "Inválido"
 
-#: error_reporting/models.py:21
+#: error_reporting/models.py:21 templates/error_report/list.html:91
 msgid "SPAM"
 msgstr "SPAM"
 
@@ -74,14 +74,14 @@ msgstr "Otros"
 #: error_reporting/models.py:35 events/models.py:63 main/models.py:154
 #: main/models.py:205 main/models.py:225 main/models.py:244
 #: suggest/models.py:23 suggest/models.py:54
-#: templates/error_report/list.html:71 templates/error_report/list.html:126
+#: templates/error_report/list.html:71 templates/error_report/list.html:130
 #: templates/events/edit-event.html:121 templates/events/edit-event.html:191
 #: templates/events/edit-event.html:263 templates/events/events.html:69
 #: templates/events/events.html.py:94 templates/main/edit-resource.html:136
 #: templates/main/edit-resource.html:206 templates/main/edit-resource.html:278
 #: templates/main/resources.html:69 templates/main/resources.html.py:94
 #: templates/suggest/list.html:50 templates/suggest/list.html.py:102
-#: templates/suggest/list.html:150
+#: templates/suggest/list.html:154
 msgid "Status"
 msgstr "Estado"
 
@@ -90,7 +90,7 @@ msgid "Error type"
 msgstr "Tipo de error"
 
 #: error_reporting/models.py:37 templates/error_report/list.html:68
-#: templates/error_report/list.html:124
+#: templates/error_report/list.html:128
 msgid "Description"
 msgstr "Descripción"
 
@@ -111,7 +111,7 @@ msgstr "Informe borrado."
 msgid "Event type"
 msgstr "Tipo de evento"
 
-#: events/models.py:14 templates/menu.html:34 templates/events/types.html:4
+#: events/models.py:14 templates/menu.html:35 templates/events/types.html:4
 #: templates/events/types.html.py:7 templates/events/types.html:21
 msgid "Event types"
 msgstr "Tipos de evento"
@@ -165,15 +165,14 @@ msgstr "Eventos"
 
 #: events/models.py:58 main/models.py:148 main/models.py:192
 #: main/models.py:215 main/models.py:235 suggest/models.py:17
-#: suggest/models.py:49 templates/error_report/list.html:87
-#: templates/error_report/list.html:141 templates/events/edit-event.html:55
-#: templates/events/edit-event.html:134 templates/events/edit-event.html:205
-#: templates/events/events.html:73 templates/events/events.html.py:112
-#: templates/main/edit-resource.html:54 templates/main/edit-resource.html:149
-#: templates/main/edit-resource.html:220 templates/main/edit-resource.html:290
-#: templates/main/resources.html:73 templates/main/resources.html.py:110
-#: templates/suggest/list.html:66 templates/suggest/list.html.py:118
-#: templates/suggest/list.html:165
+#: suggest/models.py:49 templates/error_report/list.html:145
+#: templates/events/edit-event.html:55 templates/events/edit-event.html:134
+#: templates/events/edit-event.html:205 templates/events/events.html:73
+#: templates/events/events.html.py:112 templates/main/edit-resource.html:54
+#: templates/main/edit-resource.html:149 templates/main/edit-resource.html:220
+#: templates/main/edit-resource.html:290 templates/main/resources.html:73
+#: templates/main/resources.html.py:110 templates/suggest/list.html:66
+#: templates/suggest/list.html.py:118 templates/suggest/list.html:169
 msgid "Admitted"
 msgstr "Aceptado"
 
@@ -184,7 +183,8 @@ msgstr "Aceptado"
 #: templates/events/events.html.py:114 templates/main/edit-resource.html:151
 #: templates/main/edit-resource.html:222 templates/main/edit-resource.html:292
 #: templates/main/resources.html:74 templates/main/resources.html.py:112
-#: templates/suggest/list.html:68
+#: templates/suggest/list.html:68 templates/suggest/list.html.py:120
+#: templates/suggest/list.html:171
 msgid "Refused"
 msgstr "Rechazado"
 
@@ -194,14 +194,15 @@ msgstr "Rechazado"
 #: templates/events/events.html.py:116 templates/main/edit-resource.html:153
 #: templates/main/edit-resource.html:224 templates/main/edit-resource.html:294
 #: templates/main/resources.html:75 templates/main/resources.html.py:114
-#: templates/suggest/list.html:70
+#: templates/suggest/list.html:70 templates/suggest/list.html.py:122
+#: templates/suggest/list.html:173
 msgid "Deleted"
 msgstr "Borrado"
 
 #: events/models.py:65 main/models.py:156 suggest/models.py:25
 #: suggest/models.py:56 templates/events/events.html:91
 #: templates/main/resources.html:91 templates/suggest/list.html:47
-#: templates/suggest/list.html.py:148
+#: templates/suggest/list.html.py:152
 msgid "Title"
 msgstr "Título"
 
@@ -266,17 +267,17 @@ msgstr "Tipo editado con éxito."
 msgid "Type deleted."
 msgstr "Tipo borrado."
 
-#: main/choices.py:6 templates/menu.html:48 templates/menu.html.py:54
+#: main/choices.py:6 templates/menu.html:46 templates/menu.html.py:52
 #: utils/models.py:13
 msgid "English"
 msgstr "Inglés"
 
-#: main/choices.py:7 templates/menu.html:50 templates/menu.html.py:55
+#: main/choices.py:7 templates/menu.html:48 templates/menu.html.py:53
 #: utils/models.py:14
 msgid "Portuguese"
 msgstr "Portugués"
 
-#: main/choices.py:8 templates/menu.html:49 templates/menu.html.py:56
+#: main/choices.py:8 templates/menu.html:47 templates/menu.html.py:54
 #: utils/models.py:15
 msgid "Spanish"
 msgstr "Español"
@@ -326,7 +327,7 @@ msgstr "Idiomas de la fuente"
 msgid "Thematic area"
 msgstr "Área temática"
 
-#: main/models.py:104 main/models.py:198 templates/menu.html:32
+#: main/models.py:104 main/models.py:198 templates/menu.html:33
 #: templates/events/edit-event.html:33 templates/main/edit-resource.html:32
 #: templates/main/thematics.html:4 templates/main/thematics.html.py:7
 #: templates/main/thematics.html:21
@@ -501,29 +502,25 @@ msgstr "Sí"
 msgid "Dashboard"
 msgstr "Panel de control"
 
-#: templates/menu.html:19 templates/main/index.html:41
+#: templates/menu.html:20 templates/main/index.html:41
 #: templates/suggest/list.html:4 templates/suggest/list.html.py:22
 msgid "Suggestions"
 msgstr "Sugerencias"
 
-#: templates/menu.html:28
+#: templates/menu.html:29
 msgid "Controlled lists"
 msgstr "Listas controladas "
 
-#: templates/menu.html:33 templates/main/types.html:4
+#: templates/menu.html:34 templates/main/types.html:4
 #: templates/main/types.html.py:7 templates/main/types.html:21
 msgid "Source types"
 msgstr "Tipos de fuentes"
 
-#: templates/menu.html:35
+#: templates/menu.html:36
 msgid "Languages"
 msgstr "Idiomas"
 
-#: templates/menu.html:39
-msgid "Django Admin"
-msgstr "Django admin"
-
-#: templates/menu.html:71
+#: templates/menu.html:69
 msgid "Logout"
 msgstr "Cerrar sesión"
 
@@ -597,36 +594,36 @@ msgid "Save"
 msgstr "Guardar"
 
 #: templates/error_report/list.html:50 templates/error_report/list.html:59
-#: templates/error_report/list.html:106 templates/error_report/list.html:115
+#: templates/error_report/list.html:110 templates/error_report/list.html:119
 #: templates/events/events.html:67 templates/events/types.html:30
 #: templates/events/types.html.py:38 templates/main/languages.html:30
 #: templates/main/languages.html.py:38 templates/main/resources.html:67
 #: templates/main/thematics.html:30 templates/main/thematics.html.py:38
 #: templates/main/types.html:30 templates/main/types.html.py:38
 #: templates/suggest/list.html:38 templates/suggest/list.html.py:90
-#: templates/suggest/list.html:139
+#: templates/suggest/list.html:143
 msgid "Search"
 msgstr "Buscar"
 
-#: templates/error_report/list.html:51 templates/error_report/list.html:107
+#: templates/error_report/list.html:51 templates/error_report/list.html:111
 #: templates/events/types.html:31 templates/main/languages.html:31
 #: templates/main/thematics.html:31 templates/main/types.html:31
 msgid "clear"
 msgstr "limpiar"
 
-#: templates/error_report/list.html:70 templates/error_report/list.html:125
+#: templates/error_report/list.html:70 templates/error_report/list.html:129
 #: templates/suggest/list.html:49 templates/suggest/list.html.py:101
-#: templates/suggest/list.html:149
+#: templates/suggest/list.html:153
 msgid "Date"
 msgstr "Fecha"
 
-#: templates/error_report/list.html:72 templates/error_report/list.html:127
+#: templates/error_report/list.html:72 templates/error_report/list.html:131
 #: templates/events/edit-event.html:264 templates/events/events.html:95
 #: templates/events/types.html:48 templates/main/edit-resource.html:279
 #: templates/main/languages.html:48 templates/main/resources.html:95
 #: templates/main/thematics.html:48 templates/main/types.html:48
 #: templates/suggest/list.html:51 templates/suggest/list.html.py:103
-#: templates/suggest/list.html:151
+#: templates/suggest/list.html:155
 msgid "Actions"
 msgstr "Acciones"
 
@@ -807,6 +804,18 @@ msgstr "Nuevo tipo de fuente"
 msgid "Success!"
 msgstr "Éxito!"
 
+#: templates/main/index.html:19
+msgid "documentalist"
+msgstr "documentalista"
+
+#: templates/main/index.html:19
+msgid "editor"
+msgstr "editor"
+
+#: templates/main/index.html:19
+msgid "administrator"
+msgstr "administrador"
+
 #: templates/main/index.html:28 templates/main/resources.html:32
 msgid "My resources"
 msgstr "Mis recursos"
@@ -902,8 +911,8 @@ msgid ""
 "Your suggestion will be evaluated and if approved will be included in the "
 "Health Information Locator"
 msgstr ""
-"Tu sugerencia será evaluado y si se aprueba, será incluido en el Localizador "
-"de Información en Salud"
+"Tu sugerencia será evaluado y si se aprueba, será incluido en el Localizador"
+" de Información en Salud"
 
 #: utils/forms.py:128
 msgid "You must have at least one descriptor"
@@ -924,3 +933,6 @@ msgstr "código"
 #: utils/models.py:88
 msgid "country"
 msgstr "país"
+
+#~ msgid "Django Admin"
+#~ msgstr "Django admin"
