@@ -22,6 +22,7 @@ from django.conf import settings
 from datetime import datetime
 from models import *
 from forms import *
+from error_reporting.forms import ErrorReportForm
 
 from main.decorators import *
 
@@ -137,6 +138,8 @@ def create_edit_event(request, **kwargs):
     else:
         form = EventForm(instance=event, user_data=user_data)
 
+        form_error_report = ErrorReportForm()
+
         # if documentalist create a formset with descriptors created by the user
         if user_data['user_role'] == 'doc':
             descriptor_list = Descriptor.objects.filter(object_id=event.id, content_type=ct).exclude(created_by_id=request.user.id, status=0)
@@ -159,12 +162,14 @@ def create_edit_event(request, **kwargs):
     output['formset_descriptor'] = formset_descriptor
     output['formset_keyword']  = formset_keyword
     output['formset_thematic'] = formset_thematic
+    output['form_error_report'] = form_error_report
     output['event'] = event
     output['descriptor_list'] = descriptor_list
     output['keyword_list'] = keyword_list
     output['thematic_list'] = thematic_list
     output['settings'] = settings
     output['user_data'] = user_data
+    output['content_type'] = ct.id
 
     return render_to_response('events/edit-event.html', output, context_instance=RequestContext(request))
 

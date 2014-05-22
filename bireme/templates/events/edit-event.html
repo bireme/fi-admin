@@ -52,7 +52,7 @@
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
                                     {% if field.name = 'status' %}
-                                        <p>{% if field.value == 0 %}{% trans 'Pending' %}{% else %}{% trans 'Admitted' %}{% endif %}</p>
+                                        <p>{{ event.get_status_display }}</p>
                                     {% elif field.name = 'link' %}
                                         {% for link in field.value.splitlines %}
                                             <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
@@ -108,8 +108,22 @@
                                 <p>{% trans "Last edit in" %} <strong>{{ event.updated_time }}</strong> {% trans "by user" %}  <strong>{{ event.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
-                    {% endif %}
 
+                        {% if event.error_reports.all %}
+                            <strong>{% trans "Error reports" %}</strong>
+                            <div class="alert alert-error">
+                                <ul>
+                                {% for report in event.error_reports.all %}
+                                    <li>{{ report.get_code_display }} - {{ report.description }} {{ report.new_link }}</li>
+                                {% endfor %}    
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if user_role == 'doc' and not user_data.is_owner and not is_new %}
+                            <a href="#" id="{{ event.id }}" class="btn btn-small btn-danger add_error_report" type="button"><i class="icon-warning-sign"></i>{% trans "Add new error report" %}</a>
+                        {% endif %}
+
+                    {% endif %}
             </div>
 
             <div id='tab-descriptors' class="tab-pane">
@@ -307,6 +321,48 @@
     </form>
 </div>
 
+<div id="error_report_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">      
+        <h3 id="myModalLabel">{% trans "Error report" %}</h3>
+    </div>
+
+    <div class="modal-header">
+        <form method="POST" action="{% url 'error_reporting.views.create_error_report' %}">
+            {% csrf_token %}
+            <input type="hidden" name="object_id" value="{{ event.id }}"/>
+            <input type="hidden" name="content_type" value="{{ content_type }}"/>
+            <input type="hidden" name="return_url" value="{% url 'events.views.create_edit_event' event.id %}"/>
+
+            <fieldset id="metadata">
+                {% for hidden in form_error_report.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                {{ form_error_report.non_field_errors }}
+                {% for field in form_error_report.visible_fields %}
+                    {% if field.name == 'status' %}
+                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0"/>
+                    {% else %}
+                        <label for="{{ field.auto_id }}">
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+                        <p class="muted">{{ field.help_text }}</p>
+                        {{ field.errors }}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+            </fieldset>
+
+            <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'Cancel' %}</button>
+            <input type="submit" class="btn btn-primary delete" value="{% trans 'Save' %}"></input>
+        </form>
+    </div>
+</div>
+
+
 {% endblock %}
 
 {% block extrajs %}
@@ -363,6 +419,10 @@
                 $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
 
             },false);
+
+            $(document).on("click", "a.add_error_report", function(){ 
+                $("#error_report_modal").modal("show");                
+            });
 
         })
 

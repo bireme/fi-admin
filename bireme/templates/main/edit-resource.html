@@ -51,7 +51,7 @@
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
                                     {% if field.name = 'status' %}
-                                        <p>{% if field.value == 0 %}{% trans 'Pending' %}{% else %}{% trans 'Admitted' %}{% endif %}</p>
+                                        <p>{{ resource.get_status_display }}</p>
                                     {% elif field.name = 'link' %}
                                         {% for link in field.value.splitlines %}
                                             <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
@@ -114,7 +114,7 @@
                             <div class="alert alert-error">
                                 <ul>
                                 {% for report in resource.error_reports.all %}
-                                    <li>{{ report.code }} - {{ report.description }} {{ report.new_link }}</li>
+                                    <li>{{ report.get_code_display }} - {{ report.description }} {{ report.new_link }}</li>
                                 {% endfor %}    
                                 </ul>
                             </div>
@@ -344,6 +344,7 @@
             {% csrf_token %}
             <input type="hidden" name="object_id" value="{{ resource.id }}"/>
             <input type="hidden" name="content_type" value="{{ content_type }}"/>
+            <input type="hidden" name="return_url" value="{% url 'main.views.create_edit_resource' resource.id %}"/>
 
             <fieldset id="metadata">
                 {% for hidden in form_error_report.hidden_fields %}
@@ -351,16 +352,20 @@
                 {% endfor %}
                 {{ form_error_report.non_field_errors }}
                 {% for field in form_error_report.visible_fields %}
-                    <label for="{{ field.auto_id }}">
-                        {% if field.field.required %}
-                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                        {% else %}
-                            {{ field.label }}
-                        {% endif %}
-                    </label>
-                    <p class="muted">{{ field.help_text }}</p>
-                    {{ field.errors }}
-                    {{ field }}
+                    {% if field.name == 'status' %}
+                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0"/>
+                    {% else %}
+                        <label for="{{ field.auto_id }}">
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+                        <p class="muted">{{ field.help_text }}</p>
+                        {{ field.errors }}
+                        {{ field }}
+                    {% endif %}
                 {% endfor %}
             </fieldset>
 

@@ -87,12 +87,13 @@ def create_error_report(request, **kwargs):
 
     object_id = escape(request.POST.get('object_id'))
     content_type = escape(request.POST.get('content_type'))
+    return_url = request.POST.get('return_url')
 
     error_report = ErrorReport(object_id=object_id, content_type_id=content_type)   
     form = ErrorReportForm(request.POST, instance=error_report)
     error_report = form.save()
 
-    return redirect('main.views.create_edit_resource', resource_id=object_id)
+    return redirect(return_url, resource_id=object_id)
 
 
 @login_required
