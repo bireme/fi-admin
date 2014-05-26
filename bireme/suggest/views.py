@@ -23,6 +23,7 @@ from django.conf import settings
 from datetime import datetime
 from models import *
 from main.models import Resource, Keyword
+from events.models import Event
 from forms import *
 
 import os
@@ -150,13 +151,39 @@ def create_resource_from_suggestion(request, suggestion_id):
         abstract=suggestion.abstract, created_by=request.user)
     resource.save();
 
+    for tag in suggestion.keywords.split(','):
+            keyword = Keyword(content_object=resource, text=tag.strip(), user_recomendation=True)
+            keyword.save()
+
     suggestion.status = 1
     suggestion.save();
 
     output['alert'] = _("Resource created.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
+    return redirect('main.views.create_edit_resource', resource_id=resource.id)
+
+
+@login_required
+def create_event_from_suggestion(request, suggestion_id):
+
+    user = request.user
+    suggestion = get_object_or_404(SuggestEvent, id=suggestion_id)
+    output = {}
+
+    user_data = additional_user_info(request)
+
+    event = Event(title=suggestion.title, start_date=suggestion.start_date, 
+        end_date=suggestion.end_date, link=suggestion.link, city=suggestion.city, created_by=request.user)
+    event.save();
+
+    suggestion.status = 1
+    suggestion.save();
+
+    output['alert'] = _("Event created.")
+    output['alerttype'] = "alert-success"
+
+    return redirect('events.views.create_edit_event', event_id=event.id)
 
 
 @csrf_exempt

@@ -13,9 +13,6 @@
 
 <div class='header'>
     <h2><i class='icon-thumbs-up'></i>{% trans "Edit Suggested Event" %}</h2>
-    <!--div class="pull-right">
-        <a href="{% url 'suggest.views.create_resource_from_suggestion' suggest.id %}"><button class="btn btn-info btn-large">{% trans "Create a new Event using this suggestion" %}</button></a>
-    </div-->
 </div>
 
 <div class='body'>
@@ -54,8 +51,10 @@
             </div>
 
             <div class="control-panel form-submit">                
-                <!--button class="btn btn-info btn-large">{% trans "Create a new Resource using this suggestion" %}</button-->
-                <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+                <a href="{% url 'suggest.views.create_event_from_suggestion' suggest.id %}">
+                    <button class="btn btn-warning btn-large" type="button">{% trans "Create a new Event using this suggestion" %}</button>
+                </a>
+                <button class="btn btn-primary btn-large" type="submit">{% trans "Save" %}</button>
             </div>
         </div>
     </form>

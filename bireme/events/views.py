@@ -96,6 +96,7 @@ def create_edit_event(request, **kwargs):
     descriptor_list  = None
     keyword_list     = None
     thematic_list    = None
+    form_error_report= None
     output = {}
 
     if event_id:

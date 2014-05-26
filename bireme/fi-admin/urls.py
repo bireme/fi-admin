@@ -66,6 +66,7 @@ urlpatterns = patterns('',
     (r'^suggested-resource/edit/(?P<resource_id>\d+)/?$', 'suggest.views.edit_suggested_resource'),
 
     (r'^suggested-resource/create-resource-from-suggestion/(?P<suggestion_id>\d+)/?$', 'suggest.views.create_resource_from_suggestion'),
+    (r'^suggested-resource/create-event-from-suggestion/(?P<suggestion_id>\d+)/?$', 'suggest.views.create_event_from_suggestion'),
 
     (r'^suggest-tag/?$', 'suggest.views.suggest_tag'),
 
