@@ -140,7 +140,9 @@ def external_error_report(request, **kwargs):
     sucess = True
 
     resource_id = escape(request.POST.get('resource_id'))
-    content_type = ContentType.objects.get_for_model(Resource)
+    resource_type = escape(request.POST.get('resource_type', 'resource')) 
+
+    content_type = ContentType.objects.get(model=resource_type)
 
     error_report = ErrorReport(object_id=resource_id, content_type=content_type, status=0)   
     form = ExternalErrorReportForm(request.POST, instance=error_report)
