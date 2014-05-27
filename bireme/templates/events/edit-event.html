@@ -321,47 +321,48 @@
     </form>
 </div>
 
-<div id="error_report_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">      
-        <h3 id="myModalLabel">{% trans "Error report" %}</h3>
+{% if not is_new %}
+    <div id="error_report_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">      
+            <h3 id="myModalLabel">{% trans "Error report" %}</h3>
+        </div>
+
+        <div class="modal-header">
+            <form method="POST" action="{% url 'error_reporting.views.create_error_report' %}">
+                {% csrf_token %}
+                <input type="hidden" name="object_id" value="{{ event.id }}"/>
+                <input type="hidden" name="content_type" value="{{ content_type }}"/>
+                <input type="hidden" name="return_url" value="{% url 'events.views.create_edit_event' event.id %}"/>
+
+                <fieldset id="metadata">
+                    {% for hidden in form_error_report.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {{ form_error_report.non_field_errors }}
+                    {% for field in form_error_report.visible_fields %}
+                        {% if field.name == 'status' %}
+                            <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0"/>
+                        {% else %}
+                            <label for="{{ field.auto_id }}">
+                                {% if field.field.required %}
+                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                {% else %}
+                                    {{ field.label }}
+                                {% endif %}
+                            </label>
+                            <p class="muted">{{ field.help_text }}</p>
+                            {{ field.errors }}
+                            {{ field }}
+                        {% endif %}
+                    {% endfor %}
+                </fieldset>
+
+                <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'Cancel' %}</button>
+                <input type="submit" class="btn btn-primary delete" value="{% trans 'Save' %}"></input>
+            </form>
+        </div>
     </div>
-
-    <div class="modal-header">
-        <form method="POST" action="{% url 'error_reporting.views.create_error_report' %}">
-            {% csrf_token %}
-            <input type="hidden" name="object_id" value="{{ event.id }}"/>
-            <input type="hidden" name="content_type" value="{{ content_type }}"/>
-            <input type="hidden" name="return_url" value="{% url 'events.views.create_edit_event' event.id %}"/>
-
-            <fieldset id="metadata">
-                {% for hidden in form_error_report.hidden_fields %}
-                    {{ hidden }}
-                {% endfor %}
-                {{ form_error_report.non_field_errors }}
-                {% for field in form_error_report.visible_fields %}
-                    {% if field.name == 'status' %}
-                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0"/>
-                    {% else %}
-                        <label for="{{ field.auto_id }}">
-                            {% if field.field.required %}
-                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                            {% else %}
-                                {{ field.label }}
-                            {% endif %}
-                        </label>
-                        <p class="muted">{{ field.help_text }}</p>
-                        {{ field.errors }}
-                        {{ field }}
-                    {% endif %}
-                {% endfor %}
-            </fieldset>
-
-            <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'Cancel' %}</button>
-            <input type="submit" class="btn btn-primary delete" value="{% trans 'Save' %}"></input>
-        </form>
-    </div>
-</div>
-
+{% endif %}
 
 {% endblock %}
 
