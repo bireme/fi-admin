@@ -15,6 +15,12 @@ from utils.forms import DescriptorRequired, ResourceThematicRequired
 import simplejson
 
 class EventForm(forms.ModelForm):
+    
+    start_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'), 
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
+    end_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'), 
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
+    
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
