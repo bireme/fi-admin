@@ -18,6 +18,7 @@ from django.template import RequestContext
 
 from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
+from utils.forms import is_valid_for_publication
 from django.conf import settings
 from datetime import datetime
 from models import *
@@ -97,6 +98,7 @@ def create_edit_event(request, **kwargs):
     keyword_list     = None
     thematic_list    = None
     form_error_report= None
+    valid_for_publication = True
     output = {}
 
     if event_id:
@@ -123,7 +125,12 @@ def create_edit_event(request, **kwargs):
         formset_keyword_valid = formset_keyword.is_valid() 
         formset_thematic_valid = formset_thematic.is_valid()
 
-        if form_valid and formset_descriptor_valid and formset_keyword_valid and formset_thematic_valid:
+        # for status = admitted check  if the resource have at least one descriptor and one thematica area
+        valid_for_publication = is_valid_for_publication(form, 
+            [formset_descriptor, formset_keyword, formset_thematic])
+
+        if (form_valid and formset_descriptor_valid and formset_keyword_valid 
+                and formset_thematic_valid and valid_for_publication):
             event = form.save()
             form.save_m2m()
 
@@ -164,6 +171,8 @@ def create_edit_event(request, **kwargs):
     output['formset_keyword']  = formset_keyword
     output['formset_thematic'] = formset_thematic
     output['form_error_report'] = form_error_report
+    output['valid_for_publication'] = valid_for_publication
+    
     output['event'] = event
     output['descriptor_list'] = descriptor_list
     output['keyword_list'] = keyword_list

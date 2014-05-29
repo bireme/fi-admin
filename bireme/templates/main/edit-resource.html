@@ -23,6 +23,11 @@
             <li>{% trans "Please check required fields" %}</li>
         </ul>        
     {% endif %}
+    {% if not valid_for_publication %}
+        <ul class="errorlist alert alert-error">
+            <li>{% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}</li>
+        </ul>
+    {% endif %}
     {{ formset_descriptor.non_form_errors }}
     {{ formset_thematic.non_form_errors }}
 

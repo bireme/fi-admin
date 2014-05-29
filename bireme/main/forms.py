@@ -101,6 +101,7 @@ class TypeLocalForm(forms.ModelForm):
 
 
 
+
 # definition of inline formsets
 
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1)

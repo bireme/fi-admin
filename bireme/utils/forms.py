@@ -142,3 +142,49 @@ class ResourceThematicRequired(BaseGenericInlineFormSet):
                 pass
         if count < 1:
             raise forms.ValidationError( _('You must have at least one thematic area'), code='invalid')
+
+
+
+def is_valid_for_publication(form, formsets):
+    """
+    Before admit a resources/events check if they have at least one admitted descriptors and at least
+    one thematic area.
+    """
+    #Do cross validation on forms
+    valid = True
+    descriptor_admitted = False
+    thematic_admitted = False
+    data = None
+
+    if hasattr(form, 'cleaned_data'):   
+
+        status = form.cleaned_data.get("status")
+        '''
+        For status = admitted check if the resource have at least 
+        one descriptor and one thematica area
+        '''
+        if status == 1:
+            # access forms from formsets:
+            for formset in formsets:
+                for formset_form in formset.forms:
+                    if hasattr(formset_form, 'cleaned_data'):
+                        data = formset_form.cleaned_data
+                        
+                        if data.get('status') == 1:
+                            if data.get('text') and data.get('code'):
+                                descriptor_admitted = True
+
+                            elif data.get('thematic_area'):                                    
+                                thematic_admitted = True
+
+
+            if not descriptor_admitted:
+                # For publication must have at least one descriptor admitted
+                valid = False
+
+            if not thematic_admitted:
+                # For publication must have at least one thematic area admitted
+                valid = False
+
+    return valid
+
