@@ -12,6 +12,7 @@ from django.core.paginator import Paginator
 
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
+from django.template.loader import render_to_string 
 
 from django.conf import settings
 from datetime import datetime
@@ -30,8 +31,6 @@ def search(request):
     count = '10'
 
     start = ((int(page) * int(count)) - int(count)) + 1
-
-    print "page: %s" % page
 
     # filter result by approved resources (status=1)
     if tl != '':
@@ -71,6 +70,9 @@ def search(request):
     output['page_navigation_prev_block'] = int(page_navigation_start - pages_count)
     output['page_navigation_next_block'] = int(page_navigation_start + pages_count)
     output['page_navigation_last_page'] = int(total_pages)
-
-    return render_to_response('api/lis_old_search.xml', output, context_instance=RequestContext(request))
-
+    
+    # render the template and convert the result to ISO-8859-1
+    render_xml = render_to_string('api/lis_old_search.xml', output)
+    result_iso = render_xml.encode('iso-8859-1')
+    
+    return HttpResponse(result_iso, mimetype="text/xml; charset=iso-8859-1")
