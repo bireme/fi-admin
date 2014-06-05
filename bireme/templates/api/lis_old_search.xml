@@ -61,4 +61,29 @@
            </href>
         </browse>
     {% endfor %}
+
+    <epilog mfn="1">
+       <Isis_Total>
+          <occ>{{ total }}</occ>
+       </Isis_Total>
+       <page>
+          <occ>{{ page }}</occ>
+       </page>
+       <backward-navigation>
+            <occ nav-page="{{ page|add:"- 1" }}" nav-status="V"></occ>
+            <occ nav-page="{{ page_navigation_prev_block }}" nav-status="V"></occ>
+            <occ nav-page="1" nav-status="V"></occ>
+       </backward-navigation>       
+       <page-navigation>
+       {% for occ_page in page_navigation %}
+           <occ nav-page="{{occ_page}}" nav-status="{% if occ_page == page %}C{% else %}V{% endif %}"></occ>
+       {% endfor %}
+       </page-navigation>
+       <forward-navigation>
+           <occ nav-page="{{ page|add:"1" }}" nav-status="V"></occ>
+           <occ nav-page="{{ page_navigation_next_block }}" nav-status="V"></occ>
+           <occ nav-page="{{ page_navigation_last_page }}" nav-status="V"></occ>
+       </forward-navigation>       
+    </epilog>
+
 </iyp>
