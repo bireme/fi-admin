@@ -19,10 +19,15 @@ from django.conf import settings
 from datetime import datetime
 from main.models import Resource, Keyword
 
+from urllib import unquote
+
 @csrf_exempt
 def search(request):
 
     output = {}
+
+    # set encoding of old LIS interface to avoid problems with words with accent
+    request.encoding = 'iso-8859-1'
 
     params = request.POST if request.method == 'POST' else request.GET
 
