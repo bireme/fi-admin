@@ -24,14 +24,17 @@ from urllib import unquote
 @csrf_exempt
 def search(request):
 
-    output = {}
+    output = {}    
 
     # set encoding of old LIS interface to avoid problems with words with accent
     request.encoding = 'iso-8859-1'
 
     params = request.POST if request.method == 'POST' else request.GET
 
+    # LIS old interface send newexpr or expr to inform query
     q = params.get('newexpr', '')
+    q = params.get('expr', q)
+
     tl = params.get('TL', '')
     page = params.get('page', '1')
     op = params.get('op', 'search')
