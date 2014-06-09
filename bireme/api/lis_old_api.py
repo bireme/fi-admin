@@ -24,11 +24,13 @@ def search(request):
 
     output = {}
 
-    q = request.GET.get('newexpr', '')
-    tl = request.GET.get('TL', '')
-    page = request.GET.get('page', '1')
-    op = request.GET.get('op', 'search')
-    sort = request.GET.get('sort', 'created_date desc')
+    params = request.POST if request.method == 'POST' else request.GET
+
+    q = params.get('newexpr', '')
+    tl = params.get('TL', '')
+    page = params.get('page', '1')
+    op = params.get('op', 'search')
+    sort = params.get('sort', 'created_date desc')
     count = '10'
 
     start = ((int(page) * int(count)) - int(count)) + 1
