@@ -5,6 +5,7 @@ import requests
 import math
 
 from django.shortcuts import redirect, render_to_response, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
@@ -18,12 +19,12 @@ from django.conf import settings
 from datetime import datetime
 from main.models import Resource, Keyword
 
-
+@csrf_exempt
 def search(request):
 
     output = {}
 
-    q = request.GET.get('expr', '')
+    q = request.GET.get('newexpr', '')
     tl = request.GET.get('TL', '')
     page = request.GET.get('page', '1')
     op = request.GET.get('op', 'search')
@@ -32,9 +33,13 @@ def search(request):
 
     start = ((int(page) * int(count)) - int(count)) + 1
 
+    # check if user is searching for all resources ($)
+    if q == '$':
+        q = ''
+
     # filter result by approved resources (status=1)
     if tl != '':
-        fq = '(status:1 AND django_ct:main.resource) AND thematic_area:%s' % tl
+        fq = '(status:1 AND django_ct:main.resource) AND thematic_area:"%s"' % tl
     else:
         fq = '(status:1 AND django_ct:main.resource)'
 
