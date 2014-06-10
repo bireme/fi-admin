@@ -18,23 +18,23 @@
           <occ>{{ page }}</occ>
        </page>
        <backward-navigation>
-            <occ nav-page="{{ page|add:"- 1" }}" nav-status="V"></occ>
-            <occ nav-page="{{ page_navigation_prev_block }}" nav-status="V"></occ>
-            <occ nav-page="1" nav-status="V"></occ>
-       </backward-navigation>       
+            <occ nav-page="{{ page|add:"- 1" }}" nav-status="{% if page > 1 %}V{% else %}H{% endif %}"></occ>
+            <occ nav-page="{{ page_navigation_prev_block }}" nav-status="{% if page > 10 %}V{% else %}H{% endif %}"></occ>
+            <occ nav-page="1" nav-status="{% if page > 10 %}V{% else %}H{% endif %}"></occ>
+       </backward-navigation>
        <page-navigation>
        {% for occ_page in page_navigation %}
            <occ nav-page="{{occ_page}}" nav-status="{% if occ_page == page %}C{% else %}V{% endif %}"></occ>
        {% endfor %}
        </page-navigation>
        <forward-navigation>
-           <occ nav-page="{{ page|add:"1" }}" nav-status="V"></occ>
-           <occ nav-page="{{ page_navigation_next_block }}" nav-status="V"></occ>
-           <occ nav-page="{{ page_navigation_last_page }}" nav-status="V"></occ>
-       </forward-navigation>       
+           <occ nav-page="{{ page|add:"1" }}" nav-status="{% if page < page_navigation_last_page %}V{% else %}H{% endif %}"></occ>
+           <occ nav-page="{{ page_navigation_next_block }}" nav-status="{% if page_navigation_end < page_navigation_last_page %}V{% else %}H{% endif %}"></occ>
+           <occ nav-page="{{ page_navigation_last_page }}" nav-status="{% if page < page_navigation_last_page %}V{% else %}H{% endif %}"></occ>
+       </forward-navigation>
        <newexpr>
            <occ>{{ expr }}</occ>
-       </newexpr>   
+       </newexpr>
        <connector>
           <occ>AND</occ>
        </connector>
@@ -76,7 +76,7 @@
             <occ nav-page="{{ page|add:"- 1" }}" nav-status="V"></occ>
             <occ nav-page="{{ page_navigation_prev_block }}" nav-status="V"></occ>
             <occ nav-page="1" nav-status="V"></occ>
-       </backward-navigation>       
+       </backward-navigation>
        <page-navigation>
        {% for occ_page in page_navigation %}
            <occ nav-page="{{occ_page}}" nav-status="{% if occ_page == page %}C{% else %}V{% endif %}"></occ>
@@ -86,7 +86,7 @@
            <occ nav-page="{{ page|add:"1" }}" nav-status="V"></occ>
            <occ nav-page="{{ page_navigation_next_block }}" nav-status="V"></occ>
            <occ nav-page="{{ page_navigation_last_page }}" nav-status="V"></occ>
-       </forward-navigation>       
+       </forward-navigation>
     </epilog>
 
 </iyp>
