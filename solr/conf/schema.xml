@@ -172,31 +172,43 @@
    <field name="official_language" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="official_language_display" type="string" indexed="true" stored="true" multiValued="true"/>
 
+   <!-- Compatibility with portal-org indexes --> 
+   <field name="ti" type="text" indexed="true" stored="false" multiValued="true" />
+   <field name="au" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="kw" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="mh" type="decs_keyword" indexed="true"  stored="false" multiValued="true" />
 
    <!-- Dynamic field definitions -->
    <dynamicField name="*" type="ignored" multiValued="true"/>
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
-   <field name="text" type="text_with_decs" indexed="true" stored="false" multiValued="true"/>
+   <field name="tw" type="text_with_decs" indexed="true" stored="false" multiValued="true"/>
  </fields>
 
  <!-- field to use to determine and enforce document uniqueness. -->
  <uniqueKey>id</uniqueKey>
 
  <!-- field for the QueryParser to use when an explicit fieldname is absent -->
- <defaultSearchField>text</defaultSearchField>
+ <defaultSearchField>tw</defaultSearchField>
 
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
  <solrQueryParser defaultOperator="AND"/>
 
- <copyField source="title" dest="text"/>
- <copyField source="originator" dest="text"/>
- <copyField source="author" dest="text"/>
- <copyField source="abstract" dest="text"/>
- <copyField source="objective" dest="text"/>
- <copyField source="descriptor" dest="text"/>
- <copyField source="keyword" dest="text"/>
+ <copyField source="title" dest="tw"/>
+ <copyField source="originator" dest="tw"/>
+ <copyField source="author" dest="tw"/>
+ <copyField source="abstract" dest="tw"/>
+ <copyField source="objective" dest="tw"/>
+ <copyField source="descriptor" dest="tw"/>
+ <copyField source="keyword" dest="tw"/>
  
  <copyField source="descriptor" dest="descriptor_filter"/>
+
+ <!-- Compatibility with portal-org indexes --> 
+ <copyField source="title" dest="ti"/>
+ <copyField source="author" dest="au"/>
+ <copyField source="descriptor" dest="mh"/>
+ <copyField source="keyword" dest="kw"/>
+
 </schema>
