@@ -12,11 +12,15 @@
                         <ul class="nav pull-left">
                             <li><a href="{% url 'main.views.dashboard' %}" title="{% trans "Dashboard" %}"><i class="icon-dashboard"></i> {% trans "Dashboard" %}</a></li>
 
-                            <li><a href="{% url 'main.views.list_resources' %}" title=""><i class="icon-star"></i> {% trans "Resources" %}</a></li>
+                            {% if service_role.LIS %}
+                                <li><a href="{% url 'main.views.list_resources' %}" title=""><i class="icon-star"></i> {% trans "Resources" %}</a></li>
+                            {% endif %}
 
-                            <li><a href="{% url 'events.views.list_events' %}" title=""><i class="icon-calendar"></i> {% trans "Events" %}</a></li>
+                            {% if service_role.DirEve %}
+                                <li><a href="{% url 'events.views.list_events' %}" title=""><i class="icon-calendar"></i> {% trans "Events" %}</a></li>
+                            {% endif %}
 
-                            {% if user_role != 'doc' %}
+                            {% if service_role.DirEve = 'edi' or service_role.LIS == 'edi' %}
                                 <li><a href="{% url 'suggest.views.list_suggestions' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggestions" %}</a></li>
                                 
                                 <li><a href="{% url 'error_reporting.views.list_error_report' %}" title=""><i class="icon-warning-sign"></i> {% trans "Error reports" %}</a></li>
@@ -73,7 +77,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>        
 
     {% endif %}
 {% endblock %}

@@ -28,7 +28,7 @@ class EventForm(forms.ModelForm):
 
         super(EventForm, self).__init__(*args, **kwargs)
 
-        if self.user_data['user_role'] == 'doc':
+        if self.user_data['service_role'].get('DirEve') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 
 

@@ -24,22 +24,26 @@
 
 <div class='body'>    
     <ul class="nav nav-tabs" id='tab'>
-        <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}">
-            <a href="#tab-resources" onclick="change_type('resources')" data-toggle="tab">
-                <strong>{% trans "Resources" %}</strong>
-                {% if actions.type == 'resources' or not actions.type %}
-                    <span class="badge badge-info">{{ pagination.paginator.count }}</span>
-                {% endif %}
-            </a>
-        </li>
-        <li class="{% if actions.type == 'events' %}active{% endif %}">
-            <a href="#tab-events" onclick="change_type('events')" data-toggle="tab">
-                <strong>{% trans "Events" %}</strong>
-                {% if actions.type == 'events' %}
-                    <span class="badge badge-info">{{ pagination.paginator.count }}</span>
-                {% endif %}                
-            </a>
-        </li>        
+        {% if service_role.LIS %}
+            <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}">
+                <a href="#tab-resources" onclick="change_type('resources')" data-toggle="tab">
+                    <strong>{% trans "Resources" %}</strong>
+                    {% if actions.type == 'resources' or not actions.type %}
+                        <span class="badge badge-info">{{ pagination.paginator.count }}</span>
+                    {% endif %}
+                </a>
+            </li>
+        {% endif %}
+        {% if service_role.DirEve %}
+            <li class="{% if actions.type == 'events' %}active{% endif %}">
+                <a href="#tab-events" onclick="change_type('events')" data-toggle="tab">
+                    <strong>{% trans "Events" %}</strong>
+                    {% if actions.type == 'events' %}
+                        <span class="badge badge-info">{{ pagination.paginator.count }}</span>
+                    {% endif %}                
+                </a>
+            </li>        
+        {% endif %}
     </ul>
     
     {% if actions.type == 'resources' or not actions.type %}

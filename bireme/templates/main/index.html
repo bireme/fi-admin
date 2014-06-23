@@ -16,10 +16,9 @@
 
     <!--  header -->
     <div class='header'>
-        <h2><i class='icon-dashboard'></i> {% trans "Dashboard" %} <small>{{ user.username }} - {% if user_role == 'doc' %}{% trans 'documentalist' %}{% elif user_role = 'edi' %}{% trans 'editor' %}{% else %}{% trans 'administrator' %}{% endif%} ({{ user_cc }}) {% if networks|length > 0 %} - {% trans 'Networks' %}: {{ networks|join:", " }}{% endif %} </small></h2>
+        <h2><i class='icon-dashboard'></i> {% trans "Dashboard" %} <small>{{ user.username }} ({{ user_cc }}) {% if networks|length > 0 %} - {% trans 'Networks' %}: {{ networks|join:", " }}{% endif %} </small></h2>
     </div>
-
-
+    
     <div class="row">
         <div class="span4">
             <div class="well sidebar-nav">

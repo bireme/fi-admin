@@ -109,6 +109,7 @@ def create_edit_event(request, **kwargs):
 
     user_data = additional_user_info(request)
     user_data['is_owner'] = True if event.created_by_id == request.user.id else False
+    user_role = user_data['service_role'].get('DirEve')
 
     ct = ContentType.objects.get_for_model(event)
 
@@ -149,7 +150,7 @@ def create_edit_event(request, **kwargs):
         form_error_report = ErrorReportForm()
 
         # if documentalist create a formset with descriptors created by the user
-        if user_data['user_role'] == 'doc':
+        if user_role == 'doc':
             descriptor_list = Descriptor.objects.filter(object_id=event.id, content_type=ct).exclude(created_by_id=request.user.id, status=0)
             keyword_list = Keyword.objects.filter(object_id=event.id, content_type=ct).exclude(created_by_id=request.user.id, status=0)
             thematic_list = ResourceThematic.objects.filter(object_id=event.id, content_type=ct).exclude(created_by_id=request.user.id, status=0)
@@ -179,6 +180,7 @@ def create_edit_event(request, **kwargs):
     output['thematic_list'] = thematic_list
     output['settings'] = settings
     output['user_data'] = user_data
+    output['user_role'] = user_role
     output['content_type'] = ct.id
 
     return render_to_response('events/edit-event.html', output, context_instance=RequestContext(request))

@@ -231,7 +231,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 BIREMELOGIN_BASE_URL = "http://accounts.bireme.org"
-BIREMELOGIN_SERVICE = "LIS"
+BIREMELOGIN_SERVICE = ""
 
 try:
     from settings_local import *

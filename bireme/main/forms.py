@@ -23,13 +23,8 @@ class ResourceForm(forms.ModelForm):
 
         super(ResourceForm, self).__init__(*args, **kwargs)
 
-        if self.user_data['user_role'] == 'doc':
+        if self.user_data['service_role'].get('LIS') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
-            '''
-            if not self.user_data['is_owner']:
-                for field in self.fields:
-                    self.fields[field].widget = widgets.HiddenInput()
-            '''
 
 
     def save(self, *args, **kwargs):
