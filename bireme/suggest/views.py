@@ -88,6 +88,13 @@ def list_suggestions(request):
     else:
         suggestions = SuggestResource.objects.filter(title__icontains=actions['s'])
 
+    
+    if not actions['filter_status']:
+        actions['filter_status'] = '0'
+    
+    if actions['filter_status'] != '*':
+        suggestions = suggestions.filter(status=actions['filter_status'])
+    
 
     suggestions = suggestions.order_by(actions["orderby"])
     if actions['order'] == "-":

@@ -32,18 +32,41 @@
             <li class="{% if actions.type == 'events' %}active{% endif %}"><a href="#tab-events" onclick="change_type('events')" data-toggle="tab"><strong>{% trans "Events" %}</strong></a></li>
         {% endif %}
     </ul>
+
+    <div class="row">
+        <div class="span-4">
+            <div class="input-append" style="margin-left: 10px">
+                <form name="search">
+                    {% if actions.type == 'resources' or not actions.type %}
+                        <input type="hidden" name="type" value="resources"/>
+                    {% else %}
+                        <input type="hidden" name="type" value="keywords"/>
+                    {% endif %}
+                    <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
+                 
+                    {% trans "Status" %}:
+                    <select name="filter_status">
+                        <option value="*">{% trans "All" %}</option>
+                        <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "Pending" %}</option>
+                        <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Admitted" %}</option>
+                        <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
+                        <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
+                    </select>
+                    <button class="btn" type="submit"><i class='icon-search'></i></button>
+                </form>
+            </div>
+        </div>
+        {% if actions.filter_owner == 'network' and user_data.networks %}
+            <div class="span-4">
+                {% trans "Networks" %} : {{ user_data.networks|join:", " }}
+            </div>
+        {% endif %}
+    </div>
+
     
     {% if actions.type == 'resources' or not actions.type %}
       <div class="tab-content">
         <div class="tab-pane active" id="tab-resources">
-            <div class='pull-left'>
-                <div class="input-append">
-                    <form name="search" onSubmit="return search();">
-                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
-                        <button class="btn" type="submit"><i class='icon-search'></i></button>
-                    </form>
-                </div>
-            </div>
 
             <table class='table'>
                 <thead>
@@ -88,14 +111,6 @@
         
         {% if actions.type == 'keywords'%}
           <div class="tab-pane active" id="tab-keywords">
-            <div class='pull-left'>
-                <div class="input-append">
-                    <form name="search" onSubmit="return search();">
-                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
-                        <button class="btn" type="submit"><i class='icon-search'></i></button>
-                    </form>
-                </div>
-            </div>
 
             <table class='table'>
                 <thead>
@@ -141,14 +156,6 @@
 
         {% if actions.type == 'events'%}
           <div class="tab-pane active" id="tab-keywords">
-            <div class='pull-left'>
-                <div class="input-append">
-                    <form name="search" onSubmit="return search();">
-                        <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
-                        <button class="btn" type="submit"><i class='icon-search'></i></button>
-                    </form>
-                </div>
-            </div>
 
             <table class='table'>
                 <thead>
@@ -188,7 +195,6 @@
             {% include "pagination.html" %}
           </div>
         {% endif %}
-
 
     </div>
 
