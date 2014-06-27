@@ -27,10 +27,12 @@
         {% if service_role.LIS %}
             <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}"><a href="#tab-resources" onclick="change_type('resources')" data-toggle="tab"><strong>{% trans "Resources" %}</strong></a></li>
         {% endif %}
-        <li class="{% if actions.type == 'keywords'%}active{% endif %}"><a href="#tab-keywords" onclick="change_type('keywords')" data-toggle="tab"><strong>{% trans "Keywords" %}</strong></a></li>        
         {% if service_role.DirEve %}
             <li class="{% if actions.type == 'events' %}active{% endif %}"><a href="#tab-events" onclick="change_type('events')" data-toggle="tab"><strong>{% trans "Events" %}</strong></a></li>
         {% endif %}
+        {% if service_role.LIS == 'edi' %}
+            <li class="{% if actions.type == 'keywords'%}active{% endif %}"><a href="#tab-keywords" onclick="change_type('keywords')" data-toggle="tab"><strong>{% trans "Keywords" %}</strong></a></li>
+        {% endif %}        
     </ul>
 
     <div class="row">
