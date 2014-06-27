@@ -37,10 +37,10 @@
         <div class="span-4">
             <div class="input-append" style="margin-left: 10px">
                 <form name="search">
-                    {% if actions.type == 'resources' or not actions.type %}
+                    {% if not actions.type %}
                         <input type="hidden" name="type" value="resources"/>
                     {% else %}
-                        <input type="hidden" name="type" value="keywords"/>
+                        <input type="hidden" name="type" value="{{actions.type}}"/>
                     {% endif %}
                     <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
                  
