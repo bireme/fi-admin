@@ -170,12 +170,12 @@ def create_edit_resource(request, **kwargs):
         if (form_valid and formset_descriptor_valid and formset_keyword_valid
                 and formset_thematic_valid and valid_for_publication):
 
-            resource = form.save()
-            form.save_m2m()
-
             formset_descriptor.save()
             formset_keyword.save()
             formset_thematic.save()
+
+            resource = form.save()
+            form.save_m2m()
 
             output['alert'] = _("Resource successfully edited.")
             output['alerttype'] = "alert-success"

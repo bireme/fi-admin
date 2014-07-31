@@ -51,16 +51,20 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         return [ "|".join( source_type.get_translations() ) for source_type in SourceType.objects.filter(resource=obj.id) ]
 
     def prepare_thematic_area(self, obj):
-        return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
+        return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, 
+                    content_type=ContentType.objects.get_for_model(obj), status=1) ]
 
     def prepare_thematic_area_display(self, obj):
-        return [ "|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
+        return [ "|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, 
+                    content_type=ContentType.objects.get_for_model(obj), status=1) ]
 
     def prepare_descriptor(self, obj):
-        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
+        return [ descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, 
+                    content_type=ContentType.objects.get_for_model(obj), status=1) ]
 
     def prepare_keyword(self, obj):
-        return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
+        return [ keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, 
+                    content_type=ContentType.objects.get_for_model(obj), status=1) ]
 
     def prepare_created_date(self, obj):
         if obj.created_time:        
