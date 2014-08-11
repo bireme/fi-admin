@@ -3,6 +3,7 @@ import os
 import json
 import requests
 import math
+import re
 
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -31,11 +32,28 @@ def search(request):
 
     params = request.POST if request.method == 'POST' else request.GET
 
-    # LIS old interface send newexpr or expr to inform query
+    # LIS old interface send newexpr, expr or key (topics) to inform query 
     q = params.get('newexpr', '')
     q = params.get('expr', q)
-
     tl = params.get('TL', '')
+
+    key = params.get('key', '')
+    # handle search by topic
+    if key:
+        # topic search format: ((descriptor/(323)) AND TL=LISBRXX        
+        key_search = re.search( r'AND TL=(.*)', key)
+        if key_search:
+            tl = key_search.group(1)
+                
+        # remove old search by field 323 (descriptor)
+        q = re.sub(r'\/\(323\)', '', key)
+        # replace (( )) to ""
+        q = re.sub(r'\(\(|\)\)', '"', q)
+        # remove TL from expression
+        q = re.sub(r'AND TL=.*$', '', q)
+        # make query using descriptor field
+        q = 'descriptor:' + q
+        
     page = params.get('page', '1')
     op = params.get('op', 'search')
     sort = params.get('sort', 'created_date desc')
