@@ -47,13 +47,9 @@ def search(request):
                 
         # remove old search by field 323 (descriptor)
         q = re.sub(r'\/\(323\)', '', key)
-        # replace (( )) to ""
-        q = re.sub(r'\(\(|\)\)', '"', q)
         # remove TL from expression
         q = re.sub(r'AND TL=.*$', '', q)
-        # make query using descriptor field
-        q = 'descriptor:' + q
-        
+
     page = params.get('page', '1')
     op = params.get('op', 'search')
     sort = params.get('sort', 'created_date desc')
