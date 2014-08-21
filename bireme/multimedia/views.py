@@ -217,12 +217,23 @@ class MediaDeleteView(LoginRequiredView, DeleteView):
     success_url = reverse_lazy('list_media')
 
     def get_object(self, queryset=None):
-        """ Hook to ensure object is owned by request.user. """
         obj = super(MediaDeleteView, self).get_object()
-        
+        """ Hook to ensure object is owned by request.user. """
         if not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)
+
         return obj
+
+    def delete(self, request, *args, **kwargs):
+        obj = super(MediaDeleteView, self).get_object()
+        c_type = ContentType.objects.get_for_model(obj)
+
+        # delete associated data
+        Descriptor.objects.filter(object_id=obj.id, content_type=c_type).delete()
+        Keyword.objects.filter(object_id=obj.id, content_type=c_type).delete()
+        ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
+
+        return super(MediaDeleteView, self).delete(request, *args, **kwargs)
 
 
 class MediaTypeUpdate(SuperUserRequiredView):
