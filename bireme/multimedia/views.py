@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.contenttypes.models import ContentType
 
 from django.conf import settings
 
@@ -21,12 +22,13 @@ class MultimediaListView(LoginRequiredView, ListView):
     Handle list view for multimedia objects
     """
     paginate_by = settings.ITEMS_PER_PAGE
-
+    restrict_by_user = True
+    
     def dispatch(self, *args, **kwargs):
         return super(MultimediaListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        # getting action parameter
+        # getting action parameter        
         self.actions = {}
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
@@ -40,6 +42,9 @@ class MultimediaListView(LoginRequiredView, ListView):
 
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+
+        if self.restrict_by_user and self.actions['filter_owner'] != "*":
+            object_list = object_list.filter(created_by=self.request.user)
 
         return object_list
 
@@ -56,7 +61,7 @@ class MediaListView(MultimediaListView, ListView):
     """
     model = Media
     context_object_name = "medias"
-    search_field = "title"
+    search_field = "title"    
 
 
 class MediaTypeListView(MultimediaListView, SuperUserRequiredView, ListView):
@@ -66,6 +71,7 @@ class MediaTypeListView(MultimediaListView, SuperUserRequiredView, ListView):
     model = MediaType    
     context_object_name = "types"
     search_field = "name"
+    restrict_by_user = False
 
 
 class MediaUpdate(LoginRequiredView):
@@ -83,13 +89,19 @@ class MediaUpdate(LoginRequiredView):
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid() 
-        formset_descriptor_valid = formset_descriptor.is_valid() 
         formset_keyword_valid = formset_keyword.is_valid() 
-        formset_thematic_valid = formset_thematic.is_valid()
+
+        # if document is created by other user assume formsets descriptor and thematic valid
+        if self.object and (self.object.created_by != self.request.user):
+            formset_descriptor_valid = True
+            formset_thematic_valid = True
+        else:
+            formset_descriptor_valid = formset_descriptor.is_valid()
+            formset_thematic_valid = formset_thematic.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
         valid_for_publication = is_valid_for_publication(form, 
-                                [formset_descriptor, formset_keyword, formset_thematic])
+                                          [formset_descriptor, formset_keyword, formset_thematic])
 
 
         if (form_valid and formset_descriptor_valid and formset_keyword_valid 
@@ -134,17 +146,51 @@ class MediaUpdate(LoginRequiredView):
         context = super(MediaUpdate, self).get_context_data(**kwargs)
 
         user_data = additional_user_info(self.request)
+        user_role = user_data['service_role'].get('Multimedia')
+        user_id = self.request.user.id
         if self.object:
-            user_data['is_owner'] = True if self.object.created_by_id == self.request.user.id else False
+            user_data['is_owner'] = True if self.object.created_by == self.request.user else False
         
         context['user_data'] = user_data
-        context['role'] = user_data['service_role'].get('Multimedia')
+        context['role'] = user_role
         context['settings'] = settings
 
         if self.request.method == 'GET':
-            context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
-            context['formset_keyword'] = KeywordFormSet(instance=self.object)
-            context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
+            # special treatment for user of type documentalist is edit media from other user
+            # add in the context list of descriptor, keyword and thematic already set for the media
+            if user_role == 'doc' and self.object:
+                c_type = ContentType.objects.get_for_model(self.get_object())
+
+                context['descriptor_list'] = Descriptor.objects.filter(
+                                                    object_id=self.object.id, 
+                                                    content_type=c_type).exclude(
+                                                    created_by_id=user_id, status=0)
+                context['keyword_list'] = Keyword.objects.filter(
+                                                    object_id=self.object.id, 
+                                                    content_type=c_type).exclude(
+                                                    created_by_id=user_id, status=0)
+                context['thematic_list'] = ResourceThematic.objects.filter(
+                                                    object_id=self.object.id, 
+                                                    content_type=c_type).exclude(
+                                                    created_by_id=user_id, status=0)
+
+                pending_descriptor_from_user = Descriptor.objects.filter(
+                                                    created_by_id=self.request.user.id, status=0)
+                pending_keyword_from_user = Keyword.objects.filter(
+                                                    created_by_id=user_id, status=0)
+                pending_thematic_from_user = ResourceThematic.objects.filter(
+                                                    created_by_id=user_id, status=0)
+
+                context['formset_descriptor'] = DescriptorFormSet(instance=self.object, 
+                                                    queryset=pending_descriptor_from_user)
+                context['formset_keyword']  = KeywordFormSet(instance=self.object, 
+                                                    queryset=pending_keyword_from_user)
+                context['formset_thematic'] = ResourceThematicFormSet(instance=self.object, 
+                                                    queryset=pending_thematic_from_user)
+            else:
+                context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
+                context['formset_keyword'] = KeywordFormSet(instance=self.object)
+                context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
 
         return context
 

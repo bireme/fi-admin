@@ -115,7 +115,7 @@
                         <thead>
                             <th>{% trans "Descriptors" %}</th>
                             <th>{% trans "Status" %}</th>
-                            <th></th>
+                            <th>{% trans "Delete?" %}</th>
                         </thead>
                         <tbody>
 
@@ -185,8 +185,8 @@
                         <thead>
                             <th>{% trans "Keywords" %}</th>
                             <th>{% trans "Status" %}</th>
-                            <th>{% trans "Suggestion" %}?</th>
-                            <th></th>
+                            <th>{% trans "Suggestion" %}?</th>                            
+                            <th>{% trans "Delete?" %}</th>
                         </thead>
                         <tbody>
 
@@ -253,17 +253,17 @@
 
             <div id='tab-thematic' class="tab-pane">
                 <fieldset id="thematic">
-                    <table class="table table-condensed table-striped">
+                    <table class="table table-condensed table-striped span8">
                         <thead>
                             <th>{% trans "Thematic area" %}</th>
                             <th>{% trans "Status" %}</th>
-                            <th>{% trans "Actions" %}</th>
+                            <th>{% trans "Delete?" %}</th>
                         </thead>
                         <tbody>
                         {% if thematic_list %}
                             {% for thematic in thematic_list %}
                                 <tr>
-                                    <td colspan="2">{{ thematic }}</td>
+                                    <td colspan="3">{{ thematic }}</td>
                                 </tr>
                             {% endfor %}
                         {% endif %}
@@ -315,27 +315,27 @@
         $(function() {
             $('.descriptor-row').formset({
                     addText : '{% trans "Add descriptor" %}',
-                    deleteText: '{% trans "delete" %}',
+                    deleteText: '<i class="icon-remove"></i>',
                     addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'icon-minus-sign',
+                    deleteCssClass : 'btn btn-mini',
                     keepFieldValues: '.keep-field-value',
                     prefix: '{{ formset_descriptor.prefix }}'
             });
 
             $('.keyword-row').formset({
                     addText : '{% trans "Add keyword" %}',
-                    deleteText: '{% trans "delete" %}',
+                    deleteText: '<i class="icon-remove"></i>',
                     addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'icon-minus-sign',
+                    deleteCssClass : 'btn btn-mini',
                     keepFieldValues: '.keep-field-value',
                     prefix: '{{ formset_keyword.prefix }}'
             });
 
             $('.thematic-row').formset({
                     addText : '{% trans "Add thematic area" %}',
-                    deleteText: '{% trans "delete" %}',
+                    deleteText: '<i class="icon-remove"></i>',
                     addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'icon-minus-sign',
+                    deleteCssClass : 'btn btn-mini',
                     keepFieldValues: '.keep-field-value',
                     prefix: '{{ formset_thematic.prefix }}'
             });
