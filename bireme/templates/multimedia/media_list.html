@@ -27,10 +27,10 @@
 
 <div class='body'>
     <ul class="nav nav-tabs" id='tab'>
-        <li class="{% if actions.filter_owner == user_id or not actions.filter_owner %}active{% endif %}">
+        <li class="{% if actions.filter_owner == 'user' or not actions.filter_owner %}active{% endif %}">
             <a href="#tab-my" onclick="filter_owner('user')" data-toggle="tab">
             <strong>{% trans "My medias" %}</strong>
-            {% if actions.filter_owner == user_id or not actions.filter_owner %}
+            {% if actions.filter_owner == 'user' or not actions.filter_owner %}
                 <span class="badge badge-info">{{ paginator.count }}</span>
             {% endif %}
             </a>
