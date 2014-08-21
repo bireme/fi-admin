@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Delete media" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'list_media' %}">{% trans "Media type" %}</a> <span class="divider">/</span></li>
+    <li>{% trans "Delete media" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-camera'></i>{% trans "Delete media" %}</h2>
+</div>
+
+<div class='body'>
+    <form method="POST" class="media-form">
+        <blockquote>
+            <h3>{{ object.title }}</h3>
+        </blockquote>
+        
+        {% csrf_token %}
+
+        <div class="alert">
+            <p><strong>{% trans "Are you sure to delete?" %}</strong></p>
+            <a href="{% url 'list_media'%}" class="btn">{% trans 'No' %}</a>
+            <input type="submit" class="btn btn-danger delete" value="{% trans 'Yes' %}"></input>
+        </div>
+        
+    </form>
+</div>
+
+{% endblock %}

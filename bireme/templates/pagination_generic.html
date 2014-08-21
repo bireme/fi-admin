@@ -1,0 +1,43 @@
+{% load i18n %}
+
+{% if is_paginated %}
+    <div class="pagination">
+        <ul>
+            {% if page_obj.has_previous %}
+                <li>
+                    <a href="javascript: page('1')"><i class="icon-step-backward"></i></a>
+                </li>
+                <li>
+                    <a href="javascript: page('{{ page_obj.previous_page_number }}')"><i class="icon-caret-left"></i></a>
+                </li>
+            {% else %}            
+                <li class="disabled">
+                    <a href="#"><i class="icon-step-backward"></i></a>
+                </li>            
+                <li class="disabled">
+                    <a href="#"><i class="icon-caret-left"></i></a>
+                </li>
+            {% endif %}
+
+            <li><a href="" class="active">{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</a></li>
+
+
+            {% if page_obj.has_next %}
+                <li>
+                    <a href="javascript: page('{{ page_obj.next_page_number }}')"><i class="icon-caret-right"></i></a>
+                </li>
+                <li>
+                    <a href="javascript: page('{{ page_obj.next_page_number }}')"><i class="icon-step-forward"></i></a>
+                </li>                
+            {% else %}
+                <li class="disabled">
+                    <a href="#"><i class="icon-caret-right"></i></a>
+                </li>
+                <li class="disabled">
+                    <a href="#"><i class="icon-step-forward"></i></a>
+                </li>                
+            {% endif %}
+
+        </ul>
+    </div>  
+{% endif %}
