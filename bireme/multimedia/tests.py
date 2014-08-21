@@ -157,6 +157,25 @@ class MultimediaTest(TestCase):
         self.assertContains(response, "Foto 1")
 
 
+    def test_delete_media(self):
+        """
+        Tests delete of media 
+        """
+        self.login_editor()
+        create_media_object()
+
+        response = self.client.get('/multimedia/delete/1')
+        self.assertContains(response, "Você tem certeza?")
+
+        response = self.client.post('/multimedia/delete/1')
+
+        self.assertTrue(Media.objects.count() == 0)
+        self.assertTrue(Descriptor.objects.filter(object_id=1).count() == 0)
+        self.assertTrue(ResourceThematic.objects.filter(object_id=1).count() == 0)
+
+        self.assertRedirects(response, '/multimedia/')
+
+
     def test_list_media_type(self):
         """
         Tests list media type
