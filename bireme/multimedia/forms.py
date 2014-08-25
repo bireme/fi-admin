@@ -64,6 +64,10 @@ DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=Descriptor
 
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired, can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, 
+                                    formset=ResourceThematicRequired, can_delete=True, extra=1)
 
 TypeTranslationFormSet = inlineformset_factory(MediaType, MediaTypeLocal, can_delete=True, extra=1)
+
+MediaCollectionTranslationFormSet = inlineformset_factory(MediaCollection, 
+                                        MediaCollectionLocal, can_delete=True, extra=1)

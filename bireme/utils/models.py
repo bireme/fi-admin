@@ -57,8 +57,8 @@ class Generic(models.Model):
                              self._meta.fields])
 
 
-    def save(self):
-        super(Generic, self).save()
+    def save(self, *args, **kwargs):
+        super(Generic, self).save(*args, **kwargs)
         self.__initial = self._dict
 
 

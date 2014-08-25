@@ -9,7 +9,8 @@ from django.contrib.contenttypes.models import ContentType
 
 from django.conf import settings
 
-from utils.views import ACTIONS, LoginRequiredView, SuperUserRequiredView
+from utils.views import ACTIONS
+from utils.views import LoginRequiredView, SuperUserRequiredView, GenericUpdateWithOneFormset
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
 
@@ -54,6 +55,7 @@ class MultimediaListView(LoginRequiredView, ListView):
         return context
 
 
+# ========================= MEDIA ========================================================
 
 class MediaListView(MultimediaListView, ListView):
     """
@@ -62,17 +64,6 @@ class MediaListView(MultimediaListView, ListView):
     model = Media
     context_object_name = "medias"
     search_field = "title"    
-
-
-class MediaTypeListView(MultimediaListView, SuperUserRequiredView, ListView):
-    """
-    Extend MultimediaListView to list MediaType objects
-    """
-    model = MediaType    
-    context_object_name = "types"
-    search_field = "name"
-    restrict_by_user = False
-
 
 class MediaUpdate(LoginRequiredView):
     """
@@ -235,40 +226,26 @@ class MediaDeleteView(LoginRequiredView, DeleteView):
 
         return super(MediaDeleteView, self).delete(request, *args, **kwargs)
 
+# ========================= MEDIA TYPE ===================================================
 
-class MediaTypeUpdate(SuperUserRequiredView):
+class MediaTypeListView(MultimediaListView, SuperUserRequiredView, ListView):
     """
-    Handle creation and update of MediaType objects
+    Extend MultimediaListView to list MediaType objects
     """
+    model = MediaType    
+    context_object_name = "types"
+    search_field = "name"
+    restrict_by_user = False
 
+
+class MediaTypeUpdate(SuperUserRequiredView, GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of MediaType objects 
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
     model = MediaType
     success_url = reverse_lazy('list_mediatypes')
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        formset = TypeTranslationFormSet(self.request.POST, instance=self.object)
-
-        if form.is_valid() and formset.is_valid():
-            self.object = form.save()
-            formset.instance = self.object
-            formset.save()
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form,
-                                                            formset=formset))
-
-    def form_invalid(self, form):
-            # force use of form_valid method to run all validations
-            return self.form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(MediaTypeUpdate, self).get_context_data(**kwargs)
-
-        if self.request.method == 'GET':
-            context['formset'] = TypeTranslationFormSet(instance=self.object)
-
-        return context
-
+    formset = TypeTranslationFormSet
 
 class MediaTypeUpdateView(MediaTypeUpdate, UpdateView):
     """
@@ -298,3 +275,36 @@ class MediaTypeDeleteView(LoginRequiredView, DeleteView):
         if not self.request.user.is_superuser or not obj.created_by == self.request.user:            
             return HttpResponse('Unauthorized', status=401)
         return obj
+
+
+# ========================= MEDIA COLLECTION =============================================
+
+class MediaCollectionListView(MultimediaListView, ListView):
+    """
+    Extend MultimediaListView to list Media Collection objects
+    """
+    model = MediaCollection
+    context_object_name = "collections"
+    search_field = "name"
+
+class MediaCollectionUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle create/edit of Media Collection
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = MediaCollection
+    success_url = reverse_lazy('list_mediacollections')
+    formset = MediaCollectionTranslationFormSet
+
+class MediaCollectionCreateView(MediaCollectionUpdate, CreateView):
+    """
+    Used as class view for create media collection
+    Extend MediaCollectionUpdate that do all the work
+    """
+
+
+class MediaCollectionEditView(MediaCollectionUpdate, UpdateView):
+    """
+    Used as class view for edit media type
+    Extend MediaCollectionUpdate that do all the work
+    """

@@ -51,18 +51,14 @@ def complete_form_data():
 
 
 def create_media_object():
-    # Create a Media object and test that is present on list
-    media = Media(status=0,title='Midia de teste', media_type_id=1, url='http://bvsalud.org', created_by_id=1)
-    media.save()
-
-    media_ct = ContentType.objects.get_for_model(media)
-    descriptor = Descriptor(object_id=1, content_type=media_ct, text='malaria')
-    descriptor.save()
     
-    thematic = ResourceThematic(object_id=1, content_type=media_ct, thematic_area_id=1)
-    thematic.save()
-
-
+    # Create a Media object and test that is present on list
+    media = Media.objects.create(status=0,title='Midia de teste', 
+                            media_type_id=1, url='http://bvsalud.org', created_by_id=1)
+    
+    media_ct = ContentType.objects.get_for_model(media)
+    descriptor = Descriptor.objects.create(object_id=1, content_type=media_ct, text='malaria')
+    thematic = ResourceThematic.objects.create(object_id=1, content_type=media_ct, thematic_area_id=1)
 
 @override_settings(AUTHENTICATION_BACKENDS=('django.contrib.auth.backends.ModelBackend',))
 class MultimediaTest(TestCase):
@@ -71,12 +67,8 @@ class MultimediaTest(TestCase):
         self.client = Client()
 
         # Create auxiliary tables 
-        media_type = MediaType(acronym='video', name='Video')
-        media_type.save()
-
-        thematic_area = ThematicArea(acronym='LISBR1.1', name='Teste')
-        thematic_area.save()
-
+        media_type = MediaType.objects.create(acronym='video', name='Video')
+        thematic_area = ThematicArea.objects.create(acronym='LISBR1.1', name='Teste')
 
     def login_editor(self):
         user_editor =  User.objects.create_user('editor', 'user@test.com', 'editor')
@@ -205,3 +197,39 @@ class MultimediaTest(TestCase):
        
         self.assertRedirects(response, '/multimedia/media-types')
         self.assertContains(response, "Foto")
+
+
+    def test_list_media_collection(self):
+        """
+        Tests list of media collection
+        """
+        self.login_editor()
+
+        # Create a media collection object and test that is present on list
+        media_collection = MediaCollection.objects.create(name='Coleção 1', 
+                                        description='Coleção de teste', created_by_id=1)
+
+
+        response = self.client.get('/multimedia/collections')
+        self.assertContains(response, "Coleção 1")
+
+
+    def test_add_media_collection(self):
+        """
+        Tests add media collection
+        """
+        self.login_editor()
+
+        form_data = { 
+            'name': 'Coleção nova',
+            'description': 'Coleção de teste',
+            'language': 'pt-br',
+            'mediacollectionlocal_set-TOTAL_FORMS': '0', 
+            'mediacollectionlocal_set-INITIAL_FORMS': '0',            
+        }
+
+        response = self.client.post('/multimedia/collection/new', form_data, follow=True )
+       
+        self.assertRedirects(response, '/multimedia/collections')
+        self.assertContains(response, "Coleção nova")
+

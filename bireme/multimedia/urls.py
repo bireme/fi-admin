@@ -10,6 +10,13 @@ urlpatterns = [
     url(r'^edit/(?P<pk>\d+)/?$', MediaUpdateView.as_view(), name='edit_media'),
     url(r'^delete/(?P<pk>\d+)/?$', MediaDeleteView.as_view(), name='delete_media'),
     
+    # Multimedia collections
+    url(r'^collections/?$', MediaCollectionListView.as_view(), name='list_mediacollections'),
+    url(r'^collection/new/?$', MediaCollectionCreateView.as_view(), name='create_mediacollection'),
+    url(r'^collection/edit/(?P<pk>\d+)/?$', MediaCollectionEditView.as_view(), name='edit_mediacollection'),
+    #url(r'^collection/delete/(?P<pk>\d+)/?$', MediaDeleteView.as_view(), name='delete_media'),
+
+
     # Media types
     url(r'^media-types/?$', MediaTypeListView.as_view(), name='list_mediatypes'),
     url(r'^media-type/new/?$', MediaTypeCreateView.as_view(), name='create_mediatype'),

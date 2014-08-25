@@ -49,9 +49,10 @@ class MediaTypeLocal(models.Model):
 
 
 # Collection model
-class Collection(models.Model):
+class MediaCollection(Generic):
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(_("Description"), blank=False)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
     class Meta:
         verbose_name = _("Collection")
@@ -61,13 +62,13 @@ class Collection(models.Model):
         return self.name
 
 
-class CollectionLocal(models.Model):
+class MediaCollectionLocal(models.Model):
 
     class Meta:
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    media_type = models.ForeignKey(Collection, verbose_name=_("Collection"))
+    media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"))
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=255)
     description = models.TextField(_("Description"), blank=False)
@@ -89,6 +90,7 @@ class Media(Generic):
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
     media_type = models.ForeignKey(MediaType, verbose_name=_("Media type"), blank=False)
+    media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"), null=True, blank=True)
     title = models.CharField(_('Title'), max_length=455, blank=False)
     url = models.URLField(_('URL'), blank=False)
     author = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
