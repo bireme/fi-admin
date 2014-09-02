@@ -1,15 +1,18 @@
 # coding: utf-8
-from django.test import TestCase
+
 from django.test.client import Client
-from django.test.utils import override_settings
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 
-from main.models import ThematicArea, Descriptor, ResourceThematic
+from main.models import Descriptor, ResourceThematic
 
+from utils.tests import BaseTestCase
 from models import *
 
 def minimal_form_data():
+    '''
+    Define a minimal fields for submit a media form
+    '''
+
     form_data = { 
         'status': '0',
         'title': 'Foto 1',
@@ -29,6 +32,10 @@ def minimal_form_data():
     return form_data
 
 def complete_form_data():
+    '''
+    Define missing fields for a valid submission of media object
+    '''
+
     missing_fields = {
         'url'  : 'http://www.youtube.com',
 
@@ -51,65 +58,48 @@ def complete_form_data():
 
 
 def create_media_object():
+    '''
+    Create media object for tests
+    '''
     
     # Create a Media object and test that is present on list
-    media = Media.objects.create(status=0,title='Midia de teste', 
-                            media_type_id=1, url='http://bvsalud.org', created_by_id=1)
+    media1 = Media.objects.create(status=0,title='Midia de teste (BR1.1)', 
+                            media_type_id=1, url='http://bvsalud.org', created_by_id=1,
+                            cooperative_center_code='BR1.1')
     
-    media_ct = ContentType.objects.get_for_model(media)
+    media_ct = ContentType.objects.get_for_model(media1)
     descriptor = Descriptor.objects.create(object_id=1, content_type=media_ct, text='malaria')
     thematic = ResourceThematic.objects.create(object_id=1, content_type=media_ct, thematic_area_id=1)
 
-@override_settings(AUTHENTICATION_BACKENDS=('django.contrib.auth.backends.ModelBackend',))
-class MultimediaTest(TestCase):
-    def setUp(self):
-        # Every test needs a client.
-        self.client = Client()
+    media2 = Media.objects.create(status=0,title='Media de prueba (PY3.1)', 
+                            media_type_id=1, url='http://bvsalud.org', created_by_id=2,
+                            cooperative_center_code='PY3.1')
 
-        # Create auxiliary tables 
-        media_type = MediaType.objects.create(acronym='video', name='Video')
-        thematic_area = ThematicArea.objects.create(acronym='LISBR1.1', name='Teste')
 
-    def login_editor(self):
-        user_editor =  User.objects.create_user('editor', 'user@test.com', 'editor')
-        user_editor.profile.data = '''
-        {
-            "user_role" : "normal",
-            "cc" : "BR1.2", 
-            "user_id" : 1,
-            "service_role": [{"Multimedia" : "edi"}], 
-            "user_name" : "Editor",
-            "ccs" : ["BR1.2"],
-            "networks" : ["NETWORK 1"]
-        }
-        '''
-        user_editor.profile.save()
-      
-        self.client.login(username='editor', password='editor')
 
-    def login_admin(self):
-        # only superuser can edit lists
-        user_admin = User.objects.create_superuser('admin', 'admin@test.com', 'admin')
-        self.client.login(username='admin', password='admin')
-
+class MultimediaTest(BaseTestCase):
 
     def test_list_media(self):
         """
-        Tests list of media pages
+        Test list media
         """
         self.login_editor()
         create_media_object()
 
         response = self.client.get('/multimedia/')
-        self.assertContains(response, "Midia de teste")
+        self.assertContains(response, "Midia de teste (BR1.1")
+
+        # list only medias from user cooperative center (BR1.1)
+        self.assertNotContains(response, "Media de prueba (PY3.1)")        
+
 
     def test_add_media(self):
         """
-        Tests add new media
+        Tests create media
         """
         self.login_editor()        
 
-        # Test invalid submission with missing required fields
+        # invalid submission with missing required fields
         form_data = minimal_form_data()
         response = self.client.post('/multimedia/new', form_data )
         
@@ -151,7 +141,7 @@ class MultimediaTest(TestCase):
 
     def test_delete_media(self):
         """
-        Tests delete of media 
+        Tests delete media 
         """
         self.login_editor()
         create_media_object()
@@ -161,7 +151,7 @@ class MultimediaTest(TestCase):
 
         response = self.client.post('/multimedia/delete/1')
 
-        self.assertTrue(Media.objects.count() == 0)
+        self.assertTrue(Media.objects.filter(id=1).count() == 0)
         self.assertTrue(Descriptor.objects.filter(object_id=1).count() == 0)
         self.assertTrue(ResourceThematic.objects.filter(object_id=1).count() == 0)
 
@@ -172,16 +162,34 @@ class MultimediaTest(TestCase):
         """
         Tests list media type
         """
+
+        # check if documentalist has access to list media-types
+        self.login_documentalist()
+        response = self.client.get('/multimedia/media-types/' )
+
+        # 403 = unauthorized
+        self.assertEqual(response.status_code, 403)
+
+        self.client.logout()
         self.login_admin()
 
         response = self.client.get('/multimedia/media-types/')
         self.assertContains(response, "Video")
 
 
-    def test_add_media(self):
+    def test_add_media_type(self):
         """
-        Tests add new media type
+        Tests create media type
         """
+
+        # check if documentalist has access to create new media-types
+        self.login_documentalist()
+        response = self.client.get('/multimedia/media-type/new' )
+
+        # 403 = unauthorized
+        self.assertEqual(response.status_code, 403)
+
+        self.client.logout()
         self.login_admin()
 
         form_data = { 
@@ -206,12 +214,27 @@ class MultimediaTest(TestCase):
         self.login_editor()
 
         # Create a media collection object and test that is present on list
-        media_collection = MediaCollection.objects.create(name='Coleção 1', 
-                                        description='Coleção de teste', created_by_id=1)
+        MediaCollection.objects.create(name='Coleção 1', 
+                                        description='Coleção de teste 1', 
+                                        created_by_id=1, cooperative_center_code='BR1.1')
+
+        MediaCollection.objects.create(name='Coleção 2', 
+                                        description='Coleção de teste 2', 
+                                        created_by_id=2, cooperative_center_code='BR1.1')
+
+        MediaCollection.objects.create(name='Coleção 3', 
+                                        description='Coleção de teste 3', 
+                                        created_by_id=3, cooperative_center_code='PY3.8')
 
 
         response = self.client.get('/multimedia/collections')
+        # check if only one collection is returned (restrict by user)
         self.assertContains(response, "Coleção 1")
+        self.assertEquals(response.context['object_list'].count(), 1)
+        
+        # check if return only colections from cooperative center BR1.1
+        response = self.client.get('/multimedia/collections/?filter_owner=*')
+        self.assertEquals(response.context['object_list'].count(), 2)
 
 
     def test_add_media_collection(self):
