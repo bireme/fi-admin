@@ -28,3 +28,7 @@ class WhodidMiddleware(object):
             if 'updated_by' in instance._meta.get_all_field_names():
                 instance.updated_by = user
                 instance.updated_time =  timezone.now()
+
+        # automatically add user cooperative center if present at field names and is not set
+        if 'cooperative_center_code' in instance._meta.get_all_field_names() and not instance.cooperative_center_code:
+            instance.cooperative_center_code = user.profile.get_attribute('cc')
