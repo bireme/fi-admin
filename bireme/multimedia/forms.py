@@ -33,16 +33,6 @@ class MediaForm(forms.ModelForm):
             if hasattr(field.widget.attrs, 'readonly'):
                 setattr(obj, name, field.widget.original_value)
 
-        # add cooperative center code to model for new records
-        if self.user:
-            if not obj.cooperative_center_code:
-                user_cc = settings.DEFAULT_COOPERATIVE_CENTER
-                if not self.user.is_superuser:
-                    user_data = simplejson.loads(self.user.profile.data)
-                    user_cc = user_data['cc']
-
-                obj.cooperative_center_code = user_cc
-
         # save modifications
         obj.save()
 
@@ -55,6 +45,11 @@ class MediaForm(forms.ModelForm):
         source_language = forms.MultipleChoiceField()
         Media_type = forms.MultipleChoiceField()
 
+
+class MediaCollectionForm(forms.ModelForm):
+    class Meta:
+        model  = MediaCollection
+        exclude = ('cooperative_center_code',)
 
 
 # definition of inline formsets
