@@ -81,16 +81,33 @@
                             {% endfor %}
                             {{ form.non_field_errors }}
                             {% for field in form.visible_fields %}
-                                <label for="{{ field.auto_id }}">
-                                    {% if field.field.required %}
-                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                  {% if field.name == 'media_collection' %}
+                                        {{ field.as_hidden }}
+                                        <label for="{{ field.auto_id }}">
+                                            {{ field.label }}
+                                        </label>
+                                        <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
+                                            {% spaceless %}
+                                            {% if field.value == None or field.value == '' %}
+                                                {% trans "Select by search" %}
+                                            {% else %} 
+                                                {{ media.media_collection }}
+                                            {% endif %}
+                                            {% endspaceless %}
+                                        </div>
+                                        <a href="#" onclick="javascript:media_collection_list(this)";><i class="icon-search"></i></a>
                                     {% else %}
-                                        {{ field.label }}
+                                        <label for="{{ field.auto_id }}">
+                                            {% if field.field.required %}
+                                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                            {% else %}
+                                                {{ field.label }}
+                                            {% endif %}
+                                        </label>
+                                        <p class="muted">{{ field.help_text }}</p>
+                                        {{ field.errors }}
+                                        {{ field }}
                                     {% endif %}
-                                </label>
-                                <p class="muted">{{ field.help_text }}</p>
-                                {{ field.errors }}
-                                {{ field }}
                             {% endfor %}
                         </fieldset>
                     {% endif %}
@@ -156,11 +173,13 @@
                                         <td class="span6">
                                             {{ field.as_hidden }}
                                             <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
-                                                {% if field.value == None %}
+                                                {% spaceless %}
+                                                {% if field.value == None or field.value == '' %}
                                                     {% trans "Select by search" %}
                                                 {% else %} 
                                                     {{ field.value}}
                                                 {% endif %}
+                                                {% endspaceless %}
                                             </div>
                                             <a href="#" onclick="javascript:decs_search(this)";><i class="icon-search"></i></a>
                                         </td>
@@ -375,12 +394,23 @@
             
         })
 
+        function media_collection_list(obj){
+            var row = $(obj).parent();
+            collection_field = row.find('input').attr('name');
+            collection_win = window.open('{% url "list_mediacollections" %}', 'media_collection_list', 'scrollbars=1,width=785,height=590');
+        }
+
+        function dismissRelatedLookupPopup(chosenId, chosenLabel) {
+            $('#id_media_collection').val(chosenId);
+            $('#label_media_collection').text(chosenLabel);
+            collection_win.close();
+        }
+
         function decs_search(obj){
             var row = $(obj).parent();
             decs_field = row.find('input').attr('name');
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
         }
-
 
 
    </script>
