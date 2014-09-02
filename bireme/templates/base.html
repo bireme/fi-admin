@@ -25,10 +25,12 @@
             {% block "body" %}
                 {% block top %}{% include 'menu.html' %}{% endblock %}
 
+                {% block breadcrumb_wrap %}
                 <ul class="breadcrumb">
                     <li><a href="{% url 'main.views.dashboard' %}">{% trans 'Home' %}</a> <span class="divider">/</span></li>
                     {% block breadcrumb %}{% endblock %}
                 </ul>
+                {% endblock %}
 
 
                 <div class="container-fluid content main">
