@@ -8,6 +8,8 @@ from main.choices import LANGUAGES_CHOICES
 
 from django.contrib.contenttypes.generic import GenericRelation
 
+from main.models import SourceLanguage
+
 # Media Type model
 class MediaType(Generic):
 
@@ -51,8 +53,11 @@ class MediaTypeLocal(models.Model):
 # Collection model
 class MediaCollection(Generic):
     name = models.CharField(max_length=255, null=True, blank=True)
-    description = models.TextField(_("Description"), blank=False)
-    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+    description = models.TextField(_("Description"), blank=True)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES, blank=True)
+
+    # responsible cooperative center
+    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
     class Meta:
         verbose_name = _("Collection")
@@ -71,7 +76,7 @@ class MediaCollectionLocal(models.Model):
     media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"))
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=255)
-    description = models.TextField(_("Description"), blank=False)
+    description = models.TextField(_("Description"), blank=True)
 
 
 # Media model
@@ -93,8 +98,13 @@ class Media(Generic):
     media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"), null=True, blank=True)
     title = models.CharField(_('Title'), max_length=455, blank=False)
     url = models.URLField(_('URL'), blank=False)
-    author = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
+    authors = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
+    contributors = models.TextField(_('Contributors'), blank=True, help_text=_("Enter one per line"))
     description = models.TextField(_("Description"), blank=True)
+    language = models.ManyToManyField(SourceLanguage, verbose_name=_("language"), blank=True)
+    dimension = models.CharField(_('Dimension'), max_length=155, blank=True, help_text=_("for photo, etc"))
+    duration = models.CharField(_('Duration'), max_length=155, blank=True, help_text=_("for audio, video, etc"))
+    location = models.CharField(_('Location'), max_length=155, blank=True)
 
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
