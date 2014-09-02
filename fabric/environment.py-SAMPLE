@@ -1,19 +1,16 @@
 from fabric.api import env
 
-env.user = ''
-env.path = '/home/aplicacoes-bvs/lis-service/'
-env.rootpath = env.path + 'bireme/'
-env.gitpath = env.path + 'git/'
-env.virtualenv = env.path + 'env/'
+#env.use_ssh_config = True
+#env.ssh_config_path = 'path_to_ssh_config'
 
-def test():
-    """Test server"""
-    env.hosts = ['ts']
-
-def stage():
-    """Stage server"""
-    env.hosts = ['hm']
-
-def production():
-    """Main server"""
-    env.hosts = ['pr']
+# Define stages servers
+STAGES = {
+    'test': {
+        'hosts': ['user@test.app.com'],
+        'path': '/home/path_to_app',
+    },
+    'production': {
+        'hosts': ['user@app.com'],
+        'path': '/home/path_to_app',
+    },
+}
