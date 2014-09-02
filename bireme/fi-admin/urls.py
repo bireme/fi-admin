@@ -80,6 +80,8 @@ urlpatterns = patterns('',
     # External error report
     (r'^report-error/?$', 'error_reporting.views.external_error_report'),
 
+    # Multimedia
+    (r'^multimedia/', include('multimedia.urls')),
 
     # Login/Logout
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html', 'extra_context':{'BIREMELOGIN_BASE_URL': settings.BIREMELOGIN_BASE_URL}}, name='auth_login'),

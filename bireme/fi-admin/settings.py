@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     'events',
     'suggest', 
     'error_reporting',
+    'multimedia',
     'utils',
     'south',
 
