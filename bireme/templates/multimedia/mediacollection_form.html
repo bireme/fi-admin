@@ -2,16 +2,13 @@
 {% load i18n %}
 {% load static %}
 
+{% block top %}{% endblock %}
+
 {% block title %}{% trans "Edit Media collection" %}{% endblock %}
 
-{% block breadcrumb %}
-    <li><a href="{% url 'list_mediacollections' %}">{% trans "Media collection" %}</a> <span class="divider">/</span></li>
-    {% if not object %}<li>{% trans "New Media collection" %}</li>
-    {% else %}<li>{% trans "Edit Media collection" %}</li>{% endif %}
-{% endblock %}
+{% block breadcrumb_wrap %}{% endblock %}
 
 {% block content %}
-
 
 <div class='header'>
     <h2><i class='icon-camera'></i>{% if not object %}{% trans "New Media collection" %}{% else %}{% trans "Edit Media type" %}{% endif %}</h2>
@@ -95,3 +92,4 @@
    </script>
 {% endblock %}
 
+{% block footer %}{% endblock %}

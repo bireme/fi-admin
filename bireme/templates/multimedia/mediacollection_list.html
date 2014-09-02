@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block top %}{% endblock %}
+
 {% block title %}{% trans "Media collection" %} | {{ block.super }}{% endblock %}
 
-{% block breadcrumb %}
-    <li>{% trans "Media collection" %}</li>
-{% endblock %}
-
+{% block breadcrumb_wrap %}{% endblock %}
 
 {% block content %}
 <form name="actions">
@@ -16,23 +15,8 @@
     <input type='hidden' name="s"  value="{{ actions.s }}">
 </form>
 
-<!--  header -->
-<div class='header'>
-    <h2><i class='icon-camera'></i> {% trans "Media collection" %}</h2>
-        <div class='pull-right'>
-            <a href="{% url 'create_mediacollection' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Media collection" %}</a>
-        </div>
-</div>
-
-<div class='body'>
-    {% if actions.s %}
-        <div>
-            {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-            <a href="{% url 'list_mediatypes' %}">[{% trans "clear" %}]</a>
-        </div>
-    {% endif %}
-
-    <div class='pull-right'>
+<div class="row">
+    <div class="span8">
         <div class="input-append">
             <form name="search" onSubmit="return search();">
                 <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
@@ -40,21 +24,27 @@
             </form>
         </div>
     </div>
+    <div class='span3'>
+        <a href="{% url 'create_mediacollection' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Media collection" %}</a>
+    </div>
+</div>
 
+
+<div class='body'>
+
+    <h3>{% trans "Select media collection" %}</h3>
     <table class='table'>
         <thead>
-            <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
             <th><a href="javascript:orderby('name');" id="id_title">{% trans "Name" %}</a></th>
             <th>{% trans "Actions" %}</th>
         </thead>
         <tbody>
             {% for collection in collections %}
                 <tr>
-                    <td><a href="{% url 'edit_mediacollection' collection.id %}">{{ collection.id }}</a></td>
-                    <td>{{ collection.name }}</td>
+                    <td><a href="#" onclick="opener.dismissRelatedLookupPopup('{{ collection.id }}', '{{ collection.name }}' ); return false;">{{ collection.name }}</a></td>
                     <td>
                         <a href="{% url 'edit_mediacollection' collection.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                        <a href="{% url 'delete_mediatype' collection.id %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                        <a href="{% url 'delete_mediacollection' collection.id %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                     </td>
                 </tr>
             {% endfor %}
@@ -66,3 +56,5 @@
 </div>
 
 {% endblock %}
+
+{% block footer %}{% endblock %}
