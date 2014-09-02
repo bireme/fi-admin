@@ -110,13 +110,16 @@ class MultimediaTest(BaseTestCase):
         # complete form_data with required fields and re-submit form
         form_data = complete_form_data()
 
-        # Test valid submission
-        # After submit a valid content the view will redirect to /multimedia and list the objects
+        # test valid submission
+        # after submit a valid content the view will redirect to /multimedia and list the objects
         # follow=True will allow check if the new data is on the list
         response = self.client.post('/multimedia/new', form_data, follow=True)
         self.assertRedirects(response, '/multimedia/')
         self.assertContains(response, "Foto 1")
 
+        # check if is set cooperative center code of user (editor = BR1.1)
+        self.assertEquals(Media.objects.all()[0].cooperative_center_code, "BR1.1")
+        
     def test_edit_media(self):
         """
         Tests edit media
