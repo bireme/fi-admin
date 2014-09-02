@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import HttpResponseForbidden
 from functools import wraps
 
 def advanced_permission(method):
@@ -7,7 +7,7 @@ def advanced_permission(method):
 
         user = request.user
         if not user.is_superuser and user.profile.type == "basic":
-            raise Http404
+            return HttpResponseForbidden()
 
         return method(request, *args, **kwargs)
     return wrapper
@@ -18,7 +18,7 @@ def superuser_permission(method):
 
         user = request.user
         if not user.is_superuser:
-            raise Http404
+            return HttpResponseForbidden()
 
         return method(request, *args, **kwargs)
     return wrapper
