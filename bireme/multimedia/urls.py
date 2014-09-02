@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^collections/?$', MediaCollectionListView.as_view(), name='list_mediacollections'),
     url(r'^collection/new/?$', MediaCollectionCreateView.as_view(), name='create_mediacollection'),
     url(r'^collection/edit/(?P<pk>\d+)/?$', MediaCollectionEditView.as_view(), name='edit_mediacollection'),
-    #url(r'^collection/delete/(?P<pk>\d+)/?$', MediaDeleteView.as_view(), name='delete_media'),
+    url(r'^collection/delete/(?P<pk>\d+)/?$', MediaCollectionDeleteView.as_view(), name='delete_mediacollection'),
 
 
     # Media types

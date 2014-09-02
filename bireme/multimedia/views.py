@@ -46,6 +46,10 @@ class MultimediaListView(LoginRequiredView, ListView):
 
         if self.restrict_by_user and self.actions['filter_owner'] != "*":
             object_list = object_list.filter(created_by=self.request.user)
+        elif self.actions['filter_owner'] == "*":
+            # restrict by cooperative center
+            user_cc = self.request.user.profile.get_attribute('cc')
+            object_list = object_list.filter(cooperative_center_code=user_cc)
 
         return object_list
 
@@ -293,6 +297,7 @@ class MediaCollectionUpdate(GenericUpdateWithOneFormset):
     Use GenericUpdateWithOneFormset to render form and formset
     """
     model = MediaCollection
+    form_class = MediaCollectionForm
     success_url = reverse_lazy('list_mediacollections')
     formset = MediaCollectionTranslationFormSet
 
@@ -308,3 +313,19 @@ class MediaCollectionEditView(MediaCollectionUpdate, UpdateView):
     Used as class view for edit media type
     Extend MediaCollectionUpdate that do all the work
     """
+
+class MediaCollectionDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of MediaType collection objects
+    """
+    model = MediaCollection
+    success_url = reverse_lazy('list_mediacollections')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(MediaCollectionDeleteView, self).get_object()
+        print obj.created_by
+        
+        if not obj.created_by == self.request.user:            
+            return HttpResponse('Unauthorized', status=401)
+        return obj
