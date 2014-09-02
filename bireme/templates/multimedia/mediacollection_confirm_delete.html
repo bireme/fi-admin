@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block top %}{% endblock %}
+
+{% block title %}{% trans "Delete media collection" %}{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'list_media' %}">{% trans "Media collection" %}</a> <span class="divider">/</span></li>
+    <li>{% trans "Delete media Type" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-camera'></i>{% trans "Delete media collection" %}</h2>
+</div>
+
+<div class='body'>
+    <form method="POST" class="media-form">
+        <blockquote>
+            <h3>{{ object }}</h3>
+        </blockquote>
+        
+        {% csrf_token %}
+
+        <div class="alert">
+            <p><strong>{% trans "Are you sure to delete?" %}</strong></p>
+            <a href="{% url 'list_mediacollections'%}" class="btn">{% trans 'No' %}</a>
+            <input type="submit" class="btn btn-danger delete" value="{% trans 'Yes' %}"></input>
+        </div>
+        
+    </form>
+</div>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
