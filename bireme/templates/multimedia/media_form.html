@@ -334,27 +334,27 @@
         $(function() {
             $('.descriptor-row').formset({
                     addText : '{% trans "Add descriptor" %}',
-                    deleteText: '<i class="icon-remove"></i>',
+                    deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'btn btn-mini',
+                    deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     prefix: '{{ formset_descriptor.prefix }}'
             });
 
             $('.keyword-row').formset({
                     addText : '{% trans "Add keyword" %}',
-                    deleteText: '<i class="icon-remove"></i>',
+                    deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'btn btn-mini',
+                    deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     prefix: '{{ formset_keyword.prefix }}'
             });
 
             $('.thematic-row').formset({
                     addText : '{% trans "Add thematic area" %}',
-                    deleteText: '<i class="icon-remove"></i>',
+                    deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'btn btn-mini',
+                    deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     prefix: '{{ formset_thematic.prefix }}'
             });
