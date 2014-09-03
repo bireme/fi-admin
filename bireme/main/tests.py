@@ -9,7 +9,7 @@ from models import *
 
 def minimal_form_data():
     """
-    Define a minimal fields for submit a media form
+    Define a minimal fields for submit a form
     """
 
     form_data = { 
@@ -32,7 +32,7 @@ def minimal_form_data():
 
 def complete_form_data():
     """
-    Define missing fields for a valid submission of media object
+    Define missing fields for a valid submission 
     """
 
     missing_fields = {
@@ -117,7 +117,7 @@ class ResourceTest(BaseTestCase):
 
     def test_add_resource(self):
         """
-        Tests create media
+        Tests of create view
         """
         self.login_editor()        
 
