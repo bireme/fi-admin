@@ -35,26 +35,33 @@ def suggest_resource(request, **kwargs):
     suggest = None
     output = {}
     template = ''
+    captcha_is_valid = True
+    captcha_error = ''
     
     suggest = SuggestResource()
    
     form = ExternalSuggestResourceForm(request.POST, instance=suggest)
 
-    # talk to the reCAPTCHA service  
-    captcha_response = captcha.submit(  
-        request.POST.get('recaptcha_challenge_field'),  
-        request.POST.get('recaptcha_response_field'),  
-        settings.RECAPTCHA_PRIVATE_KEY,  
-        request.META['REMOTE_ADDR'],)  
+    if settings.RECAPTCHA_PRIVATE_KEY:
+        # Check the captcha with reCAPTCHA (google service)
+        captcha_response = captcha.submit(  
+            request.POST.get('recaptcha_challenge_field'),  
+            request.POST.get('recaptcha_response_field'),  
+            settings.RECAPTCHA_PRIVATE_KEY,  
+            request.META['REMOTE_ADDR'],)  
 
+        if not captcha_response.is_valid:
+            # captcha is wrong show a error message in the template.
+            captcha_is_valid = False
+            captcha_error = captcha_response.error_code           
 
-    if form.is_valid() and captcha_response.is_valid:
+    if form.is_valid() and captcha_is_valid:
         template = 'suggest/thanks.html'
         suggest = form.save()
     else:
         template = 'suggest/invalid-link.html'
         output['form'] = form
-        output['captcha_error'] = captcha_response.error_code
+        output['captcha_error'] = captcha_error
     
     return render_to_response(template, output, context_instance=RequestContext(request))
 
@@ -228,27 +235,34 @@ def suggest_event(request, **kwargs):
     suggest = None
     output = {}
     template = ''
+    captcha_is_valid = True
+    captcha_error = ''   
     
     suggest = SuggestEvent()   
    
     form = ExternalSuggestEventForm(request.POST, instance=suggest)
 
-    # talk to the reCAPTCHA service  
-    captcha_response = captcha.submit(  
-        request.POST.get('recaptcha_challenge_field'),  
-        request.POST.get('recaptcha_response_field'),  
-        settings.RECAPTCHA_PRIVATE_KEY,  
-        request.META['REMOTE_ADDR'],)  
+    if settings.RECAPTCHA_PRIVATE_KEY:
+        # Check the captcha with reCAPTCHA (google service)
+        captcha_response = captcha.submit(  
+            request.POST.get('recaptcha_challenge_field'),  
+            request.POST.get('recaptcha_response_field'),  
+            settings.RECAPTCHA_PRIVATE_KEY,  
+            request.META['REMOTE_ADDR'],)  
 
+        if not captcha_response.is_valid:
+            # captcha is wrong show a error message in the template.
+            captcha_is_valid = False
+            captcha_error = captcha_response.error_code           
 
-    if form.is_valid() and captcha_response.is_valid:
+    if form.is_valid() and captcha_is_valid:
         template = 'suggest/thanks.html'
         suggest = form.save()
         output['type'] = 'event'
     else:
         template = 'suggest/invalid-link.html'
         output['form'] = form
-        output['captcha_error'] = captcha_response.error_code
+        output['captcha_error'] = captcha_error
     
     return render_to_response(template, output, context_instance=RequestContext(request))
 
