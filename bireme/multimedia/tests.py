@@ -3,7 +3,7 @@
 from django.test.client import Client
 from django.contrib.contenttypes.models import ContentType
 
-from main.models import Descriptor, ResourceThematic
+from main.models import Descriptor, ResourceThematic, ThematicArea
 
 from utils.tests import BaseTestCase
 from models import *
@@ -76,8 +76,18 @@ def create_media_object():
                             cooperative_center_code='PY3.1')
 
 
-
 class MultimediaTest(BaseTestCase):
+    """
+    Tests for multimedia app
+    """
+
+    def setUp(self):
+        super(MultimediaTest, self).setUp()
+
+        # create auxiliary models used on tests
+        media_type = MediaType.objects.create(acronym='video', name='Video')
+        thematic_area = ThematicArea.objects.create(acronym='LISBR1.1', name='Teste')
+
 
     def test_list_media(self):
         """

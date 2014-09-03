@@ -5,9 +5,6 @@ from django.test.utils import override_settings
 
 from django.contrib.auth.models import User
 
-from main.models import ThematicArea, Descriptor, ResourceThematic
-from multimedia.models import MediaType
-
 @override_settings(AUTHENTICATION_BACKENDS=('django.contrib.auth.backends.ModelBackend',))
 class BaseTestCase(TestCase):
     """
@@ -17,11 +14,6 @@ class BaseTestCase(TestCase):
     def setUp(self):
         # set a client.
         self.client = Client()
-
-        # Create auxiliary tables 
-        media_type = MediaType.objects.create(acronym='video', name='Video')
-        thematic_area = ThematicArea.objects.create(acronym='LISBR1.1', name='Teste')
-
 
     def login_documentalist(self):
         user_doc =  User.objects.create_user('doc', 'user@test.com', 'doc')
