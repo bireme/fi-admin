@@ -105,3 +105,12 @@ def update():
     update_version_file()
     restart_app()
 
+@task
+def run_tests():
+    """
+    execute tests defined at application
+    """
+    with cd(env.root_path):
+        with prefix('. %s/bin/activate' % env.virtualenv):
+            run('./run_tests.sh')
+
