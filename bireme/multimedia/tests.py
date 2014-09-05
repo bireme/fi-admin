@@ -37,7 +37,7 @@ def complete_form_data():
     '''
 
     missing_fields = {
-        'url'  : 'http://www.youtube.com',
+        'link'  : 'http://www.youtube.com',
 
         'main-descriptor-content_type-object_id-TOTAL_FORMS' : '1',
 
@@ -64,7 +64,7 @@ def create_media_object():
     
     # Create a Media object and test that is present on list
     media1 = Media.objects.create(status=0,title='Midia de teste (BR1.1)', 
-                            media_type_id=1, url='http://bvsalud.org', created_by_id=1,
+                            media_type_id=1, link='http://bvsalud.org', created_by_id=1,
                             cooperative_center_code='BR1.1')
     
     media_ct = ContentType.objects.get_for_model(media1)
@@ -72,7 +72,7 @@ def create_media_object():
     thematic = ResourceThematic.objects.create(object_id=1, content_type=media_ct, thematic_area_id=1)
 
     media2 = Media.objects.create(status=0,title='Media de prueba (PY3.1)', 
-                            media_type_id=1, url='http://bvsalud.org', created_by_id=2,
+                            media_type_id=1, link='http://bvsalud.org', created_by_id=2,
                             cooperative_center_code='PY3.1')
 
 
@@ -146,7 +146,14 @@ class MultimediaTest(BaseTestCase):
 
         # Test changes values and submit
         form_data = complete_form_data()
+        form_data['status'] = '1'
 
+        response = self.client.post(url, form_data)
+        # check for validation of descriptor and thematic area for status = Admitted
+        self.assertContains(response, "é necessário ter pelo menos um descritor")
+
+        # check for normal edition
+        form_data['status'] = '0'
         response = self.client.post(url, form_data, follow=True)
         self.assertRedirects(response, '/multimedia/')
         self.assertContains(response, "Foto 1")
