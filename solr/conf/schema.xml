@@ -179,7 +179,7 @@
    <field name="mh" type="decs_keyword" indexed="true"  stored="false" multiValued="true" />
 
    <!-- Dynamic field definitions -->
-   <dynamicField name="*" type="ignored" multiValued="true"/>
+   <dynamicField name="*" type="text" indexed="true" stored="true" multiValued="false"/>
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
