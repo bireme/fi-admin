@@ -2,6 +2,7 @@
 *.pot
 *.pyc
 *.sh
+Guardfile
 settings_local.py
 database.db
 database.old

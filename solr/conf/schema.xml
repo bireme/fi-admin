@@ -64,6 +64,13 @@
         </analyzer>
     </fieldType>
 
+    <fieldType name="multi_language_text" class="solr.TextField">
+        <analyzer type="index">
+            <!-- index string with language subfield. ex. pt-br^Resumo|es^Resumen|en^Abstract -->
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="\^([^\|]+)" group="1"/>
+        </analyzer>
+    </fieldType>
+
     <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
@@ -168,6 +175,10 @@
    <field name="contact_email" type="string" indexed="false" stored="true"/>
    <field name="contact_info" type="text" indexed="true" stored="true"/>
    <field name="event_type" type="string" indexed="true" stored="true" multiValued="true"/>
+   
+   <!-- multimedia -->
+   <field name="media_type" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="media_type_filter" type="string" indexed="true" stored="true" multiValued="false"/>
    
    <field name="official_language" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="official_language_display" type="string" indexed="true" stored="true" multiValued="true"/>

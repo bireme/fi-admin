@@ -4,6 +4,7 @@ from django.conf import settings
 
 from api.resources_api import LinkResource
 from api.events_api import EventResource
+from api.multimedia_api import MediaResource
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -11,6 +12,7 @@ admin.autodiscover()
 
 link_resource = LinkResource()
 event_resource = EventResource()
+media_resource = MediaResource()
 
 urlpatterns = patterns('',
     # Examples:
@@ -87,9 +89,10 @@ urlpatterns = patterns('',
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html', 'extra_context':{'BIREMELOGIN_BASE_URL': settings.BIREMELOGIN_BASE_URL}}, name='auth_login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'authentication/logout.html', 'next_page': '/'}, name='auth_logout'),
 
-    #(r'^api/', include(resource_api.urls), include(event_api.urls)),
+    # API's
     (r'^api/', include(link_resource.urls)),
     (r'^api/', include(event_resource.urls)),
+    (r'^api/', include(media_resource.urls)),
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
 
     #internationalization

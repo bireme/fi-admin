@@ -13,7 +13,8 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     media_collection = indexes.CharField(model_attr='media_collection', null=True)
     duration = indexes.CharField(model_attr='duration', null=True)
     dimension = indexes.CharField(model_attr='dimension', null=True)
-
+    media_type = indexes.MultiValueField()
+    media_type_filter = indexes.MultiValueField()
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
     descriptor = indexes.MultiValueField()
@@ -32,6 +33,12 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
         
         return False
     '''
+
+    def prepare_media_type(self, obj):
+        return [ media_type.acronym for media_type in MediaType.objects.filter(media=obj.id) ]
+
+    def prepare_media_type_filter(self, obj):
+        return [ "|".join( media_type.get_translations() ) for media_type in MediaType.objects.filter(media=obj.id) ]
 
     def prepare_thematic_area(self, obj):
         return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
