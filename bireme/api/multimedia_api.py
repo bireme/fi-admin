@@ -14,7 +14,7 @@ class MediaResource(ModelResource):
     class Meta:
         queryset = multimedia.models.Media.objects.all()
         allowed_methods = ['get']
-        resource_name = 'media'
+        resource_name = 'multimedia'
 
     def prepend_urls(self):
         return [

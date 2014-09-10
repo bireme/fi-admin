@@ -10,9 +10,14 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     title = indexes.CharField(model_attr='title')
     link = indexes.CharField(model_attr='link', null=True)    
     description = indexes.CharField(model_attr='description', null=True)
+    authors = indexes.MultiValueField()
+    contributors = indexes.MultiValueField()
     media_collection = indexes.CharField(model_attr='media_collection', null=True)
-    duration = indexes.CharField(model_attr='duration', null=True)
+    item_extension = indexes.CharField(model_attr='item_extension', null=True)
+    other_physical_details = indexes.CharField(model_attr='other_physical_details', null=True)
     dimension = indexes.CharField(model_attr='dimension', null=True)
+    language = indexes.MultiValueField()
+    language_display = indexes.MultiValueField()
     media_type = indexes.MultiValueField()
     media_type_filter = indexes.MultiValueField()
     thematic_area = indexes.MultiValueField()
@@ -39,6 +44,18 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_media_type_filter(self, obj):
         return [ "|".join( media_type.get_translations() ) for media_type in MediaType.objects.filter(media=obj.id) ]
+
+    def prepare_language(self, obj):
+        return [ source_language.acronym for source_language in SourceLanguage.objects.filter(media=obj.id) ]
+
+    def prepare_language_display(self, obj):
+        return [ "|".join( source_language.get_translations() ) for source_language in SourceLanguage.objects.filter(media=obj.id) ]
+
+    def prepare_authors(self, obj):
+        return [line.strip() for line in obj.authors.split('\n') if line.strip()]
+
+    def prepare_contributors(self, obj):
+        return [line.strip() for line in obj.contributors.split('\n') if line.strip()]
 
     def prepare_thematic_area(self, obj):
         return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]

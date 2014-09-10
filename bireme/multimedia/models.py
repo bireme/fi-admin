@@ -102,9 +102,11 @@ class Media(Generic):
     authors = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
     contributors = models.TextField(_('Contributors'), blank=True, help_text=_("Enter one per line"))
     language = models.ManyToManyField(SourceLanguage, verbose_name=_("language"), blank=True)
-    dimension = models.CharField(_('Dimension'), max_length=155, blank=True, help_text=_("for photo, etc"))
-    duration = models.CharField(_('Duration'), max_length=155, blank=True, help_text=_("for audio, video, etc"))
-    location = models.CharField(_('Location'), max_length=155, blank=True)
+    item_extension = models.CharField(_('Item extension'), max_length=255, blank=True)
+    other_physical_details = models.CharField(_('Other physical details'), max_length=255, blank=True)
+    dimension = models.CharField(_('Dimension'), max_length=255, blank=True)
+    content_notes = models.TextField(_("Content notes"), blank=True)
+    version_notes = models.TextField(_("Version notes"), blank=True)
 
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
