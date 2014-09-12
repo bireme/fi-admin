@@ -86,16 +86,22 @@
                                         <label for="{{ field.auto_id }}">
                                             {{ field.label }}
                                         </label>
-                                        <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
-                                            {% spaceless %}
-                                            {% if field.value == None or field.value == '' %}
-                                                {% trans "Select by search" %}
-                                            {% else %} 
-                                                {{ media.media_collection }}
-                                            {% endif %}
-                                            {% endspaceless %}
+                                        <div class="row">
+                                            <div class="span2">
+                                            <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}"  id="label_{{ field.html_name }}">
+                                                {% spaceless %}
+                                                {% if field.value == None or field.value == '' %}
+                                                    {% trans "Select by search" %}
+                                                {% else %} 
+                                                    {{ media.media_collection }}
+                                                {% endif %}
+                                                {% endspaceless %}
+                                            </div>
+                                            </div>
+                                            <div class="span1">
+                                                <a href="#" onclick="javascript:media_collection_list(this)";><i class="icon-search"></i></a>
+                                            </div>
                                         </div>
-                                        <a href="#" onclick="javascript:media_collection_list(this)";><i class="icon-search"></i></a>
                                     {% else %}
                                         <label for="{{ field.auto_id }}">
                                             {% if field.field.required %}

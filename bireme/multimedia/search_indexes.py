@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
+    title_translated = indexes.CharField(model_attr='title_translated')
     link = indexes.CharField(model_attr='link', null=True)    
     description = indexes.CharField(model_attr='description', null=True)
     authors = indexes.MultiValueField()
@@ -16,6 +17,10 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     item_extension = indexes.CharField(model_attr='item_extension', null=True)
     other_physical_details = indexes.CharField(model_attr='other_physical_details', null=True)
     dimension = indexes.CharField(model_attr='dimension', null=True)
+    publisher = indexes.CharField(model_attr='publisher', null=True)
+    content_notes = indexes.CharField(model_attr='content_notes', null=True)
+    version_notes = indexes.CharField(model_attr='version_notes', null=True)
+    publication_date = indexes.CharField(model_attr='publication_date', null=True)
     language = indexes.MultiValueField()
     language_display = indexes.MultiValueField()
     media_type = indexes.MultiValueField()

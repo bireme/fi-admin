@@ -54,6 +54,9 @@ class MediaTypeLocal(models.Model):
 class MediaCollection(Generic):
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(_("Description"), blank=True)
+    date = models.DateField(_('Date'), help_text='Format: DD/MM/YYYY', null=True, blank=True)
+    city = models.CharField(_("City"), max_length=255, blank=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES, blank=True)
 
     # responsible cooperative center
@@ -96,7 +99,8 @@ class Media(Generic):
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
     media_type = models.ForeignKey(MediaType, verbose_name=_("Media type"), blank=False)
     media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"), null=True, blank=True)
-    title = models.CharField(_('Title'), max_length=455, blank=False)
+    title = models.CharField(_('Original title'), max_length=455, blank=False)
+    title_translated = models.CharField(_('Translated title'), max_length=455, blank=True)
     link = models.URLField(_('Link'), blank=False)
     description = models.TextField(_("Description"), blank=True)
     authors = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
@@ -107,6 +111,8 @@ class Media(Generic):
     dimension = models.CharField(_('Dimension'), max_length=255, blank=True)
     content_notes = models.TextField(_("Content notes"), blank=True)
     version_notes = models.TextField(_("Version notes"), blank=True)
+    publisher = models.CharField(_('Publisher'), max_length=255, blank=True)
+    publication_date = models.DateField(_('Publication date'), help_text='Format: DD/MM/YYYY', null=True, blank=True)
 
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
