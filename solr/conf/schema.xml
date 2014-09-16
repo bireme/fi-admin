@@ -178,7 +178,9 @@
    
    <!-- multimedia -->
    <field name="media_type" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="media_type_filter" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="media_type_filter" type="string" indexed="true" stored="false" multiValued="false"/>
+   <field name="media_collection" type="text" indexed="true" stored="true" multiValued="false"/>
+   <field name="media_collection_filter" type="string" indexed="true" stored="false" multiValued="false"/>
    
    <field name="official_language" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="official_language_display" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -221,5 +223,7 @@
  <copyField source="author" dest="au"/>
  <copyField source="descriptor" dest="mh"/>
  <copyField source="keyword" dest="kw"/>
+
+ <copyField source="media_collection" dest="media_collection_filter"/>
 
 </schema>

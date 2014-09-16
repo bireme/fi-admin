@@ -91,6 +91,7 @@
      <lst name="invariants">
          <str name="facet">true</str>
          <str name="facet.field">descriptor_filter</str>
+         <str name="facet.field">media_collection</str>
          <str name="facet.field">media_type_filter</str>
          <str name="facet.field">event_type</str>
          <str name="facet.limit">20</str>

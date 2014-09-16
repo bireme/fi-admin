@@ -111,6 +111,7 @@ class Media(Generic):
     dimension = models.CharField(_('Dimension'), max_length=255, blank=True)
     content_notes = models.TextField(_("Content notes"), blank=True)
     version_notes = models.TextField(_("Version notes"), blank=True)
+    related_links = models.TextField(_('Related links'), blank=True, help_text=_("Enter one per line"))
     publisher = models.CharField(_('Publisher'), max_length=255, blank=True)
     publication_date = models.DateField(_('Publication date'), help_text='Format: DD/MM/YYYY', null=True, blank=True)
 
