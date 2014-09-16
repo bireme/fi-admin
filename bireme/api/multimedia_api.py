@@ -2,19 +2,32 @@
 from django.conf import settings
 from django.conf.urls.defaults import *
 
+from django.contrib.contenttypes.models import ContentType
+
 from tastypie.resources import ModelResource
+from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 from tastypie import fields
-import multimedia.models
 
+from multimedia.models import Media
+
+from  main.models import Descriptor, ResourceThematic
 import requests
 import urllib
 
 class MediaResource(ModelResource):
+  
     class Meta:
-        queryset = multimedia.models.Media.objects.all()
+        queryset = Media.objects.filter(status=1)
         allowed_methods = ['get']
+        serializer = Serializer(formats=['json', 'xml'])
         resource_name = 'multimedia'
+        filtering = {
+            'update_date': ('gte', 'lte'),
+            'status': 'exact',
+        }        
+        include_resource_uri = False
+
 
     def prepend_urls(self):
         return [
@@ -52,4 +65,19 @@ class MediaResource(ModelResource):
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
-        
+
+
+    def dehydrate(self, bundle):
+        c_type = ContentType.objects.get_for_model(bundle.obj)
+
+        descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+
+        # add fields to output 
+        bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
+        bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
+        bundle.data['authors'] = [line.strip() for line in bundle.obj.authors.split('\n') if line.strip()]
+        bundle.data['contributors'] = [line.strip() for line in bundle.obj.contributors.split('\n') if line.strip()]
+
+        return bundle
+

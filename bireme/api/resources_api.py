@@ -2,22 +2,23 @@
 from django.conf import settings
 from django.conf.urls.defaults import *
 
+from django.contrib.contenttypes.models import ContentType
+
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 from tastypie import fields
-import main.models
+from main.models import Resource, ResourceThematic, Descriptor
 
 import requests
 import urllib
 
 class LinkResource(ModelResource):
-    # descriptors relationship 
-    descriptors = fields.ToManyField('main.api.DescriptorResource', 'resources', related_name='resource', full=True, null=True)
 
     class Meta:
-        queryset = main.models.Resource.objects.all()
+        queryset = Resource.objects.filter(status=1)
         allowed_methods = ['get']
         resource_name = 'resource'
+        include_resource_uri = False
 
     def prepend_urls(self):
         return [
@@ -56,9 +57,16 @@ class LinkResource(ModelResource):
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
         
-class DescriptorResource(ModelResource):    
-    resource = fields.ToOneField('api.resources.LinkResource', 'resource')
 
-    class Meta:
-        queryset = main.models.Descriptor.objects.all()
-        resource_name = 'descriptor'
+    def dehydrate(self, bundle):
+        c_type = ContentType.objects.get_for_model(bundle.obj)
+
+        descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+        thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+
+        # add fields to output 
+        bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
+        bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
+
+        return bundle
+
