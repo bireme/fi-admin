@@ -1,10 +1,11 @@
-Django==1.5.1
+Django==1.5.10
 South==0.8.4
 django-rosetta==0.7.1
 django-tastypie==0.9.15
 django-haystack==2.1.0
 pysolr==3.1.0
 lxml==3.2.3
+defusedxml==0.4.1
 cssselect==0.9.1
 simplejson==3.3.0
 requests==1.2.3
