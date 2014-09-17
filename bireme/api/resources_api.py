@@ -65,6 +65,7 @@ class LinkResource(ModelResource):
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
 
         # add fields to output 
+        bundle.data['link'] = [line.strip() for line in bundle.obj.link.split('\n') if line.strip()]
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
 
