@@ -10,6 +10,7 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
     link = indexes.CharField(model_attr='link', null=True)
+    address = indexes.CharField(model_attr='address', null=True)
     city = indexes.CharField(model_attr='city', null=True)
     country = indexes.CharField(model_attr='country', null=True)
     start_date = indexes.DateTimeField(model_attr='start_date')
