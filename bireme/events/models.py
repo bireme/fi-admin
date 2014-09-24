@@ -71,6 +71,7 @@ class Event(Generic):
 
     link = models.URLField(_('Link'), blank=True)
    
+    address = models.CharField(_('Address'), max_length=255, blank=True)
     city = models.CharField(_('City'), max_length=125, blank=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
 

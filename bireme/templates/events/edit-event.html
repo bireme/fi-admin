@@ -373,9 +373,15 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
 
    <script type="text/javascript">
         var decs_field;
+        
+        var placeSearch, autocomplete;
+        var componentForm = {
+            id_city: 'long_name'
+        };
 
         $(function() {
             $('.descriptor-row').formset({
@@ -430,6 +436,20 @@
                 $("#error_report_modal").modal("show");                
             });
 
+
+
+            // Create the autocomplete object, restricting the search
+            // to geographical location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                /** @type {HTMLInputElement} */(document.getElementById('id_address')),
+                { types: ['geocode'] });
+            // When the user selects an address from the dropdown,
+            // populate the address fields in the form.
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+              fillInAddress();
+            });
+
+
         })
 
         function decs_search(obj){
@@ -437,6 +457,42 @@
             decs_field = row.find('input').attr('name');
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
         }
+
+        // [START region_fillform]
+        function fillInAddress() {
+          // Get the place details from the autocomplete object.
+          var place = autocomplete.getPlace();
+
+          var street_name, street_number = 's/n', neighborhood, city;
+
+          // Get each component of the address from the place details
+          // and fill the corresponding field on the form.
+          for (var i = 0; i < place.address_components.length; i++) {            
+            var addressType = place.address_components[i].types[0];
+            var addressValue = place.address_components[i].long_name;
+
+            switch (addressType) {
+                case 'route':
+                    street_name = addressValue;
+                    break;
+                case 'street_number':
+                    street_number = addressValue;
+                    break;
+                case 'neighborhood':
+                    neighborhood = addressValue;
+                    break;
+                case 'locality':
+                    city = addressValue;            
+            }
+          }
+
+          // rewrite form elements using Google API information
+          document.getElementById('id_address').value = street_name + ', ' + street_number + ', ' + neighborhood;
+          document.getElementById('id_city').value = city;
+
+
+        }
+        // [END region_fillform]
 
    </script>
 {% endblock %}

@@ -3,7 +3,7 @@ from django.test.client import Client
 from django.contrib.contenttypes.models import ContentType
 
 from utils.models import Country
-from main.models import ThematicArea
+from main.models import ThematicArea, Descriptor, Keyword, ResourceThematic
 
 from utils.tests import BaseTestCase
 from models import *
@@ -63,7 +63,7 @@ def create_test_objects():
     """
 
     # Create two objects of different users and same center code
-    Event.objects.create(status=0, title='Evento de teste (BR1.1)',
+    event_1 = Event.objects.create(status=0, title='Evento de teste (BR1.1)',
                             start_date='2014-01-01', end_date='2014-01-05',
                             created_by_id=1, cooperative_center_code='BR1.1')
     
@@ -75,6 +75,13 @@ def create_test_objects():
     Event.objects.create(status=0, title='Evento de teste (PY3.1)',
                             start_date='2014-01-01', end_date='2014-01-05',
                             created_by_id=3, cooperative_center_code='PY3.1')
+
+
+    # add descriptor and thematic area for event_1
+    object_ct = ContentType.objects.get_for_model(Event)
+    descriptor = Descriptor.objects.create(object_id=1, content_type=object_ct, text='descritor 1')
+    keyword = Keyword.objects.create(object_id=1, content_type=object_ct, text='keyword 1')
+    thematic = ResourceThematic.objects.create(object_id=1, content_type=object_ct, thematic_area_id=1)
 
 
 class EventTest(BaseTestCase):
@@ -171,6 +178,14 @@ class EventTest(BaseTestCase):
 
         response = self.client.post('/events', form_data, follow=True)
         self.assertTrue(Event.objects.filter(id=1).count() == 0)
+
+        
+        # check delete of related objects (descriptors, thematic_area, keywords)
+        object_ct = ContentType.objects.get_for_model(Event)
+
+        self.assertTrue(Descriptor.objects.filter(object_id=1, content_type=object_ct).count() == 0)
+        self.assertTrue(Keyword.objects.filter(object_id=1, content_type=object_ct).count() == 0)
+        self.assertTrue(ResourceThematic.objects.filter(object_id=1, content_type=object_ct).count() == 0)
 
 
     def test_event_type(self):

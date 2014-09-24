@@ -196,6 +196,7 @@ def delete_event(request, event_id):
 
     user = request.user
     event = get_object_or_404(Event, id=event_id)
+    c_type = ContentType.objects.get_for_model(Event)
     output = {}
 
     user_data = additional_user_info(request)
@@ -204,6 +205,11 @@ def delete_event(request, event_id):
         return HttpResponse('Unauthorized', status=401)
 
     event.delete()
+
+    # delete associated data
+    Descriptor.objects.filter(object_id=event_id, content_type=c_type).delete()
+    Keyword.objects.filter(object_id=event_id, content_type=c_type).delete()
+    ResourceThematic.objects.filter(object_id=event_id, content_type=c_type).delete()
 
     output['alert'] = _("Event deleted.")
     output['alerttype'] = "alert-success"

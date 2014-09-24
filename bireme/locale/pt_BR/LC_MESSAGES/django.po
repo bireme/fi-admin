@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-12 18:43-0300\n"
-"PO-Revision-Date: 2014-09-12 18:47-0300\n"
+"POT-Creation-Date: 2014-09-24 11:06-0300\n"
+"PO-Revision-Date: 2014-09-24 11:09-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -137,7 +137,7 @@ msgstr "Informe editado com sucesso."
 msgid "Report deleted."
 msgstr "Informe apagado."
 
-#: events/models.py:16 events/models.py:47 events/models.py:77
+#: events/models.py:16 events/models.py:47 events/models.py:78
 #: templates/events/edit-type.html:8
 msgid "Event type"
 msgstr "Tipo de evento"
@@ -274,36 +274,40 @@ msgstr "Data de término"
 msgid "Link"
 msgstr "Link"
 
-#: events/models.py:74 multimedia/models.py:58 suggest/models.py:62
+#: events/models.py:74
+msgid "Address"
+msgstr "Endereço"
+
+#: events/models.py:75 multimedia/models.py:58 suggest/models.py:62
 msgid "City"
 msgstr "Cidade"
 
-#: events/models.py:75 multimedia/models.py:59
+#: events/models.py:76 multimedia/models.py:59
 msgid "Country"
 msgstr "País"
 
-#: events/models.py:78
+#: events/models.py:79
 msgid "Official languages"
 msgstr "Idiomas oficiais"
 
-#: events/models.py:80
+#: events/models.py:81
 msgid "Contact email"
 msgstr "Email para contato"
 
-#: events/models.py:81
+#: events/models.py:82
 msgid "Information for contact"
 msgstr "Informação de contato"
 
-#: events/models.py:82
+#: events/models.py:83
 msgid "Observations"
 msgstr "Observações"
 
-#: events/models.py:83
+#: events/models.py:84
 msgid "Target groups"
 msgstr "Público alvo"
 
-#: events/models.py:86 main/models.py:176 multimedia/models.py:63
-#: multimedia/models.py:118
+#: events/models.py:87 main/models.py:176 multimedia/models.py:63
+#: multimedia/models.py:119
 msgid "Cooperative center"
 msgstr "Centro cooperante"
 
@@ -311,15 +315,15 @@ msgstr "Centro cooperante"
 msgid "Event successfully edited."
 msgstr "Evento editado com sucesso."
 
-#: events/views.py:208
+#: events/views.py:214
 msgid "Event deleted."
 msgstr "Evento apagado."
 
-#: events/views.py:281 main/views.py:417
+#: events/views.py:287 main/views.py:417
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: events/views.py:305 main/views.py:441
+#: events/views.py:311 main/views.py:441
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
@@ -419,6 +423,7 @@ msgid "Authors"
 msgstr "Autores"
 
 #: main/models.py:164 multimedia/models.py:106 multimedia/models.py:107
+#: multimedia/models.py:114
 msgid "Enter one per line"
 msgstr "Insira um por linha"
 
@@ -540,10 +545,14 @@ msgid "Version notes"
 msgstr "Notas de versão"
 
 #: multimedia/models.py:114
+msgid "Related links"
+msgstr "Links relacionados"
+
+#: multimedia/models.py:115
 msgid "Publisher"
 msgstr "Editora"
 
-#: multimedia/models.py:115
+#: multimedia/models.py:116
 msgid "Publication date"
 msgstr "Data de publicação"
 
@@ -876,13 +885,13 @@ msgstr "Sugerido"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: templates/events/edit-event.html:383 templates/main/edit-resource.html:395
+#: templates/events/edit-event.html:389 templates/main/edit-resource.html:395
 #: templates/multimedia/media_form.html:343
 msgid "Add descriptor"
 msgstr "Adicionar descritor"
 
-#: templates/events/edit-event.html:384 templates/events/edit-event.html:393
-#: templates/events/edit-event.html:402 templates/events/edit-type.html:72
+#: templates/events/edit-event.html:390 templates/events/edit-event.html:399
+#: templates/events/edit-event.html:408 templates/events/edit-type.html:72
 #: templates/main/edit-language.html:72 templates/main/edit-resource.html:396
 #: templates/main/edit-resource.html:405 templates/main/edit-resource.html:414
 #: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
@@ -894,12 +903,12 @@ msgstr "Adicionar descritor"
 msgid "delete"
 msgstr "apagar"
 
-#: templates/events/edit-event.html:392 templates/main/edit-resource.html:404
+#: templates/events/edit-event.html:398 templates/main/edit-resource.html:404
 #: templates/multimedia/media_form.html:352
 msgid "Add keyword"
 msgstr "Adicionar palavra-chave"
 
-#: templates/events/edit-event.html:401 templates/main/edit-resource.html:413
+#: templates/events/edit-event.html:407 templates/main/edit-resource.html:413
 #: templates/multimedia/media_form.html:361
 msgid "Add thematic area"
 msgstr "Adicionar área temática"
