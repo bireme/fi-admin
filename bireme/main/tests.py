@@ -80,6 +80,13 @@ def create_resource_object():
                             created_by_id=3, cooperative_center_code='PY3.1')
 
 
+    # add descriptor and thematic area for resource pk 1
+    object_ct = ContentType.objects.get_for_model(Resource)
+    descriptor = Descriptor.objects.create(object_id=1, content_type=object_ct, text='descritor 1')
+    keyword = Keyword.objects.create(object_id=1, content_type=object_ct, text='keyword 1')
+    thematic = ResourceThematic.objects.create(object_id=1, content_type=object_ct, thematic_area_id=1)
+
+
 class ResourceTest(BaseTestCase):
     """
     Tests for resource app
@@ -176,6 +183,13 @@ class ResourceTest(BaseTestCase):
 
         response = self.client.post('/resources', form_data, follow=True)
         self.assertTrue(Resource.objects.filter(id=1).count() == 0)
+
+        # check delete of related objects (descriptors, thematic_area, keywords)
+        object_ct = ContentType.objects.get_for_model(Resource)
+
+        self.assertTrue(Descriptor.objects.filter(object_id=1, content_type=object_ct).count() == 0)
+        self.assertTrue(Keyword.objects.filter(object_id=1, content_type=object_ct).count() == 0)
+        self.assertTrue(ResourceThematic.objects.filter(object_id=1, content_type=object_ct).count() == 0)
 
 
     def test_list_source_type(self):

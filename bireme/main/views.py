@@ -230,10 +230,11 @@ def create_edit_resource(request, **kwargs):
 
 
 @login_required
-def delete_resource(request, resource):
+def delete_resource(request, resource_id):
 
     user = request.user
-    resource = get_object_or_404(Resource, id=resource)
+    resource = get_object_or_404(Resource, id=resource_id)
+    c_type = ContentType.objects.get_for_model(Resource)
     output = {}
 
     user_data = additional_user_info(request)
@@ -242,6 +243,11 @@ def delete_resource(request, resource):
         return HttpResponse('Unauthorized', status=401)
 
     resource.delete()
+
+    # delete associated data
+    Descriptor.objects.filter(object_id=resource_id, content_type=c_type).delete()
+    Keyword.objects.filter(object_id=resource_id, content_type=c_type).delete()
+    ResourceThematic.objects.filter(object_id=resource_id, content_type=c_type).delete()
 
     output['alert'] = _("Resource deleted.")
     output['alerttype'] = "alert-success"
