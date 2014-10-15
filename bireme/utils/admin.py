@@ -1,5 +1,7 @@
 from django.contrib import admin
+from django.contrib.contenttypes.models import ContentType
 from models import *
+
 
 class GenericAdmin(admin.ModelAdmin):
     exclude = ()
@@ -23,4 +25,12 @@ class CountryAdmin(GenericAdmin):
     inlines = [CountryLocalAdmin,]
     search_fields = list_display = ['code', 'name']
 
+class ContentTypeAdmin(GenericAdmin):
+    model = ContentType
+    list_display = ['pk', 'name']
+    search_fields = ['name',]
+
+
 admin.site.register(Country, CountryAdmin)
+
+admin.site.register(ContentType, ContentTypeAdmin)
