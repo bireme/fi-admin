@@ -93,6 +93,10 @@ def list_resources(request):
     if actions['filter_status'] != '':
         resources = resources.filter(status=actions['filter_status'])
 
+    if actions['filter_thematic'] != '':
+        actions['filter_thematic'] = int(actions['filter_thematic'])
+        resources = resources.filter(thematics__thematic_area=actions['filter_thematic'])
+
 
     resources = resources.order_by(actions["orderby"])
     if actions['order'] == "-":
@@ -107,6 +111,8 @@ def list_resources(request):
     else:
         resources = resources.all()
 
+    # populate thematic list for filter
+    thematic_list = ThematicArea.objects.all().order_by('name')
 
     # pagination
     pagination = {}
@@ -116,6 +122,7 @@ def list_resources(request):
     resources = pagination['page'].object_list
 
     output['resources'] = resources
+    output['thematic_list'] = thematic_list
     output['actions'] = actions
     output['pagination'] = pagination
     output['user_data'] = user_data

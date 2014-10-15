@@ -135,56 +135,6 @@ class ThematicAreaLocal(models.Model):
     name = models.CharField(_("Name"), max_length=255)
 
 
-
-# Main table
-class Resource(Generic):
-
-    class Meta:
-        verbose_name = _("Resource")
-        verbose_name_plural = _("Resources")
-
-    STATUS_CHOICES = (
-        (0, _('Pending')),
-        (1, _('Admitted')),
-        (2, _('Refused')),
-        (3, _('Deleted')),
-    )
-
-    # status (399)
-    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
-    # title (311)
-    title = models.CharField(_('Title'), max_length=510, blank=False)
-    # link (351)
-    link = models.TextField(_('Link'), blank=False)
-    # originator (313)
-    originator = models.TextField(_('Originator'), blank=False)
-    # originator_location (314)
-    originator_location = models.ManyToManyField(Country, verbose_name=_('Originator location'), blank=False)
-    # author (315)
-    author = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
-    # language of resource (317)
-    source_language = models.ManyToManyField(SourceLanguage, verbose_name=_("Source language"), blank=False)
-    # source type (318)
-    source_type = models.ManyToManyField(SourceType, verbose_name=_("Source type"), blank=False)
-    # abstract (319)
-    abstract = models.TextField(_("Abstract"), blank=False)
-    # time period (341)
-    time_period_textual = models.CharField(_('Temporal range'), max_length=255, blank=True)
-    # objective (361)
-    objective = models.TextField(_('Objective'), blank=True)
-    # responsible cooperative center
-    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
-
-
-    error_reports = GenericRelation(ErrorReport)
-
-    def get_fields(self):
-        return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]
-
-    def __unicode__(self):
-        return unicode(self.title)
-
-
 # Relation resource -- thematic areas/ Field lis type (302)
 class ResourceThematic(Generic):
     STATUS_CHOICES = (
@@ -246,3 +196,53 @@ class Keyword(Generic):
 
     def __unicode__(self):
         return self.text
+
+
+# Main table
+class Resource(Generic):
+
+    class Meta:
+        verbose_name = _("Resource")
+        verbose_name_plural = _("Resources")
+
+    STATUS_CHOICES = (
+        (0, _('Pending')),
+        (1, _('Admitted')),
+        (2, _('Refused')),
+        (3, _('Deleted')),
+    )
+
+    # status (399)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
+    # title (311)
+    title = models.CharField(_('Title'), max_length=510, blank=False)
+    # link (351)
+    link = models.TextField(_('Link'), blank=False)
+    # originator (313)
+    originator = models.TextField(_('Originator'), blank=False)
+    # originator_location (314)
+    originator_location = models.ManyToManyField(Country, verbose_name=_('Originator location'), blank=False)
+    # author (315)
+    author = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
+    # language of resource (317)
+    source_language = models.ManyToManyField(SourceLanguage, verbose_name=_("Source language"), blank=False)
+    # source type (318)
+    source_type = models.ManyToManyField(SourceType, verbose_name=_("Source type"), blank=False)
+    # abstract (319)
+    abstract = models.TextField(_("Abstract"), blank=False)
+    # time period (341)
+    time_period_textual = models.CharField(_('Temporal range'), max_length=255, blank=True)
+    # objective (361)
+    objective = models.TextField(_('Objective'), blank=True)
+    # responsible cooperative center
+    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
+
+    # relations 
+    error_reports = GenericRelation(ErrorReport)
+    thematics = GenericRelation(ResourceThematic)
+
+    def get_fields(self):
+        return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]
+
+    def __unicode__(self):
+        return unicode(self.title)
