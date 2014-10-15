@@ -59,6 +59,8 @@
                 <div class="span-4">
                     <div class="input-append" style="margin-left: 10px">
                         <form name="search">
+                            <input type="hidden" name="page" value="">
+
                             {% if actions.filter_owner == '*' %}
                                 <input type="hidden" name="filter_owner" value="*"/>
                             {% elif actions.filter_owner == 'network' %}
@@ -73,6 +75,13 @@
                                 <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Admitted" %}</option>
                                 <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
                                 <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
+                            </select>
+                            {% trans "Thematic area" %}: 
+                            <select name="filter_thematic">
+                                <option value="">{% trans "All" %}</option>
+                                {% for thematic in thematic_list %}
+                                    <option value="{{ thematic.id }}" {% if actions.filter_thematic == thematic.id %}selected="true"{% endif %}>{{ thematic }}</option>
+                                {% endfor %}
                             </select>
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
                         </form>

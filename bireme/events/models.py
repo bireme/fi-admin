@@ -5,6 +5,7 @@ from django.utils import timezone
 
 from utils.models import Generic, Country
 from main.choices import LANGUAGES_CHOICES
+from main.models import ResourceThematic
 from error_reporting.models import ErrorReport
 
 from django.contrib.contenttypes.generic import GenericRelation
@@ -86,7 +87,9 @@ class Event(Generic):
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
+    # relations 
     error_reports = GenericRelation(ErrorReport)
+    thematics = GenericRelation(ResourceThematic)
 
     def __unicode__(self):
         return self.title

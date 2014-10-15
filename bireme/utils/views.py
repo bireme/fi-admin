@@ -15,6 +15,7 @@ ACTIONS = {
     's': "",
     'filter_owner': "",
     'filter_status': "",
+    'filter_thematic': "",
 }
 
 def cookie_lang(request):

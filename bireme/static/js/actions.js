@@ -35,7 +35,7 @@ function orderby(param) {
 }
 
 function page(param) {
-    var form = document.actions;
+    var form = document.search;
     form.page.value = param;
     form.submit();
 }

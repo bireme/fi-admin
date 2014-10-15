@@ -26,6 +26,7 @@ from forms import *
 from error_reporting.forms import ErrorReportForm
 
 from main.decorators import *
+from main.models import ThematicArea
 
 import mimetypes
 
@@ -59,6 +60,11 @@ def list_events(request):
     if actions['filter_status'] != '':
         events = events.filter(status=actions['filter_status'])
 
+    if actions['filter_thematic'] != '':
+        actions['filter_thematic'] = int(actions['filter_thematic'])
+        events = events.filter(thematics__thematic_area=actions['filter_thematic'])
+
+
     events = events.order_by(actions["orderby"])
     if actions['order'] == "-":
         events = events.order_by("%s%s" % (actions["order"], actions["orderby"]))
@@ -70,6 +76,9 @@ def list_events(request):
     else:
         events = events.all()
 
+    # populate thematic list for filter
+    thematic_list = ThematicArea.objects.all().order_by('name')
+
     # pagination
     pagination = {}
     paginator = Paginator(events, settings.ITEMS_PER_PAGE)
@@ -78,6 +87,7 @@ def list_events(request):
     events = pagination['page'].object_list
 
     output['events'] = events
+    output['thematic_list'] = thematic_list
     output['actions'] = actions
     output['pagination'] = pagination
     output['user_data'] = user_data
