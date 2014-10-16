@@ -171,6 +171,7 @@ INSTALLED_APPS = (
     'suggest', 
     'error_reporting',
     'multimedia',
+    'biblioref',
     'utils',
     'south',
 
