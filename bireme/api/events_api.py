@@ -14,7 +14,7 @@ import urllib
 class EventResource(ModelResource):
 
     class Meta:
-        queryset = Event.objects.all()
+        queryset = Event.objects.filter(status=1)
         allowed_methods = ['get']
         resource_name = 'event'
 
