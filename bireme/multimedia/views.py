@@ -290,6 +290,7 @@ class MediaCollectionListView(MultimediaListView, ListView):
     model = MediaCollection
     context_object_name = "collections"
     search_field = "name"
+    restrict_by_user = False
 
 class MediaCollectionUpdate(GenericUpdateWithOneFormset):
     """
