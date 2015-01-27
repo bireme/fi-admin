@@ -11,3 +11,4 @@ simplejson==3.3.0
 requests==1.2.3
 recaptcha-client
 #biremelogin
+deform==0.9.9

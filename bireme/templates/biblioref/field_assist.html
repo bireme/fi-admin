@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block top %}{% endblock %}
+
+{% block title %}{% trans "Field assist" %} | {{ block.super }}{% endblock %}
+
+{% block extrahead %}
+    <!-- include deform dependencies -->
+    {% for css in deform_dependencies.css %}
+        <link rel="stylesheet" href="{% static css %}" type="text/css"/>
+    {% endfor %}
+    {% for js in deform_dependencies.js %}
+        <script type="text/javascript" src="{% static js %}"></script>        
+    {% endfor %}
+
+{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block content %}
+
+<div class='body'>
+
+    <h3>{% trans "Field assist" %}</h3>
+
+    <!-- Make sure not to escape the HTML output by Deform -->
+    {{ form|safe }} 
+
+    <script type="text/javascript">
+        {% if field_json %}            
+            $( document ).ready(function() {
+                opener.update_field_from_assist('{{ field_name }}', '{{ field_json|safe }}');
+            });
+        {% endif %}
+
+        <!-- //Fix Deform's default enctype -->
+        $('form#deform').attr('enctype', 'application/x-www-form-urlencoded');
+    </script>   
+
+</div>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
