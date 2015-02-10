@@ -1,9 +1,10 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
+from utils.fields import JSONField
 from utils.models import Generic
+from main import choices
 
-import simplejson
 
 # Bibliographic References
 class Reference(Generic):
@@ -50,25 +51,29 @@ class Reference(Generic):
     )
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
-    call_number = models.TextField(_('Call number'), blank=True)
-    lending_system = models.TextField(_('Lending system'), blank=True)
+    # field tag 03
+    call_number = JSONField(_('Call number'), blank=True, dump_kwargs={'ensure_ascii': False})
+    # field tag 04
     database = models.TextField(_('Database'), blank=True)
-    literature_type = models.CharField(_('Literature type'), choices=LITERATURETYPE_CHOICES, 
+    # field tag 05
+    literature_type = models.CharField(_('Literature type'), choices=LITERATURETYPE_CHOICES,
         max_length=10, blank=True)
+    # field tag 06
     treatment_level = models.CharField(_('Treatment level'), choices=TREATMENTLEVEL_CHOICES, 
         max_length=10, blank=True)
-
+    # field tag 07
     inventory_number = models.TextField(_('Inventory number'), blank=True)
-    electronic_address = models.TextField(_('Electronic address'), blank=True)
+    # field tag 08
+    electronic_address = JSONField(_('Electronic address'), blank=True, dump_kwargs={'ensure_ascii': False})
 
-    title = models.TextField(_('Title'), blank=True)
+    title = JSONField(_('Title'), blank=True, dump_kwargs={'ensure_ascii': False})
     
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
     def __unicode__(self):
         
-        metadata_json = simplejson.loads(self.title)
+        metadata_json = self.title
         return metadata_json[0]['text']
         
 

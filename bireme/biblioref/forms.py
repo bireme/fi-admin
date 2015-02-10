@@ -21,10 +21,6 @@ class BiblioRefForm(forms.ModelForm):
 
         super(BiblioRefForm, self).__init__(*args, **kwargs)
 
-        # change JSON fields to hidden and mark then with specific class
-        self.fields['title'].widget = widgets.HiddenInput(attrs={'class': "jsonfield"})
-        self.fields['electronic_address'].widget = widgets.HiddenInput(attrs={'class': "jsonfield"})
-
         if self.user_data['service_role'].get('BiblioRef') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 

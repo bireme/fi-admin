@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load app_filters %}
 
 {% block title %}{% trans "Edit Media" %}{% endblock %}
 
@@ -86,23 +87,26 @@
                                     {% else %}
                                         {{ field.label }}
                                     {% endif %}
-                                    {% if field.field.widget.attrs.class == 'jsonfield' %}
+                                    {% if field.field|fieldtype == 'JSONFormField' %}
                                         <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);"><i class="icon-edit"></i></a>
                                     {% endif %}
                                 </label>
-                                
-                                <p class="muted">{{ field.help_text }}</p>
 
-                                {% if field.field.widget.attrs.class == 'jsonfield' %}
-                                    <div class="row">                                        
-                                        <div class="span18">                        
+                                {% if field.field|fieldtype == 'JSONFormField' %}
+                                    <div class="row">
+                                        <div class="span18">
                                             <ul id="id_{{field.html_name}}_display"></ul>
                                         </div>
                                     </div>
                                 {% endif %}
 
+                                {% if field.help_text != 'Enter valid JSON' %}
+                                    <p class="muted">{{ field.help_text }}</p>
+                                {% endif %}
+
                                 {{ field.errors }}
                                 {{ field }}
+
                             {% endfor %}
                         </fieldset>
                     {% endif %}

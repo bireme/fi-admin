@@ -9,6 +9,19 @@ language_choices = (('pt', 'Português'), ('es', 'Espanhol'),
                ('en', 'Inglês'))
 
 
+class CallNumberAttributes(colander.MappingSchema):
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Center code'), missing=unicode(''))
+    a = colander.SchemaNode(colander.String('utf-8'),                     
+                    title=_('Classification number'),missing=unicode(''))
+    b = colander.SchemaNode(colander.String('utf-8'), title=_('Author number'), missing=unicode(''),)
+    c = colander.SchemaNode(colander.String('utf-8'), title=_('Volumen, inventory number, part'), missing=unicode(''),)
+    t = colander.SchemaNode(colander.String('utf-8'), title=_('Lending system'), missing=unicode(''),)
+    
+
+class CallNumber(colander.SequenceSchema):
+    item = CallNumberAttributes(
+)
+
 
 class ElectronicAddressAttributes(colander.MappingSchema):
     u = colander.SchemaNode(colander.String('utf-8'), title=_('Electric address'))
