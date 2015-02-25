@@ -173,7 +173,6 @@ INSTALLED_APPS = (
     'multimedia',
     'biblioref',
     'utils',
-    'south',
 
 )
 
@@ -234,6 +233,8 @@ AUTHENTICATION_BACKENDS = (
 
 BIREMELOGIN_BASE_URL = "http://accounts.bireme.org"
 BIREMELOGIN_SERVICE = ""
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 try:
     from settings_local import *
