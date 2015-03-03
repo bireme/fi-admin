@@ -1,0 +1,244 @@
+
+if p(v1) then,
+    '{',/
+
+       c4,'"pk": ', f(mfn,1,0)','/
+       c4,'"model": ','"biblioref.reference",',/
+
+       c4,'"fields": {',/
+
+       e1:=nocc(v3),       
+       c8,'"call_number": ', '"[',
+       if p(v3) then,
+            (,   
+                '{',
+                if v3.1 <> '^' then,
+                   '\"text\": \"',v3,
+                else,
+                    '\"_',v3*1.1,'\": \"',v3*2,
+                fi,
+                '\"}',
+                if iocc < e1 then ', ' fi,
+            )
+        fi,
+       ']",'
+
+       if p(v5) then, 
+            c8,'"literature_type": ', '"',v5,'",'/
+       fi,
+
+       if p(v6) then, 
+            c8,'"treatment_level": ', '"',v6,'",'/
+       fi,       
+
+       e1:=nocc(v8),
+       c8,'"electronic_address": ', '"[',
+       if p(v8) then,           
+            (   
+                '{',
+                if v8.1 <> '^' then,
+                   '\"text\": \"',v8,
+                else,
+                    '\"_',v8*1.1,'\": \"',v8*2,
+                fi,
+                '\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       ']",'
+
+       /* individual_author [10/16/23] */       
+       c8,'"individual_author": ', '"[',
+       if p(v10) then,
+            e1:=nocc(v10),
+            (   
+                '{',
+                if v10.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v10,'\"}',
+                if iocc < e1 then ', ' fi,
+            )            
+       fi,
+       if p(v16) then,
+            e1:=nocc(v16),
+            (   
+                '{',
+                if v16.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v16,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       if p(v23) then,
+            e1:=nocc(v23),
+            (   
+                '{',
+                if v23.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v23,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       ']",'
+ 
+        /* corporate_author [11/17/24] */
+       c8,'"corporate_author": ', '"[',
+       if p(v11) then,
+            e1:=nocc(v11),
+            (   
+                '{',
+                if v11.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v11,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       if p(v17) then,
+            e1:=nocc(v17),
+            (   
+                '{',
+                if v17.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v17,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       if p(v24) then,
+            e1:=nocc(v24),
+            (   
+                '{',
+                if v24.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v24,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       ']",'
+
+
+       /* title [12/18/25] */
+       c8,'"title": ', '"[',
+       if p(v12) then,
+            e1:=nocc(v12),
+            (   
+                '{',
+                if v12.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v12,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       if p(v18) then,
+            e1:=nocc(v18),
+            (   
+                '{',
+                if v18.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v18,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi, 
+       if p(v25) then,
+            e1:=nocc(v25),
+            (   
+                '{',
+                if v25.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v25,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       ']",'
+
+       /* english_translated_title [13/19/26] */
+       if p(v13) then, 
+            c8,'"english_translated_title": ', '"',v13,'",'/ 
+       else,
+            if p(v19) then,
+                c8,'"english_translated_title": ', '"',v19,'",'/,
+            else,
+                if p(v26) then,
+                    c8,'"english_translated_title": ', '"',v26,'",'/,
+                fi,
+            fi,
+       fi,
+
+       /* pages [14/20] */
+       if p(v14) then, 
+            c8,'"pages": ', '"',v14,'",'/ 
+       else,
+            if p(v20) then,
+                c8,'"pages": ', '"',v20,'",'/,
+            fi,
+       fi,
+
+       /* volume [21/31] */
+       if p(v14) then, 
+            c8,'"volume": ', '"',v21,'",'/ 
+       else,
+            if p(v31) then,
+                c8,'"volume": ', '"',v31,'",'/,
+            fi,
+       fi,
+
+       /* volume [30] */
+       if p(v30) then, 
+            c8,'"journal_title": ', '"',v30,'",'/
+       fi,
+
+       /* volume [35] */
+       if p(v35) then, 
+            c8,'"issn": ', '"',v35,'",'/
+       fi,
+        
+       /* descriptive information [38] */
+       if p(v38) then,
+            c8,'"descriptive_information": ', '"[',
+            e1:=nocc(v38),
+            (   
+                '{',
+                if v38.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v38,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi, 
+
+
+       /* text language [40] */
+       if p(v40) then,
+            c8,'"text_language": "',
+            e1:=nocc(v40),
+            if e1 > 1 then '[' fi,
+            (   
+              '\"',v40,'\"',
+              if iocc < e1 then ', ' fi,
+            )
+            if e1 > 1 then ']' fi,
+            '", ',
+       fi, 
+
+
+       if p(v93) and val(v93)>0 then
+            c8,'"created_time": ','"', v93.4'-'v93*4.2'-'v93*6.2 , 'T09:00:00-03:00",'/,
+       else,
+            c8,'"created_time": ','"2015-03-01T09:00:00-03:00",'/,
+       fi,
+
+       c8,'"database": "LILACS",'/
+       c8,'"created_by": 2'
+
+       c4,'}',/
+    '},'/
+fi,
