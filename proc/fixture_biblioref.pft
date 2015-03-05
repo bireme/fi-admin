@@ -7,6 +7,7 @@ if p(v1) then,
 
        c4,'"fields": {',/
 
+       /* call number [03] */
        e1:=nocc(v3),       
        c8,'"call_number": ', '"[',
        if p(v3) then,
@@ -23,14 +24,23 @@ if p(v1) then,
         fi,
        ']",'
 
+
+       /* database [04] */
+       if p(v4) then, 
+            c8,'"database": ', '"',(v4/),'",'/
+       fi,
+
+       /* literature_type [05] */
        if p(v5) then, 
             c8,'"literature_type": ', '"',v5,'",'/
        fi,
 
+       /* treatment_level [06] */
        if p(v6) then, 
             c8,'"treatment_level": ', '"',v6,'",'/
        fi,       
 
+       /* electronic_address [08] */
        e1:=nocc(v8),
        c8,'"electronic_address": ', '"[',
        if p(v8) then,           
@@ -47,7 +57,7 @@ if p(v1) then,
        fi,
        ']",'
 
-       /* individual_author [10/16/23] */       
+       /* individual_author [10/16/23] */
        c8,'"individual_author": ', '"[',
        if p(v10) then,
             e1:=nocc(v10),
@@ -58,7 +68,7 @@ if p(v1) then,
                 fi
                 v10,'\"}',
                 if iocc < e1 then ', ' fi,
-            )            
+            )
        fi,
        if p(v16) then,
             e1:=nocc(v16),
@@ -182,7 +192,7 @@ if p(v1) then,
        fi,
 
        /* volume [21/31] */
-       if p(v14) then, 
+       if p(v21) then, 
             c8,'"volume": ', '"',v21,'",'/ 
        else,
             if p(v31) then,
@@ -228,6 +238,130 @@ if p(v1) then,
             if e1 > 1 then ']' fi,
             '", ',
        fi, 
+
+       /* thesis_dissertation_leader [49] */
+       c8,'"thesis_dissertation_leader": ', '"[',
+       if p(v49) then,
+            e1:=nocc(v49),
+            (   
+                '{',
+                if v49.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v49,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+
+       /* thesis_dissertation_institution [50] */
+       if p(v50) then,
+          c8,'"thesis_dissertation_institution": ', '"',mid(v50,1,250),'",'/
+       fi
+
+       /* thesis_dissertation_institution [51] */
+       if p(v51) then,
+          c8,'"thesis_dissertation_academic_title": ', '"',v51,'",'/
+       fi
+
+       /* conference_sponsoring_institution [52] */
+       if p(v52) then, 
+            c8,'"conference_sponsoring_institution": ', '"',(v52/),'",'/
+       fi,
+
+       /* conference_name [53] */
+       if p(v53) then, 
+            c8,'"conference_name": ', '"',(v53/),'",'/
+       fi,
+
+       /* conference_date [54] */
+       if p(v54) then,
+          c8,'"conference_date": ', '"',v54[1],'",'/
+       fi,
+
+       /* conference_normalized_date [55] */
+       if p(v55) then,
+          c8,'"conference_normalized_date": ', '"',v55[1],'",'/
+       fi,
+
+       /* conference_city [56] */
+       if p(v56) then,
+          c8,'"conference_city": ', '"',v56[1],'",'/
+       fi,
+
+       /* project_sponsoring_institution [58] */
+       if p(v58) then, 
+            c8,'"project_sponsoring_institution": ', '"',(v58/),'",'/
+       fi,
+
+       /* project_name [59] */
+       if p(v59) then,
+          c8,'"project_name": ', '"',v59[1],'",'/
+       fi,
+
+       /* project_name [60] */
+       if p(v60) then,
+          c8,'"project_number": ', '"',v60[1],'",'/
+       fi,
+
+       /* internal_note [61] */
+       if p(v61) then, 
+            c8,'"internal_note": ', '"',(v61/),'",'/
+       fi,
+
+       /* publisher [62] */
+       if p(v62) then, 
+            c8,'"publisher": ', '"',(v62/),'",'/
+       fi,
+
+       /* edition [63] */
+       if p(v63) then,
+          c8,'"edition": ', '"',v63[1],'",'/
+       fi,
+
+       /* publication_date [64] */
+       if p(v64) then,
+          c8,'"publication_date": ', '"',v64[1],'",'/
+       fi,
+
+       /* publication_date_normalized [65] */
+       if p(v65) then,
+          c8,'"publication_date_normalized": ', '"',v65[1],'",'/
+       fi,
+
+       /* publication_city [66] */
+       if p(v66) then,
+          c8,'"publication_city": ', '"',v66[1],'",'/
+       fi,
+
+       /* symbol [68] */
+       if p(v68) then, 
+            c8,'"symbol": ', '"',(v68/),'",'/
+       fi,
+
+       /* isbn [69] */
+       if p(v69) then,
+          c8,'"isbn": ', '"',v69[1],'",'/
+       fi,
+
+       /* isbn [69] */
+       if p(v69) then,
+          c8,'"isbn": ', '"',v69[1],'",'/
+       fi,
+
+       /* total_number_of_references [72] */
+       if p(v72) then,
+          c8,'"total_number_of_references": ', '"',mid(v72,1,100),'",'/
+       fi,
+
+       /* time_limits_from [74] */
+       if p(v74) then,
+          c8,'"time_limits_from": ', '"',v74,'",'/
+       fi,
+
+       /* time_limits_to [75] */
+       if p(v75) then,
+          c8,'"time_limits_to": ', '"',v75,'",'/
+       fi,
 
 
        if p(v93) and val(v93)>0 then
