@@ -5,8 +5,7 @@ import colander
 import deform
 import json
 
-language_choices = (('pt', 'Português'), ('es', 'Espanhol'),
-               ('en', 'Inglês'))
+language_choices = (('pt', 'Português'), ('es', 'Espanhol'), ('en', 'Inglês'))
 
 
 class CallNumberAttributes(colander.MappingSchema):
@@ -25,8 +24,8 @@ class CallNumber(colander.SequenceSchema):
 class ElectronicAddressAttributes(colander.MappingSchema):
     _u = colander.SchemaNode(colander.String('utf-8'), title=_('Electric address'))
     _i = colander.SchemaNode(colander.String('utf-8'),
-                    widget=deform.widget.SelectWidget(values=language_choices),
-                    title=_('Language'))
+                             widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Language'))
     _g = colander.SchemaNode(colander.String('utf-8'), title=_('Fulltext'), missing=unicode(''),)
     _k = colander.SchemaNode(colander.String('utf-8'), title=_('Password'), missing=unicode(''),)
     _l = colander.SchemaNode(colander.String('utf-8'), title=_('Logon'), missing=unicode(''),)
@@ -44,8 +43,8 @@ class ElectronicAddress(colander.SequenceSchema):
 class TitleAttributes(colander.MappingSchema):
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Title'))
     _i = colander.SchemaNode(colander.String('utf-8'),
-                    widget=deform.widget.SelectWidget(values=language_choices),
-                    title=_('Language'))
+                             widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Language'))
 
 class Title(colander.SequenceSchema):
     title = TitleAttributes()
@@ -54,8 +53,8 @@ class Title(colander.SequenceSchema):
 class IndividualAuthorAttributes(colander.MappingSchema):
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Personal author'))
     _1 = colander.SchemaNode(colander.String('utf-8'),
-                    widget=deform.widget.SelectWidget(values=language_choices),
-                    title=_('Affiliation institution level 1'))
+                             widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Affiliation institution level 1'))
     _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=unicode(''),)
     _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=unicode(''),)
     _p = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation country'), missing=unicode(''),)
@@ -75,7 +74,6 @@ class CorporateAuthor(colander.SequenceSchema):
     item = CorporateAuthorAttributes()
 
 
-
 class DescriptiveInformationAttributes(colander.MappingSchema):
     _b = colander.SchemaNode(colander.String('utf-8'), title=_('Other physical details'), missing=unicode(''),)
     _a = colander.SchemaNode(colander.String('utf-8'), title=_('Item extension'), missing=unicode(''),)
@@ -86,11 +84,12 @@ class DescriptiveInformationAttributes(colander.MappingSchema):
 class DescriptiveInformation(colander.SequenceSchema):
     item = DescriptiveInformationAttributes()
 
+
 class ThesisDissertationLeaderAttributes(colander.MappingSchema):
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Personal author'))
     _1 = colander.SchemaNode(colander.String('utf-8'),
-                    widget=deform.widget.SelectWidget(values=language_choices),
-                    title=_('Affiliation institution level 1'))
+                             widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Affiliation institution level 1'))
     _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=unicode(''),)
     _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=unicode(''),)
     _p = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation country'), missing=unicode(''),)
@@ -99,3 +98,23 @@ class ThesisDissertationLeaderAttributes(colander.MappingSchema):
 
 class ThesisDissertationLeader(colander.SequenceSchema):
     item = ThesisDissertationLeaderAttributes()
+
+
+class AbstractAttributes(colander.MappingSchema):
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Title'))
+    _i = colander.SchemaNode(colander.String('utf-8'), widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Language'))
+
+
+class Abstract(colander.SequenceSchema):
+    item = AbstractAttributes()
+
+class AuthorKeywordAttributes(colander.MappingSchema):
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Title'))
+    _s = colander.SchemaNode(colander.String('utf-8'), title=_('Qualifier'), missing=unicode(''),)
+    _i = colander.SchemaNode(colander.String('utf-8'), widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Language'))
+
+
+class AuthorKeyword(colander.SequenceSchema):
+    item = AuthorKeywordAttributes()

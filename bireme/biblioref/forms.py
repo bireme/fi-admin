@@ -1,16 +1,12 @@
-from django.shortcuts import get_object_or_404
-from django.forms.models import inlineformset_factory
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
-
 from django.forms import widgets
-from django.conf import settings
 from django import forms
+from django.conf import settings
 
-from django.utils.translation import ugettext_lazy as _
-from models import *
 from main.models import Descriptor, Keyword, ResourceThematic
-
 from utils.forms import DescriptorRequired, ResourceThematicRequired
+
+from models import *
 
 import simplejson
 
@@ -39,19 +35,18 @@ class BiblioRefForm(forms.ModelForm):
         return obj
 
     class Meta:
-        model  = Reference
+        model = Reference
         exclude = ('cooperative_center_code',)
 
         source_language = forms.MultipleChoiceField()
 
 
 # definition of inline formsets
-
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, 
-    can_delete=True, extra=1)
+                                                  can_delete=True, extra=1)
 
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
 
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, 
-                                    formset=ResourceThematicRequired, can_delete=True, extra=1)
+                                                        formset=ResourceThematicRequired, can_delete=True, extra=1)
 

@@ -106,7 +106,7 @@ class Reference(Generic):
     # field tag 56
     conference_city = models.CharField(_('Conference city'), max_length=100, blank=True)
     # field tag 57
-    # conference_country = FIXME
+    # conference_country = TODO
     # field tag 58
     project_sponsoring_institution = models.TextField(_('Project - Sponsoring Institution'), blank=True)
     # field tag 59
@@ -124,21 +124,75 @@ class Reference(Generic):
     # field tag 66
     publication_city = models.CharField(_('City of publication'), max_length=100, blank=True)
     # field tag 67
-    # publication_country = FIXME
+    # publication_country = TODO
     # field tag 68
     symbol = models.TextField(_('Symbol'), blank=True)
     # field tag 69
     isbn = models.CharField(_('ISBN'), max_length=60, blank=True)
     # field tag 71
-    # publication_type = FIXME
+    # publication_type = TODO
     # field tag 72
     total_number_of_references = models.CharField(_('Total number of references'), max_length=100, blank=True)
     # field tag 74
     time_limits_from = models.CharField(_('Time limits (from)'), max_length=50, blank=True)
     # field tag 75
     time_limits_to = models.CharField(_('Time limits (to)'), max_length=50, blank=True)
-
-
+    # field tag 76
+    # check_tags = TODO
+    # field tag 78
+    person_as_subject = models.TextField(_('Person as subject'), blank=True)
+    # field tag 82
+    non_decs_region = models.TextField(_('Non-DeCS Region'), blank=True)
+    # field tag 83
+    abstract = JSONField(_('Abstract'), blank=True, dump_kwargs={'ensure_ascii': False})
+    # field tag 84
+    transfer_date_to_database = models.CharField(_('Transfer date do database'), max_length=20, blank=True)
+    # field tag 85
+    author_keyword = JSONField(_('Author keyword'), blank=True, dump_kwargs={'ensure_ascii': False})
+    # field tag 91
+    # record_creation_date = TODO  (use created_time)
+    # field tag 92
+    # documentalist = CHECK
+    # field tag 93
+    # last_change_date = TODO  (use updated_time)
+    # field tag 98
+    # link_record = TODO  (check)
+    # field tag 101
+    # link_record_conference = TODO  (check)
+    # field tag 102
+    # link_record_project = TODO  (check)
+    # field tag 110
+    item_form = AuxiliaryChoiceField(_('Item form'), max_length=10, blank=True)
+    # field tag 111
+    type_of_computer_file = AuxiliaryChoiceField(_('Type of computer file'), max_length=10, blank=True)
+    # field tag 112
+    type_of_cartographic_material = AuxiliaryChoiceField(_('Type of cartographic material'), max_length=10, blank=True)
+    # field tag 113
+    type_of_journal = AuxiliaryChoiceField(_('Type of journal'), max_length=10, blank=True)
+    # field tag 114
+    type_of_visual_material = AuxiliaryChoiceField(_('Type of visual material'), max_length=10, blank=True)
+    # field tag 115
+    specific_designation_of_the_material = AuxiliaryChoiceField(_('Specific designation of the material'), max_length=10, blank=True)
+    # field tag 500
+    general_note = models.TextField(_('General note'), blank=True)
+    # field tag 505
+    formatted_contents_note = models.TextField(_('Formatted contents note'), blank=True)
+    # field tag 530
+    additional_physical_form_available_note = models.TextField(_('Additional physical form available note'), blank=True)
+    # field tag 533
+    reproduction_note = models.TextField(_('Reproduction note'), blank=True)
+    # field tag 534
+    original_version_note = models.TextField(_('Original version note'), blank=True)
+    # field tag 610
+    institution_as_subject = models.TextField(_('Institution as subject'), blank=True)
+    # field tag 653
+    local_descriptors = models.TextField(_('Local descriptors'), blank=True)
+    # field tag 700
+    clinical_trial_registry_name = models.TextField(_('Clinical trial registry name'), blank=True)
+    # field tag 724
+    doi_number = models.CharField(_('DOI number'), max_length=150, blank=True)
+    # field tag 899
+    software_version = models.CharField(_('Software version'), max_length=50, blank=True)
 
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
