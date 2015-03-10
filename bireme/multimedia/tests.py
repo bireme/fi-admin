@@ -250,7 +250,7 @@ class MultimediaTest(BaseTestCase):
         response = self.client.get('/multimedia/collections')
         # check if only one collection is returned (restrict by user)
         self.assertContains(response, "Coleção 1")
-        self.assertEquals(response.context['object_list'].count(), 1)
+        self.assertEquals(response.context['object_list'].count(), 3)
         
         # check if return only colections from cooperative center BR1.1
         response = self.client.get('/multimedia/collections/?filter_owner=*')
