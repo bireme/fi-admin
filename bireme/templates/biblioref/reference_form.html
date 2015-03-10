@@ -338,14 +338,24 @@
 
    <script id="keyPropTemplate" type="text/x-jsrender">
         [[if prop]]
-            <strong>[[>key]]:</strong> [[>prop]]
+            <strong>[[>~format(key)]]</strong> [[>prop]]
         [[/if]]
    </script>
 
    <script type="text/javascript">
         var decs_field;
 
-        // change default delimiters of jsrender 
+        function format_attrlabel(value) {
+
+            if ( value != 'text'){
+                label = value.replace('_','')
+                return  label + ':'
+            }else{
+                return ''
+            }
+        }
+
+        // change default delimiters of jsrender
         $.views.settings.delimiters("[[","]]");
 
         // render JSON fields for display
@@ -372,7 +382,7 @@
             var json_data = jQuery.parseJSON(element_val);
           
             if ( json_data != null ){
-                $('#' + element_id + '_display').html($("#itensTemplate").render(json_data));
+                $('#' + element_id + '_display').html($("#itensTemplate").render(json_data, {format: format_attrlabel}));
             }
 
         }
@@ -505,4 +515,5 @@
 
    </script>
 {% endblock %}
+
 
