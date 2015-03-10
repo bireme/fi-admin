@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.contrib.contenttypes.models import ContentType
 
+from main import choices
 
 #from datetime import datetime
 
@@ -88,3 +89,43 @@ class CountryLocal(models.Model):
     country = models.ForeignKey(Country, verbose_name=_("country"))
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
     name = models.CharField(_("name"), max_length=255)
+
+# Auxiliar table of codes
+class AuxCode(Generic):
+
+    class Meta:
+        verbose_name = _("auxiliary code")
+        verbose_name_plural = _("auxiliary codes")
+
+    code = models.CharField(_("Code"), max_length=15)
+    field = models.CharField(_("Field name"), max_length=35)
+    language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
+    label = models.CharField(_("Label"), max_length=255)
+
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = AuxCodeLocal.objects.filter(auxcode_id=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = AuxCodeLocal.objects.filter(auxcode_id=self.id, language=lang_code)
+        if translation:
+            return translation[0].label
+        else:
+            return self.label
+
+
+class AuxCodeLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    auxcode = models.ForeignKey(AuxCode, verbose_name=_("Source type"))
+    language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
+    label = models.CharField(_("Label"), max_length=255)
