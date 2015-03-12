@@ -2,12 +2,14 @@
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
 
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from deform.exception import ValidationFailure
+
+from field_definitions import FIELDS_BY_DOCUMENT_TYPE
 
 from utils.views import ACTIONS
 from utils.forms import is_valid_for_publication
@@ -20,7 +22,6 @@ from forms import *
 import colander
 import deform
 import json
-
 
 class BiblioRefGenericListView(LoginRequiredView, ListView):
     """
@@ -136,8 +137,20 @@ class BiblioRefUpdate(LoginRequiredView):
 
     def get_form_kwargs(self):
         kwargs = super(BiblioRefUpdate, self).get_form_kwargs()
+
+        # document_type is passing via GET and is used to filter the list of form fields
+        document_type = self.request.GET.get('document_type')
+        # get list of fields allowed by document_type
+        field_list = FIELDS_BY_DOCUMENT_TYPE.get(document_type, None)
+
         user_data = additional_user_info(self.request)
-        kwargs.update({'user': self.request.user, 'user_data': user_data})
+
+        additional_form_parameters = {}
+        additional_form_parameters['user'] = self.request.user
+        additional_form_parameters['user_data'] = user_data
+        additional_form_parameters['field_list'] = field_list
+
+        kwargs.update(additional_form_parameters)
 
         return kwargs
 
@@ -200,6 +213,11 @@ class BiblioRefCreateView(BiblioRefUpdate, CreateView):
     Used as class view to create BiblioRef
     Extend BiblioRefUpdate that do all the work
     """
+
+
+class SelectDocumentTypeView(FormView):
+    template_name = 'biblioref/select_document_type.html'
+    form_class = SelectDocumentTypeForm
 
 
 class BiblioRefDeleteView(LoginRequiredView, DeleteView):

@@ -8,6 +8,9 @@ import json
 language_choices = (('pt', 'Português'), ('es', 'Espanhol'), ('en', 'Inglês'))
 
 
+FIELDS_BY_DOCUMENT_TYPE = {}
+FIELDS_BY_DOCUMENT_TYPE['S'] = ['title', 'database', 'individual_author']
+
 class CallNumberAttributes(colander.MappingSchema):
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Center code'), missing=unicode(''))
     _a = colander.SchemaNode(colander.String('utf-8'), title=_('Classification number'), missing=unicode(''))
