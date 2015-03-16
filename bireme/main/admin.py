@@ -44,13 +44,11 @@ class ErrorReportAdmin(generic.GenericTabularInline):
 
 class ResourceAdmin(GenericAdmin):
     model = Resource
-    list_display = ('id','title', 'link', 'cooperative_center_code', 'status')
+    date_hierarchy = 'created_time'
+    list_display = ('id','title', 'link', 'created_by','status')
     search_fields = ['id', 'title']
+    list_filter = ('thematics__thematic_area', )
     inlines = [DescriptorAdmin, KeywordAdmin, ErrorReportAdmin,]
     
 
 admin.site.register(Resource, ResourceAdmin)
-admin.site.register(SourceType, SourceTypeAdmin)
-admin.site.register(ThematicArea, ThematicAreaAdmin)
-admin.site.register(Descriptor)
-admin.site.register(Keyword)
