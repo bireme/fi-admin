@@ -8,5 +8,6 @@ class MediaAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_time'
     raw_id_fields = ('media_collection', )
     list_display = ('id','title', 'status', 'created_by')
-    
+    list_filter = ('status', 'media_type__name', 'language__name', 'cooperative_center_code')
+
 admin.site.register(Media, MediaAdmin)

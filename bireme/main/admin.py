@@ -47,7 +47,7 @@ class ResourceAdmin(GenericAdmin):
     date_hierarchy = 'created_time'
     list_display = ('id','title', 'link', 'created_by','status')
     search_fields = ['id', 'title']
-    list_filter = ('thematics__thematic_area', )
+    list_filter = ('status','source_language__language', 'source_type__name', 'thematics__thematic_area', 'cooperative_center_code' )
     inlines = [DescriptorAdmin, KeywordAdmin, ErrorReportAdmin,]
     
 
