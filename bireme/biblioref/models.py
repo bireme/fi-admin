@@ -156,11 +156,11 @@ class Reference(Generic):
     # field tag 93
     # last_change_date = TODO  (use updated_time)
     # field tag 98
-    # link_record = TODO  (check)
+    # link_record = LILDBI USE TO LINK RECORDS BEFORE CERTIFICATION, LILACSEXPRESS ALWAYS REGISTRY 'FONTE'
     # field tag 101
-    # link_record_conference = TODO  (check)
+    # link_record_conference = NOT IN USE
     # field tag 102
-    # link_record_project = TODO  (check)
+    # link_record_project = NOT IN USE
     # field tag 110
     item_form = AuxiliaryChoiceField(_('Item form'), max_length=10, blank=True)
     # field tag 111
