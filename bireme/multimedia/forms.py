@@ -15,6 +15,10 @@ from utils.forms import DescriptorRequired, ResourceThematicRequired
 import simplejson
 
 class MediaForm(forms.ModelForm):
+  
+    publication_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'), 
+                                       input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         self.user_data = kwargs.pop('user_data', None)
