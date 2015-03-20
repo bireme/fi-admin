@@ -85,14 +85,8 @@ class MediaUpdate(LoginRequiredView):
         # run all validation before for display formset errors at form
         form_valid = form.is_valid() 
         formset_keyword_valid = formset_keyword.is_valid() 
-
-        # if document is created by other user assume formsets descriptor and thematic valid
-        if self.object and (self.object.created_by != self.request.user):
-            formset_descriptor_valid = True
-            formset_thematic_valid = True
-        else:
-            formset_descriptor_valid = formset_descriptor.is_valid()
-            formset_thematic_valid = formset_thematic.is_valid()
+        formset_descriptor_valid = formset_descriptor.is_valid()
+        formset_thematic_valid = formset_thematic.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
         valid_for_publication = is_valid_for_publication(form, 
