@@ -1,0 +1,530 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load app_filters %}
+
+{% block title %}{% trans "Edit Media" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
+    {% if not object %}<li>{% trans "New Reference" %}</li>
+    {% else %}<li>{% trans "Edit Media" %}</li>{% endif %}
+{% endblock %}
+
+{% block content %}
+
+
+<div class='header'>
+    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Reference" %}{% else %}{% trans "Edit Bibliographic Reference" %}{% endif %}</h2>
+</div>
+
+<div class='body'>
+
+    {% if form.errors %}
+        <ul class="errorlist alert alert-error">
+            <li>{% trans "Please check required fields" %}</li>
+        </ul>        
+    {% endif %}
+    {% if valid_for_publication != None and not valid_for_publication %}
+        <ul class="errorlist alert alert-error">
+            <li>{% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}</li>
+        </ul>
+    {% endif %}    
+    {{ formset_descriptor.non_form_errors }}
+    {{ formset_thematic.non_form_errors }}
+
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
+        <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
+        <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
+    </ul>
+
+
+    <form method="POST" class="media-form">
+        {% csrf_token %}
+
+        <div class="tab-content">
+            <div id="tab-data" class="tab-pane active">
+                    {% if role == 'doc' and not user_data.is_owner and media %}
+                        <div class="well">
+                            <blockquote>
+                                <p><strong>{% trans 'Identifier' %}</strong><p>
+                                <p>{{ media.id }}</p>
+                            </blockquote>
+
+                            {% for field in form %}
+                                {{ field.as_hidden }}
+                                {{ field.errors }}
+                                <blockquote>
+                                    <p><strong>{{ field.label }}</strong><p>
+                                    {% if field.name = 'status' %}
+                                        <p>{{ media.get_status_display }}</p>
+                                    {% else %}
+                                        <p>{{ field.value|linebreaks }}<p>
+                                    {% endif %}
+                                </blockquote>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+
+                        <div id="metadata" class="accordion">
+                            {{ form.non_field_errors }}
+                            {% for fieldset in form.fieldsets %}
+                                <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        {% if fieldset.legend %}
+                                            <a class="accordion-toggle" data-toggle="collapse" data-target="#{{ fieldset.name }}">{{ fieldset.legend }}</a>
+                                        {% endif %}
+                                    </div>
+                                    <fieldset class="{{ fieldset.classes }} accordion-body" id="{{ fieldset.name }}">
+                                        {% if fieldset.description %}
+                                            <p class="description">{{ fieldset.description }}</p>
+                                        {% endif %}
+                                        <ul>
+                                            {% for field in fieldset %}
+                                                <li {{ field.row_attrs }}>
+                                                    <label for="{{ field.auto_id }}">
+                                                        {% if field.field.required %}
+                                                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                                        {% else %}
+                                                            {{ field.label }}
+                                                        {% endif %}
+                                                        {% if field.field|fieldtype == 'JSONFormField' %}
+                                                            <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);"><i class="icon-edit"></i></a>
+                                                        {% endif %}
+                                                    </label>
+
+                                                    {% if field.field|fieldtype == 'JSONFormField' %}
+                                                        <div class="row">
+                                                            <div class="span18">
+                                                                <ul id="id_{{field.html_name}}_display"></ul>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+
+                                                    {% if field.help_text != 'Enter valid JSON' %}
+                                                        <p class="muted">{{ field.help_text }}</p>
+                                                    {% endif %}
+
+                                                    {{ field.errors }}
+                                                    {{ field }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+
+                                    </fieldset>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                    {% comment %}Display administrative information{% endcomment %}
+
+                    {% if media.id %}
+                        <div class="alert alert-info">
+                            <p>{% trans "Media created in" %}: <strong>{{ media.created_time }}</strong> {% trans "by user" %}  <strong>{{ media.created_by.username }}</strong></p>
+                            <p>{% trans "Cooperative center code" %}: <strong>{{ media.cooperative_center_code }}</strong></p>
+                            {% if media.updated_by %}
+                                <p>{% trans "Last edit in" %} <strong>{{ media.updated_time }}</strong> {% trans "by user" %}  <strong>{{ media.updated_by.username }}</strong></p>
+                            {% endif %}
+                        </div>
+
+                    {% endif %}
+            </div>
+
+            <div id='tab-descriptors' class="tab-pane">
+                <fieldset id="descriptors" class="row">
+                    <table class="table table-condensed table-striped span8">
+                        <thead>
+                            <th>{% trans "Descriptors" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Delete?" %}</th>
+                        </thead>
+                        <tbody>
+
+                        {% if descriptor_list %}
+                            {% for descriptor in descriptor_list %}
+                                <tr>
+                                    <td>{{ descriptor.text }}</td>
+                                    <td>
+                                        {% if descriptor.status == 0 %}
+                                            <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                        {% elif descriptor.status == 1 %}
+                                            <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                        {% elif descriptor.status == 2 %}
+                                            <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
+                                        {% elif descriptor.status == 3 %}
+                                            <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
+                                        {% endif %}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ formset_descriptor.management_form }}
+
+                        {% for form in formset_descriptor %}
+                            <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                {% for field in form.visible_fields %}                                    
+                                    {% if role == 'doc' and field.name == 'status' %}
+                                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                        <td></td>
+                                    {% elif field.name == 'code' %}
+                                        {{ field.as_hidden }}
+                                    {% elif field.name == 'text' %}                                        
+                                        <td class="span6">
+                                            {{ field.as_hidden }}
+                                            <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
+                                                {% spaceless %}
+                                                {% if field.value == None or field.value == '' %}
+                                                    {% trans "Select by search" %}
+                                                {% else %} 
+                                                    {{ field.value}}
+                                                {% endif %}
+                                                {% endspaceless %}
+                                            </div>
+                                            <a href="#" onclick="javascript:decs_search(this)";><i class="icon-search"></i></a>
+                                        </td>
+                                    {% elif field.name != 'DELETE' %}
+                                        <td class="span6">
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td class="span6">
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+
+                <fieldset id="keywords" class="row">
+                    <table class="table table-condensed table-striped span8">
+                        <thead>
+                            <th>{% trans "Keywords" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Suggestion" %}?</th>                            
+                            <th>{% trans "Delete?" %}</th>
+                        </thead>
+                        <tbody>
+
+                        {% if keyword_list %}
+                            {% for keyword in keyword_list %}
+                                <tr>
+                                    <td>{{ keyword.text }}</td>
+                                    <td>
+                                        {% if keyword.status == 0 %}
+                                            <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                        {% elif keyword.status == 1 %}
+                                            <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                        {% elif keyword.status == 2 %}
+                                            <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
+                                        {% elif keyword.status == 3 %}
+                                            <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align: center">
+                                        {% if keyword.user_recomendation %}
+                                            <span title="{% trans 'Suggested' %}"><i class="icon-thumbs-up"></i></span>
+                                        {% endif %}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ formset_keyword.management_form }}
+
+                        {% for form in formset_keyword %}
+                            <tr id="keyword-{{ forloop.counter0 }}" class="keyword-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                {% for field in form.visible_fields %}                                    
+                                    {% if role == 'doc' and field.name == 'status' %}
+                                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                        <td></td>
+                                    {% elif field.name == 'user_recomendation' %}
+                                        {{ field.as_hidden }}                                        
+                                        <td style="text-align: center">
+                                            {% if field.value == True %}
+                                                <span title="{% trans 'Suggested' %}"><i class="icon-thumbs-up"></i></span>
+                                            {% endif %}
+                                        </td>
+                                    {% elif field.name != 'DELETE' %}
+                                        <td class="span6">
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td class="span6">
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+
+            </div>
+
+            <div id='tab-thematic' class="tab-pane">
+                <fieldset id="thematic">
+                    <table class="table table-condensed table-striped span8">
+                        <thead>
+                            <th>{% trans "Thematic area" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Delete?" %}</th>
+                        </thead>
+                        <tbody>
+                        {% if thematic_list %}
+                            {% for thematic in thematic_list %}
+                                <tr>
+                                    <td colspan="3">{{ thematic }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ formset_thematic.management_form }}
+
+                        {% for form in formset_thematic %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for field in form.visible_fields %}
+                                    {% if role == 'doc' and field.name == 'status' %}
+                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                    {% elif field.name != 'DELETE' %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td><!-- status --></td>
+                                <td>
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="control-panel form-submit">
+            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
+
+{% block extrajs %}
+    
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+
+   <script src="{% static 'js/jsrender.min.js' %}"></script>
+
+   <script id="itensTemplate" type="text/x-jsrender">
+        <li>
+            [[props tmpl="#keyPropTemplate" /]]
+        </li>    
+   </script>
+
+   <script id="keyPropTemplate" type="text/x-jsrender">
+        [[if prop]]
+            <strong>[[>~format(key)]]</strong> [[>prop]]
+        [[/if]]
+   </script>
+
+   <script type="text/javascript">
+        var decs_field;
+
+        function format_attrlabel(value) {
+
+            if ( value != 'text'){
+                label = value.replace('_','')
+                return  label + ':'
+            }else{
+                return ''
+            }
+        }
+
+        // change default delimiters of jsrender
+        $.views.settings.delimiters("[[","]]");
+
+        // render JSON fields for display
+        $(".jsonfield").each(function() {
+            var field_value = $(this).val();
+
+            // check if hidden value starts with [ or { (JSON object)
+            if ( field_value.match(/^[\[|\{]/) ) {
+               display_json_value( $(this) );
+            }
+        });
+
+        // watch for change of hidden fields (JSON elements)
+        $(".jsonfield").bind("change", function() {
+            display_json_value( $(this) );
+
+        });
+
+        // function responsible for display JSON elements using jsrender template
+        function display_json_value(element){
+            var element_id = $(element).attr('id'); 
+            var element_val = $('#' + element_id).val();
+
+            var json_data = jQuery.parseJSON(element_val);
+          
+            if ( json_data != null ){
+                $('#' + element_id + '_display').html($("#itensTemplate").render(json_data, {format: format_attrlabel}));
+            }
+
+        }
+
+        $(function() {
+            $('.descriptor-row').formset({
+                    addText : '{% trans "Add descriptor" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'descriptor_formset',
+                    prefix: '{{ formset_descriptor.prefix }}'
+            });
+
+            $('.keyword-row').formset({
+                    addText : '{% trans "Add keyword" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'keyword_formset',
+                    prefix: '{{ formset_keyword.prefix }}'
+            });
+
+            $('.thematic-row').formset({
+                    addText : '{% trans "Add thematic area" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'thematic_formset',
+                    prefix: '{{ formset_thematic.prefix }}'
+            });
+
+            var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+            var eventer = window[eventMethod];
+            var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+
+            // Listen to message from child window
+            eventer(messageEvent,function(e) {                
+                var decs_data = e.data;
+                var pipe_pos = decs_data.lastIndexOf('|');
+                var decs_text = decs_data.substring(0, pipe_pos);
+                var decs_code = decs_data.substring(pipe_pos+1);
+
+                var decs_row = decs_field.replace( /[A-Za-z_$-]/g, '');
+                // set code, text and label for the new descriptor
+                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
+                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);                
+                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(decs_text);
+                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
+
+            },false);
+
+            $(document).on("click", "a.add_error_report", function(){ 
+                $("#error_report_modal").modal("show");                
+            });
+
+            // Prevent losing data by navigating away from the page
+            $(window).bind('beforeunload', function() {
+                var checkboxcount = $("input:checkbox:checked").length;
+                if(checkboxcount > 0) {
+                    return 'Are you sure?';
+                }
+            });
+            
+        })
+
+        function open_window_with_post(verb, url, data, target) {
+            var form = document.createElement("form");
+            form.setAttribute("method", verb);
+            form.setAttribute("action", url);
+            form.setAttribute("target", target);            
+
+            if (data) {
+                for (var key in data) {
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
+                    form.appendChild(input);
+                }
+            }
+            document.body.appendChild(form);
+            assist_win = window.open('about:blank', target, 'scrollbars=1,width=785,height=590');
+
+            form.submit();
+            if (window.focus) {
+                assist_win.focus();
+            }
+        }
+
+        function field_assist(field_name){
+
+            field_assist_url = '/bibliographic/field_assist/' + field_name + '/',
+            field_value = $('#id_' + field_name).val();
+
+            post_params = {'field_value' : field_value };
+            
+            open_window_with_post('POST', field_assist_url, post_params, 'field_assist');
+            return false;
+        }
+        
+
+        function update_field_from_assist(field_name, json_string) {
+
+            // convert to json_string to json object
+            json_obj = jQuery.parseJSON(json_string);
+            // select content of data element (just used for wrap de objects)
+            json_data = json_obj['data'];
+
+            // convert json to string for save at database
+            field_new_value = JSON.stringify(json_data);
+
+            // update field with string json and trigger change function
+            $('#id_' + field_name).val(field_new_value).trigger('change');
+
+            // close field assist window            
+            assist_win.close();
+        }
+
+        function decs_search(obj){
+            var row = $(obj).parent();
+            decs_field = row.find('input').attr('name');
+            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
+        }
+
+
+   </script>
+{% endblock %}
+
+

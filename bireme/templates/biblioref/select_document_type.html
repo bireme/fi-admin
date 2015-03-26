@@ -24,11 +24,11 @@
         </ul>        
     {% endif %}
 
-    <form action="{% url 'create_biblioref' %}" method="get">
+    <form action="{% url 'list_biblioref_sources' %}" method="get">
         {{ form }}
 
         <div class="control-panel form-submit">
-            <button class="btn btn-primary btn-large">{% trans "Create" %}</button>
+            <button class="btn btn-primary btn-large">{% trans "Select" %}</button>
         </div>
     </form>
 

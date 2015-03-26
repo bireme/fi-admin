@@ -162,6 +162,7 @@ INSTALLED_APPS = (
     'haystack',
     'tastypie',
     'rosetta',
+    'form_utils',
 
     'biremelogin',
     

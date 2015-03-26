@@ -4,5 +4,6 @@ from utils.admin import GenericAdmin
 
 from models import *
 
-admin.site.register(Reference)
-
+admin.site.register(ReferenceSource)
+admin.site.register(ReferenceAnalytic)
+admin.site.register(ReferenceComplement)

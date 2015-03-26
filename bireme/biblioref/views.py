@@ -29,11 +29,16 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
     """
     paginate_by = settings.ITEMS_PER_PAGE
     restrict_by_user = True
+    context_object_name = "references"
+    search_field = "reference_title"
 
     def dispatch(self, *args, **kwargs):
         return super(BiblioRefGenericListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
+
+        source_id = self.request.GET.get('source', None)
+
         # getting action parameter        
         self.actions = {}
         for key in ACTIONS.keys():
@@ -42,6 +47,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         search_field = self.search_field + '__contains'
 
         object_list = self.model.objects.filter(**{search_field: self.actions['s']})
+
+        if source_id:
+            object_list = object_list.filter(source_id=source_id)
 
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
@@ -61,6 +69,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
     def get_context_data(self, **kwargs):
         context = super(BiblioRefGenericListView, self).get_context_data(**kwargs)
         context['actions'] = self.actions
+        context['document_type'] = self.request.GET.get('document_type')
+        context['source_id'] = self.request.GET.get('source')
+
         return context
 
 
@@ -71,16 +82,26 @@ class BiblioRefListView(BiblioRefGenericListView, ListView):
     Extend BiblioRefGenericListView to list bibliographic references 
     """
     model = Reference
-    context_object_name = "references"
-    search_field = "title"
+
+
+class BiblioRefListSourceView(BiblioRefGenericListView, ListView):
+    """
+    Extend BiblioRefGenericListView to list bibliographic references
+    """
+    model = ReferenceSource
+
+class BiblioRefListAnalyticView(BiblioRefGenericListView, ListView):
+    """
+    Extend BiblioRefGenericListView to list bibliographic references
+    """
+    model = ReferenceAnalytic
 
 class BiblioRefUpdate(LoginRequiredView):
     """
     Handle creation and update of bibliographic references
     """
-    model = Reference
+
     success_url = reverse_lazy('list_biblioref')
-    form_class = BiblioRefForm
 
     def form_valid(self, form):
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
@@ -90,14 +111,8 @@ class BiblioRefUpdate(LoginRequiredView):
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
         formset_keyword_valid = formset_keyword.is_valid()
-
-        # if document is created by other user assume formsets descriptor and thematic valid
-        if self.object and (self.object.created_by != self.request.user):
-            formset_descriptor_valid = True
-            formset_thematic_valid = True
-        else:
-            formset_descriptor_valid = formset_descriptor.is_valid()
-            formset_thematic_valid = formset_thematic.is_valid()
+        formset_descriptor_valid = formset_descriptor.is_valid()
+        formset_thematic_valid = formset_thematic.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
         valid_for_publication = is_valid_for_publication(form,
@@ -137,18 +152,37 @@ class BiblioRefUpdate(LoginRequiredView):
 
     def get_form_kwargs(self):
         kwargs = super(BiblioRefUpdate, self).get_form_kwargs()
+        document_type = ''
+        reference_source = None
 
-        # document_type is passing via GET and is used to filter the list of form fields
-        document_type = self.request.GET.get('document_type')
+        source_id = self.request.GET.get('source', None)
+
+        # handle analytic
+        if source_id:
+            reference_source = ReferenceSource.objects.get(pk=source_id)
+            literature_type = reference_source.literature_type
+            if literature_type == 'S':
+                document_type = 'Sas'
+        # handle source
+        else:
+            # edition of source
+            if self.object:
+                document_type = self.object.literature_type
+            # new source
+            else:
+                document_type = self.request.GET.get('document_type')
+
         # get list of fields allowed by document_type
-        field_list = FIELDS_BY_DOCUMENT_TYPE.get(document_type, None)
+        fieldsets = FIELDS_BY_DOCUMENT_TYPE.get(document_type, None)
 
         user_data = additional_user_info(self.request)
 
         additional_form_parameters = {}
         additional_form_parameters['user'] = self.request.user
         additional_form_parameters['user_data'] = user_data
-        additional_form_parameters['field_list'] = field_list
+        additional_form_parameters['fieldsets'] = fieldsets
+        additional_form_parameters['document_type'] = document_type
+        additional_form_parameters['source_id'] = source_id
 
         kwargs.update(additional_form_parameters)
 
@@ -201,18 +235,38 @@ class BiblioRefUpdate(LoginRequiredView):
         return context
 
 
-class BiblioRefUpdateView(BiblioRefUpdate, UpdateView):
+class BiblioRefSourceUpdateView(BiblioRefUpdate, UpdateView):
     """
     Used as class view to update BiblioRef
     Extend BiblioRefUpdate that do all the work    
     """
+    model = ReferenceSource
+    form_class = BiblioRefSourceForm
+
+class BiblioRefAnaliticUpdateView(BiblioRefUpdate, UpdateView):
+    """
+    Used as class view to update BiblioRef
+    Extend BiblioRefUpdate that do all the work
+    """
+    model = ReferenceAnalytic
+    form_class = BiblioRefAnalyticForm
 
 
-class BiblioRefCreateView(BiblioRefUpdate, CreateView):
+class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
     """
     Used as class view to create BiblioRef
     Extend BiblioRefUpdate that do all the work
     """
+    model = ReferenceSource
+    form_class = BiblioRefSourceForm
+
+class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):
+    """
+    Used as class view to create BiblioRef
+    Extend BiblioRefUpdate that do all the work
+    """
+    model = ReferenceAnalytic
+    form_class = BiblioRefAnalyticForm
 
 
 class SelectDocumentTypeView(FormView):
@@ -224,7 +278,7 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
     """
     Handle delete of BiblioRef objects
     """
-    model = Reference
+    model = ReferenceSource
     success_url = reverse_lazy('list_biblioref')
 
     def get_object(self, queryset=None):

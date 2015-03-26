@@ -9,7 +9,39 @@ language_choices = (('pt', 'Português'), ('es', 'Espanhol'), ('en', 'Inglês'))
 
 
 FIELDS_BY_DOCUMENT_TYPE = {}
-FIELDS_BY_DOCUMENT_TYPE['S'] = ['title', 'database', 'individual_author']
+
+FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], 'legend': 'General information'}),
+                                ('serial_level', {'fields': ['title_serial', 'volume_serial', 'issue_number',
+                                                             'issn'],
+                                                  'legend': 'Serial level',
+                                                  'classes': ['collapse']}),
+                                ('imprint', {'fields': ['publication_date', 'publication_date_normalized'],
+                                                  'legend': 'Imprint',
+                                                  'classes': ['collapse']})]
+
+FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'call_number', 'database', 'electronic_address',
+                                                          'record_type'],
+                                               'legend': 'General information'}),
+                                  ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
+                                                                 'english_translated_title', 'pages'],
+                                                      'legend': 'Analytic Level',
+                                                      'classes': ['collapse']}),
+                                  ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi',
+                                                            'general_note', 'formatted_contents_note',
+                                                            'additional_physical_form_available_note',
+                                                            'reproduction_note', 'original_version_note',
+                                                            'internal_note', ],
+                                                   'legend': 'Complementary Information',
+                                                   'classes': ['collapse']}),
+                                  ('content_data', {'fields': ['clinical_trial_registry_name', 'author_keyword'],
+                                                   'legend': 'Content data',
+                                                   'classes': ['collapse']}),
+                                  ('abstract', {'fields': ['abstract'],
+                                                   'legend': 'Abstract',
+                                                   'classes': ['collapse']}),
+                                  ]
+
+
 
 class CallNumberAttributes(colander.MappingSchema):
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Center code'), missing=unicode(''))

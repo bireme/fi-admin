@@ -21,7 +21,7 @@
 <div class='header'>
     <h2><i class='icon-file'></i> {% trans "Bibliographic References" %}</h2>
         <div class='pull-right'>
-            <a href="{% url 'create_biblioref_step_1' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Bibliographic Reference" %}</a>
+            <a href="{% url 'select_biblioref_type' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Bibliographic Reference" %}</a>
         </div>
 </div>
 
@@ -87,7 +87,7 @@
                 <tbody>
                     {% for reference in references %}
                         <tr>
-                            <td><a href="{% url 'edit_biblioref' reference.id %}">{{ reference.id }}</a></td>
+                            <td><a href="{% url 'edit_biblioref_source' reference.id %}">{{ reference.id }}</a></td>
                             <td><span title="{{ reference }}">{{ reference|slice:"50" }}</span></td>
                             <td>
                                 {% if reference.status == 0 %}
@@ -101,7 +101,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'edit_biblioref' reference.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                <a href="{% url 'edit_biblioref_source' reference.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                                 {% if reference.created_by_id = user.id %}
                                     <a href="{% url 'delete_media' reference.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
