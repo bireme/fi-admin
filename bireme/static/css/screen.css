@@ -337,3 +337,13 @@ span.required .mark{
     margin-bottom: 70px;
 
 }
+
+ul.jsonfield_display{
+    width: 560px;
+    min-height: 22px;
+    padding: 2px;
+    margin: 0;
+    border: 1px solid #cccccc;
+    background-color: #eeeeee;
+    cursor: context-menu;
+}

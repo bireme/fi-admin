@@ -12,6 +12,7 @@ from main.models import Descriptor, Keyword, ResourceThematic
 from utils.forms import DescriptorRequired, ResourceThematicRequired
 
 from models import *
+import simplejson
 
 class SelectDocumentTypeForm(forms.Form):
     DOCUMENT_TYPE_CHOICES = (
@@ -34,7 +35,6 @@ class BiblioRefForm(BetterModelForm):
         self.user = kwargs.pop('user', None)
         self.user_data = kwargs.pop('user_data', None)
         self.document_type = kwargs.pop('document_type', None)
-        self.source_id = kwargs.pop('source_id', None)
         fieldsets = kwargs.pop('fieldsets', None)
 
         super(BiblioRefForm, self).__init__(*args, **kwargs)
@@ -42,48 +42,38 @@ class BiblioRefForm(BetterModelForm):
         # used for fieldsets method for construct internal fieldset_collection
         self._fieldsets = fieldsets
 
-        '''
-        # only display fields of the model listed at field_list parameter (filter by document_type at view)
-        if self.field_list:
-            # status fields must be always present at form
-            self.field_list.insert(0, 'status')
+        self.fields['database'].widget = AutoResizeTextarea()
 
-            # remove fields of the model that is not in field_list
-            for field_name in self.fields:
-                if not field_name in self.field_list:
-                    del self.fields[field_name]
-
-            # change the default order of the fields to match the order in field_list
-            fields_ordered = OrderedDict()
-            for field_name in self.field_list:
-                fields_ordered[field_name] = self.fields[field_name]
-
-            self.fields = fields_ordered
-        '''
         # hidden status field for documentalist profile
         if self.user_data['service_role'].get('BiblioRef') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 
-        if self.source_id:
-            self.fields['source'] = forms.IntegerField(widget=widgets.HiddenInput(), initial=self.source_id)
+        #self.fields['source'] = forms.CharField(widget=forms.widgets.HiddenInput(), label='')
 
 
     def fieldsets(self):
         if not self._fieldset_collection:
-            self._fieldset_collection = FieldsetCollection(
-                self, self._fieldsets)
+            self._fieldset_collection = FieldsetCollection(self, self._fieldsets)
+
         return self._fieldset_collection
 
     def save(self, *args, **kwargs):
         obj = super(BiblioRefForm, self).save(commit=False)
 
-        print "source_id: " % self.source_id
-        if self.document_type == 'S':
-            obj.source_id = self.source_id
-            obj.literature_type = self.document_type
-            obj.reference_title = "{0}; {1} ({2})".format(self.cleaned_data['title_serial'],
-                                                          self.cleaned_data['volume_serial'],
-                                                          self.cleaned_data['issue_number'])
+        if self.document_type[0] == 'S':
+            obj.literature_type = self.document_type[0]
+            obj.treatment_level = self.document_type[1:]
+
+            if self.document_type == 'S':
+                obj.reference_title = "{0}; {1} ({2})".format(self.cleaned_data['title_serial'],
+                                                              self.cleaned_data['volume_serial'],
+                                                              self.cleaned_data['issue_number'])
+            elif self.document_type == 'Sas':
+                if self.cleaned_data['title']:
+                    analytic_title = self.cleaned_data['title']
+                    analytic_title = analytic_title[0]['text'].encode('utf-8').strip()
+                    obj.reference_title = "{0} | {1}".format(obj.source.reference_title, analytic_title)
+
 
         # for fields with readonly attribute restore the original value for POST data insertions hack
         for name, field in self.fields.items():
@@ -102,7 +92,6 @@ class BiblioRefSourceForm(BiblioRefForm):
         exclude = ('cooperative_center_code',)
 
 
-
 class BiblioRefAnalyticForm(BiblioRefForm):
     class Meta:
         model = ReferenceAnalytic
@@ -110,11 +99,9 @@ class BiblioRefAnalyticForm(BiblioRefForm):
 
 
 # definition of inline formsets
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, 
-                                                  can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, can_delete=True, extra=1)
 
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, 
-                                                        formset=ResourceThematicRequired, can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
 

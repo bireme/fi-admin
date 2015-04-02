@@ -3,19 +3,19 @@
 {% load static %}
 {% load app_filters %}
 
-{% block title %}{% trans "Edit Media" %}{% endblock %}
+{% block title %}{% trans "Edit Analytic" %}{% endblock %}
 
 {% block breadcrumb %}
     <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
-    {% if not object %}<li>{% trans "New Reference" %}</li>
-    {% else %}<li>{% trans "Edit Media" %}</li>{% endif %}
+    {% if not object %}<li>{% trans "New Analytic" %}</li>
+    {% else %}<li>{% trans "Edit Analytic" %}</li>{% endif %}
 {% endblock %}
 
 {% block content %}
 
 
 <div class='header'>
-    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Reference" %}{% else %}{% trans "Edit Bibliographic Reference" %}{% endif %}</h2>
+    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Analytic" %}{% else %}{% trans "Edit Analytic" %}{% endif %}</h2>
 </div>
 
 <div class='body'>
@@ -84,21 +84,22 @@
                                         <ul>
                                             {% for field in fieldset %}
                                                 <li {{ field.row_attrs }}>
-                                                    <label for="{{ field.auto_id }}">
-                                                        {% if field.field.required %}
-                                                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                                        {% else %}
-                                                            {{ field.label }}
-                                                        {% endif %}
-                                                        {% if field.field|fieldtype == 'JSONFormField' %}
-                                                            <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);"><i class="icon-edit"></i></a>
-                                                        {% endif %}
-                                                    </label>
+                                                    {% if field.label %}
+                                                        <label for="{{ field.auto_id }}">
+                                                            {% if field.field.required %}
+                                                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                                            {% else %}
+                                                                {{ field.label }}
+                                                            {% endif %}
+                                                        </label>
+                                                    {% endif %}
 
                                                     {% if field.field|fieldtype == 'JSONFormField' %}
                                                         <div class="row">
                                                             <div class="span18">
-                                                                <ul id="id_{{field.html_name}}_display"></ul>
+                                                                <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);">
+                                                                    <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     {% endif %}
@@ -502,6 +503,7 @@
 
         function update_field_from_assist(field_name, json_string) {
 
+            alert(json_string);
             // convert to json_string to json object
             json_obj = jQuery.parseJSON(json_string);
             // select content of data element (just used for wrap de objects)

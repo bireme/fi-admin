@@ -56,7 +56,7 @@
                             <td><a href="{% url 'edit_biblioref_analytic' reference.id %}">{{ reference.id }}</a></td>
                             <td><span title="{{ reference }}">{{ reference|slice:"50" }}</span></td>
                             <td>
-                                <a href="{% url 'list_biblioref_analytics' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-list'></i> Analíticas</a>
+                                <a href="{% url 'edit_biblioref_analytic' reference.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                             </td>
                         </tr>
                     {% endfor %}

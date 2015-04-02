@@ -110,13 +110,14 @@ class BiblioRefUpdate(LoginRequiredView):
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
+
         formset_keyword_valid = formset_keyword.is_valid()
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
         valid_for_publication = is_valid_for_publication(form,
-                                          [formset_descriptor, formset_keyword, formset_thematic])
+                                                         [formset_descriptor, formset_keyword, formset_thematic])
 
 
         if (form_valid and formset_descriptor_valid and formset_keyword_valid
@@ -139,10 +140,10 @@ class BiblioRefUpdate(LoginRequiredView):
         else:
             return self.render_to_response(
                            self.get_context_data(form=form,
-                                  formset_descriptor=formset_descriptor,
-                                  formset_keyword=formset_keyword,
-                                  formset_thematic=formset_thematic,
-                                  valid_for_publication=valid_for_publication))
+                                                 formset_descriptor=formset_descriptor,
+                                                 formset_keyword=formset_keyword,
+                                                 formset_thematic=formset_thematic,
+                                                 valid_for_publication=valid_for_publication))
 
 
     def form_invalid(self, form):
@@ -157,17 +158,17 @@ class BiblioRefUpdate(LoginRequiredView):
 
         source_id = self.request.GET.get('source', None)
 
-        # handle analytic
+        # new analytic
         if source_id:
             reference_source = ReferenceSource.objects.get(pk=source_id)
             literature_type = reference_source.literature_type
             if literature_type == 'S':
                 document_type = 'Sas'
-        # handle source
+        # edition/new source
         else:
-            # edition of source
+            # source/analytic edition
             if self.object:
-                document_type = self.object.literature_type
+                document_type = "{0}{1}".format(self.object.literature_type, self.object.treatment_level)
             # new source
             else:
                 document_type = self.request.GET.get('document_type')
@@ -182,7 +183,6 @@ class BiblioRefUpdate(LoginRequiredView):
         additional_form_parameters['user_data'] = user_data
         additional_form_parameters['fieldsets'] = fieldsets
         additional_form_parameters['document_type'] = document_type
-        additional_form_parameters['source_id'] = source_id
 
         kwargs.update(additional_form_parameters)
 
@@ -267,6 +267,16 @@ class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):
     """
     model = ReferenceAnalytic
     form_class = BiblioRefAnalyticForm
+
+    # set initial data source at analytic creation
+    def get_initial(self):
+        reference_source = None
+        source_id = self.request.GET.get('source', None)
+
+        if source_id:
+            reference_source = ReferenceSource.objects.get(pk=source_id)
+
+        return {"source": reference_source}
 
 
 class SelectDocumentTypeView(FormView):

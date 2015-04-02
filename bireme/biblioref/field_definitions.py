@@ -14,13 +14,13 @@ FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], '
                                 ('serial_level', {'fields': ['title_serial', 'volume_serial', 'issue_number',
                                                              'issn'],
                                                   'legend': 'Serial level',
-                                                  'classes': ['collapse']}),
+                                                 }),
                                 ('imprint', {'fields': ['publication_date', 'publication_date_normalized'],
-                                                  'legend': 'Imprint',
-                                                  'classes': ['collapse']})]
+                                                  'legend': 'Imprint' })]
 
-FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'call_number', 'database', 'electronic_address',
-                                                          'record_type'],
+
+FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
+                                                          'electronic_address', 'record_type'],
                                                'legend': 'General information'}),
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
                                                                  'english_translated_title', 'pages'],
