@@ -4,6 +4,7 @@ from django import forms
 
 from django.utils.encoding import smart_text
 from django.db.models.fields import BLANK_CHOICE_DASH
+from django.forms.utils import ValidationError
 from django.core.serializers.json import DjangoJSONEncoder
 from utils.models import *
 
@@ -19,6 +20,19 @@ class JSONField(jsonfield.JSONField):
         defaults.update(kwargs)
 
         return super(JSONField, self).formfield(**defaults)
+
+    def dumps_for_display(self, value):
+        """ Overwrite to avoid problem when saving/retrieving JSON field at parent level of model """
+        if value is None or value == 'null' or value == '':
+            return None
+
+        # Only convert to string when value is a list
+        if type(value) is list:
+            json_string = json.dumps(value, **self.dump_kwargs)
+            return json_string
+
+        # If value is current in string format return the original value
+        return value
 
 
 class AuxiliaryChoiceField(models.Field):
