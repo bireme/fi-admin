@@ -13,8 +13,7 @@ FIELDS_BY_DOCUMENT_TYPE = {}
 FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], 'legend': 'General information'}),
                                 ('serial_level', {'fields': ['title_serial', 'volume_serial', 'issue_number',
                                                              'issn'],
-                                                  'legend': 'Serial level',
-                                                 }),
+                                                  'legend': 'Serial level'}),
                                 ('imprint', {'fields': ['publication_date', 'publication_date_normalized'],
                                                   'legend': 'Imprint' })]
 
@@ -24,8 +23,7 @@ FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'c
                                                'legend': 'General information'}),
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
                                                                  'english_translated_title', 'pages'],
-                                                      'legend': 'Analytic Level',
-                                                      'classes': ['collapse']}),
+                                                      'legend': 'Analytic Level'}),
                                   ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi',
                                                             'general_note', 'formatted_contents_note',
                                                             'additional_physical_form_available_note',

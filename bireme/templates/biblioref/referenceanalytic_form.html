@@ -15,7 +15,7 @@
 
 
 <div class='header'>
-    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Analytic" %}{% else %}{% trans "Edit Analytic" %}{% endif %}</h2>
+    <h3><i class='icon-file'></i>{% if not object %}{% trans "New Analytic" %}{% else %}{% trans "Edit Analytic" %}{% endif %}</h3>
 </div>
 
 <div class='body'>
@@ -69,6 +69,19 @@
                     {% else %}
 
                         <div id="metadata" class="accordion">
+                            <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-target="#serial_level">Serial level</a>
+                                    </div>
+                                    <fieldset class="accordion-body" id="serial_level">
+                                        <ul class="alert">
+                                            <li>
+                                                <strong>{{object.source.title_serial}}; {{object.source.volume_serial}} ({{object.source.issue_number}})</strong>
+                                            </li>
+                                        </ul>
+                                    </fieldset>
+                            </div>
+
                             {{ form.non_field_errors }}
                             {% for fieldset in form.fieldsets %}
                                 <div class="accordion-group">
@@ -113,7 +126,6 @@
                                                 </li>
                                             {% endfor %}
                                         </ul>
-
                                     </fieldset>
                                 </div>
                             {% endfor %}
@@ -503,7 +515,6 @@
 
         function update_field_from_assist(field_name, json_string) {
 
-            alert(json_string);
             // convert to json_string to json object
             json_obj = jQuery.parseJSON(json_string);
             // select content of data element (just used for wrap de objects)

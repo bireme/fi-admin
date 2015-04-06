@@ -183,6 +183,7 @@ class BiblioRefUpdate(LoginRequiredView):
         additional_form_parameters['user_data'] = user_data
         additional_form_parameters['fieldsets'] = fieldsets
         additional_form_parameters['document_type'] = document_type
+        additional_form_parameters['reference_source'] = reference_source
 
         kwargs.update(additional_form_parameters)
 

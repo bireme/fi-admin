@@ -35,6 +35,8 @@ class BiblioRefForm(BetterModelForm):
         self.user = kwargs.pop('user', None)
         self.user_data = kwargs.pop('user_data', None)
         self.document_type = kwargs.pop('document_type', None)
+        self.reference_source = kwargs.pop('reference_source')
+
         fieldsets = kwargs.pop('fieldsets', None)
 
         super(BiblioRefForm, self).__init__(*args, **kwargs)
@@ -48,8 +50,6 @@ class BiblioRefForm(BetterModelForm):
         if self.user_data['service_role'].get('BiblioRef') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 
-        #self.fields['source'] = forms.CharField(widget=forms.widgets.HiddenInput(), label='')
-
 
     def fieldsets(self):
         if not self._fieldset_collection:
@@ -57,8 +57,13 @@ class BiblioRefForm(BetterModelForm):
 
         return self._fieldset_collection
 
+
     def save(self, *args, **kwargs):
         obj = super(BiblioRefForm, self).save(commit=False)
+
+        # if is a new analytic save reference source info
+        if self.reference_source:
+            obj.source = self.reference_source
 
         if self.document_type[0] == 'S':
             obj.literature_type = self.document_type[0]
@@ -95,7 +100,7 @@ class BiblioRefSourceForm(BiblioRefForm):
 class BiblioRefAnalyticForm(BiblioRefForm):
     class Meta:
         model = ReferenceAnalytic
-        exclude = ('cooperative_center_code',)
+        exclude = ('source', 'cooperative_center_code',)
 
 
 # definition of inline formsets
