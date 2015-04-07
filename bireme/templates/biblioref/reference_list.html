@@ -88,7 +88,7 @@
                     {% for reference in references %}
                         <tr>
                             <td><a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}">{{ reference.id }}</a></td>
-                            <td><span title="{{ reference }}">{{ reference|slice:"50" }}</span></td>
+                            <td><span title="{{ reference }}">{{ reference }}</span></td>
                             <td>
                                 {% if reference.status == 0 %}
                                     <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>

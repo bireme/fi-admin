@@ -135,7 +135,17 @@ class Reference(Generic):
     software_version = models.CharField(_('Software version'), max_length=50, blank=True)
 
     def __unicode__(self):
-        return self.reference_title
+        if 'a' in self.treatment_level:
+            ref_child = ReferenceAnalytic.objects.get(id=self.pk)
+            ref_title = u"{0}; {1} ({2}) | {3}".format(ref_child.source.title_serial,
+                                                       ref_child.source.volume_serial,
+                                                       ref_child.source.issue_number,
+                                                       ref_child.title[0]['text'])
+        else:
+            ref_child = ReferenceSource.objects.get(id=self.pk)
+            ref_title = ref_child.title_serial
+
+        return ref_title
 
 
 # Source

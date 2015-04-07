@@ -70,14 +70,14 @@ class BiblioRefForm(BetterModelForm):
             obj.treatment_level = self.document_type[1:]
 
             if self.document_type == 'S':
-                obj.reference_title = "{0}; {1} ({2})".format(self.cleaned_data['title_serial'],
+                obj.reference_title = u"{0}; {1} ({2})".format(self.cleaned_data['title_serial'],
                                                               self.cleaned_data['volume_serial'],
                                                               self.cleaned_data['issue_number'])
             elif self.document_type == 'Sas':
                 if self.cleaned_data['title']:
                     analytic_title = self.cleaned_data['title']
-                    analytic_title = analytic_title[0]['text'].encode('utf-8').strip()
-                    obj.reference_title = "{0} | {1}".format(obj.source.reference_title, analytic_title)
+                    analytic_title = analytic_title[0]['text']
+                    obj.reference_title = u"{0} | {1}".format(obj.source.reference_title, analytic_title)
 
 
         # for fields with readonly attribute restore the original value for POST data insertions hack

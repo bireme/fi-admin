@@ -20,7 +20,7 @@
 
 <!--  header -->
 <div class='header'>
-    <h2><i class='icon-file'></i> {% trans "Reference Source" %}</h2>
+    <h2><i class='icon-file'></i> {% trans "Select or create a source" %}</h2>
 </div>
 
 <div class='body'>
@@ -61,8 +61,7 @@
                                 {{ reference.publication_date }}
                             </td>
                             <td>
-                                <a href="{% url 'edit_biblioref_source' reference.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                <a href="{% url 'list_biblioref_analytics' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-list'></i> Analíticas</a>
+                                <a href="{% url 'list_biblioref_analytics' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-list'></i> {% trans "Analytics" %}</a>
                             </td>
                         </tr>
                     {% endfor %}

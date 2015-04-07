@@ -16,6 +16,11 @@
 
 <div class='header'>
     <h2><i class='icon-file'></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %}</h2>
+    {% if object %}
+        <div class='pull-right'>
+            <a href="{% url 'create_biblioref_analytic' %}?source={{object.pk}}" class='btn btn-primary'><i class='icon-file'></i> {% trans "Create analytic" %}</a>
+        </div>
+    {% endif %}
 </div>
 
 <div class='body'>

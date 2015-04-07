@@ -252,6 +252,12 @@ class BiblioRefAnaliticUpdateView(BiblioRefUpdate, UpdateView):
     model = ReferenceAnalytic
     form_class = BiblioRefAnalyticForm
 
+    def get_context_data(self, **kwargs):
+        # add source to context of form to present source information
+        context = super(BiblioRefAnaliticUpdateView, self).get_context_data(**kwargs)
+        context['reference_source'] = self.object.source
+
+        return context
 
 class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
     """
@@ -261,6 +267,10 @@ class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
     model = ReferenceSource
     form_class = BiblioRefSourceForm
 
+    # after creation of source present option for creation new analytic
+    def get_success_url(self):
+        return 'analytics?source=%s' % self.object.pk
+
 class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):
     """
     Used as class view to create BiblioRef
@@ -269,15 +279,16 @@ class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):
     model = ReferenceAnalytic
     form_class = BiblioRefAnalyticForm
 
-    # set initial data source at analytic creation
-    def get_initial(self):
-        reference_source = None
+    def get_context_data(self, **kwargs):
+        # add source to context of form to present source information
+        context = super(BiblioRefAnalyticCreateView, self).get_context_data(**kwargs)
         source_id = self.request.GET.get('source', None)
 
         if source_id:
             reference_source = ReferenceSource.objects.get(pk=source_id)
+            context['reference_source'] = reference_source
 
-        return {"source": reference_source}
+        return context
 
 
 class SelectDocumentTypeView(FormView):
