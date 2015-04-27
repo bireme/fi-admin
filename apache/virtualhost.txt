@@ -1,0 +1,28 @@
+<VirtualHost *:80>
+    ServerName fi-admin.local
+
+    Alias /robots.txt /var/www/fi-admin/bireme/static/robots.txt
+    Alias /favicon.ico /var/www/fi-admin/bireme/static/favicon.ico
+    Alias /static/ /var/www/fi-admin/bireme/static/
+    Alias /media/ /var/www/fi-admin/bireme/media/
+
+    <Directory /var/www/fi-admin/bireme/static>
+        AllowOverride All
+        Options FollowSymLinks MultiViews
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIPassAuthorization On
+    WSGIDaemonProcess fi-admin user=apache group=apache processes=1 threads=10 python-path=/var/www/fi-admin/env/lib/python2.7/site-packages
+    WSGIScriptAlias / /var/www/fi-admin/application.wsgi
+
+    <Directory /var/www/fi-admin/>
+        WSGIProcessGroup fi-admin
+        Order allow,deny
+        Allow from all
+    </Directory>
+    ErrorLog "| /usr/local/httplog/bin/httplog /home/apache-logs/bvsalud.org/%Y-%m-%d+fi-admin-error.log 5M"
+    CustomLog "| /usr/local/httplog/bin/httplog /home/apache-logs/bvsalud.org/%Y-%m-%d+fi-admin-access.log" combined
+</VirtualHost>
