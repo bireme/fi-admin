@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-24 11:06-0300\n"
-"PO-Revision-Date: 2014-09-24 11:11-0300\n"
+"POT-Creation-Date: 2015-04-27 11:05-0300\n"
+"PO-Revision-Date: 2015-04-27 11:09-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,330 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
+
+#: biblioref/field_definitions.py:13
+#, fuzzy
+msgid "Center code"
+msgstr "Código del centro cooperante"
+
+#: biblioref/field_definitions.py:15
+msgid "Classification number"
+msgstr ""
+
+#: biblioref/field_definitions.py:16
+#, fuzzy
+msgid "Author number"
+msgstr "Autores"
+
+#: biblioref/field_definitions.py:17
+msgid "Volumen, inventory number, part"
+msgstr ""
+
+#: biblioref/field_definitions.py:18
+msgid "Lending system"
+msgstr ""
+
+#: biblioref/field_definitions.py:27
+#, fuzzy
+msgid "Electric address"
+msgstr "Área temática"
+
+#: biblioref/field_definitions.py:30 biblioref/field_definitions.py:49
+#: events/models.py:21 main/models.py:28 main/models.py:68 main/models.py:96
+#: main/models.py:107 main/models.py:134 multimedia/models.py:21
+#: multimedia/models.py:60 templates/main/edit-language.html:8
+msgid "Language"
+msgstr "Idioma"
+
+#: biblioref/field_definitions.py:31
+msgid "Fulltext"
+msgstr ""
+
+#: biblioref/field_definitions.py:32
+msgid "Password"
+msgstr ""
+
+#: biblioref/field_definitions.py:33
+#, fuzzy
+msgid "Logon"
+msgstr "Cerrar sesión"
+
+#: biblioref/field_definitions.py:34
+#, fuzzy
+msgid "File extension"
+msgstr "Extensión del ítem"
+
+#: biblioref/field_definitions.py:35
+msgid "File length"
+msgstr ""
+
+#: biblioref/field_definitions.py:36
+msgid "No public note"
+msgstr ""
+
+#: biblioref/field_definitions.py:37
+#, fuzzy
+msgid "File type"
+msgstr "Tipo de evento"
+
+#: biblioref/field_definitions.py:38
+#, fuzzy
+msgid "Public note"
+msgstr "Fecha de publicación"
+
+#: biblioref/models.py:13
+msgid "Bibliographic Reference"
+msgstr ""
+
+#: biblioref/models.py:14 templates/biblioref/reference_form.html:9
+#: templates/biblioref/reference_list.html:4
+#: templates/biblioref/reference_list.html:7
+#: templates/biblioref/reference_list.html:22
+msgid "Bibliographic References"
+msgstr ""
+
+#: biblioref/models.py:17 error_reporting/models.py:18 events/models.py:61
+#: main/models.py:141 main/models.py:164 main/models.py:184 main/models.py:209
+#: multimedia/models.py:93 suggest/models.py:16 suggest/models.py:48
+#: templates/biblioref/reference_form.html:145
+#: templates/biblioref/reference_form.html:218
+#: templates/biblioref/reference_list.html:64
+#: templates/biblioref/reference_list.html:94
+#: templates/error_report/list.html:89 templates/error_report/list.html:147
+#: templates/events/edit-event.html:151 templates/events/edit-event.html:222
+#: templates/events/events.html:74 templates/events/events.html.py:119
+#: templates/main/edit-resource.html:152 templates/main/edit-resource.html:223
+#: templates/main/edit-resource.html:293 templates/main/resources.html:74
+#: templates/main/resources.html.py:118
+#: templates/multimedia/media_form.html:152
+#: templates/multimedia/media_form.html:225
+#: templates/multimedia/media_list.html:66
+#: templates/multimedia/media_list.html:98 templates/suggest/list.html:52
+#: templates/suggest/list.html.py:93 templates/suggest/list.html:137
+#: templates/suggest/list.html.py:180
+msgid "Pending"
+msgstr "Pendiente"
+
+#: biblioref/models.py:18 events/models.py:62 main/models.py:142
+#: main/models.py:165 main/models.py:185 main/models.py:210
+#: multimedia/models.py:94 suggest/models.py:17 suggest/models.py:49
+#: templates/biblioref/reference_form.html:147
+#: templates/biblioref/reference_form.html:220
+#: templates/biblioref/reference_list.html:65
+#: templates/biblioref/reference_list.html:96
+#: templates/error_report/list.html:149 templates/events/edit-event.html:153
+#: templates/events/edit-event.html:224 templates/events/events.html:75
+#: templates/events/events.html.py:121 templates/main/edit-resource.html:154
+#: templates/main/edit-resource.html:225 templates/main/edit-resource.html:295
+#: templates/main/resources.html:75 templates/main/resources.html.py:120
+#: templates/multimedia/media_form.html:154
+#: templates/multimedia/media_form.html:227
+#: templates/multimedia/media_list.html:67
+#: templates/multimedia/media_list.html:100 templates/suggest/list.html:53
+#: templates/suggest/list.html.py:95 templates/suggest/list.html:139
+#: templates/suggest/list.html.py:182
+msgid "Admitted"
+msgstr "Aceptado"
+
+#: biblioref/models.py:19 events/models.py:63 main/models.py:143
+#: main/models.py:166 main/models.py:186 main/models.py:211
+#: multimedia/models.py:95 suggest/models.py:18 suggest/models.py:50
+#: templates/biblioref/reference_form.html:149
+#: templates/biblioref/reference_form.html:222
+#: templates/biblioref/reference_list.html:66
+#: templates/biblioref/reference_list.html:98
+#: templates/events/edit-event.html:155 templates/events/edit-event.html:226
+#: templates/events/events.html:76 templates/events/events.html.py:123
+#: templates/main/edit-resource.html:156 templates/main/edit-resource.html:227
+#: templates/main/edit-resource.html:297 templates/main/resources.html:76
+#: templates/main/resources.html.py:122
+#: templates/multimedia/media_form.html:156
+#: templates/multimedia/media_form.html:229
+#: templates/multimedia/media_list.html:68
+#: templates/multimedia/media_list.html:102 templates/suggest/list.html:54
+#: templates/suggest/list.html.py:97 templates/suggest/list.html:141
+#: templates/suggest/list.html.py:184
+msgid "Refused"
+msgstr "Rechazado"
+
+#: biblioref/models.py:20 events/models.py:64 main/models.py:212
+#: multimedia/models.py:96 suggest/models.py:19 suggest/models.py:51
+#: templates/biblioref/reference_form.html:151
+#: templates/biblioref/reference_form.html:224
+#: templates/biblioref/reference_list.html:67
+#: templates/biblioref/reference_list.html:100
+#: templates/events/edit-event.html:157 templates/events/edit-event.html:228
+#: templates/events/events.html:77 templates/events/events.html.py:125
+#: templates/main/edit-resource.html:158 templates/main/edit-resource.html:229
+#: templates/main/edit-resource.html:299 templates/main/resources.html:77
+#: templates/main/resources.html.py:124
+#: templates/multimedia/media_form.html:158
+#: templates/multimedia/media_form.html:231
+#: templates/multimedia/media_list.html:69
+#: templates/multimedia/media_list.html:104 templates/suggest/list.html:55
+#: templates/suggest/list.html.py:99 templates/suggest/list.html:143
+#: templates/suggest/list.html.py:186
+msgid "Deleted"
+msgstr "Borrado"
+
+#: biblioref/models.py:24
+msgid "Document published as a periodic series"
+msgstr ""
+
+#: biblioref/models.py:25
+msgid "Conference papers as a periodic series"
+msgstr ""
+
+#: biblioref/models.py:26
+msgid "Paper of project and conference as a periodic series"
+msgstr ""
+
+#: biblioref/models.py:27
+msgid "Project paper as a periodic series"
+msgstr ""
+
+#: biblioref/models.py:28
+msgid "Document published as a monograph"
+msgstr ""
+
+#: biblioref/models.py:29
+msgid "Conference paper as a monograph"
+msgstr ""
+
+#: biblioref/models.py:30
+msgid "Paper of project and conference as a monograph"
+msgstr ""
+
+#: biblioref/models.py:31
+msgid "Project paper as a monograph "
+msgstr ""
+
+#: biblioref/models.py:32
+msgid "Document published as a monographic series "
+msgstr ""
+
+#: biblioref/models.py:33
+msgid "Conference paper as a monographic series "
+msgstr ""
+
+#: biblioref/models.py:34
+msgid "Project paper as a monographic series"
+msgstr ""
+
+#: biblioref/models.py:35
+msgid "Thesis, Dissertation (published or not) "
+msgstr ""
+
+#: biblioref/models.py:36
+msgid "Thesis, Dissertation as a monographic series"
+msgstr ""
+
+#: biblioref/models.py:37
+msgid "Non Conventional document"
+msgstr ""
+
+#: biblioref/models.py:38
+msgid "Conference paper in a non conventional format"
+msgstr ""
+
+#: biblioref/models.py:39
+msgid "Project paper in a non conventionally"
+msgstr ""
+
+#: biblioref/models.py:43
+msgid "Monographic level"
+msgstr ""
+
+#: biblioref/models.py:44
+msgid "Monographic level of collection"
+msgstr ""
+
+#: biblioref/models.py:45
+msgid "Monographic level of serial"
+msgstr ""
+
+#: biblioref/models.py:46
+msgid "Monographic analytical level"
+msgstr ""
+
+#: biblioref/models.py:47
+msgid "Monographic analytics level of collection"
+msgstr ""
+
+#: biblioref/models.py:48
+msgid "Monographic analytics level of serial"
+msgstr ""
+
+#: biblioref/models.py:49
+msgid "Analytics level of serial"
+msgstr ""
+
+#: biblioref/models.py:50
+#, fuzzy
+msgid "Collection level"
+msgstr "Colección"
+
+#: biblioref/models.py:53 error_reporting/models.py:35 events/models.py:67
+#: main/models.py:155 main/models.py:175 main/models.py:194 main/models.py:216
+#: multimedia/models.py:99 suggest/models.py:23 suggest/models.py:54
+#: templates/biblioref/reference_form.html:134
+#: templates/biblioref/reference_form.html:206
+#: templates/biblioref/reference_form.html:278
+#: templates/biblioref/reference_list.html:61
+#: templates/biblioref/reference_list.html:84
+#: templates/error_report/list.html:75 templates/error_report/list.html:134
+#: templates/events/edit-event.html:140 templates/events/edit-event.html:210
+#: templates/events/edit-event.html:282 templates/events/events.html:71
+#: templates/events/events.html.py:103 templates/main/edit-resource.html:141
+#: templates/main/edit-resource.html:211 templates/main/edit-resource.html:283
+#: templates/main/resources.html:71 templates/main/resources.html.py:104
+#: templates/multimedia/media_form.html:141
+#: templates/multimedia/media_form.html:213
+#: templates/multimedia/media_form.html:285
+#: templates/multimedia/media_list.html:63
+#: templates/multimedia/media_list.html:87 templates/suggest/list.html:49
+#: templates/suggest/list.html.py:79 templates/suggest/list.html:123
+#: templates/suggest/list.html.py:167
+msgid "Status"
+msgstr "Estado"
+
+#: biblioref/models.py:55
+msgid "Call number"
+msgstr ""
+
+#: biblioref/models.py:57
+msgid "Database"
+msgstr ""
+
+#: biblioref/models.py:59
+#, fuzzy
+msgid "Literature type"
+msgstr "Editar tipo de fuente"
+
+#: biblioref/models.py:62
+msgid "Treatment level"
+msgstr ""
+
+#: biblioref/models.py:65
+msgid "Inventory number"
+msgstr ""
+
+#: biblioref/models.py:67
+msgid "Electronic address"
+msgstr ""
+
+#: biblioref/models.py:69 events/models.py:69 main/models.py:218
+#: suggest/models.py:25 suggest/models.py:56
+#: templates/biblioref/reference_list.html:83 templates/events/events.html:100
+#: templates/main/resources.html:101 templates/multimedia/media_list.html:85
+#: templates/suggest/list.html:76 templates/suggest/list.html.py:165
+msgid "Title"
+msgstr "Título"
+
+#: biblioref/models.py:72 events/models.py:88 main/models.py:238
+#: multimedia/models.py:63 multimedia/models.py:119
+msgid "Cooperative center"
+msgstr "Centro cooperante"
 
 #: biremelogin/models.py:12
 msgid "profile"
@@ -50,24 +374,6 @@ msgstr "Informe de error"
 msgid "Error reports"
 msgstr "Informe de errores"
 
-#: error_reporting/models.py:18 events/models.py:60 main/models.py:147
-#: main/models.py:191 main/models.py:214 main/models.py:234
-#: multimedia/models.py:93 suggest/models.py:16 suggest/models.py:48
-#: templates/error_report/list.html:89 templates/error_report/list.html:147
-#: templates/events/edit-event.html:151 templates/events/edit-event.html:222
-#: templates/events/events.html:72 templates/events/events.html.py:110
-#: templates/main/edit-resource.html:152 templates/main/edit-resource.html:223
-#: templates/main/edit-resource.html:293 templates/main/resources.html:72
-#: templates/main/resources.html.py:108
-#: templates/multimedia/media_form.html:152
-#: templates/multimedia/media_form.html:225
-#: templates/multimedia/media_list.html:64
-#: templates/multimedia/media_list.html:96 templates/suggest/list.html:52
-#: templates/suggest/list.html.py:93 templates/suggest/list.html:137
-#: templates/suggest/list.html.py:180
-msgid "Pending"
-msgstr "Pendiente"
-
 #: error_reporting/models.py:19 templates/error_report/list.html:91
 msgid "Fixed"
 msgstr "Corregido"
@@ -96,25 +402,6 @@ msgstr "Duplicado"
 msgid "Other"
 msgstr "Otros"
 
-#: error_reporting/models.py:35 events/models.py:66 main/models.py:154
-#: main/models.py:205 main/models.py:225 main/models.py:244
-#: multimedia/models.py:99 suggest/models.py:23 suggest/models.py:54
-#: templates/error_report/list.html:75 templates/error_report/list.html:134
-#: templates/events/edit-event.html:140 templates/events/edit-event.html:210
-#: templates/events/edit-event.html:282 templates/events/events.html:69
-#: templates/events/events.html.py:94 templates/main/edit-resource.html:141
-#: templates/main/edit-resource.html:211 templates/main/edit-resource.html:283
-#: templates/main/resources.html:69 templates/main/resources.html.py:94
-#: templates/multimedia/media_form.html:141
-#: templates/multimedia/media_form.html:213
-#: templates/multimedia/media_form.html:285
-#: templates/multimedia/media_list.html:61
-#: templates/multimedia/media_list.html:85 templates/suggest/list.html:49
-#: templates/suggest/list.html.py:79 templates/suggest/list.html:123
-#: templates/suggest/list.html.py:167
-msgid "Status"
-msgstr "Estado"
-
 #: error_reporting/models.py:36
 msgid "Error type"
 msgstr "Tipo de error"
@@ -137,42 +424,36 @@ msgstr "Informe editado con éxito"
 msgid "Report deleted."
 msgstr "Informe borrado."
 
-#: events/models.py:16 events/models.py:47 events/models.py:78
+#: events/models.py:17 events/models.py:48 events/models.py:79
 #: templates/events/edit-type.html:8
 msgid "Event type"
 msgstr "Tipo de evento"
 
-#: events/models.py:17 templates/menu.html:43 templates/events/types.html:4
+#: events/models.py:18 templates/menu.html:43 templates/events/types.html:4
 #: templates/events/types.html.py:7 templates/events/types.html:21
 msgid "Event types"
 msgstr "Tipos de evento"
 
-#: events/models.py:19 main/models.py:27 main/models.py:67 main/models.py:106
+#: events/models.py:20 main/models.py:27 main/models.py:67 main/models.py:106
 #: multimedia/models.py:20
 msgid "Acronym"
 msgstr "Sigla"
 
-#: events/models.py:20 main/models.py:28 main/models.py:68 main/models.py:96
-#: main/models.py:107 main/models.py:134 multimedia/models.py:21
-#: multimedia/models.py:60 templates/main/edit-language.html:8
-msgid "Language"
-msgstr "Idioma"
-
-#: events/models.py:21 main/models.py:29 main/models.py:69 main/models.py:97
+#: events/models.py:22 main/models.py:29 main/models.py:69 main/models.py:97
 #: main/models.py:108 main/models.py:135 multimedia/models.py:22
 #: templates/events/types.html:47 templates/main/languages.html:47
 #: templates/main/thematics.html:47 templates/main/types.html:47
-#: templates/multimedia/mediacollection_list.html:38
+#: templates/multimedia/mediacollection_list.html:40
 #: templates/multimedia/mediatype_list.html:47
 msgid "Name"
 msgstr "Nombre"
 
-#: events/models.py:44 main/models.py:52 main/models.py:92 main/models.py:130
+#: events/models.py:45 main/models.py:52 main/models.py:92 main/models.py:130
 #: multimedia/models.py:45 multimedia/models.py:76
 msgid "Translation"
 msgstr "Traducción"
 
-#: events/models.py:45 main/models.py:53 main/models.py:93 main/models.py:131
+#: events/models.py:46 main/models.py:53 main/models.py:93 main/models.py:131
 #: multimedia/models.py:46 multimedia/models.py:77
 #: templates/admin/base_site.html:13 templates/events/edit-type.html:36
 #: templates/main/edit-language.html:36 templates/main/edit-thematic.html:36
@@ -182,21 +463,21 @@ msgstr "Traducción"
 msgid "Translations"
 msgstr "Traducciones"
 
-#: events/models.py:48 main/models.py:56 multimedia/models.py:49
+#: events/models.py:49 main/models.py:56 multimedia/models.py:49
 #: multimedia/models.py:80 multimedia/models.py:108 utils/models.py:89
 msgid "language"
 msgstr "idioma"
 
-#: events/models.py:49 main/models.py:57 multimedia/models.py:50
+#: events/models.py:50 main/models.py:57 multimedia/models.py:50
 #: multimedia/models.py:81 utils/models.py:72 utils/models.py:90
 msgid "name"
 msgstr "nombre"
 
-#: events/models.py:56
+#: events/models.py:57
 msgid "Event"
 msgstr "Evento"
 
-#: events/models.py:57 templates/menu.html:18
+#: events/models.py:58 templates/menu.html:18
 #: templates/error_report/list.html:40 templates/events/edit-event.html:8
 #: templates/events/events.html:4 templates/events/events.html.py:7
 #: templates/events/events.html:22 templates/main/index.html:32
@@ -204,126 +485,64 @@ msgstr "Evento"
 msgid "Events"
 msgstr "Eventos"
 
-#: events/models.py:61 main/models.py:148 main/models.py:192
-#: main/models.py:215 main/models.py:235 multimedia/models.py:94
-#: suggest/models.py:17 suggest/models.py:49
-#: templates/error_report/list.html:149 templates/events/edit-event.html:153
-#: templates/events/edit-event.html:224 templates/events/events.html:73
-#: templates/events/events.html.py:112 templates/main/edit-resource.html:154
-#: templates/main/edit-resource.html:225 templates/main/edit-resource.html:295
-#: templates/main/resources.html:73 templates/main/resources.html.py:110
-#: templates/multimedia/media_form.html:154
-#: templates/multimedia/media_form.html:227
-#: templates/multimedia/media_list.html:65
-#: templates/multimedia/media_list.html:98 templates/suggest/list.html:53
-#: templates/suggest/list.html.py:95 templates/suggest/list.html:139
-#: templates/suggest/list.html.py:182
-msgid "Admitted"
-msgstr "Aceptado"
-
-#: events/models.py:62 main/models.py:149 main/models.py:193
-#: main/models.py:216 main/models.py:236 multimedia/models.py:95
-#: suggest/models.py:18 suggest/models.py:50
-#: templates/events/edit-event.html:155 templates/events/edit-event.html:226
-#: templates/events/events.html:74 templates/events/events.html.py:114
-#: templates/main/edit-resource.html:156 templates/main/edit-resource.html:227
-#: templates/main/edit-resource.html:297 templates/main/resources.html:74
-#: templates/main/resources.html.py:112
-#: templates/multimedia/media_form.html:156
-#: templates/multimedia/media_form.html:229
-#: templates/multimedia/media_list.html:66
-#: templates/multimedia/media_list.html:100 templates/suggest/list.html:54
-#: templates/suggest/list.html.py:97 templates/suggest/list.html:141
-#: templates/suggest/list.html.py:184
-msgid "Refused"
-msgstr "Rechazado"
-
-#: events/models.py:63 main/models.py:150 multimedia/models.py:96
-#: suggest/models.py:19 suggest/models.py:51
-#: templates/events/edit-event.html:157 templates/events/edit-event.html:228
-#: templates/events/events.html:75 templates/events/events.html.py:116
-#: templates/main/edit-resource.html:158 templates/main/edit-resource.html:229
-#: templates/main/edit-resource.html:299 templates/main/resources.html:75
-#: templates/main/resources.html.py:114
-#: templates/multimedia/media_form.html:158
-#: templates/multimedia/media_form.html:231
-#: templates/multimedia/media_list.html:67
-#: templates/multimedia/media_list.html:102 templates/suggest/list.html:55
-#: templates/suggest/list.html.py:99 templates/suggest/list.html:143
-#: templates/suggest/list.html.py:186
-msgid "Deleted"
-msgstr "Borrado"
-
-#: events/models.py:68 main/models.py:156 suggest/models.py:25
-#: suggest/models.py:56 templates/events/events.html:91
-#: templates/main/resources.html:91 templates/multimedia/media_list.html:83
-#: templates/suggest/list.html:76 templates/suggest/list.html.py:165
-msgid "Title"
-msgstr "Título"
-
-#: events/models.py:69 suggest/models.py:57 templates/events/events.html:92
+#: events/models.py:70 suggest/models.py:57 templates/events/events.html:101
 msgid "Start date"
 msgstr "Fecha inicial"
 
-#: events/models.py:70 suggest/models.py:58 templates/events/events.html:93
+#: events/models.py:71 suggest/models.py:58 templates/events/events.html:102
 msgid "End date"
 msgstr "Fecha final"
 
-#: events/models.py:72 main/models.py:158 multimedia/models.py:104
+#: events/models.py:73 main/models.py:220 multimedia/models.py:104
 #: suggest/models.py:27 suggest/models.py:60
 msgid "Link"
 msgstr "Enlace"
 
-#: events/models.py:74
+#: events/models.py:75
 msgid "Address"
 msgstr "Dirección"
 
-#: events/models.py:75 multimedia/models.py:58 suggest/models.py:62
+#: events/models.py:76 multimedia/models.py:58 suggest/models.py:62
 msgid "City"
 msgstr "Ciudad"
 
-#: events/models.py:76 multimedia/models.py:59
+#: events/models.py:77 multimedia/models.py:59
 msgid "Country"
 msgstr "Pais"
 
-#: events/models.py:79
+#: events/models.py:80
 msgid "Official languages"
 msgstr "Idiomas oficiales"
 
-#: events/models.py:81
+#: events/models.py:82
 msgid "Contact email"
 msgstr "Email de contacto"
 
-#: events/models.py:82
+#: events/models.py:83
 msgid "Information for contact"
 msgstr "Información para contacto"
 
-#: events/models.py:83
+#: events/models.py:84
 msgid "Observations"
 msgstr "Observaciones"
 
-#: events/models.py:84
+#: events/models.py:85
 msgid "Target groups"
 msgstr "Audiencia"
 
-#: events/models.py:87 main/models.py:176 multimedia/models.py:63
-#: multimedia/models.py:119
-msgid "Cooperative center"
-msgstr "Centro cooperante"
-
-#: events/views.py:147 suggest/views.py:287
+#: events/views.py:157 suggest/views.py:287
 msgid "Event successfully edited."
 msgstr "Evento editado con éxito."
 
-#: events/views.py:214
+#: events/views.py:224
 msgid "Event deleted."
 msgstr "Evento borrado."
 
-#: events/views.py:287 main/views.py:417
+#: events/views.py:297 main/views.py:430
 msgid "Type successfully edited."
 msgstr "Tipo editado con éxito."
 
-#: events/views.py:311 main/views.py:441
+#: events/views.py:321 main/views.py:454
 msgid "Type deleted."
 msgstr "Tipo borrado."
 
@@ -355,6 +574,7 @@ msgid "DeCS: Health Sciences Descriptors"
 msgstr "DeCS: Descriptores en Ciencias de la Salud"
 
 #: main/choices.py:20 suggest/models.py:31
+#: templates/biblioref/reference_form.html:205
 #: templates/events/edit-event.html:209 templates/main/edit-resource.html:210
 #: templates/main/index.html:43 templates/multimedia/media_form.html:212
 #: templates/suggest/list.html:34
@@ -369,11 +589,11 @@ msgstr "tipo de fuente"
 msgid "source types"
 msgstr "tipos de fuentes"
 
-#: main/models.py:55 main/models.py:168 templates/main/edit-type.html:8
+#: main/models.py:55 main/models.py:230 templates/main/edit-type.html:8
 msgid "Source type"
 msgstr "Tipo de fuente"
 
-#: main/models.py:64 main/models.py:95 main/models.py:166
+#: main/models.py:64 main/models.py:95 main/models.py:228
 msgid "Source language"
 msgstr "Idioma de la fuente"
 
@@ -382,26 +602,40 @@ msgstr "Idioma de la fuente"
 msgid "Source languages"
 msgstr "Idiomas de la fuente"
 
-#: main/models.py:103 main/models.py:133 main/models.py:197
-#: templates/events/edit-event.html:281 templates/main/edit-resource.html:282
-#: templates/main/edit-thematic.html:8
-#: templates/multimedia/media_form.html:284
+#: main/models.py:103 main/models.py:133 main/models.py:147
+#: templates/biblioref/reference_form.html:277
+#: templates/events/edit-event.html:281 templates/events/events.html:79
+#: templates/main/edit-resource.html:282 templates/main/edit-thematic.html:8
+#: templates/main/resources.html:79 templates/multimedia/media_form.html:284
 msgid "Thematic area"
 msgstr "Área temática"
 
-#: main/models.py:104 main/models.py:198 templates/menu.html:41
+#: main/models.py:104 main/models.py:148 templates/menu.html:41
+#: templates/biblioref/reference_form.html:39
 #: templates/events/edit-event.html:38 templates/main/edit-resource.html:37
 #: templates/main/thematics.html:4 templates/main/thematics.html.py:7
 #: templates/main/thematics.html:21 templates/multimedia/media_form.html:38
 msgid "Thematic areas"
 msgstr "Área temática"
 
-#: main/models.py:143 templates/error_report/list.html:71
+#: main/models.py:173 main/models.py:193
+msgid "Text"
+msgstr "Texto"
+
+#: main/models.py:174
+msgid "Code"
+msgstr "Código"
+
+#: main/models.py:195
+msgid "User recomendation?"
+msgstr "Recomendación de usuario?"
+
+#: main/models.py:205 templates/error_report/list.html:71
 #: templates/error_report/list.html:73 templates/suggest/list.html:121
 msgid "Resource"
 msgstr "Recurso"
 
-#: main/models.py:144 templates/menu.html:14
+#: main/models.py:206 templates/menu.html:14
 #: templates/error_report/list.html:7 templates/error_report/list.html:30
 #: templates/main/edit-resource.html:8 templates/main/index.html:25
 #: templates/main/index.html.py:42 templates/main/resources.html:4
@@ -410,74 +644,62 @@ msgstr "Recurso"
 msgid "Resources"
 msgstr "Recursos"
 
-#: main/models.py:160
+#: main/models.py:222
 msgid "Originator"
 msgstr "Originador"
 
-#: main/models.py:162
+#: main/models.py:224
 msgid "Originator location"
 msgstr "Local del originador"
 
-#: main/models.py:164 multimedia/models.py:106
+#: main/models.py:226 multimedia/models.py:106
 msgid "Authors"
 msgstr "Autores"
 
-#: main/models.py:164 multimedia/models.py:106 multimedia/models.py:107
+#: main/models.py:226 multimedia/models.py:106 multimedia/models.py:107
 #: multimedia/models.py:114
 msgid "Enter one per line"
 msgstr "Introduzca un por línea"
 
-#: main/models.py:170
+#: main/models.py:232
 msgid "Abstract"
 msgstr "Resumen"
 
-#: main/models.py:172
+#: main/models.py:234
 msgid "Temporal range"
 msgstr "Rango temporal"
 
-#: main/models.py:174
+#: main/models.py:236
 msgid "Objective"
 msgstr "Objetivo"
 
-#: main/models.py:223 main/models.py:243
-msgid "Text"
-msgstr "Texto"
-
-#: main/models.py:224
-msgid "Code"
-msgstr "Código"
-
-#: main/models.py:245
-msgid "User recomendation?"
-msgstr "Recomendación de usuario?"
-
-#: main/views.py:184 suggest/views.py:140
+#: main/views.py:191 suggest/views.py:140
 msgid "Resource successfully edited."
 msgstr "Recurso editado con éxito."
 
-#: main/views.py:246
+#: main/views.py:259
 msgid "Resource deleted."
 msgstr "Recurso borrado."
 
-#: main/views.py:319
+#: main/views.py:332
 msgid "Thematic area successfully edited."
 msgstr "Área temática editada con éxito."
 
-#: main/views.py:344
+#: main/views.py:357
 msgid "Thematic area deleted."
 msgstr "Área temática borrada."
 
-#: main/views.py:513
+#: main/views.py:526
 msgid "Language successfully edited."
 msgstr "Idioma editado con éxito."
 
-#: main/views.py:538
+#: main/views.py:551
 msgid "Language deleted."
 msgstr "Idioma borrado."
 
 #: multimedia/models.py:17 multimedia/models.py:48 multimedia/models.py:100
 #: templates/multimedia/media_confirm_delete.html:8
-#: templates/multimedia/media_list.html:84
+#: templates/multimedia/media_list.html:86
 #: templates/multimedia/mediatype_confirm_delete.html:8
 #: templates/multimedia/mediatype_form.html:8
 msgid "Media type"
@@ -609,8 +831,8 @@ msgstr "Administración de Fuentes"
 msgid "Home"
 msgstr "Home"
 
-#: templates/base.html:46 templates/suggest/invalid-link.html:58
-#: templates/suggest/thanks.html:40
+#: templates/base.html:46 templates/maintenance.html:24
+#: templates/suggest/invalid-link.html:58 templates/suggest/thanks.html:40
 msgid "BIREME - PAHO - WHO"
 msgstr "BIREME - OPAS - OMS"
 
@@ -653,6 +875,14 @@ msgstr "No"
 #: templates/multimedia/mediatype_confirm_delete.html:29
 msgid "Yes"
 msgstr "Sí"
+
+#: templates/maintenance.html:9 templates/maintenance.html.py:19
+msgid "Under maintenance"
+msgstr "Sistema en mantenimiento"
+
+#: templates/maintenance.html:21
+msgid "Please check again in a few minutes"
+msgstr "Por favor, puedes volver a intentarlo en unos minutos"
 
 #: templates/menu.html:10 templates/main/index.html:4
 #: templates/main/index.html.py:19
@@ -728,6 +958,237 @@ msgstr "login"
 msgid "again clicking below."
 msgstr "haga clic nuevamente abajo."
 
+#: templates/biblioref/field_assist.html:7
+#: templates/biblioref/field_assist.html:26
+msgid "Field assist"
+msgstr ""
+
+#: templates/biblioref/reference_form.html:6
+#: templates/biblioref/reference_form.html:11
+#: templates/multimedia/media_form.html:5
+#: templates/multimedia/media_form.html:10
+#: templates/multimedia/media_form.html:17
+msgid "Edit Media"
+msgstr "Editar medio"
+
+#: templates/biblioref/reference_form.html:10
+#: templates/biblioref/reference_form.html:18
+#, fuzzy
+msgid "New Reference"
+msgstr "Nuevo recurso"
+
+#: templates/biblioref/reference_form.html:18
+msgid "Edit Bibliographic Reference"
+msgstr ""
+
+#: templates/biblioref/reference_form.html:25
+#: templates/events/edit-event.html:24 templates/main/edit-resource.html:23
+#: templates/multimedia/media_form.html:24
+msgid "Please check required fields"
+msgstr "Por favor, verifique los campos requeridos"
+
+#: templates/biblioref/reference_form.html:30
+#: templates/events/edit-event.html:29 templates/main/edit-resource.html:28
+#: templates/multimedia/media_form.html:29
+msgid ""
+"For status admitted you must have at least one descriptor and one thematic "
+"area admitted"
+msgstr ""
+"Para el status \"Admitido\" es necesario tener al menos un descriptor y un "
+"área temática admitidos."
+
+#: templates/biblioref/reference_form.html:37
+#: templates/events/edit-event.html:36 templates/main/edit-resource.html:35
+#: templates/multimedia/media_form.html:36
+msgid "Metadata"
+msgstr "Metadatos"
+
+#: templates/biblioref/reference_form.html:38
+#: templates/events/edit-event.html:37 templates/main/edit-resource.html:36
+#: templates/multimedia/media_form.html:37
+msgid "Indexing"
+msgstr "Indización"
+
+#: templates/biblioref/reference_form.html:51
+#: templates/events/edit-event.html:50 templates/main/edit-resource.html:49
+#: templates/multimedia/media_form.html:50
+msgid "Identifier"
+msgstr "Identificador"
+
+#: templates/biblioref/reference_form.html:119
+#: templates/multimedia/media_form.html:126
+msgid "Media created in"
+msgstr "Medio creado en"
+
+#: templates/biblioref/reference_form.html:119
+#: templates/biblioref/reference_form.html:122
+#: templates/events/edit-event.html:111 templates/events/edit-event.html:114
+#: templates/main/edit-resource.html:111 templates/main/edit-resource.html:114
+#: templates/multimedia/media_form.html:126
+#: templates/multimedia/media_form.html:129
+msgid "by user"
+msgstr "por el usuario"
+
+#: templates/biblioref/reference_form.html:120
+#: templates/events/edit-event.html:112 templates/main/edit-resource.html:112
+#: templates/multimedia/media_form.html:127
+msgid "Cooperative center code"
+msgstr "Código del centro cooperante"
+
+#: templates/biblioref/reference_form.html:122
+#: templates/events/edit-event.html:114 templates/main/edit-resource.html:114
+#: templates/multimedia/media_form.html:129
+msgid "Last edit in"
+msgstr "Última edición en"
+
+#: templates/biblioref/reference_form.html:133
+#: templates/events/edit-event.html:139 templates/main/edit-resource.html:140
+#: templates/multimedia/media_form.html:140
+msgid "Descriptors"
+msgstr "Descriptores"
+
+#: templates/biblioref/reference_form.html:135
+#: templates/biblioref/reference_form.html:208
+#: templates/biblioref/reference_form.html:279
+#: templates/multimedia/media_form.html:142
+#: templates/multimedia/media_form.html:215
+#: templates/multimedia/media_form.html:286
+msgid "Delete?"
+msgstr "Borrar?"
+
+#: templates/biblioref/reference_form.html:178
+#: templates/events/edit-event.html:183 templates/main/edit-resource.html:184
+#: templates/multimedia/media_form.html:94
+#: templates/multimedia/media_form.html:185
+msgid "Select by search"
+msgstr "Seleccione por búsqueda"
+
+#: templates/biblioref/reference_form.html:207
+#: templates/events/edit-event.html:211 templates/main/edit-resource.html:212
+#: templates/multimedia/media_form.html:214
+msgid "Suggestion"
+msgstr "Sugerencia"
+
+#: templates/biblioref/reference_form.html:229
+#: templates/biblioref/reference_form.html:252
+#: templates/events/edit-event.html:233 templates/events/edit-event.html:256
+#: templates/main/edit-resource.html:234 templates/main/edit-resource.html:257
+#: templates/multimedia/media_form.html:236
+#: templates/multimedia/media_form.html:259
+msgid "Suggested"
+msgstr "Sugerido"
+
+#: templates/biblioref/reference_form.html:320
+#: templates/error_report/edit.html:60 templates/events/edit-event.html:324
+#: templates/events/edit-event.html:367 templates/events/edit-type.html:56
+#: templates/main/edit-language.html:56 templates/main/edit-resource.html:336
+#: templates/main/edit-resource.html:379 templates/main/edit-thematic.html:56
+#: templates/main/edit-type.html:56 templates/multimedia/media_form.html:327
+#: templates/multimedia/mediacollection_form.html:54
+#: templates/multimedia/mediatype_form.html:56
+#: templates/suggest/edit-suggested-event.html:58
+#: templates/suggest/edit-suggested-resource.html:59
+msgid "Save"
+msgstr "Guardar"
+
+#: templates/biblioref/reference_form.html:383
+#: templates/events/edit-event.html:389 templates/main/edit-resource.html:395
+#: templates/multimedia/media_form.html:343
+msgid "Add descriptor"
+msgstr "Añadir descriptor"
+
+#: templates/biblioref/reference_form.html:384
+#: templates/biblioref/reference_form.html:394
+#: templates/biblioref/reference_form.html:404
+#: templates/events/edit-event.html:390 templates/events/edit-event.html:400
+#: templates/events/edit-event.html:410 templates/events/edit-type.html:72
+#: templates/main/edit-language.html:72 templates/main/edit-resource.html:396
+#: templates/main/edit-resource.html:406 templates/main/edit-thematic.html:72
+#: templates/main/edit-type.html:72 templates/multimedia/media_form.html:344
+#: templates/multimedia/media_form.html:354
+#: templates/multimedia/media_form.html:364
+#: templates/multimedia/mediacollection_form.html:72
+#: templates/multimedia/mediatype_form.html:74
+msgid "delete"
+msgstr "borrar"
+
+#: templates/biblioref/reference_form.html:393
+#: templates/events/edit-event.html:399 templates/main/edit-resource.html:405
+#: templates/multimedia/media_form.html:353
+msgid "Add keyword"
+msgstr "Añadir palabra clave"
+
+#: templates/biblioref/reference_form.html:403
+#: templates/events/edit-event.html:409 templates/main/edit-resource.html:415
+#: templates/multimedia/media_form.html:363
+msgid "Add thematic area"
+msgstr "Añadir área temática"
+
+#: templates/biblioref/reference_list.html:24
+msgid "New Bibliographic Reference"
+msgstr ""
+
+#: templates/biblioref/reference_list.html:32
+#, fuzzy
+msgid "My references"
+msgstr "Mis recursos"
+
+#: templates/biblioref/reference_list.html:40
+#, fuzzy
+msgid "All references"
+msgstr "Todos recursos"
+
+#: templates/biblioref/reference_list.html:59
+#: templates/error_report/list.html:54 templates/error_report/list.html:63
+#: templates/error_report/list.html:114 templates/error_report/list.html:123
+#: templates/events/events.html:69 templates/events/types.html:30
+#: templates/events/types.html.py:38 templates/main/languages.html:30
+#: templates/main/languages.html.py:38 templates/main/resources.html:69
+#: templates/main/thematics.html:30 templates/main/thematics.html.py:38
+#: templates/main/types.html:30 templates/main/types.html.py:38
+#: templates/multimedia/media_list.html:61
+#: templates/multimedia/mediacollection_list.html:24
+#: templates/multimedia/mediatype_list.html:30
+#: templates/multimedia/mediatype_list.html:38 templates/suggest/list.html:47
+msgid "Search"
+msgstr "Buscar"
+
+#: templates/biblioref/reference_list.html:63 templates/events/events.html:73
+#: templates/events/events.html.py:81 templates/main/resources.html:73
+#: templates/main/resources.html.py:81 templates/multimedia/media_list.html:65
+#: templates/suggest/list.html:51
+msgid "All"
+msgstr "Todos"
+
+#: templates/biblioref/reference_list.html:75 templates/events/events.html:92
+#: templates/main/index.html:19 templates/main/resources.html:93
+#: templates/multimedia/media_list.html:77 templates/suggest/list.html:63
+msgid "Networks"
+msgstr "Redes"
+
+#: templates/biblioref/reference_list.html:85
+#: templates/error_report/list.html:76 templates/error_report/list.html:135
+#: templates/events/edit-event.html:283 templates/events/events.html:104
+#: templates/events/types.html:48 templates/main/edit-resource.html:284
+#: templates/main/languages.html:48 templates/main/resources.html:105
+#: templates/main/thematics.html:48 templates/main/types.html:48
+#: templates/multimedia/media_list.html:88
+#: templates/multimedia/mediacollection_list.html:41
+#: templates/multimedia/mediatype_list.html:48 templates/suggest/list.html:80
+#: templates/suggest/list.html.py:124 templates/suggest/list.html:168
+msgid "Actions"
+msgstr "Acciones"
+
+#: templates/biblioref/reference_list.html:106
+#: templates/events/events.html:131 templates/events/types.html:57
+#: templates/main/languages.html:57 templates/main/resources.html:130
+#: templates/main/thematics.html:57 templates/main/types.html:57
+#: templates/multimedia/media_list.html:110
+#: templates/multimedia/mediacollection_list.html:49
+#: templates/multimedia/mediatype_list.html:57
+msgid "Remove"
+msgstr "Borrar"
+
 #: templates/error_report/edit.html:5 templates/error_report/edit.html.py:9
 #: templates/error_report/edit.html:15
 msgid "Edit error report"
@@ -747,50 +1208,12 @@ msgstr "Editar el recurso deste inform"
 msgid "Posted on"
 msgstr "Publicado en"
 
-#: templates/error_report/edit.html:60 templates/events/edit-event.html:324
-#: templates/events/edit-event.html:367 templates/events/edit-type.html:56
-#: templates/main/edit-language.html:56 templates/main/edit-resource.html:336
-#: templates/main/edit-resource.html:379 templates/main/edit-thematic.html:56
-#: templates/main/edit-type.html:56 templates/multimedia/media_form.html:327
-#: templates/multimedia/mediacollection_form.html:54
-#: templates/multimedia/mediatype_form.html:56
-#: templates/suggest/edit-suggested-event.html:58
-#: templates/suggest/edit-suggested-resource.html:59
-msgid "Save"
-msgstr "Guardar"
-
-#: templates/error_report/list.html:54 templates/error_report/list.html:63
-#: templates/error_report/list.html:114 templates/error_report/list.html:123
-#: templates/events/events.html:67 templates/events/types.html:30
-#: templates/events/types.html.py:38 templates/main/languages.html:30
-#: templates/main/languages.html.py:38 templates/main/resources.html:67
-#: templates/main/thematics.html:30 templates/main/thematics.html.py:38
-#: templates/main/types.html:30 templates/main/types.html.py:38
-#: templates/multimedia/media_list.html:59
-#: templates/multimedia/mediacollection_list.html:22
-#: templates/multimedia/mediatype_list.html:30
-#: templates/multimedia/mediatype_list.html:38 templates/suggest/list.html:47
-msgid "Search"
-msgstr "Buscar"
-
 #: templates/error_report/list.html:55 templates/error_report/list.html:115
 #: templates/events/types.html:31 templates/main/languages.html:31
 #: templates/main/thematics.html:31 templates/main/types.html:31
 #: templates/multimedia/mediatype_list.html:31
 msgid "clear"
 msgstr "limpiar"
-
-#: templates/error_report/list.html:76 templates/error_report/list.html:135
-#: templates/events/edit-event.html:283 templates/events/events.html:95
-#: templates/events/types.html:48 templates/main/edit-resource.html:284
-#: templates/main/languages.html:48 templates/main/resources.html:95
-#: templates/main/thematics.html:48 templates/main/types.html:48
-#: templates/multimedia/media_list.html:86
-#: templates/multimedia/mediacollection_list.html:39
-#: templates/multimedia/mediatype_list.html:48 templates/suggest/list.html:80
-#: templates/suggest/list.html.py:124 templates/suggest/list.html:168
-msgid "Actions"
-msgstr "Acciones"
 
 #: templates/events/edit-event.html:5 templates/events/edit-event.html:10
 #: templates/events/edit-event.html:17
@@ -803,114 +1226,17 @@ msgstr "Editar evento"
 msgid "New Event"
 msgstr "Nuevo evento"
 
-#: templates/events/edit-event.html:24 templates/main/edit-resource.html:23
-#: templates/multimedia/media_form.html:24
-msgid "Please check required fields"
-msgstr "Por favor, verifique los campos requeridos"
-
-#: templates/events/edit-event.html:29 templates/main/edit-resource.html:28
-#: templates/multimedia/media_form.html:29
-msgid ""
-"For status admitted you must have at least one descriptor and one thematic "
-"area admitted"
-msgstr ""
-"Para el status \"Admitido\" es necesario tener al menos un descriptor y un "
-"área temática admitidos."
-
-#: templates/events/edit-event.html:36 templates/main/edit-resource.html:35
-#: templates/multimedia/media_form.html:36
-msgid "Metadata"
-msgstr "Metadatos"
-
-#: templates/events/edit-event.html:37 templates/main/edit-resource.html:36
-#: templates/multimedia/media_form.html:37
-msgid "Indexing"
-msgstr "Indización"
-
-#: templates/events/edit-event.html:50 templates/main/edit-resource.html:49
-#: templates/multimedia/media_form.html:50
-msgid "Identifier"
-msgstr "Identificador"
-
 #: templates/events/edit-event.html:111
 msgid "Event created in"
 msgstr "Evento creado en"
-
-#: templates/events/edit-event.html:111 templates/events/edit-event.html:114
-#: templates/main/edit-resource.html:111 templates/main/edit-resource.html:114
-#: templates/multimedia/media_form.html:126
-#: templates/multimedia/media_form.html:129
-msgid "by user"
-msgstr "por el usuario"
-
-#: templates/events/edit-event.html:112 templates/main/edit-resource.html:112
-#: templates/multimedia/media_form.html:127
-msgid "Cooperative center code"
-msgstr "Código del centro cooperante"
-
-#: templates/events/edit-event.html:114 templates/main/edit-resource.html:114
-#: templates/multimedia/media_form.html:129
-msgid "Last edit in"
-msgstr "Última edición en"
 
 #: templates/events/edit-event.html:129 templates/main/edit-resource.html:129
 msgid "Add new error report"
 msgstr "Añadir informe de error"
 
-#: templates/events/edit-event.html:139 templates/main/edit-resource.html:140
-#: templates/multimedia/media_form.html:140
-msgid "Descriptors"
-msgstr "Descriptores"
-
-#: templates/events/edit-event.html:183 templates/main/edit-resource.html:184
-#: templates/multimedia/media_form.html:94
-#: templates/multimedia/media_form.html:185
-msgid "Select by search"
-msgstr "Seleccione por búsqueda"
-
-#: templates/events/edit-event.html:211 templates/main/edit-resource.html:212
-#: templates/multimedia/media_form.html:214
-msgid "Suggestion"
-msgstr "Sugerencia"
-
-#: templates/events/edit-event.html:233 templates/events/edit-event.html:256
-#: templates/main/edit-resource.html:234 templates/main/edit-resource.html:257
-#: templates/multimedia/media_form.html:236
-#: templates/multimedia/media_form.html:259
-msgid "Suggested"
-msgstr "Sugerido"
-
 #: templates/events/edit-event.html:366 templates/main/edit-resource.html:378
 msgid "Cancel"
 msgstr "Cancelar"
-
-#: templates/events/edit-event.html:389 templates/main/edit-resource.html:395
-#: templates/multimedia/media_form.html:343
-msgid "Add descriptor"
-msgstr "Añadir descriptor"
-
-#: templates/events/edit-event.html:390 templates/events/edit-event.html:399
-#: templates/events/edit-event.html:408 templates/events/edit-type.html:72
-#: templates/main/edit-language.html:72 templates/main/edit-resource.html:396
-#: templates/main/edit-resource.html:405 templates/main/edit-resource.html:414
-#: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
-#: templates/multimedia/media_form.html:344
-#: templates/multimedia/media_form.html:353
-#: templates/multimedia/media_form.html:362
-#: templates/multimedia/mediacollection_form.html:72
-#: templates/multimedia/mediatype_form.html:74
-msgid "delete"
-msgstr "borrar"
-
-#: templates/events/edit-event.html:398 templates/main/edit-resource.html:404
-#: templates/multimedia/media_form.html:352
-msgid "Add keyword"
-msgstr "Añadir palabra clave"
-
-#: templates/events/edit-event.html:407 templates/main/edit-resource.html:413
-#: templates/multimedia/media_form.html:361
-msgid "Add thematic area"
-msgstr "Añadir área temática"
 
 #: templates/events/edit-type.html:5 templates/events/edit-type.html.py:10
 #: templates/events/edit-type.html:17
@@ -940,26 +1266,6 @@ msgstr "Eventos de mi red"
 #: templates/events/events.html:48 templates/main/index.html:35
 msgid "All events"
 msgstr "Todos eventos"
-
-#: templates/events/events.html:71 templates/main/resources.html:71
-#: templates/multimedia/media_list.html:63 templates/suggest/list.html:51
-msgid "All"
-msgstr "Todos"
-
-#: templates/events/events.html:83 templates/main/index.html:19
-#: templates/main/resources.html:83 templates/multimedia/media_list.html:75
-#: templates/suggest/list.html:63
-msgid "Networks"
-msgstr "Redes"
-
-#: templates/events/events.html:122 templates/events/types.html:57
-#: templates/main/languages.html:57 templates/main/resources.html:120
-#: templates/main/thematics.html:57 templates/main/types.html:57
-#: templates/multimedia/media_list.html:108
-#: templates/multimedia/mediacollection_list.html:47
-#: templates/multimedia/mediatype_list.html:57
-msgid "Remove"
-msgstr "Borrar"
 
 #: templates/main/edit-language.html:5 templates/main/edit-language.html:10
 #: templates/main/edit-language.html:17
@@ -1028,11 +1334,11 @@ msgstr "Nuevo idioma de fuente"
 msgid "Resources of my network"
 msgstr "Recurso de mi red"
 
-#: templates/main/resources.html:92 templates/suggest/list.html:77
+#: templates/main/resources.html:102 templates/suggest/list.html:77
 msgid "URL"
 msgstr "Enlace"
 
-#: templates/main/resources.html:93
+#: templates/main/resources.html:103
 msgid "Update date"
 msgstr "Fecha de actualización"
 
@@ -1046,27 +1352,11 @@ msgstr "Nuevo tipo de fuente"
 msgid "Delete media"
 msgstr "Borrar medio"
 
-#: templates/multimedia/media_form.html:5
-#: templates/multimedia/media_form.html:10
-#: templates/multimedia/media_form.html:17
-msgid "Edit Media"
-msgstr "Editar medio"
-
 #: templates/multimedia/media_form.html:9
 #: templates/multimedia/media_form.html:17
 #: templates/multimedia/media_list.html:24
 msgid "New Media"
 msgstr "Nuevo Medio"
-
-#: templates/multimedia/media_form.html:126
-msgid "Media created in"
-msgstr "Medio creado en"
-
-#: templates/multimedia/media_form.html:142
-#: templates/multimedia/media_form.html:215
-#: templates/multimedia/media_form.html:286
-msgid "Delete?"
-msgstr "Borrar?"
 
 #: templates/multimedia/media_list.html:32
 msgid "My medias"
@@ -1096,7 +1386,7 @@ msgid "Edit Media collection"
 msgstr "Editar colección"
 
 #: templates/multimedia/mediacollection_form.html:14
-#: templates/multimedia/mediacollection_list.html:28
+#: templates/multimedia/mediacollection_list.html:30
 msgid "New Media collection"
 msgstr "Nueva colección"
 
@@ -1107,7 +1397,7 @@ msgstr "Nueva colección"
 msgid "Edit Media type"
 msgstr "Editar tipo de medio"
 
-#: templates/multimedia/mediacollection_list.html:35
+#: templates/multimedia/mediacollection_list.html:37
 msgid "Select media collection"
 msgstr "Selecione la colección"
 

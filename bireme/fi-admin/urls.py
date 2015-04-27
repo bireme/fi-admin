@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 from django.conf import settings
 
 from api.resources_api import LinkResource
@@ -101,6 +102,8 @@ urlpatterns = patterns('',
     #internationalization
     url(r'^i18n/', include('django.conf.urls.i18n')),
     (r'^cookie-lang/?$', 'utils.views.cookie_lang'),
+
+    (r'^maintenance/', TemplateView.as_view(template_name="maintenance.html")),
 
     (r'^$', 'main.views.dashboard'),
 )
