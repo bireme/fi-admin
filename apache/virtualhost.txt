@@ -23,6 +23,6 @@
         Order allow,deny
         Allow from all
     </Directory>
-    ErrorLog "| /usr/local/httplog/bin/httplog /home/apache-logs/bvsalud.org/%Y-%m-%d+fi-admin-error.log 5M"
-    CustomLog "| /usr/local/httplog/bin/httplog /home/apache-logs/bvsalud.org/%Y-%m-%d+fi-admin-access.log" combined
+    ErrorLog "| /usr/local/httplog/bin/httplog /var/log/%Y-%m-%d+fi-admin-error.log 5M"
+    CustomLog "| /usr/local/httplog/bin/httplog /var/log/%Y-%m-%d+fi-admin-access.log" combined
 </VirtualHost>
