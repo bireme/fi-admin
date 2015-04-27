@@ -3,6 +3,7 @@ import os
 import sys
 from fabric.api import env, local, settings, abort, run, cd, task
 from fabric.operations import local, put, sudo, get
+from fabric.contrib.files import exists
 from fabric.context_managers import prefix
 
 # Define common directories
@@ -11,9 +12,9 @@ ROOT_DIR = '/bireme'
 ENV_DIR = '/env'
 
 # include stages servers information
-try: 
+try:
     from environment import STAGES
-except: 
+except:
     pass
 
 # Function that load to env variable the settings from STAGES
@@ -43,6 +44,12 @@ def production():
     """
     stage_set('production')
 
+@task
+def training():
+    """
+    set training server
+    """
+    stage_set('training')
 
 @task
 def requirements():
@@ -57,7 +64,7 @@ def requirements():
 def migrate():
     """
     run manage.py migrate
-    """    
+    """
     with cd(env.root_path):
         with prefix('. %s/bin/activate' % env.virtualenv):
             run('python manage.py migrate')
@@ -114,3 +121,33 @@ def run_tests():
         with prefix('. %s/bin/activate' % env.virtualenv):
             run('./run_tests.sh')
 
+
+def is_in_maintenance():
+    "Returns whether the site is in maintenance mode"
+    return exists(os.path.join(env.git_path, 'fabric/maintenance-mode-on'))
+
+
+@task
+def maintenance_on():
+    """
+    turns on maintenance mode
+    """
+    with cd(os.path.join(env.git_path, 'fabric')):
+        if not is_in_maintenance():
+            run("mv maintenance-mode-off maintenance-mode-on")
+            print("The site is now in maintenance mode!")
+        else:
+            print("The site is already in maintenance mode!")
+
+
+@task
+def maintenance_off():
+    """
+    turns off maintenance mode
+    """
+    if is_in_maintenance():
+        with cd(os.path.join(env.git_path, 'fabric')):
+            run("mv maintenance-mode-on maintenance-mode-off")
+            print("The site is now available!")
+    else:
+        print('The site is already NOT in maintenance mode!')
