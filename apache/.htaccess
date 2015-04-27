@@ -1,0 +1,13 @@
+RewriteCond /var/www/fi-admin/git/fabric/maintenance-mode-on -f
+RewriteCond %{REMOTE_ADDR} !^127\.0\.0\.1$
+RewriteCond %{REQUEST_URI} !^/static.*
+RewriteCond %{REQUEST_URI} !^/admin.*
+RewriteCond %{REQUEST_URI} !^/maintenance/
+# redirect to the maintenance mode page
+RewriteRule ^(.+) /maintenance/ [R,L]
+
+
+#If not under maintenance mode, redirect away from the maintenance page
+RewriteCond /var/www/fi-admin/git/fabric/maintenance-mode-off -f
+RewriteCond %{REQUEST_URI} ^/maintenance/
+RewriteRule ^(.*) / [R,L]
