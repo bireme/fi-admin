@@ -1,0 +1,28 @@
+{% load i18n %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>FI-ADMIN - {% trans "Under maintenance" %}<</title>
+        <style>
+            .spacer {clear: both; height: 1px; font-size: 1px;}
+            .container {width: 700px; margin: 50px auto 0px auto; text-align:center; font-family: arial;}
+            .home_footer {padding: 5px 0px; margin-top: 30px; border-top: 1px solid #ABABAB; font-size: 80%; color: #97a8b6;}
+        </style>
+	</head>
+	<body>
+	    <div class="container">
+            <h1>FI-ADMIN</h1>
+            <h2>{% trans "Under maintenance" %}</h2>
+            <img src="{% static "image/logo-BIREME-big.png" %}" title="BIREME/OPAS/OMS" />
+            <h3>{% trans "Please check again in a few minutes" %}</h3>
+            <div class="spacer">&#160;</div>
+            <div class="home_footer">
+                <strong>{% trans "BIREME - PAHO - WHO" %}</strong><br/>
+            </div>
+	    </div>
+	</body>
+</html>
