@@ -339,11 +339,15 @@ span.required .mark{
 }
 
 ul.jsonfield_display{
-    width: 560px;
+    width: 90%;
     min-height: 22px;
     padding: 2px;
-    margin: 0;
+    margin-left: 30px;
     border: 1px solid #cccccc;
     background-color: #eeeeee;
     cursor: context-menu;
+}
+
+ul.jsonfield_display li{
+    margin: 3px;
 }
