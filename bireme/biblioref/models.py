@@ -56,7 +56,7 @@ class Reference(Generic):
     # field tag 01
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
     # field tag 03
-    call_number = JSONField(_('Call number'), blank=True, dump_kwargs={'ensure_ascii': False})
+    call_number = JSONField(_('Call number'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 04
     database = models.TextField(_('Database'), blank=True)
     # field tag 05
@@ -64,12 +64,12 @@ class Reference(Generic):
     # field tag 06
     treatment_level = models.CharField(_('Treatment level'), max_length=10, blank=True)
     # field tag 08
-    electronic_address = JSONField(_('Electronic address'), blank=True, dump_kwargs={'ensure_ascii': False})
+    electronic_address = JSONField(_('Electronic address'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 09
     record_type = AuxiliaryChoiceField(_('Record type'), max_length=10, blank=True)
 
     # field tag 38
-    descriptive_information = JSONField(_('Descriptive information'), blank=True, dump_kwargs={'ensure_ascii': False})
+    descriptive_information = JSONField(_('Descriptive information'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 40
     text_language = MultipleAuxiliaryChoiceField(_('Text language'), blank=True)
     # field tag 61
@@ -93,11 +93,11 @@ class Reference(Generic):
     # field tag 82
     non_decs_region = models.TextField(_('Non-DeCS Region'), blank=True)
     # field tag 83
-    abstract = JSONField(_('Abstract'), blank=True, dump_kwargs={'ensure_ascii': False})
+    abstract = JSONField(_('Abstract'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 84
     transfer_date_to_database = models.CharField(_('Transfer date do database'), max_length=20, blank=True)
     # field tag 85
-    author_keyword = JSONField(_('Author keyword'), blank=True, dump_kwargs={'ensure_ascii': False})
+    author_keyword = JSONField(_('Author keyword'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 91
     # record_creation_date = TODO  (use created_time)
     # field tag 92
@@ -133,6 +133,7 @@ class Reference(Generic):
 
     # field tag 899
     software_version = models.CharField(_('Software version'), max_length=50, blank=True)
+    LILACS_original_id = models.CharField(_('LILACS id'), max_length=8, blank=True)
 
     def __unicode__(self):
         if 'a' in self.treatment_level:
@@ -158,9 +159,9 @@ class ReferenceSource(Reference):
     # field tag 07
     inventory_number = models.TextField(_('Inventory number'), blank=True)
     # field tags 16
-    individual_author_monographic = JSONField(_('Individual author'), blank=True, dump_kwargs={'ensure_ascii': False})
+    individual_author_monographic = JSONField(_('Individual author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 17
-    corporate_author_monographic = JSONField(_('Corporate author'), blank=True, dump_kwargs={'ensure_ascii': False})
+    corporate_author_monographic = JSONField(_('Corporate author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tags 18
     title_monographic = models.CharField(_('Title'), max_length=250, blank=True)
     # field tags 19
@@ -170,9 +171,9 @@ class ReferenceSource(Reference):
     # field tags 21
     volume_monographic = models.CharField(_('Volume'), max_length=100, blank=True)
     # field tags 23
-    individual_author_collection = JSONField(_('Individual author'), blank=True, dump_kwargs={'ensure_ascii': False})
+    individual_author_collection = JSONField(_('Individual author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 24
-    corporate_author_collection = JSONField(_('Corporate author'), blank=True, dump_kwargs={'ensure_ascii': False})
+    corporate_author_collection = JSONField(_('Corporate author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tags 25
     title_collection = models.CharField(_('Title'), max_length=250, blank=True)
     # field tags 26
@@ -188,7 +189,7 @@ class ReferenceSource(Reference):
     # field tags 35
     issn = models.CharField(_('ISSN'), max_length=40, blank=True)
     # field tag 49
-    thesis_dissertation_leader = JSONField(_('Thesis, Dissertation - Leader'), blank=True, dump_kwargs={'ensure_ascii': False})
+    thesis_dissertation_leader = JSONField(_('Thesis, Dissertation - Leader'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 50
     thesis_dissertation_institution = models.CharField(_('Thesis, Dissertation - Institution'), max_length=300, blank=True)
     # field tag 51
@@ -218,11 +219,11 @@ class ReferenceAnalytic(Reference):
 
     source = models.ForeignKey(ReferenceSource, verbose_name=_("Source"), blank=False)
     # field tags 10
-    individual_author = JSONField(_('Individual author'), blank=True, dump_kwargs={'ensure_ascii': False})
+    individual_author = JSONField(_('Individual author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 11
-    corporate_author = JSONField(_('Corporate author'), blank=True, dump_kwargs={'ensure_ascii': False})
+    corporate_author = JSONField(_('Corporate author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 12
-    title = JSONField(_('Title'), blank=True, dump_kwargs={'ensure_ascii': False})
+    title = JSONField(_('Title'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 13
     english_translated_title = models.CharField(_('English translated title'), max_length=400, blank=True)
     # field tag 14

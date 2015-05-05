@@ -23,6 +23,7 @@ import colander
 import deform
 import json
 
+
 class BiblioRefGenericListView(LoginRequiredView, ListView):
     """
     Handle list view for bibliographic references objects
@@ -39,7 +40,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         source_id = self.request.GET.get('source', None)
 
-        # getting action parameter        
+        # getting action parameter
         self.actions = {}
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
@@ -79,7 +80,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
 class BiblioRefListView(BiblioRefGenericListView, ListView):
     """
-    Extend BiblioRefGenericListView to list bibliographic references 
+    Extend BiblioRefGenericListView to list bibliographic references
     """
     model = Reference
 
@@ -90,11 +91,13 @@ class BiblioRefListSourceView(BiblioRefGenericListView, ListView):
     """
     model = ReferenceSource
 
+
 class BiblioRefListAnalyticView(BiblioRefGenericListView, ListView):
     """
     Extend BiblioRefGenericListView to list bibliographic references
     """
     model = ReferenceAnalytic
+
 
 class BiblioRefUpdate(LoginRequiredView):
     """
@@ -119,9 +122,8 @@ class BiblioRefUpdate(LoginRequiredView):
         valid_for_publication = is_valid_for_publication(form,
                                                          [formset_descriptor, formset_keyword, formset_thematic])
 
-
-        if (form_valid and formset_descriptor_valid and formset_keyword_valid
-                and formset_thematic_valid and valid_for_publication):
+        if (form_valid and formset_descriptor_valid and formset_keyword_valid and
+                formset_thematic_valid and valid_for_publication):
 
                 self.object = form.save()
                 formset_descriptor.instance = self.object
@@ -145,11 +147,9 @@ class BiblioRefUpdate(LoginRequiredView):
                                                  formset_thematic=formset_thematic,
                                                  valid_for_publication=valid_for_publication))
 
-
     def form_invalid(self, form):
             # force use of form_valid method to run all validations
             return self.form_valid(form)
-
 
     def get_form_kwargs(self):
         kwargs = super(BiblioRefUpdate, self).get_form_kwargs()
@@ -223,11 +223,11 @@ class BiblioRefUpdate(LoginRequiredView):
                     created_by_id=user_id, status=0)
 
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object,
-                    queryset=pending_descriptor_from_user)
+                                                                  queryset=pending_descriptor_from_user)
                 context['formset_keyword'] = KeywordFormSet(instance=self.object,
-                    queryset=pending_keyword_from_user)
+                                                            queryset=pending_keyword_from_user)
                 context['formset_thematic'] = ResourceThematicFormSet(instance=self.object,
-                    queryset=pending_thematic_from_user)
+                                                                      queryset=pending_thematic_from_user)
             else:
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
                 context['formset_keyword'] = KeywordFormSet(instance=self.object)
@@ -239,10 +239,11 @@ class BiblioRefUpdate(LoginRequiredView):
 class BiblioRefSourceUpdateView(BiblioRefUpdate, UpdateView):
     """
     Used as class view to update BiblioRef
-    Extend BiblioRefUpdate that do all the work    
+    Extend BiblioRefUpdate that do all the work
     """
     model = ReferenceSource
     form_class = BiblioRefSourceForm
+
 
 class BiblioRefAnaliticUpdateView(BiblioRefUpdate, UpdateView):
     """
@@ -259,6 +260,7 @@ class BiblioRefAnaliticUpdateView(BiblioRefUpdate, UpdateView):
 
         return context
 
+
 class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
     """
     Used as class view to create BiblioRef
@@ -270,6 +272,7 @@ class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
     # after creation of source present option for creation new analytic
     def get_success_url(self):
         return 'analytics?source=%s' % self.object.pk
+
 
 class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):
     """
@@ -323,13 +326,14 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
         return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
 
 
-def get_class( kls ):
+def get_class(kls):
     parts = kls.split('.')
     module = ".".join(parts[:-1])
-    m = __import__( module )
+    m = __import__(module)
     for comp in parts[1:]:
-        m = getattr(m, comp)            
+        m = getattr(m, comp)
     return m
+
 
 @csrf_exempt
 def field_assist(request, **kwargs):
@@ -340,13 +344,13 @@ def field_assist(request, **kwargs):
 
     formid = request.POST.get('__formid__', '')
 
-    field_name_camelcase = field_name.title().replace('_','')
+    field_name_camelcase = field_name.title().replace('_', '')
     field_full_classname = 'biblioref.field_definitions.{0}'.format(field_name_camelcase)
 
     field_definition = get_class(field_full_classname)
 
     appstruct = None
-    field_json = None    
+    field_json = None
 
     class Schema(colander.MappingSchema):
         data = field_definition()
@@ -355,7 +359,6 @@ def field_assist(request, **kwargs):
     form = deform.Form(schema, buttons=('submit',), use_ajax=True)
     form['data'].widget = deform.widget.SequenceWidget(min_len=1, orderable=True)
 
-
     # check if is a submit of deform form
     if request.method == 'POST' and formid == 'deform':
         controls = parse_qsl(request.body, keep_blank_values=True)
@@ -363,7 +366,7 @@ def field_assist(request, **kwargs):
             # If all goes well, deform returns a simple python structure of
             # the data. You use this same structure to populate a form with
             # data from permanent storage
-            appstruct = form.validate(controls)            
+            appstruct = form.validate(controls)
         except ValidationFailure, e:
             # The exception contains a reference to the form object
             rendered = e.render()
@@ -376,8 +379,8 @@ def field_assist(request, **kwargs):
     else:
         if field_value:
             # add wrap element (data) to json
-            field_value = '{"data" : %s}' % field_value            
-            appstruct = json.loads(field_value)            
+            field_value = '{"data" : %s}' % field_value
+            appstruct = json.loads(field_value)
 
             rendered = form.render(appstruct)
         else:

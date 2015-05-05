@@ -15,7 +15,7 @@ FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], '
                                                              'issn'],
                                                   'legend': 'Serial level'}),
                                 ('imprint', {'fields': ['publication_date', 'publication_date_normalized'],
-                                                  'legend': 'Imprint' })]
+                                 'legend': 'Imprint'})]
 
 
 FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
@@ -29,16 +29,15 @@ FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'c
                                                             'additional_physical_form_available_note',
                                                             'reproduction_note', 'original_version_note',
                                                             'internal_note', ],
-                                                   'legend': 'Complementary Information',
-                                                   'classes': ['collapse']}),
+                                                 'legend': 'Complementary Information',
+                                                 'classes': ['collapse']}),
                                   ('content_data', {'fields': ['clinical_trial_registry_name', 'author_keyword'],
-                                                   'legend': 'Content data',
-                                                   'classes': ['collapse']}),
+                                                    'legend': 'Content data',
+                                                    'classes': ['collapse']}),
                                   ('abstract', {'fields': ['abstract'],
-                                                   'legend': 'Abstract',
-                                                   'classes': ['collapse']}),
+                                                'legend': 'Abstract',
+                                                'classes': ['collapse']}),
                                   ]
-
 
 
 class CallNumberAttributes(colander.MappingSchema):
@@ -79,6 +78,7 @@ class TitleAttributes(colander.MappingSchema):
                              widget=deform.widget.SelectWidget(values=language_choices),
                              title=_('Language'))
 
+
 class Title(colander.SequenceSchema):
     title = TitleAttributes()
 
@@ -93,7 +93,7 @@ class IndividualAuthorAttributes(colander.MappingSchema):
 
 
 class IndividualAuthor(colander.SequenceSchema):
-    item =IndividualAuthorAttributes()
+    item = IndividualAuthorAttributes()
 
 
 class CorporateAuthorAttributes(colander.MappingSchema):
@@ -130,7 +130,8 @@ class ThesisDissertationLeader(colander.SequenceSchema):
 
 
 class AbstractAttributes(colander.MappingSchema):
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Title'))
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Title'),
+                               widget=deform.widget.TextAreaWidget(rows=15, cols=120))
     _i = colander.SchemaNode(colander.String('utf-8'), widget=deform.widget.SelectWidget(values=language_choices),
                              title=_('Language'))
 
