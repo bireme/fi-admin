@@ -10,17 +10,21 @@ class ThematicAreaLocalAdmin(admin.TabularInline):
     model = ThematicAreaLocal
     extra = 0
 
+
 class ThematicAreaAdmin(GenericAdmin):
     model = ThematicArea
-    inlines = [ThematicAreaLocalAdmin,]
+    inlines = [ThematicAreaLocalAdmin, ]
+
 
 class SourceTypeLocalAdmin(admin.TabularInline):
     model = SourceTypeLocal
     extra = 0
 
+
 class SourceTypeAdmin(GenericAdmin):
     model = SourceType
-    inlines = [SourceTypeLocalAdmin,]
+    inlines = [SourceTypeLocalAdmin, ]
+
 
 class DescriptorAdmin(generic.GenericTabularInline):
     model = Descriptor
@@ -45,10 +49,10 @@ class ErrorReportAdmin(generic.GenericTabularInline):
 class ResourceAdmin(GenericAdmin):
     model = Resource
     date_hierarchy = 'created_time'
-    list_display = ('id','title', 'link', 'created_by','status')
+    list_display = ('id', 'title', 'link', 'created_by', 'status')
     search_fields = ['id', 'title']
-    list_filter = ('status','source_language__language', 'source_type__name', 'thematics__thematic_area', 'cooperative_center_code' )
-    inlines = [DescriptorAdmin, KeywordAdmin, ErrorReportAdmin,]
-    
+    list_filter = ('status', 'source_language__language', 'source_type__name', 'thematics__thematic_area', 'cooperative_center_code')
+    inlines = [DescriptorAdmin, KeywordAdmin, ErrorReportAdmin, ]
 
 admin.site.register(Resource, ResourceAdmin)
+admin.site.register(ThematicArea, ThematicAreaAdmin)

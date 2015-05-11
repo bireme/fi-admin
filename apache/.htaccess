@@ -5,6 +5,7 @@ RewriteCond %{REMOTE_ADDR} !^127\.0\.0\.1$
 RewriteCond %{REQUEST_URI} !^/static.*
 RewriteCond %{REQUEST_URI} !^/admin.*
 RewriteCond %{REQUEST_URI} !^/maintenance/
+RewriteCond %{REQUEST_URI} !^/api/
 # redirect to the maintenance mode page
 RewriteRule ^(.+) /maintenance/ [R,L]
 
