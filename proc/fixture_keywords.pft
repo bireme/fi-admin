@@ -1,26 +1,25 @@
+proc('d9995a9995|',getenv('PK_INCREASE_NUMBER'),'|')
+proc('d9996a9996|',getenv('FI_CONTENT_TYPE_ID'),'|')
+proc('d9997a9997|',getenv('FI_USER_ID'),'|')
+
 if mfn=1 then '['/ fi,
 
 if left(v311,11) <> 'IDDUPLICADO' then,
-
-   /* LIS ID (only numeric part) */
-   proc('d9301a9301!',mid(v301,instr(v301,'-')+1,size(v301)),'!'),
-
-  (	   
+  (
 	if p(v326) then,
 	   '{',/
 			c4,'"model": ','"main.keyword",',/
 			c4,'"pk": ', 'null,'/        /* avoid PK duplication use auto-increment on load */
 			c4,'"fields": {',/
-				c8,'"object_id": ',v9301[1],',',/
+				c8,'"object_id": ',f(mfn+val(v9995[1]),1,0),',',/
 				c8,'"content_type": ', '15,',/
 				c8,'"text": ','"', v326, '",'/
-				c8,'"status": ','1,'/   
-                c8,'"created_time": "2013-12-01T09:00:00-03:00",'/        
-				c8,'"created_by": ','2'/
+				c8,'"status": ','1,'/
+                c8,'"created_time": "2015-05-07T09:00:00-03:00",'/
+				c8,'"created_by": ',v9997[1]/
 			c4,'}',/
 		'},'/
     fi,
   )
 fi,
 if mfn=MAXMFN-1 then ']'/ fi,
-
