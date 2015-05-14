@@ -289,11 +289,15 @@ fieldset a.icon-plus-sign {
 
 #metadata input[type=text], #metadata textarea, #metadata select{
     width: 560px;
-};
+}
 
- #descriptors input[name$='code']{
+#metadata textarea{
+    height: 80px;
+}
+
+#descriptors input[name$='code']{
     width: 80px;
- }
+}
 
 #descriptors select, #keywords select {
     width: 140px;
