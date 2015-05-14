@@ -17,14 +17,14 @@ import simplejson
 
 class SelectDocumentTypeForm(forms.Form):
     DOCUMENT_TYPE_CHOICES = (
-        # ('1', _('Monograph Series')),
-        # ('2', _('Monograph in a Collection')),
+        # ('MS', _('Monograph Series')),
+        # ('', _('Monograph in a Collection')),
         ('M', _('Monograph')),
-        # ('4', _('Non conventional')),
+        # ('N', _('Non conventional')),
         ('S', _('Periodical Series')),
-        # ('6', _('Collection')),
-        # ('7', _('Thesis, Dissertation appearing as a Monograph Series')),
-        # ('8', _('Thesis, Dissertation')),
+        # ('', _('Collection')),
+        # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
+        ('T', _('Thesis, Dissertation')),
     )
 
     document_type = forms.ChoiceField(choices=DOCUMENT_TYPE_CHOICES)
@@ -65,11 +65,14 @@ class BiblioRefForm(BetterModelForm):
         obj.literature_type = self.document_type[0]
         obj.treatment_level = self.document_type[1:]
 
+        print self.document_type
+
         if self.document_type[0] == 'S':
             if self.document_type == 'S':
-                obj.reference_title = u"{0}; {1} ({2})".format(self.cleaned_data['title_serial'],
-                                                               self.cleaned_data['volume_serial'],
-                                                               self.cleaned_data['issue_number'])
+                obj.reference_title = u"{0}; {1} ({2}), {3}".format(self.cleaned_data['title_serial'],
+                                                                    self.cleaned_data['volume_serial'],
+                                                                    self.cleaned_data['issue_number'],
+                                                                    self.cleaned_data['publication_date_normalized'][:4])
             elif self.document_type == 'Sas':
                 if self.cleaned_data['title']:
                     analytic_title = self.cleaned_data['title']
@@ -77,10 +80,7 @@ class BiblioRefForm(BetterModelForm):
                     obj.reference_title = u"{0} | {1}".format(obj.source.reference_title, analytic_title)
 
         elif self.document_type[0] == 'M':
-            print 'here'
-            print self.document_type
             if self.document_type == 'M':
-                print self.cleaned_data['title_monographic']
                 obj.reference_title = u"{0} {1}".format(self.cleaned_data['title_monographic'],
                                                         self.cleaned_data['volume_monographic'])
 

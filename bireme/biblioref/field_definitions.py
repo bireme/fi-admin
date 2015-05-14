@@ -18,6 +18,20 @@ abstract_section = ('abstract', {'fields': ['abstract'],
                                  'classes': ['collapse']})
 
 
+comp_info_section = ('comp_info', {'fields': ['descriptive_information', 'text_language'],
+                                   'legend': 'Complementary Information',
+                                   'classes': ['collapse']})
+
+subject_section = ('content_data', {'fields': ['author_keyword'],
+                                    'legend': 'Subject',
+                                    'classes': ['collapse']})
+
+imprint_section = ('imprint', {'fields': ['publisher', 'edition', 'publication_date',
+                                          'publication_date_normalized', 'publication_city',
+                                          'symbol', 'isbn'],
+                               'legend': 'Imprint',
+                               'classes': ['collapse']})
+
 FIELDS_BY_DOCUMENT_TYPE = {}
 
 # Periodical series (source)
@@ -66,21 +80,13 @@ FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'cal
                                                                   'volume_monographic'],
                                                        'legend': 'Monographic Level'}),
 
-                                ('comp_info', {'fields': ['descriptive_information', 'text_language'],
-                                               'legend': 'Complementary Information',
-                                               'classes': ['collapse']}),
+                                comp_info_section,
 
                                 other_notes_section,
 
-                                ('imprint', {'fields': ['publisher', 'edition', 'publication_date',
-                                                        'publication_date_normalized', 'publication_city',
-                                                        'symbol', 'isbn'],
-                                             'legend': 'Imprint',
-                                             'classes': ['collapse']}),
+                                imprint_section,
 
-                                ('content_data', {'fields': ['author_keyword'],
-                                                  'legend': 'Content data',
-                                                  'classes': ['collapse']}),
+                                subject_section,
 
                                 abstract_section
                                 ]
@@ -95,15 +101,62 @@ FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'c
                                                                  'english_translated_title', 'pages'],
                                                       'legend': 'Analytic Level'}),
 
-                                  ('comp_info', {'fields': ['descriptive_information', 'text_language'],
-                                                 'legend': 'Complementary Information',
-                                                 'classes': ['collapse']}),
+                                  comp_info_section,
 
                                   other_notes_section,
 
-                                  ('content_data', {'fields': ['author_keyword'],
-                                                    'legend': 'Content data',
+                                  subject_section,
+
+                                  abstract_section
+                                  ]
+
+# Thesis, dissertation (source)
+FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
+                                                        'inventory_number', 'electronic_address', 'record_type'],
+                                             'legend': 'General information'}),
+
+                                ('monographic_level', {'fields': ['individual_author_monographic',
+                                                                  'title_monographic', 'english_title_monographic',
+                                                                  'pages_monographic'],
+                                                       'legend': 'Monographic Level'}),
+
+                                comp_info_section,
+
+                                ('thesis_notes', {'fields': ['thesis_dissertation_leader',
+                                                             'thesis_dissertation_institution',
+                                                             'thesis_dissertation_academic_title'],
+                                                  'legend': 'Thesis Notes',
+                                                  'classes': ['collapse']}),
+
+
+                                other_notes_section,
+
+                                imprint_section,
+
+                                subject_section,
+
+                                abstract_section
+                                ]
+
+# Thesis, dissertation (analytic)
+FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
+                                                          'inventory_number', 'electronic_address', 'record_type',
+                                                          'item_form'],
+                                               'legend': 'General information'}),
+
+                                  ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
+                                                                 'english_translated_title', 'pages'],
+                                                      'legend': 'Analytic Level'}),
+
+                                  comp_info_section,
+
+                                  ('thesis_notes', {'fields': ['thesis_dissertation_leader'],
+                                                    'legend': 'Thesis Notes',
                                                     'classes': ['collapse']}),
+
+                                  other_notes_section,
+
+                                  subject_section,
 
                                   abstract_section
                                   ]

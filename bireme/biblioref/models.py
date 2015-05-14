@@ -138,17 +138,23 @@ class Reference(Generic):
     def __unicode__(self):
         if 'a' in self.treatment_level:
             ref_child = ReferenceAnalytic.objects.get(id=self.pk)
-            ref_title = u"{0}; {1} ({2}) | {3}".format(ref_child.source.title_serial,
-                                                       ref_child.source.volume_serial,
-                                                       ref_child.source.issue_number,
-                                                       ref_child.title[0]['text'])
+            if self.literature_type == 'S':
+                ref_title = u"{0}; {1} ({2}), {3} | {4}".format(ref_child.source.title_serial,
+                                                                ref_child.source.volume_serial,
+                                                                ref_child.source.issue_number,
+                                                                ref_child.source.publication_date_normalized[:4],
+                                                                ref_child.title[0]['text'])
+            else:
+                ref_title = u"{0} | {1}".format(ref_child.source.title_monographic,
+                                                ref_child.title[0]['text'])
         else:
             ref_child = ReferenceSource.objects.get(id=self.pk)
             if self.literature_type == 'S':
                 ref_title = ref_child.title_serial
-            elif self.literature_type == 'M':
+            else:
                 ref_title = ref_child.title_monographic
 
+        ref_title = u"{0} - ({1},{2})".format(ref_title, self.literature_type, self.treatment_level)
         return ref_title
 
 

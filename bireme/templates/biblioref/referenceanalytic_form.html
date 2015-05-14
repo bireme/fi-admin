@@ -71,12 +71,24 @@
                         <div id="metadata" class="accordion">
                             <div class="accordion-group">
                                     <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-target="#serial_level">Serial level</a>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-target="#serial_level">
+                                            {% if reference_source.literature_type == 'S' %}
+                                                {% trans 'Serial level' %}
+                                            {% else %}
+                                                {% trans 'Monographic level' %}
+                                            {% endif %}
+                                        </a>
                                     </div>
                                     <fieldset class="accordion-body" id="serial_level">
                                         <ul class="alert">
                                             <li>
-                                                <strong>{{reference_source.title_serial}}; {{reference_source.volume_serial}} ({{reference_source.issue_number}})</strong>
+                                                <strong>
+                                                {% if reference_source.literature_type == 'S' %}
+                                                    {{ reference_source.title_serial }}; {{ reference_source.volume_serial }} ({{ reference_source.issue_number }})
+                                                {% else %}
+                                                    {{ reference_source.title_monographic }}
+                                                {% endif %}
+                                                </strong>
                                             </li>
                                         </ul>
                                     </fieldset>

@@ -170,6 +170,8 @@ class BiblioRefUpdate(LoginRequiredView):
                 document_type = 'Sas'
             elif literature_type == 'M':
                 document_type = 'Mam'
+            elif literature_type == 'T':
+                document_type = 'Tam'
 
         # edition/new source
         else:
