@@ -7,36 +7,105 @@ import json
 
 language_choices = (('pt', 'Português'), ('es', 'Espanhol'), ('en', 'Inglês'))
 
+other_notes_section = ('other_notes', {'fields': ['general_note', 'formatted_contents_note',
+                                       'additional_physical_form_available_note', 'reproduction_note',
+                                       'original_version_note', 'internal_note'],
+                                       'legend': 'Other notes',
+                                       'classes': ['collapse']})
+
+abstract_section = ('abstract', {'fields': ['abstract'],
+                                 'legend': 'Abstract',
+                                 'classes': ['collapse']})
+
 
 FIELDS_BY_DOCUMENT_TYPE = {}
 
+# Periodical series (source)
 FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], 'legend': 'General information'}),
+
                                 ('serial_level', {'fields': ['title_serial', 'volume_serial', 'issue_number',
                                                              'issn'],
                                                   'legend': 'Serial level'}),
+
                                 ('imprint', {'fields': ['publication_date', 'publication_date_normalized'],
                                  'legend': 'Imprint'})]
 
 
+# Periodical series (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                          'electronic_address', 'record_type'],
+                                                          'electronic_address', 'record_type', 'item_form',
+                                                          'type_of_journal'],
                                                'legend': 'General information'}),
+
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
                                                                  'english_translated_title', 'pages'],
                                                       'legend': 'Analytic Level'}),
-                                  ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi',
-                                                            'general_note', 'formatted_contents_note',
-                                                            'additional_physical_form_available_note',
-                                                            'reproduction_note', 'original_version_note',
-                                                            'internal_note', ],
+
+                                  ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi'],
                                                  'legend': 'Complementary Information',
                                                  'classes': ['collapse']}),
+
+                                  other_notes_section,
+
                                   ('content_data', {'fields': ['clinical_trial_registry_name', 'author_keyword'],
                                                     'legend': 'Content data',
                                                     'classes': ['collapse']}),
-                                  ('abstract', {'fields': ['abstract'],
-                                                'legend': 'Abstract',
-                                                'classes': ['collapse']}),
+
+                                  abstract_section
+                                  ]
+
+# Monographic (source)
+FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
+                                                        'inventory_number', 'electronic_address', 'record_type',
+                                                        'item_form'],
+                                             'legend': 'General information'}),
+
+                                ('monographic_level', {'fields': ['individual_author_monographic',
+                                                                  'corporate_author_monographic', 'title_monographic',
+                                                                  'english_title_monographic', 'pages_monographic',
+                                                                  'volume_monographic'],
+                                                       'legend': 'Monographic Level'}),
+
+                                ('comp_info', {'fields': ['descriptive_information', 'text_language'],
+                                               'legend': 'Complementary Information',
+                                               'classes': ['collapse']}),
+
+                                other_notes_section,
+
+                                ('imprint', {'fields': ['publisher', 'edition', 'publication_date',
+                                                        'publication_date_normalized', 'publication_city',
+                                                        'symbol', 'isbn'],
+                                             'legend': 'Imprint',
+                                             'classes': ['collapse']}),
+
+                                ('content_data', {'fields': ['author_keyword'],
+                                                  'legend': 'Content data',
+                                                  'classes': ['collapse']}),
+
+                                abstract_section
+                                ]
+
+# Monographic (analytic)
+FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
+                                                          'inventory_number', 'electronic_address', 'record_type',
+                                                          'item_form'],
+                                               'legend': 'General information'}),
+
+                                  ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
+                                                                 'english_translated_title', 'pages'],
+                                                      'legend': 'Analytic Level'}),
+
+                                  ('comp_info', {'fields': ['descriptive_information', 'text_language'],
+                                                 'legend': 'Complementary Information',
+                                                 'classes': ['collapse']}),
+
+                                  other_notes_section,
+
+                                  ('content_data', {'fields': ['author_keyword'],
+                                                    'legend': 'Content data',
+                                                    'classes': ['collapse']}),
+
+                                  abstract_section
                                   ]
 
 
@@ -49,8 +118,7 @@ class CallNumberAttributes(colander.MappingSchema):
 
 
 class CallNumber(colander.SequenceSchema):
-    item = CallNumberAttributes(
-)
+    item = CallNumberAttributes(title=_('Call number'))
 
 
 class ElectronicAddressAttributes(colander.MappingSchema):
@@ -69,7 +137,7 @@ class ElectronicAddressAttributes(colander.MappingSchema):
 
 
 class ElectronicAddress(colander.SequenceSchema):
-    item = ElectronicAddressAttributes()
+    item = ElectronicAddressAttributes(title=_('Electronic address'))
 
 
 class TitleAttributes(colander.MappingSchema):
@@ -80,7 +148,7 @@ class TitleAttributes(colander.MappingSchema):
 
 
 class Title(colander.SequenceSchema):
-    title = TitleAttributes()
+    title = TitleAttributes(title=_('Title'))
 
 
 class IndividualAuthorAttributes(colander.MappingSchema):
@@ -93,7 +161,11 @@ class IndividualAuthorAttributes(colander.MappingSchema):
 
 
 class IndividualAuthor(colander.SequenceSchema):
-    item = IndividualAuthorAttributes()
+    item = IndividualAuthorAttributes(title=_('Individual author'))
+
+
+class IndividualAuthorMonographic(colander.SequenceSchema):
+    item = IndividualAuthorAttributes(title=_('Individual author'))
 
 
 class CorporateAuthorAttributes(colander.MappingSchema):
@@ -102,7 +174,11 @@ class CorporateAuthorAttributes(colander.MappingSchema):
 
 
 class CorporateAuthor(colander.SequenceSchema):
-    item = CorporateAuthorAttributes()
+    item = CorporateAuthorAttributes(title=_('Corporate author'))
+
+
+class CorporateAuthorMonographic(colander.SequenceSchema):
+    item = CorporateAuthorAttributes(title=_('Corporate author'))
 
 
 class DescriptiveInformationAttributes(colander.MappingSchema):
@@ -113,7 +189,7 @@ class DescriptiveInformationAttributes(colander.MappingSchema):
 
 
 class DescriptiveInformation(colander.SequenceSchema):
-    item = DescriptiveInformationAttributes()
+    item = DescriptiveInformationAttributes(title=_('Descriptive information'))
 
 
 class ThesisDissertationLeaderAttributes(colander.MappingSchema):
@@ -126,25 +202,26 @@ class ThesisDissertationLeaderAttributes(colander.MappingSchema):
 
 
 class ThesisDissertationLeader(colander.SequenceSchema):
-    item = ThesisDissertationLeaderAttributes()
+    item = ThesisDissertationLeaderAttributes(title=_('Leader'))
 
 
 class AbstractAttributes(colander.MappingSchema):
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Title'),
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Abstract'),
                                widget=deform.widget.TextAreaWidget(rows=15, cols=120))
     _i = colander.SchemaNode(colander.String('utf-8'), widget=deform.widget.SelectWidget(values=language_choices),
                              title=_('Language'))
 
 
 class Abstract(colander.SequenceSchema):
-    item = AbstractAttributes()
+    item = AbstractAttributes(title=_('Abstract'))
+
 
 class AuthorKeywordAttributes(colander.MappingSchema):
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Title'))
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Keyword'))
     _s = colander.SchemaNode(colander.String('utf-8'), title=_('Qualifier'), missing=unicode(''),)
     _i = colander.SchemaNode(colander.String('utf-8'), widget=deform.widget.SelectWidget(values=language_choices),
                              title=_('Language'))
 
 
 class AuthorKeyword(colander.SequenceSchema):
-    item = AuthorKeywordAttributes()
+    item = AuthorKeywordAttributes(title=_('Author keyword'))

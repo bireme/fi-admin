@@ -39,6 +39,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
     def get_queryset(self):
 
         source_id = self.request.GET.get('source', None)
+        document_type = self.request.GET.get('document_type', None)
 
         # getting action parameter
         self.actions = {}
@@ -54,6 +55,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
+
+        if document_type:
+            object_list = object_list.filter(literature_type=document_type)
 
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
@@ -164,6 +168,9 @@ class BiblioRefUpdate(LoginRequiredView):
             literature_type = reference_source.literature_type
             if literature_type == 'S':
                 document_type = 'Sas'
+            elif literature_type == 'M':
+                document_type = 'Mam'
+
         # edition/new source
         else:
             # source/analytic edition

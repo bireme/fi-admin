@@ -144,7 +144,10 @@ class Reference(Generic):
                                                        ref_child.title[0]['text'])
         else:
             ref_child = ReferenceSource.objects.get(id=self.pk)
-            ref_title = ref_child.title_serial
+            if self.literature_type == 'S':
+                ref_title = ref_child.title_serial
+            elif self.literature_type == 'M':
+                ref_title = ref_child.title_monographic
 
         return ref_title
 
