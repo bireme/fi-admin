@@ -168,10 +168,8 @@ class BiblioRefUpdate(LoginRequiredView):
             literature_type = reference_source.literature_type
             if literature_type == 'S':
                 document_type = 'Sas'
-            elif literature_type == 'M':
-                document_type = 'Mam'
-            elif literature_type == 'T':
-                document_type = 'Tam'
+            else:
+                document_type = "{0}am".format(literature_type)
 
         # edition/new source
         else:

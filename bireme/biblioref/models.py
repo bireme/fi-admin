@@ -152,9 +152,9 @@ class Reference(Generic):
             if self.literature_type == 'S':
                 ref_title = ref_child.title_serial
             else:
-                ref_title = ref_child.title_monographic
+                ref_title = u"{0} {1}".format(ref_child.title_monographic, ref_child.volume_monographic)
 
-        ref_title = u"{0} - ({1},{2})".format(ref_title, self.literature_type, self.treatment_level)
+        # ref_title = u"{0} - ({1},{2}) [{3}]".format(ref_title, self.literature_type, self.treatment_level, self.reference_title)
         return ref_title
 
 

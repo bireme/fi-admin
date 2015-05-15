@@ -161,6 +161,47 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'c
                                   abstract_section
                                   ]
 
+# Non Conventional (source)
+FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
+                                                        'inventory_number', 'electronic_address', 'record_type'],
+                                             'legend': 'General information'}),
+
+                                ('monographic_level', {'fields': ['individual_author_monographic',
+                                                                  'corporate_author_monographic',
+                                                                  'title_monographic', 'english_title_monographic',
+                                                                  'pages_monographic', 'volume_monographic'],
+                                                       'legend': 'Monographic Level'}),
+
+                                comp_info_section,
+
+                                other_notes_section,
+
+                                imprint_section,
+
+                                subject_section,
+
+                                abstract_section
+                                ]
+
+# Thesis, dissertation (analytic)
+FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
+                                                          'inventory_number', 'electronic_address', 'record_type',
+                                                          'item_form'],
+                                               'legend': 'General information'}),
+
+                                  ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
+                                                                 'english_translated_title', 'pages'],
+                                                      'legend': 'Analytic Level'}),
+
+                                  comp_info_section,
+
+                                  other_notes_section,
+
+                                  subject_section,
+
+                                  abstract_section
+                                  ]
+
 
 class CallNumberAttributes(colander.MappingSchema):
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Center code'), missing=unicode(''))

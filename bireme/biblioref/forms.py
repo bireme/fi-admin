@@ -20,7 +20,7 @@ class SelectDocumentTypeForm(forms.Form):
         # ('MS', _('Monograph Series')),
         # ('', _('Monograph in a Collection')),
         ('M', _('Monograph')),
-        # ('N', _('Non conventional')),
+        ('N', _('Non conventional')),
         ('S', _('Periodical Series')),
         # ('', _('Collection')),
         # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
@@ -78,11 +78,13 @@ class BiblioRefForm(BetterModelForm):
                     analytic_title = self.cleaned_data['title']
                     analytic_title = analytic_title[0]['text']
                     obj.reference_title = u"{0} | {1}".format(obj.source.reference_title, analytic_title)
-
-        elif self.document_type[0] == 'M':
-            if self.document_type == 'M':
-                obj.reference_title = u"{0} {1}".format(self.cleaned_data['title_monographic'],
-                                                        self.cleaned_data['volume_monographic'])
+        else:
+            if 'a' in self.document_type:
+                analytic_title = self.cleaned_data['title']
+                analytic_title = analytic_title[0]['text']
+                obj.reference_title = u"{0} | {1}".format(obj.source.reference_title, analytic_title)
+            else:
+                obj.reference_title = u"{0} {1}".format(self.cleaned_data['title_monographic'])
 
         # for fields with readonly attribute restore the original value for POST data insertions hack
         for name, field in self.fields.items():
