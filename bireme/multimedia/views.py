@@ -24,12 +24,12 @@ class MultimediaListView(LoginRequiredView, ListView):
     """
     paginate_by = settings.ITEMS_PER_PAGE
     restrict_by_user = True
-    
+
     def dispatch(self, *args, **kwargs):
         return super(MultimediaListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        # getting action parameter        
+        # getting action parameter
         self.actions = {}
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
@@ -47,9 +47,7 @@ class MultimediaListView(LoginRequiredView, ListView):
         if self.restrict_by_user and self.actions['filter_owner'] != "*":
             object_list = object_list.filter(created_by=self.request.user)
         elif self.actions['filter_owner'] == "*":
-            # restrict by cooperative center
-            user_cc = self.request.user.profile.get_attribute('cc')
-            object_list = object_list.filter(cooperative_center_code=user_cc)
+            object_list = object_list.all()
 
         return object_list
 
@@ -67,7 +65,8 @@ class MediaListView(MultimediaListView, ListView):
     """
     model = Media
     context_object_name = "medias"
-    search_field = "title"    
+    search_field = "title"
+
 
 class MediaUpdate(LoginRequiredView):
     """
@@ -76,25 +75,24 @@ class MediaUpdate(LoginRequiredView):
     model = Media
     success_url = reverse_lazy('list_media')
     form_class = MediaForm
-  
+
     def form_valid(self, form):
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
         formset_keyword = KeywordFormSet(self.request.POST, instance=self.object)
         formset_thematic = ResourceThematicFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
-        form_valid = form.is_valid() 
-        formset_keyword_valid = formset_keyword.is_valid() 
+        form_valid = form.is_valid()
+        formset_keyword_valid = formset_keyword.is_valid()
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
-        valid_for_publication = is_valid_for_publication(form, 
-                                          [formset_descriptor, formset_keyword, formset_thematic])
+        valid_for_publication = is_valid_for_publication(form,
+                                                         [formset_descriptor, formset_keyword, formset_thematic])
 
-
-        if (form_valid and formset_descriptor_valid and formset_keyword_valid 
-                and formset_thematic_valid and valid_for_publication):
+        if (form_valid and formset_descriptor_valid and formset_keyword_valid and
+           formset_thematic_valid and valid_for_publication):
 
                 self.object = form.save()
                 formset_descriptor.instance = self.object
@@ -113,22 +111,20 @@ class MediaUpdate(LoginRequiredView):
         else:
             return self.render_to_response(
                            self.get_context_data(form=form,
-                                  formset_descriptor=formset_descriptor,
-                                  formset_keyword=formset_keyword,
-                                  formset_thematic=formset_thematic,
-                                  valid_for_publication=valid_for_publication))
+                                                 formset_descriptor=formset_descriptor,
+                                                 formset_keyword=formset_keyword,
+                                                 formset_thematic=formset_thematic,
+                                                 valid_for_publication=valid_for_publication))
 
-    
     def form_invalid(self, form):
             # force use of form_valid method to run all validations
             return self.form_valid(form)
-
 
     def get_form_kwargs(self):
         kwargs = super(MediaUpdate, self).get_form_kwargs()
         user_data = additional_user_info(self.request)
         kwargs.update({'user': self.request.user, 'user_data': user_data})
-        
+
         return kwargs
 
     def get_context_data(self, **kwargs):
@@ -139,7 +135,7 @@ class MediaUpdate(LoginRequiredView):
         user_id = self.request.user.id
         if self.object:
             user_data['is_owner'] = True if self.object.created_by == self.request.user else False
-        
+
         context['user_data'] = user_data
         context['role'] = user_role
         context['settings'] = settings
@@ -151,15 +147,15 @@ class MediaUpdate(LoginRequiredView):
                 c_type = ContentType.objects.get_for_model(self.get_object())
 
                 context['descriptor_list'] = Descriptor.objects.filter(
-                                                    object_id=self.object.id, 
+                                                    object_id=self.object.id,
                                                     content_type=c_type).exclude(
                                                     created_by_id=user_id, status=0)
                 context['keyword_list'] = Keyword.objects.filter(
-                                                    object_id=self.object.id, 
+                                                    object_id=self.object.id,
                                                     content_type=c_type).exclude(
                                                     created_by_id=user_id, status=0)
                 context['thematic_list'] = ResourceThematic.objects.filter(
-                                                    object_id=self.object.id, 
+                                                    object_id=self.object.id,
                                                     content_type=c_type).exclude(
                                                     created_by_id=user_id, status=0)
 
@@ -170,12 +166,12 @@ class MediaUpdate(LoginRequiredView):
                 pending_thematic_from_user = ResourceThematic.objects.filter(
                                                     created_by_id=user_id, status=0)
 
-                context['formset_descriptor'] = DescriptorFormSet(instance=self.object, 
-                                                    queryset=pending_descriptor_from_user)
-                context['formset_keyword']  = KeywordFormSet(instance=self.object, 
-                                                    queryset=pending_keyword_from_user)
-                context['formset_thematic'] = ResourceThematicFormSet(instance=self.object, 
-                                                    queryset=pending_thematic_from_user)
+                context['formset_descriptor'] = DescriptorFormSet(instance=self.object,
+                                                                  queryset=pending_descriptor_from_user)
+                context['formset_keyword'] = KeywordFormSet(instance=self.object,
+                                                            queryset=pending_keyword_from_user)
+                context['formset_thematic'] = ResourceThematicFormSet(instance=self.object,
+                                                                      queryset=pending_thematic_from_user)
             else:
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
                 context['formset_keyword'] = KeywordFormSet(instance=self.object)
@@ -187,7 +183,7 @@ class MediaUpdate(LoginRequiredView):
 class MediaUpdateView(MediaUpdate, UpdateView):
     """
     Used as class view to update Media
-    Extend MediaUpdate that do all the work    
+    Extend MediaUpdate that do all the work
     """
 
 
@@ -196,7 +192,7 @@ class MediaCreateView(MediaUpdate, CreateView):
     Used as class view to create Media
     Extend MediaUpdate that do all the work
     """
-   
+
 
 class MediaDeleteView(LoginRequiredView, DeleteView):
     """
@@ -224,13 +220,13 @@ class MediaDeleteView(LoginRequiredView, DeleteView):
 
         return super(MediaDeleteView, self).delete(request, *args, **kwargs)
 
-# ========================= MEDIA TYPE ===================================================
 
+# ========================= MEDIA TYPE ===================================================
 class MediaTypeListView(MultimediaListView, SuperUserRequiredView, ListView):
     """
     Extend MultimediaListView to list MediaType objects
     """
-    model = MediaType    
+    model = MediaType
     context_object_name = "types"
     search_field = "name"
     restrict_by_user = False
@@ -238,12 +234,13 @@ class MediaTypeListView(MultimediaListView, SuperUserRequiredView, ListView):
 
 class MediaTypeUpdate(SuperUserRequiredView, GenericUpdateWithOneFormset):
     """
-    Handle creation and update of MediaType objects 
+    Handle creation and update of MediaType objects
     Use GenericUpdateWithOneFormset to render form and formset
     """
     model = MediaType
     success_url = reverse_lazy('list_mediatypes')
     formset = TypeTranslationFormSet
+
 
 class MediaTypeUpdateView(MediaTypeUpdate, UpdateView):
     """
@@ -269,14 +266,13 @@ class MediaTypeDeleteView(LoginRequiredView, DeleteView):
     def get_object(self, queryset=None):
         """ Hook to ensure object is owned by request.user. """
         obj = super(MediaTypeDeleteView, self).get_object()
-        
-        if not self.request.user.is_superuser or not obj.created_by == self.request.user:            
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)
         return obj
 
 
 # ========================= MEDIA COLLECTION =============================================
-
 class MediaCollectionListView(MultimediaListView, ListView):
     """
     Extend MultimediaListView to list Media Collection objects
@@ -285,6 +281,7 @@ class MediaCollectionListView(MultimediaListView, ListView):
     context_object_name = "collections"
     search_field = "name"
     restrict_by_user = False
+
 
 class MediaCollectionUpdate(GenericUpdateWithOneFormset):
     """
@@ -295,6 +292,7 @@ class MediaCollectionUpdate(GenericUpdateWithOneFormset):
     form_class = MediaCollectionForm
     success_url = reverse_lazy('list_mediacollections')
     formset = MediaCollectionTranslationFormSet
+
 
 class MediaCollectionCreateView(MediaCollectionUpdate, CreateView):
     """
@@ -309,6 +307,7 @@ class MediaCollectionEditView(MediaCollectionUpdate, UpdateView):
     Extend MediaCollectionUpdate that do all the work
     """
 
+
 class MediaCollectionDeleteView(LoginRequiredView, DeleteView):
     """
     Handle delete of MediaType collection objects
@@ -320,7 +319,7 @@ class MediaCollectionDeleteView(LoginRequiredView, DeleteView):
         """ Hook to ensure object is owned by request.user. """
         obj = super(MediaCollectionDeleteView, self).get_object()
         print obj.created_by
-        
-        if not obj.created_by == self.request.user:            
+
+        if not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)
         return obj
