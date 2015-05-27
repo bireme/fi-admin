@@ -80,6 +80,8 @@ class MultimediaListView(LoginRequiredView, ListView):
                 user_filter_list.append(user)
 
         cc_filter_list = user_data['ccs']
+        # remove duplications from list
+        cc_filter_list = list(set(cc_filter_list))
         cc_filter_list.sort()
 
         show_advaced_filters = self.request.GET.get('apply_filters', False)
