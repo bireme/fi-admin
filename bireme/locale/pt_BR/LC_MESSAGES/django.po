@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-27 11:05-0300\n"
-"PO-Revision-Date: 2015-04-27 11:07-0300\n"
+"POT-Creation-Date: 2015-05-27 10:46-0300\n"
+"PO-Revision-Date: 2015-05-27 10:47-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -116,7 +116,7 @@ msgstr ""
 #: templates/multimedia/media_form.html:152
 #: templates/multimedia/media_form.html:225
 #: templates/multimedia/media_list.html:66
-#: templates/multimedia/media_list.html:98 templates/suggest/list.html:52
+#: templates/multimedia/media_list.html:131 templates/suggest/list.html:52
 #: templates/suggest/list.html.py:93 templates/suggest/list.html:137
 #: templates/suggest/list.html.py:180
 msgid "Pending"
@@ -137,7 +137,7 @@ msgstr "Pendente"
 #: templates/multimedia/media_form.html:154
 #: templates/multimedia/media_form.html:227
 #: templates/multimedia/media_list.html:67
-#: templates/multimedia/media_list.html:100 templates/suggest/list.html:53
+#: templates/multimedia/media_list.html:133 templates/suggest/list.html:53
 #: templates/suggest/list.html.py:95 templates/suggest/list.html:139
 #: templates/suggest/list.html.py:182
 msgid "Admitted"
@@ -158,7 +158,7 @@ msgstr "Admitido"
 #: templates/multimedia/media_form.html:156
 #: templates/multimedia/media_form.html:229
 #: templates/multimedia/media_list.html:68
-#: templates/multimedia/media_list.html:102 templates/suggest/list.html:54
+#: templates/multimedia/media_list.html:135 templates/suggest/list.html:54
 #: templates/suggest/list.html.py:97 templates/suggest/list.html:141
 #: templates/suggest/list.html.py:184
 msgid "Refused"
@@ -178,7 +178,7 @@ msgstr "Recusado"
 #: templates/multimedia/media_form.html:158
 #: templates/multimedia/media_form.html:231
 #: templates/multimedia/media_list.html:69
-#: templates/multimedia/media_list.html:104 templates/suggest/list.html:55
+#: templates/multimedia/media_list.html:137 templates/suggest/list.html:55
 #: templates/suggest/list.html.py:99 templates/suggest/list.html:143
 #: templates/suggest/list.html.py:186
 msgid "Deleted"
@@ -299,7 +299,7 @@ msgstr "Coleção"
 #: templates/multimedia/media_form.html:213
 #: templates/multimedia/media_form.html:285
 #: templates/multimedia/media_list.html:63
-#: templates/multimedia/media_list.html:87 templates/suggest/list.html:49
+#: templates/multimedia/media_list.html:120 templates/suggest/list.html:49
 #: templates/suggest/list.html.py:79 templates/suggest/list.html:123
 #: templates/suggest/list.html.py:167
 msgid "Status"
@@ -334,13 +334,14 @@ msgstr ""
 #: biblioref/models.py:69 events/models.py:69 main/models.py:218
 #: suggest/models.py:25 suggest/models.py:56
 #: templates/biblioref/reference_list.html:83 templates/events/events.html:100
-#: templates/main/resources.html:101 templates/multimedia/media_list.html:85
+#: templates/main/resources.html:101 templates/multimedia/media_list.html:118
 #: templates/suggest/list.html:76 templates/suggest/list.html.py:165
 msgid "Title"
 msgstr "Título"
 
 #: biblioref/models.py:72 events/models.py:88 main/models.py:238
 #: multimedia/models.py:63 multimedia/models.py:119
+#: templates/multimedia/media_list.html:86
 msgid "Cooperative center"
 msgstr "Centro cooperante"
 
@@ -608,6 +609,7 @@ msgstr "Idiomas da fonte"
 #: templates/events/edit-event.html:281 templates/events/events.html:79
 #: templates/main/edit-resource.html:282 templates/main/edit-thematic.html:8
 #: templates/main/resources.html:79 templates/multimedia/media_form.html:284
+#: templates/multimedia/media_list.html:94
 msgid "Thematic area"
 msgstr "Áreas temáticas"
 
@@ -700,7 +702,7 @@ msgstr "Idioma apagado."
 
 #: multimedia/models.py:17 multimedia/models.py:48 multimedia/models.py:100
 #: templates/multimedia/media_confirm_delete.html:8
-#: templates/multimedia/media_list.html:86
+#: templates/multimedia/media_list.html:119
 #: templates/multimedia/mediatype_confirm_delete.html:8
 #: templates/multimedia/mediatype_form.html:8
 msgid "Media type"
@@ -1158,13 +1160,15 @@ msgstr "Pesquisa"
 #: templates/biblioref/reference_list.html:63 templates/events/events.html:73
 #: templates/events/events.html.py:81 templates/main/resources.html:73
 #: templates/main/resources.html.py:81 templates/multimedia/media_list.html:65
-#: templates/suggest/list.html:51
+#: templates/multimedia/media_list.html:80
+#: templates/multimedia/media_list.html:88
+#: templates/multimedia/media_list.html:96 templates/suggest/list.html:51
 msgid "All"
 msgstr "Todos"
 
 #: templates/biblioref/reference_list.html:75 templates/events/events.html:92
 #: templates/main/index.html:19 templates/main/resources.html:93
-#: templates/multimedia/media_list.html:77 templates/suggest/list.html:63
+#: templates/multimedia/media_list.html:110 templates/suggest/list.html:63
 msgid "Networks"
 msgstr "Redes"
 
@@ -1174,7 +1178,7 @@ msgstr "Redes"
 #: templates/events/types.html:48 templates/main/edit-resource.html:284
 #: templates/main/languages.html:48 templates/main/resources.html:105
 #: templates/main/thematics.html:48 templates/main/types.html:48
-#: templates/multimedia/media_list.html:88
+#: templates/multimedia/media_list.html:121
 #: templates/multimedia/mediacollection_list.html:41
 #: templates/multimedia/mediatype_list.html:48 templates/suggest/list.html:80
 #: templates/suggest/list.html.py:124 templates/suggest/list.html:168
@@ -1185,7 +1189,7 @@ msgstr "Ações"
 #: templates/events/events.html:131 templates/events/types.html:57
 #: templates/main/languages.html:57 templates/main/resources.html:130
 #: templates/main/thematics.html:57 templates/main/types.html:57
-#: templates/multimedia/media_list.html:110
+#: templates/multimedia/media_list.html:143
 #: templates/multimedia/mediacollection_list.html:49
 #: templates/multimedia/mediatype_list.html:57
 msgid "Remove"
@@ -1367,6 +1371,18 @@ msgstr "Minhas mídias"
 #: templates/multimedia/media_list.html:40
 msgid "All medias"
 msgstr "Todas as mídias"
+
+#: templates/multimedia/media_list.html:74
+msgid "Filters"
+msgstr "Filtros"
+
+#: templates/multimedia/media_list.html:78
+msgid "User"
+msgstr ""
+
+#: templates/multimedia/media_list.html:102
+msgid "Apply"
+msgstr ""
 
 #: templates/multimedia/mediacollection_confirm_delete.html:7
 #: templates/multimedia/mediacollection_confirm_delete.html:19
