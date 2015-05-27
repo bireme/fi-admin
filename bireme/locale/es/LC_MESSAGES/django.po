@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-05-27 10:46-0300\n"
-"PO-Revision-Date: 2015-05-27 10:47-0300\n"
+"PO-Revision-Date: 2015-05-27 17:12-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1380,7 +1380,7 @@ msgstr ""
 
 #: templates/multimedia/media_list.html:102
 msgid "Apply"
-msgstr ""
+msgstr "Aplicar"
 
 #: templates/multimedia/mediacollection_confirm_delete.html:7
 #: templates/multimedia/mediacollection_confirm_delete.html:19
