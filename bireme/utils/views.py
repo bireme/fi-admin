@@ -16,7 +16,7 @@ ACTIONS = {
     'filter_owner': "",
     'filter_status': "",
     'filter_thematic': "",
-    'filter_created_by_user': 0,
+    'filter_created_by_user': "",
     'filter_created_by_cc': "",
 }
 
