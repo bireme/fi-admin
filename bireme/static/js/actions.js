@@ -3,7 +3,7 @@ $(function(){
     var form = document.actions;
 
     if(form != null) {
-        
+
         var orderby = form.orderby.value;
         var order = form.order.value;
 
@@ -16,6 +16,12 @@ $(function(){
             }
         }
     }
+
+    $( "#show_advaced_filters" ).click(function() {
+      $( ".advanced_filters" ).toggle();
+      return false;
+    });
+
 });
 
 function orderby(param) {
@@ -59,5 +65,3 @@ function change_type(type) {
     form.page.value = 1;
     form.submit();
 }
-
-

@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
 
 from django.conf import settings
 
@@ -13,6 +14,8 @@ from utils.views import ACTIONS
 from utils.views import LoginRequiredView, SuperUserRequiredView, GenericUpdateWithOneFormset
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
+
+from main.models import ThematicArea
 
 from models import *
 from forms import *
@@ -41,11 +44,21 @@ class MultimediaListView(LoginRequiredView, ListView):
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
 
+        if self.actions['filter_thematic'] != '':
+            object_list = object_list.filter(thematics__thematic_area=int(self.actions['filter_thematic']))
+
+        if self.actions['filter_created_by_user'] != '':
+            object_list = object_list.filter(created_by_id=int(self.actions['filter_created_by_user']))
+
+        if self.actions['filter_created_by_cc'] != '':
+            object_list = object_list.filter(cooperative_center_code=self.actions['filter_created_by_cc'])
+
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
         if self.restrict_by_user and self.actions['filter_owner'] != "*":
             object_list = object_list.filter(created_by=self.request.user)
+
         elif self.actions['filter_owner'] == "*":
             object_list = object_list.all()
 
@@ -53,6 +66,28 @@ class MultimediaListView(LoginRequiredView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MultimediaListView, self).get_context_data(**kwargs)
+        cc_filter_list = []
+        user_filter_list = []
+
+        user_data = additional_user_info(self.request)
+
+        thematic_list = ThematicArea.objects.all().order_by('name')
+        user_list = User.objects.filter(is_superuser=False).order_by('username')
+        # mantain in user filter list only users from the same CCS (CC's in the network) as request.user
+        for user in user_list:
+            user_cc = user.profile.get_attribute('cc')
+            if user_cc == user_data['user_cc'] or user_cc in user_data['ccs']:
+                user_filter_list.append(user)
+
+        cc_filter_list = user_data['ccs']
+        cc_filter_list.sort()
+
+        show_advaced_filters = self.request.GET.get('apply_filters', False)
+
+        context['cc_filter_list'] = cc_filter_list
+        context['user_filter_list'] = user_filter_list
+        context['thematic_list'] = thematic_list
+        context['show_advaced_filters'] = show_advaced_filters
         context['actions'] = self.actions
         return context
 
@@ -318,7 +353,6 @@ class MediaCollectionDeleteView(LoginRequiredView, DeleteView):
     def get_object(self, queryset=None):
         """ Hook to ensure object is owned by request.user. """
         obj = super(MediaCollectionDeleteView, self).get_object()
-        print obj.created_by
 
         if not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)
