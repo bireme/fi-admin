@@ -331,7 +331,6 @@ span.required .mark{
 .count{
     width: 80px;
     font-size: 18px;
-    text-align: right;
     float: left;
     margin-right: 10px;
 }
@@ -354,4 +353,11 @@ ul.jsonfield_display{
 
 ul.jsonfield_display li{
     margin: 3px;
+}
+
+.advanced_filters{
+    margin: 10px 0 0 -5px;
+    border: solid 1px #d7d7d7;
+    padding: 15px;
+    background-color: #f5f5f5;
 }

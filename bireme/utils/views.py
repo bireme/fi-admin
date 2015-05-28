@@ -16,6 +16,8 @@ ACTIONS = {
     'filter_owner': "",
     'filter_status': "",
     'filter_thematic': "",
+    'filter_created_by_user': "",
+    'filter_created_by_cc': "",
 }
 
 def cookie_lang(request):
@@ -30,7 +32,7 @@ def cookie_lang(request):
     return response
 
 
-class LoginRequiredView(object): 
+class LoginRequiredView(object):
     """
     Wrap method decorator login_required to use on generic class views
     """
@@ -39,7 +41,7 @@ class LoginRequiredView(object):
     def dispatch(self, *args, **kwargs):
         return super(LoginRequiredView, self).dispatch(*args, **kwargs)
 
-class SuperUserRequiredView(object): 
+class SuperUserRequiredView(object):
     """
     Wrap method decorator superuser_permission to use on generic class views
     """

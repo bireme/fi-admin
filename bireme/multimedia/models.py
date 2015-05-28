@@ -8,7 +8,7 @@ from main.choices import LANGUAGES_CHOICES
 
 from django.contrib.contenttypes.generic import GenericRelation
 
-from main.models import SourceLanguage
+from main.models import SourceLanguage, ResourceThematic
 
 # Media Type model
 class MediaType(Generic):
@@ -27,7 +27,7 @@ class MediaType(Generic):
         if translation:
             other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
             translation_list.extend(other_languages)
-        
+
         return translation_list
 
     def __unicode__(self):
@@ -64,7 +64,7 @@ class MediaCollection(Generic):
 
     class Meta:
         verbose_name = _("Collection")
-        verbose_name_plural = _("Collections")        
+        verbose_name_plural = _("Collections")
 
     def __unicode__(self):
         return self.name
@@ -118,6 +118,8 @@ class Media(Generic):
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
+    # relations
+    thematics = GenericRelation(ResourceThematic)
+
     def __unicode__(self):
         return self.title
-
