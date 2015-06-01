@@ -287,17 +287,17 @@ fieldset a.icon-plus-sign {
     padding: 8px;
 }
 
-#metadata input[type=text], #metadata textarea, #metadata select{
+#metadata input[type=text], #metadata textarea, #metadata select {
     width: 560px;
 }
 
-#metadata textarea{
-    height: 80px;
+#onlineresource input[type=text], #onlineresource input[type=url], #onlineresource textarea, #onlineresource select {
+    width: 540px;
 }
 
 #descriptors input[name$='code']{
     width: 80px;
-}
+ }
 
 #descriptors select, #keywords select {
     width: 140px;
@@ -331,6 +331,7 @@ span.required .mark{
 .count{
     width: 80px;
     font-size: 18px;
+    text-align: right;
     float: left;
     margin-right: 10px;
 }
@@ -341,23 +342,36 @@ span.required .mark{
 
 }
 
-ul.jsonfield_display{
-    width: 90%;
-    min-height: 22px;
-    padding: 2px;
-    margin-left: 30px;
-    border: 1px solid #cccccc;
-    background-color: #eeeeee;
-    cursor: context-menu;
+td.indexrange input[type="text"] {
+    width: 120px;
 }
 
-ul.jsonfield_display li{
-    margin: 3px;
+div.onlineresource {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
 }
 
-.advanced_filters{
-    margin: 10px 0 0 -5px;
-    border: solid 1px #d7d7d7;
-    padding: 15px;
-    background-color: #f5f5f5;
+div.onlineresource table tr td {
+    border-top: 1px solid #ddd;
+}
+
+div.onlineresource table {
+    margin-top: 20px;
+}
+
+div.onlineresource input[type="checkbox"] {
+    margin: 2px;
+    float: left;
+}
+
+div.onlineresource .period {
+    margin: 27px 0;
+}
+
+div.onlineresource .period input[type="text"] {
+    width: 105px !important;
+}
+
+div.onlineresource div.check {
+    margin: 18px 0;
 }

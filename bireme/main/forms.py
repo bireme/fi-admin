@@ -51,7 +51,7 @@ class ResourceForm(forms.ModelForm):
         return obj
 
     class Meta:
-        model  =Resource
+        model = Resource
         exclude = ('cooperative_center_code',)
 
         source_language = forms.MultipleChoiceField()
@@ -93,8 +93,6 @@ class TypeLocalForm(forms.ModelForm):
 
     class Meta:
         model = SourceTypeLocal
-
-
 
 
 # definition of inline formsets

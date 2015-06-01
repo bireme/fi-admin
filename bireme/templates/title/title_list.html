@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Titles" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "Titles" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+<!--  header -->
+<div class='header'>
+    <h2><i class='icon-book'></i> {% trans "Titles" %}</h2>
+        <div class='pull-right'>
+            <a href="{% url 'create_title' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Title" %}</a>
+        </div>
+</div>
+
+<div class='body'>
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="{% if actions.filter_owner == 'user' or not actions.filter_owner %}active{% endif %}">
+            <a href="#tab-my" onclick="filter_owner('user')" data-toggle="tab">
+            <strong>{% trans "My titles" %}</strong>
+            {% if actions.filter_owner == 'user' or not actions.filter_owner %}
+                <span class="badge badge-info">{{ paginator.count }}</span>
+            {% endif %}
+            </a>
+        </li>
+        <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
+            <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
+                <strong>{% trans "All titles" %}</strong>
+               {% if  actions.filter_owner == '*' %}
+                   <span class="badge badge-info">{{ paginator.count }}</span>
+               {% endif %}                
+            </a>
+        </li>        
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <div class="row">
+                <div class="span-4">
+                    <div class="input-append" style="margin-left: 10px">
+                        <form name="search">
+                            <input type="hidden" name="page" value="">
+                            
+                            {% if actions.filter_owner == '*' %}
+                                <input type="hidden" name="filter_owner" value="*"/>
+                            {% elif actions.filter_owner == 'network' %}
+                                <input type="hidden" name="filter_owner" value="network"/>
+                            {% endif %}
+                            <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
+                         
+                            <button class="btn" type="submit"><i class='icon-search'></i></button>
+                        </form>
+                    </div>
+                </div>
+                {% if actions.filter_owner == 'network' and user_data.networks %}
+                    <div class="span-4">
+                        {% trans "Networks" %} : {{ user_data.networks|join:", " }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
+                    <th><a href="javascript:orderby('issn');" id="id_issn">{% trans "ISSN" %}</a></th>
+                    <th><a href="javascript:orderby('cooperative_center_code');" id="id_cooperative_center_code">{% trans "Cooperative center" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for title in titles %}
+                        <tr>
+                            <td><a href="{% url 'edit_title' title.id %}">{{ title.id }}</a></td>
+                            <td><a href="{% url 'edit_title' title.id %}" class='btn btn-mini' title="{% trans 'Issues' %}"><i class='icon-book'></i></a></td>
+                            <td><span title="{{ title.title }}">{{ title.title|slice:"50" }}{% if title.title|length > 50 %}...{% endif %}{% if title.section_title %}<i> - {{ title.section_title }}</i>{% endif %}</span></td>
+                            <td>{{ title.issn }}</td>
+                            <td>{{ title.cooperative_center_code }}</td>
+                            <td>
+                                <a href="{% url 'edit_title' title.id %}" class='btn btn-mini' title="{% trans 'Edit' %}"><i class='icon-pencil'></i></a>
+                                {% if title.created_by_id = user.id %}
+                                    <a href="{% url 'delete_title' title.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination_generic.html" %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
