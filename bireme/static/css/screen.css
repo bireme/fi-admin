@@ -289,11 +289,15 @@ fieldset a.icon-plus-sign {
 
 #metadata input[type=text], #metadata textarea, #metadata select{
     width: 560px;
-};
+}
 
- #descriptors input[name$='code']{
+#metadata textarea{
+    height: 80px;
+}
+
+#descriptors input[name$='code']{
     width: 80px;
- }
+}
 
 #descriptors select, #keywords select {
     width: 140px;
@@ -335,6 +339,20 @@ span.required .mark{
     margin-top: 30px;
     margin-bottom: 70px;
 
+}
+
+ul.jsonfield_display{
+    width: 90%;
+    min-height: 22px;
+    padding: 2px;
+    margin-left: 30px;
+    border: 1px solid #cccccc;
+    background-color: #eeeeee;
+    cursor: context-menu;
+}
+
+ul.jsonfield_display li{
+    margin: 3px;
 }
 
 .advanced_filters{

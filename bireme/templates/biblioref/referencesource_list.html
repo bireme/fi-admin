@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Reference Source" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
+    <li>{% trans "Reference Source" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+<!--  header -->
+<div class='header'>
+    <h2><i class='icon-file'></i> {% trans "Select or create a source" %}</h2>
+</div>
+
+<div class='body'>
+
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <div class="row">
+                <div class="span-4">
+                    <div class="input-append" style="margin-left: 10px">
+                        <form name="search">
+                            {% if actions.filter_owner == '*' %}
+                                <input type="hidden" name="filter_owner" value="*"/>
+                            {% elif actions.filter_owner == 'network' %}
+                                <input type="hidden" name="filter_owner" value="network"/>
+                            {% endif %}
+                            <input type='hidden' name="document_type"  value="{{ document_type }}">
+                            <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Title" %}" class="input-xlarge">&nbsp;&nbsp;&nbsp;
+
+                            <button class="btn" type="submit"><i class='icon-search'></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Publication year" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for reference in references %}
+                        <tr>
+                            <td><a href="{% url 'edit_biblioref_source' reference.id %}">{{ reference.id }}</a></td>
+                            <td><span title="{{ reference }}">{{ reference|slice:"50" }}</span></td>
+                            <td>
+                                {{ reference.publication_date|slice:"4" }}
+                            </td>
+                            <td>
+                                <a href="{% url 'list_biblioref_analytics' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-list'></i> {% trans "Analytics" %}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination_generic.html" %}
+
+            <div class='pull-left'>
+                <a href="{% url 'create_biblioref_source' %}?document_type={{ document_type }}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Source" %}</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

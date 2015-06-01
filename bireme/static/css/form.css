@@ -89,3 +89,6 @@ div.deformReplaces {
 .deform p.error{
     font-size: 70%;
 }
+.deform textarea, .deform input{
+    width: 98% !important;
+}

@@ -1,0 +1,492 @@
+
+if p(v1) then,
+    '{',/
+
+       c4,'"pk": ', f(mfn,1,0)','/
+       c4,'"model": ','"biblioref.reference",',/
+
+       c4,'"fields": {',/
+
+       /* call number [03] */
+       e1:=nocc(v3),       
+       c8,'"call_number": ', '"[',
+       if p(v3) then,
+            (,   
+                '{',
+                if v3.1 <> '^' then,
+                   '\"text\": \"',v3,
+                else,
+                    '\"_',v3*1.1,'\": \"',v3*2,
+                fi,
+                '\"}',
+                if iocc < e1 then ', ' fi,
+            )
+        fi,
+       ']",'
+
+
+       /* database [04] */
+       if p(v4) then, 
+            c8,'"database": ', '"',(v4/),'",'/
+       fi,
+
+       /* literature_type [05] */
+       if p(v5) then, 
+            c8,'"literature_type": ', '"',v5,'",'/
+       fi,
+
+       /* treatment_level [06] */
+       if p(v6) then, 
+            c8,'"treatment_level": ', '"',v6,'",'/
+       fi,       
+
+       /* electronic_address [08] */
+       e1:=nocc(v8),
+       c8,'"electronic_address": ', '"[',
+       if p(v8) then,           
+            (   
+                '{',
+                if v8.1 <> '^' then,
+                   '\"text\": \"',v8,
+                else,
+                    '\"_',v8*1.1,'\": \"',v8*2,
+                fi,
+                '\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       ']",'
+
+       /* individual_author [10/16/23] */
+       c8,'"individual_author": ', '"[',
+       if p(v10) then,
+            e1:=nocc(v10),
+            (   
+                '{',
+                if v10.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v10,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       if p(v16) then,
+            e1:=nocc(v16),
+            (   
+                '{',
+                if v16.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v16,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       if p(v23) then,
+            e1:=nocc(v23),
+            (   
+                '{',
+                if v23.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v23,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       ']",'
+ 
+        /* corporate_author [11/17/24] */
+       c8,'"corporate_author": ', '"[',
+       if p(v11) then,
+            e1:=nocc(v11),
+            (   
+                '{',
+                if v11.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v11,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       if p(v17) then,
+            e1:=nocc(v17),
+            (   
+                '{',
+                if v17.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v17,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       if p(v24) then,
+            e1:=nocc(v24),
+            (   
+                '{',
+                if v24.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v24,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       ']",'
+
+
+       /* title [12/18/25] */
+       c8,'"title": ', '"[',
+       if p(v12) then,
+            e1:=nocc(v12),
+            (   
+                '{',
+                if v12.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v12,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       if p(v18) then,
+            e1:=nocc(v18),
+            (   
+                '{',
+                if v18.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v18,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi, 
+       if p(v25) then,
+            e1:=nocc(v25),
+            (   
+                '{',
+                if v25.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v25,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+       ']",'
+
+       /* english_translated_title [13/19/26] */
+       if p(v13) then, 
+            c8,'"english_translated_title": ', '"',v13,'",'/ 
+       else,
+            if p(v19) then,
+                c8,'"english_translated_title": ', '"',v19,'",'/,
+            else,
+                if p(v26) then,
+                    c8,'"english_translated_title": ', '"',v26,'",'/,
+                fi,
+            fi,
+       fi,
+
+       /* pages [14/20] */
+       if p(v14) then, 
+            c8,'"pages": ', '"',v14,'",'/ 
+       else,
+            if p(v20) then,
+                c8,'"pages": ', '"',v20,'",'/,
+            fi,
+       fi,
+
+       /* volume [21/31] */
+       if p(v21) then, 
+            c8,'"volume": ', '"',v21,'",'/ 
+       else,
+            if p(v31) then,
+                c8,'"volume": ', '"',v31,'",'/,
+            fi,
+       fi,
+
+       /* volume [30] */
+       if p(v30) then, 
+            c8,'"journal_title": ', '"',v30,'",'/
+       fi,
+
+       /* volume [35] */
+       if p(v35) then, 
+            c8,'"issn": ', '"',v35,'",'/
+       fi,
+        
+       /* descriptive information [38] */
+       if p(v38) then,
+            c8,'"descriptive_information": ', '"[',
+            e1:=nocc(v38),
+            (   
+                '{',
+                if v38.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v38,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi, 
+
+
+       /* text language [40] */
+       if p(v40) then,
+            c8,'"text_language": "',
+            e1:=nocc(v40),
+            if e1 > 1 then '[' fi,
+            (   
+              '\"',v40,'\"',
+              if iocc < e1 then ', ' fi,
+            )
+            if e1 > 1 then ']' fi,
+            '", ',
+       fi, 
+
+       /* thesis_dissertation_leader [49] */
+       c8,'"thesis_dissertation_leader": ', '"[',
+       if p(v49) then,
+            e1:=nocc(v49),
+            (   
+                '{',
+                if v49.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v49,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+
+       /* thesis_dissertation_institution [50] */
+       if p(v50) then,
+          c8,'"thesis_dissertation_institution": ', '"',mid(v50,1,250),'",'/
+       fi
+
+       /* thesis_dissertation_institution [51] */
+       if p(v51) then,
+          c8,'"thesis_dissertation_academic_title": ', '"',v51,'",'/
+       fi
+
+       /* conference_sponsoring_institution [52] */
+       if p(v52) then, 
+            c8,'"conference_sponsoring_institution": ', '"',(v52/),'",'/
+       fi,
+
+       /* conference_name [53] */
+       if p(v53) then, 
+            c8,'"conference_name": ', '"',(v53/),'",'/
+       fi,
+
+       /* conference_date [54] */
+       if p(v54) then,
+          c8,'"conference_date": ', '"',v54[1],'",'/
+       fi,
+
+       /* conference_normalized_date [55] */
+       if p(v55) then,
+          c8,'"conference_normalized_date": ', '"',v55[1],'",'/
+       fi,
+
+       /* conference_city [56] */
+       if p(v56) then,
+          c8,'"conference_city": ', '"',v56[1],'",'/
+       fi,
+
+       /* project_sponsoring_institution [58] */
+       if p(v58) then, 
+            c8,'"project_sponsoring_institution": ', '"',(v58/),'",'/
+       fi,
+
+       /* project_name [59] */
+       if p(v59) then,
+          c8,'"project_name": ', '"',v59[1],'",'/
+       fi,
+
+       /* project_name [60] */
+       if p(v60) then,
+          c8,'"project_number": ', '"',v60[1],'",'/
+       fi,
+
+       /* internal_note [61] */
+       if p(v61) then, 
+            c8,'"internal_note": ', '"',(v61/),'",'/
+       fi,
+
+       /* publisher [62] */
+       if p(v62) then, 
+            c8,'"publisher": ', '"',(v62/),'",'/
+       fi,
+
+       /* edition [63] */
+       if p(v63) then,
+          c8,'"edition": ', '"',v63[1],'",'/
+       fi,
+
+       /* publication_date [64] */
+       if p(v64) then,
+          c8,'"publication_date": ', '"',v64[1],'",'/
+       fi,
+
+       /* publication_date_normalized [65] */
+       if p(v65) then,
+          c8,'"publication_date_normalized": ', '"',v65[1],'",'/
+       fi,
+
+       /* publication_city [66] */
+       if p(v66) then,
+          c8,'"publication_city": ', '"',v66[1],'",'/
+       fi,
+
+       /* symbol [68] */
+       if p(v68) then, 
+            c8,'"symbol": ', '"',(v68/),'",'/
+       fi,
+
+       /* isbn [69] */
+       if p(v69) then,
+          c8,'"isbn": ', '"',v69[1],'",'/
+       fi,
+
+       /* isbn [69] */
+       if p(v69) then,
+          c8,'"isbn": ', '"',v69[1],'",'/
+       fi,
+
+       /* total_number_of_references [72] */
+       if p(v72) then,
+          c8,'"total_number_of_references": ', '"',mid(v72,1,100),'",'/
+       fi,
+
+       /* time_limits_from [74] */
+       if p(v74) then,
+          c8,'"time_limits_from": ', '"',v74,'",'/
+       fi,
+
+       /* time_limits_to [75] */
+       if p(v75) then,
+          c8,'"time_limits_to": ', '"',v75,'",'/
+       fi,
+
+       /* symbol [78] */
+       if p(v78) then, 
+            c8,'"person_as_subject": ', '"',(v78/),'",'/
+       fi,
+
+       /* symbol [82] */
+       if p(v82) then, 
+            c8,'"non_decs_region": ', '"',(v82/),'",'/
+       fi,
+
+       /* abstract [83] */
+       c8,'"abstract": ', '"[',
+       if p(v83) then,
+            e1:=nocc(v83),
+            (   
+                '{',
+                if v83.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v83,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+
+
+       /* author_keyword [85] */
+       c8,'"author_keyword": ', '"[',
+       if p(v85) then,
+            e1:=nocc(v85),
+            (   
+                '{',
+                if v85.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v85,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+       fi,
+
+       /* item_form [110] */
+       if p(v110) then,
+          c8,'"item_form": ', '"',mid(v110,1,10),'",'/
+       fi,
+
+       /* type_of_computer_file [111] */
+       if p(v111) then,
+          c8,'"type_of_computer_file": ', '"',mid(v111,1,10),'",'/
+       fi,
+
+       /* type_of_cartographic_material [112] */
+       if p(v112) then,
+          c8,'"type_of_cartographic_material": ', '"',mid(v112,1,10),'",'/
+       fi,
+
+       /* type_of_journal [113] */
+       if p(v113) then,
+          c8,'"type_of_journal": ', '"',mid(v113,1,10),'",'/
+       fi,
+
+       /* type_of_journal [114] */
+       if p(v114) then,
+          c8,'"type_of_journal": ', '"',mid(v114,1,10),'",'/
+       fi,
+
+       /* general_note [500] */
+       if p(v500) then, 
+            c8,'"general_note": ', '"',(v500/),'",'/
+       fi,
+
+       /* formatted_contents_note [505] */
+       if p(v505) then, 
+            c8,'"formatted_contents_note": ', '"',(v505/),'",'/
+       fi,
+
+       /* additional_physical_form_available_note [530] */
+       if p(v530) then, 
+            c8,'"additional_physical_form_available_note": ', '"',(v530/),'",'/
+       fi,
+
+       /* reproduction_note [533] */
+       if p(v533) then, 
+            c8,'"reproduction_note": ', '"',(v533/),'",'/
+       fi,
+
+       /* original_version_note [534] */
+       if p(v534) then, 
+            c8,'"original_version_note": ', '"',(v534/),'",'/
+       fi,
+
+       /* institution_as_subject [610] */
+       if p(v610) then, 
+            c8,'"institution_as_subject": ', '"',(v610/),'",'/
+       fi,
+
+       /* local_descriptors [653] */
+       if p(v653) then, 
+            c8,'"local_descriptors": ', '"',(v653/),'",'/
+       fi,
+
+       /* clinical_trial_registry_name [700] */
+       if p(v700) then, 
+            c8,'"clinical_trial_registry_name": ', '"',(v700/),'",'/
+       fi,
+
+       /* software_version [899] */
+       if p(v899) then, 
+            c8,'"software_version": ', '"',v899,'",'/
+       fi,
+
+       /* doi_number [724] */
+       if p(v724) then, 
+            c8,'"doi_number": ', '"',mid(v724,1,150),'",'/
+       fi,
+
+
+       if p(v93) and val(v93)>0 then
+            c8,'"created_time": ','"', v93.4'-'v93*4.2'-'v93*6.2 , 'T09:00:00-03:00",'/,
+       else,
+            c8,'"created_time": ','"2015-03-01T09:00:00-03:00",'/,
+       fi,
+
+       c8,'"database": "LILACS",'/
+       c8,'"created_by": 2'
+
+       c4,'}',/
+    '},'/
+fi,

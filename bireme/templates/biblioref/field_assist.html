@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{% static css %}" type="text/css"/>
     {% endfor %}
     {% for js in deform_dependencies.js %}
-        <script type="text/javascript" src="{% static js %}"></script>        
+        <script type="text/javascript" src="{% static js %}"></script>
     {% endfor %}
 
 {% endblock %}
@@ -26,10 +26,10 @@
     <h3>{% trans "Field assist" %}</h3>
 
     <!-- Make sure not to escape the HTML output by Deform -->
-    {{ form|safe }} 
+    {{ form|safe }}
 
     <script type="text/javascript">
-        {% if field_json %}            
+        {% if field_json %}
             $( document ).ready(function() {
                 opener.update_field_from_assist('{{ field_name }}', '{{ field_json|safe }}');
             });
@@ -37,7 +37,7 @@
 
         <!-- //Fix Deform's default enctype -->
         $('form#deform').attr('enctype', 'application/x-www-form-urlencoded');
-    </script>   
+    </script>
 
 </div>
 

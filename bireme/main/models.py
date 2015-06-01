@@ -192,7 +192,7 @@ class Keyword(Generic):
 
     text = models.CharField(_('Text'), max_length=255, blank=True)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
-    user_recomendation = models.BooleanField(_('User recomendation?'))
+    user_recomendation = models.BooleanField(_('User recomendation?'), default=False)
 
     def __unicode__(self):
         return self.text

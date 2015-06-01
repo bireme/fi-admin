@@ -11,6 +11,7 @@ def additional_user_info(request):
     networks = ''
     ccs = ''
     service_role = {}
+    service_list = []
 
     if user.is_authenticated():
         if not user.is_superuser:
@@ -25,10 +26,14 @@ def additional_user_info(request):
                 service_id = sr.keys()[0]
                 role_id = sr.values()[0]
                 service_role[service_id] = role_id
+
+                if service_id not in service_list:
+                    service_list.append(service_id)
             
         else:
             user_role = 'admin'
             user_cc = 'br1.1'
 
     return { 'user_role': user_role, 'user_cc': user_cc, 'networks': networks, 'ccs': ccs, 
-        'service_role': service_role, 'user_name': user.username, 'user_id' : str(user.id) }
+        'service_role': service_role, 'user_name': user.username, 'user_id' : str(user.id),
+        'service_list': service_list}

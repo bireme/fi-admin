@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, url, include
 
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash

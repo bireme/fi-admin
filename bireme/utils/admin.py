@@ -31,6 +31,15 @@ class ContentTypeAdmin(GenericAdmin):
     search_fields = ['name',]
 
 
-admin.site.register(Country, CountryAdmin)
+class AuxCodeLocalAdmin(admin.TabularInline):
+    model = AuxCodeLocal
+    extra = 0
 
+class AuxCodeAdmin(GenericAdmin):
+    model = AuxCode
+    inlines = [AuxCodeLocalAdmin,]
+
+
+admin.site.register(Country, CountryAdmin)
 admin.site.register(ContentType, ContentTypeAdmin)
+admin.site.register(AuxCode, AuxCodeAdmin)

@@ -3,19 +3,24 @@
 {% load static %}
 {% load app_filters %}
 
-{% block title %}{% trans "Edit Media" %}{% endblock %}
+{% block title %}{% trans "Edit Source" %}{% endblock %}
 
 {% block breadcrumb %}
     <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
-    {% if not object %}<li>{% trans "New Reference" %}</li>
-    {% else %}<li>{% trans "Edit Media" %}</li>{% endif %}
+    {% if not object %}<li>{% trans "New Source" %}</li>
+    {% else %}<li>{% trans "Edit Source" %}</li>{% endif %}
 {% endblock %}
 
 {% block content %}
 
 
 <div class='header'>
-    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Reference" %}{% else %}{% trans "Edit Bibliographic Reference" %}{% endif %}</h2>
+    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %}</h2>
+    {% if object %}
+        <div class='pull-right'>
+            <a href="{% url 'create_biblioref_analytic' %}?source={{object.pk}}" class='btn btn-primary'><i class='icon-file'></i> {% trans "Create analytic" %}</a>
+        </div>
+    {% endif %}
 </div>
 
 <div class='body'>
@@ -23,13 +28,13 @@
     {% if form.errors %}
         <ul class="errorlist alert alert-error">
             <li>{% trans "Please check required fields" %}</li>
-        </ul>        
+        </ul>
     {% endif %}
     {% if valid_for_publication != None and not valid_for_publication %}
         <ul class="errorlist alert alert-error">
             <li>{% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}</li>
         </ul>
-    {% endif %}    
+    {% endif %}
     {{ formset_descriptor.non_form_errors }}
     {{ formset_thematic.non_form_errors }}
 
@@ -59,14 +64,6 @@
                                     <p><strong>{{ field.label }}</strong><p>
                                     {% if field.name = 'status' %}
                                         <p>{{ media.get_status_display }}</p>
-                                    {% elif field.name = 'link' %}
-                                        {% for link in field.value.splitlines %}
-                                            <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
-                                        {% endfor %}
-                                    {% elif field.name = 'source_type' %}
-                                        {% for st in media.source_type.all %}
-                                            <p>{{ st }}</p>
-                                        {% endfor %}
                                     {% else %}
                                         <p>{{ field.value|linebreaks }}<p>
                                     {% endif %}
@@ -76,40 +73,55 @@
 
                     {% else %}
 
-                        <fieldset id="metadata">
+                        <div id="metadata" class="accordion">
                             {{ form.non_field_errors }}
-                            
-                            {% for field in form %}
-
-                                {% if field.label %}
-                                    <label for="{{ field.auto_id }}">
-                                        {% if field.field.required %}
-                                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                        {% else %}
-                                            {{ field.label }}
+                            {% for fieldset in form.fieldsets %}
+                                <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        {% if fieldset.legend %}
+                                            <a class="accordion-toggle" data-toggle="collapse" data-target="#{{ fieldset.name }}">{{ fieldset.legend }}</a>
                                         {% endif %}
-                                    </label>
-                                {% endif %}
-
-                                {% if field.field|fieldtype == 'JSONFormField' %}
-                                    <div class="row">
-                                        <div class="span18">
-                                            <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);">
-                                                <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
-                                            </a>
-                                        </div>
                                     </div>
-                                {% endif %}
+                                    <fieldset class="{{ fieldset.classes }} accordion-body" id="{{ fieldset.name }}">
+                                        {% if fieldset.description %}
+                                            <p class="description">{{ fieldset.description }}</p>
+                                        {% endif %}
+                                        <ul>
+                                            {% for field in fieldset %}
+                                                <li {{ field.row_attrs }}>
+                                                    {% if field.label %}
+                                                        <label for="{{ field.auto_id }}">
+                                                            {% if field.field.required %}
+                                                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                                            {% else %}
+                                                                {{ field.label }}
+                                                            {% endif %}
+                                                        </label>
+                                                    {% endif %}
 
-                                {% if field.help_text != 'Enter valid JSON' %}
-                                    <p class="muted">{{ field.help_text }}</p>
-                                {% endif %}
+                                                    {% if field.field|fieldtype == 'JSONFormField' %}
+                                                        <div class="row">
+                                                            <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);">
+                                                                <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                                                            </a>
+                                                        </div>
+                                                    {% endif %}
 
-                                {{ field.errors }}
-                                {{ field }}
+                                                    {% if field.help_text != 'Enter valid JSON' %}
+                                                        <p class="muted">{{ field.help_text }}</p>
+                                                    {% endif %}
 
+                                                    {{ field.errors }}
+                                                    {{ field }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+
+                                    </fieldset>
+                                </div>
                             {% endfor %}
-                        </fieldset>
+                        </div>
+
                     {% endif %}
 
                     {% comment %}Display administrative information{% endcomment %}
@@ -163,20 +175,20 @@
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
-                                {% for field in form.visible_fields %}                                    
+                                {% for field in form.visible_fields %}
                                     {% if role == 'doc' and field.name == 'status' %}
                                         <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                         <td></td>
                                     {% elif field.name == 'code' %}
                                         {{ field.as_hidden }}
-                                    {% elif field.name == 'text' %}                                        
+                                    {% elif field.name == 'text' %}
                                         <td class="span6">
                                             {{ field.as_hidden }}
                                             <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
                                                 {% spaceless %}
                                                 {% if field.value == None or field.value == '' %}
                                                     {% trans "Select by search" %}
-                                                {% else %} 
+                                                {% else %}
                                                     {{ field.value}}
                                                 {% endif %}
                                                 {% endspaceless %}
@@ -204,7 +216,7 @@
                         <thead>
                             <th>{% trans "Keywords" %}</th>
                             <th>{% trans "Status" %}</th>
-                            <th>{% trans "Suggestion" %}?</th>                            
+                            <th>{% trans "Suggestion" %}?</th>
                             <th>{% trans "Delete?" %}</th>
                         </thead>
                         <tbody>
@@ -241,12 +253,12 @@
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
-                                {% for field in form.visible_fields %}                                    
+                                {% for field in form.visible_fields %}
                                     {% if role == 'doc' and field.name == 'status' %}
                                         <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                         <td></td>
                                     {% elif field.name == 'user_recomendation' %}
-                                        {{ field.as_hidden }}                                        
+                                        {{ field.as_hidden }}
                                         <td style="text-align: center">
                                             {% if field.value == True %}
                                                 <span title="{% trans 'Suggested' %}"><i class="icon-thumbs-up"></i></span>
@@ -326,15 +338,17 @@
 {% endblock %}
 
 {% block extrajs %}
-    
+
    <script src="{% static 'js/jquery.formset.js' %}"></script>
+
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
 
    <script src="{% static 'js/jsrender.min.js' %}"></script>
 
    <script id="itensTemplate" type="text/x-jsrender">
         <li>
             [[props tmpl="#keyPropTemplate" /]]
-        </li>    
+        </li>
    </script>
 
    <script id="keyPropTemplate" type="text/x-jsrender">
@@ -377,11 +391,11 @@
 
         // function responsible for display JSON elements using jsrender template
         function display_json_value(element){
-            var element_id = $(element).attr('id'); 
+            var element_id = $(element).attr('id');
             var element_val = $('#' + element_id).val();
 
             var json_data = jQuery.parseJSON(element_val);
-          
+
             if ( json_data != null ){
                 $('#' + element_id + '_display').html($("#itensTemplate").render(json_data, {format: format_attrlabel}));
             }
@@ -425,7 +439,7 @@
 
 
             // Listen to message from child window
-            eventer(messageEvent,function(e) {                
+            eventer(messageEvent,function(e) {
                 var decs_data = e.data;
                 var pipe_pos = decs_data.lastIndexOf('|');
                 var decs_text = decs_data.substring(0, pipe_pos);
@@ -434,14 +448,14 @@
                 var decs_row = decs_field.replace( /[A-Za-z_$-]/g, '');
                 // set code, text and label for the new descriptor
                 $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);                
+                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);
                 $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(decs_text);
                 $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
 
             },false);
 
-            $(document).on("click", "a.add_error_report", function(){ 
-                $("#error_report_modal").modal("show");                
+            $(document).on("click", "a.add_error_report", function(){
+                $("#error_report_modal").modal("show");
             });
 
             // Prevent losing data by navigating away from the page
@@ -451,14 +465,14 @@
                     return 'Are you sure?';
                 }
             });
-            
+
         })
 
         function open_window_with_post(verb, url, data, target) {
             var form = document.createElement("form");
             form.setAttribute("method", verb);
             form.setAttribute("action", url);
-            form.setAttribute("target", target);            
+            form.setAttribute("target", target);
 
             if (data) {
                 for (var key in data) {
@@ -484,11 +498,11 @@
             field_value = $('#id_' + field_name).val();
 
             post_params = {'field_value' : field_value };
-            
+
             open_window_with_post('POST', field_assist_url, post_params, 'field_assist');
             return false;
         }
-        
+
 
         function update_field_from_assist(field_name, json_string) {
 
@@ -503,7 +517,7 @@
             // update field with string json and trigger change function
             $('#id_' + field_name).val(field_new_value).trigger('change');
 
-            // close field assist window            
+            // close field assist window
             assist_win.close();
         }
 
@@ -516,5 +530,3 @@
 
    </script>
 {% endblock %}
-
-
