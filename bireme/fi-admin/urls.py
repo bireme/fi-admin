@@ -89,7 +89,7 @@ urlpatterns = patterns('',
     (r'^multimedia/', include('multimedia.urls')),
 
     # Title
-    #(r'^title/', include('title.urls')),
+    (r'^title/', include('title.urls')),
 
     # Bibliographic References
     (r'^bibliographic/', include('biblioref.urls')),
