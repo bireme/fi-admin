@@ -13,7 +13,7 @@ urlpatterns = [
     # Issue
     #url(r'^issues/?$', IssueListView.as_view(), name='list_issue'),
     #url(r'^issues/new/?$', IssueCreateView.as_view(), name='create_issue'),
-    url(r'^issues/edit/(?P<pk>\d+)/?$', TitleUpdateView.as_view(), name='edit_title'),
+    #url(r'^issues/edit/(?P<pk>\d+)/?$', IssueUpdateView.as_view(), name='edit_issue'),
     #url(r'^issues/delete/(?P<pk>\d+)/?$', IssueDeleteView.as_view(), name='delete_issue'),
 
 ]

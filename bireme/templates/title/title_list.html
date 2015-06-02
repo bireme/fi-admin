@@ -74,7 +74,7 @@
             <table class='table'>
                 <thead>
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
-                    <th></th>
+                    <!--th></th-->
                     <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
                     <th><a href="javascript:orderby('issn');" id="id_issn">{% trans "ISSN" %}</a></th>
                     <th><a href="javascript:orderby('cooperative_center_code');" id="id_cooperative_center_code">{% trans "Cooperative center" %}</a></th>
@@ -84,7 +84,7 @@
                     {% for title in titles %}
                         <tr>
                             <td><a href="{% url 'edit_title' title.id %}">{{ title.id }}</a></td>
-                            <td><a href="{% url 'edit_title' title.id %}" class='btn btn-mini' title="{% trans 'Issues' %}"><i class='icon-book'></i></a></td>
+                            <!--td><a href="{% url 'edit_title' title.id %}" class='btn btn-mini' title="{% trans 'Issues' %}"><i class='icon-book'></i></a></td-->
                             <td><span title="{{ title.title }}">{{ title.title|slice:"50" }}{% if title.title|length > 50 %}...{% endif %}{% if title.section_title %}<i> - {{ title.section_title }}</i>{% endif %}</span></td>
                             <td>{{ title.issn }}</td>
                             <td>{{ title.cooperative_center_code }}</td>
