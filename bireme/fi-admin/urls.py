@@ -6,6 +6,7 @@ from django.conf import settings
 from api.resources_api import LinkResource
 from api.events_api import EventResource
 from api.multimedia_api import MediaResource
+# from api.title_api import TitleResource
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -14,6 +15,7 @@ admin.autodiscover()
 link_resource = LinkResource()
 event_resource = EventResource()
 media_resource = MediaResource()
+# title_resource = TitleResource()
 
 urlpatterns = patterns('',
     # Examples:
@@ -86,6 +88,9 @@ urlpatterns = patterns('',
     # Multimedia
     (r'^multimedia/', include('multimedia.urls')),
 
+    # Title
+    #(r'^title/', include('title.urls')),
+
     # Bibliographic References
     (r'^bibliographic/', include('biblioref.urls')),
 
@@ -97,6 +102,7 @@ urlpatterns = patterns('',
     (r'^api/', include(link_resource.urls)),
     (r'^api/', include(event_resource.urls)),
     (r'^api/', include(media_resource.urls)),
+    #(r'^api/', include(title_resource.urls)),
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
 
     #internationalization

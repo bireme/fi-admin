@@ -39,6 +39,10 @@
                                 <li><a href="{% url 'list_biblioref' %}" title=""><i class="icon-book"></i> {% trans "Bibliographic references" %}</a></li>
                             {% endif %}
 
+                            {% if service_role.TITLE or service_role.TITLE %}
+                                <li><a href="{% url 'list_title' %}" title=""><i class="icon-book"></i> {% trans "Journals" %}</a></li>
+                            {% endif %}
+
                             {% if service_role|length > 3 %}
                                     </ul>
                                 </li>

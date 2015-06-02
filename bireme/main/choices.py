@@ -8,7 +8,7 @@ LANGUAGES_CHOICES = (
     ('es', _('Spanish')),
 )
 
-######################################################## Descriptor choices ###
+############################## Descriptor choices ##############################
 
 DESCRIPTOR_LEVEL = [
     ('general', _('General')),
@@ -19,4 +19,3 @@ DESCRIPTOR_VOCABULARY = [
     ('DeCS', _('DeCS: Health Sciences Descriptors')),
     ('Kewords', _('Keywords')),
 ]
-
