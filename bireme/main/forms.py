@@ -52,7 +52,7 @@ class ResourceForm(forms.ModelForm):
 
     class Meta:
         model = Resource
-        exclude = ('cooperative_center_code',)
+        exclude = ('cooperative_center_code', )
 
         source_language = forms.MultipleChoiceField()
         source_type = forms.MultipleChoiceField()
