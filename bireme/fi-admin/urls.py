@@ -7,6 +7,7 @@ from api.resources_api import LinkResource
 from api.events_api import EventResource
 from api.multimedia_api import MediaResource
 # from api.title_api import TitleResource
+from api.bibliographic import ReferenceResource
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -16,6 +17,7 @@ link_resource = LinkResource()
 event_resource = EventResource()
 media_resource = MediaResource()
 # title_resource = TitleResource()
+reference_resource = ReferenceResource()
 
 urlpatterns = patterns('',
     # Examples:
@@ -102,10 +104,11 @@ urlpatterns = patterns('',
     (r'^api/', include(link_resource.urls)),
     (r'^api/', include(event_resource.urls)),
     (r'^api/', include(media_resource.urls)),
-    #(r'^api/', include(title_resource.urls)),
+    # (r'^api/', include(title_resource.urls)),
+    (r'^api/', include(reference_resource.urls)),
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
 
-    #internationalization
+    # internationalization
     url(r'^i18n/', include('django.conf.urls.i18n')),
     (r'^cookie-lang/?$', 'utils.views.cookie_lang'),
 

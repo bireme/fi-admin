@@ -22,7 +22,7 @@
 
     {% if form.errors %}
         <ul class="errorlist alert alert-error">
-            <li>{% trans "Please check required fields" %}</li>
+            <li>{% trans "Please check errors below" %}</li>
         </ul>
     {% endif %}
     {% if valid_for_publication != None and not valid_for_publication %}
@@ -119,6 +119,8 @@
                                                         </label>
                                                     {% endif %}
 
+                                                    {{ field.errors }}
+
                                                     {% if field.field|fieldtype == 'JSONFormField' %}
                                                         <div class="row">
                                                             <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);">
@@ -131,7 +133,6 @@
                                                         <p class="muted">{{ field.help_text }}</p>
                                                     {% endif %}
 
-                                                    {{ field.errors }}
                                                     {{ field }}
                                                 </li>
                                             {% endfor %}
