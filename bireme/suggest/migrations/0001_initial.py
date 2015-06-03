@@ -1,44 +1,50 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'SuggestResource'
-        db.create_table(u'suggest_suggestresource', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('status', self.gf('django.db.models.fields.SmallIntegerField')(default=0, null=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('link', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('abstract', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('keywords', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('administrative_comments', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('created_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-        ))
-        db.send_create_signal(u'suggest', ['SuggestResource'])
+    dependencies = [
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'SuggestResource'
-        db.delete_table(u'suggest_suggestresource')
-
-
-    models = {
-        u'suggest.suggestresource': {
-            'Meta': {'object_name': 'SuggestResource'},
-            'abstract': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'administrative_comments': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'created_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'keywords': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'link': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
-            'status': ('django.db.models.fields.SmallIntegerField', [], {'default': '0', 'null': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        }
-    }
-
-    complete_apps = ['suggest']
+    operations = [
+        migrations.CreateModel(
+            name='SuggestEvent',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('status', models.SmallIntegerField(default=0, null=True, verbose_name='Status', choices=[(0, 'Pending'), (1, 'Admitted'), (2, 'Refused'), (3, 'Deleted')])),
+                ('title', models.CharField(max_length=455, verbose_name='Title')),
+                ('start_date', models.DateField(help_text='day/month/year', verbose_name='Start date')),
+                ('end_date', models.DateField(help_text='day/month/year', verbose_name='End date')),
+                ('link', models.URLField(verbose_name='Link', blank=True)),
+                ('city', models.CharField(max_length=125, verbose_name='City', blank=True)),
+                ('administrative_comments', models.TextField(verbose_name='Administrative comments', blank=True)),
+                ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
+            ],
+            options={
+                'verbose_name': 'Suggested event',
+                'verbose_name_plural': 'Suggested events',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='SuggestResource',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('status', models.SmallIntegerField(default=0, null=True, verbose_name='Status', choices=[(0, 'Pending'), (1, 'Admitted'), (2, 'Refused'), (3, 'Deleted')])),
+                ('title', models.CharField(max_length=255, verbose_name='Title')),
+                ('link', models.URLField(verbose_name='Link')),
+                ('abstract', models.TextField(verbose_name='abstract', blank=True)),
+                ('keywords', models.TextField(verbose_name='Keywords', blank=True)),
+                ('administrative_comments', models.TextField(verbose_name='Administrative comments', blank=True)),
+                ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
+            ],
+            options={
+                'verbose_name': 'Suggested resource',
+                'verbose_name_plural': 'Suggested resources',
+            },
+            bases=(models.Model,),
+        ),
+    ]

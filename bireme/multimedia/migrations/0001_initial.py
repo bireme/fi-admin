@@ -1,218 +1,135 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+from django.conf import settings
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'MediaType'
-        db.create_table(u'multimedia_mediatype', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_time', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, null=True, blank=True)),
-            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('updated_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('acronym', self.gf('django.db.models.fields.CharField')(max_length=25, blank=True)),
-            ('language', self.gf('django.db.models.fields.CharField')(max_length=10)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-        ))
-        db.send_create_signal(u'multimedia', ['MediaType'])
+    dependencies = [
+        ('utils', '0001_initial'),
+        ('main', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
 
-        # Adding model 'MediaTypeLocal'
-        db.create_table(u'multimedia_mediatypelocal', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('media_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['multimedia.MediaType'])),
-            ('language', self.gf('django.db.models.fields.CharField')(max_length=10)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-        ))
-        db.send_create_signal(u'multimedia', ['MediaTypeLocal'])
-
-        # Adding model 'MediaCollection'
-        db.create_table(u'multimedia_mediacollection', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_time', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, null=True, blank=True)),
-            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('updated_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('language', self.gf('django.db.models.fields.CharField')(max_length=10, blank=True)),
-            ('cooperative_center_code', self.gf('django.db.models.fields.CharField')(max_length=55, blank=True)),
-        ))
-        db.send_create_signal(u'multimedia', ['MediaCollection'])
-
-        # Adding model 'MediaCollectionLocal'
-        db.create_table(u'multimedia_mediacollectionlocal', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('media_collection', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['multimedia.MediaCollection'])),
-            ('language', self.gf('django.db.models.fields.CharField')(max_length=10)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-        ))
-        db.send_create_signal(u'multimedia', ['MediaCollectionLocal'])
-
-        # Adding model 'Media'
-        db.create_table(u'multimedia_media', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_time', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, null=True, blank=True)),
-            ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('updated_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('status', self.gf('django.db.models.fields.SmallIntegerField')(default=0, null=True)),
-            ('media_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['multimedia.MediaType'])),
-            ('media_collection', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['multimedia.MediaCollection'], null=True, blank=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=455)),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('authors', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('contributors', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('dimension', self.gf('django.db.models.fields.CharField')(max_length=155, blank=True)),
-            ('duration', self.gf('django.db.models.fields.CharField')(max_length=155, blank=True)),
-            ('location', self.gf('django.db.models.fields.CharField')(max_length=155, blank=True)),
-            ('cooperative_center_code', self.gf('django.db.models.fields.CharField')(max_length=55, blank=True)),
-        ))
-        db.send_create_signal(u'multimedia', ['Media'])
-
-        # Adding M2M table for field language on 'Media'
-        m2m_table_name = db.shorten_name(u'multimedia_media_language')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('media', models.ForeignKey(orm[u'multimedia.media'], null=False)),
-            ('sourcelanguage', models.ForeignKey(orm[u'main.sourcelanguage'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['media_id', 'sourcelanguage_id'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'MediaType'
-        db.delete_table(u'multimedia_mediatype')
-
-        # Deleting model 'MediaTypeLocal'
-        db.delete_table(u'multimedia_mediatypelocal')
-
-        # Deleting model 'MediaCollection'
-        db.delete_table(u'multimedia_mediacollection')
-
-        # Deleting model 'MediaCollectionLocal'
-        db.delete_table(u'multimedia_mediacollectionlocal')
-
-        # Deleting model 'Media'
-        db.delete_table(u'multimedia_media')
-
-        # Removing M2M table for field language on 'Media'
-        db.delete_table(db.shorten_name(u'multimedia_media_language'))
-
-
-    models = {
-        u'auth.group': {
-            'Meta': {'object_name': 'Group'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
-        },
-        u'auth.permission': {
-            'Meta': {'ordering': "(u'content_type__app_label', u'content_type__model', u'codename')", 'unique_together': "((u'content_type', u'codename'),)", 'object_name': 'Permission'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        u'auth.user': {
-            'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
-        },
-        u'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        u'main.sourcelanguage': {
-            'Meta': {'object_name': 'SourceLanguage'},
-            'acronym': ('django.db.models.fields.CharField', [], {'max_length': '25', 'blank': 'True'}),
-            'created_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'created_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'updated_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'updated_time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'null': 'True', 'blank': 'True'})
-        },
-        u'multimedia.media': {
-            'Meta': {'object_name': 'Media'},
-            'authors': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'contributors': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'cooperative_center_code': ('django.db.models.fields.CharField', [], {'max_length': '55', 'blank': 'True'}),
-            'created_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'created_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'dimension': ('django.db.models.fields.CharField', [], {'max_length': '155', 'blank': 'True'}),
-            'duration': ('django.db.models.fields.CharField', [], {'max_length': '155', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['main.SourceLanguage']", 'symmetrical': 'False', 'blank': 'True'}),
-            'location': ('django.db.models.fields.CharField', [], {'max_length': '155', 'blank': 'True'}),
-            'media_collection': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['multimedia.MediaCollection']", 'null': 'True', 'blank': 'True'}),
-            'media_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['multimedia.MediaType']"}),
-            'status': ('django.db.models.fields.SmallIntegerField', [], {'default': '0', 'null': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '455'}),
-            'updated_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'updated_time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'null': 'True', 'blank': 'True'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200'})
-        },
-        u'multimedia.mediacollection': {
-            'Meta': {'object_name': 'MediaCollection'},
-            'cooperative_center_code': ('django.db.models.fields.CharField', [], {'max_length': '55', 'blank': 'True'}),
-            'created_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'created_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.CharField', [], {'max_length': '10', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'updated_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'updated_time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'null': 'True', 'blank': 'True'})
-        },
-        u'multimedia.mediacollectionlocal': {
-            'Meta': {'object_name': 'MediaCollectionLocal'},
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'media_collection': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['multimedia.MediaCollection']"}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        },
-        u'multimedia.mediatype': {
-            'Meta': {'object_name': 'MediaType'},
-            'acronym': ('django.db.models.fields.CharField', [], {'max_length': '25', 'blank': 'True'}),
-            'created_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'created_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'updated_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'updated_time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'null': 'True', 'blank': 'True'})
-        },
-        u'multimedia.mediatypelocal': {
-            'Meta': {'object_name': 'MediaTypeLocal'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'media_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['multimedia.MediaType']"}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        }
-    }
-
-    complete_apps = ['multimedia']
+    operations = [
+        migrations.CreateModel(
+            name='Media',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
+                ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
+                ('status', models.SmallIntegerField(default=0, null=True, verbose_name='Status', choices=[(0, 'Pending'), (1, 'Admitted'), (2, 'Refused'), (3, 'Deleted')])),
+                ('title', models.CharField(max_length=455, verbose_name='Original title')),
+                ('title_translated', models.CharField(max_length=455, verbose_name='Translated title', blank=True)),
+                ('link', models.URLField(verbose_name='Link')),
+                ('description', models.TextField(verbose_name='Description', blank=True)),
+                ('authors', models.TextField(help_text='Enter one per line', verbose_name='Authors', blank=True)),
+                ('contributors', models.TextField(help_text='Enter one per line', verbose_name='Contributors', blank=True)),
+                ('item_extension', models.CharField(max_length=255, verbose_name='Item extension', blank=True)),
+                ('other_physical_details', models.CharField(max_length=255, verbose_name='Other physical details', blank=True)),
+                ('dimension', models.CharField(max_length=255, verbose_name='Dimension', blank=True)),
+                ('content_notes', models.TextField(verbose_name='Content notes', blank=True)),
+                ('version_notes', models.TextField(verbose_name='Version notes', blank=True)),
+                ('related_links', models.TextField(help_text='Enter one per line', verbose_name='Related links', blank=True)),
+                ('publisher', models.CharField(max_length=255, verbose_name='Publisher', blank=True)),
+                ('publication_date', models.DateField(help_text=b'Format: DD/MM/YYYY', null=True, verbose_name='Publication date', blank=True)),
+                ('cooperative_center_code', models.CharField(max_length=55, verbose_name='Cooperative center', blank=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('language', models.ManyToManyField(to='main.SourceLanguage', verbose_name='language', blank=True)),
+            ],
+            options={
+                'verbose_name': 'Media',
+                'verbose_name_plural': 'Medias',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='MediaCollection',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
+                ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
+                ('name', models.CharField(max_length=255, null=True, blank=True)),
+                ('description', models.TextField(verbose_name='Description', blank=True)),
+                ('date', models.DateField(help_text=b'Format: DD/MM/YYYY', null=True, verbose_name='Date', blank=True)),
+                ('city', models.CharField(max_length=255, verbose_name='City', blank=True)),
+                ('language', models.CharField(blank=True, max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
+                ('cooperative_center_code', models.CharField(max_length=55, verbose_name='Cooperative center', blank=True)),
+                ('country', models.ForeignKey(verbose_name='Country', blank=True, to='utils.Country', null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'verbose_name': 'Collection',
+                'verbose_name_plural': 'Collections',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='MediaCollectionLocal',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
+                ('name', models.CharField(max_length=255, verbose_name='name')),
+                ('description', models.TextField(verbose_name='Description', blank=True)),
+                ('media_collection', models.ForeignKey(verbose_name='Collection', to='multimedia.MediaCollection')),
+            ],
+            options={
+                'verbose_name': 'Translation',
+                'verbose_name_plural': 'Translations',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='MediaType',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
+                ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
+                ('acronym', models.CharField(max_length=25, verbose_name='Acronym', blank=True)),
+                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
+                ('name', models.CharField(max_length=255, verbose_name='Name')),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'verbose_name': 'Media type',
+                'verbose_name_plural': 'Media types',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='MediaTypeLocal',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
+                ('name', models.CharField(max_length=255, verbose_name='name')),
+                ('media_type', models.ForeignKey(verbose_name='Media type', to='multimedia.MediaType')),
+            ],
+            options={
+                'verbose_name': 'Translation',
+                'verbose_name_plural': 'Translations',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='media_collection',
+            field=models.ForeignKey(verbose_name='Collection', blank=True, to='multimedia.MediaCollection', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='media_type',
+            field=models.ForeignKey(verbose_name='Media type', to='multimedia.MediaType'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='updated_by',
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            preserve_default=True,
+        ),
+    ]
