@@ -7,6 +7,30 @@ import json
 
 language_choices = (('pt', 'Português'), ('es', 'Espanhol'), ('en', 'Inglês'))
 
+field_tag_map = {'cooperative_center_code': '01', 'call_number': '03', 'database': '04', 'literature_type': '05',
+                 'treatment_level':  '06', 'inventory_number': '07', 'eletronic_address': '08', 'record_type': '09',
+                 'individual_author': '10', 'corporate_author': '11', 'title': '12', 'english_translated_title': '13',
+                 'pages': '14', 'individual_author_monographic': '16', 'corporate_author_monographic': '17',
+                 'title_monographic': '18', 'english_title_monographic': '19', 'pages_monographic': '20',
+                 'volume_monographic': '21', 'individual_author_collection': '23', 'corporate_author_collection': '24',
+                 'title_collection': '25', 'english_title_collection': '26', 'total_number_of_volumes': '27',
+                 'title_serial': '30', 'volume_serial': '31', 'issue_number': '32', 'issn': '35',
+                 'thesis_dissertation_leader': '49', 'thesis_dissertation_institution': '50',
+                 'thesis_dissertation_academic_title': '51', 'publisher': '62', 'edition': '63', 'publication_city': '66',
+                 'symbol': '68', 'isbn': '69', 'descriptive_information': '38', 'text_language': '40',
+                 'conference_sponsoring_institution': '52', 'conference_name': '53', 'conference_date': '54',
+                 'conference_normalized_date': '55', 'conference_city': '56', 'project_sponsoring_institution': '58',
+                 'project_name': '59', 'internal_note': '61', 'publication_date': '64',
+                 'publication_date_normalized': '65', 'total_number_of_references': '72',
+                 'time_limits_from': '74', 'time_limits_to': '75', 'person_as_subject': '78', 'non_decs_region': '82',
+                 'abstract': '83', 'transfer_date_to_database': '84', 'author_keyword': '85',
+                 'item_form': '110', 'type_of_computer_file': '111', 'type_of_cartographic_material': '112',
+                 'type_of_journal': '113', 'type_of_visual_material': '114', 'specific_designation_of_the_material': '115',
+                 'general_note': '500', 'formatted_contents_note': '505', 'additional_physical_form_available_note': '530',
+                 'reproduction_note': '533', 'original_version_note': '534', 'institution_as_subject': '610',
+                 'local_descriptors': '653', 'clinical_trial_registry_name': '700', 'doi_number': '724'
+                 }
+
 other_notes_section = ('other_notes', {'fields': ['general_note', 'formatted_contents_note',
                                        'additional_physical_form_available_note', 'reproduction_note',
                                        'original_version_note', 'internal_note'],
