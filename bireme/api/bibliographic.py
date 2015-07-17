@@ -72,14 +72,16 @@ class ReferenceResource(CustomResource):
         return self.create_response(request, r.json())
 
     def dehydrate(self, bundle):
-        c_type = ContentType.objects.get_for_model(bundle.obj)
+        # retrive child class of reference (analytic or source) for use in ContentType query
+        child_class = bundle.obj.child_class()
+        c_type = ContentType.objects.get_for_model(child_class)
 
-        descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
 
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
-        bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
-        bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
+        bundle.data['descriptors'] = [{'text': descriptor.code} for descriptor in descriptors]
+        bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
 
         return bundle

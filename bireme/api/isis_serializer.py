@@ -19,43 +19,59 @@ class ISISSerializer(Serializer):
         options = options or {}
         context = {}
         id_lines = []
+        record_lines = []
         data = self.to_simple(data, options)
 
         objects = data.get('objects', [])
 
         for item in objects:
+            # Add line that represent new record
+            mfn_line = "!ID 00000\n"
+            id_lines.append(mfn_line)
+
+            record_lines = []
             for field_name in item:
                 field = item[field_name]
                 # check if field is not empty
                 if field:
-                    if field_name == 'MFN':
-                        mfn_line = "!ID {0}\n".format(field)
-                        id_lines.append(mfn_line)
+                    if field_name == 'id' and item['LILACS_original_id']:
+                        id_field = self.id_field(field_name, item['LILACS_original_id'])
+                        record_lines.append(id_field)
 
                     # JSONField is returned as list from tastypie_custom class
                     elif type(field) is list:
                         # create a temp str field_value with all subfields of current occ
                         for field_occ in field:
                             field_value = ''
-                            for key, value in field_occ.iteritems():
-                                subfield_id = "^{0}".format(key[1]) if key.startswith('_') else ''
-                                subfield = u''.join((subfield_id, value)).encode('utf-8').strip()
-                                field_value = ''.join((field_value, subfield))
+                            if isinstance(field_occ, dict):
+                                for key, value in field_occ.iteritems():
+                                    subfield_id = "^{0}".format(key[1]) if key.startswith('_') else ''
+                                    subfield = u''.join((subfield_id, value)).encode('utf-8').strip()
+                                    field_value = ''.join((field_value, subfield))
+                                # format out line in ID format
+                                id_field = self.id_field(field_name, field_value)
+                                record_lines.append(id_field)
+                            else:
+                                id_field = self.id_field(field_name, field_occ)
+                                record_lines.append(id_field)
 
-                            # format out line in ID format
-                            id_field = self.id_field(field_name, field_value)
-                            id_lines.append(id_field)
                     else:
                         # check for fields with multiples lines as occurrences
                         if isinstance(field, basestring) and "\n" in field:
                             for field_line in field.split('\n'):
                                 id_field = self.id_field(field_name, field_line)
-                                id_lines.append(id_field)
+                                record_lines.append(id_field)
                         else:
                             id_field = self.id_field(field_name, field)
-                            id_lines.append(id_field)
+                            record_lines.append(id_field)
 
-        id_lines.sort()
+            # sort lines will result a sort by tag number
+            record_lines.sort()
+
+            # add lines of record at id export list
+            id_lines.extend(record_lines)
+            id_lines.append("\n")
+
         return ''.join(id_lines)
 
     def id_field(self, field, value):

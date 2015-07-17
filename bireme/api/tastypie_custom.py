@@ -2,7 +2,7 @@ from tastypie.bundle import Bundle
 from tastypie.fields import ApiField, CharField
 from tastypie.resources import ModelResource
 
-from utils.fields import JSONField
+from utils.fields import JSONField, MultipleAuxiliaryChoiceField
 
 
 class JSONApiField(ApiField):
@@ -11,6 +11,20 @@ class JSONApiField(ApiField):
     """
     dehydrated_type = 'json'
     help_text = 'JSON structured data.'
+
+    def convert(self, value):
+        if value is None:
+            return None
+
+        return value
+
+
+class ListApiField(ApiField):
+    """
+    Custom ApiField for dealing with data from custom ListFields.
+    """
+    dehydrated_type = 'list'
+    help_text = 'List of items.'
 
     def convert(self, value):
         if value is None:
@@ -30,5 +44,7 @@ class CustomResource(ModelResource):
         """
         if isinstance(f, JSONField):
             return JSONApiField
+        elif isinstance(f, MultipleAuxiliaryChoiceField):
+            return ListApiField
 
         return super(CustomResource, cls).api_field_from_django_field(f, default)
