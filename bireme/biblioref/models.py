@@ -157,6 +157,15 @@ class Reference(Generic):
         # ref_title = u"{0} - ({1},{2}) [{3}]".format(ref_title, self.literature_type, self.treatment_level, self.reference_title)
         return ref_title
 
+    def child_class(self):
+        """
+        Return the child class of the current instance (ex. for use in Content Type)
+        """
+        if 'a' in self.treatment_level:
+            return ReferenceAnalytic
+        else:
+            return ReferenceResource
+
 
 # Source
 class ReferenceSource(Reference):
