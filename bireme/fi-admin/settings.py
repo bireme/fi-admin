@@ -164,14 +164,15 @@ INSTALLED_APPS = (
     'rosetta',
 
     'biremelogin',
-    
+
     'api',
     'main',
     'events',
-    'suggest', 
+    'suggest',
     'error_reporting',
     'multimedia',
-    'biblioref',
+    # 'biblioref',
+    'reports',
     'utils',
     'south',
 

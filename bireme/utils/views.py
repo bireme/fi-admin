@@ -3,8 +3,11 @@ from django.conf import settings
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.utils.text import slugify
 
 from main.decorators import *
+
+import csv
 
 # form actions
 ACTIONS = {
@@ -80,3 +83,33 @@ class GenericUpdateWithOneFormset(LoginRequiredView):
             context['formset'] = self.formset(instance=self.object)
 
         return context
+
+class CSVResponseMixin(object):
+    """
+    A generic mixin that constructs a CSV response from the context data if
+    the CSV export option was provided in the request.
+    """
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Creates a CSV response if requested, otherwise returns the default
+        template response.
+        """
+        # Sniff if we need to return a CSV export
+        if 'csv' in self.request.GET.get('export', ''):
+            data = context['report_rows']
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="%s.csv"' % slugify(context['title'])
+
+            writer = csv.writer(response)
+            # Write CSV header line
+            writer.writerow(data[0].keys())
+
+            # Write the data from the context somehow
+            for item in data:
+                # print item.items()
+                writer.writerow(item.values())
+
+            return response
+        # Business as usual otherwise
+        else:
+            return super(CSVResponseMixin, self).render_to_response(context, **response_kwargs)
