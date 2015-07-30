@@ -95,9 +95,9 @@
                     {% for key, value in row.items %}
                         <td>
                             {% if params.report == '3' and key == 'year' %}
-                                {{ value|slice:":4" }}
+                                {{ value|date:"Y" }}
                             {% elif params.report == '4' and key == 'month' %}
-                                {{ value|slice:":7" }}
+                                {{ value|date:"m/Y" }}
                             {% else %}
                                 {{ value }}
                             {% endif %}

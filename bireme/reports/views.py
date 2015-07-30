@@ -38,7 +38,11 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
         filter_status = self.request.GET.get('status', None)
         filter_thematic = self.request.GET.get('filter_thematic', None)
         filter_created_by_cc = self.request.GET.get('filter_created_by_cc', None)
+        export = self.request.GET.get('export', '')
         report_rows = []
+
+        if export == 'csv':
+            self.paginate_by = None
 
         if report and source_name:
             source_ctype = ContentType.objects.get(model=source_name)
@@ -93,7 +97,8 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                 if filter_thematic:
                     source_list = source_list.filter(thematics__thematic_area=filter_status)
 
-                report_rows = source_list.values(truncate_by).annotate(total=Count('pk')).order_by(truncate_by)
+                order = "-{0}".format(truncate_by)
+                report_rows = source_list.values(truncate_by).annotate(total=Count('pk')).order_by(order)
 
         return report_rows
 
