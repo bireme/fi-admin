@@ -37,15 +37,14 @@
                         <option value="4" {% if params.report == '4' %}selected="true"{% endif %}>{% trans "Documents by Entry Month" %}</option>
                         <option value="5" {% if params.report == '5' %}selected="true"{% endif %}>{% trans "Documents by Thematic Area" %}</option>
                         <option value="6" {% if params.report == '6' %}selected="true"{% endif %}>{% trans "Documents by Status" %}</option>
-                        <option value="7" {% if params.report == '7' %}selected="true"{% endif %}>{% trans "Documents by Descriptor" %}</option>
-                        <option value="8" {% if params.report == '8' %}selected="true"{% endif %}>{% trans "Medias by Media Collection" %}</option>
+                        <option value="7" {% if params.report == '7' %}selected="true"{% endif %}>{% trans "Medias by Media Collection" %}</option>
                     </select>
 
                     {% trans "Source" %}:
                     <select name="source">
                         <option value="resource" {% if params.source == 'resource' %}selected="true"{% endif %}>{% trans "Resources" %}</option>
                         <option value="event" {% if params.source == 'event' %}selected="true"{% endif %}>{% trans "Events" %}</option>
-                        <option value="media" {% if params.source == 'media' or params.report == '8' %}selected="true"{% endif %}>{% trans "Multimedia" %}</option>
+                        <option value="media" {% if params.source == 'media' or params.report == '7' %}selected="true"{% endif %}>{% trans "Multimedia" %}</option>
                     </select>
 
                     <button class="btn" type="submit">{% trans "Execute" %}</button>
