@@ -26,7 +26,6 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
     Handle list view for reports
     """
     paginate_by = settings.ITEMS_PER_PAGE
-    restrict_by_user = True
 
     template_name = 'reports/index.html'
     context_object_name = 'report_rows'
@@ -51,9 +50,22 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
             source = source_ctype.model_class()
 
             if report == '1':
+                user_data = additional_user_info(self.request)
                 user_list = User.objects.all()
+                user_filter_list = []
 
-                for user in user_list:
+                # if is superuser or is a user from BR1.1 (BIREME) 
+                if self.request.user.is_superuser or user_data['user_cc'] == 'BR1.1':
+                    user_filter_list = user_list
+                else:
+                    # else filter only users from the same CC as request.user
+                    for user in user_list:
+                        if not user.is_superuser:
+                            user_cc = user.profile.get_attribute('cc')
+                            if user_cc == user_data['user_cc']:
+                                user_filter_list.append(user)
+
+                for user in user_filter_list:
                     source_list = source.objects.filter(created_by=user)
                     if filter_status:
                         source_list = source_list.filter(status=filter_status)
