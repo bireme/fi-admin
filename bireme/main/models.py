@@ -34,7 +34,7 @@ class SourceType(Generic):
         if translation:
             other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
             translation_list.extend(other_languages)
-        
+
         return translation_list
 
     def __unicode__(self):
@@ -74,7 +74,7 @@ class SourceLanguage(Generic):
         if translation:
             other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
             translation_list.extend(other_languages)
-        
+
         return translation_list
 
     def __unicode__(self):
@@ -84,7 +84,7 @@ class SourceLanguage(Generic):
             return translation[0].name
         else:
             return self.name
-    
+
 
 class SourceLanguageLocal(models.Model):
 
@@ -113,7 +113,7 @@ class ThematicArea(Generic):
         if translation:
             other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
             translation_list.extend(other_languages)
-        
+
         return translation_list
 
     def __unicode__(self):
@@ -237,9 +237,10 @@ class Resource(Generic):
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
-    # relations 
+    # relations
     error_reports = GenericRelation(ErrorReport)
     thematics = GenericRelation(ResourceThematic)
+    descriptors = GenericRelation(Descriptor)
 
     def get_fields(self):
         return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]
