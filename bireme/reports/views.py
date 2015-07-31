@@ -134,27 +134,15 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                 report_rows = source_list.values('status').annotate(total=Count('status')).order_by('-total')
 
             if report == '7':
-                descriptor_list = Descriptor.objects.filter(content_type=source_ctype).order_by('text')
+                source_list = source.objects.all()
+                if filter_status:
+                    source_list = source_list.filter(status=filter_status)
+                if filter_created_by_cc:
+                    source_list = source_list.filter(cooperative_center_code=filter_created_by_cc)
+                if filter_thematic:
+                    source_list = source_list.filter(thematics__thematic_area=filter_thematic)
 
-                for descriptor in descriptor_list:
-                    source_list = source.objects.filter(descriptors__text=descriptor)
-                    if filter_status:
-                        source_list = source_list.filter(status=filter_status)
-                    if filter_created_by_cc:
-                        source_list = source_list.filter(cooperative_center_code=filter_created_by_cc)
-                    if filter_thematic:
-                        source_list = source_list.filter(thematics__thematic_area=filter_thematic)
-
-                    total_by_descriptor = source_list.count()
-                    if total_by_descriptor > 0:
-                        data = OrderedDict()
-                        data['descriptor'] = descriptor
-                        data['total'] = total_by_descriptor
-                        report_rows.append(data)
-
-                    # sort the result list by total (reverse)
-                    report_rows = sorted(report_rows, key=lambda k:k['total'], reverse=True)
-
+                report_rows = source_list.values('descriptors__text').annotate(total=Count('descriptors__code')).order_by('-total')
 
             if report == '8':
                 collection_list = MediaCollection.objects.all().order_by('name')
