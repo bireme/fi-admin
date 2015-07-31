@@ -134,17 +134,6 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                 report_rows = source_list.values('status').annotate(total=Count('status')).order_by('-total')
 
             if report == '7':
-                source_list = source.objects.all()
-                if filter_status:
-                    source_list = source_list.filter(status=filter_status)
-                if filter_created_by_cc:
-                    source_list = source_list.filter(cooperative_center_code=filter_created_by_cc)
-                if filter_thematic:
-                    source_list = source_list.filter(thematics__thematic_area=filter_thematic)
-
-                report_rows = source_list.values('descriptors__text').annotate(total=Count('descriptors__code')).order_by('-total')
-
-            if report == '8':
                 collection_list = MediaCollection.objects.all().order_by('name')
 
                 for collection in collection_list:
