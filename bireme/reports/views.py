@@ -16,8 +16,10 @@ from utils.views import LoginRequiredView, SuperUserRequiredView
 from utils.context_processors import additional_user_info
 
 from collections import OrderedDict
-from main.models import ThematicArea
+from main.models import Descriptor, ThematicArea
+from multimedia.models import Media, MediaCollection
 from utils.views import CSVResponseMixin
+
 
 class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
     """
@@ -70,7 +72,7 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                     # sort the result list by total (reverse)
                     report_rows = sorted(report_rows, key=lambda k:k['total'], reverse=True)
 
-            if report == '2':
+            elif report == '2':
                 source_list = source.objects.all()
                 if filter_status:
                     source_list = source_list.filter(status=filter_status)
@@ -81,7 +83,7 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
 
                 report_rows = source_list.values('cooperative_center_code').annotate(total=Count('cooperative_center_code')).order_by('-total')
 
-            if report == '3' or report == '4':
+            elif report == '3' or report == '4':
                 if report == '3':
                     truncate_by = 'year'
                 else:
@@ -99,6 +101,83 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
 
                 order = "-{0}".format(truncate_by)
                 report_rows = source_list.values(truncate_by).annotate(total=Count('pk')).order_by(order)
+
+            elif report == '5':
+                thematic_list = ThematicArea.objects.all().order_by('name')
+
+                for thematic in thematic_list:
+                    source_list = source.objects.filter(thematics__thematic_area=thematic)
+                    if filter_status:
+                        source_list = source_list.filter(status=filter_status)
+                    if filter_created_by_cc:
+                        source_list = source_list.filter(cooperative_center_code=filter_created_by_cc)
+
+                    total_by_thematic = source_list.count()
+                    if total_by_thematic > 0:
+                        data = OrderedDict()
+                        data['thematic'] = thematic
+                        data['total'] = total_by_thematic
+                        report_rows.append(data)
+
+                    # sort the result list by total (reverse)
+                    report_rows = sorted(report_rows, key=lambda k:k['total'], reverse=True)
+
+            elif report == '6':
+                source_list = source.objects.all()
+                if filter_status:
+                    source_list = source_list.filter(status=filter_status)
+                if filter_created_by_cc:
+                    source_list = source_list.filter(cooperative_center_code=filter_created_by_cc)
+                if filter_thematic:
+                    source_list = source_list.filter(thematics__thematic_area=filter_thematic)
+
+                report_rows = source_list.values('status').annotate(total=Count('status')).order_by('-total')
+
+            if report == '7':
+                descriptor_list = Descriptor.objects.filter(content_type=source_ctype).order_by('text')
+
+                for descriptor in descriptor_list:
+                    source_list = source.objects.filter(descriptors__text=descriptor)
+                    if filter_status:
+                        source_list = source_list.filter(status=filter_status)
+                    if filter_created_by_cc:
+                        source_list = source_list.filter(cooperative_center_code=filter_created_by_cc)
+                    if filter_thematic:
+                        source_list = source_list.filter(thematics__thematic_area=filter_thematic)
+
+                    total_by_descriptor = source_list.count()
+                    if total_by_descriptor > 0:
+                        data = OrderedDict()
+                        data['descriptor'] = descriptor
+                        data['total'] = total_by_descriptor
+                        report_rows.append(data)
+
+                    # sort the result list by total (reverse)
+                    report_rows = sorted(report_rows, key=lambda k:k['total'], reverse=True)
+
+
+            if report == '8':
+                collection_list = MediaCollection.objects.all().order_by('name')
+
+                for collection in collection_list:
+                    source_list = Media.objects.filter(media_collection=collection)
+                    if filter_status:
+                        source_list = source_list.filter(status=filter_status)
+                    if filter_created_by_cc:
+                        source_list = source_list.filter(cooperative_center_code=filter_created_by_cc)
+                    if filter_thematic:
+                        source_list = source_list.filter(thematics__thematic_area=filter_thematic)
+
+                    total_by_collection = source_list.count()
+                    if total_by_collection > 0:
+                        data = OrderedDict()
+                        data['collection'] = collection
+                        data['total'] = total_by_collection
+                        report_rows.append(data)
+
+                    # sort the result list by total (reverse)
+                    report_rows = sorted(report_rows, key=lambda k:k['total'], reverse=True)
+
 
         return report_rows
 

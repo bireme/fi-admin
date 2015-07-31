@@ -35,13 +35,17 @@
                         <option value="2" {% if params.report == '2' %}selected="true"{% endif %}>{% trans "Documents by Cooperative Center" %}</option>
                         <option value="3" {% if params.report == '3' %}selected="true"{% endif %}>{% trans "Documents by Entry Year" %}</option>
                         <option value="4" {% if params.report == '4' %}selected="true"{% endif %}>{% trans "Documents by Entry Month" %}</option>
+                        <option value="5" {% if params.report == '5' %}selected="true"{% endif %}>{% trans "Documents by Thematic Area" %}</option>
+                        <option value="6" {% if params.report == '6' %}selected="true"{% endif %}>{% trans "Documents by Status" %}</option>
+                        <option value="7" {% if params.report == '7' %}selected="true"{% endif %}>{% trans "Documents by Descriptor" %}</option>
+                        <option value="8" {% if params.report == '8' %}selected="true"{% endif %}>{% trans "Medias by Media Collection" %}</option>
                     </select>
 
                     {% trans "Source" %}:
                     <select name="source">
                         <option value="resource" {% if params.source == 'resource' %}selected="true"{% endif %}>{% trans "Resources" %}</option>
                         <option value="event" {% if params.source == 'event' %}selected="true"{% endif %}>{% trans "Events" %}</option>
-                        <option value="media" {% if params.source == 'media' %}selected="true"{% endif %}>{% trans "Multimedia" %}</option>
+                        <option value="media" {% if params.source == 'media' or params.report == '8' %}selected="true"{% endif %}>{% trans "Multimedia" %}</option>
                     </select>
 
                     <button class="btn" type="submit">{% trans "Execute" %}</button>
@@ -98,6 +102,16 @@
                                 {{ value|date:"Y" }}
                             {% elif params.report == '4' and key == 'month' %}
                                 {{ value|date:"m/Y" }}
+                            {% elif params.report == '6' and key == 'status' %}
+                                {% if value == 0 %}
+                                    {% trans "Pending" %}
+                                {% elif value == 1 %}
+                                    {% trans "Admitted" %}
+                                {% elif value == 2 %}
+                                    {% trans "Refused" %}
+                                {% elif value == 3 %}
+                                    {% trans "Deleted" %}
+                                {% endif %}
                             {% else %}
                                 {{ value }}
                             {% endif %}
@@ -109,6 +123,12 @@
         </table>
         <button class="btn btn-success" type="submit" name="export" value="csv">{% trans "Export CSV" %}</button>
         {% include "pagination_generic.html" %}
+
+    {% elif params.report %}
+
+        <div class="alert" style="margin-top: 30px">
+            <h2>{% trans "No data for these criteria" %}</h2>
+        </div>
 
     {% endif %}
 
