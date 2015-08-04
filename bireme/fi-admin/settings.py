@@ -119,6 +119,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
 
     'utils.context_processors.additional_user_info',
+    'utils.context_processors.django_settings',
 )
 
 
@@ -235,6 +236,12 @@ AUTHENTICATION_BACKENDS = (
 
 BIREMELOGIN_BASE_URL = "http://accounts.bireme.org"
 BIREMELOGIN_SERVICE = ""
+GOOGLE_ANALYTICS_ID = ""
+
+# for settings_context_processor
+TEMPLATE_VISIBLE_SETTINGS = (
+    'GOOGLE_ANALYTICS_ID',
+)
 
 try:
     from settings_local import *
