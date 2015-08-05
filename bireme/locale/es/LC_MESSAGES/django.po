@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-27 10:46-0300\n"
+"POT-Creation-Date: 2015-07-31 11:46-0300\n"
 "PO-Revision-Date: 2015-05-27 17:12-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
@@ -116,7 +116,8 @@ msgstr ""
 #: templates/multimedia/media_form.html:152
 #: templates/multimedia/media_form.html:225
 #: templates/multimedia/media_list.html:66
-#: templates/multimedia/media_list.html:131 templates/suggest/list.html:52
+#: templates/multimedia/media_list.html:131 templates/reports/index.html:58
+#: templates/reports/index.html.py:106 templates/suggest/list.html:52
 #: templates/suggest/list.html.py:93 templates/suggest/list.html:137
 #: templates/suggest/list.html.py:180
 msgid "Pending"
@@ -137,7 +138,8 @@ msgstr "Pendiente"
 #: templates/multimedia/media_form.html:154
 #: templates/multimedia/media_form.html:227
 #: templates/multimedia/media_list.html:67
-#: templates/multimedia/media_list.html:133 templates/suggest/list.html:53
+#: templates/multimedia/media_list.html:133 templates/reports/index.html:59
+#: templates/reports/index.html.py:108 templates/suggest/list.html:53
 #: templates/suggest/list.html.py:95 templates/suggest/list.html:139
 #: templates/suggest/list.html.py:182
 msgid "Admitted"
@@ -158,7 +160,8 @@ msgstr "Aceptado"
 #: templates/multimedia/media_form.html:156
 #: templates/multimedia/media_form.html:229
 #: templates/multimedia/media_list.html:68
-#: templates/multimedia/media_list.html:135 templates/suggest/list.html:54
+#: templates/multimedia/media_list.html:135 templates/reports/index.html:60
+#: templates/reports/index.html.py:110 templates/suggest/list.html:54
 #: templates/suggest/list.html.py:97 templates/suggest/list.html:141
 #: templates/suggest/list.html.py:184
 msgid "Refused"
@@ -178,7 +181,8 @@ msgstr "Rechazado"
 #: templates/multimedia/media_form.html:158
 #: templates/multimedia/media_form.html:231
 #: templates/multimedia/media_list.html:69
-#: templates/multimedia/media_list.html:137 templates/suggest/list.html:55
+#: templates/multimedia/media_list.html:137 templates/reports/index.html:61
+#: templates/reports/index.html.py:112 templates/suggest/list.html:55
 #: templates/suggest/list.html.py:99 templates/suggest/list.html:143
 #: templates/suggest/list.html.py:186
 msgid "Deleted"
@@ -299,9 +303,9 @@ msgstr "Colección"
 #: templates/multimedia/media_form.html:213
 #: templates/multimedia/media_form.html:285
 #: templates/multimedia/media_list.html:63
-#: templates/multimedia/media_list.html:120 templates/suggest/list.html:49
-#: templates/suggest/list.html.py:79 templates/suggest/list.html:123
-#: templates/suggest/list.html.py:167
+#: templates/multimedia/media_list.html:120 templates/reports/index.html:55
+#: templates/suggest/list.html:49 templates/suggest/list.html.py:79
+#: templates/suggest/list.html:123 templates/suggest/list.html.py:167
 msgid "Status"
 msgstr "Estado"
 
@@ -340,7 +344,7 @@ msgstr "Título"
 
 #: biblioref/models.py:72 events/models.py:88 main/models.py:238
 #: multimedia/models.py:63 multimedia/models.py:119
-#: templates/multimedia/media_list.html:86
+#: templates/multimedia/media_list.html:86 templates/reports/index.html:64
 msgid "Cooperative center"
 msgstr "Centro cooperante"
 
@@ -430,7 +434,7 @@ msgstr "Informe borrado."
 msgid "Event type"
 msgstr "Tipo de evento"
 
-#: events/models.py:18 templates/menu.html:43 templates/events/types.html:4
+#: events/models.py:18 templates/menu.html:45 templates/events/types.html:4
 #: templates/events/types.html.py:7 templates/events/types.html:21
 msgid "Event types"
 msgstr "Tipos de evento"
@@ -482,7 +486,7 @@ msgstr "Evento"
 #: templates/error_report/list.html:40 templates/events/edit-event.html:8
 #: templates/events/events.html:4 templates/events/events.html.py:7
 #: templates/events/events.html:22 templates/main/index.html:32
-#: templates/suggest/list.html:31
+#: templates/reports/index.html:46 templates/suggest/list.html:31
 msgid "Events"
 msgstr "Eventos"
 
@@ -547,17 +551,17 @@ msgstr "Tipo editado con éxito."
 msgid "Type deleted."
 msgstr "Tipo borrado."
 
-#: main/choices.py:6 templates/menu.html:55 templates/menu.html.py:61
+#: main/choices.py:6 templates/menu.html:57 templates/menu.html.py:63
 #: utils/models.py:13
 msgid "English"
 msgstr "Inglés"
 
-#: main/choices.py:7 templates/menu.html:57 templates/menu.html.py:62
+#: main/choices.py:7 templates/menu.html:59 templates/menu.html.py:64
 #: utils/models.py:14
 msgid "Portuguese"
 msgstr "Portugués"
 
-#: main/choices.py:8 templates/menu.html:56 templates/menu.html.py:63
+#: main/choices.py:8 templates/menu.html:58 templates/menu.html.py:65
 #: utils/models.py:15
 msgid "Spanish"
 msgstr "Español"
@@ -608,11 +612,11 @@ msgstr "Idiomas de la fuente"
 #: templates/events/edit-event.html:281 templates/events/events.html:79
 #: templates/main/edit-resource.html:282 templates/main/edit-thematic.html:8
 #: templates/main/resources.html:79 templates/multimedia/media_form.html:284
-#: templates/multimedia/media_list.html:94
+#: templates/multimedia/media_list.html:94 templates/reports/index.html:72
 msgid "Thematic area"
 msgstr "Área temática"
 
-#: main/models.py:104 main/models.py:148 templates/menu.html:41
+#: main/models.py:104 main/models.py:148 templates/menu.html:43
 #: templates/biblioref/reference_form.html:39
 #: templates/events/edit-event.html:38 templates/main/edit-resource.html:37
 #: templates/main/thematics.html:4 templates/main/thematics.html.py:7
@@ -642,7 +646,8 @@ msgstr "Recurso"
 #: templates/main/edit-resource.html:8 templates/main/index.html:25
 #: templates/main/index.html.py:42 templates/main/resources.html:4
 #: templates/main/resources.html.py:7 templates/main/resources.html:22
-#: templates/suggest/list.html:7 templates/suggest/list.html.py:28
+#: templates/reports/index.html:45 templates/suggest/list.html:7
+#: templates/suggest/list.html.py:28
 msgid "Resources"
 msgstr "Recursos"
 
@@ -707,7 +712,7 @@ msgstr "Idioma borrado."
 msgid "Media type"
 msgstr "Tipo de media"
 
-#: multimedia/models.py:18 templates/menu.html:45
+#: multimedia/models.py:18 templates/menu.html:47
 #: templates/multimedia/mediatype_list.html:4
 #: templates/multimedia/mediatype_list.html:7
 #: templates/multimedia/mediatype_list.html:21
@@ -893,7 +898,7 @@ msgstr "Panel de control"
 
 #: templates/menu.html:22 templates/multimedia/media_list.html:4
 #: templates/multimedia/media_list.html:7
-#: templates/multimedia/media_list.html:22
+#: templates/multimedia/media_list.html:22 templates/reports/index.html:47
 msgid "Multimedia"
 msgstr "Multimedia"
 
@@ -902,20 +907,26 @@ msgstr "Multimedia"
 msgid "Suggestions"
 msgstr "Sugerencias"
 
-#: templates/menu.html:37
+#: templates/menu.html:33 templates/reports/index.html:4
+#: templates/reports/index.html.py:7 templates/reports/index.html:22
+#, fuzzy
+msgid "Reports"
+msgstr "Informe de error"
+
+#: templates/menu.html:39
 msgid "Controlled lists"
 msgstr "Listas controladas "
 
-#: templates/menu.html:42 templates/main/types.html:4
+#: templates/menu.html:44 templates/main/types.html:4
 #: templates/main/types.html.py:7 templates/main/types.html:21
 msgid "Source types"
 msgstr "Tipos de fuentes"
 
-#: templates/menu.html:44
+#: templates/menu.html:46
 msgid "Languages"
 msgstr "Idiomas"
 
-#: templates/menu.html:78
+#: templates/menu.html:80
 msgid "Logout"
 msgstr "Cerrar sesión"
 
@@ -1160,7 +1171,9 @@ msgstr "Buscar"
 #: templates/main/resources.html.py:81 templates/multimedia/media_list.html:65
 #: templates/multimedia/media_list.html:80
 #: templates/multimedia/media_list.html:88
-#: templates/multimedia/media_list.html:96 templates/suggest/list.html:51
+#: templates/multimedia/media_list.html:96 templates/reports/index.html:57
+#: templates/reports/index.html.py:66 templates/reports/index.html:74
+#: templates/suggest/list.html:51
 msgid "All"
 msgstr "Todos"
 
@@ -1370,7 +1383,7 @@ msgstr "Mis medias"
 msgid "All medias"
 msgstr "Todos los medios"
 
-#: templates/multimedia/media_list.html:74
+#: templates/multimedia/media_list.html:74 templates/reports/index.html:52
 msgid "Filters"
 msgstr "Filtros"
 
@@ -1378,7 +1391,7 @@ msgstr "Filtros"
 msgid "User"
 msgstr ""
 
-#: templates/multimedia/media_list.html:102
+#: templates/multimedia/media_list.html:102 templates/reports/index.html:80
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -1427,6 +1440,61 @@ msgstr "Borrar tipo de media"
 #: templates/multimedia/mediatype_list.html:23
 msgid "New Media type"
 msgstr "Nuevo tipo de medio"
+
+#: templates/reports/index.html:32
+#, fuzzy
+msgid "Report"
+msgstr "Informe de error"
+
+#: templates/reports/index.html:34
+#, fuzzy
+msgid "Documents by Documentalists"
+msgstr "documentalista"
+
+#: templates/reports/index.html:35
+#, fuzzy
+msgid "Documents by Cooperative Center"
+msgstr "Centro cooperante"
+
+#: templates/reports/index.html:36
+msgid "Documents by Entry Year"
+msgstr ""
+
+#: templates/reports/index.html:37
+msgid "Documents by Entry Month"
+msgstr ""
+
+#: templates/reports/index.html:38
+#, fuzzy
+msgid "Documents by Thematic Area"
+msgstr "Centro cooperante"
+
+#: templates/reports/index.html:39
+#, fuzzy
+msgid "Documents by Status"
+msgstr "documentalista"
+
+#: templates/reports/index.html:40
+#, fuzzy
+msgid "Medias by Media Collection"
+msgstr "Editar colección"
+
+#: templates/reports/index.html:43
+#, fuzzy
+msgid "Source"
+msgstr "Recurso"
+
+#: templates/reports/index.html:50
+msgid "Execute"
+msgstr ""
+
+#: templates/reports/index.html:123
+msgid "Export CSV"
+msgstr ""
+
+#: templates/reports/index.html:129
+msgid "No data for these criteria"
+msgstr ""
 
 #: templates/suggest/edit-suggested-event.html:5
 #: templates/suggest/edit-suggested-event.html:15
@@ -1489,8 +1557,8 @@ msgid ""
 "Your suggestion will be evaluated and if approved will be included in the "
 "Health Information Locator"
 msgstr ""
-"Tu sugerencia será evaluado y si se aprueba, será incluido en el Localizador"
-" de Información en Salud"
+"Tu sugerencia será evaluado y si se aprueba, será incluido en el Localizador "
+"de Información en Salud"
 
 #: utils/forms.py:128
 msgid "You must have at least one descriptor"
@@ -1512,6 +1580,14 @@ msgstr "código"
 msgid "country"
 msgstr "país"
 
+#, fuzzy
+#~ msgid "Publication year"
+#~ msgstr "Fecha de publicación"
+
+#, fuzzy
+#~ msgid "Publication month"
+#~ msgstr "Fecha de publicación"
+
 #~ msgid "for photo, etc"
 #~ msgstr "para fotos, etc."
 
@@ -1523,9 +1599,6 @@ msgstr "país"
 
 #~ msgid "Location"
 #~ msgstr "Localización"
-
-#~ msgid "documentalist"
-#~ msgstr "documentalista"
 
 #~ msgid "editor"
 #~ msgstr "editor"

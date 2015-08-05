@@ -96,6 +96,9 @@ urlpatterns = patterns('',
     # Bibliographic References
     (r'^bibliographic/', include('biblioref.urls')),
 
+    # Reports
+    (r'^reports/', include('reports.urls')),
+
     # Login/Logout
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html', 'extra_context':{'BIREMELOGIN_BASE_URL': settings.BIREMELOGIN_BASE_URL}}, name='auth_login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'authentication/logout.html', 'next_page': '/'}, name='auth_logout'),

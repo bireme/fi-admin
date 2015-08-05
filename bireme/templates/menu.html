@@ -52,6 +52,8 @@
                                 <li><a href="{% url 'error_reporting.views.list_error_report' %}" title=""><i class="icon-warning-sign"></i> {% trans "Error reports" %}</a></li>
                             {% endif %}
 
+                            <li><a href="{% url 'list_reports' %}" title=""><i class="icon-file"></i> {% trans "Reports" %}</a></li>
+
                             {% if user.is_superuser %}
                                 <li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_control_tables">
@@ -104,7 +106,7 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
 
     {% endif %}
 {% endblock %}
