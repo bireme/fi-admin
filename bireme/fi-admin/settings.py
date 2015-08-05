@@ -175,6 +175,7 @@ INSTALLED_APPS = (
     'multimedia',
     'title',
     'biblioref',
+    'reports',
     'utils',
 
 )
