@@ -27,10 +27,10 @@
            <h1>{% trans 'Ops!' %}</h1>
            <p>{% trans 'Please check the following problems and submit your suggest again:' %}</p>
 
-           <ul>           
+           <ul>
            {% for field in form %}
                 {% if field.errors %}
-                    <li>{{ field.name }} : {{ field.value }}        
+                    <li>{{ field.label }} : {{ field.value }}        
                         <div class="alert alert-error">
                         {% for error in field.errors %}
                             {{ error|escape }}
@@ -67,4 +67,3 @@
 
     </body>
 </html>
-
