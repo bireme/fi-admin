@@ -108,7 +108,6 @@ class BiblioRefForm(BetterModelForm):
                         message = string_concat(message_item, message)
                         self.add_error(field, message)
         else:
-            print self.is_LILACS
             occ = 0
             for author in data:
                 occ = occ + 1
