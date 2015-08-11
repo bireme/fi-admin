@@ -37,23 +37,23 @@ def suggest_resource(request, **kwargs):
     template = ''
     captcha_is_valid = True
     captcha_error = ''
-    
+
     suggest = SuggestResource()
-   
+
     form = ExternalSuggestResourceForm(request.POST, instance=suggest)
 
     if settings.RECAPTCHA_PRIVATE_KEY:
         # Check the captcha with reCAPTCHA (google service)
-        captcha_response = captcha.submit(  
-            request.POST.get('recaptcha_challenge_field'),  
-            request.POST.get('recaptcha_response_field'),  
-            settings.RECAPTCHA_PRIVATE_KEY,  
-            request.META['REMOTE_ADDR'],)  
+        captcha_response = captcha.submit(
+            request.POST.get('recaptcha_challenge_field'),
+            request.POST.get('recaptcha_response_field'),
+            settings.RECAPTCHA_PRIVATE_KEY,
+            request.META['REMOTE_ADDR'],)
 
         if not captcha_response.is_valid:
             # captcha is wrong show a error message in the template.
             captcha_is_valid = False
-            captcha_error = captcha_response.error_code           
+            captcha_error = captcha_response.error_code
 
     if form.is_valid() and captcha_is_valid:
         template = 'suggest/thanks.html'
@@ -62,7 +62,7 @@ def suggest_resource(request, **kwargs):
         template = 'suggest/invalid-link.html'
         output['form'] = form
         output['captcha_error'] = captcha_error
-    
+
     return render_to_response(template, output, context_instance=RequestContext(request))
 
 @login_required
@@ -95,13 +95,13 @@ def list_suggestions(request):
     else:
         suggestions = SuggestResource.objects.filter(title__icontains=actions['s'])
 
-    
+
     if not actions['filter_status']:
         actions['filter_status'] = '0'
-    
+
     if actions['filter_status'] != '*':
         suggestions = suggestions.filter(status=actions['filter_status'])
-    
+
 
     suggestions = suggestions.order_by(actions["orderby"])
     if actions['order'] == "-":
@@ -161,7 +161,7 @@ def create_resource_from_suggestion(request, suggestion_id):
 
     user_data = additional_user_info(request)
 
-    resource = Resource(title=suggestion.title, link=suggestion.link, 
+    resource = Resource(title=suggestion.title, link=suggestion.link,
         abstract=suggestion.abstract, created_by=request.user)
     resource.save();
 
@@ -187,7 +187,7 @@ def create_event_from_suggestion(request, suggestion_id):
 
     user_data = additional_user_info(request)
 
-    event = Event(title=suggestion.title, start_date=suggestion.start_date, 
+    event = Event(title=suggestion.title, start_date=suggestion.start_date,
         end_date=suggestion.end_date, link=suggestion.link, city=suggestion.city, created_by=request.user)
     event.save();
 
@@ -206,13 +206,13 @@ def suggest_tag(request, **kwargs):
     resource = None
     response = None
     sucess = True
-    
+
     resource_id = escape(request.POST.get('resource_id'))
     suggest_tag = escape(request.POST.get('tags'))
 
     try:
         resource = Resource.objects.get(pk=resource_id)
-    except Resource.DoesNotExist:    
+    except Resource.DoesNotExist:
         sucess = False
 
     if resource != None:
@@ -221,11 +221,11 @@ def suggest_tag(request, **kwargs):
             keyword.save()
 
 
-    response = HttpResponse(sucess)  
+    response = HttpResponse(sucess)
     response["Access-Control-Allow-Origin"] = "*"
     response["Access-Control-Allow-Methods"] = "POST"
-    response["Access-Control-Allow-Headers"] = "*" 
-    
+    response["Access-Control-Allow-Headers"] = "*"
+
     return response
 
 
@@ -236,24 +236,30 @@ def suggest_event(request, **kwargs):
     output = {}
     template = ''
     captcha_is_valid = True
-    captcha_error = ''   
-    
-    suggest = SuggestEvent()   
-   
+    captcha_error = ''
+
+    suggest = SuggestEvent()
+
     form = ExternalSuggestEventForm(request.POST, instance=suggest)
 
     if settings.RECAPTCHA_PRIVATE_KEY:
         # Check the captcha with reCAPTCHA (google service)
-        captcha_response = captcha.submit(  
-            request.POST.get('recaptcha_challenge_field'),  
-            request.POST.get('recaptcha_response_field'),  
-            settings.RECAPTCHA_PRIVATE_KEY,  
-            request.META['REMOTE_ADDR'],)  
+        captcha_response = captcha.submit(
+            request.POST.get('recaptcha_challenge_field'),
+            request.POST.get('recaptcha_response_field'),
+            settings.RECAPTCHA_PRIVATE_KEY,
+            request.META['REMOTE_ADDR'],)
 
         if not captcha_response.is_valid:
             # captcha is wrong show a error message in the template.
             captcha_is_valid = False
-            captcha_error = captcha_response.error_code           
+            captcha_error = captcha_response.error_code
+
+    lang_code = request.POST.get('language', 'pt-BR')
+    if hasattr(request, 'session'):
+        request.session['django_language'] = lang_code
+    else:
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang_code)
 
     if form.is_valid() and captcha_is_valid:
         template = 'suggest/thanks.html'
@@ -263,7 +269,7 @@ def suggest_event(request, **kwargs):
         template = 'suggest/invalid-link.html'
         output['form'] = form
         output['captcha_error'] = captcha_error
-    
+
     return render_to_response(template, output, context_instance=RequestContext(request))
 
 
@@ -297,4 +303,3 @@ def edit_suggested_event(request, **kwargs):
     output['settings'] = settings
 
     return render_to_response('suggest/edit-suggested-event.html', output, context_instance=RequestContext(request))
-
