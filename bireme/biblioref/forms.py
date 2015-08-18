@@ -3,6 +3,8 @@ from collections import OrderedDict
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.utils.translation import string_concat
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
+from django.contrib.contenttypes.models import ContentType
 from django.forms import widgets
 from django import forms
 from form_utils.forms import BetterModelForm, FieldsetCollection
@@ -85,6 +87,9 @@ class BiblioRefForm(BetterModelForm):
     def clean_individual_author_monographic(self):
         field = 'individual_author_monographic'
         data = self.cleaned_data[field]
+        abbreviation_list = [' JR.', ' JR ', 'Fº', ' jr.', ' jr ', 'fº', ' Jr.', ' Jr ', ' jR.', ' jR ']
+        literature_type = self.document_type[0]
+        type_of_journal = self.cleaned_data['type_of_journal']
 
         if self.document_type[0] == 'T':
             if not data:
@@ -107,7 +112,7 @@ class BiblioRefForm(BetterModelForm):
                         message = _("Insert space after comma")
                         message = string_concat(message_item, message)
                         self.add_error(field, message)
-        else:
+        elif data:
             occ = 0
             for author in data:
                 occ = occ + 1
@@ -115,11 +120,33 @@ class BiblioRefForm(BetterModelForm):
                 message_item = _("item %s: ") % occ
                 if author_name != 'Anon':
                     if not ',' in author_name and self.is_LILACS:
-                        message = "Comma absense or error in the word Anon"
+                        message = _("Comma absense or error in the word Anon")
+                        message = string_concat(message_item, message)
+                        self.add_error(field, message)
+                    else:
+                        if ',' in author_name and not ', ' in author_name:
+                            message = _("Insert space after comma")
+                            message = string_concat(message_item, message)
+                            self.add_error(field, message)
+                        if '.' in author_name and not '. ' in author_name:
+                            message = _("Insert space after point")
+                            message = string_concat(message_item, message)
+                            self.add_error(field, message)
+                        if any(abbreviation.decode('utf-8') in author_name for abbreviation in abbreviation_list):
+                            message = _("Invalid abbreviation input Junior and/or Filho")
+                            message = string_concat(message_item, message)
+                            self.add_error(field, message)
+
+                    if literature_type == 'S' and self.is_LILACS and type_of_journal == 'p' and not '_1' in author:
+                        message = _("Subfield 1 affiliation mandatory")
                         message = string_concat(message_item, message)
                         self.add_error(field, message)
 
-
+                    for key, value in author.iteritems():
+                        if value.strip().endswith('.'):
+                            message = _("Point at end of field is not allowed")
+                            message = string_concat(message_item, message)
+                            self.add_error(field, message)
 
         return data
 
@@ -195,6 +222,8 @@ class BiblioRefForm(BetterModelForm):
         return data
 
     def save(self, *args, **kwargs):
+        new_reference = True
+
         obj = super(BiblioRefForm, self).save(commit=False)
 
         # if is a new analytic save reference source info
@@ -228,10 +257,13 @@ class BiblioRefForm(BetterModelForm):
             if hasattr(field.widget.attrs, 'readonly'):
                 setattr(obj, name, field.widget.original_value)
 
-        # save modifications
-        obj.save()
+        fields_change = ''
+        if obj.pk:
+            new_reference = False
+            fields_change = self.get_changes_in_json()
 
-        return obj
+        # save object in database
+        obj.save()
 
 
 class BiblioRefSourceForm(BiblioRefForm):
