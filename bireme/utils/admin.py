@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.admin.models import LogEntry
 from models import *
-
 
 class GenericAdmin(admin.ModelAdmin):
     exclude = ()
@@ -30,6 +30,11 @@ class ContentTypeAdmin(GenericAdmin):
     list_display = ['pk', 'name']
     search_fields = ['name',]
 
+class LogEntryAdmin(GenericAdmin):
+    model = LogEntry
+    #list_display = ['pk', 'name']
+    #search_fields = ['name',]
+
 
 class AuxCodeLocalAdmin(admin.TabularInline):
     model = AuxCodeLocal
@@ -43,4 +48,5 @@ class AuxCodeAdmin(GenericAdmin):
 
 admin.site.register(Country, CountryAdmin)
 admin.site.register(ContentType, ContentTypeAdmin)
+admin.site.register(LogEntry, LogEntryAdmin)
 admin.site.register(AuxCode, AuxCodeAdmin)

@@ -262,8 +262,44 @@ class BiblioRefForm(BetterModelForm):
             new_reference = False
             fields_change = self.get_changes_in_json()
 
-        # save object in database
+        # save object in database and get object PK for logentry
         obj.save()
+
+        # only add log for new references or if there are a changes in any form field
+        if fields_change or new_reference:
+            LogEntry.objects.log_action(user_id = self.user.id,
+                                        content_type_id = ContentType.objects.get_for_model(obj).pk,
+                                        object_id = obj.pk,
+                                        object_repr = obj.reference_title,
+                                        change_message = fields_change,
+                                        action_flag = ADDITION if new_reference else CHANGE)
+
+
+        return obj
+
+    def get_changes_in_json(self):
+        data = self.cleaned_data
+        field_change = []
+        field_change_json = ''
+
+        obj_model = type(self.instance)
+        obj = obj_model.objects.get(pk = self.instance.id)
+
+        for field_name in self.instance.changed_fields:
+            previous_value = obj.__dict__[field_name]
+            new_value = data[field_name]
+
+            # convert JSON to compare properly
+            if isinstance(previous_value, basestring) and previous_value[0:2] == '[{':
+                previous_value = json.loads(previous_value)
+
+            if field_name != 'reference_title' and field_name != 'literature_type' and new_value != previous_value:
+                field_change.append({'field_name': field_name, 'previous_value': previous_value, 'new_value': new_value})
+
+        if field_change:
+            field_change_json = json.dumps(field_change, encoding="utf-8", ensure_ascii=False)
+
+        return field_change_json
 
 
 class BiblioRefSourceForm(BiblioRefForm):

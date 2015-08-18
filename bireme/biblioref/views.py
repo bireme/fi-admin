@@ -140,7 +140,7 @@ class BiblioRefUpdate(LoginRequiredView):
                 formset_thematic.save()
 
                 # update solr index
-                form.save()
+                # form.save()
                 form.save_m2m()
                 return HttpResponseRedirect(self.get_success_url())
         else:

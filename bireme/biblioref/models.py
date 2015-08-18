@@ -1,6 +1,8 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
+from django.contrib.contenttypes.generic import GenericRelation
+from django.contrib.admin.models import LogEntry
 from utils.fields import JSONField, AuxiliaryChoiceField, MultipleAuxiliaryChoiceField
 from utils.models import Generic
 
@@ -134,6 +136,9 @@ class Reference(Generic):
     # field tag 899
     software_version = models.CharField(_('Software version'), max_length=50, blank=True)
     LILACS_original_id = models.CharField(_('LILACS id'), max_length=8, blank=True)
+
+    # relations
+    logs = GenericRelation(LogEntry)
 
     def __unicode__(self):
         if 'a' in self.treatment_level:
