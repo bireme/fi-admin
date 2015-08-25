@@ -45,7 +45,7 @@
     </ul>
 
 
-    <form method="POST" class="media-form">
+    <form method="POST" class="reference-form">
         {% csrf_token %}
 
         <div class="tab-content">
@@ -126,12 +126,32 @@
 
                     {% comment %}Display administrative information{% endcomment %}
 
-                    {% if media.id %}
+                    {% if object.id %}
                         <div class="alert alert-info">
-                            <p>{% trans "Media created in" %}: <strong>{{ media.created_time }}</strong> {% trans "by user" %}  <strong>{{ media.created_by.username }}</strong></p>
-                            <p>{% trans "Cooperative center code" %}: <strong>{{ media.cooperative_center_code }}</strong></p>
+                            <p>{% trans "Created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ media.created_by.username }}</strong></p>
+                            <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
                             {% if media.updated_by %}
                                 <p>{% trans "Last edit in" %} <strong>{{ media.updated_time }}</strong> {% trans "by user" %}  <strong>{{ media.updated_by.username }}</strong></p>
+                            {% endif %}
+                        </div>
+
+                        <i class="icon icon-time"></i> <a href="#" id="show_advaced_filters" onclick="$('#changes_history').toggle()">{% trans "Changes history" %}</a>
+                        <div id="changes_history" class="hide">
+                            {% if object.logs  %}
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>{% trans "Date" %}</th>
+                                        <th>{% trans "User" %}</th>
+                                        <th>{% trans "Changes" %}</th>
+                                    </tr>
+                                    {% for log in object.logs.all %}
+                                        <tr>
+                                            <td>{{ log.action_time }}</td>
+                                            <td>{{ log.user }}</td>
+                                            <td>{{ log|log_json_changes }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
                             {% endif %}
                         </div>
 
