@@ -164,6 +164,7 @@
                         <thead>
                             <th>{% trans "Descriptors" %}</th>
                             <th>{% trans "Status" %}</th>
+                            <th>{% trans "Primary?" %}</th>
                             <th>{% trans "Delete?" %}</th>
                         </thead>
                         <tbody>
@@ -358,7 +359,6 @@
 {% endblock %}
 
 {% block extrajs %}
-
    <script src="{% static 'js/jquery.formset.js' %}"></script>
 
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
@@ -476,14 +476,6 @@
 
             $(document).on("click", "a.add_error_report", function(){
                 $("#error_report_modal").modal("show");
-            });
-
-            // Prevent losing data by navigating away from the page
-            $(window).bind('beforeunload', function() {
-                var checkboxcount = $("input:checkbox:checked").length;
-                if(checkboxcount > 0) {
-                    return 'Are you sure?';
-                }
             });
 
         })
