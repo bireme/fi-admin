@@ -13,16 +13,16 @@ def minimal_form_data():
     Define a minimal fields for submit a media form
     '''
 
-    form_data = { 
+    form_data = {
         'status': '0',
         'title': 'Foto 1',
         'description': 'Foto 1',
         'media_type' : '1',
-        
-        'main-descriptor-content_type-object_id-TOTAL_FORMS': '0', 
+
+        'main-descriptor-content_type-object_id-TOTAL_FORMS': '0',
         'main-descriptor-content_type-object_id-INITIAL_FORMS': '0',
 
-        'main-keyword-content_type-object_id-TOTAL_FORMS': '0', 
+        'main-keyword-content_type-object_id-TOTAL_FORMS': '0',
         'main-keyword-content_type-object_id-INITIAL_FORMS': '0',
 
         'main-resourcethematic-content_type-object_id-TOTAL_FORMS': '0',
@@ -38,6 +38,7 @@ def complete_form_data():
 
     missing_fields = {
         'link'  : 'http://www.youtube.com',
+        'publication_date' : '01/12/2015',
 
         'main-descriptor-content_type-object_id-TOTAL_FORMS' : '1',
 
@@ -61,17 +62,17 @@ def create_media_object():
     '''
     Create media object for tests
     '''
-    
+
     # Create a Media object and test that is present on list
-    media1 = Media.objects.create(status=0,title='Midia de teste (BR1.1)', 
+    media1 = Media.objects.create(status=0,title='Midia de teste (BR1.1)',
                             media_type_id=1, link='http://bvsalud.org', created_by_id=1,
                             cooperative_center_code='BR1.1')
-    
+
     media_ct = ContentType.objects.get_for_model(media1)
     descriptor = Descriptor.objects.create(object_id=1, content_type=media_ct, text='malaria')
     thematic = ResourceThematic.objects.create(object_id=1, content_type=media_ct, thematic_area_id=1)
 
-    media2 = Media.objects.create(status=0,title='Media de prueba (PY3.1)', 
+    media2 = Media.objects.create(status=0,title='Media de prueba (PY3.1)',
                             media_type_id=1, link='http://bvsalud.org', created_by_id=2,
                             cooperative_center_code='PY3.1')
 
@@ -100,19 +101,19 @@ class MultimediaTest(BaseTestCase):
         self.assertContains(response, "Midia de teste (BR1.1")
 
         # list only medias from user cooperative center (BR1.1)
-        self.assertNotContains(response, "Media de prueba (PY3.1)")        
+        self.assertNotContains(response, "Media de prueba (PY3.1)")
 
 
     def test_add_media(self):
         """
         Tests create media
         """
-        self.login_editor()        
+        self.login_editor()
 
         # invalid submission with missing required fields
         form_data = minimal_form_data()
         response = self.client.post('/multimedia/new', form_data )
-        
+
         self.assertContains(response,'Por favor verifique os campos obrigatórios')
         self.assertContains(response,'Você precisa inserir pelo menos um descritor de assunto')
         self.assertContains(response,'Você precisa selecionar pelo menos uma área temática')
@@ -129,7 +130,7 @@ class MultimediaTest(BaseTestCase):
 
         # check if is set cooperative center code of user (editor = BR1.1)
         self.assertEquals(Media.objects.all()[0].cooperative_center_code, "BR1.1")
-        
+
     def test_edit_media(self):
         """
         Tests edit media
@@ -161,7 +162,7 @@ class MultimediaTest(BaseTestCase):
 
     def test_delete_media(self):
         """
-        Tests delete media 
+        Tests delete media
         """
         self.login_editor()
         create_media_object()
@@ -212,17 +213,17 @@ class MultimediaTest(BaseTestCase):
         self.client.logout()
         self.login_admin()
 
-        form_data = { 
+        form_data = {
             'status': '0',
             'acronym': 'foto',
             'name': 'Foto',
             'language' : 'pt-br',
-            'mediatypelocal_set-TOTAL_FORMS': '0', 
+            'mediatypelocal_set-TOTAL_FORMS': '0',
             'mediatypelocal_set-INITIAL_FORMS': '0',
         }
 
         response = self.client.post('/multimedia/media-type/new', form_data, follow=True )
-       
+
         self.assertRedirects(response, '/multimedia/media-types')
         self.assertContains(response, "Foto")
 
@@ -234,16 +235,16 @@ class MultimediaTest(BaseTestCase):
         self.login_editor()
 
         # Create a media collection object and test that is present on list
-        MediaCollection.objects.create(name='Coleção 1', 
-                                        description='Coleção de teste 1', 
+        MediaCollection.objects.create(name='Coleção 1',
+                                        description='Coleção de teste 1',
                                         created_by_id=1, cooperative_center_code='BR1.1')
 
-        MediaCollection.objects.create(name='Coleção 2', 
-                                        description='Coleção de teste 2', 
+        MediaCollection.objects.create(name='Coleção 2',
+                                        description='Coleção de teste 2',
                                         created_by_id=2, cooperative_center_code='BR1.1')
 
-        MediaCollection.objects.create(name='Coleção 3', 
-                                        description='Coleção de teste 3', 
+        MediaCollection.objects.create(name='Coleção 3',
+                                        description='Coleção de teste 3',
                                         created_by_id=3, cooperative_center_code='PY3.8')
 
 
@@ -251,9 +252,9 @@ class MultimediaTest(BaseTestCase):
         # check if only one collection is returned (restrict by user)
         self.assertContains(response, "Coleção 1")
         self.assertEquals(response.context['object_list'].count(), 3)
-        
+
         # check if return only colections from cooperative center BR1.1
-        response = self.client.get('/multimedia/collections/?filter_owner=*')
+        response = self.client.get('/multimedia/collections/?filter_created_by_cc=BR1.1')
         self.assertEquals(response.context['object_list'].count(), 2)
 
 
@@ -263,16 +264,15 @@ class MultimediaTest(BaseTestCase):
         """
         self.login_editor()
 
-        form_data = { 
+        form_data = {
             'name': 'Coleção nova',
             'description': 'Coleção de teste',
             'language': 'pt-br',
-            'mediacollectionlocal_set-TOTAL_FORMS': '0', 
-            'mediacollectionlocal_set-INITIAL_FORMS': '0',            
+            'mediacollectionlocal_set-TOTAL_FORMS': '0',
+            'mediacollectionlocal_set-INITIAL_FORMS': '0',
         }
 
         response = self.client.post('/multimedia/collection/new', form_data, follow=True )
-       
+
         self.assertRedirects(response, '/multimedia/collections')
         self.assertContains(response, "Coleção nova")
-

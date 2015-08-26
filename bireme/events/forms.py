@@ -15,12 +15,12 @@ from utils.forms import DescriptorRequired, ResourceThematicRequired
 import simplejson
 
 class EventForm(forms.ModelForm):
-    
-    start_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'), 
+
+    start_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
-    end_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'), 
+    end_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
-    
+
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -71,7 +71,8 @@ class TypeForm(forms.ModelForm):
 
 # definition of inline formsets
 
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True,
+                                                  exclude=['primary'], extra=1)
 
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
 

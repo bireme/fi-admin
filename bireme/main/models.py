@@ -173,6 +173,7 @@ class Descriptor(Generic):
     text = models.CharField(_('Text'), max_length=255, blank=True)
     code = models.CharField(_('Code'), max_length=50, blank=True)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
+    primary = models.BooleanField(_('Primary?'), default=False)
 
     def __unicode__(self):
         return self.text

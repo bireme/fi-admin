@@ -96,17 +96,17 @@ class TypeLocalForm(forms.ModelForm):
 
 
 # definition of inline formsets
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, exclude=['primary'],
+                                                  can_delete=True, extra=1)
 
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, 
-                                        can_delete=True, extra=1)
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, 
-                                        formset=ResourceThematicRequired, can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired,
+                                                        can_delete=True, extra=1)
 
-ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAreaLocal, 
-                                        form=ThematicAreaLocalForm, can_delete=True, extra=1)
+ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAreaLocal,
+                                                       form=ThematicAreaLocalForm, can_delete=True, extra=1)
 
-LanguageTranslationFormSet = inlineformset_factory(SourceLanguage, SourceLanguageLocal, 
-                                        can_delete=True, extra=1)
+LanguageTranslationFormSet = inlineformset_factory(SourceLanguage, SourceLanguageLocal,
+                                                   can_delete=True, extra=1)
 
 TypeTranslationFormSet = inlineformset_factory(SourceType, SourceTypeLocal, can_delete=True, extra=1)
