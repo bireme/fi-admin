@@ -48,6 +48,8 @@ def format_jsonfield(data):
                     out = out + key + ": " + value
                 else:
                     out = out + value + " "
+    elif type(data) == unicode:
+        out = data.encode('utf-8')
     elif data != None:
         out = data
 

@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.contenttypes.generic import GenericRelation
 from django.contrib.admin.models import LogEntry
 from utils.fields import JSONField, AuxiliaryChoiceField, MultipleAuxiliaryChoiceField
-from utils.models import Generic
+from utils.models import Generic, Country
 
 STATUS_CHOICES = (
     (0, _('Pending')),
@@ -224,7 +224,7 @@ class ReferenceSource(Reference):
     # field tag 66
     publication_city = models.CharField(_('City of publication'), max_length=100, blank=True)
     # field tag 67
-    # publication_country = TODO
+    publication_country = models.ForeignKey(Country, verbose_name=_('Publication country'), blank=True, null=True)
     # field tag 68
     symbol = models.TextField(_('Symbol'), blank=True)
     # field tag 69
@@ -275,7 +275,7 @@ class ReferenceComplement(models.Model):
     # field tag 56
     conference_city = models.CharField(_('Conference city'), max_length=100, blank=True)
     # field tag 57
-    # conference_country = TODO
+    conference_country = models.ForeignKey(Country, verbose_name=_('Conference country'), blank=True, null=True)
     # field tag 58
     project_sponsoring_institution = models.TextField(_('Project - Sponsoring Institution'), blank=True)
     # field tag 59

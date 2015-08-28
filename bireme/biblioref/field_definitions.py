@@ -52,7 +52,7 @@ subject_section = ('content_data', {'fields': ['author_keyword'],
 
 imprint_section = ('imprint', {'fields': ['publisher', 'edition', 'publication_date',
                                           'publication_date_normalized', 'publication_city',
-                                          'symbol', 'isbn'],
+                                          'publication_country', 'symbol', 'isbn'],
                                'legend': 'Imprint',
                                'classes': ['collapse']})
 
