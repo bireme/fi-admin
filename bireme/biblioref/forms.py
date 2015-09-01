@@ -64,7 +64,7 @@ class BiblioRefForm(BetterModelForm):
         error_messages = []
 
         for field_name, field_value in self.fields.iteritems():
-            field_check = data[field_name]
+            field_check = data.get(field_name)
 
             if isinstance(self.fields[field_name].widget, forms.widgets.Textarea):
                 if '%' in field_check:
