@@ -56,7 +56,7 @@
                     {% for reference in references %}
                         <tr>
                             <td><a href="{% url 'edit_biblioref_source' reference.id %}">{{ reference.id }}</a></td>
-                            <td><span title="{{ reference }}">{{ reference|slice:"50" }}</span></td>
+                            <td><span title="{{ reference }}">{{ reference.title_serial }}; {{reference.volume_serial}} ({{reference.issue_number}})</span></td>
                             <td>
                                 {{ reference.publication_date|slice:"4" }}
                             </td>

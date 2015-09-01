@@ -246,7 +246,7 @@ class ReferenceAnalytic(Reference):
     # field tag 11
     corporate_author = JSONField(_('Corporate author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 12
-    title = JSONField(_('Title'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+    title = JSONField(_('Title'), blank=False, null=True, dump_kwargs={'ensure_ascii': False}, help_text=_("Field mandatory"))
     # field tag 13
     english_translated_title = models.CharField(_('English translated title'), max_length=400, blank=True)
     # field tag 14
@@ -259,8 +259,8 @@ class ReferenceAnalytic(Reference):
 class ReferenceComplement(models.Model):
 
     class Meta:
-        verbose_name = _("Bibliographic Reference Analytic")
-        verbose_name_plural = _("Bibliographic References Analytic")
+        verbose_name = _("Bibliographic Reference Complement")
+        verbose_name_plural = _("Bibliographic References Complement")
 
     source = models.ForeignKey(Reference, verbose_name=_("Source"), blank=False)
 
