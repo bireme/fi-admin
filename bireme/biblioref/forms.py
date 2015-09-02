@@ -1,6 +1,7 @@
 #! coding: utf-8
 from collections import OrderedDict
 from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import ugettext as __
 from django.utils.translation import string_concat
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
@@ -12,6 +13,7 @@ from form_utils.widgets import AutoResizeTextarea
 from django.conf import settings
 
 from main.models import Descriptor, Keyword, ResourceThematic
+from title.models import Title
 from utils.forms import DescriptorRequired, ResourceThematicRequired
 
 from models import *
@@ -40,6 +42,7 @@ class BiblioRefForm(BetterModelForm):
         self.user_data = kwargs.pop('user_data', None)
         self.document_type = kwargs.pop('document_type', None)
         self.reference_source = kwargs.pop('reference_source')
+        self.user_role = self.user_data['service_role'].get('LILDBI', 'doc')
         self.is_LILACS = False
 
         fieldsets = kwargs.pop('fieldsets', None)
@@ -50,8 +53,37 @@ class BiblioRefForm(BetterModelForm):
         self._fieldsets = fieldsets
 
         # hidden status field for documentalist profile
-        if self.user_data['service_role'].get('BiblioRef') == 'doc':
+        if self.user_data['service_role'].get('LILDBI') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
+
+        # load serial titles for serial analytic
+        if self.document_type == 'S' and not self.reference_source:
+
+            title_objects = Title.objects.all()
+
+            # populate choice title list based on user profile
+            if self.user_role == 'editor_llxp':
+                # for LILACS Express editor return only serials with same editor_cc_code of current user
+                title_list = [(t.shortened_title, t.shortened_title) for t in title_objects.filter(editor_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
+            else:
+                # for regular users return a title list splited in two parts:
+                # first journals that is indexed by user center code
+                # last the titles that have indexer_cc_code filled
+                title_list = [('', '')]
+                title_list_indexer_code = [(t.shortened_title, t.shortened_title) for t in title_objects.filter(indexer_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
+                title_list_other = [(t.shortened_title, t.shortened_title) for t in title_objects.exclude(indexer_cc_code=u'').exclude(indexer_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
+
+                separator = "-----------"
+                label_indexed = separator + __("Indexed by your cooperative center") + separator
+                label_not_indexed = separator + __("Indexed by other cooperative centers") + separator
+
+                title_list.extend([('', label_indexed)])
+                title_list.extend(title_list_indexer_code)
+                title_list.extend([('', label_not_indexed)])
+                title_list.extend(title_list_other)
+
+            self.fields['title_serial'] = forms.ChoiceField(choices=title_list, required=False, help_text=_("Select from the list"))
+            self.fields['title_serial_other'] = forms.CharField(required=False)
 
     def fieldsets(self):
         if not self._fieldset_collection:
@@ -218,6 +250,27 @@ class BiblioRefForm(BetterModelForm):
 
             if message:
                 self.add_error(field, message)
+
+        return data
+
+
+    def clean_title_serial(self):
+        title_serial_other = self.data.get('title_serial_other')
+        title_serial = self.cleaned_data['title_serial']
+
+        if title_serial_other and self.is_LILACS:
+            self.add_error('title_serial', _("For LILACS references is mandatory select a journal from the list"))
+
+        if title_serial and title_serial_other and not self.is_LILACS:
+            self.add_error('title_serial', _("Please choose one journal from the list or use blank to inform other journal title"))
+
+        if not title_serial_other and not title_serial:
+            self.add_error('title_serial', _("Mandatory"))
+
+        if title_serial_other and not self.is_LILACS:
+            data = title_serial_other
+        else:
+            data = title_serial
 
         return data
 

@@ -37,7 +37,7 @@ def additional_user_info(request):
             user_cc = 'br1.1'
 
     return { 'user_role': user_role, 'user_cc': user_cc, 'networks': networks, 'ccs': ccs,
-        'service_role': service_role, 'user_name': user.username, 'user_id' : str(user.id) }
+        'service_role': service_role, 'user_name': user.username, 'user_id' : str(user.id), 'service_list' : service_list }
 
 def django_settings(request):
     """

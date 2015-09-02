@@ -310,7 +310,7 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
     """
     Handle delete of BiblioRef objects
     """
-    model = ReferenceSource
+    model = Reference
     success_url = reverse_lazy('list_biblioref')
 
     def get_object(self, queryset=None):

@@ -27,7 +27,7 @@
 
     {% if form.errors %}
         <ul class="errorlist alert alert-error">
-            <li>{% trans "Please check required fields" %}</li>
+            <li>{% trans "Please check error messages" %}</li>
         </ul>
     {% endif %}
     {% if valid_for_publication != None and not valid_for_publication %}
@@ -112,7 +112,29 @@
                                                     {% endif %}
 
                                                     {{ field.errors }}
-                                                    {{ field }}
+
+                                                    {% if field.name == 'title_serial' %}
+                                                        <div>
+                                                            {% if form.fields.title_serial.choices|length > 1 %}
+                                                                <select id="{{ field.auto_id }}" name="{{ field.name }}">
+                                                                {% for value, label in form.fields.title_serial.choices %}
+                                                                    <option value="{{ value }}"{% if field.value == value %} selected{% endif %}>{{ label }}</option>
+                                                                {% endfor %}
+                                                                </select>
+                                                                {% if service_role.LILDBI != 'editor_llxp' %}
+                                                                    <div>
+                                                                        <p class="muted">{% trans "Other journal title (from refereces not indexed in LILACS)" %}</p>
+                                                                        <input id="id_title_serial_other" maxlength="80" name="title_serial_other" type="text" value="{% if not field.value|invalues:form.fields.title_serial.choices %}{{ field.value }}{% elif form.title_serial_other.value  %}{{ form.title_serial_other.value }}{% endif %}">
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                <input id="id_title_serial" maxlength="80" name="title_serial" type="text" value="{{ form.fields.title_serial.choices.0.1 }}" readonly="True">
+                                                            {% endif %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ field }}
+                                                    {% endif %}
+
                                                 </li>
                                             {% endfor %}
                                         </ul>

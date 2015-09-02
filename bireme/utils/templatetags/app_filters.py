@@ -10,6 +10,13 @@ register = template.Library()
 def fieldtype(obj):
     return obj.__class__.__name__
 
+@register.filter
+def invalues(value, list):
+    find = [item for item in list if item[1] == value]
+    if find:
+        find = True
+
+    return find
 
 @register.filter()
 def log_json_changes(obj):
