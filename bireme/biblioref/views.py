@@ -267,6 +267,10 @@ class BiblioRefAnaliticUpdateView(BiblioRefUpdate, UpdateView):
 
         return context
 
+    # after creation of source present option for creation new analytic
+    def get_success_url(self):
+        return '/bibliographic/analytics?source=%s' % self.object.source.id
+
 
 class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
     """
@@ -300,6 +304,10 @@ class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):
 
         return context
 
+    # after creation of source present option for creation new analytic
+    def get_success_url(self):
+        source_id = self.request.GET.get('source', None)
+        return 'analytics?source=%s' % source_id
 
 class SelectDocumentTypeView(FormView):
     template_name = 'biblioref/select_document_type.html'

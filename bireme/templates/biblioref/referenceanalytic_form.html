@@ -7,6 +7,7 @@
 
 {% block breadcrumb %}
     <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'list_biblioref_analytics' %}?source={{reference_source.id}}">{% trans "Reference Analytics" %}</a><span class="divider">/</span></li>
     {% if not object %}<li>{% trans "New Analytic" %}</li>
     {% else %}<li>{% trans "Edit Analytic" %}</li>{% endif %}
 {% endblock %}
@@ -80,17 +81,13 @@
                                         </a>
                                     </div>
                                     <fieldset class="accordion-body" id="serial_level">
-                                        <ul class="alert">
-                                            <li>
-                                                <strong>
-                                                {% if reference_source.literature_type == 'S' %}
-                                                    {{ reference_source.title_serial }}; {{ reference_source.volume_serial }} ({{ reference_source.issue_number }})
-                                                {% else %}
-                                                    {{ reference_source.title_monographic }}
-                                                {% endif %}
-                                                </strong>
-                                            </li>
-                                        </ul>
+                                        <h4 class="alert alert-success">
+                                            {% if reference_source.literature_type == 'S' %}
+                                                {{ reference_source }}
+                                            {% else %}
+                                                {{ reference_source.title_monographic }}
+                                            {% endif %}
+                                        </h4>
                                     </fieldset>
                             </div>
 
@@ -347,6 +344,7 @@
                     </table>
                 </fieldset>
             </div>
+
         </div>
 
         <div class="control-panel form-submit">

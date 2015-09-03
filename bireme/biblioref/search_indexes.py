@@ -29,17 +29,20 @@ class RefereceIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return ReferenceAnalytic
 
-    def prepare_reference_title(self, obj):
+    def prepare_reference_title(self, obj):        
         return [occ['text'] for occ in obj.title]
 
     def prepare_author(self, obj):
-        return [occ['text'] for occ in obj.individual_author]
+        if obj.individual_author:
+            return [occ['text'] for occ in obj.individual_author]
 
     def prepare_link(self, obj):
-        return [occ['_u'] for occ in obj.electronic_address]
+        if obj.electronic_address:
+            return [occ['_u'] for occ in obj.electronic_address]
 
     def prepare_reference_abstract(self, obj):
-        return [occ['text'] for occ in obj.abstract]
+        if obj.abstract:
+            return [occ['text'] for occ in obj.abstract]
 
     def prepare_reference_source(self, obj):
         source = u"{0}; {1} ({2}), {3}".format(obj.source.title_serial,
