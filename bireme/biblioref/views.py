@@ -282,7 +282,7 @@ class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
 
     # after creation of source present option for creation new analytic
     def get_success_url(self):
-        return 'analytics?source=%s' % self.object.pk
+        return 'new-analytic?source=%s' % self.object.pk
 
 
 class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):

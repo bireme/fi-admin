@@ -36,28 +36,12 @@ from decorators import *
 
 @login_required
 def dashboard(request):
-
-    recent_actions = LogEntry.objects.all()[:20]
     output = {}
 
-    user = request.user    
-    
-    my_resources_count = Resource.objects.filter(created_by=request.user).count()
-    all_resource_count = Resource.objects.all().count()
-    my_events_count = Event.objects.filter(created_by=request.user).count()
-    all_events_count = Event.objects.all().count()
-
-    suggestions_keyword_count  = Keyword.objects.filter(user_recomendation=True, status=0).count()
-    suggestions_resource_count = SuggestResource.objects.filter(status=0).count()
-
+    current_user = request.user
+    recent_actions = LogEntry.objects.filter(user=current_user)[:20]
 
     output['recent_actions'] = recent_actions
-    output['my_resources_count'] = my_resources_count
-    output['all_resources_count'] = all_resource_count
-    output['my_events_count'] = my_events_count
-    output['all_events_count'] = all_events_count
-    output['suggestions_keyword_count'] = suggestions_keyword_count
-    output['suggestions_resource_count'] = suggestions_resource_count
 
     return render_to_response('main/index.html', output, context_instance=RequestContext(request))
 
@@ -103,8 +87,8 @@ def list_resources(request):
         resources = resources.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
     user_data = additional_user_info(request)
-  
-    if actions['filter_owner'] == "network":        
+
+    if actions['filter_owner'] == "network":
         resources = resources.filter(cooperative_center_code__in=user_data['ccs'])
     elif actions['filter_owner'] != "*":
         resources = resources.filter(created_by=request.user)
@@ -166,12 +150,12 @@ def create_edit_resource(request, **kwargs):
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
-        formset_descriptor_valid = formset_descriptor.is_valid()        
+        formset_descriptor_valid = formset_descriptor.is_valid()
         formset_keyword_valid  = formset_keyword.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
-        valid_for_publication = is_valid_for_publication(form, 
+        valid_for_publication = is_valid_for_publication(form,
             [formset_descriptor, formset_keyword, formset_thematic])
 
         if (form_valid and formset_descriptor_valid and formset_keyword_valid
@@ -179,7 +163,7 @@ def create_edit_resource(request, **kwargs):
 
             if not resource.id:
                 resource = form.save()
-            
+
             formset_descriptor.save()
             formset_keyword.save()
             formset_thematic.save()
@@ -213,7 +197,7 @@ def create_edit_resource(request, **kwargs):
             formset_thematic = ResourceThematicFormSet(instance=resource, queryset=pending_thematic_from_user)
         else:
             formset_descriptor = DescriptorFormSet(instance=resource)
-            formset_keyword  = KeywordFormSet(instance=resource)            
+            formset_keyword  = KeywordFormSet(instance=resource)
             formset_thematic = ResourceThematicFormSet(instance=resource)
 
     output['form'] = form

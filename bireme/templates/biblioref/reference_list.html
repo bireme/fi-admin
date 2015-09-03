@@ -21,7 +21,17 @@
 <div class='header'>
     <h2><i class='icon-file'></i> {% trans "Bibliographic References" %}</h2>
         <div class='pull-right'>
-            <a href="{% url 'select_biblioref_type' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Bibliographic Reference" %}</a>
+
+            {% if service_role.LILDBI == 'editor_llxp' %}
+                {% if references|length == 0 %}
+                    <a href="{% url 'create_biblioref_source' %}?document_type=S" class='btn btn-primary'>
+                {% else %}
+                    <a href="{% url 'list_biblioref_sources' %}?document_type=S" class='btn btn-primary'>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'select_biblioref_type' %}" class='btn btn-primary'>
+            {% endif %}
+            <i class='icon-file'></i> {% trans "New Bibliographic Reference" %}</a>
         </div>
 </div>
 

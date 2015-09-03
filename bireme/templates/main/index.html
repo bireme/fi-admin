@@ -18,41 +18,18 @@
     <div class='header'>
         <h2><i class='icon-dashboard'></i> {% trans "Dashboard" %} <small>{{ user.username }} ({{ user_cc }}) {% if networks|length > 0 %} - {% trans 'Networks' %}: {{ networks|join:", " }}{% endif %} </small></h2>
     </div>
-    
+
     <div class="row">
-        <div class="span4">
-            <div class="well sidebar-nav">
-                <h3>{% trans "Resources" %}</h3>
-                <ul class="nav nav-list">                  
-                  <li><a href="{% url 'main.views.list_resources' %}"><span class="count">{{ my_resources_count }}</span> {% trans 'My resources' %}</a></li>
-                  <li><a href="{% url 'main.views.list_resources' %}/?filter_owner=*"><span class="count">{{ all_resources_count }}</span> {% trans 'All resources' %}</a></li>
-                </ul>
-            </div>
-            <div class="well sidebar-nav">
-                <h3>{% trans "Events" %}</h3>
-                <ul class="nav nav-list">                  
-                  <li><a href="{% url 'events.views.list_events' %}"><span class="count">{{ my_events_count }}</span> {% trans 'My events' %}</a></li>
-                  <li><a href="{% url 'events.views.list_events' %}/?filter_owner=*"><span class="count">{{ all_events_count }}</span> {% trans 'All events' %}</a></li>
-                </ul>
-            </div>
-
-            <div class="well sidebar-nav">
-                <h3>{% trans "Suggestions" %}</h3>
-                <ul class="nav nav-list">                  
-                  <li><a href="{% url 'suggest.views.list_suggestions' %}"><span class="count">{{ suggestions_resource_count }}</span> {% trans 'Resources' %}</a></li>
-                  <li><a href="{% url 'suggest.views.list_suggestions' %}/?type=keywords"><span class="count">{{ suggestions_keyword_count }}</span> {% trans 'Keywords' %}</a></li>
-                </ul>
-            </div>
-
-        </div>
         <div class="span6">
             <div class="well sidebar-nav">
                 <h3>{% trans "Recent actions" %}</h3>
-                <ul class="unstyled">                
+                <ul class="unstyled">
                     {% for action in recent_actions %}
-                        <li><i class="icon-pencil"></i> {{ action.action_time }} - {{ action }} {{ action.user }}</li>
+                        <li>
+                            <i class="{% if action.action_flag == 1%}icon-plus status-ok{% elif action.action_flag == 2 %}icon-pencil{% endif %}"></i>
+                            {{ action.action_time }} - {{ action.object_repr }}</li>
                     {% endfor %}
-                </ul>        
+                </ul>
             </div>
         </div>
     </div>
