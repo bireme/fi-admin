@@ -137,9 +137,9 @@
    <!-- haystack control fields -->
    <field name="django_ct" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="django_id" type="string" indexed="true" stored="true" multiValued="false"/>
-   
+
    <!-- common fields -->
-   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="title" type="text" indexed="true" stored="true" termVectors="true"/>
    <field name="link" type="string" indexed="false" stored="true" multiValued="true"/>
 
@@ -148,7 +148,7 @@
    <field name="created_date" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="updated_date" type="string" indexed="true" stored="true" multiValued="false"/>
 
-   <field name="descriptor" type="decs_keyword" indexed="true" stored="true" multiValued="true" termVectors="true"/>  
+   <field name="descriptor" type="decs_keyword" indexed="true" stored="true" multiValued="true" termVectors="true"/>
    <field name="descriptor_filter" type="decs_code" indexed="true" stored="false" multiValued="true"/>
    <field name="keyword" type="text" indexed="true" stored="true" multiValued="true"/>
 
@@ -175,17 +175,27 @@
    <field name="contact_email" type="string" indexed="false" stored="true"/>
    <field name="contact_info" type="text" indexed="true" stored="true"/>
    <field name="event_type" type="string" indexed="true" stored="true" multiValued="true"/>
-   
+
    <!-- multimedia -->
    <field name="media_type" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="media_type_filter" type="string" indexed="true" stored="false" multiValued="false"/>
    <field name="media_collection" type="text" indexed="true" stored="true" multiValued="false"/>
    <field name="media_collection_filter" type="string" indexed="true" stored="false" multiValued="false"/>
-   
    <field name="official_language" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="official_language_display" type="string" indexed="true" stored="true" multiValued="true"/>
 
-   <!-- Compatibility with portal-org indexes --> 
+   <!-- bibliographic references -->
+   <field name="reference_title" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
+   <field name="reference_abstract" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
+   <field name="reference_source" type="string" indexed="false" stored="true" multiValued="false"/>
+   <field name="database" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="journal" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="publication_year" type="tint" indexed="true" stored="true" multiValued="false"/>
+   <field name="publication_type" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="publication_language" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="publication_country" type="string" indexed="true" stored="true" multiValued="true"/>
+
+   <!-- Compatibility with portal-org indexes -->
    <field name="ti" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="au" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="kw" type="text" indexed="true" stored="false" multiValued="true"/>
@@ -215,10 +225,10 @@
  <copyField source="objective" dest="tw"/>
  <copyField source="descriptor" dest="tw"/>
  <copyField source="keyword" dest="tw"/>
- 
+
  <copyField source="descriptor" dest="descriptor_filter"/>
 
- <!-- Compatibility with portal-org indexes --> 
+ <!-- Compatibility with portal-org indexes -->
  <copyField source="title" dest="ti"/>
  <copyField source="author" dest="au"/>
  <copyField source="descriptor" dest="mh"/>

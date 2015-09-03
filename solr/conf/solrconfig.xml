@@ -94,6 +94,12 @@
          <str name="facet.field">media_collection_filter</str>
          <str name="facet.field">media_type_filter</str>
          <str name="facet.field">event_type</str>
+         <str name="facet.field">publication_type</str>
+         <str name="facet.field">publication_language</str>
+         <str name="facet.field">publication_country</str>
+         <str name="facet.field">publication_year</str>
+         <str name="facet.field">journal</str>
+         <str name="facet.field">database</str>
          <str name="facet.limit">20</str>
          <str name="facet.mincount">1</str>
      </lst>

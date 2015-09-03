@@ -56,9 +56,9 @@ class ReferenceResource(CustomResource):
 
         # filter result by approved resources (status=1)
         if fq != '':
-            fq = '(status:1 AND django_ct:biblioref.reference) AND %s' % fq
+            fq = '(status:1 AND django_ct:biblioref.reference*) AND %s' % fq
         else:
-            fq = '(status:1 AND django_ct:biblioref.reference)'
+            fq = '(status:1 AND django_ct:biblioref.reference*)'
 
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
