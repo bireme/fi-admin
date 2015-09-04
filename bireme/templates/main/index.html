@@ -26,7 +26,11 @@
                 <ul class="unstyled">
                     {% for action in recent_actions %}
                         <li>
-                            <i class="{% if action.action_flag == 1%}icon-plus status-ok{% elif action.action_flag == 2 %}icon-pencil{% endif %}"></i>
+                            {% if action.action_flag == 1 %}
+                                <span class="label label-success">{% trans "Created" %}</span>
+                            {% elif action.action_flag == 2 %}
+                                <span class="label label-info">{% trans "Modified" %}</span>
+                            {% endif %}
                             {{ action.action_time }} - {{ action.object_repr }}</li>
                     {% endfor %}
                 </ul>

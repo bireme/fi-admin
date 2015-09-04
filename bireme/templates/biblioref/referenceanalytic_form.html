@@ -92,70 +92,44 @@
                             </div>
 
                             {{ form.non_field_errors }}
+
                             {% for fieldset in form.fieldsets %}
-                                <div class="accordion-group">
-                                    <div class="accordion-heading">
-                                        {% if fieldset.legend %}
-                                            <a class="accordion-toggle" data-toggle="collapse" data-target="#{{ fieldset.name }}">{{ fieldset.legend }}</a>
-                                        {% endif %}
-                                    </div>
-                                    <fieldset class="{{ fieldset.classes }} accordion-body" id="{{ fieldset.name }}">
-                                        {% if fieldset.description %}
-                                            <p class="description">{{ fieldset.description }}</p>
-                                        {% endif %}
-                                        <ul>
-                                            {% for field in fieldset %}
-                                                <li {{ field.row_attrs }}>
-                                                    {% if field.label %}
-                                                        <label for="{{ field.auto_id }}">
-                                                            {% if field.field.required %}
-                                                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                                            {% else %}
-                                                                {{ field.label }}
-                                                            {% endif %}
-                                                        </label>
-                                                    {% endif %}
-
-                                                    {{ field.errors }}
-
-                                                    {% if field.field|fieldtype == 'JSONFormField' %}
-                                                        <div class="row">
-                                                            <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);">
-                                                                <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
-                                                            </a>
-                                                        </div>
-                                                    {% endif %}
-
-                                                    {% if field.help_text != 'Enter valid JSON' %}
-                                                        <p class="muted">{{ field.help_text }}</p>
-                                                    {% endif %}
-
-                                                    {{ field }}
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </fieldset>
-                                </div>
+                                {% if fieldset.name != 'indexing' %}
+                                    {% include "biblioref/fieldset_include.html" %}
+                                {% endif %}
                             {% endfor %}
                         </div>
 
                     {% endif %}
 
                     {% comment %}Display administrative information{% endcomment %}
-
-                    {% if media.id %}
-                        <div class="alert alert-info">
-                            <p>{% trans "Media created in" %}: <strong>{{ media.created_time }}</strong> {% trans "by user" %}  <strong>{{ media.created_by.username }}</strong></p>
-                            <p>{% trans "Cooperative center code" %}: <strong>{{ media.cooperative_center_code }}</strong></p>
-                            {% if media.updated_by %}
-                                <p>{% trans "Last edit in" %} <strong>{{ media.updated_time }}</strong> {% trans "by user" %}  <strong>{{ media.updated_by.username }}</strong></p>
+                    {% if object.id %}
+                        <i class="icon icon-time"></i> <a href="#" id="show_advaced_filters" onclick="$('#changes_history').toggle()">{% trans "Changes history" %}</a>
+                        <div id="changes_history" class="hide">
+                            {% if object.logs  %}
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>{% trans "Date" %}</th>
+                                        <th>{% trans "User" %}</th>
+                                        <th>{% trans "Center" %}</th>
+                                        <th>{% trans "Changes" %}</th>
+                                    </tr>
+                                    {% for log in object.logs.all %}
+                                        <tr>
+                                            <td>{{ log.action_time }}</td>
+                                            <td>{{ log.user }}</td>
+                                            <td>{{ log.user|profilefield:"cc" }}</td>
+                                            <td>{{ log|log_json_changes }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
                             {% endif %}
                         </div>
-
                     {% endif %}
             </div>
 
             <div id='tab-descriptors' class="tab-pane">
+
                 <fieldset id="descriptors" class="row">
                     <table class="table table-condensed table-striped span8">
                         <thead>
@@ -229,74 +203,11 @@
                     </table>
                 </fieldset>
 
-                <fieldset id="keywords" class="row">
-                    <table class="table table-condensed table-striped span8">
-                        <thead>
-                            <th>{% trans "Keywords" %}</th>
-                            <th>{% trans "Status" %}</th>
-                            <th>{% trans "Suggestion" %}?</th>
-                            <th>{% trans "Delete?" %}</th>
-                        </thead>
-                        <tbody>
-
-                        {% if keyword_list %}
-                            {% for keyword in keyword_list %}
-                                <tr>
-                                    <td>{{ keyword.text }}</td>
-                                    <td>
-                                        {% if keyword.status == 0 %}
-                                            <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                                        {% elif keyword.status == 1 %}
-                                            <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
-                                        {% elif keyword.status == 2 %}
-                                            <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
-                                        {% elif keyword.status == 3 %}
-                                            <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
-                                        {% endif %}
-                                    </td>
-                                    <td style="text-align: center">
-                                        {% if keyword.user_recomendation %}
-                                            <span title="{% trans 'Suggested' %}"><i class="icon-thumbs-up"></i></span>
-                                        {% endif %}
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-
-                        {{ formset_keyword.management_form }}
-
-                        {% for form in formset_keyword %}
-                            <tr id="keyword-{{ forloop.counter0 }}" class="keyword-row{% if form.errors %} error{% endif %} formset-row">
-                                {% for hidden in form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
-                                {% for field in form.visible_fields %}
-                                    {% if role == 'doc' and field.name == 'status' %}
-                                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                        <td></td>
-                                    {% elif field.name == 'user_recomendation' %}
-                                        {{ field.as_hidden }}
-                                        <td style="text-align: center">
-                                            {% if field.value == True %}
-                                                <span title="{% trans 'Suggested' %}"><i class="icon-thumbs-up"></i></span>
-                                            {% endif %}
-                                        </td>
-                                    {% elif field.name != 'DELETE' %}
-                                        <td class="span6">
-                                            {{ field }}
-                                            {{ field.errors }}
-                                        </td>
-                                    {% endif %}
-                                {% endfor %}
-                                <td class="span6">
-                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </fieldset>
+                {% for fieldset in form.fieldsets %}
+                    {% if fieldset.name == 'indexing' %}
+                        {% include "biblioref/fieldset_include.html" %}
+                    {% endif %}
+                {% endfor %}
 
             </div>
 

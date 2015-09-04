@@ -3,6 +3,7 @@ from collections import OrderedDict
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.utils.translation import ugettext as __
 from django.utils.translation import string_concat
+from django.forms.models import inlineformset_factory
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.contrib.contenttypes.models import ContentType
@@ -369,7 +370,5 @@ class BiblioRefAnalyticForm(BiblioRefForm):
 
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, can_delete=True, extra=1)
-
-KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
-
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
+LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal)

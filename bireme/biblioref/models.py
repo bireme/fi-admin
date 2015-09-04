@@ -81,7 +81,7 @@ class Reference(Generic):
     # field tag 65
     publication_date_normalized = models.CharField(_('Publication normalized date'), max_length=25, blank=True)
     # field tag 71
-    # publication_type = TODO
+    publication_type = MultipleAuxiliaryChoiceField(_('Publication type'), max_length=100, blank=True)
     # field tag 72
     total_number_of_references = models.CharField(_('Total number of references'), max_length=100, blank=True)
     # field tag 74
@@ -89,7 +89,7 @@ class Reference(Generic):
     # field tag 75
     time_limits_to = models.CharField(_('Time limits (to)'), max_length=50, blank=True)
     # field tag 76
-    # check_tags = TODO
+    check_tags = MultipleAuxiliaryChoiceField(_('Check tags'), max_length=100, blank=True)
     # field tag 78
     person_as_subject = models.TextField(_('Person as subject'), blank=True)
     # field tag 82
@@ -154,12 +154,8 @@ class Reference(Generic):
                                                 ref_child.title[0]['text'])
         else:
             ref_child = ReferenceSource.objects.get(id=self.pk)
-            if self.literature_type == 'S':
-                ref_title = ref_child.title_serial
-            else:
-                ref_title = u"{0} {1}".format(ref_child.title_monographic, ref_child.volume_monographic)
+            ref_title = ref_child.__unicode__()
 
-        # ref_title = u"{0} - ({1},{2}) [{3}]".format(ref_title, self.literature_type, self.treatment_level, self.reference_title)
         return ref_title
 
     def child_class(self):
@@ -232,6 +228,17 @@ class ReferenceSource(Reference):
     # field tag 724
     doi_number = models.CharField(_('DOI number'), max_length=150, blank=True)
 
+    def __unicode__(self):
+        analytic_title = ''
+        if self.literature_type == 'S':
+            analytic_title = u"{0}; {1} ({2}), {3}".format(self.title_serial,
+                                                           self.volume_serial,
+                                                           self.issue_number,
+                                                           self.publication_date_normalized[:4])
+        else:
+            analytic_title = u"{0} {1}".format(self.title_monographic, self.volume_monographic)
+
+        return analytic_title
 
 # Bibliographic References
 class ReferenceAnalytic(Reference):
@@ -280,3 +287,25 @@ class ReferenceComplement(models.Model):
     project_sponsoring_institution = models.TextField(_('Project - Sponsoring Institution'), blank=True)
     # field tag 59
     project_name = models.CharField(_('Project name'), max_length=500, blank=True)
+
+
+# Bibliographic References Local information (library tab)
+class ReferenceLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Bibliographic Reference Local")
+        verbose_name_plural = _("Bibliographic References Local")
+
+    source = models.ForeignKey(Reference, verbose_name=_("Source"), blank=False)
+    # field tag 03
+    call_number = JSONField(_('Call number'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+    # field tag 04
+    database = models.TextField(_('Database'), blank=True)
+    # field tag 07
+    inventory_number = models.TextField(_('Inventory number'), blank=True)
+    # field tag 61
+    internal_note = models.TextField(_('Internal note'), blank=True)
+    # field tag 653
+    local_descriptors = models.TextField(_('Local descriptors'), blank=True)
+    # responsible cooperative center
+    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)

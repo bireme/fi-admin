@@ -112,29 +112,23 @@ class BiblioRefUpdate(LoginRequiredView):
 
     def form_valid(self, form):
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
-        formset_keyword = KeywordFormSet(self.request.POST, instance=self.object)
         formset_thematic = ResourceThematicFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
 
-        formset_keyword_valid = formset_keyword.is_valid()
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
         valid_for_publication = is_valid_for_publication(form,
-                                                         [formset_descriptor, formset_keyword, formset_thematic])
+                                                         [formset_descriptor, formset_thematic])
 
-        if (form_valid and formset_descriptor_valid and formset_keyword_valid and
-                formset_thematic_valid and valid_for_publication):
+        if (form_valid and formset_descriptor_valid and formset_thematic_valid and valid_for_publication):
 
                 self.object = form.save()
                 formset_descriptor.instance = self.object
                 formset_descriptor.save()
-
-                formset_keyword.instance = self.object
-                formset_keyword.save()
 
                 formset_thematic.instance = self.object
                 formset_thematic.save()
@@ -147,7 +141,6 @@ class BiblioRefUpdate(LoginRequiredView):
             return self.render_to_response(
                            self.get_context_data(form=form,
                                                  formset_descriptor=formset_descriptor,
-                                                 formset_keyword=formset_keyword,
                                                  formset_thematic=formset_thematic,
                                                  valid_for_publication=valid_for_publication))
 
@@ -211,33 +204,26 @@ class BiblioRefUpdate(LoginRequiredView):
 
         if self.request.method == 'GET':
             # special treatment for user of type documentalist is edit document from other user
-            # add in the context list of descriptor, keyword and thematic already set for the document
+            # add in the context list of descriptor and thematic already set for the document
             if user_role == 'doc' and self.object:
                 c_type = ContentType.objects.get_for_model(self.get_object())
 
                 context['descriptor_list'] = Descriptor.objects.filter(
-                    object_id=self.object.id, content_type=c_type).exclude(created_by_id=user_id, status=0)
-                context['keyword_list'] = Keyword.objects.filter(
                     object_id=self.object.id, content_type=c_type).exclude(created_by_id=user_id, status=0)
                 context['thematic_list'] = ResourceThematic.objects.filter(
                     object_id=self.object.id, content_type=c_type).exclude(created_by_id=user_id, status=0)
 
                 pending_descriptor_from_user = Descriptor.objects.filter(
                     created_by_id=self.request.user.id, status=0)
-                pending_keyword_from_user = Keyword.objects.filter(
-                    created_by_id=user_id, status=0)
                 pending_thematic_from_user = ResourceThematic.objects.filter(
                     created_by_id=user_id, status=0)
 
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object,
                                                                   queryset=pending_descriptor_from_user)
-                context['formset_keyword'] = KeywordFormSet(instance=self.object,
-                                                            queryset=pending_keyword_from_user)
                 context['formset_thematic'] = ResourceThematicFormSet(instance=self.object,
                                                                       queryset=pending_thematic_from_user)
             else:
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
-                context['formset_keyword'] = KeywordFormSet(instance=self.object)
                 context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
 
         return context
@@ -335,7 +321,6 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
 
         # delete associated data
         Descriptor.objects.filter(object_id=obj.id, content_type=c_type).delete()
-        Keyword.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
 
         return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)

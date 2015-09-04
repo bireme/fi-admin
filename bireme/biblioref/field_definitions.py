@@ -50,6 +50,11 @@ subject_section = ('content_data', {'fields': ['author_keyword'],
                                     'legend': 'Subject',
                                     'classes': ['collapse']})
 
+indexing_section = ('indexing', {'fields': ['publication_type', 'check_tags', 'time_limits_from', 'time_limits_to',
+                                 'person_as_subject', 'non_decs_region', 'institution_as_subject', 'total_number_of_references'],
+                                 'legend': 'Additional indexing fields'})
+
+
 imprint_section = ('imprint', {'fields': ['publisher', 'edition', 'publication_date',
                                           'publication_date_normalized', 'publication_city',
                                           'publication_country', 'symbol', 'isbn'],
@@ -89,7 +94,9 @@ FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'c
                                                     'legend': 'Content data',
                                                     'classes': ['collapse']}),
 
-                                  abstract_section
+                                  abstract_section,
+
+                                  indexing_section
                                   ]
 
 # Monographic (source)

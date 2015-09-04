@@ -291,7 +291,11 @@ fieldset a.icon-plus-sign {
     width: 560px;
 }
 
-#metadata textarea {
+fieldset.metadata input[type=text], fieldset.metadata textarea, fieldset.metadata select {
+    width: 560px;
+}
+
+#metadata textarea, fieldset.metadata textarea {
     height: 80px;
 }
 

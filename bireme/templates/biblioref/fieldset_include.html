@@ -1,0 +1,45 @@
+{% load app_filters %}
+
+<div class="accordion-group">
+    <div class="accordion-heading">
+        {% if fieldset.legend %}
+            <a class="accordion-toggle" data-toggle="collapse" data-target="#{{ fieldset.name }}">{{ fieldset.legend }}</a>
+        {% endif %}
+    </div>
+    <fieldset class="{{ fieldset.classes }} accordion-body metadata" id="{{ fieldset.name }}">
+        {% if fieldset.description %}
+            <p class="description">{{ fieldset.description }}</p>
+        {% endif %}
+        <ul>
+            {% for field in fieldset %}
+                <li {{ field.row_attrs }}>
+                    {% if field.label %}
+                        <label for="{{ field.auto_id }}">
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                        </label>
+                    {% endif %}
+
+                    {{ field.errors }}
+
+                    {% if field.field|fieldtype == 'JSONFormField' %}
+                        <div class="row">
+                            <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);">
+                                <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if field.help_text != 'Enter valid JSON' %}
+                        <p class="muted">{{ field.help_text }}</p>
+                    {% endif %}
+
+                    {{ field }}
+                </li>
+            {% endfor %}
+        </ul>
+    </fieldset>
+</div>
