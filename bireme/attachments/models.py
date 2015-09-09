@@ -5,21 +5,25 @@ from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.conf import settings
-from django.db import models
+from datetime import date
 
+from django.db import models
 from main.choices import LANGUAGES_CHOICES
 from utils.models import Generic
 
 import os
 
-def attachment_upload(instance, filename):
-    """Stores the attachment in a "uploads/<app_label>/<primary key>/" folder"""
 
+def attachment_upload(instance, filename):
+    """Stores the attachment in a "uploads/<app_label>/<YEAR>/<MONTH>/<primary key>/" folder"""
+
+    current_year = date.today().year
+    current_month = date.today().month
     fname, dot, extension = filename.rpartition('.')
     slug_filename = "%s.%s" % (slugify(fname), extension)
 
-    upload_path = '%s/%s/%s' % (instance.content_object._meta.app_label,
-                                instance.content_object.pk, slug_filename)
+    upload_path = '%s/%s/%02d/%s/%s' % (instance.content_object._meta.app_label, current_year,
+                                        current_month, instance.content_object.pk, slug_filename)
 
     return upload_path
 
