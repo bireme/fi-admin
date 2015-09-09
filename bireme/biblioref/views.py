@@ -113,18 +113,21 @@ class BiblioRefUpdate(LoginRequiredView):
     def form_valid(self, form):
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
         formset_thematic = ResourceThematicFormSet(self.request.POST, instance=self.object)
+        formset_attachment = AttachmentFormSet(self.request.POST, self.request.FILES, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
 
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
+        formset_attachment_valid = formset_attachment.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
         valid_for_publication = is_valid_for_publication(form,
                                                          [formset_descriptor, formset_thematic])
 
-        if (form_valid and formset_descriptor_valid and formset_thematic_valid and valid_for_publication):
+        if (form_valid and formset_descriptor_valid and formset_thematic_valid and
+            formset_attachment_valid and valid_for_publication):
 
                 self.object = form.save()
                 formset_descriptor.instance = self.object
@@ -132,6 +135,9 @@ class BiblioRefUpdate(LoginRequiredView):
 
                 formset_thematic.instance = self.object
                 formset_thematic.save()
+
+                formset_attachment.instance = self.object
+                formset_attachment.save()
 
                 # update solr index
                 # form.save()
@@ -142,6 +148,7 @@ class BiblioRefUpdate(LoginRequiredView):
                            self.get_context_data(form=form,
                                                  formset_descriptor=formset_descriptor,
                                                  formset_thematic=formset_thematic,
+                                                 formset_attachment=formset_attachment,
                                                  valid_for_publication=valid_for_publication))
 
     def form_invalid(self, form):
@@ -225,6 +232,7 @@ class BiblioRefUpdate(LoginRequiredView):
             else:
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
                 context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
+                context['formset_attachment'] = AttachmentFormSet(instance=self.object)
 
         return context
 

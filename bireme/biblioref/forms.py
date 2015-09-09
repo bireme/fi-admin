@@ -10,12 +10,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.forms import widgets
 from django import forms
 from form_utils.forms import BetterModelForm, FieldsetCollection
-from form_utils.widgets import AutoResizeTextarea
 from django.conf import settings
 
-from main.models import Descriptor, Keyword, ResourceThematic
-from title.models import Title
+from main.models import Descriptor, ResourceThematic
 from utils.forms import DescriptorRequired, ResourceThematicRequired
+from title.models import Title
+from attachments.models import Attachment
 
 from models import *
 import json
@@ -368,7 +368,13 @@ class BiblioRefAnalyticForm(BiblioRefForm):
         exclude = ('source', 'cooperative_center_code',)
 
 
+class AttachmentForm(forms.ModelForm):
+    # change widget from attachment_file field for simple select
+    attachment_file = forms.FileField(widget=widgets.FileInput)
+
+
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, can_delete=True, extra=1)
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
+AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm, can_delete=True, extra=1)
 LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal)

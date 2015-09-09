@@ -21,7 +21,7 @@
 
 <div class='body'>
 
-    {% if form.errors %}
+    {% if form.errors or formset_attachment.errors or formset_thematic.errors or formset_descriptor.errors %}
         <ul class="errorlist alert alert-error">
             <li>{% trans "Please check errors below" %}</li>
         </ul>
@@ -31,17 +31,19 @@
             <li>{% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}</li>
         </ul>
     {% endif %}
+
     {{ formset_descriptor.non_form_errors }}
     {{ formset_thematic.non_form_errors }}
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
-        <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
-        <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
+        <li><a href="#tab-descriptors" data-toggle="tab" class="{% if formset_descriptor.errors and not formset_descriptor.is_valid %}alert-error{% endif %}"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
+        <li><a href="#tab-thematic" data-toggle="tab" class="{% if formset_thematic.errors and not formset_thematic.is_valid %}alert-error{% endif %}"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
+        <li><a href="#tab-attachment" data-toggle="tab" class="{% if formset_attachment.errors and not formset_attachment.is_valid %}alert-error{% endif %}"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a></li>
     </ul>
 
 
-    <form method="POST" class="media-form">
+    <form method="POST" enctype="multipart/form-data" class="media-form">
         {% csrf_token %}
 
         <div class="tab-content">
@@ -94,7 +96,7 @@
                             {{ form.non_field_errors }}
 
                             {% for fieldset in form.fieldsets %}
-                                {% if fieldset.name != 'indexing' %}
+                                {% if fieldset.name != 'indexing' and fieldset.name != 'fulltext' %}
                                     {% include "biblioref/fieldset_include.html" %}
                                 {% endif %}
                             {% endfor %}
@@ -256,6 +258,63 @@
                 </fieldset>
             </div>
 
+            <div id='tab-attachment' class="tab-pane">
+
+                {% for fieldset in form.fieldsets %}
+                    {% if fieldset.name == 'fulltext' %}
+                        {% include "biblioref/fieldset_include.html" %}
+                    {% endif %}
+                {% endfor %}
+
+
+                <fieldset id="attachment">
+                    <table class="table table-condensed table-striped span8">
+                        <thead>
+                            <th>{% trans "File" %}</th>
+                            <th>{% trans "Language" %}</th>
+                            <th>{% trans "Delete?" %}</th>
+                        </thead>
+                        <tbody>
+                        {% if attachment_list %}
+                            {% for attachment in attachment_list %}
+                                <tr>
+                                    <td colspan="3">{{ attachment }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ formset_attachment.management_form }}
+
+                        {% for form in formset_attachment %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <tr id="attachment-{{ forloop.counter0 }}" class="attachment-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for field in form.visible_fields %}
+                                    {% if role == 'doc' and field.name == 'status' %}
+                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+
+                                    {% elif field.name == 'attachment_file' and form.instance.pk %}
+                                        <td>
+                                            <strong>{{ form.instance.filename }}</strong>
+                                        </td>
+                                    {% elif field.name != 'DELETE' %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+
         </div>
 
         <div class="control-panel form-submit">
@@ -343,8 +402,8 @@
                     prefix: '{{ formset_descriptor.prefix }}'
             });
 
-            $('.keyword-row').formset({
-                    addText : '{% trans "Add keyword" %}',
+            $('.attachment-row').formset({
+                    addText : '{% trans "Add file" %}',
                     deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign btn',
                     deleteCssClass : 'btn',

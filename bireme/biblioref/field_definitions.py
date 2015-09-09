@@ -8,7 +8,7 @@ import json
 language_choices = (('pt', 'Português'), ('es', 'Espanhol'), ('en', 'Inglês'))
 
 field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03', 'database': '04', 'literature_type': '05',
-                 'treatment_level':  '06', 'inventory_number': '07', 'eletronic_address': '08', 'record_type': '09',
+                 'treatment_level':  '06', 'inventory_number': '07', 'electronic_address': '08', 'record_type': '09',
                  'individual_author': '10', 'corporate_author': '11', 'title': '12', 'english_translated_title': '13',
                  'pages': '14', 'individual_author_monographic': '16', 'corporate_author_monographic': '17',
                  'title_monographic': '18', 'english_title_monographic': '19', 'pages_monographic': '20',
@@ -34,7 +34,7 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
 other_notes_section = ('other_notes', {'fields': ['general_note', 'formatted_contents_note',
                                        'additional_physical_form_available_note', 'reproduction_note',
                                        'original_version_note', 'internal_note'],
-                                       'legend': 'Other notes',
+                                       'legend': _('Other notes'),
                                        'classes': ['collapse']})
 
 abstract_section = ('abstract', {'fields': ['abstract'],
@@ -43,23 +43,27 @@ abstract_section = ('abstract', {'fields': ['abstract'],
 
 
 comp_info_section = ('comp_info', {'fields': ['descriptive_information', 'text_language'],
-                                   'legend': 'Complementary Information',
+                                   'legend': _('Complementary Information'),
                                    'classes': ['collapse']})
 
 subject_section = ('content_data', {'fields': ['author_keyword'],
-                                    'legend': 'Subject',
+                                    'legend': _('Subject'),
                                     'classes': ['collapse']})
 
 indexing_section = ('indexing', {'fields': ['publication_type', 'check_tags', 'time_limits_from', 'time_limits_to',
                                  'person_as_subject', 'non_decs_region', 'institution_as_subject', 'total_number_of_references'],
-                                 'legend': 'Additional indexing fields'})
+                                 'legend': _('Additional indexing fields')})
 
 
 imprint_section = ('imprint', {'fields': ['publisher', 'edition', 'publication_date',
                                           'publication_date_normalized', 'publication_city',
                                           'publication_country', 'symbol', 'isbn'],
-                               'legend': 'Imprint',
+                               'legend': _('Imprint'),
                                'classes': ['collapse']})
+
+fulltext_section = ('fulltext', {'fields': ['electronic_address'],
+                                 'legend': _('Fulltext'),
+                                 })
 
 FIELDS_BY_DOCUMENT_TYPE = {}
 
@@ -68,48 +72,49 @@ FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], '
 
                                 ('serial_level', {'fields': ['title_serial', 'volume_serial', 'issue_number',
                                                              'issn'],
-                                                  'legend': 'Serial level'}),
+                                                  'legend': _('Serial level')}),
 
                                 ('imprint', {'fields': ['publication_date', 'publication_date_normalized'],
-                                 'legend': 'Imprint'})]
+                                 'legend': _('Imprint')})]
 
 
 # Periodical series (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                          'electronic_address', 'record_type', 'item_form',
-                                                          'type_of_journal'],
-                                               'legend': 'General information'}),
+                                                          'record_type', 'item_form', 'type_of_journal'],
+                                               'legend': _('General information')}),
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
                                                                  'english_translated_title', 'pages'],
-                                                      'legend': 'Analytic Level'}),
+                                                      'legend': _('Analytic Level')}),
 
                                   ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi'],
-                                                 'legend': 'Complementary Information',
+                                                 'legend': _('Complementary Information'),
                                                  'classes': ['collapse']}),
 
                                   other_notes_section,
 
                                   ('content_data', {'fields': ['clinical_trial_registry_name', 'author_keyword'],
-                                                    'legend': 'Content data',
+                                                    'legend': _('Content data'),
                                                     'classes': ['collapse']}),
 
                                   abstract_section,
 
-                                  indexing_section
+                                  indexing_section,
+
+                                  fulltext_section,
                                   ]
 
 # Monographic (source)
 FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                        'inventory_number', 'electronic_address', 'record_type',
+                                                        'inventory_number', 'record_type',
                                                         'item_form'],
-                                             'legend': 'General information'}),
+                                             'legend': _('General information')}),
 
                                 ('monographic_level', {'fields': ['individual_author_monographic',
                                                                   'corporate_author_monographic', 'title_monographic',
                                                                   'english_title_monographic', 'pages_monographic',
                                                                   'volume_monographic'],
-                                                       'legend': 'Monographic Level'}),
+                                                       'legend': _('Monographic Level')}),
 
                                 comp_info_section,
 
@@ -124,13 +129,13 @@ FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'cal
 
 # Monographic (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                          'inventory_number', 'electronic_address', 'record_type',
+                                                          'inventory_number', 'record_type',
                                                           'item_form'],
-                                               'legend': 'General information'}),
+                                               'legend': _('General information')}),
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
                                                                  'english_translated_title', 'pages'],
-                                                      'legend': 'Analytic Level'}),
+                                                      'legend': _('Analytic Level')}),
 
                                   comp_info_section,
 
@@ -143,20 +148,20 @@ FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'c
 
 # Thesis, dissertation (source)
 FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                        'inventory_number', 'electronic_address', 'record_type'],
-                                             'legend': 'General information'}),
+                                                        'inventory_number', 'record_type'],
+                                             'legend': _('General information')}),
 
                                 ('monographic_level', {'fields': ['individual_author_monographic',
                                                                   'title_monographic', 'english_title_monographic',
                                                                   'pages_monographic'],
-                                                       'legend': 'Monographic Level'}),
+                                                       'legend': _('Monographic Level')}),
 
                                 comp_info_section,
 
                                 ('thesis_notes', {'fields': ['thesis_dissertation_leader',
                                                              'thesis_dissertation_institution',
                                                              'thesis_dissertation_academic_title'],
-                                                  'legend': 'Thesis Notes',
+                                                  'legend': _('Thesis Notes'),
                                                   'classes': ['collapse']}),
 
 
@@ -171,18 +176,18 @@ FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'cal
 
 # Thesis, dissertation (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                          'inventory_number', 'electronic_address', 'record_type',
+                                                          'inventory_number', 'record_type',
                                                           'item_form'],
-                                               'legend': 'General information'}),
+                                               'legend': _('General information')}),
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
                                                                  'english_translated_title', 'pages'],
-                                                      'legend': 'Analytic Level'}),
+                                                      'legend': _('Analytic Level')}),
 
                                   comp_info_section,
 
                                   ('thesis_notes', {'fields': ['thesis_dissertation_leader'],
-                                                    'legend': 'Thesis Notes',
+                                                    'legend': _('Thesis Notes'),
                                                     'classes': ['collapse']}),
 
                                   other_notes_section,
@@ -194,14 +199,14 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'c
 
 # Non Conventional (source)
 FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                        'inventory_number', 'electronic_address', 'record_type'],
-                                             'legend': 'General information'}),
+                                                        'inventory_number', 'record_type'],
+                                             'legend': _('General information')}),
 
                                 ('monographic_level', {'fields': ['individual_author_monographic',
                                                                   'corporate_author_monographic',
                                                                   'title_monographic', 'english_title_monographic',
                                                                   'pages_monographic', 'volume_monographic'],
-                                                       'legend': 'Monographic Level'}),
+                                                       'legend': _('Monographic Level')}),
 
                                 comp_info_section,
 
@@ -216,13 +221,13 @@ FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'cal
 
 # Thesis, dissertation (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                          'inventory_number', 'electronic_address', 'record_type',
+                                                          'inventory_number', 'record_type',
                                                           'item_form'],
-                                               'legend': 'General information'}),
+                                               'legend': _('General information')}),
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
                                                                  'english_translated_title', 'pages'],
-                                                      'legend': 'Analytic Level'}),
+                                                      'legend': _('Analytic Level')}),
 
                                   comp_info_section,
 
