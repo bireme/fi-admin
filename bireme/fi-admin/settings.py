@@ -69,7 +69,7 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT_PATH, 'uploads')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = '/uploads/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -87,6 +87,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_ROOT_PATH, 'static'),
+    os.path.join(PROJECT_ROOT_PATH, 'uploads'),
 )
 
 # List of finder classes that know how to find static files in
@@ -239,6 +240,7 @@ AUTHENTICATION_BACKENDS = (
 BIREMELOGIN_BASE_URL = "http://accounts.bireme.org"
 BIREMELOGIN_SERVICE = ""
 GOOGLE_ANALYTICS_ID = ""
+VIEW_DOCUMENTS_BASE_URL = ""
 
 # for settings_context_processor
 TEMPLATE_VISIBLE_SETTINGS = (

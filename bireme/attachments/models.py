@@ -10,6 +10,7 @@ from datetime import date
 from django.db import models
 from main.choices import LANGUAGES_CHOICES
 from utils.models import Generic
+from short_url import encode_url
 
 import os
 
@@ -42,6 +43,7 @@ class Attachment(Generic):
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     attachment_file = models.FileField(_('Select a file'), upload_to=attachment_upload, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES, blank=False)
+    short_url = models.CharField(max_length=25, blank=False)
 
     class Meta:
         app_label = ugettext("attachments")
@@ -49,6 +51,14 @@ class Attachment(Generic):
 
     def __unicode__(self):
         return '%s attached %s' % (self.created_by.get_username(), self.attachment_file.name)
+
+    def save(self, *args, **kwargs):
+        super(Attachment, self).save(*args, **kwargs)
+        # add short_url field base on attachment PK
+        if not self.short_url:
+            self.short_url = encode_url(self.pk)
+            self.save()
+
 
     def delete(self, *args, **kwargs):
         # remove file from file system

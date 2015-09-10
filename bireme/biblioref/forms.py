@@ -376,5 +376,6 @@ class AttachmentForm(forms.ModelForm):
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, can_delete=True, extra=1)
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
-AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm, can_delete=True, extra=1)
+AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
+                                                  exclude = ('short_url',), can_delete=True, extra=1)
 LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal)
