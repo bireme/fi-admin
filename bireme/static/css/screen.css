@@ -320,7 +320,7 @@ span.required {
     font-weight: bold;
 }
 
-span.required .mark{
+span.mark{
     color: #e32;
 }
 
@@ -403,4 +403,9 @@ div.onlineresource .period input[type="text"] {
 
 div.onlineresource div.check {
     margin: 18px 0;
+}
+
+#help_modal{
+    width: 750px;
+    margin-left: -375px;
 }

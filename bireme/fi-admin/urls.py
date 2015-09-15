@@ -102,6 +102,9 @@ urlpatterns = patterns('',
     # attachments
     (r'^document/', include('attachments.urls')),
 
+    # help
+    (r'^help/', include('help.urls')),
+
     # Login/Logout
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html', 'extra_context':{'BIREMELOGIN_BASE_URL': settings.BIREMELOGIN_BASE_URL}}, name='auth_login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'authentication/logout.html', 'next_page': '/'}, name='auth_logout'),
@@ -121,6 +124,9 @@ urlpatterns = patterns('',
     (r'^maintenance/', TemplateView.as_view(template_name="maintenance.html")),
 
     (r'^$', 'main.views.dashboard'),
+
+    # tinymce wysiwyg editor
+    (r'^tinymce/', include('tinymce.urls')),
 )
 
 

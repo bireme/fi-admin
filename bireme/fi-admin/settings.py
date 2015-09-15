@@ -165,6 +165,7 @@ INSTALLED_APPS = (
     'tastypie',
     'rosetta',
     'form_utils',
+    'tinymce',
 
     'biremelogin',
 
@@ -179,6 +180,7 @@ INSTALLED_APPS = (
     'reports',
     'utils',
     'attachments',
+    'help',
 
 )
 
@@ -241,6 +243,14 @@ BIREMELOGIN_BASE_URL = "http://accounts.bireme.org"
 BIREMELOGIN_SERVICE = ""
 GOOGLE_ANALYTICS_ID = ""
 VIEW_DOCUMENTS_BASE_URL = ""
+
+TINYMCE_JS_URL = "/static/js/tinymce/tinymce.min.js"
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': "modern",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+}
 
 # for settings_context_processor
 TEMPLATE_VISIBLE_SETTINGS = (

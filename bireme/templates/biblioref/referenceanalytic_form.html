@@ -52,7 +52,7 @@
                         <div class="well">
                             <blockquote>
                                 <p><strong>{% trans 'Identifier' %}</strong><p>
-                                <p>{{ media.id }}</p>
+                                <p>{{ reference_source.id }}</p>
                             </blockquote>
 
                             {% for field in form %}
@@ -61,7 +61,7 @@
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
                                     {% if field.name = 'status' %}
-                                        <p>{{ media.get_status_display }}</p>
+                                        <p>{{ reference_source.get_status_display }}</p>
                                     {% else %}
                                         <p>{{ field.value|linebreaks }}<p>
                                     {% endif %}
@@ -323,6 +323,10 @@
 
     </form>
 </div>
+
+{% if help_fields %}
+    {% include "modal_help.html" %}
+{% endif %}
 
 {% endblock %}
 

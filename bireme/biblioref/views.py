@@ -15,6 +15,7 @@ from utils.views import ACTIONS
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
 from main.models import Descriptor
+from help.models import get_help_fields
 from utils.views import LoginRequiredView
 from urlparse import parse_qsl
 from forms import *
@@ -208,6 +209,7 @@ class BiblioRefUpdate(LoginRequiredView):
         context['user_data'] = user_data
         context['role'] = user_role
         context['settings'] = settings
+        context['help_fields'] = get_help_fields('biblioref')
 
         if self.request.method == 'GET':
             # special treatment for user of type documentalist is edit document from other user

@@ -8,6 +8,12 @@ LANGUAGES_CHOICES = (
     ('es', _('Spanish')),
 )
 
+SOURCE_CHOICES = [
+    ('resources', _('Resources')),
+    ('events', _('Events')),
+    ('biblioref', _('Bibliographic Reference')),
+]
+
 ############################## Descriptor choices ##############################
 
 DESCRIPTOR_LEVEL = [

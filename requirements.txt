@@ -14,3 +14,4 @@ deform==0.9.9
 jsonfield==1.0.2
 django-form-utils==1.0.2
 short-url==1.2.1
+django-tinymce==2.0.5
