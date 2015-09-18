@@ -1,18 +1,20 @@
+proc('d9995a9995|',getenv('PK_INCREASE_NUMBER'),'|')
+
 if mfn=1 then '['/ fi,
    '{',/
-       c4,'"pk": ', f(mfn,1,0),','//
+       c4,'"pk": ', f(mfn+val(v9995),1,0),','/
        c4,'"model": ','"events.event",',/
 
        c4,'"fields": {',/
             c8,'"status": 1,',/    
-            c8,'"title": ','"',v501,'",'/
+            c8,'"title": ','"',if size(v501) > 455 then left(v501,455) else v501 fi,'",'/
             if p(v503) then c8,'"official_language": ','[',(if val(v503) > 0 then, if iocc > 1 then ', ' fi, v503 fi),'],',/, fi,
-            if p(v505) then c8,'"link": ','"',v505,'",'/  fi,
+            if p(v505) then c8,'"link": ','"',if size(v505) > 200 then left(v505,200) else v505 fi,'",'/  fi,
             c8,'"start_date": ','"',v507.4'-'v507*4.2'-'v507*6.2'",'/,
             c8,'"end_date": ','"',v509.4'-'v509*4.2'-'v509*6.2,'",'/,
           
             if p(v511) then c8,'"target_groups": ','"',(v511+|\r\n|),'",'/  fi,
-            if p(v513) then c8,'"event_type": ','[',v513,'],'/  fi,
+            if p(v513) then c8,'"event_type": ','[',if val(v513) > 0 then f(val(v513),1,0) else '16' fi,'],'/  fi,
             if p(v555) then c8,'"contact_info": ','"',(v555+|\r\n|),'",'/  fi,
             
             if p(v710) then c8,'"city": ','"',v710,'",'/  fi,
@@ -21,9 +23,9 @@ if mfn=1 then '['/ fi,
             if p(v760) then c8,'"contact_email": ','"',left(v760[1],instr(v760,' ')-1),'",'/  fi,
             if p(v900) then c8,'"observations": ','"',(v900+|\r\n|),'",'/ fi,
             
-            c8,'"created_time": ','"2013-11-11T09:00:00-03:00",'/,          
-            c8,'"cooperative_center_code": ','"BR1.1",'/
-            c8,'"created_by": ','2'/
+            c8,'"created_time": ','"2015-03-12T09:00:00-03:00",'/,          
+            c8,'"cooperative_center_code": ','"',getenv('CC_CODE'),'",'/
+            c8,'"created_by": ',getenv('FI_USER_ID'),/
             
        c4,'}',/
     '}'    

@@ -1,45 +1,24 @@
-if mfn=1 then '['/ fi,
- (	   
-	if p(v610) then,
-		/* check if is descriptor/qualifier */
-		if instr(v610,'/') > 0 then,
-			proc('d9991a9991~',left(v610,instr(v610,'/')-1),'~'),
-			proc('d9992a9992~',mid(v610,instr(v610,'/'),size(v610)),'~'),
-		else,
-			proc('d9991d9992a9991~',v610,'~'),
-		fi,
-		
-		if l(['decs']v9991[1]) <> 0 then,
-		   '{',/
-				c4,'"model": ','"main.descriptor",',/				
-				c4,'"pk": ', 'null,'/     	/* avoid PK duplication use auto-increment on load */
-				c4,'"fields": {',/
-					c8,'"object_id": ',mfn(0),',',/
-					c8,'"content_type": ', '19,',/
-					c8,'"text": ','"', v610, '",'/
-					c8,'"code": ','"',ref( l(['decs']v9991[1]),'^d',mfn(0) ), ref( l(['decs']v9992[1]),'^s',mfn(0) ) ,'",'/
-					c8,'"status": ','1,'/     
-					c8,'"created_time": ','"2013-12-01T09:00:00-03:00",'/,
-					c8,'"created_by": ','2'/
-				c4,'}',/
-			'}'
-			if mfn=MAXMFN-1 then else ',' fi,/
-		else,
-		   '{',/
-				c4,'"model": ','"main.keyword",',/
-				c4,'"pk": ', 'null,'/      /* avoid PK duplication use auto-increment on load */
-				c4,'"fields": {',/
-					c8,'"object_id": ',mfn(0),',',/    
-					c8,'"content_type": ', '19,',/
-					c8,'"text": ','"', v610, '",'/
-					c8,'"status": ','1,'/           
-					c8,'"created_time": ','"2013-12-01T09:00:00-03:00",'/,
-					c8,'"created_by": ','2'/
-				c4,'}',/
-			'}'			
-			if mfn=MAXMFN-1 then else ',' fi,/
-		fi,
-    fi,
-)
-if mfn=MAXMFN-1 then ']'/ fi,
+proc('d9991a9991|',getenv('FI_CONTENT_TYPE_ID'),'|')
+proc('d9992a9992|',getenv('FI_THEMATIC_AREA_ID'),'|')
+proc('d9993a9993|',getenv('FI_USER_ID'),'|')
+proc('d9995a9995|',getenv('PK_INCREASE_NUMBER'),'|')
 
+if mfn=1 then '['/ fi,
+  (	   
+	
+   '{',/
+		c4,'"model": ','"main.resourcethematic",',/
+		c4,'"pk": ', 'null,'/
+		c4,'"fields": {',/
+			c8,'"object_id": ',f(mfn+val(v9995[1]),1,0),',',/
+			c8,'"content_type": ',v9991[1],',',/	 
+			c8,'"thematic_area": ',v9992[1],','/
+			c8,'"status": ','1,'/
+            c8,'"created_time": "2015-03-12T09:00:00-03:00",'/
+			c8,'"created_by": ',v9993[1]/      
+		c4,'}',/
+	'},'/
+   
+  )
+
+if mfn=MAXMFN-1 then ']'/ fi,
