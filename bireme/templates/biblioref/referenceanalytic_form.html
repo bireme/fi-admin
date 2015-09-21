@@ -37,15 +37,17 @@
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
-        <li><a href="#tab-descriptors" data-toggle="tab" class="{% if formset_descriptor.errors and not formset_descriptor.is_valid %}alert-error{% endif %}"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
-        <li><a href="#tab-thematic" data-toggle="tab" class="{% if formset_thematic.errors and not formset_thematic.is_valid %}alert-error{% endif %}"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
-        <li><a href="#tab-attachment" data-toggle="tab" class="{% if formset_attachment.errors and not formset_attachment.is_valid %}alert-error{% endif %}"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a></li>
+        <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a>{% if formset_descriptor.errors and not formset_descriptor.is_valid %}<span class="mark">*</span>{% endif %}</li>
+        <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a> {% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark">*</span>{% endif %}</li>
+        <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark">*</span>{% endif %}</li>
+        <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i>  {% trans "Library" %}</a>{% if formset_library.errors and not formset_library.is_valid %}<span class="mark">*</span>{% endif %}</li>
     </ul>
 
 
     <form method="POST" enctype="multipart/form-data" class="media-form">
         {% csrf_token %}
 
+        <!-- METADATA FORMSET -->
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
                     {% if role == 'doc' and not user_data.is_owner and media %}
@@ -130,6 +132,7 @@
                     {% endif %}
             </div>
 
+            <!-- INDEXING FORMSET -->
             <div id='tab-descriptors' class="tab-pane">
 
                 <fieldset id="descriptors" class="row">
@@ -213,6 +216,7 @@
 
             </div>
 
+            <!-- THEMATIC AREA FORMSET -->
             <div id='tab-thematic' class="tab-pane">
                 <fieldset id="thematic">
                     <table class="table table-condensed table-striped span8">
@@ -258,6 +262,7 @@
                 </fieldset>
             </div>
 
+            <!-- FULLTEXT FORMSET -->
             <div id='tab-attachment' class="tab-pane">
 
                 {% for fieldset in form.fieldsets %}
@@ -312,6 +317,46 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                </fieldset>
+            </div>
+
+            <!-- LIBRARY FORMSET -->
+            <div id='tab-library' class="tab-pane">
+                <fieldset class="accordion-body metadata" id="{{ fieldset.name }}">
+                    {{ formset_library.management_form }}
+
+                    {# only one set of fields are present for each center #}
+                    {% for field in formset_library.0 %}
+                        {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
+                            <label for="{{ field.auto_id }}">
+                                {% if field.name in help_fields %}
+                                    <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
+                                {% else %}
+                                    {{ field.label }}
+                                {% endif %}
+                                {% if field.field.required %}
+                                    <span class="mark">*</span>
+                                {% endif %}
+                            </label>
+                        {% endif %}
+
+                        {{ field.errors }}
+
+                        {% if field.field|fieldtype == 'JSONFormField' %}
+                            <div class="row">
+                                <a onclick="javascript:field_assist('{{field.name}}', '{{field.html_name}}')" href="javascript:void(0);">
+                                    <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {{ field }}
+
+                        {% if field.help_text != 'Enter valid JSON' %}
+                            <p class="muted">{{ field.help_text }}</p>
+                        {% endif %}
+
+                    {% endfor %}
                 </fieldset>
             </div>
 
@@ -477,20 +522,21 @@
             }
         }
 
-        function field_assist(field_name){
-
+        function field_assist(field_name, field_id){
+            if ( !field_id ){
+                field_id = field_name
+            }
             field_assist_url = '/bibliographic/field_assist/' + field_name + '/',
-            field_value = $('#id_' + field_name).val();
+            field_value = $('#id_' + field_id).val();
 
-            post_params = {'field_value' : field_value };
+            post_params = {'field_value' : field_value, 'field_id': field_id};
 
             open_window_with_post('POST', field_assist_url, post_params, 'field_assist');
             return false;
         }
 
 
-        function update_field_from_assist(field_name, json_string) {
-
+        function update_field_from_assist(field_name, json_string, field_id) {
             // convert to json_string to json object
             json_obj = jQuery.parseJSON(json_string);
             // select content of data element (just used for wrap de objects)
@@ -500,7 +546,7 @@
             field_new_value = JSON.stringify(json_data);
 
             // update field with string json and trigger change function
-            $('#id_' + field_name).val(field_new_value).trigger('change');
+            $('#id_' + field_id).val(field_new_value).trigger('change');
 
             // close field assist window
             assist_win.close();

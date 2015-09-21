@@ -30,7 +30,6 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
     Handle list view for bibliographic references objects
     """
     paginate_by = settings.ITEMS_PER_PAGE
-    restrict_by_user = True
     context_object_name = "references"
     search_field = "reference_title"
 
@@ -63,10 +62,11 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
-        if self.restrict_by_user and self.actions['filter_owner'] != "*":
+        # filter by user
+        if not self.actions['filter_owner'] or self.actions['filter_owner'] == 'user':
             object_list = object_list.filter(created_by=self.request.user)
-        elif self.actions['filter_owner'] == "*":
-            # restrict by cooperative center
+        # filter by cooperative center
+        elif self.actions['filter_owner'] == "center":
             user_cc = self.request.user.profile.get_attribute('cc')
             object_list = object_list.filter(cooperative_center_code=user_cc)
 
@@ -115,6 +115,7 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
         formset_thematic = ResourceThematicFormSet(self.request.POST, instance=self.object)
         formset_attachment = AttachmentFormSet(self.request.POST, self.request.FILES, instance=self.object)
+        formset_library = LibraryFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
@@ -122,6 +123,7 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
         formset_attachment_valid = formset_attachment.is_valid()
+        formset_library_valid = formset_library.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
         valid_for_publication = is_valid_for_publication(form,
@@ -140,6 +142,9 @@ class BiblioRefUpdate(LoginRequiredView):
                 formset_attachment.instance = self.object
                 formset_attachment.save()
 
+                formset_library.instance = self.object
+                formset_library.save()
+
                 # update solr index
                 # form.save()
                 form.save_m2m()
@@ -150,6 +155,7 @@ class BiblioRefUpdate(LoginRequiredView):
                                                  formset_descriptor=formset_descriptor,
                                                  formset_thematic=formset_thematic,
                                                  formset_attachment=formset_attachment,
+                                                 formset_library=formset_library,
                                                  valid_for_publication=valid_for_publication))
 
     def form_invalid(self, form):
@@ -234,7 +240,10 @@ class BiblioRefUpdate(LoginRequiredView):
             else:
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
                 context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
-                context['formset_attachment'] = AttachmentFormSet(instance=self.object)
+
+            context['formset_attachment'] = AttachmentFormSet(instance=self.object)
+            context['formset_library'] = LibraryFormSet(instance=self.object,
+                                                        queryset=ReferenceLocal.objects.filter(cooperative_center_code=user_data['user_cc']))
 
         return context
 
@@ -351,6 +360,7 @@ def field_assist(request, **kwargs):
     field_name = kwargs.get('field_name')
     # get previous value from field (json)
     field_value = request.POST.get('field_value', '')
+    field_id = request.POST.get('field_id', field_name)
 
     formid = request.POST.get('__formid__', '')
 
@@ -401,5 +411,6 @@ def field_assist(request, **kwargs):
         'form': rendered,
         'field_json': field_json,
         'field_name': field_name,
+        'field_id': field_id,
         'deform_dependencies': form.get_widget_resources()
     })

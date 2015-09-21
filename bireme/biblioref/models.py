@@ -57,10 +57,6 @@ class Reference(Generic):
 
     # field tag 01
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
-    # field tag 03
-    call_number = JSONField(_('Call number'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
-    # field tag 04
-    database = models.TextField(_('Database'), blank=True)
     # field tag 05
     literature_type = models.CharField(_('Literature type'), max_length=10, blank=True)
     # field tag 06
@@ -175,8 +171,6 @@ class ReferenceSource(Reference):
         verbose_name = _("Bibliographic Reference Source")
         verbose_name_plural = _("Bibliographic References Source")
 
-    # field tag 07
-    inventory_number = models.TextField(_('Inventory number'), blank=True)
     # field tags 16
     individual_author_monographic = JSONField(_('Individual author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 17
@@ -309,3 +303,6 @@ class ReferenceLocal(models.Model):
     local_descriptors = models.TextField(_('Local descriptors'), blank=True)
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
+
+    def __unicode__(self):
+        return u"[%s] | %s" % (self.cooperative_center_code, self.source)

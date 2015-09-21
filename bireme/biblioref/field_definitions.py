@@ -79,8 +79,8 @@ FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], '
 
 
 # Periodical series (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                          'record_type', 'item_form', 'type_of_journal'],
+FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status','record_type', 'item_form',
+                                                          'type_of_journal'],
                                                'legend': _('General information')}),
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
@@ -105,8 +105,7 @@ FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'c
                                   ]
 
 # Monographic (source)
-FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                        'inventory_number', 'record_type',
+FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'record_type',
                                                         'item_form'],
                                              'legend': _('General information')}),
 
@@ -128,8 +127,7 @@ FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'cal
                                 ]
 
 # Monographic (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                          'inventory_number', 'record_type',
+FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'record_type',
                                                           'item_form'],
                                                'legend': _('General information')}),
 
@@ -147,8 +145,7 @@ FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'c
                                   ]
 
 # Thesis, dissertation (source)
-FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                        'inventory_number', 'record_type'],
+FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'record_type'],
                                              'legend': _('General information')}),
 
                                 ('monographic_level', {'fields': ['individual_author_monographic',
@@ -175,8 +172,7 @@ FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'cal
                                 ]
 
 # Thesis, dissertation (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                          'inventory_number', 'record_type',
+FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'record_type',
                                                           'item_form'],
                                                'legend': _('General information')}),
 
@@ -198,8 +194,7 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'c
                                   ]
 
 # Non Conventional (source)
-FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                        'inventory_number', 'record_type'],
+FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'record_type'],
                                              'legend': _('General information')}),
 
                                 ('monographic_level', {'fields': ['individual_author_monographic',
@@ -220,8 +215,7 @@ FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'cal
                                 ]
 
 # Thesis, dissertation (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'call_number', 'database',
-                                                          'inventory_number', 'record_type',
+FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'record_type',
                                                           'item_form'],
                                                'legend': _('General information')}),
 

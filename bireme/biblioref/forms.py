@@ -372,10 +372,16 @@ class AttachmentForm(forms.ModelForm):
     # change widget from attachment_file field for simple select
     attachment_file = forms.FileField(widget=widgets.FileInput)
 
+class LibraryForm(forms.ModelForm):
+    class Meta:
+        model = ReferenceLocal
+        exclude = ('cooperative_center_code',)
+
 
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, can_delete=True, extra=1)
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
 AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
-                                                  exclude = ('short_url',), can_delete=True, extra=1)
-LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal)
+                                                  exclude=('short_url',), can_delete=True, extra=1)
+LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal, form=LibraryForm, extra=1,
+                                       max_num=1, can_delete=False)

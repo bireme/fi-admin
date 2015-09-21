@@ -13,7 +13,7 @@ class RefereceIndex(indexes.SearchIndex, indexes.Indexable):
     author = indexes.MultiValueField(model_attr='individual_author', null=True)
     link = indexes.MultiValueField(model_attr='electronic_address', null=True)
     publication_type = indexes.CharField()
-    database = indexes.MultiValueField()
+    # database = indexes.MultiValueField()
     publication_language = indexes.MultiValueField()
     publication_year = indexes.CharField()
     journal = indexes.CharField()
@@ -29,7 +29,7 @@ class RefereceIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return ReferenceAnalytic
 
-    def prepare_reference_title(self, obj):        
+    def prepare_reference_title(self, obj):
         return [occ['text'] for occ in obj.title]
 
     def prepare_author(self, obj):
