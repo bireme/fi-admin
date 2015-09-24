@@ -54,7 +54,7 @@ class BiblioRefForm(BetterModelForm):
         self._fieldsets = fieldsets
 
         # hidden status field for documentalist profile
-        if self.user_data['service_role'].get('LILDBI') == 'doc':
+        if self.user_role == 'doc' or self.user_role == 'editor_llxp':
             self.fields['status'].widget = widgets.HiddenInput()
 
         # load serial titles for serial analytic
@@ -105,10 +105,11 @@ class BiblioRefForm(BetterModelForm):
 
             if isinstance(field_check, basestring):
                 if field_check.strip().endswith('.'):
-                    self.add_error(field_name, _("Point at end of field is not allowed"))
 
+                    self.add_error(field_name, _("Point at end of field is not allowed"))
         # Always return the full collection of cleaned data.
         return data
+
 
     def clean_database(self):
         data = self.cleaned_data['database']

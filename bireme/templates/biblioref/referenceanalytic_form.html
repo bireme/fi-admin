@@ -38,36 +38,40 @@
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a>{% if formset_descriptor.errors and not formset_descriptor.is_valid %}<span class="mark">*</span>{% endif %}</li>
-        <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a> {% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark">*</span>{% endif %}</li>
         <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark">*</span>{% endif %}</li>
-        <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i>  {% trans "Library" %}</a>{% if formset_library.errors and not formset_library.is_valid %}<span class="mark">*</span>{% endif %}</li>
+        {% if user_role != 'editor_llxp' %}
+            <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i>  {% trans "Library" %}</a>{% if formset_library.errors and not formset_library.is_valid %}<span class="mark">*</span>{% endif %}</li>
+            <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a> {% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark">*</span>{% endif %}</li>
+        {% endif %}
     </ul>
 
-
-    <form method="POST" enctype="multipart/form-data" class="media-form">
+    <form method="POST" enctype="multipart/form-data" class="reference-form">
         {% csrf_token %}
-
         <!-- METADATA FORMSET -->
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
-                    {% if role == 'doc' and not user_data.is_owner and media %}
+                    {% if not user_can_edit %}
                         <div class="well">
                             <blockquote>
                                 <p><strong>{% trans 'Identifier' %}</strong><p>
-                                <p>{{ reference_source.id }}</p>
+                                <p>{{ object.id }}</p>
                             </blockquote>
 
-                            {% for field in form %}
-                                {{ field.as_hidden }}
-                                {{ field.errors }}
-                                <blockquote>
-                                    <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
-                                        <p>{{ reference_source.get_status_display }}</p>
-                                    {% else %}
-                                        <p>{{ field.value|linebreaks }}<p>
-                                    {% endif %}
-                                </blockquote>
+                            {% for fieldset in form.fieldsets %}
+                                {% if fieldset.name != 'indexing' and fieldset.name != 'fulltext' %}
+                                    {% for field in fieldset %}
+                                        {% if field.value or field.name == 'status' %}
+                                            <blockquote>
+                                                <p><strong>{{ field.label }}</strong><p>
+                                                {% if field.name = 'status' %}
+                                                    <p>{{ object.get_status_display }}</p>
+                                                {% else %}
+                                                    <p>{% display_field field %}<p>
+                                                {% endif %}
+                                            </blockquote>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                             {% endfor %}
                         </div>
 
@@ -131,6 +135,7 @@
                         </div>
                     {% endif %}
             </div>
+            <!-- /METADATA FORMSET -->
 
             <!-- INDEXING FORMSET -->
             <div id='tab-descriptors' class="tab-pane">
@@ -141,7 +146,9 @@
                             <th>{% trans "Descriptors" %}</th>
                             <th>{% trans "Status" %}</th>
                             <th>{% trans "Primary?" %}</th>
-                            <th>{% trans "Delete?" %}</th>
+                            {% if user_can_edit %}
+                                <th>{% trans "Delete?" %}</th>
+                            {% endif %}
                         </thead>
                         <tbody>
 
@@ -165,102 +172,59 @@
                             {% endfor %}
                         {% endif %}
 
-                        {{ formset_descriptor.management_form }}
+                        {% if user_can_edit %}
+                            {{ formset_descriptor.management_form }}
 
-                        {% for form in formset_descriptor %}
-                            <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
-                                {% for hidden in form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
-                                {% for field in form.visible_fields %}
-                                    {% if role == 'doc' and field.name == 'status' %}
-                                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                        <td></td>
-                                    {% elif field.name == 'code' %}
-                                        {{ field.as_hidden }}
-                                    {% elif field.name == 'text' %}
-                                        <td class="span6">
+                            {% for form in formset_descriptor %}
+                                <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == 'status' and not user_can_change_status %}
+                                            <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                            <td></td>
+                                        {% elif field.name == 'code' %}
                                             {{ field.as_hidden }}
-                                            <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
-                                                {% spaceless %}
-                                                {% if field.value == None or field.value == '' %}
-                                                    {% trans "Select by search" %}
-                                                {% else %}
-                                                    {{ field.value}}
-                                                {% endif %}
-                                                {% endspaceless %}
-                                            </div>
-                                            <a href="#" onclick="javascript:decs_search(this)";><i class="icon-search"></i></a>
-                                        </td>
-                                    {% elif field.name != 'DELETE' %}
-                                        <td class="span6">
-                                            {{ field }}
-                                            {{ field.errors }}
-                                        </td>
-                                    {% endif %}
-                                {% endfor %}
-                                <td class="span6">
-                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </fieldset>
-
-                {% for fieldset in form.fieldsets %}
-                    {% if fieldset.name == 'indexing' %}
-                        {% include "biblioref/fieldset_include.html" %}
-                    {% endif %}
-                {% endfor %}
-
-            </div>
-
-            <!-- THEMATIC AREA FORMSET -->
-            <div id='tab-thematic' class="tab-pane">
-                <fieldset id="thematic">
-                    <table class="table table-condensed table-striped span8">
-                        <thead>
-                            <th>{% trans "Thematic area" %}</th>
-                            <th>{% trans "Status" %}</th>
-                            <th>{% trans "Delete?" %}</th>
-                        </thead>
-                        <tbody>
-                        {% if thematic_list %}
-                            {% for thematic in thematic_list %}
-                                <tr>
-                                    <td colspan="3">{{ thematic }}</td>
+                                        {% elif field.name == 'text' %}
+                                            <td class="span6">
+                                                {{ field.as_hidden }}
+                                                <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
+                                                    {% spaceless %}
+                                                    {% if field.value == None or field.value == '' %}
+                                                        {% trans "Select by search" %}
+                                                    {% else %}
+                                                        {{ field.value}}
+                                                    {% endif %}
+                                                    {% endspaceless %}
+                                                </div>
+                                                <a href="#" onclick="javascript:decs_search(this)";><i class="icon-search"></i></a>
+                                            </td>
+                                        {% elif field.name != 'DELETE' %}
+                                            <td class="span6">
+                                                {{ field }}
+                                                {{ field.errors }}
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td class="span6">
+                                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         {% endif %}
-
-                        {{ formset_thematic.management_form }}
-
-                        {% for form in formset_thematic %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                            <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
-                                {% for field in form.visible_fields %}
-                                    {% if role == 'doc' and field.name == 'status' %}
-                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                    {% elif field.name != 'DELETE' %}
-                                        <td>
-                                            {{ field }}
-                                            {{ field.errors }}
-                                        </td>
-                                    {% endif %}
-                                {% endfor %}
-                                <td><!-- status --></td>
-                                <td>
-                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
                         </tbody>
-                    </table>
-                </fieldset>
+                        </table>
+                    </fieldset>
+
+                    {% for fieldset in form.fieldsets %}
+                        {% if fieldset.name == 'indexing' %}
+                            {% include "biblioref/fieldset_include.html" %}
+                        {% endif %}
+                    {% endfor %}
+
             </div>
+            <!-- /INDEXING FORMSET -->
 
             <!-- FULLTEXT FORMSET -->
             <div id='tab-attachment' class="tab-pane">
@@ -271,99 +235,190 @@
                     {% endif %}
                 {% endfor %}
 
-
-                <fieldset id="attachment">
-                    <table class="table table-condensed table-striped span8">
-                        <thead>
-                            <th>{% trans "File" %}</th>
-                            <th>{% trans "Language" %}</th>
-                            <th>{% trans "Delete?" %}</th>
-                        </thead>
-                        <tbody>
-                        {% if attachment_list %}
-                            {% for attachment in attachment_list %}
-                                <tr>
-                                    <td colspan="3">{{ attachment }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-
-                        {{ formset_attachment.management_form }}
-
-                        {% for form in formset_attachment %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                            <tr id="attachment-{{ forloop.counter0 }}" class="attachment-row{% if form.errors %} error{% endif %} formset-row">
-                                {% for field in form.visible_fields %}
-                                    {% if role == 'doc' and field.name == 'status' %}
-                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-
-                                    {% elif field.name == 'attachment_file' and form.instance.pk %}
-                                        <td>
-                                            <strong>{{ form.instance.filename }}</strong>
-                                        </td>
-                                    {% elif field.name != 'DELETE' %}
-                                        <td>
-                                            {{ field }}
-                                            {{ field.errors }}
-                                        </td>
-                                    {% endif %}
+                {% if attachment_list or user_can_edit %}
+                    <fieldset id="attachment">
+                        <table class="table table-condensed table-striped span8">
+                            <thead>
+                                <th>{% trans "File" %}</th>
+                                <th>{% trans "Language" %}</th>
+                                {% if user_can_edit %}
+                                    <th>{% trans "Delete?" %}</th>
+                                {% endif %}
+                            </thead>
+                            <tbody>
+                            {% if attachment_list %}
+                                {% for attachment in attachment_list %}
+                                    <tr>
+                                        <td colspan="3">{{ attachment }}</td>
+                                    </tr>
                                 {% endfor %}
-                                <td>
-                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </fieldset>
+                            {% endif %}
+
+                            {% if user_can_edit %}
+
+                                {{ formset_attachment.management_form }}
+
+                                {% for form in formset_attachment %}
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <tr id="attachment-{{ forloop.counter0 }}" class="attachment-row{% if form.errors %} error{% endif %} formset-row">
+                                        {% for field in form.visible_fields %}
+                                            {% if field.name == 'attachment_file' and form.instance.pk %}
+                                                <td>
+                                                    <strong>{{ form.instance.filename }}</strong>
+                                                </td>
+                                            {% elif field.name != 'DELETE' %}
+                                                <td>
+                                                    {{ field }}
+                                                    {{ field.errors }}
+                                                </td>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <td>
+                                            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </fieldset>
+                {% endif %}
             </div>
+            <!-- /FULLTEXT FORMSET -->
 
             <!-- LIBRARY FORMSET -->
             <div id='tab-library' class="tab-pane">
                 <fieldset class="accordion-body metadata" id="{{ fieldset.name }}">
-                    {{ formset_library.management_form }}
-
-                    {# only one set of fields are present for each center #}
-                    {% for field in formset_library.0 %}
-                        {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
-                            <label for="{{ field.auto_id }}">
-                                {% if field.name in help_fields %}
-                                    <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
-                                {% else %}
-                                    {{ field.label }}
+                    {% if not user_can_edit %}
+                        {% for field in formset_library.0 %}
+                            {% if field.value %}
+                                {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
+                                    <div class="well">
+                                        <blockquote>
+                                            <p><strong>{{ field.label }}</strong><p>
+                                            <p>{{ field.value|linebreaks }}<p>
+                                        </blockquote>
+                                    </div>
                                 {% endif %}
-                                {% if field.field.required %}
-                                    <span class="mark">*</span>
-                                {% endif %}
-                            </label>
-                        {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {{ formset_library.management_form }}
 
-                        {{ field.errors }}
+                        {# only one set of fields are present for each center #}
+                        {% for field in formset_library.0 %}
+                            {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
+                                <label for="{{ field.auto_id }}">
+                                    {% if field.name in help_fields %}
+                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
+                                    {% else %}
+                                        {{ field.label }}
+                                    {% endif %}
+                                    {% if field.field.required %}
+                                        <span class="mark">*</span>
+                                    {% endif %}
+                                </label>
+                            {% endif %}
 
-                        {% if field.field|fieldtype == 'JSONFormField' %}
-                            <div class="row">
-                                <a onclick="javascript:field_assist('{{field.name}}', '{{field.html_name}}')" href="javascript:void(0);">
-                                    <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
-                                </a>
-                            </div>
-                        {% endif %}
+                            {{ field.errors }}
 
-                        {{ field }}
+                            {% if field.field|fieldtype == 'JSONFormField' %}
+                                <div class="row">
+                                    <a onclick="javascript:field_assist('{{field.name}}', '{{field.html_name}}')" href="javascript:void(0);">
+                                        <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                                    </a>
+                                </div>
+                            {% endif %}
 
-                        {% if field.help_text != 'Enter valid JSON' %}
-                            <p class="muted">{{ field.help_text }}</p>
-                        {% endif %}
+                            {{ field }}
 
-                    {% endfor %}
+                            {% if field.help_text != 'Enter valid JSON' %}
+                                <p class="muted">{{ field.help_text }}</p>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endif %}
                 </fieldset>
             </div>
+            <!-- /LIBRARY FORMSET -->
+
+            <!-- THEMATIC AREA FORMSET -->
+            <div id='tab-thematic' class="tab-pane">
+                <fieldset id="thematic">
+                    <table class="table table-condensed table-striped span8">
+                        <thead>
+                            <th>{% trans "Thematic area" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            {% if user_can_edit %}
+                                <th>{% trans "Delete?" %}</th>
+                            {% endif %}
+                        </thead>
+                        <tbody>
+                        {% if thematic_list %}
+                            {% for thematic in thematic_list %}
+                                <tr>
+                                    <td colspan="3">{{ thematic }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if user_can_edit %}
+                            {{ formset_thematic.management_form }}
+
+                            {% for form in formset_thematic %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
+                                    {% for field in form.visible_fields %}
+                                        {% if role == 'doc' and field.name == 'status' %}
+                                           <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                        {% elif field.name != 'DELETE' %}
+                                            <td>
+                                                {{ field }}
+                                                {{ field.errors }}
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td><!-- status --></td>
+                                    <td>
+                                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <!-- /THEMATIC AREA FORMSET -->
 
         </div>
 
         <div class="control-panel form-submit">
-            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+        {% if user_can_edit %}
+            {% if not object or object.status == -1 %}
+                <button class="btn btn-large">{% trans "Save Draft" %}</button>
+            {% elif user_can_change_status %}
+                <button class="btn btn-large">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
+            {% endif %}
+
+            {% if not user_can_change_status %}
+                <button class="btn btn-primary btn-large" id="submit-for-review">{% trans "Submit for Review" %}</button>
+            {% else %}
+                {% if object.status == 1 %}
+                    <button class="btn btn-primary btn-large">{% trans "Update" %}</button>
+                {% else %}
+                    <button class="btn btn-primary btn-large" id="submit-publish">{% trans "Publish" %}</button>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <a href="{% url 'list_biblioref_analytics' %}?source={{reference_source.id}}" class="btn btn-large">
+                {% trans "Back" %}
+            </a>
+        {% endif %}
         </div>
 
     </form>
@@ -558,6 +613,20 @@
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
         }
 
+        $("#submit-for-review").click(function() {
+            // set status to pending for review (status=0)
+            $('#id_status').val('0');
+        });
+
+        $("#submit-publish").click(function() {
+            // set status to published (1)
+            $('#id_status').val('1');
+        });
+
+        $("#id_status").change(function(){
+            new_status_label = $(this).find("option:selected").text();
+            $('#save_status').text(new_status_label);
+        })
 
    </script>
 {% endblock %}

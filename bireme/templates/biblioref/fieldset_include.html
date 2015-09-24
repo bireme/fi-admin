@@ -12,36 +12,54 @@
         {% endif %}
         <ul>
             {% for field in fieldset %}
-                <li {{ field.row_attrs }}>
-                    {% if field.label %}
-                        <label for="{{ field.auto_id }}">
-                            {% if field.name in help_fields %}
-                                <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
-                            {% else %}
-                                {{ field.label }}
-                            {% endif %}
-                            {% if field.field.required %}
-                                <span class="mark">*</span>
-                            {% endif %}
-                        </label>
-                    {% endif %}
-
-                    {{ field.errors }}
-
-                    {% if field.field|fieldtype == 'JSONFormField' %}
-                        <div class="row">
-                            <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);">
-                                <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
-                            </a>
+                {% if not user_can_edit %}
+                    {% if field.value %}
+                        <div class="well">
+                            <blockquote>
+                                <p><strong>{{ field.label }}</strong><p>
+                                <p>{% display_field field %}<p>
+                            </blockquote>
                         </div>
                     {% endif %}
+                {% else %}
+                    <li {{ field.row_attrs }}>
+                        {% if field.name == 'status' and not user_can_change_status %}
+                            <p>
+                                {{ field.label }} : <span class="badge badge-inverse"> {{ field.value|display_status }} </span>
+                            </p>
+                            {{ field }}
+                        {% else %}
+                            {% if field.label %}
+                                <label for="{{ field.auto_id }}">
+                                    {% if field.name in help_fields %}
+                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
+                                    {% else %}
+                                        {{ field.label }}
+                                    {% endif %}
+                                    {% if field.field.required %}
+                                        <span class="mark">*</span>
+                                    {% endif %}
+                                </label>
+                            {% endif %}
 
-                    {% if field.help_text != 'Enter valid JSON' %}
-                        <p class="muted">{{ field.help_text }}</p>
-                    {% endif %}
+                            {{ field.errors }}
 
-                    {{ field }}
-                </li>
+                            {% if field.field|fieldtype == 'JSONFormField' %}
+                                <div class="row">
+                                    <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);">
+                                        <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                                    </a>
+                                </div>
+                            {% endif %}
+
+                            {% if field.help_text != 'Enter valid JSON' %}
+                                <p class="muted">{{ field.help_text }}</p>
+                            {% endif %}
+
+                            {{ field }}
+                        {% endif %}
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </fieldset>

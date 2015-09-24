@@ -18,7 +18,6 @@ def additional_user_info(request):
     if user.is_authenticated():
         if not user.is_superuser:
             user_data = simplejson.loads(user.profile.data)
-            #user_role = user_data['role']
             user_cc = user_data['cc']
             networks = user_data['networks']
             ccs = user_data['ccs']
@@ -33,11 +32,10 @@ def additional_user_info(request):
                     service_list.append(service_id)
 
         else:
-            user_role = 'admin'
             user_cc = 'br1.1'
 
-    return { 'user_role': user_role, 'user_cc': user_cc, 'networks': networks, 'ccs': ccs,
-        'service_role': service_role, 'user_name': user.username, 'user_id' : str(user.id), 'service_list' : service_list }
+    return {'user_cc': user_cc, 'networks': networks, 'ccs': ccs, 'service_role': service_role,
+            'user_name': user.username, 'user_id' : str(user.id), 'service_list' : service_list}
 
 def django_settings(request):
     """

@@ -336,6 +336,10 @@ span.mark{
     color: #e32;
 }
 
+.status-draft{
+    color: #000;
+}
+
 .count{
     width: 80px;
     font-size: 18px;

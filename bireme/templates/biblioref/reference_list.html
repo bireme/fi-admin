@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load app_filters %}
 {% load i18n %}
 
 {% block title %}{% trans "Bibliographic References" %} | {{ block.super }}{% endblock %}
@@ -53,14 +54,16 @@
                {% endif %}
             </a>
         </li>
-        <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
-            <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
-                <strong>{% trans "All references" %}</strong>
-               {% if  actions.filter_owner == '*' %}
-                   <span class="badge badge-info">{{ paginator.count }}</span>
-               {% endif %}
-            </a>
-        </li>
+        {% if user_role != 'editor_llxp' %}
+            <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
+                <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
+                    <strong>{% trans "All references" %}</strong>
+                   {% if  actions.filter_owner == '*' %}
+                       <span class="badge badge-info">{{ paginator.count }}</span>
+                   {% endif %}
+                </a>
+            </li>
+        {% endif %}
     </ul>
 
     <div class="tab-content">
@@ -109,15 +112,7 @@
                             <td><a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}">{{ reference.id }}</a></td>
                             <td><span title="{{ reference }}">{{ reference }}</span></td>
                             <td>
-                                {% if reference.status == 0 %}
-                                    <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                                {% elif reference.status == 1 %}
-                                    <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
-                                {% elif reference.status == 2 %}
-                                    <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
-                                {% elif reference.status == 3 %}
-                                    <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
-                                {% endif %}
+                                {{ reference.status|display_status_icon }}
                             </td>
                             <td nowrap="1">
                                 <a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}" class='btn btn-mini'><i class='icon-pencil'></i></a>

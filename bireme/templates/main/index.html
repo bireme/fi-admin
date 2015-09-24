@@ -23,17 +23,19 @@
         <div class="span6">
             <div class="well sidebar-nav">
                 <h3>{% trans "Recent actions" %}</h3>
+
                 <ul class="unstyled">
                     {% for action in recent_actions %}
                         <li>
                             {% if action.action_flag == 1 %}
-                                <span class="label label-success">{% trans "Created" %}</span>
+                                <i class="icon-file" title="{% trans "Created" %}"></i>
                             {% elif action.action_flag == 2 %}
-                                <span class="label label-info">{% trans "Modified" %}</span>
+                                <i class="icon-pencil" title="{% trans "Modified" %}"></i>
                             {% endif %}
-                            {{ action.action_time }} - {{ action.object_repr }}</li>
+                            {{ action.action_time }} - {{ action.object_repr }}
+                        </li>
                     {% endfor %}
-                </ul>
+                </ul>                
             </div>
         </div>
     </div>

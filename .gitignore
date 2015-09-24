@@ -9,3 +9,5 @@ database.old
 fabric/environment.py
 biremelogin
 bireme/templates/version.txt
+fixtures/samples/
+uploads/

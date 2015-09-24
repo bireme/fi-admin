@@ -7,8 +7,9 @@ from utils.fields import JSONField, AuxiliaryChoiceField, MultipleAuxiliaryChoic
 from utils.models import Generic, Country
 
 STATUS_CHOICES = (
+    (-1, _('Draft')),
     (0, _('Pending')),
-    (1, _('Admitted')),
+    (1, _('Published')),
     (2, _('Refused')),
     (3, _('Deleted')),
 )
@@ -50,7 +51,7 @@ class Reference(Generic):
         verbose_name = _("Bibliographic Reference")
         verbose_name_plural = _("Bibliographic References")
 
-    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
 
     # title used for display and search of Reference objects
     reference_title = models.TextField(_('Title'), blank=True)

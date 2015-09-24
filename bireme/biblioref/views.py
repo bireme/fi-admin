@@ -56,11 +56,16 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
 
+        # filter by specific document type and remove filter by user (filter_owner)
         if document_type:
             object_list = object_list.filter(literature_type=document_type)
 
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+
+        # if is list of a specific source or source type dont't filter by user
+        if source_id or document_type:
+            self.actions['filter_owner'] = '*'
 
         # filter by user
         if not self.actions['filter_owner'] or self.actions['filter_owner'] == 'user':
@@ -74,9 +79,13 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(BiblioRefGenericListView, self).get_context_data(**kwargs)
+        user_data = additional_user_info(self.request)
+        user_role = user_data['service_role'].get('LILDBI')
+
         context['actions'] = self.actions
         context['document_type'] = self.request.GET.get('document_type')
         context['source_id'] = self.request.GET.get('source')
+        context['user_role'] = user_role
 
         return context
 
@@ -207,13 +216,23 @@ class BiblioRefUpdate(LoginRequiredView):
         context = super(BiblioRefUpdate, self).get_context_data(**kwargs)
 
         user_data = additional_user_info(self.request)
-        user_role = user_data['service_role'].get('BiblioRef')
+        user_role = user_data['service_role'].get('LILDBI')
         user_id = self.request.user.id
         if self.object:
             user_data['is_owner'] = True if self.object.created_by == self.request.user else False
 
         context['user_data'] = user_data
-        context['role'] = user_role
+        context['user_role'] = user_role
+
+        #create flag that control if user have permission to edit the reference
+        if user_role == 'doc' or user_role == 'editor_llxp':
+            context['user_can_edit'] = True if not self.object or (self.object.status != 1 and user_data['is_owner']) else False
+            context['user_can_change_status'] = False
+        else:
+            context['user_can_edit'] = True
+            context['user_can_change_status'] = True
+
+        #context['user_can_edit'] = True if (not self.object or user_role != 'doc' or user_role != 'editor_llxp') or (self.object.status != 1 and user_data['is_owner']) else False
         context['settings'] = settings
         context['help_fields'] = get_help_fields('biblioref')
 
