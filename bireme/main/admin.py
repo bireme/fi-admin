@@ -13,6 +13,8 @@ class ThematicAreaLocalAdmin(admin.TabularInline):
 
 class ThematicAreaAdmin(GenericAdmin):
     model = ThematicArea
+    list_display = ('id', 'name', 'acronym')
+    search_fields = ['name', 'acronym']    
     inlines = [ThematicAreaLocalAdmin, ]
 
 

@@ -46,7 +46,7 @@ class Attachment(Generic):
     short_url = models.CharField(max_length=25, blank=False)
 
     class Meta:
-        app_label = ugettext("attachments")
+        app_label = 'attachments'
         ordering = ['-created_time']
 
     def __unicode__(self):

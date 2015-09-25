@@ -38,7 +38,7 @@ other_notes_section = ('other_notes', {'fields': ['general_note', 'formatted_con
                                        'classes': ['collapse']})
 
 abstract_section = ('abstract', {'fields': ['abstract'],
-                                 'legend': 'Abstract',
+                                 'legend': _('Abstract'),
                                  'classes': ['collapse']})
 
 

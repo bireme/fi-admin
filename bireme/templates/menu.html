@@ -1,4 +1,5 @@
 {% load i18n %}
+
 {% block menu %}
     {% if user.is_authenticated %}
 
@@ -48,11 +49,10 @@
                                 </li>
                             {% endif %}
 
-                            {% if service_role.DirEve = 'edi' or service_role.LIS == 'edi' %}
+                            {% if service_role.DirEve = 'edi' or service_role.LIS == 'edi' or service_role.LILDBI = 'edi' %}
                                 <li><a href="{% url 'error_reporting.views.list_error_report' %}" title=""><i class="icon-warning-sign"></i> {% trans "Error reports" %}</a></li>
+                                <li><a href="{% url 'list_reports' %}" title=""><i class="icon-file"></i> {% trans "Reports" %}</a></li>
                             {% endif %}
-
-                            <li><a href="{% url 'list_reports' %}" title=""><i class="icon-file"></i> {% trans "Reports" %}</a></li>
 
                             {% if user.is_superuser %}
                                 <li class="dropdown">
