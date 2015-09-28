@@ -187,9 +187,9 @@
                                         {% elif field.name == 'code' %}
                                             {{ field.as_hidden }}
                                         {% elif field.name == 'text' %}
-                                            <td class="span6">
+                                            <td class="span9">
                                                 {{ field.as_hidden }}
-                                                <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
+                                                <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:decs_search(this)">
                                                     {% spaceless %}
                                                     {% if field.value == None or field.value == '' %}
                                                         {% trans "Select by search" %}
@@ -198,7 +198,6 @@
                                                     {% endif %}
                                                     {% endspaceless %}
                                                 </div>
-                                                <a href="#" onclick="javascript:decs_search(this)";><i class="icon-search"></i></a>
                                             </td>
                                         {% elif field.name != 'DELETE' %}
                                             <td class="span6">

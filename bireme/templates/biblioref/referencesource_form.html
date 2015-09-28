@@ -40,8 +40,10 @@
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
-        <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
-        <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
+        {% if user_role != 'editor_llxp' %}
+            <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
+            <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
+        {% endif %}
     </ul>
 
 
@@ -211,15 +213,15 @@
                                     {{ hidden }}
                                 {% endfor %}
                                 {% for field in form.visible_fields %}
-                                    {% if role == 'doc' and field.name == 'status' %}
+                                    {% if field.name == 'status' and not user_can_change_status %}
                                         <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                         <td></td>
                                     {% elif field.name == 'code' %}
                                         {{ field.as_hidden }}
                                     {% elif field.name == 'text' %}
-                                        <td class="span6">
+                                        <td class="span9">
                                             {{ field.as_hidden }}
-                                            <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
+                                            <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:decs_search(this)">
                                                 {% spaceless %}
                                                 {% if field.value == None or field.value == '' %}
                                                     {% trans "Select by search" %}
@@ -228,7 +230,6 @@
                                                 {% endif %}
                                                 {% endspaceless %}
                                             </div>
-                                            <a href="#" onclick="javascript:decs_search(this)";><i class="icon-search"></i></a>
                                         </td>
                                     {% elif field.name != 'DELETE' %}
                                         <td class="span6">
@@ -273,7 +274,7 @@
                             {% endfor %}
                             <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for field in form.visible_fields %}
-                                    {% if role == 'doc' and field.name == 'status' %}
+                                    {% if field.name == 'status' and not user_can_change_status %}
                                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                     {% elif field.name != 'DELETE' %}
                                         <td>
