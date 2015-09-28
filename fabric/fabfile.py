@@ -107,6 +107,7 @@ def update():
     execute git pull and restart application
     """
     with cd(env.git_path):
+        run("git checkout bireme/templates/version.txt")
         run("git pull")
 
     update_version_file()

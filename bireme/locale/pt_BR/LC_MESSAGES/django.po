@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-25 18:28-0300\n"
-"PO-Revision-Date: 2015-09-25 18:34-0300\n"
+"PO-Revision-Date: 2015-09-28 11:23-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -276,7 +276,7 @@ msgstr ""
 
 #: biblioref/forms.py:86
 msgid "Select from the list"
-msgstr ""
+msgstr "Selecione da lista"
 
 #: biblioref/forms.py:104
 #, python-format
@@ -1907,7 +1907,7 @@ msgstr "Por favor verifique as mensagens de erro"
 
 #: templates/biblioref/referencesource_form.html:126
 msgid "Other journal title (from refereces not indexed in LILACS)"
-msgstr ""
+msgstr "Outro título de revista (para referências não indexadas na LILACS)"
 
 #: templates/biblioref/referencesource_list.html:4
 #: templates/biblioref/referencesource_list.html:8
