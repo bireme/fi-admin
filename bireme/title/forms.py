@@ -26,10 +26,62 @@ class TitleForm(forms.ModelForm):
         if self.user_data['service_role'].get('Title') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 
+    def clean_initial_date(self):
+        field = 'initial_date'
+        data = self.cleaned_data[field]
+        status = self.cleaned_data['status']
+        message = ''
+
+        if 'C' in status:
+            if not data:
+                message = _("The initial date field is mandatory when publish status field value is 'current'")
+
+        if message:
+            self.add_error(field, message)
+
+        return data
+
+    def clean_final_date(self):
+        field = 'final_date'
+        data = self.cleaned_data[field]
+        status = self.cleaned_data['status']
+        message = ''
+
+        if 'D' in status:
+            if not data:
+                message = _("The final date field is mandatory when publish status field value is 'suspended or closed'")
+
+        if message:
+            self.add_error(field, message)
+
+        return data
+
+    def clean_state(self):
+        field = 'state'
+        data = self.cleaned_data[field]
+        country = self.cleaned_data['country']
+        c_list = [c.code for c in country]
+        message = ''
+
+        if 'BR' in c_list:
+            if not data:
+                message = _("The state field is mandatory when country field value is 'Brazil'")
+
+        if message:
+            self.add_error(field, message)
+
+        return data
+
     def save(self, *args, **kwargs):
         obj = super(TitleForm, self).save(commit=False)
 
         # save modifications
+        data = Title.objects.latest('id')
+        if not data:
+            id = 1
+        else:
+            id = data.id
+        obj.id_number = id
         obj.last_change_date = time.strftime('%Y%m%d')
         obj.save()
 
@@ -37,7 +89,7 @@ class TitleForm(forms.ModelForm):
 
     class Meta:
         model  = Title
-        exclude = ('record_type', 'treatment_level', 'cooperative_center_code', 'last_change_date', )
+        exclude = ( 'id_number', 'record_type', 'treatment_level', 'cooperative_center_code', 'last_change_date', )
 
 
 class OnlineResourcesForm(forms.ModelForm):
@@ -46,7 +98,7 @@ class OnlineResourcesForm(forms.ModelForm):
 
         # save modifications
         if not obj.creation_date:
-            obj.creation_date = time.strftime('%Y%m%d')        
+            obj.creation_date = time.strftime('%Y%m%d')
 
         obj.save()
 
@@ -54,12 +106,12 @@ class OnlineResourcesForm(forms.ModelForm):
 
     class Meta:
         model = OnlineResources
-        exclude = ('creation_date', )
+        exclude = ('creation_date', 'tco', 'ndb', 'pca', 'access_control', )
 
 
 # definition of inline formsets
 
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1, exclude=('primary', ))
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
 OnlineResourcesFormSet = inlineformset_factory(Title, OnlineResources, form=OnlineResourcesForm, can_delete=True, extra=1)
 BVSSpecialtyFormSet = inlineformset_factory(Title, BVSSpecialty, can_delete=True, extra=1)

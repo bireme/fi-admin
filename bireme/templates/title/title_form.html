@@ -13,7 +13,7 @@
 {% block content %}
 
 <div class='header'>
-    <h2><i class='icon-book'></i>{% if not object %}{% trans "New Title" %}{% else %}{% trans "Edit Title" %}{% endif %}</h2>
+    <h2><i class='icon-book'></i>{% if not object %}{% trans "New Title" %}{% else %}{% trans "Edit Title" %}{% if object.id %} - ID: {{ object.id }}{% endif %}{% endif %}</h2>
 </div>
 
 <div class='body'>
@@ -21,7 +21,7 @@
     {% if form.errors %}
         <ul class="errorlist alert alert-error">
             <li>{% trans "Please check required fields" %}</li>
-        </ul>        
+        </ul>
     {% endif %}
     {% if valid_for_publication != None and not valid_for_publication %}
         <ul class="errorlist alert alert-error">
@@ -33,6 +33,7 @@
     {{ formset_indexrange.non_form_errors }}
     {{ formset_specialty.non_form_errors }}
     {{ formset_variance.non_form_errors }}
+    {{ formset_links.non_form_errors }}
     {{ formset_descriptor.non_form_errors }}
     {{ formset_keyword.non_form_errors }}
 
@@ -112,7 +113,6 @@
                                 <p>{% trans "Last edit in" %} <strong>{{ title.updated_time }}</strong> {% trans "by user" %}  <strong>{{ title.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
-
                     {% endif %}
             </div>
 
@@ -153,20 +153,20 @@
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
-                                {% for field in form.visible_fields %}                                    
+                                {% for field in form.visible_fields %}
                                     {% if field.name == 'status' %}
                                         {{ field.as_hidden }}
                                         <td></td>
                                     {% elif field.name == 'code' %}
                                         {{ field.as_hidden }}
-                                    {% elif field.name == 'text' %}                                        
+                                    {% elif field.name == 'text' %}
                                         <td class="span6">
                                             {{ field.as_hidden }}
                                             <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
                                                 {% spaceless %}
                                                 {% if field.value == None or field.value == '' %}
                                                     {% trans "Select by search" %}
-                                                {% else %} 
+                                                {% else %}
                                                     {{ field.value }}
                                                 {% endif %}
                                                 {% endspaceless %}
@@ -410,7 +410,6 @@
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
-                        {{ formset_links.non_form_errors }}
                         <div id="onlineresource-{{ forloop.counter0 }}" class="onlineresource onlineresource-row{% if form.errors %} error{% endif %} formset-row">
                             <table class="table table-condensed table-striped span8">
                                 <tr>
@@ -542,7 +541,7 @@
             var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
             // Listen to message from child window
-            eventer(messageEvent,function(e) {                
+            eventer(messageEvent,function(e) {
                 var decs_data = e.data;
                 var pipe_pos = decs_data.lastIndexOf('|');
                 var decs_text = decs_data.substring(0, pipe_pos);
@@ -551,14 +550,14 @@
                 var decs_row = decs_field.replace( /[A-Za-z_$-]/g, '');
                 // set code, text and label for the new descriptor
                 $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);                
+                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);
                 $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(decs_text);
                 $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
 
             },false);
 
-            $(document).on("click", "a.add_error_report", function(){ 
-                $("#error_report_modal").modal("show");                
+            $(document).on("click", "a.add_error_report", function(){
+                $("#error_report_modal").modal("show");
             });
 
             $(document).on("click", "button.save", function(){
@@ -590,7 +589,7 @@
                     return 'Are you sure?';
                 }
             });*/
-            
+
         })
 
         function decs_search(obj){
