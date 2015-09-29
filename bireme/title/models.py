@@ -24,19 +24,19 @@ class Title(Generic):
         ('D', _('Suspended or closed')),
     )
 
+    id_number = models.CharField(_('ID number'), max_length=55, blank=False)
     local_code = models.CharField(_('Local code'), max_length=55, choices=LOCAL_CODE_CHOICES, blank=True)
     record_type = models.CharField(_('Record type'), max_length=55, default='KS', blank=False)
     treatment_level = models.CharField(_('Title treatment level'), max_length=55, default='K', blank=False)
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=False)
-    national_code = models.CharField(_('National code'), max_length=55, blank=False)
-    id_number = models.CharField(_('ID number'), max_length=55, blank=False)
-    secs_number = models.CharField(_('SeCS number'), max_length=55, blank=False)
-    related_systems = models.TextField(_("Related systems"), blank=False, help_text=_("Enter one per line"))
+    national_code = models.CharField(_('National code'), max_length=55, blank=True)
+    secs_number = models.CharField(_('SeCS number'), max_length=55, blank=True)
+    related_systems = models.TextField(_("Related systems"), blank=True, help_text=_("Enter one per line"))
     status = models.CharField(_('Publish status'), max_length=55, choices=STATUS_CHOICES, blank=False)
     title = models.CharField(_('Title'), max_length=455, blank=False)
     subtitle = models.CharField(_('Subtitle'), max_length=455, blank=True)
-    section = models.CharField(_('Section/Part'), max_length=255, blank=False)
-    section_title = models.CharField(_('Section/Part title'), max_length=455, blank=False)
+    section = models.CharField(_('Section/Part'), max_length=255, blank=True)
+    section_title = models.CharField(_('Section/Part title'), max_length=455, blank=True)
     responsibility_mention = models.TextField(_("Responsibility Mention"), blank=True, help_text=_("Enter one per line"))
     shortened_title = models.CharField(_('Shortened title'), max_length=455, blank=False)
     medline_shortened_title = models.CharField(_('MEDLINE shortened title'), max_length=455, blank=True)
@@ -53,7 +53,7 @@ class Title(Generic):
     text_language = models.ManyToManyField(SourceLanguage, related_name="text_language+", verbose_name=_("Text language"), blank=True)
     abstract_language = models.ManyToManyField(SourceLanguage, related_name="abstract_language+", verbose_name=_("Abstract language"), blank=True)
     frequency = models.CharField(_('Frequency'), max_length=55, choices=FREQUENCY_CHOICES, blank=True)
-    issn = models.CharField(_('ISSN'), max_length=255, blank=False)
+    issn = models.CharField(_('ISSN'), max_length=255, blank=True)
     coden = models.CharField(_('CODEN'), max_length=255, blank=True)
     medline_code = models.CharField(_('MEDLINE code'), max_length=255, blank=True)
     classification = models.TextField(_("Classification"), blank=True, help_text=_("Enter one per line"))
@@ -74,55 +74,6 @@ class Title(Generic):
     def __unicode__(self):
         return self.title
 
-# Mask model
-class Mask(Generic):
-
-    class Meta:
-        verbose_name = _("Mask")
-        verbose_name_plural = _("Masks")
-
-    record_type = models.CharField(_('Record type'), max_length=55, blank=False)
-    treatment_level = models.CharField(_('Title treatment level'), max_length=55, blank=False)
-    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=False)
-    mask = models.CharField(_('Mask code'), max_length=55, blank=False)
-    status = models.CharField(_('Status'), max_length=55, blank=False)
-    volume = models.TextField(_("Volume"), blank=True, help_text=_("Enter one per line"))
-    issue = models.TextField(_("Issue"), blank=True, help_text=_("Enter one per line"))
-    volumes_sequence = models.CharField(_('Volumes sequence'), max_length=55, blank=True)
-    issues_sequence = models.CharField(_('Issues sequence'), max_length=55, blank=True)
-    notes = models.TextField(_("Notes"), blank=True, help_text=_("Enter one per line"))
-    filling_date = models.CharField(_('Filling date'), help_text='Format: YYYYMMDD', max_length=55, blank=False)
-
-    def __unicode__(self):
-        return self.mask
-        
-# Fascic model
-class Fascic(Generic):
-
-    class Meta:
-        verbose_name = _("Issue")
-        verbose_name_plural = _("Issues")
-
-    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=False)
-    record_type = models.CharField(_('Record type'), max_length=55, blank=False)
-    treatment_level = models.CharField(_('Title treatment level'), max_length=55, blank=False)
-    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=False)
-    title_id_number = models.CharField(_('Title ID'), max_length=55, blank=False)
-    notes = models.TextField(_("Notes"), blank=True, help_text=_("Enter one per line"))
-    mask = models.ForeignKey(Mask, verbose_name=_("Mask code"), blank=False)
-    year = models.CharField(_('Year'), max_length=255, blank=False)
-    volume = models.CharField(_('Volume'), max_length=255, blank=True)
-    issue = models.CharField(_('Issue'), max_length=55, blank=True)
-    status = models.CharField(_('Status (P/A)'), max_length=55, blank=False)
-    copies = models.CharField(_('Number of copies'), max_length=55, blank=False)
-    publication_type = models.CharField(_('Publication type'), max_length=55, blank=False)
-    classification = models.CharField(_('Classification'), max_length=55, blank=False)
-    creation_date = models.CharField(_('Creation date'), help_text='Format: YYYYMMDD', max_length=55, blank=True)
-    last_change_date = models.CharField(_('Last change date'), help_text='Format: YYYYMMDD', max_length=55, blank=True)
-
-    def __unicode__(self):
-        return self.issue
-
 class OwnerList(Generic):
 
     class Meta:
@@ -141,7 +92,7 @@ class OnlineResources(models.Model):
         verbose_name_plural = _("Online resources")
 
     title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True, null=True)
-    url = models.URLField(_('URL'), blank=True)
+    url = models.URLField(_('URL'), max_length=255, blank=True)
     owner = models.ForeignKey(OwnerList, verbose_name=_("Owner"), blank=True, null=True)
     issn_online = models.CharField(_('ISSN online'), max_length=55, blank=True)
     tco = models.BooleanField(_('ONLINE full text'), default=False)
