@@ -110,314 +110,50 @@
 
                     {% endif %}
 
-                    {% comment %}Display administrative information{% endcomment %}
-                    {% if object.id %}
-                        <i class="icon icon-time"></i> <a href="#" id="show_advaced_filters" onclick="$('#changes_history').toggle()">{% trans "Changes history" %}</a>
-                        <div id="changes_history" class="hide">
-                            {% if object.logs  %}
-                                <table class="table table-striped">
-                                    <tr>
-                                        <th>{% trans "Date" %}</th>
-                                        <th>{% trans "User" %}</th>
-                                        <th>{% trans "Center" %}</th>
-                                        <th>{% trans "Changes" %}</th>
-                                    </tr>
-                                    {% for log in object.logs.all %}
-                                        <tr>
-                                            <td>{{ log.action_time }}</td>
-                                            <td>{{ log.user }}</td>
-                                            <td>{{ log.user|profilefield:"cc" }}</td>
-                                            <td>{{ log|log_json_changes }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </table>
-                            {% endif %}
-                        </div>
+                    <!-- display changes log -->
+                    {%if object.pk %}
+                        <i class="icon icon-time"></i><a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/">{% trans "Changes history" %}</a>
                     {% endif %}
+
             </div>
             <!-- /METADATA FORMSET -->
 
             <!-- INDEXING FORMSET -->
-            <div id='tab-descriptors' class="tab-pane">
-
-                <fieldset id="descriptors" class="row">
-                    <table class="table table-condensed table-striped span8">
-                        <thead>
-                            <th>{% trans "Descriptors" %}</th>
-                            <th>{% trans "Status" %}</th>
-                            <th>{% trans "Primary?" %}</th>
-                            {% if user_can_edit %}
-                                <th>{% trans "Delete?" %}</th>
-                            {% endif %}
-                        </thead>
-                        <tbody>
-
-                        {% if descriptor_list %}
-                            {% for descriptor in descriptor_list %}
-                                <tr>
-                                    <td>{{ descriptor.text }}</td>
-                                    <td>
-                                        {% if descriptor.status == 0 %}
-                                            <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                                        {% elif descriptor.status == 1 %}
-                                            <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
-                                        {% elif descriptor.status == 2 %}
-                                            <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
-                                        {% elif descriptor.status == 3 %}
-                                            <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
-                                        {% endif %}
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-
-                        {% if user_can_edit %}
-                            {{ formset_descriptor.management_form }}
-
-                            {% for form in formset_descriptor %}
-                                <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
-                                    {% for hidden in form.hidden_fields %}
-                                        {{ hidden }}
-                                    {% endfor %}
-                                    {% for field in form.visible_fields %}
-                                        {% if field.name == 'status' and not user_can_change_status %}
-                                            <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                            <td></td>
-                                        {% elif field.name == 'code' %}
-                                            {{ field.as_hidden }}
-                                        {% elif field.name == 'text' %}
-                                            <td class="span9">
-                                                {{ field.as_hidden }}
-                                                <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:decs_search(this)">
-                                                    {% spaceless %}
-                                                    {% if field.value == None or field.value == '' %}
-                                                        {% trans "Select by search" %}
-                                                    {% else %}
-                                                        {{ field.value}}
-                                                    {% endif %}
-                                                    {% endspaceless %}
-                                                </div>
-                                            </td>
-                                        {% elif field.name != 'DELETE' %}
-                                            <td class="span6">
-                                                {{ field }}
-                                                {{ field.errors }}
-                                            </td>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <td class="span6">
-                                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                        </tbody>
-                        </table>
-                    </fieldset>
-
-                    {% for fieldset in form.fieldsets %}
-                        {% if fieldset.name == 'indexing' %}
-                            {% include "biblioref/fieldset_include.html" %}
-                        {% endif %}
-                    {% endfor %}
-
-            </div>
-            <!-- /INDEXING FORMSET -->
+            {% include "biblioref/fieldset_indexing.html" %}
 
             <!-- FULLTEXT FORMSET -->
-            <div id='tab-attachment' class="tab-pane">
-
-                {% for fieldset in form.fieldsets %}
-                    {% if fieldset.name == 'fulltext' %}
-                        {% include "biblioref/fieldset_include.html" %}
-                    {% endif %}
-                {% endfor %}
-
-                {% if attachment_list or user_can_edit %}
-                    <fieldset id="attachment">
-                        <table class="table table-condensed table-striped span8">
-                            <thead>
-                                <th>{% trans "File" %}</th>
-                                <th>{% trans "Language" %}</th>
-                                {% if user_can_edit %}
-                                    <th>{% trans "Delete?" %}</th>
-                                {% endif %}
-                            </thead>
-                            <tbody>
-                            {% if attachment_list %}
-                                {% for attachment in attachment_list %}
-                                    <tr>
-                                        <td colspan="3">{{ attachment }}</td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-
-                            {% if user_can_edit %}
-
-                                {{ formset_attachment.management_form }}
-
-                                {% for form in formset_attachment %}
-                                    {% for hidden in form.hidden_fields %}
-                                        {{ hidden }}
-                                    {% endfor %}
-                                    <tr id="attachment-{{ forloop.counter0 }}" class="attachment-row{% if form.errors %} error{% endif %} formset-row">
-                                        {% for field in form.visible_fields %}
-                                            {% if field.name == 'attachment_file' and form.instance.pk %}
-                                                <td>
-                                                    <strong>{{ form.instance.filename }}</strong>
-                                                </td>
-                                            {% elif field.name != 'DELETE' %}
-                                                <td>
-                                                    {{ field }}
-                                                    {{ field.errors }}
-                                                </td>
-                                            {% endif %}
-                                        {% endfor %}
-                                        <td>
-                                            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                            </tbody>
-                        </table>
-                    </fieldset>
-                {% endif %}
-            </div>
-            <!-- /FULLTEXT FORMSET -->
+            {% include "biblioref/fieldset_fulltext.html" %}
 
             <!-- LIBRARY FORMSET -->
-            <div id='tab-library' class="tab-pane">
-                <fieldset class="accordion-body metadata" id="{{ fieldset.name }}">
-                    {% if not user_can_edit %}
-                        {% for field in formset_library.0 %}
-                            {% if field.value %}
-                                {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
-                                    <div class="well">
-                                        <blockquote>
-                                            <p><strong>{{ field.label }}</strong><p>
-                                            <p>{{ field.value|linebreaks }}<p>
-                                        </blockquote>
-                                    </div>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        {{ formset_library.management_form }}
-
-                        {# only one set of fields are present for each center #}
-                        {% for field in formset_library.0 %}
-                            {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
-                                <label for="{{ field.auto_id }}">
-                                    {% if field.name in help_fields %}
-                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
-                                    {% else %}
-                                        {{ field.label }}
-                                    {% endif %}
-                                    {% if field.field.required %}
-                                        <span class="mark">*</span>
-                                    {% endif %}
-                                </label>
-                            {% endif %}
-
-                            {{ field.errors }}
-
-                            {% if field.field|fieldtype == 'JSONFormField' %}
-                                <div class="row">
-                                    <a onclick="javascript:field_assist('{{field.name}}', '{{field.html_name}}')" href="javascript:void(0);">
-                                        <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
-                                    </a>
-                                </div>
-                            {% endif %}
-
-                            {{ field }}
-
-                            {% if field.help_text != 'Enter valid JSON' %}
-                                <p class="muted">{{ field.help_text }}</p>
-                            {% endif %}
-
-                        {% endfor %}
-                    {% endif %}
-                </fieldset>
-            </div>
-            <!-- /LIBRARY FORMSET -->
+            {% include "biblioref/fieldset_library.html" %}
 
             <!-- THEMATIC AREA FORMSET -->
-            <div id='tab-thematic' class="tab-pane">
-                <fieldset id="thematic">
-                    <table class="table table-condensed table-striped span8">
-                        <thead>
-                            <th>{% trans "Thematic area" %}</th>
-                            <th>{% trans "Status" %}</th>
-                            {% if user_can_edit %}
-                                <th>{% trans "Delete?" %}</th>
-                            {% endif %}
-                        </thead>
-                        <tbody>
-                        {% if thematic_list %}
-                            {% for thematic in thematic_list %}
-                                <tr>
-                                    <td colspan="3">{{ thematic }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-
-                        {% if user_can_edit %}
-                            {{ formset_thematic.management_form }}
-
-                            {% for form in formset_thematic %}
-                                {% for hidden in form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
-                                <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
-                                    {% for field in form.visible_fields %}
-                                        {% if role == 'doc' and field.name == 'status' %}
-                                           <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                        {% elif field.name != 'DELETE' %}
-                                            <td>
-                                                {{ field }}
-                                                {{ field.errors }}
-                                            </td>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <td><!-- status --></td>
-                                    <td>
-                                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                        </tbody>
-                    </table>
-                </fieldset>
-            </div>
-            <!-- /THEMATIC AREA FORMSET -->
+            {% include "biblioref/fieldset_thematic.html" %}
 
         </div>
 
         <div class="control-panel form-submit">
-        {% if user_can_edit %}
-            {% if not object or object.status == -1 %}
-                <button class="btn btn-large">{% trans "Save Draft" %}</button>
-            {% elif user_can_change_status %}
-                <button class="btn btn-large">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
-            {% endif %}
-
-            {% if not user_can_change_status %}
-                <button class="btn btn-primary btn-large" id="submit-for-review">{% trans "Submit for Review" %}</button>
-            {% else %}
-                {% if object.status == 1 %}
-                    <button class="btn btn-primary btn-large">{% trans "Update" %}</button>
-                {% else %}
-                    <button class="btn btn-primary btn-large" id="submit-publish">{% trans "Publish" %}</button>
+            {% if user_can_edit %}
+                {% if not object or object.status == -1 %}
+                    <button class="btn btn-large">{% trans "Save Draft" %}</button>
+                {% elif user_can_change_status %}
+                    <button class="btn btn-large">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
                 {% endif %}
+
+                {% if not user_can_change_status %}
+                    <button class="btn btn-primary btn-large" id="submit-for-review">{% trans "Submit for Review" %}</button>
+                {% else %}
+                    {% if object.status == 1 %}
+                        <button class="btn btn-primary btn-large">{% trans "Update" %}</button>
+                    {% else %}
+                        <button class="btn btn-primary btn-large" id="submit-publish">{% trans "Publish" %}</button>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <a href="{% url 'list_biblioref_analytics' %}?source={{reference_source.id}}" class="btn btn-large">
+                    {% trans "Back" %}
+                </a>
             {% endif %}
-        {% else %}
-            <a href="{% url 'list_biblioref_analytics' %}?source={{reference_source.id}}" class="btn btn-large">
-                {% trans "Back" %}
-            </a>
-        {% endif %}
         </div>
 
     </form>
@@ -425,6 +161,10 @@
 
 {% if help_fields %}
     {% include "modal_help.html" %}
+{% endif %}
+
+{% if object.id %}
+    {% include "modal_log.html" %}
 {% endif %}
 
 {% endblock %}

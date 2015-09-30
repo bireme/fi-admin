@@ -1,0 +1,55 @@
+{% load i18n %}
+
+<!-- THEMATIC AREA FORMSET -->
+<div id='tab-thematic' class="tab-pane">
+    <fieldset id="thematic">
+
+        {% if thematic_list or user_can_edit %}
+            <table class="table table-condensed table-striped span8">
+                <thead>
+                    <th>{% trans "Thematic area" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    {% if user_can_edit %}
+                        <th>{% trans "Delete?" %}</th>
+                    {% endif %}
+                </thead>
+                <tbody>
+                {% if thematic_list %}
+                    {% for thematic in thematic_list %}
+                        <tr>
+                            <td colspan="3">{{ thematic }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+
+                {% if user_can_edit %}
+                    {{ formset_thematic.management_form }}
+
+                    {% for form in formset_thematic %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
+                            {% for field in form.visible_fields %}
+                                {% if role == 'doc' and field.name == 'status' %}
+                                   <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                {% elif field.name != 'DELETE' %}
+                                    <td>
+                                        {{ field }}
+                                        {{ field.errors }}
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                            <td><!-- status --></td>
+                            <td>
+                                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+    {% endif %}
+    </fieldset>
+</div>
+<!-- /THEMATIC AREA FORMSET -->

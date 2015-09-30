@@ -1,0 +1,61 @@
+{% load i18n %}
+
+<div id='tab-attachment' class="tab-pane">
+
+    {% for fieldset in form.fieldsets %}
+        {% if fieldset.name == 'fulltext' %}
+            {% include "biblioref/fieldset_include.html" %}
+        {% endif %}
+    {% endfor %}
+
+    {% if attachment_list or user_can_edit %}
+        <fieldset id="attachment">
+            <table class="table table-condensed table-striped span8">
+                <thead>
+                    <th>{% trans "File" %}</th>
+                    <th>{% trans "Language" %}</th>
+                    {% if user_can_edit %}
+                        <th>{% trans "Delete?" %}</th>
+                    {% endif %}
+                </thead>
+                <tbody>
+                {% if attachment_list %}
+                    {% for attachment in attachment_list %}
+                        <tr>
+                            <td colspan="3">{{ attachment }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+
+                {% if user_can_edit %}
+
+                    {{ formset_attachment.management_form }}
+
+                    {% for form in formset_attachment %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        <tr id="attachment-{{ forloop.counter0 }}" class="attachment-row{% if form.errors %} error{% endif %} formset-row">
+                            {% for field in form.visible_fields %}
+                                {% if field.name == 'attachment_file' and form.instance.pk %}
+                                    <td>
+                                        <strong>{{ form.instance.filename }}</strong>
+                                    </td>
+                                {% elif field.name != 'DELETE' %}
+                                    <td>
+                                        {{ field }}
+                                        {{ field.errors }}
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                            <td>
+                                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </fieldset>
+    {% endif %}
+</div>

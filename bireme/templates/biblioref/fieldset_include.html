@@ -1,4 +1,5 @@
 {% load app_filters %}
+{% load i18n %}
 
 <div class="accordion-group">
     <div class="accordion-heading">
@@ -30,16 +31,18 @@
                             {{ field }}
                         {% else %}
                             {% if field.label %}
-                                <label for="{{ field.auto_id }}">
-                                    {% if field.name in help_fields %}
-                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
-                                    {% else %}
-                                        {{ field.label }}
-                                    {% endif %}
-                                    {% if field.field.required %}
-                                        <span class="mark">*</span>
-                                    {% endif %}
-                                </label>
+                                {% if not field.is_hidden or field.field|fieldtype == 'JSONFormField' %}
+                                    <label for="{{ field.auto_id }}">
+                                        {% if field.name in help_fields %}
+                                            <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
+                                        {% else %}
+                                            {{ field.label }}
+                                        {% endif %}
+                                        {% if field.field.required %}
+                                            <span class="mark">*</span>
+                                        {% endif %}
+                                    </label>
+                                {% endif %}
                             {% endif %}
 
                             {{ field.errors }}
@@ -56,7 +59,29 @@
                                 <p class="muted">{{ field.help_text }}</p>
                             {% endif %}
 
-                            {{ field }}
+                            {% if field.name == 'title_serial' %}
+                                <div>
+                                    {% if form.fields.title_serial.choices|length > 1 %}
+
+                                        <select id="{{ field.auto_id }}" name="{{ field.name }}">
+                                        {% for value, label in form.fields.title_serial.choices %}
+                                            <option value="{{ value }}"{% if field.value == value %} selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                        </select>
+                                        {% if user_role != 'editor_llxp' %}
+                                            <div>
+                                                <p>{% trans "Other journal title (from refereces not indexed in LILACS)" %}</p>
+                                                <input id="id_title_serial_other" maxlength="80" name="title_serial_other" type="text" value="{%if field.value and not field.value|invalues:form.fields.title_serial.choices %}{{ field.value }}{% elif form.title_serial_other.value  %}{{ form.title_serial_other.value }}{% endif %}">
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                        <input id="id_title_serial" maxlength="80" name="title_serial" type="text" value="{{ form.fields.title_serial.choices.0.1 }}" readonly="True">
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+
                         {% endif %}
                     </li>
                 {% endif %}
