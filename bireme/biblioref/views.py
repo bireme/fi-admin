@@ -232,7 +232,7 @@ class BiblioRefUpdate(LoginRequiredView):
         context['user_data'] = user_data
         context['user_role'] = user_role
 
-        #create flag that control if user have permission to edit the reference
+        # create flag that control if user have permission to edit the reference
         if user_role == 'doc' or user_role == 'editor_llxp':
             context['user_can_edit'] = True if not self.object or (self.object.status != 1 and user_data['is_owner']) else False
             context['user_can_change_status'] = False
@@ -240,14 +240,12 @@ class BiblioRefUpdate(LoginRequiredView):
             context['user_can_edit'] = True
             context['user_can_change_status'] = True
 
-        #context['user_can_edit'] = True if (not self.object or user_role != 'doc' or user_role != 'editor_llxp') or (self.object.status != 1 and user_data['is_owner']) else False
         context['settings'] = settings
         context['help_fields'] = get_help_fields('biblioref')
 
         if self.object:
             c_type = ContentType.objects.get_for_model(self.get_object())
             context['c_type'] = c_type
-
 
         if self.request.method == 'GET':
             # special treatment for user of type documentalist is edit document from other user

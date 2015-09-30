@@ -31,7 +31,7 @@
                         {% endfor %}
                         <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
                             {% for field in form.visible_fields %}
-                                {% if role == 'doc' and field.name == 'status' %}
+                                {% if field.name == 'status' and not user_can_change_status %}
                                    <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                 {% elif field.name != 'DELETE' %}
                                     <td>

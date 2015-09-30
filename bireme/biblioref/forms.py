@@ -61,6 +61,10 @@ class BiblioRefForm(BetterModelForm):
         if self.document_type == 'S' and self.user_role == 'editor_llxp':
             self.fields['issn'].widget = widgets.HiddenInput()
 
+        # hidden LILACS_indexed field for llxp editor profile
+        if self.user_role == 'editor_llxp':
+            self.fields['LILACS_indexed'].widget = widgets.HiddenInput()
+
         # load serial titles for serial analytic
         if self.document_type == 'S' and not self.reference_source:
             title_objects = Title.objects.all()
@@ -115,9 +119,9 @@ class BiblioRefForm(BetterModelForm):
         return data
 
 
-    def clean_database(self):
-        data = self.cleaned_data['database']
-        if "LILACS" in data:
+    def clean_LILACS_indexed(self):
+        data = self.cleaned_data['LILACS_indexed']
+        if data is True:
             self.is_LILACS = True
 
         return data

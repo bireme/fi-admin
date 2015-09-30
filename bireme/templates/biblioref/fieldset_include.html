@@ -32,16 +32,20 @@
                         {% else %}
                             {% if field.label %}
                                 {% if not field.is_hidden or field.field|fieldtype == 'JSONFormField' %}
-                                    <label for="{{ field.auto_id }}">
-                                        {% if field.name in help_fields %}
-                                            <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
-                                        {% else %}
-                                            {{ field.label }}
-                                        {% endif %}
-                                        {% if field.field.required %}
-                                            <span class="mark">*</span>
-                                        {% endif %}
-                                    </label>
+                                    {% if field.field|fieldtype == 'BooleanField' %}
+                                        <span>{{ field.label }}</span>
+                                    {% else %}
+                                        <label for="{{ field.auto_id }}">
+                                            {% if field.name in help_fields %}
+                                                <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
+                                            {% else %}
+                                                {{ field.label }}
+                                            {% endif %}
+                                            {% if field.field.required %}
+                                                <span class="mark">*</span>
+                                            {% endif %}
+                                        </label>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
 
@@ -55,7 +59,7 @@
                                 </div>
                             {% endif %}
 
-                            {% if field.help_text != 'Enter valid JSON' %}
+                            {% if field.help_text and field.help_text != 'Enter valid JSON' %}
                                 <p class="muted">{{ field.help_text }}</p>
                             {% endif %}
 

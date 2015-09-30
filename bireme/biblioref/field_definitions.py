@@ -68,7 +68,7 @@ fulltext_section = ('fulltext', {'fields': ['electronic_address'],
 FIELDS_BY_DOCUMENT_TYPE = {}
 
 # Periodical series (source)
-FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], 'legend': 'General information'}),
+FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'LILACS_indexed'], 'legend': _('General information')}),
 
                                 ('serial_level', {'fields': ['title_serial', 'issn', 'volume_serial',
                                                              'issue_number'],
@@ -79,8 +79,8 @@ FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], '
 
 
 # Periodical series (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status','record_type', 'item_form',
-                                                          'type_of_journal'],
+FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'record_type',
+                                                          'item_form', 'type_of_journal'],
                                                'legend': _('General information')}),
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
@@ -105,7 +105,7 @@ FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status','re
                                   ]
 
 # Monographic (source)
-FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'record_type',
+FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'record_type',
                                                         'item_form'],
                                              'legend': _('General information')}),
 
@@ -127,7 +127,7 @@ FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'rec
                                 ]
 
 # Monographic (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'record_type',
+FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'record_type',
                                                           'item_form'],
                                                'legend': _('General information')}),
 
@@ -145,7 +145,7 @@ FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'r
                                   ]
 
 # Thesis, dissertation (source)
-FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'record_type'],
+FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'record_type'],
                                              'legend': _('General information')}),
 
                                 ('monographic_level', {'fields': ['individual_author_monographic',
@@ -172,7 +172,7 @@ FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'rec
                                 ]
 
 # Thesis, dissertation (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'record_type',
+FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'record_type',
                                                           'item_form'],
                                                'legend': _('General information')}),
 

@@ -52,10 +52,10 @@ class Reference(Generic):
         verbose_name_plural = _("Bibliographic References")
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
+    LILACS_indexed = models.BooleanField(_('LILACS indexed?'), default=True)
 
     # title used for display and search of Reference objects
     reference_title = models.TextField(_('Title'), blank=True)
-
     # field tag 01
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
     # field tag 05
@@ -76,7 +76,7 @@ class Reference(Generic):
     # field tag 64
     publication_date = models.CharField(_('Publication date'), max_length=250, blank=True)
     # field tag 65
-    publication_date_normalized = models.CharField(_('Publication normalized date'), max_length=25, blank=True)
+    publication_date_normalized = models.CharField(_('Publication normalized date'), max_length=25, blank=True, help_text=_("Format: YYYYMMDD"))
     # field tag 71
     publication_type = MultipleAuxiliaryChoiceField(_('Publication type'), max_length=100, blank=True)
     # field tag 72
