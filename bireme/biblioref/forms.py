@@ -57,9 +57,12 @@ class BiblioRefForm(BetterModelForm):
         if self.user_role == 'doc' or self.user_role == 'editor_llxp':
             self.fields['status'].widget = widgets.HiddenInput()
 
+        # hidden issn field for llxp editor profile
+        if self.document_type == 'S' and self.user_role == 'editor_llxp':
+            self.fields['issn'].widget = widgets.HiddenInput()
+
         # load serial titles for serial analytic
         if self.document_type == 'S' and not self.reference_source:
-
             title_objects = Title.objects.all()
 
             # populate choice title list based on user profile
@@ -75,15 +78,16 @@ class BiblioRefForm(BetterModelForm):
                 title_list_other = [(t.shortened_title, t.shortened_title) for t in title_objects.exclude(indexer_cc_code=u'').exclude(indexer_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
 
                 separator = "-----------"
-                label_indexed = separator + __("Indexed by your cooperative center") + separator
-                label_not_indexed = separator + __("Indexed by other cooperative centers") + separator
+                label_indexed = separator + __('Indexed by your cooperative center') + separator
+                label_not_indexed = separator + __('Indexed by other cooperative centers') + separator
 
-                title_list.extend([('', label_indexed)])
-                title_list.extend(title_list_indexer_code)
+                if title_list_indexer_code:
+                    title_list.extend([('', label_indexed)])
+                    title_list.extend(title_list_indexer_code)
                 title_list.extend([('', label_not_indexed)])
                 title_list.extend(title_list_other)
 
-            self.fields['title_serial'] = forms.ChoiceField(choices=title_list, required=False, help_text=_("Select from the list"))
+            self.fields['title_serial'] = forms.ChoiceField(choices=title_list, required=False)
             self.fields['title_serial_other'] = forms.CharField(required=False)
 
     def fieldsets(self):

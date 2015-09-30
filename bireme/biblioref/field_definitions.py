@@ -70,8 +70,8 @@ FIELDS_BY_DOCUMENT_TYPE = {}
 # Periodical series (source)
 FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'database'], 'legend': 'General information'}),
 
-                                ('serial_level', {'fields': ['title_serial', 'volume_serial', 'issue_number',
-                                                             'issn'],
+                                ('serial_level', {'fields': ['title_serial', 'issn', 'volume_serial',
+                                                             'issue_number'],
                                                   'legend': _('Serial level')}),
 
                                 ('imprint', {'fields': ['publication_date', 'publication_date_normalized'],

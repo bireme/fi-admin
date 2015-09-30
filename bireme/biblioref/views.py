@@ -41,6 +41,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         source_id = self.request.GET.get('source', None)
         document_type = self.request.GET.get('document_type', None)
 
+        user_data = additional_user_info(self.request)
+        user_role = user_data['service_role'].get('LILDBI')
+
         # getting action parameter
         self.actions = {}
         for key in ACTIONS.keys():
@@ -66,6 +69,11 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         # if is list of a specific source or source type dont't filter by user
         if source_id or document_type:
             self.actions['filter_owner'] = '*'
+
+        # profile lilacs express editor - restrict by CC code when list sources
+        if document_type and user_role == 'editor_llxp':
+            self.actions['filter_owner'] = 'center'
+
 
         # filter by user
         if not self.actions['filter_owner'] or self.actions['filter_owner'] == 'user':
@@ -235,6 +243,11 @@ class BiblioRefUpdate(LoginRequiredView):
         #context['user_can_edit'] = True if (not self.object or user_role != 'doc' or user_role != 'editor_llxp') or (self.object.status != 1 and user_data['is_owner']) else False
         context['settings'] = settings
         context['help_fields'] = get_help_fields('biblioref')
+
+        if self.object:
+            c_type = ContentType.objects.get_for_model(self.get_object())
+            context['c_type'] = c_type
+
 
         if self.request.method == 'GET':
             # special treatment for user of type documentalist is edit document from other user

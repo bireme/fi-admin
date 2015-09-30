@@ -83,8 +83,12 @@ def log_json_changes(obj):
                 continue
 
             field_name = model._meta.get_field(change['field_name']).verbose_name.encode('utf-8')
-            previous_str = format_field(change['previous_value'], True)
-            new_str = format_field(change['new_value'], True)
+            if field_name == 'Status':
+                previous_str = display_status(change['previous_value'])
+                new_str = display_status(change['new_value'])
+            else:
+                previous_str = format_field(change['previous_value'], True)
+                new_str = format_field(change['new_value'], True)
 
             log_str = ('{log_str}<strong>{field}:</strong> <em>{previous_value}</em> '
                        '<strong>&rarr;</strong> {new_value} <br/>').format(
