@@ -16,7 +16,7 @@ def get_status_info(code):
         {'code': 2, 'label': _('Refused'), 'icons': 'icon-ban-circle status-del'},
         {'code': 3, 'label': _('Deleted'), 'icons': 'icon-minus-sign status-del'},
     )
-    status_info = [status for status in STATUS if status['code'] == code]
+    status_info = [status for status in STATUS if status['code'] == int(code)]
 
     return status_info[0]
 
