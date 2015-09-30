@@ -1,0 +1,23 @@
+{% load i18n %}
+{% load app_filters %}
+
+{% if logs  %}
+    <div id="changes_history">
+        <table class="table table-striped">
+            <tr>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "User" %}</th>
+                <th>{% trans "Center" %}</th>
+                <th>{% trans "Changes" %}</th>
+            </tr>
+            {% for log_entry in logs %}
+                <tr>
+                    <td>{{ log_entry.action_time }}</td>
+                    <td>{{ log_entry.user }}</td>
+                    <td>{{ log_entry.user|profilefield:"cc" }}</td>
+                    <td>{{ log_entry|log_json_changes }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}
