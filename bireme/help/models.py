@@ -29,7 +29,7 @@ class Help(models.Model):
     def get_help(self):
         lang_code = get_language()
         if lang_code == self.language:
-            return help_text
+            return self.help_text
         else:
             translation = HelpLocal.objects.filter(help=self.id, language=lang_code)
             if translation:
