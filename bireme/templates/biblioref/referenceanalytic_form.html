@@ -37,11 +37,14 @@
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
-        <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a>{% if formset_descriptor.errors and not formset_descriptor.is_valid %}<span class="mark">*</span>{% endif %}</li>
-        <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
+
         {% if user_role != 'editor_llxp' %}
+            <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a>{% if formset_descriptor.errors and not formset_descriptor.is_valid %}<span class="mark">*</span>{% endif %}</li>
+            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
             <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}</a>{% if formset_library.errors and not formset_library.is_valid %}<span class="mark">*</span>{% endif %}</li>
             <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a> {% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark">*</span>{% endif %}</li>
+        {% else %}
+            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
         {% endif %}
     </ul>
 
