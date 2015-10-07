@@ -90,5 +90,10 @@ div.deformReplaces {
     font-size: 70%;
 }
 .deform textarea, .deform input{
-    width: 98% !important;
+    width: 98%;
+}
+
+.deform input[type='checkbox']{
+    float: left;
+    width: auto;
 }
