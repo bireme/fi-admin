@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from django.conf import settings
 
-from utils.views import ACTIONS
+#from utils.views import ACTIONS
 from utils.views import LoginRequiredView, SuperUserRequiredView, GenericUpdateWithOneFormset
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
@@ -17,6 +17,23 @@ from utils.context_processors import additional_user_info
 from models import *
 from forms import *
 
+# form actions
+ACTIONS = {
+    'orderby': 'id',
+    'order': '-',
+    'page': 1,
+    'type': "",
+    'issn': "",
+    'id': "",
+    's': "",
+    'secs_number': "",
+    'short_title': "",
+    'filter_owner': "",
+    'filter_status': "",
+    'filter_thematic': "",
+    'filter_created_by_user': "",
+    'filter_created_by_cc': "",
+}
 
 class TitleCatalogView(LoginRequiredView, ListView):
     """
@@ -24,12 +41,12 @@ class TitleCatalogView(LoginRequiredView, ListView):
     """
     paginate_by = settings.ITEMS_PER_PAGE
     restrict_by_user = True
-    
+
     def dispatch(self, *args, **kwargs):
         return super(TitleCatalogView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        # getting action parameter        
+        # getting action parameter
         self.actions = {}
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
@@ -38,8 +55,17 @@ class TitleCatalogView(LoginRequiredView, ListView):
 
         object_list = self.model.objects.filter(**{search_field: self.actions['s']})
 
-        if self.actions['filter_status'] != '':
-            object_list = object_list.filter(status=self.actions['filter_status'])
+        if self.actions['short_title'] != '':
+            object_list = object_list.filter(shortened_title__contains=self.actions['short_title'])
+
+        if self.actions['id'] != '':
+            object_list = object_list.filter(id_number=self.actions['id'])
+
+        if self.actions['secs_number'] != '':
+            object_list = object_list.filter(secs_number=self.actions['secs_number'])
+
+        if self.actions['issn'] != '':
+            object_list = object_list.filter(issn=self.actions['issn'])
 
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
@@ -76,7 +102,7 @@ class TitleUpdate(LoginRequiredView):
     model = Title
     success_url = reverse_lazy('list_title')
     form_class = TitleForm
-  
+
     def form_valid(self, form):
         formset_links = OnlineResourcesFormSet(self.request.POST, instance=self.object)
         formset_specialty = BVSSpecialtyFormSet(self.request.POST, instance=self.object)
@@ -87,7 +113,7 @@ class TitleUpdate(LoginRequiredView):
         formset_keyword = KeywordFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
-        form_valid = form.is_valid() 
+        form_valid = form.is_valid()
 
         formset_links_valid = formset_links.is_valid()
         formset_specialty_valid = formset_specialty.is_valid()
@@ -101,7 +127,7 @@ class TitleUpdate(LoginRequiredView):
         valid_for_publication = is_valid_for_publication(form, [formset_links, formset_specialty, formset_variance, formset_indexrange, formset_audit, formset_descriptor, formset_keyword])
 
         if (form_valid and formset_links_valid and formset_specialty_valid and formset_variance_valid and formset_indexrange_valid and formset_audit_valid and formset_descriptor_valid and formset_keyword_valid and valid_for_publication):
-        
+
                 self.object = form.save()
 
                 formset_links.instance = self.object
@@ -141,7 +167,7 @@ class TitleUpdate(LoginRequiredView):
                                 formset_keyword=formset_keyword,
                                 valid_for_publication=valid_for_publication))
 
-    
+
     def form_invalid(self, form):
             # force use of form_valid method to run all validations
             return self.form_valid(form)
@@ -151,7 +177,7 @@ class TitleUpdate(LoginRequiredView):
         kwargs = super(TitleUpdate, self).get_form_kwargs()
         user_data = additional_user_info(self.request)
         kwargs.update({'user': self.request.user, 'user_data': user_data})
-        
+
         return kwargs
 
     def get_context_data(self, **kwargs):
@@ -162,20 +188,20 @@ class TitleUpdate(LoginRequiredView):
         user_id = self.request.user.id
         if self.object:
             user_data['is_owner'] = True if self.object.created_by == self.request.user else False
-        
+
         context['user_data'] = user_data
         context['role'] = user_role
         context['settings'] = settings
-        
+
 
         if self.request.method == 'GET':
-            # special treatment for user of type documentalist is edit media from other user
+            # special treatment for user of type documentalist is edit title from other user
             # add in the context list of descriptor already set for the title
             if user_role == 'doc' and self.object:
                 c_type = ContentType.objects.get_for_model(self.get_object())
 
                 context['descriptor_list'] = Descriptor.objects.filter(
-                                                    object_id=self.object.id, 
+                                                    object_id=self.object.id,
                                                     content_type=c_type).exclude(
                                                     created_by_id=user_id, status=0)
                 context['keyword_list'] = Keyword.objects.filter(
@@ -188,7 +214,7 @@ class TitleUpdate(LoginRequiredView):
                 pending_keyword_from_user = Keyword.objects.filter(
                                                     created_by_id=user_id, status=0)
 
-                context['formset_descriptor'] = DescriptorFormSet(instance=self.object, 
+                context['formset_descriptor'] = DescriptorFormSet(instance=self.object,
                                                     queryset=pending_descriptor_from_user)
                 context['formset_keyword']  = KeywordFormSet(instance=self.object,
                                                     queryset=pending_keyword_from_user)
@@ -213,7 +239,7 @@ class TitleUpdate(LoginRequiredView):
 class TitleUpdateView(TitleUpdate, UpdateView):
     """
     Used as class view to update Title
-    Extend TitleUpdate that do all the work    
+    Extend TitleUpdate that do all the work
     """
 
 
@@ -222,7 +248,7 @@ class TitleCreateView(TitleUpdate, CreateView):
     Used as class view to create Title
     Extend TitleUpdate that do all the work
     """
-   
+
 
 class TitleDeleteView(LoginRequiredView, DeleteView):
     """
