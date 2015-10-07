@@ -108,20 +108,24 @@ def format_field(data, truncate=False):
     out = ''
     if data:
         if type(data) == list:
-            if type(data[0]) == dict:
-                for (key, value) in data[0].items():
-                    if value:
-                        key = key.encode('utf-8')
-                        value = value.encode('utf-8')
-                        if truncate and len(value) > 100:
-                            value = value[0:100] + "..."
+            for data_occ in data:
+                if type(data_occ) == dict:
+                    for (key, value) in data_occ.items():
+                        if value:
+                            key = key.encode('utf-8')
+                            value = value.encode('utf-8')
+                            if truncate and len(value) > 100:
+                                value = value[0:100] + "..."
 
-                        if key != 'text':
-                            out = out + "<span class='label'>" + key + "</span> " + value + " "
-                        else:
-                            out = out + value + " "
-            else:
-                out = ", ".join(data)
+                            if key != 'text':
+                                out = out + "<span class='label'>" + key + "</span> " + value + " "
+                            else:
+                                out = out + value + " "
+
+                    out = out + "<br/>"
+                else:
+                    out = ", ".join(data)
+
         elif type(data) == unicode:
             out = data.encode('utf-8')
         elif data is not None:

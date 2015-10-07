@@ -14,7 +14,11 @@
     <input type="hidden" name="orderby" value="{{ actions.orderby }}">
     <input type="hidden" name="order" value="{{ actions.order }}">
     <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="issn"  value="{{ actions.issn }}">
+    <input type='hidden' name="id"  value="{{ actions.id }}">
     <input type='hidden' name="s"  value="{{ actions.s }}">
+    <input type='hidden' name="secs_number"  value="{{ actions.secs_number }}">
+    <input type='hidden' name="short_title"  value="{{ actions.short_title }}">
 </form>
 
 <!--  header -->
@@ -40,9 +44,9 @@
                 <strong>{% trans "All titles" %}</strong>
                {% if  actions.filter_owner == '*' %}
                    <span class="badge badge-info">{{ paginator.count }}</span>
-               {% endif %}                
+               {% endif %}
             </a>
-        </li>        
+        </li>
     </ul>
 
     <div class="tab-content">
@@ -52,14 +56,31 @@
                     <div class="input-append" style="margin-left: 10px">
                         <form name="search">
                             <input type="hidden" name="page" value="">
-                            
+
                             {% if actions.filter_owner == '*' %}
                                 <input type="hidden" name="filter_owner" value="*"/>
                             {% elif actions.filter_owner == 'network' %}
                                 <input type="hidden" name="filter_owner" value="network"/>
                             {% endif %}
-                            <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
-                         
+                            <!-- filter by title -->
+                            <span style="margin-right: 5px">{% trans "Title" %}:</span>
+                            <input type='text' name="s"  value="{{ actions.s }}" style="width: 420px">&nbsp;
+                            <!-- filter by shortened title -->
+                            <span style="margin: 0 5px">{% trans "Shortened title" %}:</span>
+                            <input type='text' name="short_title"  value="{{ actions.short_title }}" style="width: 286px">&nbsp;
+
+                            <div class="spacer" style="margin: 15px 0"></div>
+
+                            <!-- filter by id -->
+                            <span style="margin-right: 5px">{% trans "ID" %}:</span>
+                            <input type='text' name="id"  value="{{ actions.id }}">&nbsp;
+                            <!-- filter by secs number -->
+                            <span style="margin: 0 5px">{% trans "SeCS number" %}:</span>
+                            <input type='text' name="secs_number"  value="{{ actions.secs_number }}">&nbsp;
+                            <!-- filter by issn -->
+                            <span style="margin: 0 5px">{% trans "ISSN" %}:</span>
+                            <input type='text' name="issn"  value="{{ actions.issn }}">&nbsp;
+
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
                         </form>
                     </div>
@@ -74,7 +95,6 @@
             <table class='table'>
                 <thead>
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
-                    <!--th></th-->
                     <th><a href="javascript:orderby('title');" id="id_title">{% trans "Title" %}</a></th>
                     <th><a href="javascript:orderby('issn');" id="id_issn">{% trans "ISSN" %}</a></th>
                     <th><a href="javascript:orderby('cooperative_center_code');" id="id_cooperative_center_code">{% trans "Cooperative center" %}</a></th>
@@ -84,7 +104,6 @@
                     {% for title in titles %}
                         <tr>
                             <td><a href="{% url 'edit_title' title.id %}">{{ title.id }}</a></td>
-                            <!--td><a href="{% url 'edit_title' title.id %}" class='btn btn-mini' title="{% trans 'Issues' %}"><i class='icon-book'></i></a></td-->
                             <td><span title="{{ title.title }}">{{ title.title|slice:"50" }}{% if title.title|length > 50 %}...{% endif %}{% if title.section_title %}<i> - {{ title.section_title }}</i>{% endif %}</span></td>
                             <td>{{ title.issn }}</td>
                             <td>{{ title.cooperative_center_code }}</td>

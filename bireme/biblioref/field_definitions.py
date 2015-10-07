@@ -250,7 +250,9 @@ class ElectronicAddressAttributes(colander.MappingSchema):
     _i = colander.SchemaNode(colander.String('utf-8'),
                              widget=deform.widget.SelectWidget(values=language_choices),
                              title=_('Language'))
-    _g = colander.SchemaNode(colander.String('utf-8'), title=_('Fulltext'), missing=unicode(''),)
+    _g = colander.SchemaNode(colander.Boolean(),
+                             widget=deform.widget.CheckboxWidget(),
+                             label=_('Fulltext'), missing=unicode(''), title='')
     _k = colander.SchemaNode(colander.String('utf-8'), title=_('Password'), missing=unicode(''),)
     _l = colander.SchemaNode(colander.String('utf-8'), title=_('Logon'), missing=unicode(''),)
     _q = colander.SchemaNode(colander.String('utf-8'), title=_('File extension'), missing=unicode(''),)

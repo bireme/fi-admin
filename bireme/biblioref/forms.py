@@ -53,13 +53,21 @@ class BiblioRefForm(BetterModelForm):
         # used for fieldsets method for construct internal fieldset_collection
         self._fieldsets = fieldsets
 
-        # hidden status field for documentalist profile
+        # hidden status field for documentalist and llxp editor profile
         if self.user_role == 'doc' or self.user_role == 'editor_llxp':
             self.fields['status'].widget = widgets.HiddenInput()
 
-        # hidden issn field for llxp editor profile
-        if self.document_type == 'S' and self.user_role == 'editor_llxp':
-            self.fields['issn'].widget = widgets.HiddenInput()
+        # hidden not necessary fields for llxp editor profile
+        if self.user_role == 'editor_llxp':
+            # source
+            if self.document_type == 'S':
+                self.fields['issn'].widget = widgets.HiddenInput()
+            # analytic
+            else:
+                self.fields['record_type'].widget = widgets.HiddenInput()
+                self.fields['item_form'].widget = widgets.HiddenInput()
+                self.fields['type_of_journal'].widget = widgets.HiddenInput()
+                self.fields['english_translated_title'].widget = widgets.HiddenInput()
 
         # hidden LILACS_indexed field for llxp editor profile
         if self.user_role == 'editor_llxp':
@@ -319,6 +327,13 @@ class BiblioRefForm(BetterModelForm):
         for name, field in self.fields.items():
             if hasattr(field.widget.attrs, 'readonly'):
                 setattr(obj, name, field.widget.original_value)
+
+        # fix values for specific fields for llxp editor profile
+        if self.document_type == 'Sas' and self.user_role == 'editor_llxp':
+            obj.record_type = 'a'       # textual material
+            obj.item_form = 's'         # eletronic
+            obj.type_of_journal = 'p'   # periodical
+
 
         fields_change = ''
         if obj.pk:
