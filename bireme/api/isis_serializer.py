@@ -34,7 +34,7 @@ class ISISSerializer(Serializer):
                 field = item[field_name]
                 # check if field is not empty
                 if field:
-                    if field_name == 'id' and item['LILACS_original_id']:
+                    if field_name == 'id' and 'LILACS_original_id' in item and item['LILACS_original_id']:
                         id_field = self.id_field(field_name, item['LILACS_original_id'])
                         record_lines.append(id_field)
 
