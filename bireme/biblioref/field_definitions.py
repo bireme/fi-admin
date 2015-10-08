@@ -1,11 +1,13 @@
 # coding: utf-8
 from django.utils.translation import ugettext_lazy as _
+from main.models import SourceLanguage
+from utils.models import AuxCode
 
 import colander
 import deform
 import json
 
-language_choices = (('pt', 'Português'), ('es', 'Espanhol'), ('en', 'Inglês'))
+language_choices = [(source_language.acronym,source_language.name) for source_language in SourceLanguage.objects.all() ]
 
 field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03', 'database': '04', 'literature_type': '05',
                  'treatment_level':  '06', 'inventory_number': '07', 'electronic_address': '08', 'record_type': '09',
@@ -246,19 +248,30 @@ class CallNumber(colander.SequenceSchema):
 
 
 class ElectronicAddressAttributes(colander.MappingSchema):
+    file_type_choices = [(aux.code, aux) for aux in
+                         AuxCode.objects.filter(field='electronic_address_y')]
+
+    file_extension_choices = [(aux.code, aux) for aux in
+                              AuxCode.objects.filter(field='electronic_address_q')]
+
     _u = colander.SchemaNode(colander.String('utf-8'), title=_('Electric address'))
-    _i = colander.SchemaNode(colander.String('utf-8'),
-                             widget=deform.widget.SelectWidget(values=language_choices),
-                             title=_('Language'))
     _g = colander.SchemaNode(colander.Boolean(),
                              widget=deform.widget.CheckboxWidget(),
                              label=_('Fulltext'), missing=unicode(''), title='')
+    _i = colander.SchemaNode(colander.String('utf-8'),
+                             widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Language'))
+    _y = colander.SchemaNode(colander.String('utf-8'),
+                             widget=deform.widget.SelectWidget(values=file_type_choices),
+                             title=_('File type'), missing=unicode(''),)
+    _q = colander.SchemaNode(colander.String('utf-8'),
+                             widget=deform.widget.SelectWidget(values=file_extension_choices),
+                             title=_('File extension'), missing=unicode(''),)
+
     _k = colander.SchemaNode(colander.String('utf-8'), title=_('Password'), missing=unicode(''),)
     _l = colander.SchemaNode(colander.String('utf-8'), title=_('Logon'), missing=unicode(''),)
-    _q = colander.SchemaNode(colander.String('utf-8'), title=_('File extension'), missing=unicode(''),)
     _s = colander.SchemaNode(colander.String('utf-8'), title=_('File length'), missing=unicode(''),)
     _x = colander.SchemaNode(colander.String('utf-8'), title=_('No public note'), missing=unicode(''),)
-    _y = colander.SchemaNode(colander.String('utf-8'), title=_('File type'), missing=unicode(''),)
     _z = colander.SchemaNode(colander.String('utf-8'), title=_('Public note'), missing=unicode(''),)
 
 

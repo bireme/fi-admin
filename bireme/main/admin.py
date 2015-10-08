@@ -14,7 +14,7 @@ class ThematicAreaLocalAdmin(admin.TabularInline):
 class ThematicAreaAdmin(GenericAdmin):
     model = ThematicArea
     list_display = ('id', 'name', 'acronym')
-    search_fields = ['name', 'acronym']    
+    search_fields = ['name', 'acronym']
     inlines = [ThematicAreaLocalAdmin, ]
 
 
@@ -26,6 +26,16 @@ class SourceTypeLocalAdmin(admin.TabularInline):
 class SourceTypeAdmin(GenericAdmin):
     model = SourceType
     inlines = [SourceTypeLocalAdmin, ]
+
+
+class SourceLanguageLocalAdmin(admin.TabularInline):
+    model = SourceLanguageLocal
+    extra = 0
+
+
+class SourceLanguageAdmin(GenericAdmin):
+    model = SourceType
+    inlines = [SourceLanguageLocalAdmin, ]
 
 
 class DescriptorAdmin(generic.GenericTabularInline):
@@ -58,3 +68,4 @@ class ResourceAdmin(GenericAdmin):
 
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(ThematicArea, ThematicAreaAdmin)
+admin.site.register(SourceLanguage, SourceLanguageAdmin)
