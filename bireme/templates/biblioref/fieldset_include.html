@@ -26,7 +26,7 @@
                     <li {{ field.row_attrs }}>
                         {% if field.name == 'status' and not user_can_change_status %}
                             <p>
-                                {{ field.label }} : <span class="badge badge-inverse"> {{ field.value|display_status }} </span>
+                                {{ field.label }} : {{ field.value|display_status_label }}
                             </p>
                             {{ field }}
                         {% else %}

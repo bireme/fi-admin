@@ -74,7 +74,6 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if document_type and user_role == 'editor_llxp':
             self.actions['filter_owner'] = 'center'
 
-
         # filter by user
         if not self.actions['filter_owner'] or self.actions['filter_owner'] == 'user':
             object_list = object_list.filter(created_by=self.request.user)
@@ -167,6 +166,11 @@ class BiblioRefUpdate(LoginRequiredView):
                 form.save_m2m()
                 return HttpResponseRedirect(self.get_success_url())
         else:
+            # if not valid for publication return status to original (previous) value
+            if not valid_for_publication:
+                self.object.status = self.object.previous_value('status')
+                self.request.POST['status'] = self.object.previous_value('status')
+
             return self.render_to_response(
                            self.get_context_data(form=form,
                                                  formset_descriptor=formset_descriptor,
