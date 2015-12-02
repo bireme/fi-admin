@@ -8,7 +8,7 @@ from utils.models import Generic, Country
 
 STATUS_CHOICES = (
     (-1, _('Draft')),
-    (0, _('Pending')),
+    (0, _('Inprocess')),
     (1, _('Published')),
     (2, _('Refused')),
     (3, _('Deleted')),
@@ -136,6 +136,16 @@ class Reference(Generic):
 
     # relations
     logs = GenericRelation(LogEntry)
+
+    def __init__(self, *args, **kwargs):
+        super(Reference, self).__init__(*args, **kwargs)
+        self.__track_fields = ['status']
+        for field in self.__track_fields:
+            setattr(self, '__original_%s' % field, getattr(self, field))
+
+    def previous_value(self, field):
+        orig = '__original_%s' % field
+        return getattr(self, orig)
 
     def __unicode__(self):
         if 'a' in self.treatment_level:

@@ -67,7 +67,7 @@
                                             <blockquote>
                                                 <p><strong>{{ field.label }}</strong><p>
                                                 {% if field.name = 'status' %}
-                                                    <p>{{ object.get_status_display }}</p>
+                                                    <p>{{ object.get_status_display_label }}</p>
                                                 {% else %}
                                                     <p>{% display_field field %}<p>
                                                 {% endif %}
@@ -138,13 +138,21 @@
         <div class="control-panel form-submit">
             {% if user_can_edit %}
                 {% if not object or object.status == -1 %}
-                    <button class="btn btn-large">{% trans "Save Draft" %}</button>
+                    <button class="btn btn-large btn-info">{% trans "Save Draft" %}</button>
                 {% elif user_can_change_status %}
-                    <button class="btn btn-large">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
+                    <button class="btn btn-large btn-info">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
                 {% endif %}
 
                 {% if not user_can_change_status %}
-                    <button class="btn btn-primary btn-large" id="submit-for-review">{% trans "Submit for Review" %}</button>
+                    {% if user_role == 'editor_llxp' %}
+                        {% if object.status == 0 %}
+                            <button class="btn btn-primary btn-large" id="save-inprocess">{% trans "Save as LILACS Express" %}</button>
+                        {% else %}
+                            <button class="btn btn-primary btn-large" id="save-inprocess">{% trans "Publish as LILACS Express" %}</button>
+                        {% endif %}
+                    {% else %}
+                        <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
+                    {% endif %}
                 {% else %}
                     {% if object.status == 1 %}
                         <button class="btn btn-primary btn-large">{% trans "Update" %}</button>
@@ -355,15 +363,16 @@
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
         }
 
-        $("#submit-for-review").click(function() {
-            // set status to pending for review (status=0)
+        $("#save-inprocess").click(function() {
+            // set status to Inprocess (0) = LILACS Express
             $('#id_status').val('0');
         });
 
-        $("#submit-publish").click(function() {
-            // set status to published (1)
+        $("#save-published").click(function() {
+            // set status to Published (1) = LILACS
             $('#id_status').val('1');
         });
+
 
         $("#id_status").change(function(){
             new_status_label = $(this).find("option:selected").text();
