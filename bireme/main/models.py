@@ -170,7 +170,7 @@ class Descriptor(Generic):
     content_type = models.ForeignKey(ContentType, related_name='descriptors')
     content_object = generic.GenericForeignKey('content_type', 'object_id')
 
-    text = models.CharField(_('Text'), max_length=255, blank=True)
+    text = models.CharField(_('Descriptor'), max_length=255, blank=True)
     code = models.CharField(_('Code'), max_length=50, blank=True)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
     primary = models.BooleanField(_('Primary?'), default=False)
