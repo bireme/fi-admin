@@ -3,6 +3,7 @@
 from django.db.models import signals
 from django.utils.functional import curry
 from django.utils import timezone
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from log.models import AuditLog
@@ -90,8 +91,7 @@ class WhodidMiddleware(object):
     def get_changes_in_json(self, instance, new_object, was_deleted):
         field_change = []
         field_change_json = ''
-        exclude_log_fields = ['content_type', 'object_id', 'reference_title',
-                              'literature_type', 'code']
+        exclude_log_fields = settings.EXCLUDE_AUDITLOG_FIELDS
 
         obj_model = type(instance)
         obj_name = obj_model._meta.verbose_name.title()

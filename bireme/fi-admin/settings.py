@@ -257,6 +257,10 @@ TEMPLATE_VISIBLE_SETTINGS = (
     'GOOGLE_ANALYTICS_ID',
 )
 
+# don't registry changes at specific fields on audit log (ex. control fields)
+EXCLUDE_AUDITLOG_FIELDS = ('content_type', 'object_id', 'reference_title',
+                           'literature_type', 'code', 'short_url')
+
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 try:
