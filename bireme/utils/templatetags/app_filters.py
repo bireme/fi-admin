@@ -103,7 +103,7 @@ def log_json_changes(obj):
                 try:
                     field_name = model._meta.get_field(change['field_name']).verbose_name.encode('utf-8')
                 except:
-                    field_name = change['field_name']
+                    field_name = change['field_name'].encode('utf-8')
 
                 if field_name == 'Status':
                     previous_str = display_status(change['previous_value'])
@@ -124,6 +124,7 @@ def log_json_changes(obj):
                            field=field_name,
                            previous_value=previous_str,
                            new_value=new_str)
+
 
     elif obj.action_flag == 1:
         log_str = _('Record created')

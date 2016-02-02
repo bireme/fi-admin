@@ -5,12 +5,13 @@ from django.utils.functional import curry
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from log.models import AuditLog
 
 import json
 
+
 # FIX https://djangosnippets.org/snippets/2179/
 # http://simionbaws.ro/programming/python-programming/django-python-programming/django-get-current-user-globally-in-the-project/
-
 class WhodidMiddleware(object):
     def process_request(self, request):
         if not request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
@@ -29,12 +30,10 @@ class WhodidMiddleware(object):
         signals.pre_delete.disconnect(dispatch_uid=(self.__class__, request,))
         return response
 
-
     def mark_whodel(self, user, sender, instance, **kwargs):
         # mark instance as deleted and call mark_whodid function
-        instance.was_deleted=True
+        instance.was_deleted = True
         self.mark_whodid(user, sender, instance, **kwargs)
-
 
     def mark_whodid(self, user, sender, instance, **kwargs):
 
@@ -50,12 +49,11 @@ class WhodidMiddleware(object):
         if 'cooperative_center_code' in instance._meta.get_all_field_names() and not instance.cooperative_center_code:
             instance.cooperative_center_code = user.profile.get_attribute('cc')
 
-
         # trace and log changes
-        if not isinstance(instance, LogEntry):
+        if isinstance(instance, AuditLog):
             new_object = True if not instance.pk else False
-            has_changes = getattr(instance,'changed_fields', False)
-            was_deleted = getattr(instance,'was_deleted', False)
+            has_changes = getattr(instance, 'changed_fields', False)
+            was_deleted = getattr(instance, 'was_deleted', False)
             inline_model = getattr(instance, 'content_object', False)
 
             # log if new, changed or deleted
@@ -80,13 +78,14 @@ class WhodidMiddleware(object):
                     elif was_deleted:
                         log_change_type = DELETION
 
-                # create log entry
-                LogEntry.objects.log_action(user_id=user.id,
-                                            content_type_id=log_object_ct_id,
-                                            object_id=log_object_id,
-                                            object_repr=log_repr,
-                                            change_message=fields_change,
-                                            action_flag=log_change_type)
+                # only create log entry for not empty change message
+                if fields_change:
+                    LogEntry.objects.log_action(user_id=user.id,
+                                                content_type_id=log_object_ct_id,
+                                                object_id=log_object_id,
+                                                object_repr=log_repr,
+                                                change_message=fields_change,
+                                                action_flag=log_change_type)
 
     def get_changes_in_json(self, instance, new_object, was_deleted):
         field_change = []
@@ -98,9 +97,11 @@ class WhodidMiddleware(object):
         obj_name = obj_model._meta.verbose_name.title()
 
         if new_object:
-            field_change.append({'label': 'new', 'field_name': obj_name, 'previous_value': '', 'new_value': str(instance)})
+            field_change.append({'label': 'new', 'field_name': obj_name, 'previous_value': '',
+                                 'new_value': unicode(instance)})
         elif was_deleted:
-            field_change.append({'label': 'deleted', 'field_name': obj_name, 'previous_value': str(instance), 'new_value': ''})
+            field_change.append({'label': 'deleted', 'field_name': obj_name,
+                                 'previous_value': unicode(instance), 'new_value': ''})
         else:
             # get previous attributes values of object
             obj = obj_model.objects.get(pk=instance.id)
@@ -117,7 +118,8 @@ class WhodidMiddleware(object):
                     previous_value = json.loads(previous_value)
 
                 if field_name not in exclude_log_fields and new_value != previous_value:
-                    field_change.append({'field_name': field_name, 'previous_value': previous_value, 'new_value': new_value})
+                    field_change.append({'field_name': field_name, 'previous_value': previous_value,
+                                         'new_value': new_value})
 
         if field_change:
             field_change_json = json.dumps(field_change, encoding="utf-8", ensure_ascii=False)

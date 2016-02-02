@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.generic import GenericRelation
+from log.models import AuditLog
 
 from datetime import datetime
 from django.db import models
@@ -136,7 +137,7 @@ class ThematicAreaLocal(models.Model):
 
 
 # Relation resource -- thematic areas/ Field lis type (302)
-class ResourceThematic(Generic):
+class ResourceThematic(Generic, AuditLog):
     STATUS_CHOICES = (
         (0, _('Pending')),
         (1, _('Admitted')),
@@ -155,11 +156,11 @@ class ResourceThematic(Generic):
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING, blank=True)
 
     def __unicode__(self):
-        return unicode(self.thematic_area.name)
+        return self.thematic_area.name
 
 
 # DeCS descriptors table
-class Descriptor(Generic):
+class Descriptor(Generic, AuditLog):
     STATUS_CHOICES = (
         (0, _('Pending')),
         (1, _('Admitted')),
