@@ -10,6 +10,7 @@ from datetime import date
 from django.db import models
 from main.choices import LANGUAGES_CHOICES
 from utils.models import Generic
+from log.models import AuditLog
 from short_url import encode_url
 
 import os
@@ -34,7 +35,7 @@ class AttachmentManager(models.Manager):
         return self.filter(content_type__pk=object_type.id,
                            object_id=obj.id)
 
-class Attachment(Generic):
+class Attachment(Generic, AuditLog):
 
     objects = AttachmentManager()
 
@@ -50,7 +51,7 @@ class Attachment(Generic):
         ordering = ['-created_time']
 
     def __unicode__(self):
-        return '%s attached %s' % (self.created_by.get_username(), self.attachment_file.name)
+        return self.attachment_file.name
 
     def save(self, *args, **kwargs):
         super(Attachment, self).save(*args, **kwargs)

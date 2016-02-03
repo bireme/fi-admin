@@ -20,6 +20,14 @@ def get_status_info(code):
 
     return status_info[0]
 
+def get_change_info(label):
+    STATUS = (
+        {'label': 'new', 'label_text' : _('new'), 'label_color': 'success'},
+        {'label': 'deleted', 'label_text' : _('deleted'), 'label_color': 'important'},
+    )
+    change_info = [status for status in STATUS if status['label'] == label]
+
+    return change_info[0]
 
 @register.filter
 def fieldtype(obj):
@@ -81,29 +89,42 @@ def display_status(status):
 @register.filter()
 def log_json_changes(obj):
     log_str = ''
-    if obj.change_message:
+
+    if obj.change_message and obj.change_message != '':
         data = json.loads(obj.change_message)
         model = obj.content_type.model_class()
 
-        for change in data:
-            # ignore changes from where previous and new are null or blank. Ex. null to blank
-            if not change['previous_value'] and not change['new_value']:
-                continue
+        if type(data) is list:
+            for change in data:
+                # ignore changes from where previous and new are null or blank. Ex. null to blank
+                if not change['previous_value'] and not change['new_value']:
+                    continue
 
-            field_name = model._meta.get_field(change['field_name']).verbose_name.encode('utf-8')
-            if field_name == 'Status':
-                previous_str = display_status(change['previous_value'])
-                new_str = display_status(change['new_value'])
-            else:
-                previous_str = format_field(change['previous_value'], True)
-                new_str = format_field(change['new_value'], True)
+                try:
+                    field_name = model._meta.get_field(change['field_name']).verbose_name.encode('utf-8')
+                except:
+                    field_name = change['field_name'].encode('utf-8')
 
-            log_str = ('{log_str}<strong>{field}:</strong> <em>{previous_value}</em> '
-                       '<strong>&rarr;</strong> {new_value} <br/>').format(
-                       log_str=log_str,
-                       field=field_name,
-                       previous_value=previous_str,
-                       new_value=new_str)
+                if field_name == 'Status':
+                    previous_str = display_status(change['previous_value'])
+                    new_str = display_status(change['new_value'])
+                else:
+                    previous_str = format_field(change['previous_value'], True)
+                    new_str = format_field(change['new_value'], True)
+
+                label_str = ''
+                if 'label' in change:
+                    change_label = get_change_info(change['label'])
+                    label_str = '<span class="label label-%s">%s</span> ' % (change_label['label_color'], change_label['label_text'])
+
+                log_str = ('{log_str}{label}<strong>{field}:</strong> <em>{previous_value}</em> '
+                           '<strong>&rarr;</strong> {new_value} <br/>').format(
+                           label=label_str,
+                           log_str=log_str,
+                           field=field_name,
+                           previous_value=previous_str,
+                           new_value=new_str)
+
 
     elif obj.action_flag == 1:
         log_str = _('Record created')

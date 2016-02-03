@@ -5,6 +5,7 @@ from django.contrib.contenttypes.generic import GenericRelation
 from django.contrib.admin.models import LogEntry
 from utils.fields import JSONField, AuxiliaryChoiceField, MultipleAuxiliaryChoiceField
 from utils.models import Generic, Country
+from log.models import AuditLog
 
 STATUS_CHOICES = (
     (-1, _('Draft')),
@@ -46,7 +47,7 @@ TREATMENTLEVEL_CHOICES = (
 
 
 # Bibliographic References
-class Reference(Generic):
+class Reference(Generic, AuditLog):
     class Meta:
         verbose_name = _("Bibliographic Reference")
         verbose_name_plural = _("Bibliographic References")
