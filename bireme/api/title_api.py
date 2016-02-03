@@ -162,7 +162,7 @@ class TitleResource(CustomResource):
                 text = data.issn_online if data.issn_online else ''
                 text += '^a'+data.access_type if data.access_type else ''
                 text += '^b'+data.url if data.url else ''
-                text += '^c'+data.owner.owner if data.owner.owner else ''
+                text += '^c'+data.owner.owner if data.owner else ''
                 text += '^d'+data.access_control if data.access_control else ''
                 text += '^e'+data.initial_period if data.initial_period else ''
                 text += '^f'+data.final_period if data.final_period else ''
