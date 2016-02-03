@@ -192,6 +192,7 @@ class TitleUpdate(LoginRequiredView):
         context['user_data'] = user_data
         context['role'] = user_role
         context['settings'] = settings
+        context['next_id'] = Title.objects.latest('id').id + 1
 
 
         if self.request.method == 'GET':
