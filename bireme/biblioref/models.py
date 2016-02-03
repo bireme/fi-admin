@@ -54,6 +54,7 @@ class Reference(Generic, AuditLog):
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
     LILACS_indexed = models.BooleanField(_('LILACS indexed?'), default=True)
+    BIREME_reviewed = models.BooleanField(_('Reviewed by BIREME?'), default=False)
 
     # title used for display and search of Reference objects
     reference_title = models.TextField(_('Title'), blank=True)

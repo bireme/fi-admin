@@ -68,9 +68,13 @@ class BiblioRefForm(BetterModelForm):
                 self.fields['type_of_journal'].widget = widgets.HiddenInput()
                 self.fields['english_translated_title'].widget = widgets.HiddenInput()
 
-        # hidden LILACS_indexed field for llxp editor profile
+        # hide LILACS_indexed field for llxp editor profile
         if self.user_role == 'editor_llxp':
             self.fields['LILACS_indexed'].widget = widgets.HiddenInput()
+
+        # hide BIREME reviewed field for non BIREME users
+        if self.user_data['user_cc'] != 'BR1.1':
+            self.fields['BIREME_reviewed'].widget = widgets.HiddenInput()
 
         # load serial titles for serial analytic
         if self.document_type == 'S' and not self.reference_source:
