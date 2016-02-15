@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
@@ -15,6 +16,7 @@ from utils.views import ACTIONS
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
 from main.models import Descriptor
+from title.models import Title
 from help.models import get_help_fields
 from utils.views import LoginRequiredView
 from urlparse import parse_qsl
@@ -78,9 +80,21 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if not self.actions['filter_owner'] or self.actions['filter_owner'] == 'user':
             object_list = object_list.filter(created_by=self.request.user)
         # filter by cooperative center
-        elif self.actions['filter_owner'] == "center":
+        elif self.actions['filter_owner'] == 'center':
             user_cc = self.request.user.profile.get_attribute('cc')
             object_list = object_list.filter(cooperative_center_code=user_cc)
+        # filter by titles of responsibility of current user CC
+        elif self.actions['filter_owner'] == 'indexed':
+            user_cc = self.request.user.profile.get_attribute('cc')
+            titles_indexed = [t.shortened_title for t in Title.objects.filter(indexer_cc_code=user_cc)]
+            filter_title_qs = Q()
+            for title in titles_indexed:
+                filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title)
+            # by default filter by LILACS express references
+            object_list = object_list.filter(filter_title_qs)
+            if self.actions['filter_status'] == '':
+                self.actions['filter_status'] = 0
+                object_list = object_list.filter(status=0)
 
         return object_list
 

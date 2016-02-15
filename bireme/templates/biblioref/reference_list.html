@@ -63,6 +63,14 @@
                    {% endif %}
                 </a>
             </li>
+            <li class="{% if actions.filter_owner == 'indexed' %}active{% endif %}">
+                <a href="#tab-network" onclick="filter_owner('indexed')" data-toggle="tab">
+                    <strong>{% trans "Indexed by my center" %}</strong>
+                   {% if actions.filter_owner == 'indexed' %}
+                       <span class="badge badge-info">{{ paginator.count }}</span>
+                   {% endif %}
+                </a>
+            </li>
         {% endif %}
     </ul>
 
@@ -73,20 +81,16 @@
                     <div class="input-append" style="margin-left: 10px">
                         <form name="search">
                             <input type="hidden" name="page" value="">
-                            {% if actions.filter_owner == '*' %}
-                                <input type="hidden" name="filter_owner" value="*"/>
-                            {% elif actions.filter_owner == 'network' %}
-                                <input type="hidden" name="filter_owner" value="network"/>
-                            {% endif %}
+                            <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
                             <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
 
                             {% trans "Status" %}:
                             <select name="filter_status">
                                 <option value="">{% trans "All" %}</option>
-                                <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "Pending" %}</option>
-                                <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Admitted" %}</option>
-                                <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
-                                <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
+                                <option value="0" {% if actions.filter_status == 0 %}selected="true"{% endif %}>{% trans "Pending" %}</option>
+                                <option value="1" {% if actions.filter_status == 1 %}selected="true"{% endif %}>{% trans "Admitted" %}</option>
+                                <option value="2" {% if actions.filter_status == 2 %}selected="true"{% endif %}>{% trans "Refused" %}</option>
+                                <option value="3" {% if actions.filter_status == 3 %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
                             </select>
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
                         </form>
