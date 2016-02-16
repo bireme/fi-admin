@@ -251,8 +251,11 @@ class BiblioRefUpdate(LoginRequiredView):
         context['user_role'] = user_role
 
         # create flag that control if user have permission to edit the reference
-        if user_role == 'doc' or user_role == 'editor_llxp':
+        if user_role == 'editor_llxp':
             context['user_can_edit'] = True if not self.object or (self.object.status != 1 and user_data['is_owner']) else False
+            context['user_can_change_status'] = False
+        elif user_role == 'doc':
+            context['user_can_edit'] = True if not self.object or self.object.status == 0 or user_data['is_owner'] else False
             context['user_can_change_status'] = False
         else:
             context['user_can_edit'] = True
