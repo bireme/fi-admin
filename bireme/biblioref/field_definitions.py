@@ -367,3 +367,13 @@ class AuthorKeywordAttributes(colander.MappingSchema):
 
 class AuthorKeyword(colander.SequenceSchema):
     item = AuthorKeywordAttributes(title=_('Author keyword'))
+
+
+class PagesAttributes(colander.MappingSchema):
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Pages'), missing=unicode(''),)
+    _f = colander.SchemaNode(colander.String('utf-8'), title=_('Initial number'), missing=unicode(''),)
+    _l = colander.SchemaNode(colander.String('utf-8'), title=_('End number'), missing=unicode(''),)
+
+
+class Pages(colander.SequenceSchema):
+    pages = PagesAttributes(title=_('Pages'))

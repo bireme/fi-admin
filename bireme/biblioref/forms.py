@@ -137,8 +137,7 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
-    def clean_individual_author_monographic(self):
-        field = 'individual_author_monographic'
+    def validate_author_field(self, field):
         data = self.cleaned_data[field]
         abbreviation_list = [' JR.', ' JR ', 'Fº', ' jr.', ' jr ', 'fº', ' Jr.', ' Jr ', ' jR.', ' jR ']
         literature_type = self.document_type[0]
@@ -198,10 +197,24 @@ class BiblioRefForm(BetterModelForm):
                     for key, value in author.iteritems():
                         if value.strip().endswith('.'):
                             message = _("Point at end of field is not allowed")
-                            message = string_concat(message_item, message)
+                            subfield = _(" at subfield %s ") % key[1:]
+                            message = string_concat(message_item, message, subfield)
                             self.add_error(field, message)
 
         return data
+
+    # field tag 10
+    def clean_individual_author(self):
+        data = self.validate_author_field('individual_author')
+
+        return data
+
+    # field tag 16
+    def clean_individual_author_monographic(self):
+        data = self.validate_author_field('individual_author_monographic')
+
+        return data
+
 
     def clean_electronic_address(self):
         field = 'electronic_address'

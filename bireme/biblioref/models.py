@@ -263,10 +263,27 @@ class ReferenceAnalytic(Reference):
     title = JSONField(_('Title'), blank=False, null=True, dump_kwargs={'ensure_ascii': False}, help_text=_("Field mandatory"))
     # field tag 13
     english_translated_title = models.CharField(_('English translated title'), max_length=400, blank=True)
-    # field tag 14
-    pages = models.CharField(_('Pages'), max_length=80, blank=True)
+    # field tag 14    
+    pages = JSONField(_('Pages'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+
     # field tag 700
     clinical_trial_registry_name = models.TextField(_('Clinical trial registry name'), blank=True)
+
+    def __unicode__(self):
+        if 'a' in self.treatment_level:
+            if self.literature_type == 'S':
+                ref_title = u"{0}; {1} ({2}), {3} | {4}".format(self.source.title_serial,
+                                                                self.source.volume_serial,
+                                                                self.source.issue_number,
+                                                                self.source.publication_date_normalized[:4],
+                                                                self.title[0]['text'])
+            else:
+                ref_title = u"{0} | {1}".format(self.source.title_monographic,
+                                                self.title[0]['text'])
+        else:
+            ref_title = self.title[0]['text']
+
+        return ref_title
 
 
 # Bibliographic References
