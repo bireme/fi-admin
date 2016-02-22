@@ -141,7 +141,7 @@ class BiblioRefForm(BetterModelForm):
         data = self.cleaned_data[field]
         abbreviation_list = [' JR.', ' JR ', 'Fº', ' jr.', ' jr ', 'fº', ' Jr.', ' Jr ', ' jR.', ' jR ']
         literature_type = self.document_type[0]
-        type_of_journal = self.cleaned_data['type_of_journal']
+        type_of_journal = self.cleaned_data.get('type_of_journal', 'p')
 
         if self.document_type[0] == 'T':
             if not data:
