@@ -413,3 +413,10 @@ div.onlineresource div.check {
     width: 750px;
     margin-left: -375px;
 }
+
+.fixed-alert{
+    position: fixed;
+    right: 10px;
+    top: 50px;
+    border: red solid 1px
+}

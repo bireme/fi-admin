@@ -243,6 +243,8 @@ BIREMELOGIN_BASE_URL = "http://accounts.bireme.org"
 BIREMELOGIN_SERVICE = ""
 GOOGLE_ANALYTICS_ID = ""
 VIEW_DOCUMENTS_BASE_URL = ""
+DEDUP_SERVICE_URL = ""
+VIEW_DEDUP_ARTICLE_DETAIL = ""
 
 TINYMCE_JS_URL = "/static/js/tinymce/tinymce.min.js"
 

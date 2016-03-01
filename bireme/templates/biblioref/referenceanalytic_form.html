@@ -3,6 +3,10 @@
 {% load static %}
 {% load app_filters %}
 
+{% block extrahead %}
+<link href="{% static "css/animate.min.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}{% trans "Edit Analytic" %}{% endblock %}
 
 {% block breadcrumb %}
@@ -47,6 +51,11 @@
             <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
         {% endif %}
     </ul>
+
+    <div class="dedup-alert well fixed-alert" style="display: none">
+        <button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;&nbsp;&times;</button>
+        <strong><i class="icon icon-warning-sign"></i> {% trans "Possible duplicated article" %} <a href="#" data-toggle="modal" data-target="#dedup_result">({% trans "check" %})</a></strong>
+    </div>
 
     <form method="POST" enctype="multipart/form-data" class="reference-form">
         {% csrf_token %}
@@ -178,6 +187,8 @@
     {% include "modal_log.html" %}
 {% endif %}
 
+{% include "modal_dedup.html" %}
+
 {% endblock %}
 
 {% block extrajs %}
@@ -301,6 +312,9 @@
                 $("#error_report_modal").modal("show");
             });
 
+            // check for duplicated
+            $(document).ready(check_duplication);
+
         })
 
         function open_window_with_post(verb, url, data, target) {
@@ -377,7 +391,47 @@
         $("#id_status").change(function(){
             new_status_label = $(this).find("option:selected").text();
             $('#save_status').text(new_status_label);
-        })
+        });
+
+        // watch for change at specific fields for duplicated dectection
+        $("#id_title").bind("change", check_duplication);
+
+        function check_duplication() {
+            status = $('#id_status').val();
+            title_val = $("#id_title").val();
+            console.log(status);
+
+            if (status < 1 && title_val){
+                obj = jQuery.parseJSON(title_val);
+                journal = "{{ reference_source.title_serial }};"
+                title = obj[0].text;
+                publication_year = "{{ reference_source.publication_date_normalized|slice:":4" }}";
+                $.ajax({
+                  method: "get",
+                  url: "{{ settings.DEDUP_SERVICE_URL }}",
+                  data: { database: "lilacs_sas", schema: "lilacs_sas_three",
+                          "ano de publicacao": publication_year, "titulo artigo": title, "titulo da revista": journal},
+                  dataType: "json",
+                  success: function(data){
+                      if (data.total > 0) {
+                          $('.dedup-alert').show();
+                          $('.dedup-alert').addClass('animated shake');
+                          articles = data.result;
+                          for (i = 0; i < articles.length; i++){
+                              pos = i+1;
+                              article = articles[i];
+                              $('#dedup_result .modal-body').append($('<div>', {
+                                    html: pos + '. <a href="{{ settings.DEDUP_ARTICLE_DETAIL }}lil-' + article['id'] +'" target="_dedup">' + article['titulo artigo']
+                                      + '</a> - ' + article['titulo da revista'] + ' (' + article['ano de publicacao'] + ')'
+                              }));
+                          }
+                      }else{
+                        $('.dedup-alert').hide();
+                      }
+                  }
+               });
+           }
+        };
 
    </script>
 {% endblock %}
