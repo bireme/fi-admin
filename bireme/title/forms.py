@@ -29,10 +29,10 @@ class TitleForm(forms.ModelForm):
     def clean_initial_date(self):
         field = 'initial_date'
         data = self.cleaned_data[field]
-        status = self.cleaned_data['status']
+        status = self.cleaned_data['status'] if 'status' in self.cleaned_data else None
         message = ''
 
-        if 'C' in status:
+        if status and'C' in status:
             if not data:
                 message = _("The initial date field is mandatory when publish status field value is 'current'")
 
@@ -44,10 +44,10 @@ class TitleForm(forms.ModelForm):
     def clean_final_date(self):
         field = 'final_date'
         data = self.cleaned_data[field]
-        status = self.cleaned_data['status']
+        status = self.cleaned_data['status'] if 'status' in self.cleaned_data else None
         message = ''
 
-        if 'D' in status:
+        if status and 'D' in status:
             if not data:
                 message = _("The final date field is mandatory when publish status field value is 'suspended or closed'")
 
@@ -59,11 +59,11 @@ class TitleForm(forms.ModelForm):
     def clean_state(self):
         field = 'state'
         data = self.cleaned_data[field]
-        country = self.cleaned_data['country']
-        c_list = [c.code for c in country]
+        country = self.cleaned_data['country'] if 'country' in self.cleaned_data else None
+        c_list = [c.code for c in country] if country else None
         message = ''
 
-        if 'BR' in c_list:
+        if c_list and 'BR' in c_list:
             if not data:
                 message = _("The state field is mandatory when country field value is 'Brazil'")
 
@@ -81,8 +81,10 @@ class TitleForm(forms.ModelForm):
             id = 1
         else:
             id = data.id
+
         obj.id_number = id
         obj.last_change_date = time.strftime('%Y%m%d')
+
         obj.save()
 
         return obj
@@ -106,10 +108,10 @@ class OnlineResourcesForm(forms.ModelForm):
 
     class Meta:
         model = OnlineResources
-        exclude = ('creation_date', 'tco', 'ndb', 'pca', 'access_control', )
+        exclude = ( 'creation_date', 'tco', 'ndb', 'pca', 'access_control', )
 
 
-# definition of inline formsets
+# Definition of inline formsets
 
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1, exclude=('primary', ))
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
