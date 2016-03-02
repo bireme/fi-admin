@@ -11,7 +11,6 @@ body {
 }
 ul.alert {
     margin: 0 0 10px 0;
-    list-style: none;
 }
 /* Set the fixed height of the footer here */
 #push,
@@ -221,7 +220,7 @@ h3.header {
     color: #ddd;
     text-transform: uppercase;
 }
-/* Tables */
+/*tablees*/
 .table td {
     padding-top: 11px;
     padding-bottom: 11px;
@@ -399,7 +398,7 @@ div.onlineresource input[type="checkbox"] {
 }
 
 div.onlineresource .period {
-    margin: 10px 0;
+    margin: 27px 0;
 }
 
 div.onlineresource .period input[type="text"] {
@@ -421,32 +420,3 @@ div.onlineresource div.check {
     top: 50px;
     border: red solid 1px
 }
-
-/* Preview page */
-.preview .table-condensed th, .preview .table-condensed td {
-    padding-left: 0;
-    padding-right: 20px;
-}
-.preview .table-header {
-    text-transform: uppercase;
-    text-decoration: underline;
-}
-.preview .table { display: inline; }
-.preview .table td {
-    padding-top: 0;
-    padding-bottom: 0;
-    background-color: #FFF !important;
-}
-.preview .textarea { display: inline-flex; }
-.preview span.textarea { font-weight: normal; }
-.preview span.textarea p { margin: 0 }
-.preview input, .preview textarea, .preview select { display: none; }
-.preview label, .preview span {
-    font-weight: bold;
-    display: inline;
-}
-.preview .tab-pane {
-    border-top: 1px solid #eee;
-    padding: 18px 0;
-}
-.preview #tab-descriptors { padding-bottom: 10px; }

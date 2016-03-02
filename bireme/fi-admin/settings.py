@@ -176,7 +176,6 @@ INSTALLED_APPS = (
     'error_reporting',
     'multimedia',
     'title',
-    'issues',
     'biblioref',
     'reports',
     'utils',

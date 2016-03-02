@@ -7,7 +7,6 @@ from django.contrib.contenttypes.generic import GenericRelation
 from main.models import SourceLanguage
 from choices import *
 
-
 # Title model
 class Title(Generic):
 
@@ -25,97 +24,51 @@ class Title(Generic):
         ('D', _('Suspended or closed')),
     )
 
-    # field tag 30
     id_number = models.CharField(_('ID number'), max_length=55, blank=False)
-    # field tag 03
     local_code = models.CharField(_('Local code'), max_length=55, choices=LOCAL_CODE_CHOICES, blank=True)
-    # field tag 05
     record_type = models.CharField(_('Record type'), max_length=55, default='KS', blank=False)
-    # field tag 06
     treatment_level = models.CharField(_('Title treatment level'), max_length=55, default='K', blank=False)
-    # field tag 10
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=False)
-    # field tag 20
     national_code = models.CharField(_('National code'), max_length=55, blank=True)
-    # field tag 37
     secs_number = models.CharField(_('SeCS number'), max_length=55, blank=True)
-    # field tag 40
     related_systems = models.TextField(_("Related systems"), blank=True, help_text=_("Enter one per line"))
-    # field tag 50
     status = models.CharField(_('Publish status'), max_length=55, choices=STATUS_CHOICES, blank=False)
-    # field tag 100
     title = models.CharField(_('Title'), max_length=455, blank=False)
-    # field tag 110
     subtitle = models.CharField(_('Subtitle'), max_length=455, blank=True)
-    # field tag 120
     section = models.CharField(_('Section/Part'), max_length=255, blank=True)
-    # field tag 130
     section_title = models.CharField(_('Section/Part title'), max_length=455, blank=True)
-    # field tag 140
     responsibility_mention = models.TextField(_("Responsibility Mention"), blank=True, help_text=_("Enter one per line"))
-    # field tag 150
     shortened_title = models.CharField(_('Shortened title'), max_length=455, blank=False)
-    # field tag 180
     medline_shortened_title = models.CharField(_('MEDLINE shortened title'), max_length=455, blank=True)
-    # field tag 301
     initial_date = models.CharField(_('Initial date'), max_length=255, blank=True)
-    # field tag 302
     initial_volume = models.CharField(_('Initial volume'), max_length=55, blank=True)
-    # field tag 303
     initial_number = models.CharField(_('Initial number'), max_length=55, blank=True)
-    # field tag 304
     final_date = models.CharField(_('Final date'), max_length=255, blank=True)
-    # field tag 305
     final_volume = models.CharField(_('Final volume'), max_length=255, blank=True)
-    # field tag 306
     final_number = models.CharField(_('Final number'), max_length=255, blank=True)
-    # field tag 310
     country = models.ManyToManyField(Country, verbose_name=_('Country'), blank=False)
-    # field tag 320
     state = models.CharField(_('State'), max_length=255, blank=True)
-    # field tag 330
     publication_level = models.CharField(_('Publication level'), max_length=55, choices=PUBLICATION_LEVEL_CHOICES, blank=True)
-    # field tag 340
     title_alphabet = models.CharField(_('Title alphabet'), max_length=55, choices=TITLE_ALPHABET_CHOICES, blank=True)
-    # field tag 350
     text_language = models.ManyToManyField(SourceLanguage, related_name="text_language+", verbose_name=_("Text language"), blank=True)
-    # field tag 360
     abstract_language = models.ManyToManyField(SourceLanguage, related_name="abstract_language+", verbose_name=_("Abstract language"), blank=True)
-    # field tag 380
     frequency = models.CharField(_('Frequency'), max_length=55, choices=FREQUENCY_CHOICES, blank=True)
-    # field tag 400
     issn = models.CharField(_('ISSN'), max_length=255, blank=True)
-    # field tag 410
     coden = models.CharField(_('CODEN'), max_length=255, blank=True)
-    # field tag 420
     medline_code = models.CharField(_('MEDLINE code'), max_length=255, blank=True)
-    # field tag 430
     classification = models.TextField(_("Classification"), blank=True, help_text=_("Enter one per line"))
-    # field tag 435
     thematic_area = models.TextField(_("Thematic area"), blank=True, help_text=_("Enter one per line"))
-    # field tag 445
     user = models.TextField(_("Users"), blank=True, help_text=_("Enter one per line"))
-    # field tag 460
     acquisition_form = models.CharField(_('Acquisition Form'), max_length=55, choices=ACQUISITION_FORM_CHOICES, blank=True)
-    # field tag 470
     acquisition_priority = models.CharField(_('Acquisition priority'), max_length=55, choices=ACQUISITION_PRIORITY_CHOICES, blank=True)
-    # field tag 480
     comercial_editor = models.CharField(_('Comercial editor'), max_length=455, blank=True)
-    # field tag 490
     city = models.CharField(_('City'), max_length=455, blank=True)
-    # field tag 500
     lilacs_index_year = models.CharField(_('Index - Year/Start (LILACS)'), help_text='Format: YYYY', max_length=55, blank=True)
-    # field tag 900
     notes = models.TextField(_("Notes"), blank=True, help_text=_("Enter one per line"))
-    # field tag 910
     bireme_notes = models.TextField(_("BIREME notes"), blank=True, help_text=_("Enter one per line"))
-    # field tag 920
     indexer_cc_code = models.CharField(_('Indexer center code'), max_length=55, blank=True)
-    # field tag 930
     editor_cc_code = models.CharField(_('Editor code'), max_length=55, blank=True)
-    # field tag 940
     creation_date = models.CharField(_('Creation date'), help_text='Format: YYYYMMDD', max_length=55, blank=False)
-    # field tag 941
     last_change_date = models.CharField(_('Last change date'), help_text='Format: YYYYMMDD', max_length=55, blank=True)
 
     def __unicode__(self):

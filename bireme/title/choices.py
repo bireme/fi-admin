@@ -119,6 +119,8 @@ STATE_CHOICES = (
     ("TO", "Tocantins"),
 )
 
+############################## Fascic choices ##############################
+
 ACCESS_TYPE_CHOICES = (
     ("ALIV", _("Free")),
     ("ALAP", _("Free for subscribers")),
