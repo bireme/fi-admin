@@ -417,6 +417,7 @@
                           $('.dedup-alert').show();
                           $('.dedup-alert').addClass('animated shake');
                           articles = data.result;
+                          $('#dedup_result .modal-body').empty();
                           for (i = 0; i < articles.length; i++){
                               pos = i+1;
                               article = articles[i];
