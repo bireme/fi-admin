@@ -164,7 +164,7 @@
                                     {% elif field.name == 'text' %}
                                         <td class="span6">
                                             {{ field.as_hidden }}
-                                            <div class="input-large uneditable-input {% if not field.value %}placeholder-style{% else %}default-style{% endif %}" id="label_{{ field.html_name }}">
+                                            <div class="input-large uneditable-input {% if not field.value %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
                                                 {% spaceless %}
                                                 {% if not field.value %}
                                                     {% trans "Select by search" %}

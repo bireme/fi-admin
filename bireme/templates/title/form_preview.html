@@ -194,7 +194,7 @@
                             {% endfor %}
                             {% if form.cleaned_data|length %}
                                 {% if form.DELETE.value %}
-                                    <input type="hidden" name="indexrange_set-{{ forloop.counter0 }}-DELETE" id="id_indexrange_set-{{ forloop.counter0 }}-DELETE" value="on">
+                                    <input type="hidden" name="{{ formset_indexrange.prefix }}-{{ forloop.counter0 }}-DELETE" id="id_{{ formset_indexrange.prefix }}-{{ forloop.counter0 }}-DELETE" value="on">
                                 {% else %}
                                     <tr id="indexrange-{{ forloop.counter0 }}" class="indexrange-row{% if form.errors %} error{% endif %} formset-row">
                                         {% for field in form.visible_fields %}
@@ -240,7 +240,7 @@
                             {% endfor %}
                             {% if form.cleaned_data|length %}
                                 {% if form.DELETE.value %}
-                                    <input type="hidden" name="bvsspecialty_set-{{ forloop.counter0 }}-DELETE" id="id_bvsspecialty_set-{{ forloop.counter0 }}-DELETE" value="on">
+                                    <input type="hidden" name="{{ formset_specialty.prefix }}-{{ forloop.counter0 }}-DELETE" id="id_{{ formset_specialty.prefix }}-{{ forloop.counter0 }}-DELETE" value="on">
                                 {% else %}
                                     <tr id="specialty-{{ forloop.counter0 }}" class="specialty-row{% if form.errors %} error{% endif %} formset-row">
                                         {% for field in form.visible_fields %}
@@ -288,7 +288,7 @@
                             {% endfor %}
                             {% if form.cleaned_data|length %}
                                 {% if form.DELETE.value %}
-                                    <input type="hidden" name="titlevariance_set-{{ forloop.counter0 }}-DELETE" id="id_titlevariance_set-{{ forloop.counter0 }}-DELETE" value="on">
+                                    <input type="hidden" name="{{ formset_variance.prefix }}-{{ forloop.counter0 }}-DELETE" id="id_{{ formset_variance.prefix }}-{{ forloop.counter0 }}-DELETE" value="on">
                                 {% else %}
                                     <tr id="variance-{{ forloop.counter0 }}" class="variance-row{% if form.errors %} error{% endif %} formset-row">
                                         {% for field in form.visible_fields %}
@@ -335,7 +335,7 @@
                             {% endfor %}
                             {% if form.cleaned_data|length %}
                                 {% if form.DELETE.value %}
-                                    <input type="hidden" name="audit_set-{{ forloop.counter0 }}-DELETE" id="id_audit_set-{{ forloop.counter0 }}-DELETE" value="on">
+                                    <input type="hidden" name="{{ formset_audit.prefix }}-{{ forloop.counter0 }}-DELETE" id="id_{{ formset_audit.prefix }}-{{ forloop.counter0 }}-DELETE" value="on">
                                 {% else %}
                                     <tr id="audit-{{ forloop.counter0 }}" class="audit-row{% if form.errors %} error{% endif %} formset-row">
                                         {% for field in form.visible_fields %}
