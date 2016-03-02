@@ -33,6 +33,9 @@ def get_change_info(label):
 def fieldtype(obj):
     return obj.__class__.__name__
 
+@register.filter
+def widgetfieldtype(obj):
+    return obj.widget.__class__.__name__
 
 @register.filter
 def invalues(value, list):
@@ -42,11 +45,30 @@ def invalues(value, list):
 
     return find
 
-
 @register.filter
 def profilefield(user, field):
     return user.profile.get_attribute(field)
 
+@register.simple_tag
+def get_field_display(object, field, sep=' '):
+    ft = fieldtype(field.field)
+    widget = widgetfieldtype(field.field)
+
+    if widget == 'Select':
+        # check if is foreign key
+        if ft == 'ModelChoiceField':
+            out = getattr(object, field.name)
+        else:
+            out = getattr(object, 'get_%s_display' % field.name)()
+    elif widget == 'SelectMultiple':
+        list = []
+        for index in field.form[field.name][0].value:
+            list += [dict(field.field.choices)[int(index)]]
+        # query = getattr(object, field.name).all()
+        # out = sep.join(str(i) for i in query)
+        out = sep.join(list)
+
+    return out
 
 @register.simple_tag(takes_context=True)
 def display_field(context, field):
