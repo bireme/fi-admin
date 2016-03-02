@@ -1,6 +1,6 @@
 #! coding: utf-8
 from django.core.urlresolvers import reverse, reverse_lazy
-
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 
 from django.views.generic.list import ListView
@@ -128,6 +128,24 @@ class TitleUpdate(LoginRequiredView):
 
         if (form_valid and formset_links_valid and formset_specialty_valid and formset_variance_valid and formset_indexrange_valid and formset_audit_valid and formset_descriptor_valid and formset_keyword_valid and valid_for_publication):
 
+            action = self.request.POST['action']
+
+            if action in ('preview', 'edit'):
+                view = 'title/form_preview.html' if action == 'preview' else 'title/title_form.html'
+
+                return render(
+                            self.request,
+                            view,
+                            self.get_context_data(form=form,
+                                    formset_links=formset_links,
+                                    formset_specialty=formset_specialty,
+                                    formset_variance=formset_variance,
+                                    formset_indexrange=formset_indexrange,
+                                    formset_audit=formset_audit,
+                                    formset_descriptor=formset_descriptor,
+                                    formset_keyword=formset_keyword,
+                                    valid_for_publication=valid_for_publication))
+            else:
                 self.object = form.save()
 
                 formset_links.instance = self.object
@@ -240,6 +258,13 @@ class TitleUpdate(LoginRequiredView):
 class TitleUpdateView(TitleUpdate, UpdateView):
     """
     Used as class view to update Title
+    Extend TitleUpdate that do all the work
+    """
+
+
+class TitlePreview(TitleUpdate, UpdateView):
+    """
+    Used as class view to preview Title
     Extend TitleUpdate that do all the work
     """
 
