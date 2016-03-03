@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-01 18:06-0300\n"
+"POT-Creation-Date: 2016-03-03 16:19-0300\n"
 "PO-Revision-Date: 2016-03-01 18:08-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
@@ -31,7 +31,7 @@ msgstr "Seleccione por búsqueda"
 #: help/models.py:53 main/models.py:29 main/models.py:69 main/models.py:97
 #: main/models.py:108 main/models.py:135 multimedia/models.py:21
 #: multimedia/models.py:60 templates/biblioref/fieldset_fulltext.html:16
-#: templates/main/edit-language.html:8 utils/models.py:102 utils/models.py:130
+#: templates/main/edit-language.html:8 utils/models.py:113 utils/models.py:141
 msgid "Language"
 msgstr "Idioma"
 
@@ -183,8 +183,9 @@ msgstr ""
 #: templates/biblioref/referencesource_list.html:51
 #: templates/events/events.html:100 templates/main/resources.html:101
 #: templates/multimedia/media_list.html:118 templates/suggest/list.html:76
-#: templates/suggest/list.html.py:165 templates/title/title_form.html:337
-#: templates/title/title_form.html:374 templates/title/title_list.html:66
+#: templates/suggest/list.html.py:165 templates/title/form_preview.html:277
+#: templates/title/form_preview.html:325 templates/title/title_form.html:339
+#: templates/title/title_form.html:376 templates/title/title_list.html:66
 #: templates/title/title_list.html.py:98 title/models.py:14 title/models.py:36
 #: title/models.py:94 title/models.py:119 title/models.py:132
 #: title/models.py:154 title/models.py:174
@@ -278,8 +279,8 @@ msgstr "Añadir palabra clave"
 msgid "Pages"
 msgstr "Página"
 
-#: biblioref/field_definitions.py:374 templates/title/title_form.html:264
-#: title/models.py:45 title/models.py:158
+#: biblioref/field_definitions.py:374 templates/title/form_preview.html:182
+#: templates/title/title_form.html:266 title/models.py:45 title/models.py:158
 msgid "Initial number"
 msgstr ""
 
@@ -306,145 +307,154 @@ msgstr ""
 msgid "Thesis, Dissertation"
 msgstr ""
 
-#: biblioref/forms.py:123
+#: biblioref/forms.py:96
+#, fuzzy
+#| msgid "Indexed by other cooperative centers"
+msgid "Indexed by your cooperative center"
+msgstr "Centro cooperante"
+
+#: biblioref/forms.py:97
+msgid "Indexed by other cooperative centers"
+msgstr "Centro cooperante"
+
+#: biblioref/forms.py:145
 #, python-format
 msgid "The % simbol don't separete occurences"
 msgstr ""
 
-#: biblioref/forms.py:128 biblioref/forms.py:199
+#: biblioref/forms.py:150 biblioref/forms.py:221
 msgid "Point at end of field is not allowed"
 msgstr ""
 
-#: biblioref/forms.py:148 biblioref/forms.py:302
+#: biblioref/forms.py:170 biblioref/forms.py:324
 msgid "Mandatory"
 msgstr ""
 
-#: biblioref/forms.py:154 biblioref/forms.py:172 biblioref/forms.py:230
+#: biblioref/forms.py:176 biblioref/forms.py:194 biblioref/forms.py:252
 #, python-format
 msgid "item %s: "
 msgstr ""
 
-#: biblioref/forms.py:156
+#: biblioref/forms.py:178
 msgid "Thesis's author anonymous"
 msgstr ""
 
-#: biblioref/forms.py:160
+#: biblioref/forms.py:182
 msgid "Comma abscent"
 msgstr ""
 
-#: biblioref/forms.py:164 biblioref/forms.py:180
+#: biblioref/forms.py:186 biblioref/forms.py:202
 msgid "Insert space after comma"
 msgstr ""
 
-#: biblioref/forms.py:175
+#: biblioref/forms.py:197
 msgid "Comma absense or error in the word Anon"
 msgstr ""
 
-#: biblioref/forms.py:184
+#: biblioref/forms.py:206
 msgid "Insert space after point"
 msgstr ""
 
-#: biblioref/forms.py:188
+#: biblioref/forms.py:210
 msgid "Invalid abbreviation input Junior and/or Filho"
 msgstr ""
 
-#: biblioref/forms.py:193
+#: biblioref/forms.py:215
 msgid "Subfield 1 affiliation mandatory"
 msgstr ""
 
-#: biblioref/forms.py:200
+#: biblioref/forms.py:222
 #, python-format
 msgid " at subfield %s "
 msgstr ""
 
-#: biblioref/forms.py:233
+#: biblioref/forms.py:255
 msgid "File extension attribute is mandatory"
 msgstr ""
 
-#: biblioref/forms.py:238
+#: biblioref/forms.py:260
 msgid "File type attribute is mandatory"
 msgstr ""
 
-#: biblioref/forms.py:243
+#: biblioref/forms.py:265
 msgid "Language incompatible with LILACS"
 msgstr ""
 
-#: biblioref/forms.py:250
+#: biblioref/forms.py:272
 #, fuzzy
 #| msgid "Duplicated"
 msgid "URL duplicated"
 msgstr "Duplicado"
 
-#: biblioref/forms.py:263
+#: biblioref/forms.py:285
 msgid ""
 "Printed music in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:265
+#: biblioref/forms.py:287
 msgid ""
 "Manuscript music in the Record Type is incompatible with the LILACS "
 "Methodology"
 msgstr ""
 
-#: biblioref/forms.py:267
+#: biblioref/forms.py:289
 msgid ""
 "Printed cartographic material in the Record Type is incompatible with the "
 "LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:269
+#: biblioref/forms.py:291
 msgid ""
-"Manuscript cartographic material in the Record Type is incompatible with the"
-" LILACS Methodology"
+"Manuscript cartographic material in the Record Type is incompatible with the "
+"LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:271
+#: biblioref/forms.py:293
 msgid ""
 "Musical sound recording in the Record Type is incompatible with the LILACS "
 "Methodology"
 msgstr ""
 
-#: biblioref/forms.py:273
+#: biblioref/forms.py:295
 msgid ""
 "Two-dimensional nonprojectable graphic in the Record Type is incompatible "
 "with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:275
+#: biblioref/forms.py:297
 msgid ""
 "Computer file in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:277
+#: biblioref/forms.py:299
 msgid "Kit in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:279
+#: biblioref/forms.py:301
 msgid ""
-"Mixed material in the Record Type is incompatible with the LILACS "
-"Methodology"
+"Mixed material in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:281
+#: biblioref/forms.py:303
 msgid ""
 "Three-dimensional artifact or naturally occurring object in the Record Type "
 "is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:283
+#: biblioref/forms.py:305
 msgid ""
 "Manuscript language material in the Record Type is incompatible with the "
 "LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:296
+#: biblioref/forms.py:318
 msgid "For LILACS references is mandatory select a journal from the list"
 msgstr ""
 
-#: biblioref/forms.py:299
+#: biblioref/forms.py:321
 msgid ""
-"Please choose one journal from the list or use blank to inform other journal"
-" title"
+"Please choose one journal from the list or use blank to inform other journal "
+"title"
 msgstr ""
 
 #: biblioref/models.py:11 templates/biblioref/reference_list.html:90
@@ -481,8 +491,8 @@ msgstr "Editor"
 #: templates/multimedia/media_list.html:135 templates/reports/index.html:60
 #: templates/reports/index.html.py:110 templates/suggest/list.html:54
 #: templates/suggest/list.html.py:97 templates/suggest/list.html:141
-#: templates/suggest/list.html.py:184 templates/title/title_form.html:140
-#: templates/title/title_form.html:212 utils/templatetags/app_filters.py:16
+#: templates/suggest/list.html.py:184 templates/title/title_form.html:142
+#: templates/title/title_form.html:214 utils/templatetags/app_filters.py:16
 msgid "Refused"
 msgstr "Rechazado"
 
@@ -503,8 +513,8 @@ msgstr "Rechazado"
 #: templates/multimedia/media_list.html:137 templates/reports/index.html:61
 #: templates/reports/index.html.py:112 templates/suggest/list.html:55
 #: templates/suggest/list.html.py:99 templates/suggest/list.html:143
-#: templates/suggest/list.html.py:186 templates/title/title_form.html:142
-#: templates/title/title_form.html:214 utils/templatetags/app_filters.py:17
+#: templates/suggest/list.html.py:186 templates/title/title_form.html:144
+#: templates/title/title_form.html:216 utils/templatetags/app_filters.py:17
 msgid "Deleted"
 msgstr "Borrado"
 
@@ -842,8 +852,9 @@ msgstr "Título original"
 msgid "Issue number"
 msgstr "Autores"
 
-#: biblioref/models.py:216 templates/title/title_form.html:338
-#: templates/title/title_form.html:375 templates/title/title_list.html:81
+#: biblioref/models.py:216 templates/title/form_preview.html:278
+#: templates/title/form_preview.html:326 templates/title/title_form.html:340
+#: templates/title/title_form.html:377 templates/title/title_list.html:81
 #: templates/title/title_list.html.py:99 title/models.py:56
 #: title/models.py:120 title/models.py:175
 msgid "ISSN"
@@ -1023,8 +1034,8 @@ msgstr "Informe de errores"
 #: templates/multimedia/media_list.html:131 templates/reports/index.html:58
 #: templates/reports/index.html.py:106 templates/suggest/list.html:52
 #: templates/suggest/list.html.py:93 templates/suggest/list.html:137
-#: templates/suggest/list.html.py:180 templates/title/title_form.html:136
-#: templates/title/title_form.html:208
+#: templates/suggest/list.html.py:180 templates/title/title_form.html:138
+#: templates/title/title_form.html:210
 msgid "Pending"
 msgstr "Pendiente"
 
@@ -1105,7 +1116,7 @@ msgstr "Nombre"
 
 #: events/models.py:45 help/models.py:49 main/models.py:53 main/models.py:93
 #: main/models.py:131 multimedia/models.py:45 multimedia/models.py:76
-#: utils/models.py:126
+#: utils/models.py:137
 msgid "Translation"
 msgstr "Traducción"
 
@@ -1115,17 +1126,17 @@ msgstr "Traducción"
 #: templates/main/edit-language.html:36 templates/main/edit-thematic.html:36
 #: templates/main/edit-type.html:36
 #: templates/multimedia/mediacollection_form.html:34
-#: templates/multimedia/mediatype_form.html:36 utils/models.py:127
+#: templates/multimedia/mediatype_form.html:36 utils/models.py:138
 msgid "Translations"
 msgstr "Traducciones"
 
 #: events/models.py:49 main/models.py:57 multimedia/models.py:49
-#: multimedia/models.py:80 multimedia/models.py:108 utils/models.py:90
+#: multimedia/models.py:80 multimedia/models.py:108 utils/models.py:101
 msgid "language"
 msgstr "idioma"
 
 #: events/models.py:50 main/models.py:58 multimedia/models.py:50
-#: multimedia/models.py:81 utils/models.py:73 utils/models.py:91
+#: multimedia/models.py:81 utils/models.py:81 utils/models.py:102
 msgid "name"
 msgstr "nombre"
 
@@ -1158,8 +1169,8 @@ msgstr "Eventos"
 #: templates/multimedia/media_list.html:133 templates/reports/index.html:59
 #: templates/reports/index.html.py:108 templates/suggest/list.html:53
 #: templates/suggest/list.html.py:95 templates/suggest/list.html:139
-#: templates/suggest/list.html.py:182 templates/title/title_form.html:138
-#: templates/title/title_form.html:210
+#: templates/suggest/list.html.py:182 templates/title/title_form.html:140
+#: templates/title/title_form.html:212
 msgid "Admitted"
 msgstr "Aceptado"
 
@@ -1234,7 +1245,7 @@ msgstr ""
 msgid "Helps"
 msgstr ""
 
-#: help/models.py:25 utils/models.py:101
+#: help/models.py:25 utils/models.py:112
 msgid "Field name"
 msgstr ""
 
@@ -1278,7 +1289,7 @@ msgstr "DeCS: Descriptores en Ciencias de la Salud"
 #: templates/biblioref/reference_form.html:208
 #: templates/events/edit-event.html:209 templates/main/edit-resource.html:210
 #: templates/multimedia/media_form.html:212 templates/suggest/list.html:34
-#: templates/title/title_form.html:196
+#: templates/title/form_preview.html:144 templates/title/title_form.html:198
 msgid "Keywords"
 msgstr "Palabras clave"
 
@@ -1291,7 +1302,7 @@ msgid "source types"
 msgstr "tipos de fuentes"
 
 #: main/models.py:56 main/models.py:232 templates/main/edit-type.html:8
-#: utils/models.py:129
+#: utils/models.py:140
 msgid "Source type"
 msgstr "Tipo de fuente"
 
@@ -1332,7 +1343,7 @@ msgstr "Área temática"
 msgid "Descriptor"
 msgstr "Descriptores"
 
-#: main/models.py:175 utils/models.py:100
+#: main/models.py:175 utils/models.py:111
 msgid "Code"
 msgstr "Código"
 
@@ -1594,9 +1605,9 @@ msgstr "Tipo de evento"
 #: templates/multimedia/media_form.html:142
 #: templates/multimedia/media_form.html:215
 #: templates/multimedia/media_form.html:286
-#: templates/title/title_form.html:126 templates/title/title_form.html:198
-#: templates/title/title_form.html:268 templates/title/title_form.html:303
-#: templates/title/title_form.html:340 templates/title/title_form.html:376
+#: templates/title/title_form.html:128 templates/title/title_form.html:200
+#: templates/title/title_form.html:270 templates/title/title_form.html:305
+#: templates/title/title_form.html:342 templates/title/title_form.html:378
 msgid "Delete?"
 msgstr "Borrar?"
 
@@ -1607,8 +1618,9 @@ msgstr ""
 #: templates/biblioref/fieldset_indexing.html:9
 #: templates/biblioref/reference_form.html:135
 #: templates/events/edit-event.html:139 templates/main/edit-resource.html:140
-#: templates/multimedia/media_form.html:140 templates/title/title_form.html:42
-#: templates/title/title_form.html:124
+#: templates/multimedia/media_form.html:140
+#: templates/title/form_preview.html:112 templates/title/title_form.html:42
+#: templates/title/title_form.html:126
 msgid "Descriptors"
 msgstr "Descriptores"
 
@@ -1617,7 +1629,7 @@ msgstr "Descriptores"
 #: templates/events/edit-event.html:183 templates/main/edit-resource.html:184
 #: templates/multimedia/media_form.html:94
 #: templates/multimedia/media_form.html:185
-#: templates/title/title_form.html:169
+#: templates/title/title_form.html:171
 msgid "Select by search"
 msgstr "Seleccione por búsqueda"
 
@@ -1644,7 +1656,8 @@ msgstr ""
 #: templates/biblioref/reference_form.html:25
 #: templates/biblioref/select_document_type.html:23
 #: templates/events/edit-event.html:24 templates/main/edit-resource.html:23
-#: templates/multimedia/media_form.html:24 templates/title/title_form.html:23
+#: templates/multimedia/media_form.html:24
+#: templates/title/form_preview.html:28 templates/title/title_form.html:23
 msgid "Please check required fields"
 msgstr "Por favor, verifique los campos requeridos"
 
@@ -1652,7 +1665,8 @@ msgstr "Por favor, verifique los campos requeridos"
 #: templates/biblioref/referenceanalytic_form.html:35
 #: templates/biblioref/referencesource_form.html:34
 #: templates/events/edit-event.html:29 templates/main/edit-resource.html:28
-#: templates/multimedia/media_form.html:29 templates/title/title_form.html:28
+#: templates/multimedia/media_form.html:29
+#: templates/title/form_preview.html:33 templates/title/title_form.html:28
 msgid ""
 "For status admitted you must have at least one descriptor and one thematic "
 "area admitted"
@@ -1680,7 +1694,8 @@ msgstr "Indización"
 #: templates/biblioref/referenceanalytic_form.html:68
 #: templates/biblioref/referencesource_form.html:57
 #: templates/events/edit-event.html:50 templates/main/edit-resource.html:49
-#: templates/multimedia/media_form.html:50 templates/title/title_form.html:58
+#: templates/multimedia/media_form.html:50
+#: templates/title/form_preview.html:55 templates/title/title_form.html:60
 msgid "Identifier"
 msgstr "Identificador"
 
@@ -1695,21 +1710,21 @@ msgstr "Medio creado en"
 #: templates/main/edit-resource.html:111 templates/main/edit-resource.html:114
 #: templates/multimedia/media_form.html:126
 #: templates/multimedia/media_form.html:129
-#: templates/title/title_form.html:111 templates/title/title_form.html:114
+#: templates/title/title_form.html:113 templates/title/title_form.html:116
 msgid "by user"
 msgstr "por el usuario"
 
 #: templates/biblioref/reference_form.html:122
 #: templates/events/edit-event.html:112 templates/main/edit-resource.html:112
 #: templates/multimedia/media_form.html:127
-#: templates/title/title_form.html:112
+#: templates/title/title_form.html:114
 msgid "Cooperative center code"
 msgstr "Código del centro cooperante"
 
 #: templates/biblioref/reference_form.html:124
 #: templates/events/edit-event.html:114 templates/main/edit-resource.html:114
 #: templates/multimedia/media_form.html:129
-#: templates/title/title_form.html:114
+#: templates/title/title_form.html:116
 msgid "Last edit in"
 msgstr "Última edición en"
 
@@ -1725,7 +1740,7 @@ msgstr "Sugerencia"
 #: templates/main/edit-resource.html:234 templates/main/edit-resource.html:257
 #: templates/multimedia/media_form.html:236
 #: templates/multimedia/media_form.html:259
-#: templates/title/title_form.html:219
+#: templates/title/title_form.html:221
 msgid "Suggested"
 msgstr "Sugerido"
 
@@ -1740,7 +1755,7 @@ msgstr "Sugerido"
 #: templates/multimedia/mediatype_form.html:56
 #: templates/suggest/edit-suggested-event.html:58
 #: templates/suggest/edit-suggested-resource.html:59
-#: templates/title/title_form.html:461
+#: templates/title/form_preview.html:405
 msgid "Save"
 msgstr "Guardar"
 
@@ -1749,7 +1764,7 @@ msgstr "Guardar"
 #: templates/biblioref/referencesource_form.html:192
 #: templates/events/edit-event.html:389 templates/main/edit-resource.html:395
 #: templates/multimedia/media_form.html:343
-#: templates/title/title_form.html:477
+#: templates/title/title_form.html:479
 msgid "Add descriptor"
 msgstr "Añadir descriptor"
 
@@ -1771,10 +1786,10 @@ msgstr "Añadir descriptor"
 #: templates/multimedia/media_form.html:364
 #: templates/multimedia/mediacollection_form.html:72
 #: templates/multimedia/mediatype_form.html:74
-#: templates/title/title_form.html:478 templates/title/title_form.html:487
-#: templates/title/title_form.html:496 templates/title/title_form.html:505
-#: templates/title/title_form.html:514 templates/title/title_form.html:523
-#: templates/title/title_form.html:532
+#: templates/title/title_form.html:480 templates/title/title_form.html:489
+#: templates/title/title_form.html:498 templates/title/title_form.html:507
+#: templates/title/title_form.html:516 templates/title/title_form.html:525
+#: templates/title/title_form.html:534
 msgid "delete"
 msgstr "borrar"
 
@@ -1782,7 +1797,7 @@ msgstr "borrar"
 #: templates/biblioref/referencesource_form.html:202
 #: templates/events/edit-event.html:399 templates/main/edit-resource.html:405
 #: templates/multimedia/media_form.html:353
-#: templates/title/title_form.html:486
+#: templates/title/title_form.html:488
 msgid "Add keyword"
 msgstr "Añadir palabra clave"
 
@@ -2492,17 +2507,17 @@ msgid ""
 "Your suggestion will be evaluated and if approved will be included in the "
 "Health Information Locator"
 msgstr ""
-"Tu sugerencia será evaluado y si se aprueba, será incluido en el Localizador"
-" de Información en Salud"
+"Tu sugerencia será evaluado y si se aprueba, será incluido en el Localizador "
+"de Información en Salud"
 
-#: templates/title/title_confirm_delete.html:5
-#: templates/title/title_confirm_delete.html:9
-#: templates/title/title_confirm_delete.html:15
+#: templates/title/form_preview.html:6 templates/title/form_preview.html:15
+#: templates/title/form_preview.html:21
 #, fuzzy
-#| msgid "Delete media type"
-msgid "Delete Title"
-msgstr "Borrar tipo de media"
+#| msgid "Title"
+msgid "Preview Title"
+msgstr "Título"
 
+#: templates/title/form_preview.html:9
 #: templates/title/title_confirm_delete.html:8
 #: templates/title/title_form.html:8 templates/title/title_list.html:4
 #: templates/title/title_list.html.py:7 templates/title/title_list.html:26
@@ -2512,132 +2527,162 @@ msgstr "Borrar tipo de media"
 msgid "Titles"
 msgstr "Título"
 
-#: templates/title/title_form.html:5 templates/title/title_form.html.py:10
-#: templates/title/title_form.html:16
+#: templates/title/form_preview.html:11 templates/title/title_form.html:5
+#: templates/title/title_form.html.py:10 templates/title/title_form.html:16
 #, fuzzy
 #| msgid "Title"
 msgid "Edit Title"
 msgstr "Título"
 
-#: templates/title/title_form.html:9 templates/title/title_form.html.py:16
+#: templates/title/form_preview.html:13 templates/title/title_form.html:5
+#: templates/title/title_form.html.py:9 templates/title/title_form.html:16
 #: templates/title/title_list.html:28
 #, fuzzy
 #| msgid "Title"
 msgid "New Title"
 msgstr "Título"
 
-#: templates/title/title_form.html:43 title/models.py:151 title/models.py:152
+#: templates/title/form_preview.html:176 templates/title/title_form.html:43
+#: title/models.py:151 title/models.py:152
 #, fuzzy
 #| msgid "Indexing"
 msgid "Index range"
 msgstr "Indización"
 
-#: templates/title/title_form.html:44 title/models.py:130
-msgid "BVS Specialties"
-msgstr ""
-
-#: templates/title/title_form.html:45 title/models.py:115
-msgid "Title variances"
-msgstr ""
-
-#: templates/title/title_form.html:46 title/models.py:169 title/models.py:170
-msgid "Audit"
-msgstr ""
-
-#: templates/title/title_form.html:47 title/models.py:92
-#, fuzzy
-#| msgid "All resources"
-msgid "Online resources"
-msgstr "Todos recursos"
-
-#: templates/title/title_form.html:111
-#, fuzzy
-#| msgid "Media created in"
-msgid "Title created in"
-msgstr "Medio creado en"
-
-#: templates/title/title_form.html:261 title/models.py:155
+#: templates/title/form_preview.html:179 templates/title/title_form.html:263
+#: title/models.py:155
 #, fuzzy
 #| msgid "project source code"
 msgid "Index source code"
 msgstr "código fuente"
 
-#: templates/title/title_form.html:262 title/models.py:43 title/models.py:156
+#: templates/title/form_preview.html:180 templates/title/title_form.html:264
+#: title/models.py:43 title/models.py:156
 #, fuzzy
 #| msgid "Start date"
 msgid "Initial date"
 msgstr "Fecha inicial"
 
-#: templates/title/title_form.html:263 title/models.py:44 title/models.py:157
+#: templates/title/form_preview.html:181 templates/title/title_form.html:265
+#: title/models.py:44 title/models.py:157
 msgid "Initial volume"
 msgstr ""
 
-#: templates/title/title_form.html:265 title/models.py:46 title/models.py:159
+#: templates/title/form_preview.html:183 templates/title/title_form.html:267
+#: title/models.py:46 title/models.py:159
 #, fuzzy
 #| msgid "End date"
 msgid "Final date"
 msgstr "Fecha final"
 
-#: templates/title/title_form.html:266 title/models.py:47 title/models.py:160
+#: templates/title/form_preview.html:184 templates/title/title_form.html:268
+#: title/models.py:47 title/models.py:160
 msgid "Final volume"
 msgstr ""
 
-#: templates/title/title_form.html:267 title/models.py:48 title/models.py:161
+#: templates/title/form_preview.html:185 templates/title/title_form.html:269
+#: title/models.py:48 title/models.py:161
 msgid "Final number"
 msgstr ""
 
-#: templates/title/title_form.html:301
+#: templates/title/form_preview.html:227 templates/title/title_form.html:44
+#: title/models.py:130
+msgid "BVS Specialties"
+msgstr ""
+
+#: templates/title/form_preview.html:230 templates/title/title_form.html:303
 msgid "VHL"
 msgstr ""
 
-#: templates/title/title_form.html:302
+#: templates/title/form_preview.html:231 templates/title/title_form.html:304
 #, fuzzy
 #| msgid "Thematic area"
 msgid "VHL Thematic area"
 msgstr "Área temática"
 
-#: templates/title/title_form.html:336 templates/title/title_form.html:373
+#: templates/title/form_preview.html:273 templates/title/title_form.html:45
+#: title/models.py:115
+msgid "Title variances"
+msgstr ""
+
+#: templates/title/form_preview.html:276 templates/title/form_preview.html:324
+#: templates/title/title_form.html:338 templates/title/title_form.html:375
 #: title/models.py:118 title/models.py:173
 msgid "Type"
 msgstr ""
 
-#: templates/title/title_form.html:339 title/models.py:121
+#: templates/title/form_preview.html:279 templates/title/title_form.html:341
+#: title/models.py:121
 msgid "Initial year"
 msgstr ""
 
-#: templates/title/title_form.html:431
+#: templates/title/form_preview.html:321 templates/title/title_form.html:46
+#: title/models.py:169 title/models.py:170
+msgid "Audit"
+msgstr ""
+
+#: templates/title/form_preview.html:366 templates/title/title_form.html:47
+#: title/models.py:92
+#, fuzzy
+#| msgid "All resources"
+msgid "Online resources"
+msgstr "Todos recursos"
+
+#: templates/title/form_preview.html:404 templates/title/title_list.html:111
+msgid "Edit"
+msgstr ""
+
+#: templates/title/title_confirm_delete.html:5
+#: templates/title/title_confirm_delete.html:9
+#: templates/title/title_confirm_delete.html:15
+#, fuzzy
+#| msgid "Delete media type"
+msgid "Delete Title"
+msgstr "Borrar tipo de media"
+
+#: templates/title/title_form.html:113
+#, fuzzy
+#| msgid "Media created in"
+msgid "Title created in"
+msgstr "Medio creado en"
+
+#: templates/title/title_form.html:433
 msgid "Period"
 msgstr ""
 
-#: templates/title/title_form.html:432
+#: templates/title/title_form.html:434
 msgid "From"
 msgstr ""
 
-#: templates/title/title_form.html:436
+#: templates/title/title_form.html:438
 msgid "Until"
 msgstr ""
 
-#: templates/title/title_form.html:495
+#: templates/title/title_form.html:463
+msgid "Send"
+msgstr ""
+
+#: templates/title/title_form.html:497
 msgid "Add specialty"
 msgstr ""
 
-#: templates/title/title_form.html:504
+#: templates/title/title_form.html:506
 #, fuzzy
 #| msgid "Advanced"
 msgid "Add variance"
 msgstr "Avanzado"
 
-#: templates/title/title_form.html:513
+#: templates/title/title_form.html:515
 msgid "Add index range"
 msgstr ""
 
-#: templates/title/title_form.html:522
+#: templates/title/title_form.html:524
 #, fuzzy
 #| msgid "Add descriptor"
 msgid "Add audit"
 msgstr "Añadir descriptor"
 
-#: templates/title/title_form.html:531
+#: templates/title/title_form.html:533
 #, fuzzy
 #| msgid "All resources"
 msgid "Add online resource"
@@ -2665,10 +2710,6 @@ msgstr ""
 
 #: templates/title/title_list.html:78 title/models.py:33
 msgid "SeCS number"
-msgstr ""
-
-#: templates/title/title_list.html:111
-msgid "Edit"
 msgstr ""
 
 #: title/choices.py:8
@@ -3203,23 +3244,27 @@ msgstr "Debe seleccionar al menos una área temática"
 msgid "updated"
 msgstr "actualizado"
 
-#: utils/models.py:72
+#: utils/models.py:80
 msgid "code"
 msgstr "código"
 
-#: utils/models.py:89
+#: utils/models.py:82
+msgid "Latin America & Caribbean region?"
+msgstr ""
+
+#: utils/models.py:100
 msgid "country"
 msgstr "país"
 
-#: utils/models.py:97
+#: utils/models.py:108
 msgid "auxiliary code"
 msgstr ""
 
-#: utils/models.py:98
+#: utils/models.py:109
 msgid "auxiliary codes"
 msgstr ""
 
-#: utils/models.py:103 utils/models.py:131
+#: utils/models.py:114 utils/models.py:142
 msgid "Label"
 msgstr ""
 
@@ -3233,14 +3278,11 @@ msgstr ""
 msgid "deleted"
 msgstr "borrar"
 
-#: utils/templatetags/app_filters.py:130
+#: utils/templatetags/app_filters.py:152
 #, fuzzy
 #| msgid "Resource created."
 msgid "Record created"
 msgstr "Recurso creado."
-
-#~ msgid "Indexed by other cooperative centers"
-#~ msgstr "Centro cooperante"
 
 #~ msgid "Mask code"
 #~ msgstr "código"
