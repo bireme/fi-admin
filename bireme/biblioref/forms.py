@@ -105,6 +105,28 @@ class BiblioRefForm(BetterModelForm):
             self.fields['title_serial'] = forms.ChoiceField(choices=title_list, required=False)
             self.fields['title_serial_other'] = forms.CharField(required=False)
 
+        if 'publication_country' in self.fields:
+            # divide list of countries in Latin America & Caribbean and Others
+            country_list = [('', '')]
+            country_list_latin_caribbean = [(c.pk, unicode(c)) for c in Country.objects.filter(LA_Caribbean=True)]
+            country_list_other = [(c.pk, unicode(c)) for c in Country.objects.filter(LA_Caribbean=False)]
+
+            # sort list by translation name
+            country_list_latin_caribbean.sort(key=lambda c: c[1])
+            country_list_other.sort(key=lambda c: c[1])
+
+            separator = "-----------"
+            label_latin_caribbean = separator + __('Latin America & Caribbean') + separator
+            label_other = separator + __('Others') + separator
+
+            country_list.extend([('', label_latin_caribbean)])
+            country_list.extend(country_list_latin_caribbean)
+            country_list.extend([('', label_other)])
+            country_list.extend(country_list_other)
+
+            self.fields['publication_country'].choices = country_list
+
+
     def fieldsets(self):
         if not self._fieldset_collection:
             self._fieldset_collection = FieldsetCollection(self, self._fieldsets)

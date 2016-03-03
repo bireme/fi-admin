@@ -63,6 +63,14 @@ class Generic(models.Model):
         self.__initial = self._dict
 
 
+class CountryManager(models.Manager):
+    def get_query_set(self):
+        return (
+            super(CountryManager, self)
+            .get_query_set()
+            .order_by('-LA_Caribbean', 'name')
+        )
+
 class Country(Generic):
 
     class Meta:
@@ -71,6 +79,9 @@ class Country(Generic):
 
     code = models.CharField(_('code'), max_length=55)
     name = models.CharField(_('name'), max_length=255)
+    LA_Caribbean = models.BooleanField(_('Latin America & Caribbean region?'), default=False)
+
+    objects = CountryManager()
 
     def __unicode__(self):
         lang_code = get_language()
