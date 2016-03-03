@@ -195,6 +195,8 @@
 
    <script src="{% static 'js/jquery.formset.min.js' %}"></script>
 
+   <script src="{% static 'js/jquery.confirm.min.js' %}"></script>
+
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
 
    <script src="{% static 'js/jsrender.min.js' %}"></script>
@@ -310,6 +312,22 @@
 
             $(document).on("click", "a.add_error_report", function(){
                 $("#error_report_modal").modal("show");
+            });
+
+            // confirm delete of inline formsets
+            $(document).on("mousedown", "td a.btn", function(e){
+                btn = $(this);
+                $.confirm({
+                    text: "{% trans 'Are you sure you want to delete?' %}",
+                        confirm: function(button) {
+                            btn.click();
+                        },
+                        cancel: function(button) {
+                            // nothing to do
+                        },
+                        confirmButton: "{% trans 'Yes' %}",
+                        cancelButton: "{% trans 'No' %}"
+                });
             });
 
             // check for duplicated
