@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-03 16:19-0300\n"
+"POT-Creation-Date: 2016-03-03 17:58-0300\n"
 "PO-Revision-Date: 2016-03-01 18:08-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -306,16 +306,6 @@ msgstr ""
 #: biblioref/forms.py:32
 msgid "Thesis, Dissertation"
 msgstr ""
-
-#: biblioref/forms.py:96
-#, fuzzy
-#| msgid "Indexed by other cooperative centers"
-msgid "Indexed by your cooperative center"
-msgstr "Centro cooperante"
-
-#: biblioref/forms.py:97
-msgid "Indexed by other cooperative centers"
-msgstr "Centro cooperante"
 
 #: biblioref/forms.py:145
 #, python-format
@@ -1760,7 +1750,7 @@ msgid "Save"
 msgstr "Guardar"
 
 #: templates/biblioref/reference_form.html:396
-#: templates/biblioref/referenceanalytic_form.html:261
+#: templates/biblioref/referenceanalytic_form.html:263
 #: templates/biblioref/referencesource_form.html:192
 #: templates/events/edit-event.html:389 templates/main/edit-resource.html:395
 #: templates/multimedia/media_form.html:343
@@ -1771,9 +1761,9 @@ msgstr "Añadir descriptor"
 #: templates/biblioref/reference_form.html:397
 #: templates/biblioref/reference_form.html:407
 #: templates/biblioref/reference_form.html:417
-#: templates/biblioref/referenceanalytic_form.html:262
-#: templates/biblioref/referenceanalytic_form.html:272
-#: templates/biblioref/referenceanalytic_form.html:282
+#: templates/biblioref/referenceanalytic_form.html:264
+#: templates/biblioref/referenceanalytic_form.html:274
+#: templates/biblioref/referenceanalytic_form.html:284
 #: templates/biblioref/referencesource_form.html:193
 #: templates/biblioref/referencesource_form.html:203
 #: templates/biblioref/referencesource_form.html:213
@@ -1802,7 +1792,7 @@ msgid "Add keyword"
 msgstr "Añadir palabra clave"
 
 #: templates/biblioref/reference_form.html:416
-#: templates/biblioref/referenceanalytic_form.html:281
+#: templates/biblioref/referenceanalytic_form.html:283
 #: templates/biblioref/referencesource_form.html:212
 #: templates/events/edit-event.html:409 templates/main/edit-resource.html:415
 #: templates/multimedia/media_form.html:363
@@ -1977,9 +1967,37 @@ msgstr "actualizado"
 msgid "Back"
 msgstr "Volver"
 
-#: templates/biblioref/referenceanalytic_form.html:271
+#: templates/biblioref/referenceanalytic_form.html:273
 msgid "Add file"
 msgstr ""
+
+#: templates/biblioref/referenceanalytic_form.html:321
+#: templates/delete_confirm.html:9
+#: templates/multimedia/media_confirm_delete.html:27
+#: templates/multimedia/mediacollection_confirm_delete.html:31
+#: templates/multimedia/mediatype_confirm_delete.html:27
+#, fuzzy
+#| msgid "Are you sure to delete?"
+msgid "Are you sure you want to delete?"
+msgstr "¿Está seguro que desea eliminar?"
+
+#: templates/biblioref/referenceanalytic_form.html:328
+#: templates/delete_confirm.html:17
+#: templates/multimedia/media_confirm_delete.html:29
+#: templates/multimedia/mediacollection_confirm_delete.html:33
+#: templates/multimedia/mediatype_confirm_delete.html:29
+#: templates/title/title_confirm_delete.html:29
+msgid "Yes"
+msgstr "Sí"
+
+#: templates/biblioref/referenceanalytic_form.html:329
+#: templates/delete_confirm.html:16
+#: templates/multimedia/media_confirm_delete.html:28
+#: templates/multimedia/mediacollection_confirm_delete.html:32
+#: templates/multimedia/mediatype_confirm_delete.html:28
+#: templates/title/title_confirm_delete.html:28
+msgid "No"
+msgstr "No"
 
 #: templates/biblioref/referenceanalytic_list.html:5
 msgid "Reference Analytic"
@@ -2049,30 +2067,6 @@ msgstr ""
 #: templates/delete_confirm.html:5
 msgid "Delete"
 msgstr "Borrar"
-
-#: templates/delete_confirm.html:9
-#: templates/multimedia/media_confirm_delete.html:27
-#: templates/multimedia/mediacollection_confirm_delete.html:31
-#: templates/multimedia/mediatype_confirm_delete.html:27
-#: templates/title/title_confirm_delete.html:27
-msgid "Are you sure to delete?"
-msgstr "¿Está seguro que desea eliminar?"
-
-#: templates/delete_confirm.html:16
-#: templates/multimedia/media_confirm_delete.html:28
-#: templates/multimedia/mediacollection_confirm_delete.html:32
-#: templates/multimedia/mediatype_confirm_delete.html:28
-#: templates/title/title_confirm_delete.html:28
-msgid "No"
-msgstr "No"
-
-#: templates/delete_confirm.html:17
-#: templates/multimedia/media_confirm_delete.html:29
-#: templates/multimedia/mediacollection_confirm_delete.html:33
-#: templates/multimedia/mediatype_confirm_delete.html:29
-#: templates/title/title_confirm_delete.html:29
-msgid "Yes"
-msgstr "Sí"
 
 #: templates/error_report/edit.html:5 templates/error_report/edit.html.py:9
 #: templates/error_report/edit.html:15
@@ -2639,6 +2633,10 @@ msgstr ""
 #| msgid "Delete media type"
 msgid "Delete Title"
 msgstr "Borrar tipo de media"
+
+#: templates/title/title_confirm_delete.html:27
+msgid "Are you sure to delete?"
+msgstr "¿Está seguro que desea eliminar?"
 
 #: templates/title/title_form.html:113
 #, fuzzy
@@ -3283,6 +3281,14 @@ msgstr "borrar"
 #| msgid "Resource created."
 msgid "Record created"
 msgstr "Recurso creado."
+
+#, fuzzy
+#~| msgid "Indexed by other cooperative centers"
+#~ msgid "Indexed by your cooperative center"
+#~ msgstr "Centro cooperante"
+
+#~ msgid "Indexed by other cooperative centers"
+#~ msgstr "Centro cooperante"
 
 #~ msgid "Mask code"
 #~ msgstr "código"
