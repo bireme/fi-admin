@@ -475,63 +475,63 @@
 
         $(function() {
             $('.descriptor-row').formset({
-                    addText : '{% trans "Add descriptor" %}',
+                    addText : '<i class="icon-plus-sign"></i>{% trans "Add descriptor" %}',
                     deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
+                    addCssClass : 'add-button btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'descriptor_formset',
                     prefix: '{{ formset_descriptor.prefix }}'
             });
             $('.keyword-row').formset({
-                    addText : '{% trans "Add keyword" %}',
+                    addText : '<i class="icon-plus-sign"></i>{% trans "Add keyword" %}',
                     deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
+                    addCssClass : 'add-button btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'keyword_formset',
                     prefix: '{{ formset_keyword.prefix }}'
             });
             $('.specialty-row').formset({
-                    addText : '{% trans "Add specialty" %}',
+                    addText : '<i class="icon-plus-sign"></i>{% trans "Add specialty" %}',
                     deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
+                    addCssClass : 'add-button btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'specialty_formset',
                     prefix: '{{ formset_specialty.prefix }}'
             });
             $('.variance-row').formset({
-                    addText : '{% trans "Add variance" %}',
+                    addText : '<i class="icon-plus-sign"></i>{% trans "Add variance" %}',
                     deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
+                    addCssClass : 'add-button btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'variance_formset',
                     prefix: '{{ formset_variance.prefix }}'
             });
             $('.indexrange-row').formset({
-                    addText : '{% trans "Add index range" %}',
+                    addText : '<i class="icon-plus-sign"></i>{% trans "Add index range" %}',
                     deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
+                    addCssClass : 'add-button btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'indexrange_formset',
                     prefix: '{{ formset_indexrange.prefix }}'
             });
             $('.audit-row').formset({
-                    addText : '{% trans "Add audit" %}',
+                    addText : '<i class="icon-plus-sign"></i>{% trans "Add audit" %}',
                     deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
+                    addCssClass : 'add-button btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'audit_formset',
                     prefix: '{{ formset_audit.prefix }}'
             });
             $('.onlineresource-row').formset({
-                    addText : '{% trans "Add online resource" %}',
+                    addText : '<i class="icon-plus-sign"></i>{% trans "Add online resource" %}',
                     deleteText: '{% trans "delete" %}<i class="icon-trash"></i>',
-                    addCssClass : 'icon-plus-sign btn',
+                    addCssClass : 'add-button btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'onlineresource_formset',
@@ -582,14 +582,6 @@
                     }
                 });
             });
-
-            // Prevent losing data by navigating away from the page
-            /*$(window).bind('beforeunload', function() {
-                var checkboxcount = $("input:checkbox:checked").length;
-                if(checkboxcount > 0) {
-                    return 'Are you sure?';
-                }
-            });*/
         });
 
         function decs_search(obj){

@@ -276,12 +276,11 @@ div[id^=tab] ul li {
     color: #333;
 }
 
-
 .formset-row a.icon-minus-sign {
     color: #b94a48;
 }
 
-fieldset a.icon-plus-sign {
+fieldset a.icon-plus-sign, fieldset a.add-button {
     float: left;
     margin: 15px 0 0 3px;
     clear: both;
@@ -430,6 +429,8 @@ div.onlineresource div.check {
 .preview .table-header {
     text-transform: uppercase;
     text-decoration: underline;
+    font-weight: bold;
+    display: block;
 }
 .preview .table { display: inline; }
 .preview .table td {
@@ -441,7 +442,7 @@ div.onlineresource div.check {
 .preview span.textarea { font-weight: normal; }
 .preview span.textarea p { margin: 0 }
 .preview input, .preview textarea, .preview select { display: none; }
-.preview label, .preview span {
+.preview label {
     font-weight: bold;
     display: inline;
 }
