@@ -277,6 +277,7 @@ class MediaTypeUpdate(SuperUserRequiredView, GenericUpdateWithOneFormset):
     model = MediaType
     success_url = reverse_lazy('list_mediatypes')
     formset = TypeTranslationFormSet
+    fields = '__all__'
 
 
 class MediaTypeUpdateView(MediaTypeUpdate, UpdateView):

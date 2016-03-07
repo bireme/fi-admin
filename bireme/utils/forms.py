@@ -113,7 +113,10 @@ class DisableableSelectWidget(forms.Select):
 
 
 class DescriptorRequired(BaseGenericInlineFormSet):
-    def clean(self):        
+    class Meta:
+        fields = '__all__'
+
+    def clean(self):
         # get forms that actually have valid data
         count = 0
         for form in self.forms:
@@ -129,7 +132,10 @@ class DescriptorRequired(BaseGenericInlineFormSet):
 
 
 class ResourceThematicRequired(BaseGenericInlineFormSet):
-    def clean(self):        
+    class Meta:
+        fields = '__all__'
+    
+    def clean(self):
         # get forms that actually have valid data
         count = 0
         for form in self.forms:
@@ -156,11 +162,11 @@ def is_valid_for_publication(form, formsets):
     thematic_admitted = False
     data = None
 
-    if hasattr(form, 'cleaned_data'):   
+    if hasattr(form, 'cleaned_data'):
 
         status = form.cleaned_data.get("status")
         '''
-        For status = admitted check if the resource have at least 
+        For status = admitted check if the resource have at least
         one descriptor and one thematica area
         '''
         if status == 1:
@@ -169,12 +175,12 @@ def is_valid_for_publication(form, formsets):
                 for formset_form in formset.forms:
                     if hasattr(formset_form, 'cleaned_data'):
                         data = formset_form.cleaned_data
-                        
+
                         if data.get('status') == 1:
                             if data.get('text') and data.get('code'):
                                 descriptor_admitted = True
 
-                            elif data.get('thematic_area'):                                    
+                            elif data.get('thematic_area'):
                                 thematic_admitted = True
 
 
@@ -187,4 +193,3 @@ def is_valid_for_publication(form, formsets):
                 valid = False
 
     return valid
-

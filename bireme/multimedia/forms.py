@@ -16,6 +16,14 @@ import simplejson
 
 class MediaForm(forms.ModelForm):
 
+    class Meta:
+        model = Media
+        exclude = ('cooperative_center_code',)
+        fields = '__all__'
+
+        source_language = forms.MultipleChoiceField()
+        Media_type = forms.MultipleChoiceField()
+
     publication_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                        input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
 
@@ -42,17 +50,11 @@ class MediaForm(forms.ModelForm):
 
         return obj
 
-    class Meta:
-        model  = Media
-        exclude = ('cooperative_center_code',)
-
-        source_language = forms.MultipleChoiceField()
-        Media_type = forms.MultipleChoiceField()
-
 
 class MediaCollectionForm(forms.ModelForm):
     class Meta:
         model  = MediaCollection
+        fields = '__all__'
         exclude = ('cooperative_center_code',)
 
 
@@ -61,12 +63,13 @@ class MediaCollectionForm(forms.ModelForm):
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, exclude=['primary'],
                                                   can_delete=True, extra=1)
 
-KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
+KeywordFormSet = generic_inlineformset_factory(Keyword, fields='__all__', can_delete=True, extra=1)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic,
-                                    formset=ResourceThematicRequired, can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired,
+                                                        can_delete=True, extra=1)
 
-TypeTranslationFormSet = inlineformset_factory(MediaType, MediaTypeLocal, can_delete=True, extra=1)
+TypeTranslationFormSet = inlineformset_factory(MediaType, MediaTypeLocal, fields='__all__',
+                                               can_delete=True, extra=1)
 
-MediaCollectionTranslationFormSet = inlineformset_factory(MediaCollection,
-                                        MediaCollectionLocal, can_delete=True, extra=1)
+MediaCollectionTranslationFormSet = inlineformset_factory(MediaCollection, MediaCollectionLocal,
+                                                          fields='__all__', can_delete=True, extra=1)

@@ -27,7 +27,7 @@ class EventType(Generic):
         if translation:
             other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
             translation_list.extend(other_languages)
-        
+
         return translation_list
 
     def __unicode__(self):
@@ -71,13 +71,13 @@ class Event(Generic):
     end_date = models.DateField(_('End date'), help_text='DD/MM/YYYY')
 
     link = models.URLField(_('Link'), blank=True)
-   
+
     address = models.CharField(_('Address'), max_length=255, blank=True)
     city = models.CharField(_('City'), max_length=125, blank=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
 
     event_type = models.ManyToManyField(EventType, verbose_name=_("Event type"), blank=False)
-    official_language = models.ManyToManyField('main.SourceLanguage', verbose_name=_("Official languages"), blank=True, null=True)
+    official_language = models.ManyToManyField('main.SourceLanguage', verbose_name=_("Official languages"), blank=True)
 
     contact_email = models.EmailField(_('Contact email'), blank=True)
     contact_info = models.TextField(_("Information for contact"), blank=True)
@@ -87,10 +87,9 @@ class Event(Generic):
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
-    # relations 
+    # relations
     error_reports = GenericRelation(ErrorReport)
     thematics = GenericRelation(ResourceThematic)
 
     def __unicode__(self):
         return self.title
-

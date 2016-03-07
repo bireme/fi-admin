@@ -8,12 +8,14 @@ class SuggestResourceForm(forms.ModelForm):
 
     class Meta:
         model = SuggestResource
+        fields = '__all__'
 
 
 class SuggestEventForm(forms.ModelForm):
 
     class Meta:
         model = SuggestEvent
+        fields = '__all__'
 
 
 

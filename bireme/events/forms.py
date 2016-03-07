@@ -67,6 +67,7 @@ class TypeForm(forms.ModelForm):
 
     class Meta:
         model = EventType
+        fields = '__all__'
 
 
 # definition of inline formsets
@@ -78,4 +79,5 @@ KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1
 
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired, can_delete=True, extra=1)
 
-TypeTranslationFormSet = inlineformset_factory(EventType, EventTypeLocal, can_delete=True, extra=1)
+TypeTranslationFormSet = inlineformset_factory(EventType, EventTypeLocal, can_delete=True,
+                                               fields='__all__', extra=1)

@@ -68,6 +68,7 @@ class ThematicAreaLocalForm(forms.ModelForm):
 
     class Meta:
         model = ThematicAreaLocal
+        fields = '__all__'
 
 
 class LanguageForm(forms.ModelForm):
@@ -80,6 +81,7 @@ class LanguageLocalForm(forms.ModelForm):
 
     class Meta:
         model = SourceLanguageLocal
+        fields = '__all__'
 
 
 class TypeForm(forms.ModelForm):
@@ -93,6 +95,7 @@ class TypeLocalForm(forms.ModelForm):
 
     class Meta:
         model = SourceTypeLocal
+        fields = '__all__'
 
 
 # definition of inline formsets
@@ -107,6 +110,7 @@ ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAre
                                                        form=ThematicAreaLocalForm, can_delete=True, extra=1)
 
 LanguageTranslationFormSet = inlineformset_factory(SourceLanguage, SourceLanguageLocal,
-                                                   can_delete=True, extra=1)
+                                                   fields='__all__', can_delete=True, extra=1)
 
-TypeTranslationFormSet = inlineformset_factory(SourceType, SourceTypeLocal, can_delete=True, extra=1)
+TypeTranslationFormSet = inlineformset_factory(SourceType, SourceTypeLocal, fields='__all__',
+                                               can_delete=True, extra=1)

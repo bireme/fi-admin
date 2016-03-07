@@ -168,7 +168,7 @@ class MultimediaTest(BaseTestCase):
         create_media_object()
 
         response = self.client.get('/multimedia/delete/1')
-        self.assertContains(response, "Você tem certeza?")
+        self.assertContains(response, "Você tem certeza que deseja apagar?")
 
         response = self.client.post('/multimedia/delete/1')
 
