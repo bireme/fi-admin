@@ -3,15 +3,29 @@ proc('d9996a9996|',getenv('FIELD_NAME'),'|')
 
 if mfn=1 then '['/ fi,
 
+	/* tratamento para bases com v2 = codigo, v3 = label en, v4 = label es, v5 = label pt */
+	if p(v4) and p(v5) then,
+	   proc('d2002a2002~',v2,'~'),
+	   proc('d2003a2003~',v3,'~'),
+	   proc('d2004a2004~',v4,'~'),
+	   proc('d2005a2005~',v5,'~'),
+	else,
+	    /* tratamento para bases com v1 = label en, v2 = label es, v3 = label pt */
+		proc('d2002a2002~',v1,'~'),
+		proc('d2003a2003~',v1,'~'),
+		proc('d2004a2004~',v2,'~'),
+		proc('d2005a2005~',v3,'~'),
+	fi,
+
 	'{',/
 	   c4,'"pk": ', f(mfn+val(v9995),1,0),','/
 	   c4,'"model": ','"utils.auxcode",',/
 
 	   c4,'"fields": {',/
-		   c8,'"code": ','"',v2,'",'/
+		   c8,'"code": ','"',v2002,'",'/
 		   c8,'"field": ','"',v9996,'",'/
 		   c8,'"language": ','"en",'/
-		   c8,'"label": ','"',v3,'",'/
+		   c8,'"label": ','"',v2003,'",'/
 		   c8,'"created_by": ','1,'/
 		   c8,'"created_time": "2015-10-01T09:00:00-03:00"'/
 	   c4,'}',/
@@ -24,7 +38,7 @@ if mfn=1 then '['/ fi,
 	   c4,'"fields": {',/
 		   c8,'"auxcode": ','"',f(mfn+val(v9995),1,0),'",'/
 		   c8,'"language": ','"es",'/
-		   c8,'"label": ','"',v4,'"'/
+		   c8,'"label": ','"',v2004,'"'/
 	   c4,'}',/
 	'},'/
 
@@ -35,7 +49,7 @@ if mfn=1 then '['/ fi,
 	   c4,'"fields": {',/
 		   c8,'"auxcode": ','"',f(mfn+val(v9995),1,0),'",'/
 		   c8,'"language": ','"pt-br",'/
-		   c8,'"label": ','"',v5,'"'/
+		   c8,'"label": ','"',v2005,'"'/
 	   c4,'}',/
 	'},'/
 
