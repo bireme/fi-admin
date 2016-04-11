@@ -126,6 +126,7 @@ class BiblioRefForm(BetterModelForm):
 
             self.fields['publication_country'].choices = country_list
 
+        print self.fields
 
     def fieldsets(self):
         if not self._fieldset_collection:
@@ -311,22 +312,24 @@ class BiblioRefForm(BetterModelForm):
 
 
     def clean_title_serial(self):
-        title_serial_other = self.data.get('title_serial_other')
-        title_serial = self.cleaned_data['title_serial']
+        data = self.cleaned_data['title_serial']
+        if self.document_type == 'S':
+            title_serial = self.cleaned_data['title_serial']
+            title_serial_other = self.data.get('title_serial_other')
 
-        if title_serial_other and self.is_LILACS:
-            self.add_error('title_serial', _("For LILACS references is mandatory select a journal from the list"))
+            if title_serial_other and self.is_LILACS:
+                self.add_error('title_serial', _("For LILACS references is mandatory select a journal from the list"))
 
-        if title_serial and title_serial_other and not self.is_LILACS:
-            self.add_error('title_serial', _("Please choose one journal from the list or use blank to inform other journal title"))
+            if title_serial and title_serial_other and not self.is_LILACS:
+                self.add_error('title_serial', _("Please choose one journal from the list or use blank to inform other journal title"))
 
-        if not title_serial_other and not title_serial:
-            self.add_error('title_serial', _("Mandatory"))
+            if not title_serial_other and not title_serial:
+                self.add_error('title_serial', _("Mandatory"))
 
-        if title_serial_other and not self.is_LILACS:
-            data = title_serial_other
-        else:
-            data = title_serial
+            if title_serial_other and not self.is_LILACS:
+                data = title_serial_other
+            else:
+                data = title_serial
 
         return data
 

@@ -172,7 +172,9 @@ FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'LIL
 
                                 subject_section,
 
-                                abstract_section
+                                abstract_section,
+
+                                fulltext_section,
                                 ]
 
 # Thesis, dissertation (analytic)
