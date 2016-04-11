@@ -17,7 +17,8 @@
     <h2><i class='icon-file'></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %}</h2>
     {% if object %}
         <div class='pull-right'>
-            <a href="{% url 'create_biblioref_analytic' %}?source={{object.pk}}" class='btn btn-primary'><i class='icon-file'></i> {% trans "Create analytic" %}</a>
+            <a href="{% url 'list_biblioref_analytics' %}?source={{object.pk}}" class='btn btn-info'><i class='icon-align-justify'></i>{% trans "List analytics" %}</a>
+            <a href="{% url 'create_biblioref_analytic' %}?source={{object.pk}}" class='btn btn-primary'><i class='icon-plus'></i> {% trans "Create analytic" %}</a>
         </div>
     {% endif %}
 </div>
@@ -42,6 +43,10 @@
         {% if user_role != 'editor_llxp' %}
             <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
             <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
+        {% endif %}
+
+        {% if 'fulltext'|infieldset:form.fieldsets %}
+            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
         {% endif %}
     </ul>
 
@@ -81,7 +86,9 @@
                         <div id="metadata" class="accordion">
                             {{ form.non_field_errors }}
                             {% for fieldset in form.fieldsets %}
-                                {% include "biblioref/fieldset_include.html" %}
+                                {% if fieldset.name != 'indexing' and fieldset.name != 'fulltext' %}
+                                    {% include "biblioref/fieldset_include.html" %}
+                                {% endif %}
                             {% endfor %}
                         </div>
 
@@ -91,11 +98,15 @@
                     {%if object.pk %}
                         <i class="icon icon-time"></i> <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/">{% trans "Changes history" %}</a>
                     {% endif %}
-
             </div>
 
             <!-- INDEXING FORMSET -->
             {% include "biblioref/fieldset_indexing.html" %}
+
+            <!-- FULLTEXT FORMSET -->
+            {% if 'fulltext'|infieldset:form.fieldsets %}
+                {% include "biblioref/fieldset_fulltext.html" %}
+            {% endif %}
 
             <!-- THEMATIC AREA FORMSET -->
             {% include "biblioref/fieldset_thematic.html" %}
@@ -125,10 +136,9 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
-
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
-
    <script src="{% static 'js/jsrender.min.js' %}"></script>
+   <script src="{% static 'js/field_assist.js' %}"></script>
 
    <script id="itensTemplate" type="text/x-jsrender">
         <li>
@@ -244,59 +254,6 @@
             });
 
         })
-
-        function open_window_with_post(verb, url, data, target) {
-            var form = document.createElement("form");
-            form.setAttribute("method", verb);
-            form.setAttribute("action", url);
-            form.setAttribute("target", target);
-
-            if (data) {
-                for (var key in data) {
-                    var input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = key;
-                    input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
-                    form.appendChild(input);
-                }
-            }
-            document.body.appendChild(form);
-            assist_win = window.open('about:blank', target, 'scrollbars=1,width=785,height=590');
-
-            form.submit();
-            if (window.focus) {
-                assist_win.focus();
-            }
-        }
-
-        function field_assist(field_name){
-
-            field_assist_url = '/bibliographic/field_assist/' + field_name + '/',
-            field_value = $('#id_' + field_name).val();
-
-            post_params = {'field_value' : field_value };
-
-            open_window_with_post('POST', field_assist_url, post_params, 'field_assist');
-            return false;
-        }
-
-
-        function update_field_from_assist(field_name, json_string) {
-
-            // convert to json_string to json object
-            json_obj = jQuery.parseJSON(json_string);
-            // select content of data element (just used for wrap de objects)
-            json_data = json_obj['data'];
-
-            // convert json to string for save at database
-            field_new_value = JSON.stringify(json_data);
-
-            // update field with string json and trigger change function
-            $('#id_' + field_name).val(field_new_value).trigger('change');
-
-            // close field assist window
-            assist_win.close();
-        }
 
         function decs_search(obj){
             var row = $(obj).parent();

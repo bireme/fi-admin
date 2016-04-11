@@ -46,6 +46,16 @@ def invalues(value, list):
     return find
 
 @register.filter
+def infieldset(name, fieldsets):
+    find = False
+    for fieldset in fieldsets:
+        if fieldset.name == name:
+            find = True
+
+    return find
+
+
+@register.filter
 def profilefield(user, field):
     return user.profile.get_attribute(field)
 
