@@ -22,7 +22,7 @@
 
 <!--  header -->
 <div class='header'>
-    <h2><i class='icon-file'></i> {% trans "Edit or create an analytic" %}</h2>
+    <h2>{% trans "Edit or create an analytic" %}</h2>
     <div class='pull-right'>
         <a href="{% url 'create_biblioref_analytic' %}?source={{source_id}}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Analytic" %}</a>
     </div>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-            <h3>{{ references.0.source }}</h3>
+            <h3><i class='icon-file'></i> {{ reference_source }}</h3>
             <table class='table'>
                 <thead>
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>

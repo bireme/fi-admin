@@ -102,11 +102,14 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         context = super(BiblioRefGenericListView, self).get_context_data(**kwargs)
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('LILDBI')
+        source_id = self.request.GET.get('source')
 
         context['actions'] = self.actions
         context['document_type'] = self.request.GET.get('document_type')
         context['source_id'] = self.request.GET.get('source')
         context['user_role'] = user_role
+        if source_id:
+            context['reference_source'] = ReferenceSource.objects.get(pk=source_id)
 
         return context
 
