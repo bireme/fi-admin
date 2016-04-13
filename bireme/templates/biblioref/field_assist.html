@@ -14,7 +14,22 @@
     {% for js in deform_dependencies.js %}
         <script type="text/javascript" src="{% static js %}"></script>
     {% endfor %}
-
+    <style>
+        #item-deformField1 > label.desc{
+            display: none !important;
+        }
+        #deformField1-addtext{
+            color:#ffffff!important;
+            display:inline-block;
+            font-size:14px;
+            margin:5px 5px 12px 0;
+            padding:7px 18px;
+            text-decoration:none;
+            border-radius:3px;
+            vertical-align:top;
+            background-color:#4dcba9!important
+        }
+    </style>
 {% endblock %}
 
 {% block breadcrumb_wrap %}{% endblock %}
@@ -49,4 +64,22 @@
 
 {% endblock %}
 
-{% block footer %}{% endblock %}
+{% block footer %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        var warn_on_unload="";
+        $('input:text, input:checkbox, input:radio, textarea, select').one('keypress', function() {
+            warn_on_unload = '{%trans "Leaving this page will cause any unsaved data to be lost" %}';
+
+            $('#deformsubmit').click(function(e) {
+                warn_on_unload = "";});
+
+                window.onbeforeunload = function() {
+                if(warn_on_unload != ''){
+                    return warn_on_unload;
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

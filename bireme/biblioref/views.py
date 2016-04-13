@@ -1,6 +1,7 @@
 #! coding: utf-8
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
@@ -430,7 +431,7 @@ def field_assist(request, **kwargs):
         data = field_definition()
 
     schema = Schema()
-    form = deform.Form(schema, buttons=('submit',), use_ajax=True)
+    form = deform.Form(schema, buttons=[deform.Button('submit', _('Save'), css_class='btn btn-primary btn-large')], use_ajax=False)
     form['data'].widget = deform.widget.SequenceWidget(min_len=1, orderable=True)
 
     # check if is a submit of deform form
