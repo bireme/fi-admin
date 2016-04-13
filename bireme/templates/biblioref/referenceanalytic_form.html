@@ -10,7 +10,14 @@
 {% block title %}{% trans "Edit Analytic" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
+    <li>
+        {% if user_role == 'editor_llxp' %}
+            <a href="{% url 'list_biblioref_sources' %}?document_type=S">
+        {% else %}
+            <a href="{% url 'list_biblioref' %}">
+        {% endif %}
+        {% trans "Bibliographic References" %}</a> <span class="divider">/</span>
+    </li>    
     <li><a href="{% url 'list_biblioref_analytics' %}?source={{reference_source.id}}">{% trans "Reference Analytics" %}</a><span class="divider">/</span></li>
     {% if not object %}<li>{% trans "New Analytic" %}</li>
     {% else %}<li>{% trans "Edit Analytic" %}</li>{% endif %}
@@ -28,6 +35,9 @@
     {% if form.errors or formset_attachment.errors or formset_thematic.errors or formset_descriptor.errors %}
         <p class="errorlist alert alert-error">
           {% trans "Please check errors below" %}
+          {% for error in form.non_field_errors %}
+              <strong>{{ error|escape }}</strong>
+          {% endfor %}
         </p>
     {% endif %}
     {% if valid_for_publication != None and not valid_for_publication %}

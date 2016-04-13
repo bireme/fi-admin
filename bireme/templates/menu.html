@@ -37,7 +37,11 @@
                             {% endif %}
 
                             {% if service_role.LILDBI %}
-                                <li><a href="{% url 'list_biblioref' %}" title=""><i class="icon-book"></i> {% trans "Bibliographic references" %}</a></li>
+                                {% if service_role.LILDBI = 'editor_llxp' %}
+                                    <li><a href="{% url 'list_biblioref_sources' %}?document_type=S" title=""><i class="icon-book"></i> {% trans "Bibliographic references" %}</a></li>
+                                {% else %}
+                                    <li><a href="{% url 'list_biblioref' %}" title=""><i class="icon-book"></i> {% trans "Bibliographic references" %}</a></li>
+                                {% endif %}
                             {% endif %}
 
                             {% if service_role.TITLE or service_role.TITLE %}

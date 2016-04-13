@@ -5,7 +5,14 @@
 {% block title %}{% trans "Reference Analytic" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
+    <li>
+        {% if user_role == 'editor_llxp' %}
+            <a href="{% url 'list_biblioref_sources' %}?document_type=S">
+        {% else %}
+            <a href="{% url 'list_biblioref' %}">
+        {% endif %}
+        {% trans "Bibliographic References" %}</a> <span class="divider">/</span>
+    </li>
     <li>{% trans "Reference Analytics" %}</li>
 {% endblock %}
 

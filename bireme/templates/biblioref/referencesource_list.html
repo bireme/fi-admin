@@ -4,10 +4,13 @@
 {% block title %}{% trans "Reference Source" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
+    {% if user_role == 'editor_llxp' %}
+        <li>{% trans "Bibliographic References" %}<span class="divider">/</span></li>
+    {% else %}
+        <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
+    {% endif %}
     <li>{% trans "Reference Source" %}</li>
 {% endblock %}
-
 
 {% block content %}
 <form name="actions">
