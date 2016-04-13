@@ -44,6 +44,7 @@ class AuxCodeAdmin(GenericAdmin):
     model = AuxCode
     inlines = [AuxCodeLocalAdmin,]
     search_fields = list_display = ['code', 'field', 'label']
+    list_filter = ('field',)
 
 
 admin.site.register(Country, CountryAdmin)

@@ -126,8 +126,6 @@ class BiblioRefForm(BetterModelForm):
 
             self.fields['publication_country'].choices = country_list
 
-        print self.fields
-
     def fieldsets(self):
         if not self._fieldset_collection:
             self._fieldset_collection = FieldsetCollection(self, self._fieldsets)
@@ -147,16 +145,42 @@ class BiblioRefForm(BetterModelForm):
 
             if isinstance(field_check, basestring):
                 if field_check.strip().endswith('.'):
-
                     self.add_error(field_name, _("Point at end of field is not allowed"))
+
+        # check presence of individual and corporate author
+        if data.get('individual_author') and data.get('corporate_author'):
+            self.add_error('individual_author', _("Individual Author and Corporate Autor present simultaneous"))
+        else:
+            if not data.get('individual_author') and not data.get('corporate_author'):
+                self.add_error('individual_author', _("Individual Author or Corporate Author mandatory"))
+
         # Always return the full collection of cleaned data.
         return data
-
 
     def clean_LILACS_indexed(self):
         data = self.cleaned_data['LILACS_indexed']
         if data is True:
             self.is_LILACS = True
+
+        return data
+
+
+    def clean_corporate_author(self):
+        field = 'corporate_author'
+        data = self.cleaned_data[field]
+        abbreviation_list = ['edt', 'com', 'coord', 'org']
+        literature_type = self.document_type[0]
+
+        if data:
+            occ = 0
+            for author in data:
+                occ = occ + 1
+                author_resp = author.get('_r', '')
+                message_item = _("item %s: ") % occ
+                if not author_resp in abbreviation_list:
+                    message = _("Degree of responsibility incompatible with LILACS")
+                    message = string_concat(message_item, message)
+                    self.add_error(field, message)
 
         return data
 

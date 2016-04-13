@@ -426,13 +426,18 @@ def field_assist(request, **kwargs):
 
     appstruct = None
     field_json = None
+    min_len_param = 1
+    # if previous_value allow delete the first ocurrence
+    if field_value and field_value != '[]':
+        min_len_param = 0
 
     class Schema(colander.MappingSchema):
         data = field_definition()
 
     schema = Schema()
-    form = deform.Form(schema, buttons=[deform.Button('submit', _('Save'), css_class='btn btn-primary btn-large')], use_ajax=False)
-    form['data'].widget = deform.widget.SequenceWidget(min_len=1, orderable=True)
+    form = deform.Form(schema, buttons=[deform.Button('submit', _('Save'),
+                       css_class='btn btn-primary btn-large')], use_ajax=False)
+    form['data'].widget = deform.widget.SequenceWidget(min_len=min_len_param, orderable=True)
 
     # check if is a submit of deform form
     if request.method == 'POST' and formid == 'deform':

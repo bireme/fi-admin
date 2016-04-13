@@ -18,7 +18,7 @@ if mfn=1 then '['/ fi,
 	fi,
 
 	'{',/
-	   c4,'"pk": ', f(mfn+val(v9995),1,0),','/
+       c4,'"pk": ', f(mfn+val(v9995),1,0),','/
 	   c4,'"model": ','"utils.auxcode",',/
 
 	   c4,'"fields": {',/
