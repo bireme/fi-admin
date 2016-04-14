@@ -147,12 +147,13 @@ class BiblioRefForm(BetterModelForm):
                 if field_check.strip().endswith('.'):
                     self.add_error(field_name, _("Point at end of field is not allowed"))
 
-        # check presence of individual and corporate author
-        if data.get('individual_author') and data.get('corporate_author'):
-            self.add_error('individual_author', _("Individual Author and Corporate Autor present simultaneous"))
-        else:
-            if not data.get('individual_author') and not data.get('corporate_author'):
-                self.add_error('individual_author', _("Individual Author or Corporate Author mandatory"))
+        if 'individual_author' in self.fields:
+            # check presence of individual and corporate author
+            if data.get('individual_author') and data.get('corporate_author'):
+                self.add_error('individual_author', _("Individual Author and Corporate Autor present simultaneous"))
+            else:
+                if not data.get('individual_author') and not data.get('corporate_author'):
+                    self.add_error('individual_author', _("Individual Author or Corporate Author mandatory"))
 
         # Always return the full collection of cleaned data.
         return data
@@ -356,6 +357,32 @@ class BiblioRefForm(BetterModelForm):
                 data = title_serial
 
         return data
+
+    def clean_publication_date_normalized(self):
+        normalized_date = self.cleaned_data['publication_date_normalized']
+        raw_date = self.cleaned_data.get('publication_date')
+
+        if raw_date != 's.d' and raw_date != 's.f':
+            if not normalized_date:
+                self.add_error('publication_date_normalized', _("Entering information in this field is conditional to filling out publication date field"))
+            else:
+                if len(normalized_date) != 8:
+                    self.add_error('publication_date_normalized', _("Different of 8 characters"))
+
+                if self.is_LILACS:
+                    if int(normalized_date[:4]) < 1982:
+                        self.add_error('publication_date_normalized', _("Incompatible with LILACS"))
+
+                    if len(raw_date) == 4:
+                        if not normalized_date == "%s0000" % raw_date:
+                            self.add_error('publication_date_normalized', _("Error in the date"))
+        else:
+            if normalized_date:
+                msg = _("Leave blank, publication date = %s") % raw_date
+                self.add_error('publication_date_normalized', msg)
+
+
+        return normalized_date
 
     def save(self, *args, **kwargs):
         new_reference = True

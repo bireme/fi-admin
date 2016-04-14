@@ -302,6 +302,19 @@ class BiblioRefUpdate(LoginRequiredView):
 
         return context
 
+    # after creation of source present option for creation new analytic
+    def get_success_url(self):
+        user_data = additional_user_info(self.request)
+        user_role = user_data['service_role'].get('LILDBI')
+
+        if user_role == 'editor_llxp':
+            redirect_ulr = "%s?document_type=S" % reverse_lazy('list_biblioref_sources') 
+        else:
+            redirect_ulr = self.success_url
+
+        return redirect_ulr
+
+
 
 class BiblioRefSourceUpdateView(BiblioRefUpdate, UpdateView):
     """
