@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-14 14:57-0300\n"
-"PO-Revision-Date: 2016-04-14 14:58-0300\n"
+"POT-Creation-Date: 2016-04-14 16:02-0300\n"
+"PO-Revision-Date: 2016-04-14 16:04-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,8 +24,8 @@ msgid "Select a file"
 msgstr "Selecione o arquivo"
 
 #: attachments/models.py:46 biblioref/field_definitions.py:268
-#: biblioref/field_definitions.py:291 biblioref/field_definitions.py:374
-#: biblioref/field_definitions.py:385 events/models.py:21 help/models.py:26
+#: biblioref/field_definitions.py:291 biblioref/field_definitions.py:369
+#: biblioref/field_definitions.py:380 events/models.py:21 help/models.py:26
 #: help/models.py:53 main/models.py:29 main/models.py:69 main/models.py:97
 #: main/models.py:108 main/models.py:135 multimedia/models.py:21
 #: multimedia/models.py:60 templates/biblioref/fieldset_fulltext.html:16
@@ -37,8 +37,8 @@ msgstr "Idioma"
 msgid "Other notes"
 msgstr "Outras notas"
 
-#: biblioref/field_definitions.py:43 biblioref/field_definitions.py:371
-#: biblioref/field_definitions.py:378 biblioref/models.py:97
+#: biblioref/field_definitions.py:43 biblioref/field_definitions.py:366
+#: biblioref/field_definitions.py:373 biblioref/models.py:97
 #: main/models.py:234
 msgid "Abstract"
 msgstr "Resumo"
@@ -176,92 +176,97 @@ msgstr "Endereço eletrônico"
 msgid "Title"
 msgstr "Título"
 
-#: biblioref/field_definitions.py:302 biblioref/field_definitions.py:355
+#: biblioref/field_definitions.py:302
 msgid "Personal author"
 msgstr "Autor pessoal"
 
-#: biblioref/field_definitions.py:303 biblioref/field_definitions.py:356
+#: biblioref/field_definitions.py:303 biblioref/field_definitions.py:354
 msgid "Affiliation institution level 1"
 msgstr "Afiliação - Instituição nível 1"
 
-#: biblioref/field_definitions.py:304 biblioref/field_definitions.py:357
+#: biblioref/field_definitions.py:304 biblioref/field_definitions.py:355
 msgid "Affiliation institution level 2"
 msgstr "Afiliação - Instituição nível 2"
 
-#: biblioref/field_definitions.py:305 biblioref/field_definitions.py:358
+#: biblioref/field_definitions.py:305 biblioref/field_definitions.py:356
 msgid "Affiliation institution level 3"
 msgstr "Afiliação - Instituição nível 3"
 
-#: biblioref/field_definitions.py:306 biblioref/field_definitions.py:359
+#: biblioref/field_definitions.py:306 biblioref/field_definitions.py:357
+#| msgid "Affiliation country"
+msgid "Affiliation city"
+msgstr "Afiliação - Cidade"
+
+#: biblioref/field_definitions.py:307 biblioref/field_definitions.py:358
 msgid "Affiliation country"
 msgstr "Afiliação - País"
 
-#: biblioref/field_definitions.py:308 biblioref/field_definitions.py:361
+#: biblioref/field_definitions.py:309
 msgid "Affiliation degree of responsibility"
 msgstr "Afiliação - Grau de responsabilidade"
 
-#: biblioref/field_definitions.py:314 biblioref/field_definitions.py:318
+#: biblioref/field_definitions.py:315 biblioref/field_definitions.py:319
 #: biblioref/models.py:188 biblioref/models.py:200 biblioref/models.py:259
 msgid "Individual author"
 msgstr "Autor individual"
 
-#: biblioref/field_definitions.py:325 biblioref/field_definitions.py:333
-#: biblioref/field_definitions.py:337 biblioref/models.py:190
+#: biblioref/field_definitions.py:326 biblioref/field_definitions.py:334
+#: biblioref/field_definitions.py:338 biblioref/models.py:190
 #: biblioref/models.py:202 biblioref/models.py:261
 msgid "Corporate author"
 msgstr "Autor institucional"
 
-#: biblioref/field_definitions.py:327
+#: biblioref/field_definitions.py:328
 msgid "Degree of responsibility"
 msgstr "Grau de responsabilidade"
 
-#: biblioref/field_definitions.py:341 multimedia/models.py:110
+#: biblioref/field_definitions.py:342 multimedia/models.py:110
 msgid "Other physical details"
 msgstr "Outros detalhes físicos"
 
-#: biblioref/field_definitions.py:342 multimedia/models.py:109
+#: biblioref/field_definitions.py:343 multimedia/models.py:109
 msgid "Item extension"
 msgstr "Extensão do item"
 
-#: biblioref/field_definitions.py:343 multimedia/models.py:111
+#: biblioref/field_definitions.py:344 multimedia/models.py:111
 msgid "Dimension"
 msgstr "Dimensão"
 
-#: biblioref/field_definitions.py:344
+#: biblioref/field_definitions.py:345
 msgid "Accompanying material"
 msgstr "Material acompanhante"
 
-#: biblioref/field_definitions.py:348 biblioref/models.py:73
+#: biblioref/field_definitions.py:349 biblioref/models.py:73
 msgid "Descriptive information"
 msgstr "Informação descritiva"
 
-#: biblioref/field_definitions.py:367
+#: biblioref/field_definitions.py:353 biblioref/field_definitions.py:362
 msgid "Leader"
 msgstr "Orientador"
 
-#: biblioref/field_definitions.py:382 templates/suggest/list.html:120
+#: biblioref/field_definitions.py:377 templates/suggest/list.html:120
 msgid "Keyword"
 msgstr "Palavra-chave"
 
-#: biblioref/field_definitions.py:383
+#: biblioref/field_definitions.py:378
 msgid "Qualifier"
 msgstr "Qualificador"
 
-#: biblioref/field_definitions.py:389 biblioref/models.py:101
+#: biblioref/field_definitions.py:384 biblioref/models.py:101
 msgid "Author keyword"
 msgstr "Palavras-chave do autor"
 
-#: biblioref/field_definitions.py:393 biblioref/field_definitions.py:399
+#: biblioref/field_definitions.py:388 biblioref/field_definitions.py:394
 #: biblioref/models.py:196 biblioref/models.py:267
 msgid "Pages"
 msgstr "Páginas"
 
-#: biblioref/field_definitions.py:394 templates/title/form_preview.html:190
+#: biblioref/field_definitions.py:389 templates/title/form_preview.html:190
 #: templates/title/title_form.html:266 title/models.py:45 title/models.py:158
 msgid "Initial number"
 msgstr "Número inicial"
 
-#: biblioref/field_definitions.py:395
+#: biblioref/field_definitions.py:390
 msgid "End number"
 msgstr "Número final"
 
@@ -474,7 +479,6 @@ msgstr "Erro na data"
 
 #: biblioref/forms.py:381
 #, python-format
-#| msgid "Leave blank publication date = %s"
 msgid "Leave blank, publication date = %s"
 msgstr "Deixe em branco, data de publicação = %s"
 
