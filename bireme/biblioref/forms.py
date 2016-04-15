@@ -368,6 +368,26 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_title(self):
+        field = 'title'
+        data = self.cleaned_data[field]
+        LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
+        url_list = []
+
+        if data and self.is_visiblefield('title'):
+            occ = 0
+            for title in data:
+                occ = occ + 1
+                url = title.get('_u', '')
+                message_item = _("item %s: ") % occ
+                if self.is_LILACS:
+                    if title.get('_i', '') not in LILACS_compatible_languages:
+                        message = _("Language incompatible with LILACS")
+                        message = string_concat(message_item, message)
+                        self.add_error(field, message)
+
+        return data
+
     def clean_publication_date_normalized(self):
         normalized_date = self.cleaned_data['publication_date_normalized']
         raw_date = self.cleaned_data.get('publication_date')
