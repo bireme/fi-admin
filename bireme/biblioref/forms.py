@@ -165,6 +165,10 @@ class BiblioRefForm(BetterModelForm):
                 if not data.get('individual_author') and not data.get('corporate_author'):
                     self.add_error('individual_author', _("Individual Author or Corporate Author mandatory"))
 
+        if 'issue_number' in self.fields:
+            if not data.get('volume_serial') and not data.get('issue_number'):
+                self.add_error('volume_serial', _("Volume or issue number mandatory"))
+
         # Always return the full collection of cleaned data.
         return data
 
@@ -388,6 +392,15 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_publication_date(self):
+        data = self.cleaned_data['publication_date']
+
+        if data.isalpha() and data != 's.d' and data != 's.f':
+            self.add_error('publication_date', _("Date without year"))
+
+        return data
+
+
     def clean_publication_date_normalized(self):
         normalized_date = self.cleaned_data['publication_date_normalized']
         raw_date = self.cleaned_data.get('publication_date')
@@ -413,6 +426,7 @@ class BiblioRefForm(BetterModelForm):
                     self.add_error('publication_date_normalized', msg)
 
         return normalized_date
+
 
     def save(self, *args, **kwargs):
         new_reference = True
