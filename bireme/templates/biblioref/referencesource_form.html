@@ -33,9 +33,12 @@
 <div class='body'>
 
     {% if form.errors %}
-        <ul class="errorlist alert alert-error">
-            <li>{% trans "Please check error messages" %}</li>
-        </ul>
+        <p class="errorlist alert alert-error">
+            {% trans "Please check error messages" %}
+            {% for error in form.non_field_errors %}
+                <strong>{{ error|escape }}</strong>
+            {% endfor %}
+        </p>        
     {% endif %}
     {% if valid_for_publication != None and not valid_for_publication %}
         <ul class="errorlist alert alert-error">

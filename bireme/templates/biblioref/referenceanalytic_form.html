@@ -124,7 +124,9 @@
                             {{ form.non_field_errors }}
 
                             {% for fieldset in form.fieldsets %}
+                                {#  indexing and fulltext are loaded as separate tabs #}
                                 {% if fieldset.name != 'indexing' and fieldset.name != 'fulltext' %}
+                                    {#  hide other_notes fields from editor_llxp  #}
                                     {% if user_role == 'editor_llxp' and fieldset.name == 'other_notes' %}
                                     {% else %}
                                         {% include "biblioref/fieldset_include.html" %}

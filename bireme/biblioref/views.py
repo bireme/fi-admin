@@ -308,11 +308,11 @@ class BiblioRefUpdate(LoginRequiredView):
         user_role = user_data['service_role'].get('LILDBI')
 
         if user_role == 'editor_llxp':
-            redirect_ulr = "%s?document_type=S" % reverse_lazy('list_biblioref_sources') 
+            redirect_url = "%s?document_type=S" % reverse_lazy('list_biblioref_sources')
         else:
-            redirect_ulr = self.success_url
+            redirect_url = self.success_url
 
-        return redirect_ulr
+        return redirect_url
 
 
 

@@ -7,7 +7,7 @@ import colander
 import deform
 import json
 
-language_choices = [(source_language.acronym,source_language.name) for source_language in SourceLanguage.objects.all() ]
+language_choices = [(aux.code, aux) for aux in AuxCode.objects.filter(field='text_language')]
 
 field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03', 'database': '04', 'literature_type': '05',
                  'treatment_level':  '06', 'inventory_number': '07', 'electronic_address': '08', 'record_type': '09',
