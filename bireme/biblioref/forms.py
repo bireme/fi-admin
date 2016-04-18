@@ -395,11 +395,14 @@ class BiblioRefForm(BetterModelForm):
     def clean_publication_date(self):
         data = self.cleaned_data['publication_date']
 
-        if data.isalpha() and data != 's.d' and data != 's.f':
-            self.add_error('publication_date', _("Date without year"))
+        if self.is_visiblefield('publication_date_normalized'):
+            if data.isalpha() and data != 's.d' and data != 's.f':
+                self.add_error('publication_date', _("Date without year"))
+
+            if not data:
+                self.add_error('publication_date', _("Mandatory"))
 
         return data
-
 
     def clean_publication_date_normalized(self):
         normalized_date = self.cleaned_data['publication_date_normalized']

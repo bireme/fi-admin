@@ -76,7 +76,7 @@ class Reference(Generic, AuditLog):
     # field tag 61
     internal_note = models.TextField(_('Internal note'), blank=True)
     # field tag 64
-    publication_date = models.CharField(_('Publication date'), max_length=250, blank=False)
+    publication_date = models.CharField(_('Publication date'), max_length=250, blank=True)
     # field tag 65
     publication_date_normalized = models.CharField(_('Publication normalized date'), max_length=25, blank=True, help_text=_("Format: YYYYMMDD"))
     # field tag 71
@@ -265,9 +265,8 @@ class ReferenceAnalytic(Reference):
     english_translated_title = models.CharField(_('English translated title'), max_length=400, blank=True)
     # field tag 14
     pages = JSONField(_('Pages'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
-
     # field tag 700
-    clinical_trial_registry_name = models.TextField(_('Clinical trial registry name'), blank=True)
+    clinical_trial_registry_name = JSONField(_('Clinical trial registry name'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
 
     def __unicode__(self):
         if 'a' in self.treatment_level:

@@ -392,3 +392,17 @@ class PagesAttributes(colander.MappingSchema):
 
 class Pages(colander.SequenceSchema):
     pages = PagesAttributes(title=_('Pages'))
+
+
+class ClinicalTrialRegistryNameAttributes(colander.MappingSchema):
+    db_choices = [(aux.code, aux) for aux in
+                  AuxCode.objects.filter(field='clinical_trial_database')]
+
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Database'),
+                               widget=deform.widget.SelectWidget(values=db_choices),
+                               missing=unicode(''),)
+    _a = colander.SchemaNode(colander.String('utf-8'), title=_('Record number'), missing=unicode(''),)
+    _u = colander.SchemaNode(colander.String('utf-8'), title=_('URL'), missing=unicode(''),)
+
+class ClinicalTrialRegistryName(colander.SequenceSchema):
+    item = ClinicalTrialRegistryNameAttributes(title=_('Clinical Trial'))
