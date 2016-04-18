@@ -16,6 +16,7 @@ from field_definitions import FIELDS_BY_DOCUMENT_TYPE
 from utils.views import ACTIONS
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
+from attachments.models import Attachment
 from main.models import Descriptor
 from title.models import Title
 from help.models import get_help_fields
@@ -404,13 +405,28 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         obj = super(BiblioRefDeleteView, self).get_object()
-        c_type = ContentType.objects.get_for_model(obj)
+        child_class = obj.child_class()
+        c_type = ContentType.objects.get_for_model(child_class)
 
         # delete associated data
         Descriptor.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
+        Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
+        ReferenceLocal.objects.filter(source=obj.id).delete()
 
         return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
+
+    # after creation of source present option for creation new analytic
+    def get_success_url(self):
+        user_data = additional_user_info(self.request)
+        user_role = user_data['service_role'].get('LILDBI')
+
+        if user_role == 'editor_llxp':
+            redirect_url = "%s?document_type=S" % reverse_lazy('list_biblioref_sources')
+        else:
+            redirect_url = self.success_url
+
+        return redirect_url
 
 
 def get_class(kls):

@@ -247,6 +247,12 @@ class ReferenceSource(Reference):
 
         return analytic_title
 
+    def has_analytic(self):
+        exist_analytic = ReferenceAnalytic.objects.filter(source=self.pk).exists()
+
+        return exist_analytic
+
+
 # Bibliographic References
 class ReferenceAnalytic(Reference):
 

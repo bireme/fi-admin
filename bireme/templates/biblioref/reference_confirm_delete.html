@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Delete reference" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "Reference" %}<span class="divider">/</span></li>
+    <li>{% trans "Delete reference" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-file'></i>{% trans "Delete reference" %}</h2>
+</div>
+
+<div class='body'>
+    <form method="POST" class="media-form">
+        <blockquote>
+            <h3>{{ object }}</h3>
+        </blockquote>
+
+        {% csrf_token %}
+
+        <div class="alert">
+            <p><strong>{% trans "Are you sure you want to delete?" %}</strong></p>
+            <a href="javascript:history.back()" class="btn">{% trans 'No' %}</a>
+            <input type="submit" class="btn btn-danger delete" value="{% trans 'Yes' %}"></input>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
