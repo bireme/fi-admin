@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-19 11:00-0300\n"
+"POT-Creation-Date: 2016-04-19 15:46-0300\n"
 "PO-Revision-Date: 2016-04-13 10:19-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,8 +26,8 @@ msgid "Select a file"
 msgstr "Seleccione por búsqueda"
 
 #: attachments/models.py:46 biblioref/field_definitions.py:268
-#: biblioref/field_definitions.py:291 biblioref/field_definitions.py:369
-#: biblioref/field_definitions.py:380 events/models.py:21 help/models.py:26
+#: biblioref/field_definitions.py:291 biblioref/field_definitions.py:379
+#: biblioref/field_definitions.py:390 events/models.py:21 help/models.py:26
 #: help/models.py:53 main/models.py:29 main/models.py:69 main/models.py:97
 #: main/models.py:108 main/models.py:135 multimedia/models.py:21
 #: multimedia/models.py:60 templates/biblioref/fieldset_fulltext.html:16
@@ -41,8 +41,8 @@ msgstr "Idioma"
 msgid "Other notes"
 msgstr "Notas de contenido"
 
-#: biblioref/field_definitions.py:43 biblioref/field_definitions.py:366
-#: biblioref/field_definitions.py:373 biblioref/models.py:97
+#: biblioref/field_definitions.py:43 biblioref/field_definitions.py:376
+#: biblioref/field_definitions.py:383 biblioref/models.py:97
 #: main/models.py:234
 msgid "Abstract"
 msgstr "Resumen"
@@ -193,123 +193,136 @@ msgstr ""
 msgid "Title"
 msgstr "Título"
 
-#: biblioref/field_definitions.py:302
+#: biblioref/field_definitions.py:302 biblioref/forms.py:222
+msgid "Comma abscent"
+msgstr ""
+
+#: biblioref/field_definitions.py:305 biblioref/forms.py:226
+#: biblioref/forms.py:242
+msgid "Insert space after comma"
+msgstr ""
+
+#: biblioref/field_definitions.py:311
 msgid "Personal author"
 msgstr ""
 
-#: biblioref/field_definitions.py:303 biblioref/field_definitions.py:354
+#: biblioref/field_definitions.py:312
+msgid "Format: Lastname, Name"
+msgstr ""
+
+#: biblioref/field_definitions.py:313 biblioref/field_definitions.py:364
 msgid "Affiliation institution level 1"
 msgstr ""
 
-#: biblioref/field_definitions.py:304 biblioref/field_definitions.py:355
+#: biblioref/field_definitions.py:314 biblioref/field_definitions.py:365
 msgid "Affiliation institution level 2"
 msgstr ""
 
-#: biblioref/field_definitions.py:305 biblioref/field_definitions.py:356
+#: biblioref/field_definitions.py:315 biblioref/field_definitions.py:366
 msgid "Affiliation institution level 3"
 msgstr ""
 
-#: biblioref/field_definitions.py:306 biblioref/field_definitions.py:357
+#: biblioref/field_definitions.py:316 biblioref/field_definitions.py:367
 #, fuzzy
 msgid "Affiliation city"
 msgstr "Fecha de publicación"
 
-#: biblioref/field_definitions.py:307 biblioref/field_definitions.py:358
+#: biblioref/field_definitions.py:317 biblioref/field_definitions.py:368
 #, fuzzy
 msgid "Affiliation country"
 msgstr "Fecha de publicación"
 
-#: biblioref/field_definitions.py:309
+#: biblioref/field_definitions.py:319
 msgid "Affiliation degree of responsibility"
 msgstr ""
 
-#: biblioref/field_definitions.py:315 biblioref/field_definitions.py:319
+#: biblioref/field_definitions.py:325 biblioref/field_definitions.py:329
 #: biblioref/models.py:188 biblioref/models.py:200 biblioref/models.py:265
 msgid "Individual author"
 msgstr ""
 
-#: biblioref/field_definitions.py:326 biblioref/field_definitions.py:334
-#: biblioref/field_definitions.py:338 biblioref/models.py:190
+#: biblioref/field_definitions.py:336 biblioref/field_definitions.py:344
+#: biblioref/field_definitions.py:348 biblioref/models.py:190
 #: biblioref/models.py:202 biblioref/models.py:267
 msgid "Corporate author"
 msgstr ""
 
-#: biblioref/field_definitions.py:328
+#: biblioref/field_definitions.py:338
 msgid "Degree of responsibility"
 msgstr ""
 
-#: biblioref/field_definitions.py:342 multimedia/models.py:110
+#: biblioref/field_definitions.py:352 multimedia/models.py:110
 msgid "Other physical details"
 msgstr "Otros detalles físicos"
 
-#: biblioref/field_definitions.py:343 multimedia/models.py:109
+#: biblioref/field_definitions.py:353 multimedia/models.py:109
 msgid "Item extension"
 msgstr "Extensión del ítem"
 
-#: biblioref/field_definitions.py:344 multimedia/models.py:111
+#: biblioref/field_definitions.py:354 multimedia/models.py:111
 msgid "Dimension"
 msgstr "Dimensión"
 
-#: biblioref/field_definitions.py:345
+#: biblioref/field_definitions.py:355
 msgid "Accompanying material"
 msgstr ""
 
-#: biblioref/field_definitions.py:349 biblioref/models.py:73
+#: biblioref/field_definitions.py:359 biblioref/models.py:73
 #, fuzzy
 #| msgid "Description"
 msgid "Descriptive information"
 msgstr "Descripción"
 
-#: biblioref/field_definitions.py:353 biblioref/field_definitions.py:362
+#: biblioref/field_definitions.py:363 biblioref/field_definitions.py:372
 msgid "Leader"
 msgstr ""
 
-#: biblioref/field_definitions.py:377 templates/suggest/list.html:120
+#: biblioref/field_definitions.py:387 templates/suggest/list.html:120
 msgid "Keyword"
 msgstr "Palabra clave"
 
-#: biblioref/field_definitions.py:378
+#: biblioref/field_definitions.py:388
 msgid "Qualifier"
 msgstr ""
 
-#: biblioref/field_definitions.py:384 biblioref/models.py:101
+#: biblioref/field_definitions.py:394 biblioref/models.py:101
 #, fuzzy
 #| msgid "Add keyword"
 msgid "Author keyword"
 msgstr "Añadir palabra clave"
 
-#: biblioref/field_definitions.py:388 biblioref/field_definitions.py:394
+#: biblioref/field_definitions.py:398 biblioref/field_definitions.py:404
 #: biblioref/models.py:196 biblioref/models.py:273
 #, fuzzy
 #| msgid "Page"
 msgid "Pages"
 msgstr "Página"
 
-#: biblioref/field_definitions.py:389 templates/title/form_preview.html:190
+#: biblioref/field_definitions.py:399 templates/title/form_preview.html:190
 #: templates/title/title_form.html:266 title/models.py:45 title/models.py:158
 msgid "Initial number"
 msgstr ""
 
-#: biblioref/field_definitions.py:390
+#: biblioref/field_definitions.py:400
 #, fuzzy
 msgid "End number"
 msgstr "Autores"
 
-#: biblioref/field_definitions.py:401 biblioref/models.py:332
+#: biblioref/field_definitions.py:411 biblioref/models.py:332
 msgid "Database"
 msgstr ""
 
-#: biblioref/field_definitions.py:404
+#: biblioref/field_definitions.py:414
 #, fuzzy
 msgid "Record number"
 msgstr "Autores"
 
-#: biblioref/field_definitions.py:405 templates/main/resources.html:102
+#: biblioref/field_definitions.py:415 templates/main/resources.html:102
 #: templates/suggest/list.html:77 title/models.py:95
 msgid "URL"
 msgstr "Enlace"
 
-#: biblioref/field_definitions.py:408
+#: biblioref/field_definitions.py:418
 msgid "Clinical Trial"
 msgstr ""
 
@@ -368,14 +381,6 @@ msgstr ""
 
 #: biblioref/forms.py:218
 msgid "Thesis's author anonymous"
-msgstr ""
-
-#: biblioref/forms.py:222
-msgid "Comma abscent"
-msgstr ""
-
-#: biblioref/forms.py:226 biblioref/forms.py:242
-msgid "Insert space after comma"
 msgstr ""
 
 #: biblioref/forms.py:237
@@ -1056,7 +1061,7 @@ msgstr ""
 msgid "Inventory number"
 msgstr ""
 
-#: biblioref/views.py:467 templates/biblioref/reference_form.html:323
+#: biblioref/views.py:473 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:131
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:324
 #: templates/events/edit-event.html:367 templates/events/edit-type.html:56

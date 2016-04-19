@@ -22,6 +22,7 @@ from title.models import Title
 from help.models import get_help_fields
 from utils.views import LoginRequiredView
 from urlparse import parse_qsl
+from pkg_resources import resource_filename
 from forms import *
 
 import colander
@@ -440,6 +441,11 @@ def get_class(kls):
 
 @csrf_exempt
 def field_assist(request, **kwargs):
+
+    # add search_path to override deform templates
+    deform_templates = resource_filename('deform', 'templates')
+    search_path = ('templates/deform', deform_templates)
+    deform.Form.set_zpt_renderer(search_path)
 
     field_name = kwargs.get('field_name')
     # get previous value from field (json)

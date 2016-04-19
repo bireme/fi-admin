@@ -308,7 +308,8 @@ class IndividualAuthorAttributes(colander.MappingSchema):
     degree_choices = [(aux.code, aux) for aux in
                       AuxCode.objects.filter(field='degree_of_responsibility')]
 
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Personal author'), validator=validate_author,)
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Personal author'), validator=validate_author,
+                               description=_('Format: Lastname, Name'))
     _1 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 1'), missing=unicode(''),)
     _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=unicode(''),)
     _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=unicode(''),)
