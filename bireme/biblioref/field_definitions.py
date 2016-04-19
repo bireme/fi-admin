@@ -296,10 +296,19 @@ class Title(colander.SequenceSchema):
 
 
 class IndividualAuthorAttributes(colander.MappingSchema):
+    def validate_author(form, value):
+        if value != 'Anon':
+            if not ',' in value:
+                exc = colander.Invalid(form, _("Comma abscent"))
+                raise exc
+            elif not ', ' in value:
+                exc = colander.Invalid(form, _("Insert space after comma"))
+                raise exc
+
     degree_choices = [(aux.code, aux) for aux in
                       AuxCode.objects.filter(field='degree_of_responsibility')]
 
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Personal author'))
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Personal author'), validator=validate_author,)
     _1 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 1'), missing=unicode(''),)
     _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=unicode(''),)
     _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=unicode(''),)
