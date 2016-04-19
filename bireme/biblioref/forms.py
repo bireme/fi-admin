@@ -430,6 +430,43 @@ class BiblioRefForm(BetterModelForm):
 
         return normalized_date
 
+    def clean_pages(self):
+        field = 'pages'
+        data = self.cleaned_data[field]
+
+        if data and self.is_visiblefield(field):
+            if len(data) > 4:
+                self.add_error(field, _('Do not have more than 4 occurrences, use passim'))
+            else:
+                occ = 0
+                for page in data:
+                    occ = occ + 1
+                    text = page.get('text', '')
+                    first = page.get('_f', '')
+                    last = page.get('_l', '')
+                    message_item = _("item %s: ") % occ
+
+                    if first == 'passim' and last != '':
+                        message = _("If the attribute first is passim, the attribute last should be empty")
+                        message = string_concat(message_item, message)
+                        self.add_error(field, message)
+
+                    if first != '' and first != 'passim' and not last:
+                        message = _("Attribute last is missing")
+                        message = string_concat(message_item, message)
+                        self.add_error(field, message)
+
+                    if last != '' and not first:
+                        message = _("Attribute first is missing")
+                        message = string_concat(message_item, message)
+                        self.add_error(field, message)
+
+                    if text and (text[0] != '[' or text[-1] != ']'):
+                        message = _("Square brackets are missing [ ]")
+                        message = string_concat(message_item, message)
+                        self.add_error(field, message)
+
+        return data
 
     def save(self, *args, **kwargs):
         new_reference = True
