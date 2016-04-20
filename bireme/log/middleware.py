@@ -107,7 +107,7 @@ class WhodidMiddleware(object):
             obj = obj_model.objects.get(pk=instance.id)
             for field_name in instance.changed_fields:
                 if instance.id:
-                    previous_value = obj.__dict__[field_name]
+                    previous_value = obj.__dict__.get(field_name)
                 else:
                     previous_value = ''
 

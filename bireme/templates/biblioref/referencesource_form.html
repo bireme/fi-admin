@@ -38,7 +38,7 @@
             {% for error in form.non_field_errors %}
                 <strong>{{ error|escape }}</strong>
             {% endfor %}
-        </p>        
+        </p>
     {% endif %}
     {% if valid_for_publication != None and not valid_for_publication %}
         <ul class="errorlist alert alert-error">
@@ -271,6 +271,10 @@
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
         }
 
+        // open all fieldsets when form erros
+        {% if form.errors %}
+            $("fieldset").removeClass('collapse');
+        {% endif %}
 
    </script>
 {% endblock %}

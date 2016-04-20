@@ -24,8 +24,8 @@ class SelectDocumentTypeForm(forms.Form):
     DOCUMENT_TYPE_CHOICES = (
         # ('MS', _('Monograph Series')),
         # ('', _('Monograph in a Collection')),
-        ('M', _('Monograph')),
-        ('N', _('Non conventional')),
+        # ('M', _('Monograph')),
+        # ('N', _('Non conventional')),
         ('S', _('Periodical Series')),
         # ('', _('Collection')),
         # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
@@ -165,7 +165,7 @@ class BiblioRefForm(BetterModelForm):
                 if not data.get('individual_author') and not data.get('corporate_author'):
                     self.add_error('individual_author', _("Individual Author or Corporate Author mandatory"))
 
-        if 'issue_number' in self.fields:
+        if self.is_visiblefield('issue_number'):
             if not data.get('volume_serial') and not data.get('issue_number'):
                 self.add_error('volume_serial', _("Volume or issue number mandatory"))
 
@@ -392,6 +392,26 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_english_translated_title(self):
+        field = 'english_translated_title'
+        data = self.cleaned_data[field]
+        title_languages = []
+
+        if 'a' in self.document_type:
+            title = self.cleaned_data.get('title')
+            if title:
+                title_languages = [t.get('_i') for t in title]
+
+            if not(data):
+                if self.is_LILACS and title and not 'en' in title_languages:
+                    self.add_error(field, _("Mandatory"))
+            else:
+                if self.is_LILACS and 'en' in title_languages:
+                    self.add_error(field, _("Invalid fill. Don't translate title in English"))
+
+
+        return data
+
     def clean_publication_date(self):
         data = self.cleaned_data['publication_date']
 
@@ -467,6 +487,54 @@ class BiblioRefForm(BetterModelForm):
                         self.add_error(field, message)
 
         return data
+
+
+    def clean_pages_monographic(self):
+        field = 'pages_monographic'
+        data = self.cleaned_data[field]
+
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+            if not(data) and not(self.cleaned_data['electronic_address']):
+                self.add_error(field, 'Electronic medium or Number of pages mandatory')
+
+
+        return data
+
+    def clean_thesis_dissertation_institution(self):
+        field = 'thesis_dissertation_institution'
+        data = self.cleaned_data[field]
+
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1 and not data:
+            self.add_error(field, _('Mandatory'))
+
+        return data
+
+    def clean_publication_city(self):
+        field = 'publication_city'
+        data = self.cleaned_data[field]
+
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+            if not(data):
+                self.add_error(field, _('Mandatory'))
+
+        return data
+
+    def clean_publication_country(self):
+        field = 'publication_country'
+        data = self.cleaned_data[field]
+
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+            if not(data):
+                if self.cleaned_data['publication_city'] != 's.l':
+                    self.add_error(field, _('Entering information in this field is conditional to filling out publication city field'))
+            else:
+                if self.is_LILACS:
+                    country_list_latin_caribbean = [c for c in Country.objects.filter(LA_Caribbean=True)]
+                    if data not in country_list_latin_caribbean:
+                        self.add_error(field, _('LILACS incompatible'))
+
+        return data
+
 
     def save(self, *args, **kwargs):
         new_reference = True
