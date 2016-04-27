@@ -599,16 +599,39 @@ class AttachmentForm(forms.ModelForm):
     # change widget from attachment_file field for simple select
     attachment_file = forms.FileField(widget=widgets.FileInput)
 
+
 class LibraryForm(forms.ModelForm):
     class Meta:
         model = ReferenceLocal
         exclude = ('cooperative_center_code',)
 
 
+class ThematicForm(forms.ModelForm):
+    def save(self, *args, **kwargs):
+        obj = super(ThematicForm, self).save(commit=False)
+        # for bibliographic default value for thematic is admited
+        obj.status = 1
+
+        obj.save()
+
+
+class DescriptorForm(forms.ModelForm):
+    def save(self, *args, **kwargs):
+        obj = super(DescriptorForm, self).save(commit=False)
+        # for bibliographic default value for descriptor is admited
+        obj.status = 1
+
+        obj.save()
+
 # definition of inline formsets
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, can_delete=True, extra=1)
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,
+                                                  exclude=('status',), can_delete=True, extra=1)
+
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
+                                                        exclude=('status',), can_delete=True, extra=1)
+
 AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
                                                   exclude=('short_url',), can_delete=True, extra=1)
+
 LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal, form=LibraryForm, extra=1,
                                        max_num=1, can_delete=False)

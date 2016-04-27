@@ -134,7 +134,7 @@ class DescriptorRequired(BaseGenericInlineFormSet):
 class ResourceThematicRequired(BaseGenericInlineFormSet):
     class Meta:
         fields = '__all__'
-    
+
     def clean(self):
         # get forms that actually have valid data
         count = 0
@@ -163,20 +163,24 @@ def is_valid_for_publication(form, formsets):
     data = None
 
     if hasattr(form, 'cleaned_data'):
-
         status = form.cleaned_data.get("status")
+        form_class = type(form).__name__
         '''
         For status = admitted check if the resource have at least
         one descriptor and one thematica area
         '''
         if status == 1:
+            #for biblioref descriptor/thematic status is admited by default
+            status_default = True if 'BiblioRef' in form_class else False
+
             # access forms from formsets:
             for formset in formsets:
                 for formset_form in formset.forms:
                     if hasattr(formset_form, 'cleaned_data'):
-                        data = formset_form.cleaned_data
+                        data = formset_form.cleaned_data                        
 
-                        if data.get('status') == 1:
+                        # check for status and not marked for DELETE
+                        if data.get('status', status_default) == 1 and data.get('DELETE') == False:
                             if data.get('text') and data.get('code'):
                                 descriptor_admitted = True
 

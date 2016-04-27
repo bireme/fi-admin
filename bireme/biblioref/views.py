@@ -281,14 +281,14 @@ class BiblioRefUpdate(LoginRequiredView):
                 c_type = ContentType.objects.get_for_model(self.get_object())
 
                 context['descriptor_list'] = Descriptor.objects.filter(
-                    object_id=self.object.id, content_type=c_type).exclude(created_by_id=user_id, status=0)
+                    object_id=self.object.id, content_type=c_type).exclude(created_by_id=user_id)
                 context['thematic_list'] = ResourceThematic.objects.filter(
-                    object_id=self.object.id, content_type=c_type).exclude(created_by_id=user_id, status=0)
+                    object_id=self.object.id, content_type=c_type).exclude(created_by_id=user_id)
 
                 pending_descriptor_from_user = Descriptor.objects.filter(
-                    created_by_id=self.request.user.id, status=0)
+                    created_by_id=self.request.user.id)
                 pending_thematic_from_user = ResourceThematic.objects.filter(
-                    created_by_id=user_id, status=0)
+                    created_by_id=user_id)
 
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object,
                                                                   queryset=pending_descriptor_from_user)

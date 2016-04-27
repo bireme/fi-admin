@@ -42,7 +42,7 @@
     {% endif %}
     {% if valid_for_publication != None and not valid_for_publication %}
         <p class="errorlist alert alert-error">
-            {% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}
+            {% trans 'For status "Published" you must have at least one descriptor and one thematic area' %}
         <p>
     {% endif %}
 
@@ -53,12 +53,12 @@
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
 
         {% if user_role != 'editor_llxp' %}
-            <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a>{% if formset_descriptor.errors and not formset_descriptor.is_valid %}<span class="mark">*</span>{% endif %}</li>
-            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
-            <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}</a>{% if formset_library.errors and not formset_library.is_valid %}<span class="mark">*</span>{% endif %}</li>
-            <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a> {% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark">*</span>{% endif %}</li>
+            <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}{% if formset_descriptor.errors and not formset_descriptor.is_valid %}<span class="mark"> * </span>{% endif %}</a></li>
+            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark"> * </span>{% endif %}</a></li>
+            <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}{% if formset_library.errors and not formset_library.is_valid %}<span class="mark"> * </span>{% endif %}</a></li>
+            <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}{% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark"> * </span>{% endif %}</a></li>
         {% else %}
-            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
+            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark"> * </span>{% endif %}</a></li>
         {% endif %}
     </ul>
 
@@ -163,8 +163,8 @@
             {% if user_can_edit %}
                 {% if not object or object.status == -1 %}
                     <button class="btn btn-large btn-info">{% trans "Save Draft" %}</button>
-                {% elif user_can_change_status %}
-                    <button class="btn btn-primary btn-large">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
+                {% elif user_role != 'editor_llxp' %}
+                    <button class="btn btn-info btn-large">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
                 {% endif %}
 
                 {% if not user_can_change_status %}

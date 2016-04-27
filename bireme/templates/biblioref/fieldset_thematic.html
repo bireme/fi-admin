@@ -8,7 +8,6 @@
             <table class="table table-condensed table-striped span8">
                 <thead>
                     <th>{% trans "Thematic area" %}</th>
-                    <th>{% trans "Status" %}</th>
                     {% if user_can_edit %}
                         <th>{% trans "Delete?" %}</th>
                     {% endif %}
@@ -17,7 +16,7 @@
                 {% if thematic_list %}
                     {% for thematic in thematic_list %}
                         <tr>
-                            <td colspan="3">{{ thematic }}</td>
+                            <td colspan="2">{{ thematic }}</td>
                         </tr>
                     {% endfor %}
                 {% endif %}
@@ -31,16 +30,13 @@
                         {% endfor %}
                         <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
                             {% for field in form.visible_fields %}
-                                {% if field.name == 'status' and not user_can_change_status %}
-                                   <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                {% elif field.name != 'DELETE' %}
+                                {% if field.name != 'DELETE' %}
                                     <td>
                                         {{ field }}
                                         {{ field.errors }}
                                     </td>
                                 {% endif %}
                             {% endfor %}
-                            <td><!-- status --></td>
                             <td>
                                 {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                             </td>

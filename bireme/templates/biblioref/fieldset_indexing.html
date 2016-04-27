@@ -7,7 +7,6 @@
         <table class="table table-condensed table-striped span8">
             <thead>
                 <th>{% trans "Descriptors" %}</th>
-                <th>{% trans "Status" %}</th>
                 <th>{% trans "Primary?" %}</th>
                 {% if user_can_edit %}
                     <th>{% trans "Delete?" %}</th>
@@ -18,19 +17,7 @@
             {% if descriptor_list %}
                 {% for descriptor in descriptor_list %}
                     <tr>
-                        <td>{{ descriptor.text }}</td>
-                        <td>
-                            {% if descriptor.status == 0 %}
-                                <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                            {% elif descriptor.status == 1 %}
-                                <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
-                            {% elif descriptor.status == 2 %}
-                                <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
-                            {% elif descriptor.status == 3 %}
-                                <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
-                            {% endif %}
-                        </td>
-                        <td></td>
+                        <td colspan="3">{{ descriptor.text }}</td>
                     </tr>
                 {% endfor %}
             {% endif %}
@@ -44,9 +31,8 @@
                             {{ hidden }}
                         {% endfor %}
                         {% for field in form.visible_fields %}
-                            {% if field.name == 'status' and not user_can_change_status %}
-                                <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                <td></td>
+                            {% if field.name == 'status' %}
+                                <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="1" class="keep-field-value" />
                             {% elif field.name == 'code' %}
                                 {{ field.as_hidden }}
                             {% elif field.name == 'text' %}
