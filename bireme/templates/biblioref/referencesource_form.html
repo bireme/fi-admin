@@ -72,15 +72,22 @@
                                 <p><strong>{% trans 'Identifier' %}</strong><p>
                                 <p>{{ object.id }}</p>
                             </blockquote>
-
                             {% for fieldset in form.fieldsets %}
                                 {% if fieldset.name != 'indexing' and fieldset.name != 'fulltext' %}
-                                    {% for field in form %}
+                                    {% if fieldset.legend %}
+                                        <h3>{{ fieldset.legend }}</h3>
+                                    {% endif %}
+
+                                    {% for field in fieldset %}
                                         {% if field.value or field.name == 'status' %}
                                             <blockquote>
                                                 <p><strong>{{ field.label }}</strong><p>
                                                 {% if field.name = 'status' %}
-                                                    <p>{{ object.get_status_display }}</p>
+                                                    {% if document_type == 'S' %}
+                                                        <span class="label label-success">{% trans "Series source" %}</span>
+                                                    {% else %}
+                                                        <p>{{ object.get_status_display }}</p>
+                                                    {% endif %}
                                                 {% else %}
                                                     <p>{% display_field field %}<p>
                                                 {% endif %}

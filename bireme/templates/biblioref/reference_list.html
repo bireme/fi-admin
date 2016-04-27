@@ -117,7 +117,7 @@
                             <td><a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}">{{ reference.id }}</a></td>
                             <td><span title="{{ reference }}">{{ reference }}</span></td>
                             <td>
-                                {{ reference.status|display_status_label }}
+                                {% if reference.literature_type == 'S' and not 'a' in reference.treatment_level %}<span class="label label-success">{% trans "Series source" %}</span>{% else %}{{ reference.status|display_status_label }}{% endif %}
                             </td>
                             <td nowrap="1">
                                 <a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}" class='btn btn-mini'><i class='icon-pencil'></i></a>

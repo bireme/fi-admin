@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-27 10:22-0300\n"
+"POT-Creation-Date: 2016-04-27 12:38-0300\n"
 "PO-Revision-Date: 2016-04-13 10:19-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1062,8 +1062,8 @@ msgstr ""
 msgid "Inventory number"
 msgstr ""
 
-#: biblioref/views.py:473 templates/biblioref/reference_form.html:323
-#: templates/biblioref/referencesource_form.html:131
+#: biblioref/views.py:481 templates/biblioref/reference_form.html:323
+#: templates/biblioref/referencesource_form.html:138
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:324
 #: templates/events/edit-event.html:367 templates/events/edit-type.html:56
 #: templates/main/edit-language.html:56 templates/main/edit-resource.html:336
@@ -1690,7 +1690,14 @@ msgstr "Tipo de evento"
 msgid "Delete?"
 msgstr "Borrar?"
 
-#: templates/biblioref/fieldset_include.html:77
+#: templates/biblioref/fieldset_include.html:29
+#: templates/biblioref/reference_list.html:120
+#: templates/biblioref/referencesource_form.html:87
+#, fuzzy
+msgid "Series source"
+msgstr "Nuevo recurso"
+
+#: templates/biblioref/fieldset_include.html:80
 msgid "Other journal title (from refereces not indexed in LILACS)"
 msgstr ""
 
@@ -1868,7 +1875,7 @@ msgstr "Sugerido"
 
 #: templates/biblioref/reference_form.html:396
 #: templates/biblioref/referenceanalytic_form.html:269
-#: templates/biblioref/referencesource_form.html:212
+#: templates/biblioref/referencesource_form.html:219
 #: templates/events/edit-event.html:389 templates/main/edit-resource.html:395
 #: templates/multimedia/media_form.html:343
 #: templates/title/title_form.html:479
@@ -1881,9 +1888,9 @@ msgstr "Añadir descriptor"
 #: templates/biblioref/referenceanalytic_form.html:270
 #: templates/biblioref/referenceanalytic_form.html:280
 #: templates/biblioref/referenceanalytic_form.html:290
-#: templates/biblioref/referencesource_form.html:213
-#: templates/biblioref/referencesource_form.html:223
-#: templates/biblioref/referencesource_form.html:233
+#: templates/biblioref/referencesource_form.html:220
+#: templates/biblioref/referencesource_form.html:230
+#: templates/biblioref/referencesource_form.html:240
 #: templates/events/edit-event.html:390 templates/events/edit-event.html:400
 #: templates/events/edit-event.html:410 templates/events/edit-type.html:72
 #: templates/main/edit-language.html:72 templates/main/edit-resource.html:396
@@ -1901,7 +1908,7 @@ msgid "delete"
 msgstr "borrar"
 
 #: templates/biblioref/reference_form.html:406
-#: templates/biblioref/referencesource_form.html:222
+#: templates/biblioref/referencesource_form.html:229
 #: templates/events/edit-event.html:399 templates/main/edit-resource.html:405
 #: templates/multimedia/media_form.html:353
 #: templates/title/title_form.html:488
@@ -1910,7 +1917,7 @@ msgstr "Añadir palabra clave"
 
 #: templates/biblioref/reference_form.html:416
 #: templates/biblioref/referenceanalytic_form.html:289
-#: templates/biblioref/referencesource_form.html:232
+#: templates/biblioref/referencesource_form.html:239
 #: templates/events/edit-event.html:409 templates/main/edit-resource.html:415
 #: templates/multimedia/media_form.html:363
 msgid "Add thematic area"
@@ -2059,7 +2066,7 @@ msgid "check"
 msgstr "verificar"
 
 #: templates/biblioref/referenceanalytic_form.html:142
-#: templates/biblioref/referencesource_form.html:109
+#: templates/biblioref/referencesource_form.html:116
 #: templates/modal_log.html:6
 msgid "Changes history"
 msgstr ""

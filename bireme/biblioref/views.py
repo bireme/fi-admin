@@ -302,6 +302,14 @@ class BiblioRefUpdate(LoginRequiredView):
             context['formset_library'] = LibraryFormSet(instance=self.object,
                                                         queryset=ReferenceLocal.objects.filter(cooperative_center_code=user_data['user_cc']))
 
+        # source/analytic edition
+        if self.object:
+            context['document_type'] = "{0}{1}".format(self.object.literature_type, self.object.treatment_level)
+        # new source
+        else:
+            context['document_type'] = self.request.GET.get('document_type')
+
+
         return context
 
     # after creation of source present option for creation new analytic

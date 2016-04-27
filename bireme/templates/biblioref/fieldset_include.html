@@ -15,18 +15,21 @@
             {% for field in fieldset %}
                 {% if not user_can_edit %}
                     {% if field.value %}
-                        <div class="well">
-                            <blockquote>
-                                <p><strong>{{ field.label }}</strong><p>
-                                <p>{% display_field field %}<p>
-                            </blockquote>
-                        </div>
+                        <blockquote>
+                            <p><strong>{{ field.label }}</strong><p>
+                            <p>{% display_field field %}<p>
+                        </blockquote>
                     {% endif %}
                 {% else %}
                     <li {{ field.row_attrs }}>
                         {% if field.name == 'status' and not user_can_change_status %}
                             <p>
-                                {{ field.label }} : {{ field.value|display_status_label }}
+                                {{ field.label }} :
+                                {% if document_type == 'S' %}
+                                    <span class="label label-success">{% trans "Series source" %}</span>
+                                {% else %}
+                                    {{ field.value|display_status_label }}
+                                {% endif %}
                             </p>
                             {{ field }}
                         {% else %}
