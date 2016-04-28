@@ -24,6 +24,7 @@ class CountryAdmin(GenericAdmin):
     model = Country
     inlines = [CountryLocalAdmin,]
     search_fields = list_display = ['code', 'name']
+    list_filter = ('LA_Caribbean',)
 
 class ContentTypeAdmin(GenericAdmin):
     model = ContentType
