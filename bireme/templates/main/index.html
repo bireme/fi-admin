@@ -35,8 +35,16 @@
                             {{ action.action_time }} - {{ action.object_repr }}
                         </li>
                     {% endfor %}
-                </ul>                
+                </ul>
             </div>
+        </div>
+        <div class="span6">
+            {% for text_block in text_blocks %}
+                <div class="well sidebar-nav">
+                    <h3>{{ text_block.get_title }}</h3>
+                    {{ text_block.get_content|safe }}
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

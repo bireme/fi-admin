@@ -181,6 +181,7 @@ INSTALLED_APPS = (
     'utils',
     'attachments',
     'help',
+    'text_block',
 
 )
 

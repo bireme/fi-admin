@@ -25,6 +25,7 @@ from datetime import datetime
 from models import *
 from events.models import Event
 from suggest.models import *
+from text_block.models import TextBlock
 from forms import *
 from error_reporting.forms import ErrorReportForm
 
@@ -40,8 +41,15 @@ def dashboard(request):
 
     current_user = request.user
     recent_actions = LogEntry.objects.filter(user=current_user)[:20]
+    user_data = additional_user_info(request)
+    user_roles = ['']
+    user_roles.extend([role for role in user_data['service_role'].values()])
+
+    # retrive text blocks
+    text_blocks = TextBlock.objects.filter(slot='dashboard', user_profile__in=user_roles).order_by('order')
 
     output['recent_actions'] = recent_actions
+    output['text_blocks'] = text_blocks
 
     return render_to_response('main/index.html', output, context_instance=RequestContext(request))
 

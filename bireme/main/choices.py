@@ -14,6 +14,17 @@ SOURCE_CHOICES = [
     ('biblioref', _('Bibliographic Reference')),
 ]
 
+USER_PROFILES = [
+    ('edi', _('Editor')),
+    ('doc', _('Documentalist')),
+    ('editor_llxp', _('Editor LILACS Express')),
+]
+
+SLOTS = [
+    ('dashboard', _('Dashboard')),
+]
+
+
 ############################## Descriptor choices ##############################
 
 DESCRIPTOR_LEVEL = [
