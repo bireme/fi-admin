@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-28 13:05-0300\n"
-"PO-Revision-Date: 2016-04-28 13:05-0300\n"
+"POT-Creation-Date: 2016-04-28 14:44-0300\n"
+"PO-Revision-Date: 2016-04-28 14:44-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -96,6 +96,10 @@ msgstr "Nível Monográfico"
 #: biblioref/field_definitions.py:166 biblioref/field_definitions.py:193
 msgid "Thesis Notes"
 msgstr "Notas da Tese"
+
+#: biblioref/field_definitions.py:254
+msgid "Latin America & Caribbean"
+msgstr "América Latina e Caribe"
 
 #: biblioref/field_definitions.py:266
 msgid "Center code"
@@ -1315,17 +1319,14 @@ msgid "Resources"
 msgstr "Recursos"
 
 #: main/choices.py:18
-#| msgid "editor"
 msgid "Editor"
 msgstr "Editor"
 
 #: main/choices.py:19
-#| msgid "Documents by Documentalists"
 msgid "Documentalist"
 msgstr "Documentalista"
 
 #: main/choices.py:20
-#| msgid "Save as LILACS Express"
 msgid "Editor LILACS Express"
 msgstr "Editor LILACS Express"
 
@@ -3360,9 +3361,6 @@ msgstr "Recurso criado"
 
 #~ msgid "Indexed by other cooperative centers"
 #~ msgstr "Indexados por outros centros cooperantes"
-
-#~ msgid "Latin America & Caribbean"
-#~ msgstr "América Latina e Caribe"
 
 #~ msgid "Submit for Review"
 #~ msgstr "Enviar para Revisão"
