@@ -67,9 +67,9 @@
                                 {% if reference.has_analytic %}
                                     <a href="{% url 'list_biblioref_analytics' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-list'></i> {% trans "Analytics" %}</a>
                                 {% else %}
-                                    <a href="{% url 'create_biblioref_analytic' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-plus'></i> {% trans "New Analytic" %}</a>                                
+                                    <a href="{% url 'create_biblioref_analytic' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-plus'></i> {% trans "New Analytic" %}</a>
                                 {% endif %}
-                                {% if reference.created_by_id = user.id  and not reference.has_analytic %}
+                                {% if reference.created_by_id = user.id and not reference.has_analytic %}
                                     <a href="{% url 'delete_biblioref' reference.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>

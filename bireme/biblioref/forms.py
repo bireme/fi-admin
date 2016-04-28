@@ -397,7 +397,7 @@ class BiblioRefForm(BetterModelForm):
         data = self.cleaned_data[field]
         title_languages = []
 
-        if 'a' in self.document_type:
+        if 'a' in self.document_type and self.cleaned_data['status'] == 1:
             title = self.cleaned_data.get('title')
             if title:
                 title_languages = [t.get('_i') for t in title]

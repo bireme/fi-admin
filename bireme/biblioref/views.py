@@ -161,7 +161,7 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_attachment_valid = formset_attachment.is_valid()
         formset_library_valid = formset_library.is_valid()
 
-        # for status = admitted check  if the resource have at least one descriptor and one thematica area
+        # for status = admitted check if the reference have at least one descriptor and one thematica area
         valid_for_publication = is_valid_for_publication(form,
                                                          [formset_descriptor, formset_thematic])
 
@@ -261,7 +261,7 @@ class BiblioRefUpdate(LoginRequiredView):
             context['user_can_edit'] = True if not self.object or (self.object.status != 1 and self.object.cooperative_center_code == user_data['user_cc']) else False
             context['user_can_change_status'] = False
         elif user_role == 'doc':
-            context['user_can_edit'] = True if not self.object or self.object.status == 0 or user_data['is_owner'] else False
+            context['user_can_edit'] = True if not self.object or self.object.status == 0 or self.object.cooperative_center_code == user_data['user_cc'] else False
             context['user_can_change_status'] = False
         else:
             context['user_can_edit'] = True

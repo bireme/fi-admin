@@ -174,7 +174,7 @@ class Reference(Generic, AuditLog):
         if 'a' in self.treatment_level:
             return ReferenceAnalytic
         else:
-            return ReferenceResource
+            return ReferenceSource
 
 
 # Source
