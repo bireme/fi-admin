@@ -305,8 +305,9 @@ class IndividualAuthorAttributes(colander.MappingSchema):
                 exc = colander.Invalid(form, _("Insert space after comma"))
                 raise exc
 
-    degree_choices = [(aux.code, aux) for aux in
-                      AuxCode.objects.filter(field='degree_of_responsibility')]
+    degree_choices = [('', '')]
+    degree_choices.extend([(aux.code, aux) for aux in
+                          AuxCode.objects.filter(field='degree_of_responsibility')])
 
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Personal author'), validator=validate_author,
                                description=_('Format: Lastname, Name'))
@@ -330,8 +331,9 @@ class IndividualAuthorMonographic(colander.SequenceSchema):
 
 
 class CorporateAuthorAttributes(colander.MappingSchema):
-    degree_choices = [(aux.code, aux) for aux in
-                      AuxCode.objects.filter(field='degree_of_responsibility')]
+    degree_choices = [('', '')]
+    degree_choices.extend([(aux.code, aux) for aux in
+                          AuxCode.objects.filter(field='degree_of_responsibility')])
 
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Corporate author'))
     _r = colander.SchemaNode(colander.String('utf-8'),
