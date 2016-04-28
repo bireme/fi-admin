@@ -250,7 +250,9 @@ VIEW_DEDUP_ARTICLE_DETAIL = ""
 TINYMCE_JS_URL = "/static/js/tinymce/tinymce.min.js"
 
 TINYMCE_DEFAULT_CONFIG = {
+    'plugins': 'link',
     'theme': "modern",
+    'menubar': False,
     'cleanup_on_startup': True,
     'custom_undo_redo_levels': 10,
 }
