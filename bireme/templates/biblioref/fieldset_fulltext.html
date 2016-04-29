@@ -2,6 +2,12 @@
 
 <div id='tab-attachment' class="tab-pane">
 
+    {% for error in formset_attachment.non_form_errors  %}
+        <p class="errorlist alert alert-error">
+            <strong>{{ error|escape }}</strong>
+        </p>
+    {% endfor %}
+
     {% for fieldset in form.fieldsets %}
         {% if fieldset.name == 'fulltext' %}
             {% include "biblioref/fieldset_include.html" %}

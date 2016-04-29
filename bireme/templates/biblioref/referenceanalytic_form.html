@@ -35,30 +35,24 @@
     {% if form.errors or formset_attachment.errors or formset_thematic.errors or formset_descriptor.errors %}
         <p class="errorlist alert alert-error">
           {% trans "Please check errors below" %}
-          {% for error in form.non_field_errors %}
-              <strong>{{ error|escape }}</strong>
-          {% endfor %}
         </p>
-    {% endif %}
-    {% if valid_for_publication != None and not valid_for_publication %}
-        <p class="errorlist alert alert-error">
-            {% trans 'For status "Published" you must have at least one descriptor and one thematic area' %}
-        <p>
+        {{ form.non_field_errors }}
     {% endif %}
 
     {{ formset_descriptor.non_form_errors }}
+
     {{ formset_thematic.non_form_errors }}
 
     <ul class="nav nav-tabs" id='tab'>
-        <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
+        <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}{% if form.errors and not form.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
 
         {% if user_role != 'editor_llxp' %}
-            <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}{% if formset_descriptor.errors and not formset_descriptor.is_valid %}<span class="mark"> * </span>{% endif %}</a></li>
-            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark"> * </span>{% endif %}</a></li>
-            <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}{% if formset_library.errors and not formset_library.is_valid %}<span class="mark"> * </span>{% endif %}</a></li>
-            <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}{% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark"> * </span>{% endif %}</a></li>
+            <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}{% if formset_descriptor.errors and not formset_descriptor.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+            <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}{% if formset_library.errors and not formset_library.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+            <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}{% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         {% else %}
-            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark"> * </span>{% endif %}</a></li>
+            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         {% endif %}
     </ul>
 
@@ -120,8 +114,6 @@
                                         </h4>
                                     </fieldset>
                             </div>
-
-                            {{ form.non_field_errors }}
 
                             {% for fieldset in form.fieldsets %}
                                 {#  indexing and fulltext are loaded as separate tabs #}

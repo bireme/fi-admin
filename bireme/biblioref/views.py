@@ -14,7 +14,7 @@ from deform.exception import ValidationFailure
 from field_definitions import FIELDS_BY_DOCUMENT_TYPE
 
 from utils.views import ACTIONS
-from utils.forms import is_valid_for_publication
+from cross_validation import check_for_publication
 from utils.context_processors import additional_user_info
 from attachments.models import Attachment
 from main.models import Descriptor
@@ -161,9 +161,11 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_attachment_valid = formset_attachment.is_valid()
         formset_library_valid = formset_library.is_valid()
 
-        # for status = admitted check if the reference have at least one descriptor and one thematica area
-        valid_for_publication = is_valid_for_publication(form,
-                                                         [formset_descriptor, formset_thematic])
+        user_data = additional_user_info(self.request)
+        # run cross formsets validations
+        valid_for_publication = check_for_publication(form, {'descriptor': formset_descriptor,
+                                                             'thematic': formset_thematic,
+                                                             'attachment': formset_attachment}, user_data)
 
         if (form_valid and formset_descriptor_valid and formset_thematic_valid and
             formset_attachment_valid and valid_for_publication):
@@ -451,8 +453,9 @@ def get_class(kls):
 def field_assist(request, **kwargs):
 
     # add search_path to override deform templates
+    custom_deform_templates = '%s/templates/deform' % settings.PROJECT_ROOT_PATH
     deform_templates = resource_filename('deform', 'templates')
-    search_path = ('templates/deform', deform_templates)
+    search_path = (custom_deform_templates, deform_templates)
     deform.Form.set_zpt_renderer(search_path)
 
     field_name = kwargs.get('field_name')

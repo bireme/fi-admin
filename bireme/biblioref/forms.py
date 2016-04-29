@@ -186,7 +186,7 @@ class BiblioRefForm(BetterModelForm):
         abbreviation_list = ['edt', 'com', 'coord', 'org']
         literature_type = self.document_type[0]
 
-        if data:
+        if data and self.cleaned_data['status'] != -1:
             occ = 0
             for author in data:
                 occ = occ + 1
@@ -284,7 +284,7 @@ class BiblioRefForm(BetterModelForm):
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
         url_list = []
 
-        if data:
+        if data and self.cleaned_data['status'] != -1:
             occ = 0
             for electronic_address in data:
                 occ = occ + 1
@@ -320,7 +320,7 @@ class BiblioRefForm(BetterModelForm):
         data = self.cleaned_data[field]
         message = ''
 
-        if data and self.is_LILACS:
+        if data and self.is_LILACS and self.cleaned_data['status'] != -1:
             if data == 'c':
                 message = _("Printed music in the Record Type is incompatible with the LILACS Methodology")
             elif data == 'd':
@@ -415,7 +415,7 @@ class BiblioRefForm(BetterModelForm):
     def clean_publication_date(self):
         data = self.cleaned_data['publication_date']
 
-        if self.is_visiblefield('publication_date_normalized'):
+        if self.is_visiblefield('publication_date_normalized') and self.cleaned_data['status'] != -1:
             if data.isalpha() and data != 's.d' and data != 's.f':
                 self.add_error('publication_date', _("Date without year"))
 
@@ -428,7 +428,7 @@ class BiblioRefForm(BetterModelForm):
         normalized_date = self.cleaned_data['publication_date_normalized']
         raw_date = self.cleaned_data.get('publication_date')
 
-        if self.is_visiblefield('publication_date_normalized'):
+        if self.is_visiblefield('publication_date_normalized') and self.cleaned_data['status'] != -1:
             if raw_date != 's.d' and raw_date != 's.f':
                 if not normalized_date:
                     self.add_error('publication_date_normalized', _("Entering information in this field is conditional to filling out publication date field"))
@@ -454,7 +454,7 @@ class BiblioRefForm(BetterModelForm):
         field = 'pages'
         data = self.cleaned_data[field]
 
-        if data and self.is_visiblefield(field):
+        if data and self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
             if len(data) > 4:
                 self.add_error(field, _('Do not have more than 4 occurrences, use passim'))
             else:

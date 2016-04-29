@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
+from django.forms.utils import ErrorList
 
 from django.contrib.contenttypes.generic import BaseGenericInlineFormSet
 
@@ -177,7 +178,7 @@ def is_valid_for_publication(form, formsets):
             for formset in formsets:
                 for formset_form in formset.forms:
                     if hasattr(formset_form, 'cleaned_data'):
-                        data = formset_form.cleaned_data                        
+                        data = formset_form.cleaned_data
 
                         # check for status and not marked for DELETE
                         if data.get('status', status_default) == 1 and data.get('DELETE') == False:
@@ -195,5 +196,8 @@ def is_valid_for_publication(form, formsets):
             if not thematic_admitted:
                 # For publication must have at least one thematic area admitted
                 valid = False
+
+            if not valid:
+                form.non_field_errors = ErrorList([_('For status "Published" you must have at least one descriptor and one thematic area')])
 
     return valid
