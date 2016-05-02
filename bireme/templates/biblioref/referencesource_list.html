@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Reference Source" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Record Sources" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
     {% if user_role == 'editor_llxp' %}
-        <li>{% trans "Bibliographic References" %}<span class="divider">/</span></li>
+        <li>{% trans "Bibliographic Records" %}<span class="divider">/</span></li>
     {% else %}
-        <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
+        <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic Records" %}</a> <span class="divider">/</span></li>
     {% endif %}
-    <li>{% trans "Reference Source" %}</li>
+    <li>{% trans "Record Sources" %}</li>
 {% endblock %}
 
 {% block content %}

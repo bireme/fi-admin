@@ -46,11 +46,11 @@ TREATMENTLEVEL_CHOICES = (
 )
 
 
-# Bibliographic References
+# Bibliographic Record
 class Reference(Generic, AuditLog):
     class Meta:
-        verbose_name = _("Bibliographic Reference")
-        verbose_name_plural = _("Bibliographic References")
+        verbose_name = _("Bibliographic Record")
+        verbose_name_plural = _("Bibliographic Records")
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
     LILACS_indexed = models.BooleanField(_('LILACS indexed?'), default=True)
@@ -181,8 +181,8 @@ class Reference(Generic, AuditLog):
 class ReferenceSource(Reference):
 
     class Meta:
-        verbose_name = _("Bibliographic Reference Source")
-        verbose_name_plural = _("Bibliographic References Source")
+        verbose_name = _("Bibliographic Record Source")
+        verbose_name_plural = _("Bibliographic Records Source")
 
     # field tags 16
     individual_author_monographic = JSONField(_('Individual author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
@@ -253,12 +253,12 @@ class ReferenceSource(Reference):
         return exist_analytic
 
 
-# Bibliographic References
+# Bibliographic Records Analytic
 class ReferenceAnalytic(Reference):
 
     class Meta:
-        verbose_name = _("Bibliographic Reference Analytic")
-        verbose_name_plural = _("Bibliographic References Analytic")
+        verbose_name = _("Bibliographic Record Analytic")
+        verbose_name_plural = _("Bibliographic Records Analytic")
 
     source = models.ForeignKey(ReferenceSource, verbose_name=_("Source"), blank=False)
     # field tags 10
@@ -291,12 +291,12 @@ class ReferenceAnalytic(Reference):
         return ref_title
 
 
-# Bibliographic References
+# Bibliographic Record Complement
 class ReferenceComplement(models.Model):
 
     class Meta:
-        verbose_name = _("Bibliographic Reference Complement")
-        verbose_name_plural = _("Bibliographic References Complement")
+        verbose_name = _("Bibliographic Record Complement")
+        verbose_name_plural = _("Bibliographic Records Complement")
 
     source = models.ForeignKey(Reference, verbose_name=_("Source"), blank=False)
 
@@ -318,12 +318,12 @@ class ReferenceComplement(models.Model):
     project_name = models.CharField(_('Project name'), max_length=500, blank=True)
 
 
-# Bibliographic References Local information (library tab)
+# Bibliographic Record Local information (library tab)
 class ReferenceLocal(models.Model):
 
     class Meta:
-        verbose_name = _("Bibliographic Reference Local")
-        verbose_name_plural = _("Bibliographic References Local")
+        verbose_name = _("Bibliographic Record Local")
+        verbose_name_plural = _("Bibliographic Records Local")
 
     source = models.ForeignKey(Reference, verbose_name=_("Source"), blank=False)
     # field tag 03

@@ -6,14 +6,14 @@
 {% block title %}{% trans "Select document type" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
-    <li>{% trans "New Reference" %}</li>
+    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic Records" %}</a> <span class="divider">/</span></li>
+    <li>{% trans "New Record" %}</li>
 {% endblock %}
 
 {% block content %}
 
 <div class='header'>
-    <h2><i class='icon-file'></i>{% trans "New Reference" %}</h2>
+    <h2><i class='icon-file'></i>{% trans "New Record" %}</h2>
 </div>
 
 <div class='body'>
@@ -21,7 +21,7 @@
     {% if form.errors %}
         <ul class="errorlist alert alert-error">
             <li>{% trans "Please check required fields" %}</li>
-        </ul>        
+        </ul>
     {% endif %}
 
     <form action="{% url 'list_biblioref_sources' %}" method="get">

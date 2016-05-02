@@ -3,7 +3,7 @@ from views import *
 
 urlpatterns = [
 
-    # Bibliographic References
+    # Bibliographic Record
     url(r'^/?$', BiblioRefListView.as_view(), name='list_biblioref'),
     url(r'^type/?$', SelectDocumentTypeView.as_view(), name='select_biblioref_type'),
     url(r'^sources?$', BiblioRefListSourceView.as_view(), name='list_biblioref_sources'),
@@ -18,6 +18,3 @@ urlpatterns = [
     url(r'^field_assist/(?P<field_name>\w+)/', field_assist, name='field_assist'),
 
 ]
-
-
-

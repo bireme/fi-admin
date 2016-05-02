@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-28 14:44-0300\n"
-"PO-Revision-Date: 2016-04-28 14:44-0300\n"
+"POT-Creation-Date: 2016-05-02 11:17-0300\n"
+"PO-Revision-Date: 2016-05-02 11:18-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,11 +28,15 @@ msgstr "Selecione o arquivo"
 #: biblioref/field_definitions.py:416 events/models.py:21 help/models.py:26
 #: help/models.py:53 main/models.py:29 main/models.py:69 main/models.py:97
 #: main/models.py:108 main/models.py:135 multimedia/models.py:21
-#: multimedia/models.py:60 templates/biblioref/fieldset_fulltext.html:16
+#: multimedia/models.py:60 templates/biblioref/fieldset_fulltext.html:22
 #: templates/main/edit-language.html:8 text_block/models.py:16
 #: text_block/models.py:52 utils/models.py:113 utils/models.py:141
 msgid "Language"
 msgstr "Idioma"
+
+#: biblioref/cross_validation.py:25
+msgid "Eletronic address or fulltext file required"
+msgstr "Endereço eletrônico ou texto completo obrigatório"
 
 #: biblioref/field_definitions.py:40
 msgid "Other notes"
@@ -61,8 +65,8 @@ msgid "Imprint"
 msgstr "Imprenta"
 
 #: biblioref/field_definitions.py:68 biblioref/field_definitions.py:287
-#: templates/biblioref/referenceanalytic_form.html:57
-#: templates/biblioref/referenceanalytic_form.html:61
+#: templates/biblioref/referenceanalytic_form.html:51
+#: templates/biblioref/referenceanalytic_form.html:55
 #: templates/biblioref/referencesource_form.html:59
 msgid "Fulltext"
 msgstr "Texto completo"
@@ -75,7 +79,7 @@ msgid "General information"
 msgstr "Informações Gerais"
 
 #: biblioref/field_definitions.py:79
-#: templates/biblioref/referenceanalytic_form.html:107
+#: templates/biblioref/referenceanalytic_form.html:101
 msgid "Serial level"
 msgstr "Nível Série"
 
@@ -96,10 +100,6 @@ msgstr "Nível Monográfico"
 #: biblioref/field_definitions.py:166 biblioref/field_definitions.py:193
 msgid "Thesis Notes"
 msgstr "Notas da Tese"
-
-#: biblioref/field_definitions.py:254
-msgid "Latin America & Caribbean"
-msgstr "América Latina e Caribe"
 
 #: biblioref/field_definitions.py:266
 msgid "Center code"
@@ -669,7 +669,7 @@ msgstr "Documento de conferência em forma não convencional "
 msgid "Project paper in a non conventionally"
 msgstr "Documento de projeto em forma não convencional"
 
-#: biblioref/models.py:38 templates/biblioref/referenceanalytic_form.html:109
+#: biblioref/models.py:38 templates/biblioref/referenceanalytic_form.html:103
 msgid "Monographic level"
 msgstr "Nível monográfico"
 
@@ -701,9 +701,9 @@ msgstr "Nível analítico de série"
 msgid "Collection level"
 msgstr "Nível de coleção"
 
-#: biblioref/models.py:52 main/choices.py:14
-msgid "Bibliographic Reference"
-msgstr "Referência bibliográfica"
+#: biblioref/models.py:52
+msgid "Bibliographic Record"
+msgstr "Registro bibliográfico"
 
 #: biblioref/models.py:53 templates/biblioref/reference_form.html:9
 #: templates/biblioref/reference_list.html:5
@@ -715,8 +715,8 @@ msgstr "Referência bibliográfica"
 #: templates/biblioref/referencesource_list.html:8
 #: templates/biblioref/referencesource_list.html:10
 #: templates/biblioref/select_document_type.html:9
-msgid "Bibliographic References"
-msgstr "Referências bibliográficas"
+msgid "Bibliographic Records"
+msgstr "Registros bibliográficos"
 
 #: biblioref/models.py:55 error_reporting/models.py:35 events/models.py:67
 #: main/models.py:156 main/models.py:176 main/models.py:196 main/models.py:218
@@ -883,12 +883,12 @@ msgid "LILACS id"
 msgstr "Identificador LILACS"
 
 #: biblioref/models.py:184
-msgid "Bibliographic Reference Source"
-msgstr "Referência bibliografica - Fonte"
+msgid "Bibliographic Record Source"
+msgstr "Registro bibliográfico - Fonte"
 
 #: biblioref/models.py:185
-msgid "Bibliographic References Source"
-msgstr "Referência bibliografica - Fontes"
+msgid "Bibliographic Records Source"
+msgstr "Registro bibliográfico - Fontes"
 
 #: biblioref/models.py:194 biblioref/models.py:206 biblioref/models.py:271
 msgid "English translated title"
@@ -959,12 +959,12 @@ msgid "DOI number"
 msgstr "Número DOI"
 
 #: biblioref/models.py:260
-msgid "Bibliographic Reference Analytic"
-msgstr "Referência bibliografica - Analítica"
+msgid "Bibliographic Record Analytic"
+msgstr "Registro bibliográfico - Analítica"
 
 #: biblioref/models.py:261
-msgid "Bibliographic References Analytic"
-msgstr "Referência bibliografica - Analíticas"
+msgid "Bibliographic Records Analytic"
+msgstr "Registro bibliográfico - Analíticas"
 
 #: biblioref/models.py:263 biblioref/models.py:301 biblioref/models.py:328
 #: help/models.py:24 templates/reports/index.html:43
@@ -980,12 +980,12 @@ msgid "Clinical trial registry name"
 msgstr "Nome do registro do ensaio clínico"
 
 #: biblioref/models.py:298
-msgid "Bibliographic Reference Complement"
-msgstr "Complemento da Referência Bibliográfica"
+msgid "Bibliographic Record Complement"
+msgstr "Complemento do Registro Bibliográfico"
 
 #: biblioref/models.py:299
-msgid "Bibliographic References Complement"
-msgstr "Complemento das Referências Bibliográficas"
+msgid "Bibliographic Records Complement"
+msgstr "Complemento das Registros Bibliográficos"
 
 #: biblioref/models.py:304
 msgid "Conference Sponsoring Institution"
@@ -1020,18 +1020,18 @@ msgid "Project name"
 msgstr "Nome do projeto"
 
 #: biblioref/models.py:325
-msgid "Bibliographic Reference Local"
-msgstr "Referência bibliografica - Campos locais"
+msgid "Bibliographic Record Local"
+msgstr "Registro bibliográfico - Campos locais"
 
 #: biblioref/models.py:326
-msgid "Bibliographic References Local"
-msgstr "Referência bibliografica - Campos locais"
+msgid "Bibliographic Records Local"
+msgstr "Registro bibliográfico - Campos locais"
 
 #: biblioref/models.py:334
 msgid "Inventory number"
 msgstr "Tombo"
 
-#: biblioref/views.py:481 templates/biblioref/reference_form.html:323
+#: biblioref/views.py:484 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:138
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:324
 #: templates/events/edit-event.html:367 templates/events/edit-type.html:56
@@ -1047,7 +1047,7 @@ msgid "Save"
 msgstr "Gravar"
 
 #: country_lista_dividida.txt:17
-#: templates/biblioref/referenceanalytic_form.html:58
+#: templates/biblioref/referenceanalytic_form.html:52
 msgid "Library"
 msgstr "Biblioteca"
 
@@ -1318,6 +1318,10 @@ msgstr "Espanhol"
 msgid "Resources"
 msgstr "Recursos"
 
+#: main/choices.py:14
+msgid "Bibliographic Reference"
+msgstr "Referência bibliográfica"
+
 #: main/choices.py:18
 msgid "Editor"
 msgstr "Editor"
@@ -1390,7 +1394,7 @@ msgstr "Áreas temáticas"
 
 #: main/models.py:105 main/models.py:149
 #: templates/biblioref/reference_form.html:39
-#: templates/biblioref/referenceanalytic_form.html:59
+#: templates/biblioref/referenceanalytic_form.html:53
 #: templates/biblioref/referencesource_form.html:55
 #: templates/events/edit-event.html:38 templates/main/edit-resource.html:37
 #: templates/main/thematics.html:4 templates/main/thematics.html.py:7
@@ -1654,11 +1658,11 @@ msgstr "Assistente de campo"
 msgid "Leaving this page will cause any unsaved data to be lost"
 msgstr "Sair desta página fará com que os dados não salvos sejam perdidos"
 
-#: templates/biblioref/fieldset_fulltext.html:15
+#: templates/biblioref/fieldset_fulltext.html:21
 msgid "File"
 msgstr "Arquivo"
 
-#: templates/biblioref/fieldset_fulltext.html:18
+#: templates/biblioref/fieldset_fulltext.html:24
 #: templates/biblioref/fieldset_indexing.html:12
 #: templates/biblioref/fieldset_thematic.html:12
 #: templates/biblioref/reference_form.html:138
@@ -1704,15 +1708,15 @@ msgstr "Selecione pela pesquisa"
 #: templates/biblioref/reference_confirm_delete.html:5
 #: templates/biblioref/reference_confirm_delete.html:9
 #: templates/biblioref/reference_confirm_delete.html:15
-msgid "Delete reference"
-msgstr "Apagar referência"
+msgid "Delete record"
+msgstr "Apagar registro"
 
 #: templates/biblioref/reference_confirm_delete.html:8
-msgid "Reference"
-msgstr "Referência"
+msgid "Record"
+msgstr "Registro"
 
 #: templates/biblioref/reference_confirm_delete.html:27
-#: templates/biblioref/referenceanalytic_form.html:327
+#: templates/biblioref/referenceanalytic_form.html:319
 #: templates/delete_confirm.html:9
 #: templates/multimedia/media_confirm_delete.html:27
 #: templates/multimedia/mediacollection_confirm_delete.html:31
@@ -1722,7 +1726,7 @@ msgid "Are you sure you want to delete?"
 msgstr "Você tem certeza que deseja apagar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
-#: templates/biblioref/referenceanalytic_form.html:335
+#: templates/biblioref/referenceanalytic_form.html:327
 #: templates/delete_confirm.html:16
 #: templates/multimedia/media_confirm_delete.html:28
 #: templates/multimedia/mediacollection_confirm_delete.html:32
@@ -1732,7 +1736,7 @@ msgid "No"
 msgstr "Não"
 
 #: templates/biblioref/reference_confirm_delete.html:29
-#: templates/biblioref/referenceanalytic_form.html:334
+#: templates/biblioref/referenceanalytic_form.html:326
 #: templates/delete_confirm.html:17
 #: templates/multimedia/media_confirm_delete.html:29
 #: templates/multimedia/mediacollection_confirm_delete.html:33
@@ -1742,7 +1746,6 @@ msgid "Yes"
 msgstr "Sim"
 
 #: templates/biblioref/reference_form.html:6
-#: templates/biblioref/reference_form.html:11
 #: templates/multimedia/media_form.html:5
 #: templates/multimedia/media_form.html:10
 #: templates/multimedia/media_form.html:17
@@ -1753,12 +1756,16 @@ msgstr "Editar mídia"
 #: templates/biblioref/reference_form.html:18
 #: templates/biblioref/select_document_type.html:10
 #: templates/biblioref/select_document_type.html:16
-msgid "New Reference"
-msgstr "Nova referência"
+msgid "New Record"
+msgstr "Novo Registro"
+
+#: templates/biblioref/reference_form.html:11
+msgid "Edit Record"
+msgstr "Editar Registro"
 
 #: templates/biblioref/reference_form.html:18
-msgid "Edit Bibliographic Reference"
-msgstr "Editar Referência Bibliográfica"
+msgid "Edit Bibliographic Record"
+msgstr "Editar Registro Bibliográfico"
 
 #: templates/biblioref/reference_form.html:25
 #: templates/biblioref/select_document_type.html:23
@@ -1781,7 +1788,7 @@ msgstr ""
 "área temática admitidos."
 
 #: templates/biblioref/reference_form.html:37
-#: templates/biblioref/referenceanalytic_form.html:53
+#: templates/biblioref/referenceanalytic_form.html:47
 #: templates/biblioref/referencesource_form.html:52
 #: templates/events/edit-event.html:36 templates/main/edit-resource.html:35
 #: templates/multimedia/media_form.html:36 templates/title/title_form.html:41
@@ -1789,7 +1796,7 @@ msgid "Metadata"
 msgstr "Metadados"
 
 #: templates/biblioref/reference_form.html:38
-#: templates/biblioref/referenceanalytic_form.html:56
+#: templates/biblioref/referenceanalytic_form.html:50
 #: templates/biblioref/referencesource_form.html:54
 #: templates/events/edit-event.html:37 templates/main/edit-resource.html:36
 #: templates/multimedia/media_form.html:37
@@ -1797,7 +1804,7 @@ msgid "Indexing"
 msgstr "Indexação"
 
 #: templates/biblioref/reference_form.html:51
-#: templates/biblioref/referenceanalytic_form.html:78
+#: templates/biblioref/referenceanalytic_form.html:72
 #: templates/biblioref/referencesource_form.html:72
 #: templates/events/edit-event.html:50 templates/main/edit-resource.html:49
 #: templates/multimedia/media_form.html:50
@@ -1851,7 +1858,7 @@ msgid "Suggested"
 msgstr "Sugerido"
 
 #: templates/biblioref/reference_form.html:396
-#: templates/biblioref/referenceanalytic_form.html:269
+#: templates/biblioref/referenceanalytic_form.html:261
 #: templates/biblioref/referencesource_form.html:219
 #: templates/events/edit-event.html:389 templates/main/edit-resource.html:395
 #: templates/multimedia/media_form.html:343
@@ -1862,9 +1869,9 @@ msgstr "Adicionar descritor"
 #: templates/biblioref/reference_form.html:397
 #: templates/biblioref/reference_form.html:407
 #: templates/biblioref/reference_form.html:417
-#: templates/biblioref/referenceanalytic_form.html:270
-#: templates/biblioref/referenceanalytic_form.html:280
-#: templates/biblioref/referenceanalytic_form.html:290
+#: templates/biblioref/referenceanalytic_form.html:262
+#: templates/biblioref/referenceanalytic_form.html:272
+#: templates/biblioref/referenceanalytic_form.html:282
 #: templates/biblioref/referencesource_form.html:220
 #: templates/biblioref/referencesource_form.html:230
 #: templates/biblioref/referencesource_form.html:240
@@ -1893,7 +1900,7 @@ msgid "Add keyword"
 msgstr "Adicionar palavra-chave"
 
 #: templates/biblioref/reference_form.html:416
-#: templates/biblioref/referenceanalytic_form.html:289
+#: templates/biblioref/referenceanalytic_form.html:281
 #: templates/biblioref/referencesource_form.html:239
 #: templates/events/edit-event.html:409 templates/main/edit-resource.html:415
 #: templates/multimedia/media_form.html:363
@@ -1901,20 +1908,20 @@ msgid "Add thematic area"
 msgstr "Adicionar área temática"
 
 #: templates/biblioref/reference_list.html:35
-msgid "New Bibliographic Reference"
-msgstr "Nova Referência Bibliográfica"
+msgid "New Bibliographic Record"
+msgstr "Novo Registro Bibliográfico"
 
 #: templates/biblioref/reference_list.html:43
-msgid "My references"
-msgstr "Minhas referências"
+msgid "My records"
+msgstr "Meus registros"
 
 #: templates/biblioref/reference_list.html:51
-msgid "References of my center"
-msgstr "Referências do meu centro"
+msgid "Records of my center"
+msgstr "Registros do meu centro"
 
 #: templates/biblioref/reference_list.html:60
-msgid "All references"
-msgstr "Todos as referências"
+msgid "All records"
+msgstr "Todos registros"
 
 #: templates/biblioref/reference_list.html:68
 msgid "Indexed by my center"
@@ -1995,8 +2002,8 @@ msgid "Edit Analytic"
 msgstr "Editar Analítica"
 
 #: templates/biblioref/referenceanalytic_form.html:21
-#: templates/biblioref/referenceanalytic_list.html:16
-msgid "Reference Analytics"
+#: templates/biblioref/referencesource_list.html:68
+msgid "Analytics"
 msgstr "Analíticas"
 
 #: templates/biblioref/referenceanalytic_form.html:22
@@ -2011,61 +2018,57 @@ msgstr "Nova Analítica"
 msgid "Please check errors below"
 msgstr "Por favor verifique os erros abaixo"
 
-#: templates/biblioref/referenceanalytic_form.html:45
-msgid ""
-"For status \"Published\" you must have at least one descriptor and one "
-"thematic area"
-msgstr ""
-"Para o status \"Publicado\" é necessário ter pelo menos um descritor e uma "
-"área temática."
-
-#: templates/biblioref/referenceanalytic_form.html:67
+#: templates/biblioref/referenceanalytic_form.html:61
 #: templates/modal_dedup.html:6
 msgid "Possible duplicated article"
 msgstr "Possível artigo duplicado"
 
-#: templates/biblioref/referenceanalytic_form.html:67
+#: templates/biblioref/referenceanalytic_form.html:61
 msgid "check"
 msgstr "verificar"
 
-#: templates/biblioref/referenceanalytic_form.html:142
+#: templates/biblioref/referenceanalytic_form.html:134
 #: templates/biblioref/referencesource_form.html:116
 #: templates/modal_log.html:6
 msgid "Changes history"
 msgstr "Histórico de mudanças"
 
-#: templates/biblioref/referenceanalytic_form.html:165
+#: templates/biblioref/referenceanalytic_form.html:157
 msgid "Save Draft"
 msgstr "Gravar Rascunho"
 
-#: templates/biblioref/referenceanalytic_form.html:167
+#: templates/biblioref/referenceanalytic_form.html:159
 msgid "Save as"
 msgstr "Gravar como"
 
-#: templates/biblioref/referenceanalytic_form.html:173
+#: templates/biblioref/referenceanalytic_form.html:165
 msgid "Save as LILACS Express"
 msgstr "Salvar como LILACS Express"
 
-#: templates/biblioref/referenceanalytic_form.html:175
+#: templates/biblioref/referenceanalytic_form.html:167
 msgid "Publish as LILACS Express"
 msgstr "Publicar como LILACS Express"
 
-#: templates/biblioref/referenceanalytic_form.html:178
+#: templates/biblioref/referenceanalytic_form.html:170
 msgid "Publish"
 msgstr "Publicar"
 
-#: templates/biblioref/referenceanalytic_form.html:183
+#: templates/biblioref/referenceanalytic_form.html:175
 #: templates/suggest/invalid-link.html:51 templates/suggest/thanks.html:33
 msgid "Back"
 msgstr "Voltar"
 
-#: templates/biblioref/referenceanalytic_form.html:279
+#: templates/biblioref/referenceanalytic_form.html:271
 msgid "Add file"
 msgstr "Adicionar arquivo"
 
 #: templates/biblioref/referenceanalytic_list.html:5
 msgid "Reference Analytic"
 msgstr "Analítica"
+
+#: templates/biblioref/referenceanalytic_list.html:16
+msgid "Reference Analytics"
+msgstr "Analíticas"
 
 #: templates/biblioref/referenceanalytic_list.html:32
 msgid "Edit or create an analytic"
@@ -2097,8 +2100,9 @@ msgstr "Por favor verifique as mensagens de erro"
 
 #: templates/biblioref/referencesource_list.html:4
 #: templates/biblioref/referencesource_list.html:12
-msgid "Reference Source"
-msgstr "Nova Fonte"
+#| msgid "Record Source"
+msgid "Record Sources"
+msgstr "Fontes"
 
 #: templates/biblioref/referencesource_list.html:26
 msgid "Select or create a source"
@@ -2107,10 +2111,6 @@ msgstr "Selecione ou crie uma fonte"
 #: templates/biblioref/referencesource_list.html:55
 msgid "Publication year"
 msgstr "Ano de publicação"
-
-#: templates/biblioref/referencesource_list.html:68
-msgid "Analytics"
-msgstr "Analíticas"
 
 #: templates/biblioref/select_document_type.html:6
 msgid "Select document type"
@@ -2326,8 +2326,8 @@ msgid "Suggestions"
 msgstr "Sugestões"
 
 #: templates/menu.html:41 templates/menu.html.py:43
-msgid "Bibliographic references"
-msgstr "Referências bibliográficas"
+msgid "Bibliographic records"
+msgstr "Registros bibliográficos"
 
 #: templates/menu.html:48
 msgid "Journals"
@@ -2755,16 +2755,12 @@ msgid "Order"
 msgstr ""
 
 #: text_block/models.py:15
-#, fuzzy
-#| msgid "profile"
 msgid "User profile"
-msgstr "perfil"
+msgstr "Perfil do usuário"
 
 #: text_block/models.py:17 text_block/models.py:54
-#, fuzzy
-#| msgid "Content data"
 msgid "Content"
-msgstr "Dados de conteúdo"
+msgstr "Conteúdo"
 
 #: title/choices.py:8
 msgid "Scientific/Technical"
@@ -3284,13 +3280,21 @@ msgstr ""
 msgid "Public Health"
 msgstr "Data de publicação"
 
-#: utils/forms.py:131
+#: utils/forms.py:132
 msgid "You must have at least one descriptor"
 msgstr "Você precisa inserir pelo menos um descritor de assunto"
 
-#: utils/forms.py:150
+#: utils/forms.py:151
 msgid "You must have at least one thematic area"
 msgstr "Você precisa selecionar pelo menos uma área temática"
+
+#: utils/forms.py:201
+msgid ""
+"For status \"Published\" you must have at least one descriptor and one "
+"thematic area"
+msgstr ""
+"Para o status \"Publicado\" é necessário ter pelo menos um descritor e uma "
+"área temática."
 
 #: utils/models.py:29
 msgid "updated"
@@ -3331,6 +3335,36 @@ msgstr "apagado"
 #: utils/templatetags/app_filters.py:162
 msgid "Record created"
 msgstr "Recurso criado"
+
+#~ msgid "Record Analytics"
+#~ msgstr "Analíticas"
+
+#~ msgid "Delete reference"
+#~ msgstr "Apagar referência"
+
+#~ msgid "Reference"
+#~ msgstr "Referência"
+
+#~ msgid "New Reference"
+#~ msgstr "Nova referência"
+
+#~ msgid "Edit Bibliographic Reference"
+#~ msgstr "Editar Referência Bibliográfica"
+
+#~ msgid "New Bibliographic Reference"
+#~ msgstr "Nova Referência Bibliográfica"
+
+#~ msgid "My references"
+#~ msgstr "Minhas referências"
+
+#~ msgid "All references"
+#~ msgstr "Todos as referências"
+
+#~ msgid "Reference Source"
+#~ msgstr "Nova Fonte"
+
+#~ msgid "Latin America & Caribbean"
+#~ msgstr "América Latina e Caribe"
 
 #~ msgid "Monograph"
 #~ msgstr "Monografia"

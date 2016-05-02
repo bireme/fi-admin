@@ -6,16 +6,16 @@
 {% block title %}{% trans "Edit Media" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic References" %}</a> <span class="divider">/</span></li>
-    {% if not object %}<li>{% trans "New Reference" %}</li>
-    {% else %}<li>{% trans "Edit Media" %}</li>{% endif %}
+    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic Records" %}</a> <span class="divider">/</span></li>
+    {% if not object %}<li>{% trans "New Record" %}</li>
+    {% else %}<li>{% trans "Edit Record" %}</li>{% endif %}
 {% endblock %}
 
 {% block content %}
 
 
 <div class='header'>
-    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Reference" %}{% else %}{% trans "Edit Bibliographic Reference" %}{% endif %}</h2>
+    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Record" %}{% else %}{% trans "Edit Bibliographic Record" %}{% endif %}</h2>
 </div>
 
 <div class='body'>

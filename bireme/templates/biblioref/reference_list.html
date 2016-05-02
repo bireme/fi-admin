@@ -2,10 +2,10 @@
 {% load app_filters %}
 {% load i18n %}
 
-{% block title %}{% trans "Bibliographic References" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Bibliographic Records" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li>{% trans "Bibliographic References" %}</li>
+    <li>{% trans "Bibliographic Records" %}</li>
 {% endblock %}
 
 
@@ -20,7 +20,7 @@
 
 <!--  header -->
 <div class='header'>
-    <h2><i class='icon-file'></i> {% trans "Bibliographic References" %}</h2>
+    <h2><i class='icon-file'></i> {% trans "Bibliographic Records" %}</h2>
         <div class='pull-right'>
 
             {% if service_role.LILDBI == 'editor_llxp' %}
@@ -32,7 +32,7 @@
             {% else %}
                 <a href="{% url 'select_biblioref_type' %}" class='btn btn-primary'>
             {% endif %}
-            <i class='icon-file'></i> {% trans "New Bibliographic Reference" %}</a>
+            <i class='icon-file'></i> {% trans "New Bibliographic Record" %}</a>
         </div>
 </div>
 
@@ -40,7 +40,7 @@
     <ul class="nav nav-tabs" id='tab'>
         <li class="{% if actions.filter_owner == 'user' or not actions.filter_owner %}active{% endif %}">
             <a href="#tab-my" onclick="filter_owner('user')" data-toggle="tab">
-            <strong>{% trans "My references" %}</strong>
+            <strong>{% trans "My records" %}</strong>
             {% if actions.filter_owner == 'user' or not actions.filter_owner %}
                 <span class="badge badge-info">{{ paginator.count }}</span>
             {% endif %}
@@ -48,7 +48,7 @@
         </li>
         <li class="{% if actions.filter_owner == 'center' %}active{% endif %}">
             <a href="#tab-network" onclick="filter_owner('center')" data-toggle="tab">
-                <strong>{% trans "References of my center" %}</strong>
+                <strong>{% trans "Records of my center" %}</strong>
                {% if  actions.filter_owner == 'center' %}
                    <span class="badge badge-info">{{ paginator.count }}</span>
                {% endif %}
@@ -57,7 +57,7 @@
         {% if user_role != 'editor_llxp' %}
             <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
                 <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
-                    <strong>{% trans "All references" %}</strong>
+                    <strong>{% trans "All records" %}</strong>
                    {% if  actions.filter_owner == '*' %}
                        <span class="badge badge-info">{{ paginator.count }}</span>
                    {% endif %}

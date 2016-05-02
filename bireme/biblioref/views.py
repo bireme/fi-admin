@@ -32,7 +32,7 @@ import json
 
 class BiblioRefGenericListView(LoginRequiredView, ListView):
     """
-    Handle list view for bibliographic references objects
+    Handle list view for bibliographic records objects
     """
     paginate_by = settings.ITEMS_PER_PAGE
     context_object_name = "references"
@@ -121,28 +121,28 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
 class BiblioRefListView(BiblioRefGenericListView, ListView):
     """
-    Extend BiblioRefGenericListView to list bibliographic references
+    Extend BiblioRefGenericListView to list bibliographic records
     """
     model = Reference
 
 
 class BiblioRefListSourceView(BiblioRefGenericListView, ListView):
     """
-    Extend BiblioRefGenericListView to list bibliographic references
+    Extend BiblioRefGenericListView to list bibliographic records
     """
     model = ReferenceSource
 
 
 class BiblioRefListAnalyticView(BiblioRefGenericListView, ListView):
     """
-    Extend BiblioRefGenericListView to list bibliographic references
+    Extend BiblioRefGenericListView to list bibliographic records
     """
     model = ReferenceAnalytic
 
 
 class BiblioRefUpdate(LoginRequiredView):
     """
-    Handle creation and update of bibliographic references
+    Handle creation and update of bibliographic records
     """
 
     success_url = reverse_lazy('list_biblioref')

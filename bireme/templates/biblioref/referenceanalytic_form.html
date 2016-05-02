@@ -16,9 +16,9 @@
         {% else %}
             <a href="{% url 'list_biblioref' %}">
         {% endif %}
-        {% trans "Bibliographic References" %}</a> <span class="divider">/</span>
+        {% trans "Bibliographic Records" %}</a> <span class="divider">/</span>
     </li>
-    <li><a href="{% url 'list_biblioref_analytics' %}?source={{reference_source.id}}">{% trans "Reference Analytics" %}</a><span class="divider">/</span></li>
+    <li><a href="{% url 'list_biblioref_analytics' %}?source={{reference_source.id}}">{% trans "Analytics" %}</a><span class="divider">/</span></li>
     {% if not object %}<li>{% trans "New Analytic" %}</li>
     {% else %}<li>{% trans "Edit Analytic" %}</li>{% endif %}
 {% endblock %}

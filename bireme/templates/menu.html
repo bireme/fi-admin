@@ -38,9 +38,9 @@
 
                             {% if service_role.LILDBI %}
                                 {% if service_role.LILDBI = 'editor_llxp' %}
-                                    <li><a href="{% url 'list_biblioref_sources' %}?document_type=S" title=""><i class="icon-book"></i> {% trans "Bibliographic references" %}</a></li>
+                                    <li><a href="{% url 'list_biblioref_sources' %}?document_type=S" title=""><i class="icon-book"></i> {% trans "Bibliographic records" %}</a></li>
                                 {% else %}
-                                    <li><a href="{% url 'list_biblioref' %}" title=""><i class="icon-book"></i> {% trans "Bibliographic references" %}</a></li>
+                                    <li><a href="{% url 'list_biblioref' %}" title=""><i class="icon-book"></i> {% trans "Bibliographic records" %}</a></li>
                                 {% endif %}
                             {% endif %}
 
