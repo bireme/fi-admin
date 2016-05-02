@@ -435,9 +435,8 @@ class ClinicalTrialRegistryNameAttributes(colander.MappingSchema):
                   AuxCode.objects.filter(field='clinical_trial_database')]
 
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Database'),
-                               widget=deform.widget.SelectWidget(values=db_choices),
-                               missing=unicode(''),)
-    _a = colander.SchemaNode(colander.String('utf-8'), title=_('Record number'), missing=unicode(''),)
+                               widget=deform.widget.SelectWidget(values=db_choices))
+    _a = colander.SchemaNode(colander.String('utf-8'), title=_('Record number'))
     _u = colander.SchemaNode(colander.String('utf-8'), title=_('URL'), missing=unicode(''),)
 
 class ClinicalTrialRegistryName(colander.SequenceSchema):
