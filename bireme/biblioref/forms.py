@@ -424,29 +424,31 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+
     def clean_publication_date_normalized(self):
-        normalized_date = self.cleaned_data['publication_date_normalized']
+        normalized_field = 'publication_date_normalized'
+        normalized_date = self.cleaned_data[normalized_field]
         raw_date = self.cleaned_data.get('publication_date')
 
-        if self.is_visiblefield('publication_date_normalized') and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(normalized_field) and self.cleaned_data['status'] != -1:
             if raw_date != 's.d' and raw_date != 's.f':
                 if not normalized_date:
-                    self.add_error('publication_date_normalized', _("Entering information in this field is conditional to filling out publication date field"))
+                    self.add_error(normalized_field, _("Entering information in this field is conditional to filling out publication date field"))
                 else:
                     if len(normalized_date) != 8:
-                        self.add_error('publication_date_normalized', _("Different of 8 characters"))
+                        self.add_error(normalized_field, _("Different of 8 characters"))
 
                     if self.is_LILACS:
                         if int(normalized_date[:4]) < 1982:
-                            self.add_error('publication_date_normalized', _("Incompatible with LILACS"))
+                            self.add_error(normalized_field, _("Incompatible with LILACS"))
 
                         if len(raw_date) == 4:
                             if not normalized_date == "%s0000" % raw_date:
-                                self.add_error('publication_date_normalized', _("Error in the date"))
+                                self.add_error(normalized_field, _("Error in the date"))
             else:
                 if normalized_date:
                     msg = _("Leave blank, publication date = %s") % raw_date
-                    self.add_error('publication_date_normalized', msg)
+                    self.add_error(normalized_field, msg)
 
         return normalized_date
 
@@ -606,6 +608,36 @@ class LibraryForm(forms.ModelForm):
         exclude = ('cooperative_center_code',)
 
 
+class ComplementForm(forms.ModelForm):
+    class Meta:
+        model = ReferenceComplement
+        exclude = ('source',)
+
+    def clean_conference_normalized_date(self):
+        conference = self.cleaned_data.get('conference_name', '')
+        normalized_field = 'conference_normalized_date'
+        normalized_date = self.cleaned_data[normalized_field]
+        raw_date = self.cleaned_data.get('conference_date')
+
+        if conference:
+            if raw_date != 's.d' and raw_date != 's.f':
+                if not normalized_date:
+                    self.add_error(normalized_field, _("Mandatory"))
+                else:
+                    if len(normalized_date) != 8:
+                        self.add_error(normalized_field, _("Different of 8 characters"))
+
+                    if len(raw_date) == 4:
+                        if not normalized_date == "%s0000" % raw_date:
+                            self.add_error(normalized_field, _("Error in the date"))
+            else:
+                if normalized_date:
+                    msg = _("Leave blank, publication date = %s") % raw_date
+                    self.add_error(normalized_field, msg)
+
+        return normalized_date
+
+
 class ThematicForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         obj = super(ThematicForm, self).save(commit=False)
@@ -635,3 +667,6 @@ AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentFor
 
 LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal, form=LibraryForm, extra=1,
                                        max_num=1, can_delete=False)
+
+ComplementFormSet = inlineformset_factory(Reference, ReferenceComplement, form=ComplementForm, extra=1,
+                                          max_num=1, can_delete=False)

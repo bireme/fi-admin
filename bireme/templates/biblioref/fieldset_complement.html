@@ -1,0 +1,78 @@
+{% load i18n %}
+{% load app_filters %}
+
+<div id='tab-complement' class="tab-pane">
+    <fieldset class="accordion-body metadata" id="{{ fieldset.name }}">
+        {% if not user_can_edit %}
+            {% for field in formset_complement.0 %}
+                {% if field.value %}
+                    {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
+                        <div class="well">
+                            <blockquote>
+                                <p><strong>{{ field.label }}</strong><p>
+                                <p>{{ field.value|linebreaks }}<p>
+                            </blockquote>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {{ formset_complement.management_form }}
+
+            {# only one set of fields are present for each center #}
+            {% for field in formset_complement.0 %}
+                {% if field.name == 'conference_name' %}
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-target="#event">{% trans "Event notes" %}</a>
+                        </div>
+                        <fieldset class="accordion-body" id="event" style="margin-left: 15px;">
+                {% elif field.name == 'project_name' %}
+                        </fieldset>
+                    </div>
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-target="#project">{% trans "Project notes" %}</a>
+                        </div>
+                        <fieldset class="accordion-body" id="project" style="margin-left: 15px;">
+                {% endif %}
+
+                {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
+                    <label for="{{ field.auto_id }}">
+                        {% if field.name in help_fields %}
+                            <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
+                        {% else %}
+                            {{ field.label }}
+                        {% endif %}
+                        {% if field.field.required %}
+                            <span class="mark">*</span>
+                        {% endif %}
+                    </label>
+                {% endif %}
+
+                {{ field.errors }}
+
+                {% if field.field|fieldtype == 'JSONFormField' %}
+                    <div class="row">
+                        <a onclick="javascript:field_assist('{{field.name}}', '{{field.html_name}}')" href="javascript:void(0);">
+                            <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                        </a>
+                    </div>
+                {% endif %}
+
+                {{ field }}
+
+                {% if field.help_text != 'Enter valid JSON' %}
+                    <p class="muted">{{ field.help_text }}</p>
+                {% endif %}
+
+                {% if field.name == 'project_sponsoring_institution' %}
+                        </fieldset>
+                    </div>
+                {% endif %}
+
+
+            {% endfor %}
+        {% endif %}
+    </fieldset>
+</div>

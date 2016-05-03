@@ -152,6 +152,7 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_thematic = ResourceThematicFormSet(self.request.POST, instance=self.object)
         formset_attachment = AttachmentFormSet(self.request.POST, self.request.FILES, instance=self.object)
         formset_library = LibraryFormSet(self.request.POST, instance=self.object)
+        formset_complement = ComplementFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
@@ -160,6 +161,7 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_thematic_valid = formset_thematic.is_valid()
         formset_attachment_valid = formset_attachment.is_valid()
         formset_library_valid = formset_library.is_valid()
+        formset_complement_valid = formset_complement.is_valid()
 
         user_data = additional_user_info(self.request)
         # run cross formsets validations
@@ -168,9 +170,27 @@ class BiblioRefUpdate(LoginRequiredView):
                                                              'attachment': formset_attachment}, user_data)
 
         if (form_valid and formset_descriptor_valid and formset_thematic_valid and
-            formset_attachment_valid and valid_for_publication):
+            formset_attachment_valid and formset_complement_valid and valid_for_publication):
 
                 self.object = form.save()
+
+                # Handle record complement (Event and/or Project)
+                complement_conference = (formset_complement.cleaned_data[0]['conference_name'] != '')
+                complement_project = (formset_complement.cleaned_data[0]['project_name'] != '')
+
+                if complement_conference:
+                    self.object.literature_type += 'C'
+                elif 'C' in self.object.literature_type:
+                    self.object.literature_type = self.object.literature_type.replace('C', '')
+
+                if complement_project:
+                    self.object.literature_type += 'P'
+                elif 'P' in self.object.literature_type:
+                    self.object.literature_type = self.object.literature_type.replace('P', '')
+
+                if (complement_conference or complement_project):
+                    self.object.save()
+
                 formset_descriptor.instance = self.object
                 formset_descriptor.save()
 
@@ -182,6 +202,9 @@ class BiblioRefUpdate(LoginRequiredView):
 
                 formset_library.instance = self.object
                 formset_library.save()
+
+                formset_complement.instance = self.object
+                formset_complement.save()
 
                 # update solr index
                 # form.save()
@@ -199,6 +222,7 @@ class BiblioRefUpdate(LoginRequiredView):
                                                  formset_thematic=formset_thematic,
                                                  formset_attachment=formset_attachment,
                                                  formset_library=formset_library,
+                                                 formset_complement=formset_complement,
                                                  valid_for_publication=valid_for_publication))
 
     def form_invalid(self, form):
@@ -225,7 +249,7 @@ class BiblioRefUpdate(LoginRequiredView):
         else:
             # source/analytic edition
             if self.object:
-                document_type = "{0}{1}".format(self.object.literature_type, self.object.treatment_level)
+                document_type = "{0}{1}".format(self.object.literature_type[0], self.object.treatment_level)
             # new source
             else:
                 document_type = self.request.GET.get('document_type')
@@ -303,6 +327,7 @@ class BiblioRefUpdate(LoginRequiredView):
             context['formset_attachment'] = AttachmentFormSet(instance=self.object)
             context['formset_library'] = LibraryFormSet(instance=self.object,
                                                         queryset=ReferenceLocal.objects.filter(cooperative_center_code=user_data['user_cc']))
+            context['formset_complement'] = ComplementFormSet(instance=self.object)
 
         # source/analytic edition
         if self.object:
@@ -424,6 +449,7 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
         Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ReferenceLocal.objects.filter(source=obj.id).delete()
+        ReferenceComplement.objects.filter(source=obj.id).delete()
 
         return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
 

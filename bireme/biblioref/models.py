@@ -152,7 +152,7 @@ class Reference(Generic, AuditLog):
     def __unicode__(self):
         if 'a' in self.treatment_level:
             ref_child = ReferenceAnalytic.objects.get(id=self.pk)
-            if self.literature_type == 'S':
+            if self.literature_type[0] == 'S':
                 ref_title = u"{0}; {1} ({2}), {3} | {4}".format(ref_child.source.title_serial,
                                                                 ref_child.source.volume_serial,
                                                                 ref_child.source.issue_number,
@@ -237,7 +237,7 @@ class ReferenceSource(Reference):
 
     def __unicode__(self):
         analytic_title = ''
-        if self.literature_type == 'S':
+        if self.literature_type[0] == 'S':
             analytic_title = u"{0}; {1} ({2}), {3}".format(self.title_serial,
                                                            self.volume_serial,
                                                            self.issue_number,
@@ -300,10 +300,10 @@ class ReferenceComplement(models.Model):
 
     source = models.ForeignKey(Reference, verbose_name=_("Source"), blank=False)
 
-    # field tag 52
-    conference_sponsoring_institution = models.TextField(_('Conference Sponsoring Institution'), blank=True)
     # field tag 53
     conference_name = models.TextField(_('Conference name'), blank=True)
+    # field tag 52
+    conference_sponsoring_institution = models.TextField(_('Conference Sponsoring Institution'), blank=True)
     # field tag 54
     conference_date = models.CharField(_('Conference date'), max_length=100, blank=True)
     # field tag 55
@@ -312,10 +312,12 @@ class ReferenceComplement(models.Model):
     conference_city = models.CharField(_('Conference city'), max_length=100, blank=True)
     # field tag 57
     conference_country = models.ForeignKey(Country, verbose_name=_('Conference country'), blank=True, null=True)
-    # field tag 58
-    project_sponsoring_institution = models.TextField(_('Project - Sponsoring Institution'), blank=True)
     # field tag 59
     project_name = models.CharField(_('Project name'), max_length=500, blank=True)
+    # field tag 60
+    project_number = models.CharField(_('Project number'), max_length=155, blank=True)
+    # field tag 58
+    project_sponsoring_institution = models.TextField(_('Project - Sponsoring Institution'), blank=True)
 
 
 # Bibliographic Record Local information (library tab)
