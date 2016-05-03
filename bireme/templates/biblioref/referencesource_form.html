@@ -21,7 +21,7 @@
 {% block content %}
 
 <div class='header'>
-    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %}</h2>
+    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %} ({{ document_type }})</h2>
     {% if object %}
         <div class='pull-right'>
             <a href="{% url 'list_biblioref_analytics' %}?source={{object.pk}}" class='btn btn-info'><i class='icon-align-justify'></i>{% trans "List analytics" %}</a>
