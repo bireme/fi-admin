@@ -122,6 +122,7 @@ urlpatterns = patterns('',
     (r'^api/', include(title_resource.urls)),
     (r'^api/', include(reference_resource.urls)),
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
+    (r'^api/users/get_user_id/(?P<username>[a-zA-z0-9\.\-]{0,30})/$', 'api.users.get_user_id'),
 
     # internationalization
     url(r'^i18n/', include('django.conf.urls.i18n')),
