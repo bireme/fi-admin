@@ -174,10 +174,11 @@ class BiblioRefUpdate(LoginRequiredView):
 
                 self.object = form.save()
 
-                # Handle record complement (Event and/or Project)
-                complement_conference = (formset_complement.cleaned_data[0]['conference_name'] != '')
-                complement_project = (formset_complement.cleaned_data[0]['project_name'] != '')
+                # Check if is present conference or project complement
+                complement_conference = formset_complement.cleaned_data[0].get('conference_name')
+                complement_project = formset_complement.cleaned_data[0].get('project_name')
 
+                # Update information at literature_type field
                 if complement_conference:
                     self.object.literature_type += 'C'
                 elif 'C' in self.object.literature_type:
