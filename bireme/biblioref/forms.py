@@ -537,6 +537,31 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_issn(self):
+        field = 'issn'
+        data = self.cleaned_data[field]
+
+        if data and self.is_visiblefield(field):
+            if len(data) > 9:
+                self.add_error(field, _('Maximum number of characteres = 9'))
+
+        return data
+
+    def clean_text_language(self):
+        field = 'text_language'
+        data = self.cleaned_data[field]
+        LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
+
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+            if not data:
+                self.add_error(field, _('Mandatory'))
+            else:
+                if self.is_LILACS:
+                    for text_language in data:
+                        if text_language not in LILACS_compatible_languages:
+                            self.add_error(field, _('Language incompatible with LILACS'))
+
+        return data
 
     def save(self, *args, **kwargs):
         new_reference = True

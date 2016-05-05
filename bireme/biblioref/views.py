@@ -213,7 +213,7 @@ class BiblioRefUpdate(LoginRequiredView):
                 return HttpResponseRedirect(self.get_success_url())
         else:
             # if not valid for publication return status to original (previous) value
-            if not valid_for_publication:
+            if not valid_for_publication and self.object:
                 self.object.status = self.object.previous_value('status')
                 self.request.POST['status'] = self.object.previous_value('status')
 
