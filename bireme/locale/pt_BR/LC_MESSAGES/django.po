@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 17:48-0300\n"
-"PO-Revision-Date: 2016-05-06 17:50-0306\n"
+"PO-Revision-Date: 2016-05-06 17:54-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -560,7 +560,7 @@ msgstr "Rascunho"
 
 #: biblioref/models.py:12
 msgid "Inprocess"
-msgstr "LILACS Express"
+msgstr "LILACS-Express"
 
 #: biblioref/models.py:13 templates/biblioref/reference_list.html:92
 #: utils/templatetags/app_filters.py:15
