@@ -36,13 +36,14 @@ def check_for_publication(form, formsets, user_data):
     status = form.cleaned_data['status']
     user_role = user_data['service_role'].get('LILDBI')
 
-    if status == 1:
-        # for LILACS status is required descriptor and thematic area
+    # for LILACS status and not Serie Source is required descriptor and thematic area
+    if status == 1 and form.document_type != 'S':
         valid = is_valid_for_publication(form, [formsets['descriptor'], formsets['thematic']])
 
-    # for LILACS-Express is required electronic_address or attachment
-    elif status == 0 and user_role == 'editor_llxp':
+    # for analytic of a serie is required electronic_address or attachment
+    if form.document_type == 'Sas' and status != -1:
         # check for electronic_address or attachment present
         valid = check_url_or_attachment(form, formsets['attachment'])
+
 
     return valid

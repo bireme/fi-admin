@@ -413,14 +413,15 @@ class BiblioRefForm(BetterModelForm):
         return data
 
     def clean_publication_date(self):
-        data = self.cleaned_data['publication_date']
+        field = 'publication_date'
+        data = self.cleaned_data[field]
 
-        if self.is_visiblefield('publication_date_normalized') and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
             if data.isalpha() and data != 's.d' and data != 's.f':
-                self.add_error('publication_date', _("Date without year"))
+                self.add_error(field, _("Date without year"))
 
             if not data:
-                self.add_error('publication_date', _("Mandatory"))
+                self.add_error(field, _("Mandatory"))
 
         return data
 
@@ -563,6 +564,16 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_publisher(self):
+        field = 'publisher'
+        data = self.cleaned_data[field]
+
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+            if not data:
+                self.add_error(field, _('Mandatory'))
+
+        return data
+
     def save(self, *args, **kwargs):
         new_reference = True
 
@@ -600,10 +611,14 @@ class BiblioRefForm(BetterModelForm):
                 setattr(obj, name, field.widget.original_value)
 
         # fix values for specific fields for llxp editor profile
-        if self.document_type == 'Sas' and self.user_role == 'editor_llxp':
-            obj.record_type = 'a'       # textual material
-            obj.item_form = 's'         # eletronic
-            obj.type_of_journal = 'p'   # periodical
+        if self.user_role == 'editor_llxp':
+            if self.document_type == 'Sas':
+                obj.record_type = 'a'       # textual material
+                obj.item_form = 's'         # eletronic
+                obj.type_of_journal = 'p'   # periodical
+            # mark source of serial with LLXP status
+            elif self.document_type == 'S':
+                obj.status = '0'
 
         # save object
         obj.save()

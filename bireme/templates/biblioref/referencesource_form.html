@@ -51,9 +51,11 @@
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         {% if user_role != 'editor_llxp' %}
-            <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
-            <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
-            {% if document_type.0 != 'M' and document_type.0 != 'T' %}
+            {% if document_type == 'Mc' or document_type == 'M' or document_type == 'N' or document_type.0 == 'T' %}
+                <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
+                <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
+            {% endif %}
+            {% if document_type == 'MS' or document_type == 'Mc' or document_type == 'M' or document_type == 'N' %}
                 <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
         {% endif %}
@@ -86,7 +88,7 @@
                                             <blockquote>
                                                 <p><strong>{{ field.label }}</strong><p>
                                                 {% if field.name = 'status' %}
-                                                    {% if document_type == 'S' %}
+                                                    {% if document_type.0 == 'S' %}
                                                         <span class="label label-success">{% trans "Series source" %}</span>
                                                     {% else %}
                                                         <p>{{ object.get_status_display }}</p>

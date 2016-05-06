@@ -170,7 +170,7 @@ class BiblioRefUpdate(LoginRequiredView):
                                                              'attachment': formset_attachment}, user_data)
 
         if (form_valid and formset_descriptor_valid and formset_thematic_valid and
-            formset_attachment_valid and formset_complement_valid and valid_for_publication):
+           formset_attachment_valid and formset_complement_valid and valid_for_publication):
 
                 self.object = form.save()
 
@@ -215,7 +215,7 @@ class BiblioRefUpdate(LoginRequiredView):
             # if not valid for publication return status to original (previous) value
             if not valid_for_publication and self.object:
                 self.object.status = self.object.previous_value('status')
-                self.request.POST['status'] = self.object.previous_value('status')
+                # self.request.POST['status'] = self.object.previous_value('status')
 
             return self.render_to_response(
                            self.get_context_data(form=form,
@@ -288,7 +288,7 @@ class BiblioRefUpdate(LoginRequiredView):
             context['user_can_edit'] = True if not self.object or (self.object.status != 1 and self.object.cooperative_center_code == user_data['user_cc']) else False
             context['user_can_change_status'] = False
         elif user_role == 'doc':
-            context['user_can_edit'] = True if not self.object or self.object.status == 0 or self.object.cooperative_center_code == user_data['user_cc'] else False
+            context['user_can_edit'] = True if not self.object or self.object.status == 0 or (self.object.status != 1 and self.object.cooperative_center_code == user_data['user_cc']) else False
             context['user_can_change_status'] = False
         else:
             context['user_can_edit'] = True
