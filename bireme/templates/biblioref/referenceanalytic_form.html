@@ -168,9 +168,9 @@
                 {% if not user_can_change_status %}
                     {% if user_role == 'editor_llxp' %}
                         {% if object.status == 0 %}
-                            <button class="btn btn-primary btn-large" id="save-inprocess">{% trans "Save as LILACS Express" %}</button>
+                            <button class="btn btn-primary btn-large" id="save-inprocess">{% trans "Save as LILACS-Express" %}</button>
                         {% else %}
-                            <button class="btn btn-primary btn-large" id="save-inprocess">{% trans "Publish as LILACS Express" %}</button>
+                            <button class="btn btn-primary btn-large" id="save-inprocess">{% trans "Publish as LILACS-Express" %}</button>
                         {% endif %}
                     {% else %}
                         <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
