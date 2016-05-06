@@ -41,7 +41,7 @@ def check_for_publication(form, formsets, user_data):
         valid = is_valid_for_publication(form, [formsets['descriptor'], formsets['thematic']])
 
     # for analytic of a serie is required electronic_address or attachment
-    if form.document_type == 'Sas' and status != -1:
+    if valid and form.document_type == 'Sas' and status != -1:
         # check for electronic_address or attachment present
         valid = check_url_or_attachment(form, formsets['attachment'])
 

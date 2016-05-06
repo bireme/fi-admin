@@ -14,7 +14,6 @@
         {% endif %}
     {% endfor %}
 
-
     <fieldset id="attachment">
         <table class="table table-condensed table-striped span8">
             <thead>
@@ -60,7 +59,6 @@
                     </tr>
                 {% endfor %}
             {% else %}
-
                 {% for form in formset_attachment %}
                     {% for field in form %}
                         {% if field.name == 'attachment_file' %}
