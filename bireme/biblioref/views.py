@@ -176,7 +176,8 @@ class BiblioRefUpdate(LoginRequiredView):
 
                 # Check if is present conference or project complement
                 complement_conference = formset_complement.cleaned_data[0].get('conference_name')
-                complement_project = formset_complement.cleaned_data[0].get('project_name')
+                complement_project = (formset_complement.cleaned_data[0].get('project_name') or
+                                      formset_complement.cleaned_data[0].get('project_number'))
 
                 # Update information at literature_type field
                 if complement_conference:

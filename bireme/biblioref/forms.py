@@ -653,6 +653,16 @@ class ComplementForm(forms.ModelForm):
         model = ReferenceComplement
         exclude = ('source',)
 
+    def clean_conference_date(self):
+        field = 'conference_date'
+        conference = self.cleaned_data.get('conference_name', '')
+        data = self.cleaned_data.get(field)
+
+        if conference and not data:
+            self.add_error(field, _("Mandatory"))
+
+        return data
+
     def clean_conference_normalized_date(self):
         conference = self.cleaned_data.get('conference_name', '')
         normalized_field = 'conference_normalized_date'
@@ -676,6 +686,16 @@ class ComplementForm(forms.ModelForm):
                     self.add_error(normalized_field, msg)
 
         return normalized_date
+
+    def clean_conference_city(self):
+        field = 'conference_city'
+        conference = self.cleaned_data.get('conference_name', '')
+        data = self.cleaned_data.get(field)
+
+        if conference and not data:
+            self.add_error(field, _("Mandatory"))
+
+        return data
 
 
 class ThematicForm(forms.ModelForm):
