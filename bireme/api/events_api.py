@@ -22,13 +22,14 @@ class EventResource(ModelResource):
         return [
             url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
             url(r"^(?P<resource_name>%s)/next%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_next'), name="api_get_next"),
+            url(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_last_id'), name="api_get_last_id"),
         ]
 
-    
+
     def get_search(self, request, **kwargs):
         self.method_check(request, allowed=['get'])
         self.is_authenticated(request)
-        self.throttle_check(request)        
+        self.throttle_check(request)
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
@@ -37,7 +38,7 @@ class EventResource(ModelResource):
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
-        sort = request.GET.get('sort', 'start_date desc')        
+        sort = request.GET.get('sort', 'start_date desc')
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -48,11 +49,11 @@ class EventResource(ModelResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': lang, 
+        search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': lang,
                     'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id, 'sort': sort}
 
 
-        r = requests.post(search_url, data=search_params)        
+        r = requests.post(search_url, data=search_params)
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
@@ -60,12 +61,12 @@ class EventResource(ModelResource):
     def get_next(self, request, **kwargs):
         self.method_check(request, allowed=['get'])
         self.is_authenticated(request)
-        self.throttle_check(request)        
+        self.throttle_check(request)
 
         fq = request.GET.get('fq', '')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
-        sort = request.GET.get('sort', 'start_date asc')        
+        sort = request.GET.get('sort', 'start_date asc')
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -78,12 +79,18 @@ class EventResource(ModelResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': 'pt', 
+        search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': 'pt',
                     'q': q , 'fq': fq, 'sort': sort}
 
 
-        r = requests.post(search_url, data=search_params)        
+        r = requests.post(search_url, data=search_params)
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
-        
+
+    def get_last_id(self, request, **kwargs):
+        self.method_check(request, allowed=['get'])
+
+        response = Event.objects.latest('pk').pk
+
+        return self.create_response(request, response)

@@ -17,7 +17,7 @@ SOURCE_CHOICES = [
 USER_PROFILES = [
     ('edi', _('Editor')),
     ('doc', _('Documentalist')),
-    ('editor_llxp', _('Editor LILACS Express')),
+    ('editor_llxp', _('Editor LILACS-Express')),
 ]
 
 SLOTS = [

@@ -38,6 +38,8 @@ class ReferenceResource(CustomResource):
         return [
             url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
+            url(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_last_id'), name="api_get_last_id"),
         ]
 
     def get_search(self, request, **kwargs):
@@ -85,3 +87,9 @@ class ReferenceResource(CustomResource):
         bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
 
         return bundle
+
+    def get_last_id(self, request, **kwargs):
+        self.method_check(request, allowed=['get'])
+        response = Reference.objects.latest('pk').pk
+
+        return self.create_response(request, response)

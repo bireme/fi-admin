@@ -1,51 +1,59 @@
 {% load i18n %}
+{% load app_filters %}
 
 <!-- THEMATIC AREA FORMSET -->
 <div id='tab-thematic' class="tab-pane">
     <fieldset id="thematic">
-
-        {% if thematic_list or user_can_edit %}
-            <table class="table table-condensed table-striped span8">
-                <thead>
-                    <th>{% trans "Thematic area" %}</th>
-                    {% if user_can_edit %}
-                        <th>{% trans "Delete?" %}</th>
-                    {% endif %}
-                </thead>
-                <tbody>
-                {% if thematic_list %}
-                    {% for thematic in thematic_list %}
-                        <tr>
-                            <td colspan="2">{{ thematic }}</td>
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-
+        <table class="table table-condensed table-striped span8">
+            <thead>
+                <th>{% trans "Thematic area" %}</th>
                 {% if user_can_edit %}
-                    {{ formset_thematic.management_form }}
-
-                    {% for form in formset_thematic %}
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
-                        <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
-                            {% for field in form.visible_fields %}
-                                {% if field.name != 'DELETE' %}
-                                    <td>
-                                        {{ field }}
-                                        {{ field.errors }}
-                                    </td>
-                                {% endif %}
-                            {% endfor %}
-                            <td>
-                                {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
+                    <th>{% trans "Delete?" %}</th>
                 {% endif %}
-                </tbody>
-            </table>
-    {% endif %}
+            </thead>
+            <tbody>
+            {% if thematic_list %}
+                {% for thematic in thematic_list %}
+                    <tr>
+                        <td colspan="2">{{ thematic }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+
+            {% if user_can_edit %}
+                {{ formset_thematic.management_form }}
+
+                {% for form in formset_thematic %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
+                        {% for field in form.visible_fields %}
+                            {% if field.name != 'DELETE' %}
+                                <td>
+                                    {{ field }}
+                                    {{ field.errors }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                        <td>
+                            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                {% for form in formset_thematic %}
+                    <tr>
+                    {% for field in form.visible_fields %}
+                        {% if field.name == 'thematic_area' and field.value != None %}
+                            <td>{% get_field_display form.instance field %}</td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
     </fieldset>
 </div>
 <!-- /THEMATIC AREA FORMSET -->

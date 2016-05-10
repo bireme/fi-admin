@@ -170,14 +170,16 @@ class BiblioRefUpdate(LoginRequiredView):
                                                              'attachment': formset_attachment}, user_data)
 
         if (form_valid and formset_descriptor_valid and formset_thematic_valid and
-            formset_attachment_valid and formset_complement_valid and valid_for_publication):
+           formset_attachment_valid and formset_complement_valid and valid_for_publication):
 
                 self.object = form.save()
 
-                # Handle record complement (Event and/or Project)
-                complement_conference = (formset_complement.cleaned_data[0]['conference_name'] != '')
-                complement_project = (formset_complement.cleaned_data[0]['project_name'] != '')
+                # Check if is present conference or project complement
+                complement_conference = formset_complement.cleaned_data[0].get('conference_name')
+                complement_project = (formset_complement.cleaned_data[0].get('project_name') or
+                                      formset_complement.cleaned_data[0].get('project_number'))
 
+                # Update information at literature_type field
                 if complement_conference:
                     self.object.literature_type += 'C'
                 elif 'C' in self.object.literature_type:
@@ -211,10 +213,12 @@ class BiblioRefUpdate(LoginRequiredView):
                 form.save_m2m()
                 return HttpResponseRedirect(self.get_success_url())
         else:
+
             # if not valid for publication return status to original (previous) value
-            if not valid_for_publication:
-                self.object.status = self.object.previous_value('status')
-                self.request.POST['status'] = self.object.previous_value('status')
+            if self.object:
+                previous_status = self.object.previous_value('status')
+                self.object.status = previous_status
+                form.cleaned_data['status'] = previous_status
 
             return self.render_to_response(
                            self.get_context_data(form=form,
@@ -287,7 +291,7 @@ class BiblioRefUpdate(LoginRequiredView):
             context['user_can_edit'] = True if not self.object or (self.object.status != 1 and self.object.cooperative_center_code == user_data['user_cc']) else False
             context['user_can_change_status'] = False
         elif user_role == 'doc':
-            context['user_can_edit'] = True if not self.object or self.object.status == 0 or self.object.cooperative_center_code == user_data['user_cc'] else False
+            context['user_can_edit'] = True if not self.object or self.object.status == 0 or (self.object.status != 1 and self.object.cooperative_center_code == user_data['user_cc']) else False
             context['user_can_change_status'] = False
         else:
             context['user_can_edit'] = True
@@ -301,29 +305,8 @@ class BiblioRefUpdate(LoginRequiredView):
             context['c_type'] = c_type
 
         if self.request.method == 'GET':
-            # special treatment for user of type documentalist is edit document from other user
-            # add in the context list of descriptor and thematic already set for the document
-            if user_role == 'doc' and self.object:
-                c_type = ContentType.objects.get_for_model(self.get_object())
-
-                context['descriptor_list'] = Descriptor.objects.filter(
-                    object_id=self.object.id, content_type=c_type).exclude(created_by_id=user_id)
-                context['thematic_list'] = ResourceThematic.objects.filter(
-                    object_id=self.object.id, content_type=c_type).exclude(created_by_id=user_id)
-
-                pending_descriptor_from_user = Descriptor.objects.filter(
-                    created_by_id=self.request.user.id)
-                pending_thematic_from_user = ResourceThematic.objects.filter(
-                    created_by_id=user_id)
-
-                context['formset_descriptor'] = DescriptorFormSet(instance=self.object,
-                                                                  queryset=pending_descriptor_from_user)
-                context['formset_thematic'] = ResourceThematicFormSet(instance=self.object,
-                                                                      queryset=pending_thematic_from_user)
-            else:
-                context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
-                context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
-
+            context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
+            context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
             context['formset_attachment'] = AttachmentFormSet(instance=self.object)
             context['formset_library'] = LibraryFormSet(instance=self.object,
                                                         queryset=ReferenceLocal.objects.filter(cooperative_center_code=user_data['user_cc']))
@@ -335,7 +318,6 @@ class BiblioRefUpdate(LoginRequiredView):
         # new source
         else:
             context['document_type'] = self.request.GET.get('document_type')
-
 
         return context
 

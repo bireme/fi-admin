@@ -17,7 +17,7 @@
             {% if descriptor_list %}
                 {% for descriptor in descriptor_list %}
                     <tr>
-                        <td colspan="3">{{ descriptor.text }}</td>
+                        <td>{{ descriptor.text }}</td>
                     </tr>
                 {% endfor %}
             {% endif %}
@@ -58,6 +58,18 @@
                         <td class="span6">
                             {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                         </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                {% for form in formset_descriptor %}
+                    <tr>
+                    {% for field in form.visible_fields %}
+                        {% if field.name == 'text' and field.value != None %}
+                            <td>{{ field.value }}</td>
+                        {% elif field.name == 'primary'%}
+                            <td>{% if field.value == True %}{% trans "Yes" %}{% endif %}</td>
+                        {% endif %}
+                    {% endfor %}
                     </tr>
                 {% endfor %}
             {% endif %}

@@ -413,14 +413,15 @@ class BiblioRefForm(BetterModelForm):
         return data
 
     def clean_publication_date(self):
-        data = self.cleaned_data['publication_date']
+        field = 'publication_date'
+        data = self.cleaned_data[field]
 
-        if self.is_visiblefield('publication_date_normalized') and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
             if data.isalpha() and data != 's.d' and data != 's.f':
-                self.add_error('publication_date', _("Date without year"))
+                self.add_error(field, _("Date without year"))
 
             if not data:
-                self.add_error('publication_date', _("Mandatory"))
+                self.add_error(field, _("Mandatory"))
 
         return data
 
@@ -537,6 +538,41 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_issn(self):
+        field = 'issn'
+        data = self.cleaned_data[field]
+
+        if data and self.is_visiblefield(field):
+            if len(data) > 9:
+                self.add_error(field, _('Maximum number of characteres = 9'))
+
+        return data
+
+    def clean_text_language(self):
+        field = 'text_language'
+        data = self.cleaned_data[field]
+        LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
+
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+            if not data:
+                self.add_error(field, _('Mandatory'))
+            else:
+                if self.is_LILACS:
+                    for text_language in data:
+                        if text_language not in LILACS_compatible_languages:
+                            self.add_error(field, _('Language incompatible with LILACS'))
+
+        return data
+
+    def clean_publisher(self):
+        field = 'publisher'
+        data = self.cleaned_data[field]
+
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+            if not data:
+                self.add_error(field, _('Mandatory'))
+
+        return data
 
     def save(self, *args, **kwargs):
         new_reference = True
@@ -575,10 +611,14 @@ class BiblioRefForm(BetterModelForm):
                 setattr(obj, name, field.widget.original_value)
 
         # fix values for specific fields for llxp editor profile
-        if self.document_type == 'Sas' and self.user_role == 'editor_llxp':
-            obj.record_type = 'a'       # textual material
-            obj.item_form = 's'         # eletronic
-            obj.type_of_journal = 'p'   # periodical
+        if self.user_role == 'editor_llxp':
+            if self.document_type == 'Sas':
+                obj.record_type = 'a'       # textual material
+                obj.item_form = 's'         # eletronic
+                obj.type_of_journal = 'p'   # periodical
+            # mark source of serial with LLXP status
+            elif self.document_type == 'S':
+                obj.status = '0'
 
         # save object
         obj.save()
@@ -613,6 +653,16 @@ class ComplementForm(forms.ModelForm):
         model = ReferenceComplement
         exclude = ('source',)
 
+    def clean_conference_date(self):
+        field = 'conference_date'
+        conference = self.cleaned_data.get('conference_name', '')
+        data = self.cleaned_data.get(field)
+
+        if conference and not data:
+            self.add_error(field, _("Mandatory"))
+
+        return data
+
     def clean_conference_normalized_date(self):
         conference = self.cleaned_data.get('conference_name', '')
         normalized_field = 'conference_normalized_date'
@@ -636,6 +686,16 @@ class ComplementForm(forms.ModelForm):
                     self.add_error(normalized_field, msg)
 
         return normalized_date
+
+    def clean_conference_city(self):
+        field = 'conference_city'
+        conference = self.cleaned_data.get('conference_name', '')
+        data = self.cleaned_data.get(field)
+
+        if conference and not data:
+            self.add_error(field, _("Mandatory"))
+
+        return data
 
 
 class ThematicForm(forms.ModelForm):

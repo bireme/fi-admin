@@ -23,13 +23,14 @@ class LinkResource(ModelResource):
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
+            url(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_last_id'), name="api_get_last_id"),
         ]
 
-    
+
     def get_search(self, request, **kwargs):
         self.method_check(request, allowed=['get'])
         self.is_authenticated(request)
-        self.throttle_check(request)        
+        self.throttle_check(request)
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
@@ -38,7 +39,7 @@ class LinkResource(ModelResource):
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
-        sort = request.GET.get('sort', 'created_date desc')        
+        sort = request.GET.get('sort', 'created_date desc')
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -49,14 +50,14 @@ class LinkResource(ModelResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': lang, 
+        search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': lang,
                     'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
 
-        r = requests.post(search_url, data=search_params)        
+        r = requests.post(search_url, data=search_params)
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
-        
+
 
     def dehydrate(self, bundle):
         c_type = ContentType.objects.get_for_model(bundle.obj)
@@ -66,7 +67,7 @@ class LinkResource(ModelResource):
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
 
-        # add fields to output 
+        # add fields to output
         bundle.data['link'] = [line.strip() for line in bundle.obj.link.split('\n') if line.strip()]
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
@@ -75,3 +76,8 @@ class LinkResource(ModelResource):
 
         return bundle
 
+    def get_last_id(self, request, **kwargs):
+        self.method_check(request, allowed=['get'])
+        response = Resource.objects.latest('pk').pk
+
+        return self.create_response(request, response)
