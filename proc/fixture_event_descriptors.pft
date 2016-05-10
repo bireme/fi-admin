@@ -32,7 +32,7 @@ if mfn=1 then '['/ fi,
 					c8,'"created_by": ',v9997[1],/
 				c4,'}',/
 			'}'
-			if mfn=MAXMFN-1 then else ',' fi,/
+			if mfn=MAXMFN-1 then if iocc=nocc(v600) then else ',' fi, else ',' fi,/
 		else,
 		   '{',/
 				c4,'"model": ','"main.keyword",',/
@@ -46,7 +46,7 @@ if mfn=1 then '['/ fi,
 					c8,'"created_by": ',v9997[1],/
 				c4,'}',/
 			'}'			
-			if mfn=MAXMFN-1 then else ',' fi,/
+			if mfn=MAXMFN-1 then if iocc=nocc(v600) then else ',' fi, else ',' fi,/
 		fi,
     fi,
 )
