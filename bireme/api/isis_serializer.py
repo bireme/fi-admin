@@ -34,12 +34,7 @@ class ISISSerializer(Serializer):
                 field = item[field_name]
                 # check if field is not empty
                 if field:
-                    if field_name == 'id' and 'LILACS_original_id' in item and item['LILACS_original_id']:
-                        id_field = self.id_field(field_name, item['LILACS_original_id'])
-                        record_lines.append(id_field)
-
-                    # JSONField is returned as list from tastypie_custom class
-                    elif type(field) is list:
+                    if type(field) is list:
                         # create a temp str field_value with all subfields of current occ
                         for field_occ in field:
                             field_value = ''
@@ -64,6 +59,13 @@ class ISISSerializer(Serializer):
                         else:
                             id_field = self.id_field(field_name, field)
                             record_lines.append(id_field)
+
+            # add control fields
+            export_control_1 = self.id_field('export_control_1', 'FI-ADMIN^i%s^bLILACS' % item['id'])
+            record_lines.append(export_control_1)
+            if item['LILACS_original_id']:
+                export_control_2 = self.id_field('export_control_2', item['LILACS_original_id'])
+                record_lines.append(export_control_2)
 
             # sort lines will result a sort by tag number
             record_lines.sort()

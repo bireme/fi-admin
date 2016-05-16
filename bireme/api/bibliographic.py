@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.conf import settings
 from django.conf.urls import patterns, url, include
+from copy import copy
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -8,7 +9,7 @@ from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 from tastypie import fields
 
-from biblioref.models import Reference
+from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic
 from isis_serializer import ISISSerializer
 
 from tastypie_custom import CustomResource
@@ -24,7 +25,7 @@ import json
 class ReferenceResource(CustomResource):
 
     class Meta:
-        queryset = Reference.objects.filter(status=1)
+        queryset = Reference.objects.all()
         allowed_methods = ['get']
         serializer = ISISSerializer(formats=['json', 'xml', 'isis_id'], field_tag=field_tag_map)
         resource_name = 'bibliographic'
@@ -72,6 +73,43 @@ class ReferenceResource(CustomResource):
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
+
+    def full_dehydrate(self, bundle, for_list=False):
+        # complete bundle fields with child fields. Ex. Analytic and Source fields to Reference
+
+        # first populate bundle with Reference fields
+        bundle = super(ReferenceResource, self).full_dehydrate(bundle)
+
+        # Check type of Reference to add additional fields to bundle
+        reference_id = bundle.obj.id
+        if 'a' in bundle.data['treatment_level']:
+            obj = ReferenceAnalytic.objects.get(pk=reference_id)
+        else:
+            obj = ReferenceSource.objects.get(pk=reference_id)
+
+        # Add additional fields to bundle
+        bundle = self.add_fields_to_bundle(bundle, obj)
+
+        # Add Source fields to bundle
+        if 'source' in bundle.data:
+            source_id = bundle.data['source']
+            obj_source = ReferenceSource.objects.get(pk=source_id)
+            bundle = self.add_fields_to_bundle(bundle, obj_source)
+            bundle.data['source_control'] = 'FONTE'
+
+        return bundle
+
+    def add_fields_to_bundle(self, bundle, obj):
+
+        for field in obj._meta.get_fields():
+            # check if field is not already in bundle
+            if field.name not in bundle.data:
+                field_value = getattr(obj, field.name, {})
+                if field_value:
+                    # copy value to mantain list (jsonfieds)
+                    bundle.data[field.name] = copy(field_value)
+
+        return bundle
 
     def dehydrate(self, bundle):
         # retrive child class of reference (analytic or source) for use in ContentType query
