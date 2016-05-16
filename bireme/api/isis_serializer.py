@@ -41,6 +41,13 @@ class ISISSerializer(Serializer):
                             if isinstance(field_occ, dict):
                                 for key, value in field_occ.iteritems():
                                     subfield_id = "^{0}".format(key[1]) if key.startswith('_') else ''
+                                    # skip subfields with False values. ex. ^g of electronic_address
+                                    if isinstance(value, bool) and value is False:
+                                        continue
+
+                                    if not isinstance(value, basestring):
+                                        value = str(value)
+
                                     subfield = u''.join((subfield_id, value)).encode('utf-8').strip()
                                     field_value = ''.join((field_value, subfield))
                                 # format out line in ID format
