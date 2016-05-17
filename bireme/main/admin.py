@@ -68,5 +68,5 @@ class ResourceAdmin(GenericAdmin):
     inlines = [DescriptorAdmin, KeywordAdmin, ThematicAreaAdmin, ErrorReportAdmin, ]
 
 admin.site.register(Resource, ResourceAdmin)
-admin.site.register(ThematicArea, ThematicAreaAdmin)
 admin.site.register(SourceLanguage, SourceLanguageAdmin)
+admin.site.register(ThematicArea)
