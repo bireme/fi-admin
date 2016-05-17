@@ -10,6 +10,7 @@ from tastypie.utils import trailing_slash
 from tastypie import fields
 
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic
+from attachments.models import Attachment
 from isis_serializer import ISISSerializer
 
 from tastypie_custom import CustomResource
@@ -118,11 +119,33 @@ class ReferenceResource(CustomResource):
 
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+        attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
 
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
         bundle.data['descriptors'] = [{'text': descriptor.code} for descriptor in descriptors]
         bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
+
+        electronic_address = []
+        for attach in attachments:
+            file_name = attach.attachment_file.name
+            file_extension = file_name.split(".")[-1].lower()
+
+            if file_extension == 'pdf':
+                file_type = 'PDF'
+            else:
+                file_type = 'TEXTO'
+
+            view_url = "%sdocument/view/%s" % (settings.SITE_URL,  attach.short_url)
+
+            electronic_address.append({'_u': view_url, '_i': attach.language[:2],
+                                       '_y': file_type, '_q': file_extension})
+
+        if electronic_address:
+            if bundle.data['electronic_address'] and type(bundle.data['electronic_address']) is list:
+                bundle.data['electronic_address'].extend(electronic_address)
+            else:
+                bundle.data['electronic_address'] = electronic_address
 
         return bundle
 
