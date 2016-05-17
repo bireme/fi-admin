@@ -48,13 +48,13 @@ class KeywordAdmin(generic.GenericTabularInline):
     extra = 1
 
 
-class ResourceThematicAdmin(admin.TabularInline):
-    model = ResourceThematic
+class ErrorReportAdmin(generic.GenericTabularInline):
+    model = ErrorReport
     extra = 1
 
 
-class ErrorReportAdmin(generic.GenericTabularInline):
-    model = ErrorReport
+class ThematicAreaAdmin(generic.GenericTabularInline):
+    model = ResourceThematic
     extra = 1
 
 
@@ -63,9 +63,9 @@ class ResourceAdmin(GenericAdmin):
     date_hierarchy = 'created_time'
     list_display = ('id', 'title', 'link', 'created_by', 'status')
     search_fields = ['id', 'title']
-    list_filter = ('status', 'source_language__language', 'source_type__name', 'thematics__thematic_area', 'cooperative_center_code')
-    inlines = [DescriptorAdmin, KeywordAdmin, ErrorReportAdmin, ]
+    list_filter = ('status', 'source_language__language', 'source_type__name',
+                   'thematics__thematic_area', 'cooperative_center_code')
+    inlines = [DescriptorAdmin, KeywordAdmin, ThematicAreaAdmin, ErrorReportAdmin, ]
 
 admin.site.register(Resource, ResourceAdmin)
-admin.site.register(ThematicArea, ThematicAreaAdmin)
 admin.site.register(SourceLanguage, SourceLanguageAdmin)
