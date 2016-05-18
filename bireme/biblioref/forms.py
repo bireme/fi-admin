@@ -191,7 +191,7 @@ class BiblioRefForm(BetterModelForm):
             for author in data:
                 occ = occ + 1
                 author_resp = author.get('_r', '')
-                message_item = _("item %s: ") % occ
+                message_item = _("Author %s: ") % occ
                 if not author_resp in abbreviation_list:
                     message = _("Degree of responsibility incompatible with LILACS")
                     message = string_concat(message_item, message)
@@ -204,6 +204,7 @@ class BiblioRefForm(BetterModelForm):
         abbreviation_list = [' JR.', ' JR ', 'Fº', ' jr.', ' jr ', 'fº', ' Jr.', ' Jr ', ' jR.', ' jR ']
         literature_type = self.document_type[0]
         type_of_journal = self.cleaned_data.get('type_of_journal', 'p')
+        status = self.cleaned_data['status']
 
         if self.document_type[0] == 'T':
             if not data:
@@ -213,7 +214,7 @@ class BiblioRefForm(BetterModelForm):
                 for author in data:
                     occ = occ + 1
                     author_name = author.get('text', '')
-                    message_item = _("item %s: ") % occ
+                    message_item = _("Author %s: ") % occ
                     if author_name == 'Anon':
                         message = _("Thesis's author anonymous")
                         message = string_concat(message_item, message)
@@ -231,7 +232,7 @@ class BiblioRefForm(BetterModelForm):
             for author in data:
                 occ = occ + 1
                 author_name = author.get('text', '')
-                message_item = _("item %s: ") % occ
+                message_item = _("Author %s: ") % occ
                 if author_name != 'Anon':
                     if not ',' in author_name and self.is_LILACS:
                         message = _("Comma absense or error in the word Anon")
@@ -251,10 +252,21 @@ class BiblioRefForm(BetterModelForm):
                             message = string_concat(message_item, message)
                             self.add_error(field, message)
 
-                    if literature_type == 'S' and self.is_LILACS and type_of_journal == 'p' and not '_1' in author:
-                        message = _("Subfield 1 affiliation mandatory")
+                    if status == 1 and literature_type == 'S' and self.is_LILACS and type_of_journal == 'p' and not author.get('_1'):
+                        message = _("Affiliation institution level 1 mandatory")
                         message = string_concat(message_item, message)
                         self.add_error(field, message)
+
+                    if status == 1 and not author.get('_p') and author.get('_1') and author.get('_1').lower() != 's.af':
+                        message = _("Affiliation country mandatory")
+                        message = string_concat(message_item, message)
+                        self.add_error(field, message)
+
+                    if status == 1 and (not author.get('_1') or author.get('_1').lower() == 's.af'):
+                        if author.get('_2') or author.get('_3') or author.get('_p') or author.get('_c'):
+                            message = _("For absent or s.af affiliation do not describe the others affiliation atributes")
+                            message = string_concat(message_item, message)
+                            self.add_error(field, message)
 
                     for key, value in author.iteritems():
                         if value.strip().endswith('.'):
