@@ -73,7 +73,7 @@ class ISISSerializer(Serializer):
             # add control fields
             export_control_1 = self.id_field('export_control_1', 'FI-ADMIN^i%s^bLILACS' % item['id'])
             record_lines.append(export_control_1)
-            if item['LILACS_original_id']:
+            if item.get('LILACS_original_id'):
                 export_control_2 = self.id_field('export_control_2', item['LILACS_original_id'])
                 record_lines.append(export_control_2)
 
