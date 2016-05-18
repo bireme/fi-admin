@@ -44,6 +44,9 @@ class ISISSerializer(Serializer):
                                     # skip subfields with False values. ex. ^g of electronic_address
                                     if isinstance(value, bool) and value is False:
                                         continue
+                                    # skip empty attributes
+                                    if not value:
+                                        continue
 
                                     if not isinstance(value, basestring):
                                         value = str(value)
