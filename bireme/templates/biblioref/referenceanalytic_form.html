@@ -109,7 +109,7 @@
                                     </div>
                                     <fieldset class="accordion-body" id="serial_level">
                                         <h4 class="alert alert-success">
-                                            {% if reference_source.literature_type == 'S' %}
+                                            {% if reference_source.literature_type.0 == 'S' %}
                                                 {{ reference_source }}
                                             {% else %}
                                                 {{ reference_source.title_monographic }}

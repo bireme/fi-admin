@@ -253,6 +253,7 @@ class BiblioRefUpdate(LoginRequiredView):
         else:
             # source/analytic edition
             if self.object:
+                reference_source = self.object.source
                 document_type = "{0}{1}".format(self.object.literature_type[0], self.object.treatment_level)
             # new source
             else:

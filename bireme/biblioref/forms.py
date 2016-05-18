@@ -361,6 +361,19 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_item_form(self):
+        field = 'item_form'
+        data = self.cleaned_data[field]
+        electronic_address = self.cleaned_data.get('electronic_address')
+        pages = self.cleaned_data.get('pages')
+        pages_monographic = self.cleaned_data.get('pages_monographic')
+
+        if data and self.is_LILACS and self.cleaned_data['status'] == 1:
+            if electronic_address:
+                if not pages and not pages_monographic and not data == 's':
+                    self.add_error(field, _("For the tradicional material of LILACS which is only in electronic form you should describe it as Electronic"))
+
+        return data
 
     def clean_title_serial(self):
         data = self.cleaned_data['title_serial']
