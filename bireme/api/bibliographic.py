@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.conf import settings
 from django.conf.urls import patterns, url, include
+from django.conf import settings
 from copy import copy
 
 from django.contrib.contenttypes.models import ContentType
@@ -18,13 +19,13 @@ from tastypie_custom import CustomResource
 from main.models import Descriptor, ResourceThematic
 from biblioref.field_definitions import field_tag_map
 
+import os
 import requests
 import urllib
 import json
 
 
 class ReferenceResource(CustomResource):
-
     class Meta:
         queryset = Reference.objects.all()
         allowed_methods = ['get']
@@ -98,13 +99,21 @@ class ReferenceResource(CustomResource):
             bundle = self.add_fields_to_bundle(bundle, obj_source)
             bundle.data['source_control'] = 'FONTE'
 
+        # Add system version control number
+        version_file = open(os.path.join(settings.PROJECT_ROOT_PATH, 'templates/version.txt'))
+        version_number = version_file.readlines()[0]
+        bundle.data['system_version'] = version_number.rstrip()
+
+        # Add LILACS Database
+        if obj.LILACS_indexed:
+            bundle.data['database'] = 'LILACS'
+
         return bundle
 
     def add_fields_to_bundle(self, bundle, obj):
-
         for field in obj._meta.get_fields():
-            # check if field is not already in bundle
-            if field.name not in bundle.data:
+            # check if field is not already in bundle or has no value in bundle.data
+            if field.name not in bundle.data or not bundle.data.get(field.name):
                 field_value = getattr(obj, field.name, {})
                 if field_value:
                     # copy value to mantain list (jsonfieds)
