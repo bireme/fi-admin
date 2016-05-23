@@ -41,7 +41,7 @@ class RefereceIndex(indexes.SearchIndex, indexes.Indexable):
             return [occ['_u'] for occ in obj.electronic_address]
 
     def prepare_reference_abstract(self, obj):
-        if obj.abstract:
+        if obj.abstract and type(obj.abstract) == list:
             return [occ['text'] for occ in obj.abstract]
 
     def prepare_reference_source(self, obj):
