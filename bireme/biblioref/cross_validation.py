@@ -72,6 +72,33 @@ def check_url_or_attachment(form, formset_attachment):
     return url_or_attachment
 
 
+def check_descriptor(form, formset_descriptor):
+    """
+    Check for at least one primary descriptors
+    """
+    valid = True
+    descriptor_primary = False
+    data = None
+
+    # access forms from formsets:
+    for formset in formset_descriptor.forms:
+        if hasattr(formset, 'cleaned_data'):
+            data = formset.cleaned_data
+
+            # check for status and not marked for DELETE
+            if data.get('DELETE') == False:
+                if data.get('text') and data.get('code'):
+                    if data.get('primary') == True:
+                        descriptor_primary = True
+
+    if not descriptor_primary:
+        # For publication must have at least one descriptor admitted
+        formset_descriptor.non_form_errors = ErrorList([_('For status "Published" you must have at least one primary descriptor')])
+        formset_descriptor.is_valid = False
+        valid = False
+
+    return valid
+
 def check_for_publication(form, formsets, user_data):
     """
     Run additional validation across forms fields for status LILACS-Express and LILACS
@@ -84,14 +111,13 @@ def check_for_publication(form, formsets, user_data):
     status = form.cleaned_data['status']
     user_role = user_data['service_role'].get('LILDBI')
 
-    # for LILACS status and not Serie Source is required descriptor and thematic area
+    # for LILACS status and not Serie Source is required at least one primary descriptor
     if status == 1 and form.document_type != 'S':
-        valid = is_valid_for_publication(form, [formsets['descriptor'], formsets['thematic']])
+        valid = check_descriptor(form, formsets['descriptor'])
 
     # for is_LILACS and journal article (Sas record) is required electronic_address or fulltext file #159
     if valid and form.is_LILACS and Sas_record and status != -1:
         # check for electronic_address/attachment or page
         valid = check_url_or_attachment(form, formsets['attachment'])
-
 
     return valid
