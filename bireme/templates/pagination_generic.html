@@ -10,10 +10,10 @@
                 <li>
                     <a href="javascript: page('{{ page_obj.previous_page_number }}')"><i class="icon-caret-left"></i></a>
                 </li>
-            {% else %}            
+            {% else %}
                 <li class="disabled">
                     <a href="#"><i class="icon-step-backward"></i></a>
-                </li>            
+                </li>
                 <li class="disabled">
                     <a href="#"><i class="icon-caret-left"></i></a>
                 </li>
@@ -27,17 +27,17 @@
                     <a href="javascript: page('{{ page_obj.next_page_number }}')"><i class="icon-caret-right"></i></a>
                 </li>
                 <li>
-                    <a href="javascript: page('{{ page_obj.next_page_number }}')"><i class="icon-step-forward"></i></a>
-                </li>                
+                    <a href="javascript: page('{{ page_obj.paginator.num_pages }}')"><i class="icon-step-forward"></i></a>
+                </li>
             {% else %}
                 <li class="disabled">
                     <a href="#"><i class="icon-caret-right"></i></a>
                 </li>
                 <li class="disabled">
                     <a href="#"><i class="icon-step-forward"></i></a>
-                </li>                
+                </li>
             {% endif %}
 
         </ul>
-    </div>  
+    </div>
 {% endif %}
