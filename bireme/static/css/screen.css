@@ -379,6 +379,14 @@ td.indexrange input[type="text"] {
     width: 120px;
 }
 
+td.variance input[type="text"] {
+    width: 130px;
+}
+
+td.variance.title input[type="text"] {
+    width: 220px;
+}
+
 div.onlineresource {
     border-bottom: 1px solid #ddd;
     padding-bottom: 20px;
@@ -442,7 +450,7 @@ div.onlineresource div.check {
 .preview span.textarea { font-weight: normal; }
 .preview span.textarea p { margin: 0 }
 .preview input, .preview textarea, .preview select { display: none; }
-.preview label {
+.preview label, .preview span {
     font-weight: bold;
     display: inline;
 }

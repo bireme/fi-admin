@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load app_filters %}
 
 {% block title %}{% if not object %}{% trans "New Title" %}{% else %}{% trans "Edit Title" %}{% endif %}{% endblock %}
 
@@ -338,6 +339,8 @@
                             <th>{% trans "Title" %}</th>
                             <th>{% trans "ISSN" %}</th>
                             <th>{% trans "Initial year" %}</th>
+                            <th>{% trans "Initial volume" %}</th>
+                            <th>{% trans "Initial number" %}</th>
                             <th>{% trans "Delete?" %}</th>
                         </thead>
                         <tbody>
@@ -351,7 +354,11 @@
                             <tr id="variance-{{ forloop.counter0 }}" class="variance-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for field in form.visible_fields %}
                                     {% if field.name != 'DELETE' %}
-                                        <td>
+                                        {% if field.name == 'label' %}
+                                            <td class="variance title">
+                                        {% else %}
+                                            <td class="variance">
+                                        {% endif %}
                                             {{ field }}
                                             {{ field.errors }}
                                         </td>

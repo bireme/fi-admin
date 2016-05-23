@@ -2,7 +2,7 @@
 
 from django.utils.translation import ugettext_lazy as _
 
-############################## Title choices ##############################
+############################## Title Choices ##############################
 
 PUBLICATION_LEVEL_CHOICES = (
     ('CT', _('Scientific/Technical')),
@@ -11,6 +11,7 @@ PUBLICATION_LEVEL_CHOICES = (
 
 TITLE_VARIANCE_CHOICES = (
     ('230', _('Parallel title')),
+    ('235', _('Shortened parallel title')),
     ('240', _('Other title forms')),
 )
 
@@ -118,8 +119,6 @@ STATE_CHOICES = (
     ("SP", "São Paulo"),
     ("TO", "Tocantins"),
 )
-
-############################## Fascic choices ##############################
 
 ACCESS_TYPE_CHOICES = (
     ("ALIV", _("Free")),
