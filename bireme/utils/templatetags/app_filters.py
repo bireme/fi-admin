@@ -174,6 +174,8 @@ def format_field(data, truncate=False):
                     for (key, value) in data_occ.items():
                         if value:
                             key = key.encode('utf-8')
+                            if not isinstance(value, basestring):
+                                value = str(value)
                             value = value.encode('utf-8')
                             if truncate and len(value) > 100:
                                 value = value[0:100] + "..."

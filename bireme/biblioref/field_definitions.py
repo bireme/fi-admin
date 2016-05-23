@@ -199,7 +199,9 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'L
 
                                   subject_section,
 
-                                  abstract_section
+                                  abstract_section,
+                                  
+                                  fulltext_section,
                                   ]
 
 # Non Conventional (source)

@@ -5,45 +5,31 @@ from utils.forms import is_valid_for_publication
 
 import re
 
-def validate_page_or_eletronic_address(form, formset_attachment):
+
+def check_url_or_page(form, formset_attachment):
     """
-    Check if is present the electronic_address field or attachment and run LILACS validation
-    across pages, electronic_address, record_type and descriptive_information atribute_a
+    Check for electronic_address field or attachment or pages
     """
-    url_or_attachment = True
+    url_or_page = True
 
     pages = form.cleaned_data.get('pages')
     electronic_address = form.cleaned_data.get('electronic_address')
-    record_type = form.cleaned_data.get('record_type')
-    descriptive_information = form.cleaned_data.get('descriptive_information')
-
-    check_record_type = ['a', 'c', 'd', 'e', 'f', 't']
-    check_descriptive_information = ['cdrom', 'cd-rom', 'disquete', 'diskete', 'cd', 'disquette', 'diskette']
 
     # if not electronic_address field check for attachment files
     if not electronic_address:
-        count = 0
         for form_attach in formset_attachment:
             try:
                 if form_attach.cleaned_data and form_attach.cleaned_data.get('DELETE') == False:
                     electronic_address = True
             except AttributeError:
-                # annoyingly, if a subform is invalid Django explicity raises
-                # an AttributeError for cleaned_data
                 pass
 
-    descriptive_atribute_a = ''
     # run LILACS validation check
     if not pages and not electronic_address:
-        if record_type in check_record_type:
-            if descriptive_information:
-                descriptive_atribute_a = descriptive_information[0].get('_a').lower()
+        form.add_error('pages', _('Eletronic address, fulltext file OR pages are required'))
+        url_or_page = False
 
-            if not descriptive_atribute_a in check_descriptive_information:
-                form.add_error('pages', _('Eletronic address, fulltext file OR pages are required'))
-                url_or_attachment = False
-
-    return url_or_attachment
+    return url_or_page
 
 
 def check_url_or_attachment(form, formset_attachment):
@@ -60,8 +46,6 @@ def check_url_or_attachment(form, formset_attachment):
                 if form_attach.cleaned_data and form_attach.cleaned_data.get('DELETE') == False:
                     electronic_address = True
             except AttributeError:
-                # annoyingly, if a subform is invalid Django explicity raises
-                # an AttributeError for cleaned_data
                 pass
 
     if not electronic_address:
@@ -115,9 +99,13 @@ def check_for_publication(form, formsets, user_data):
     if status == 1 and form.document_type != 'S':
         valid = check_descriptor(form, formsets['descriptor'])
 
-    # for is_LILACS and journal article (Sas record) is required electronic_address or fulltext file #159
-    if valid and form.is_LILACS and Sas_record and status != -1:
-        # check for electronic_address/attachment or page
-        valid = check_url_or_attachment(form, formsets['attachment'])
+    # for LILACS indexed check url/fulltext/page
+    if valid and form.is_LILACS and status != -1:
+        # for journal article (Sas record) check for electronic_address OR fulltext file #159
+        if Sas_record:
+            valid = check_url_or_attachment(form, formsets['attachment'])
+        else:
+            # for other types of document check for page or electronic_address #160
+            valid = check_url_or_page(form, formsets['attachment'])
 
     return valid
