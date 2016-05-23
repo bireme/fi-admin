@@ -22,6 +22,7 @@ import json
 
 TITLE_VARIANCE_LABELS = (
     ('230', 'parallel_titles'),
+    ('235', 'shortened_parallel_titles'),
     ('240', 'other_titles'),
 )
 
@@ -119,6 +120,8 @@ class TitleResource(CustomResource):
             for title in title_variance:
                 text = title.label if title.label else ''
                 text += '^a'+title.initial_year if title.initial_year else ''
+                text += '^v'+title.initial_volume if title.initial_volume else ''
+                text += '^n'+title.initial_number if title.initial_number else ''
                 text += '^i'+title.issn if title.issn else ''
                 bundle.data[dict(TITLE_VARIANCE_LABELS)[title.type]] += [{'text': text}]
 
