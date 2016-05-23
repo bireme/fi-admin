@@ -190,7 +190,6 @@ class TitleUpdate(LoginRequiredView):
             # force use of form_valid method to run all validations
             return self.form_valid(form)
 
-
     def get_form_kwargs(self):
         kwargs = super(TitleUpdate, self).get_form_kwargs()
         user_data = additional_user_info(self.request)
@@ -210,7 +209,11 @@ class TitleUpdate(LoginRequiredView):
         context['user_data'] = user_data
         context['role'] = user_role
         context['settings'] = settings
-        context['next_id'] = Title.objects.latest('id').id + 1
+
+        if Title.objects.count() > 0:
+            context['next_id'] = Title.objects.latest('id').id + 1
+        else:
+            context['next_id'] = 1
 
 
         if self.request.method == 'GET':
