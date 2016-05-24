@@ -70,9 +70,9 @@
                                 <div>
                                     {% if form.fields.title_serial.choices|length > 1 %}
 
-                                        <select id="{{ field.auto_id }}" name="{{ field.name }}">
+                                        <select id="{{ field.auto_id }}" name="{{ field.name }}" onchange="fill_issn()">
                                         {% for value, label in form.fields.title_serial.choices %}
-                                            <option value="{{ value }}"{% if field.value == value %} selected{% endif %}>{{ label }}</option>
+                                            <option value="{{ value }}"{% if field.value == value %} selected{% endif %} data-issn="{{ label|substring_after:'|' }}">{{ label|substring_before:'|' }}</option>
                                         {% endfor %}
                                         </select>
                                         {% if user_role != 'editor_llxp' %}
@@ -82,9 +82,11 @@
                                             </div>
                                         {% endif %}
                                     {% else %}
-                                        <input id="id_title_serial" maxlength="80" name="title_serial" type="text" value="{{ form.fields.title_serial.choices.0.1 }}" readonly="True">
+                                        <input id="id_title_serial" maxlength="80" name="title_serial" type="text" value="{{ form.fields.title_serial.choices.0.0 }}" readonly="True">
                                     {% endif %}
                                 </div>
+                            {% elif field.name == 'issn' and user_role == 'editor_llxp' and form.fields.title_serial.choices|length = 1 %}
+                                <input type="hidden" name="issn" id="id_issn" value="{{ form.fields.title_serial.choices.0.1|substring_after:'|' }}">
                             {% else %}
                                 {{ field }}
                             {% endif %}

@@ -83,14 +83,14 @@ class BiblioRefForm(BetterModelForm):
             # populate choice title list based on user profile
             if self.user_role == 'editor_llxp':
                 # for LILACS Express editor return only serials with same editor_cc_code of current user
-                title_list = [(t.shortened_title, t.shortened_title) for t in title_objects.filter(editor_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
+                title_list = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in title_objects.filter(editor_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
             else:
                 # for regular users return a title list splited in two parts:
                 # first journals that is indexed by user center code
                 # last the titles that have indexer_cc_code filled
                 title_list = [('', '')]
-                title_list_indexer_code = [(t.shortened_title, t.shortened_title) for t in title_objects.filter(indexer_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
-                title_list_other = [(t.shortened_title, t.shortened_title) for t in title_objects.exclude(indexer_cc_code=u'').exclude(indexer_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
+                title_list_indexer_code = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in title_objects.filter(indexer_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
+                title_list_other = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in title_objects.exclude(indexer_cc_code=u'').exclude(indexer_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
 
                 separator = "-----------"
                 label_indexed = separator + __('Indexed by your cooperative center') + separator
@@ -378,7 +378,7 @@ class BiblioRefForm(BetterModelForm):
     def clean_title_serial(self):
         data = self.cleaned_data['title_serial']
         if self.document_type == 'S':
-            title_serial = self.cleaned_data['title_serial']
+            title_serial = self.cleaned_data.get('title_serial')
             title_serial_other = self.data.get('title_serial_other')
 
             if title_serial_other and self.is_LILACS:
