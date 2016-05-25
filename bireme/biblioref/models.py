@@ -99,12 +99,6 @@ class Reference(Generic, AuditLog):
     transfer_date_to_database = models.CharField(_('Transfer date do database'), max_length=20, blank=True)
     # field tag 85
     author_keyword = JSONField(_('Author keyword'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
-    # field tag 91
-    # record_creation_date = TODO  (use created_time)
-    # field tag 92
-    # documentalist = CHECK
-    # field tag 93
-    # last_change_date = TODO  (use updated_time)
     # field tag 110
     item_form = AuxiliaryChoiceField(_('Item form'), max_length=10, blank=True)
     # field tag 111

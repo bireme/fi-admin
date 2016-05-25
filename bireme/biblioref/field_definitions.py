@@ -86,7 +86,9 @@ FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'LILACS_indexe
 
 # Periodical series (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                          'record_type', 'item_form', 'type_of_journal'],
+                                                          'record_type', 'item_form', 'type_of_computer_file',
+                                                          'type_of_cartographic_material', 'type_of_journal',
+                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
                                                'legend': _('General information')}),
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
@@ -200,7 +202,7 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'L
                                   subject_section,
 
                                   abstract_section,
-                                  
+
                                   fulltext_section,
                                   ]
 
