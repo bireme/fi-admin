@@ -132,6 +132,18 @@ class OwnerList(Generic):
     def __unicode__(self):
         return self.owner
 
+class IndexCode(Generic):
+
+    class Meta:
+        verbose_name = _("Indexing Code")
+        verbose_name_plural = _("Indexing Codes")
+
+    code = models.CharField(_('Code'), max_length=55, blank=True)
+    name = models.CharField(_('Name'), max_length=455, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
 class OnlineResources(models.Model):
 
     class Meta:
@@ -187,21 +199,12 @@ class BVSSpecialty(models.Model):
 
 class IndexRange(models.Model):
 
-    INDEX_CODE_CHOICES = (
-        ('IM', _('Index Medicus')),
-        ('IL', _('Index Medicus Latin American')),
-        ('EM', _('Excerpta Medica')),
-        ('BA', _('Biological abstracts')),
-        ('LL', _('LILACS')),
-        ('SP', _('Public Health')),
-    )
-
     class Meta:
         verbose_name = _("Index range")
         verbose_name_plural = _("Index range")
 
     title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True)
-    index_code = models.CharField(_('Index source code'), max_length=55, choices=INDEX_CODE_CHOICES, blank=True)
+    index_code = models.ForeignKey(IndexCode, verbose_name=_("Index source code"), blank=True, null=True)
     initial_date = models.CharField(_('Initial date'), max_length=255, blank=True)
     initial_volume = models.CharField(_('Initial volume'), max_length=55, blank=True)
     initial_number = models.CharField(_('Initial number'), max_length=55, blank=True)
@@ -210,7 +213,7 @@ class IndexRange(models.Model):
     final_number = models.CharField(_('Final number'), max_length=255, blank=True)
 
     def __unicode__(self):
-        return self.index_code
+        return self.index_code.name
 
 class Audit(models.Model):
 
