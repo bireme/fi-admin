@@ -137,7 +137,7 @@ class TitleResource(CustomResource):
         if index_range:
             bundle.data['index_range'] = []
             for index in index_range:
-                text = index.index_code if index.index_code else ''
+                text = index.index_code.code if index.index_code else ''
                 text += '^a'+index.initial_volume if index.initial_volume else ''
                 text += '^b'+index.initial_number if index.initial_number else ''
                 text += '^c'+index.initial_date if index.initial_date else ''
