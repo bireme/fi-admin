@@ -459,3 +459,14 @@ div.onlineresource div.check {
     padding: 18px 0;
 }
 .preview #tab-descriptors { padding-bottom: 10px; }
+
+#field_LILACS_indexed{
+    padding: 7px;
+    border: solid 1px #2f96b4;
+    width: 20%;
+}
+#field_LILACS_indexed input[type="checkbox"]{
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+}

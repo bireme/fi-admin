@@ -21,7 +21,7 @@
                         </blockquote>
                     {% endif %}
                 {% else %}
-                    <li {{ field.row_attrs }}>
+                    <li {{ field.row_attrs }} id="field_{{ field.name }}" >
                         {% if field.name == 'status' and not user_can_change_status %}
                             <p>
                                 {{ field.label }} :
