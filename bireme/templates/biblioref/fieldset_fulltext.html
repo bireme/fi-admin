@@ -4,7 +4,7 @@
 
     {% for error in formset_attachment.non_form_errors  %}
         <p class="errorlist alert alert-error">
-            <strong>{{ error|escape }}</strong>
+            {{ error|escape }}
         </p>
     {% endfor %}
 

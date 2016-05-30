@@ -4,67 +4,47 @@ from django.test.client import Client
 from django.contrib.contenttypes.models import ContentType
 
 from main.models import Descriptor, ResourceThematic, ThematicArea
+from title.models import Title
+from utils.models import AuxCode
 
 from utils.tests import BaseTestCase
 from models import *
 
-def minimal_form_data():
-    '''
-    Define a minimal fields for submit a biblioref form
-    '''
 
-    form_data = { 
-        'status': '0',
-        
-        'main-descriptor-content_type-object_id-TOTAL_FORMS': '0', 
-        'main-descriptor-content_type-object_id-INITIAL_FORMS': '0',
+form_data = {}
 
-        'main-keyword-content_type-object_id-TOTAL_FORMS': '0', 
-        'main-keyword-content_type-object_id-INITIAL_FORMS': '0',
+form_data['S'] = {
+    'status': '-1',
+    'LILACS_indexed': True,
+    'title_serial': 'Rev. Enfermagem',
+    'volume_serial': '10',
+    'issue_number': '2',
+}
 
-        'main-resourcethematic-content_type-object_id-TOTAL_FORMS': '0',
-        'main-resourcethematic-content_type-object_id-INITIAL_FORMS': '0',
-    }
+form_data['Sas'] = {
+    'status': '-1',
+    'LILACS_indexed': True,
+    'title': '[{"text": "Primeira analítica", "_i": "pt"}]',
+    'individual_author': '[{"text": "Chaves, Juca"}]'
 
-    return form_data
+}
 
-def complete_form_data():
-    '''
-    Define missing fields for a valid submission of biblioref object
-    '''
+blank_formsets = {
+    'main-descriptor-content_type-object_id-TOTAL_FORMS': '0',
+    'main-descriptor-content_type-object_id-INITIAL_FORMS': '0',
 
-    missing_fields = {
-        'main-descriptor-content_type-object_id-TOTAL_FORMS' : '1',
+    'main-resourcethematic-content_type-object_id-TOTAL_FORMS': '0',
+    'main-resourcethematic-content_type-object_id-INITIAL_FORMS': '0',
 
-        'main-descriptor-content_type-object_id-0-id' : '',
-        'main-descriptor-content_type-object_id-0-text' : 'malaria',
-        'main-descriptor-content_type-object_id-0-code' : '^d8462',
-        'main-descriptor-content_type-object_id-0-status' : '0',
+    'attachments-attachment-content_type-object_id-TOTAL_FORMS': '1',
+    'attachments-attachment-content_type-object_id-INITIAL_FORMS': '0',
 
-        'main-resourcethematic-content_type-object_id-TOTAL_FORMS' : '1',
-        'main-resourcethematic-content_type-object_id-0-thematic_area' : '1',
-        'main-resourcethematic-content_type-object_id-0-status' : '0',
-    }
+    'referencelocal_set-TOTAL_FORMS': '0',
+    'referencelocal_set-INITIAL_FORMS': '0',
 
-    complete_form_data = minimal_form_data()
-    complete_form_data.update(missing_fields)
-
-    return complete_form_data
-
-
-def create_test_objects():
-    '''
-    Create biblioref objects for tests
-    '''
-    BiblioRef.objects.create(status=0, metadata='{title: "Referência de teste 1 (BR1.1)"}', 
-                            created_by_id=1, cooperative_center_code='BR1.1')
-    
-    ct_id = ContentType.objects.get_for_model(BiblioRef)
-    descriptor = Descriptor.objects.create(object_id=1, content_type=ct_id, text='descritor 1')
-    thematic = ResourceThematic.objects.create(object_id=1, content_type=ct_id, thematic_area_id=1)
-
-    BiblioRef.objects.create(status=0, metadata='{title:"Referência de teste 2 (PY3.1)"}', 
-                            created_by_id=2, cooperative_center_code='PY3.1')
+    'referencecomplement_set-TOTAL_FORMS': '1',
+    'referencecomplement_set-INITIAL_FORMS': '0',
+}
 
 
 class BiblioRefTest(BaseTestCase):
@@ -75,96 +55,42 @@ class BiblioRefTest(BaseTestCase):
     def setUp(self):
         super(BiblioRefTest, self).setUp()
 
-        # create auxiliary models used on tests        
-        thematic_area = ThematicArea.objects.create(acronym='LISBR1.1', name='Teste')
+        AuxCode.objects.create(code='pt', field='text_language', language='pt', label='Português')
+
+        Title.objects.create(id_number='1', record_type='KS', treatment_level='K', cooperative_center_code='BR1.1',
+                             status='1', title='Revista de Enfermagem', creation_date='20160525',
+                             shortened_title='Rev. Enfermagem', editor_cc_code='BR772', issn='0000-XXXXX')
 
 
-    def test_list(self):
+
+    def test_editor_llxp(self):
         """
-        Test list view
+        Tests creation of records by editor llxp
         """
-        self.login_editor()
-        create_test_objects()
+        self.login_editor_llxp()
 
-        response = self.client.get('/biblioref/')
-        self.assertContains(response, "Referência de teste 1 (BR1.1")
+        # test create new source
+        post_data = form_data['S']
+        post_data.update(blank_formsets)
 
-        # list only references from user cooperative center (BR1.1)
-        self.assertNotContains(response, "Referência de teste 2 (PY3.1)")        
+        response = self.client.post('/bibliographic/new-source?document_type=S', post_data)
+        self.assertRedirects(response, '/bibliographic/new-analytic?source=1')
 
-'''
-    def test_add(self):
-        """
-        Tests create media
-        """
-        self.login_editor()        
+        # test create new analytic
+        post_data = form_data['Sas']
+        post_data.update(blank_formsets)
+        response = self.client.post('/bibliographic/new-analytic?source=1', post_data)
+        self.assertRedirects(response, '/bibliographic/analytics?source=1')
 
-        # invalid submission with missing required fields
-        form_data = minimal_form_data()
-        response = self.client.post('/multimedia/new', form_data )
-        
-        self.assertContains(response,'Por favor verifique os campos obrigatórios')
-        self.assertContains(response,'Você precisa inserir pelo menos um descritor de assunto')
-        self.assertContains(response,'Você precisa selecionar pelo menos uma área temática')
+        # test check for electronic_address or attachament
+        post_data =  form_data['Sas']
+        post_data.update(blank_formsets)
+        post_data['status'] = 0
+        post_data['text_language'] = 'pt'
+        response = self.client.post('/bibliographic/edit-analytic/2', post_data)
+        self.assertContains(response, "Endereço eletrônico OU texto completo obrigatório")
 
-        # complete form_data with required fields and re-submit form
-        form_data = complete_form_data()
-
-        # test valid submission
-        # after submit a valid content the view will redirect to /multimedia and list the objects
-        # follow=True will allow check if the new data is on the list
-        response = self.client.post('/multimedia/new', form_data, follow=True)
-        self.assertRedirects(response, '/multimedia/')
-        self.assertContains(response, "Foto 1")
-
-        # check if is set cooperative center code of user (editor = BR1.1)
-        self.assertEquals(Media.objects.all()[0].cooperative_center_code, "BR1.1")
-        
-    def test_edit(self):
-        """
-        Tests edit media
-        """
-        self.login_editor()
-        create_media_object()
-
-        media_test = Media.objects.all()[0]
-        url = '/multimedia/edit/{0}'.format(media_test.id)
-        response = self.client.get(url)
-
-        # Test if return form with fields
-        self.assertContains(response, media_test.title)
-
-        # Test changes values and submit
-        form_data = complete_form_data()
-        form_data['status'] = '1'
-
-        response = self.client.post(url, form_data)
-        # check for validation of descriptor and thematic area for status = Admitted
-        self.assertContains(response, "é necessário ter pelo menos um descritor")
-
-        # check for normal edition
-        form_data['status'] = '0'
-        response = self.client.post(url, form_data, follow=True)
-        self.assertRedirects(response, '/multimedia/')
-        self.assertContains(response, "Foto 1")
-
-
-    def test_delete(self):
-        """
-        Tests delete media 
-        """
-        self.login_editor()
-        create_media_object()
-
-        response = self.client.get('/multimedia/delete/1')
-        self.assertContains(response, "Você tem certeza?")
-
-        response = self.client.post('/multimedia/delete/1')
-
-        self.assertTrue(Media.objects.filter(id=1).count() == 0)
-        self.assertTrue(Descriptor.objects.filter(object_id=1).count() == 0)
-        self.assertTrue(ResourceThematic.objects.filter(object_id=1).count() == 0)
-
-        self.assertRedirects(response, '/multimedia/')
-
-'''
+        # test publish record
+        post_data['electronic_address'] = '[{"_u": "http://fulltext.org", "_i": "pt", "_q": "pdf", "_y": "PDF" }]'
+        response = self.client.post('/bibliographic/edit-analytic/2', post_data)
+        self.assertRedirects(response, '/bibliographic/analytics?source=1')

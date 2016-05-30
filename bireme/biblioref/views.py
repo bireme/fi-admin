@@ -244,6 +244,7 @@ class BiblioRefUpdate(LoginRequiredView):
         if source_id:
             reference_source = ReferenceSource.objects.get(pk=source_id)
             literature_type = reference_source.literature_type
+
             if literature_type == 'S':
                 document_type = 'Sas'
             else:
@@ -319,7 +320,21 @@ class BiblioRefUpdate(LoginRequiredView):
             context['document_type'] = "{0}{1}".format(self.object.literature_type, self.object.treatment_level)
         # new source
         else:
-            context['document_type'] = self.request.GET.get('document_type')
+            document_type = self.request.GET.get('document_type')
+            source_id = self.request.GET.get('source')
+
+            if document_type:
+                context['document_type'] = document_type
+            elif source_id:
+                reference_source = ReferenceSource.objects.get(pk=source_id)
+                literature_type = reference_source.literature_type
+                if literature_type == 'S':
+                    document_type = 'Sas'
+                else:
+                    document_type = "{0}am".format(literature_type)
+
+                context['document_type'] = document_type
+
 
         return context
 

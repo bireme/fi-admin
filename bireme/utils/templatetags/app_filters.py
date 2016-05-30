@@ -39,7 +39,7 @@ def widgetfieldtype(obj):
 
 @register.filter
 def invalues(value, list):
-    find = [item for item in list if item[1] == value]
+    find = [item for item in list if item[0] == value]
     if find:
         find = True
 
@@ -174,6 +174,8 @@ def format_field(data, truncate=False):
                     for (key, value) in data_occ.items():
                         if value:
                             key = key.encode('utf-8')
+                            if not isinstance(value, basestring):
+                                value = str(value)
                             value = value.encode('utf-8')
                             if truncate and len(value) > 100:
                                 value = value[0:100] + "..."
@@ -193,3 +195,11 @@ def format_field(data, truncate=False):
             out = data
 
     return out
+
+@register.filter
+def substring_after(text, delim):
+    return text.partition(delim)[2]
+
+@register.filter
+def substring_before(text, delim):
+    return text.partition(delim)[0]

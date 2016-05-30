@@ -291,5 +291,11 @@
             $("fieldset").removeClass('collapse');
         {% endif %}
 
+        // fill ISSN field
+        function fill_issn(){
+            issn = $("#id_title_serial option:selected").data('issn');
+            $("#id_issn").val(issn);
+        }
+
    </script>
 {% endblock %}
