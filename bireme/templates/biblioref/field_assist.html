@@ -47,7 +47,7 @@
     <script type="text/javascript">
         {% if field_json %}
             $( document ).ready(function() {
-                field_json_esc = `{{ field_json|escapejs }}`;
+                field_json_esc = '{{ field_json|escapejs }}';
                 opener.update_field_from_assist('{{ field_name }}', field_json_esc, '{{field_id}}');
             });
         {% endif %}
