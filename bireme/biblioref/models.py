@@ -153,7 +153,7 @@ class Reference(Generic, AuditLog):
                                                                 ref_child.source.publication_date_normalized[:4],
                                                                 ref_child.title[0]['text'])
             else:
-                ref_title = u"{0} | {1}".format(ref_child.source.title_monographic,
+                ref_title = u"{0} | {1}".format(ref_child.source.title_monographic[0]['text'],
                                                 ref_child.title[0]['text'])
         else:
             ref_child = ReferenceSource.objects.get(id=self.pk)
@@ -170,6 +170,9 @@ class Reference(Generic, AuditLog):
         else:
             return ReferenceSource
 
+    def document_type(self):
+        return "%s%s" % (self.literature_type, self.treatment_level)
+
 
 # Source
 class ReferenceSource(Reference):
@@ -183,7 +186,7 @@ class ReferenceSource(Reference):
     # field tag 17
     corporate_author_monographic = JSONField(_('Corporate author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tags 18
-    title_monographic = models.CharField(_('Title'), max_length=250, blank=True)
+    title_monographic = JSONField(_('Title'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tags 19
     english_title_monographic = models.CharField(_('English translated title'), max_length=250, blank=True)
     # field tag 20
@@ -195,7 +198,7 @@ class ReferenceSource(Reference):
     # field tag 24
     corporate_author_collection = JSONField(_('Corporate author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tags 25
-    title_collection = models.CharField(_('Title'), max_length=250, blank=True)
+    title_collection = JSONField(_('Title'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tags 26
     english_title_collection = models.CharField(_('English translated title'), max_length=250, blank=True)
     # field tags 27
@@ -230,16 +233,16 @@ class ReferenceSource(Reference):
     doi_number = models.CharField(_('DOI number'), max_length=150, blank=True)
 
     def __unicode__(self):
-        analytic_title = ''
+        source_title = ''
         if self.literature_type[0] == 'S':
-            analytic_title = u"{0}; {1} ({2}), {3}".format(self.title_serial,
+            source_title = u"{0}; {1} ({2}), {3}".format(self.title_serial,
                                                            self.volume_serial,
                                                            self.issue_number,
                                                            self.publication_date_normalized[:4])
         else:
-            analytic_title = u"{0} {1}".format(self.title_monographic, self.volume_monographic)
+            source_title = u"{0} {1}".format(self.title_monographic[0]['text'], self.volume_monographic)
 
-        return analytic_title
+        return source_title
 
     def has_analytic(self):
         exist_analytic = ReferenceAnalytic.objects.filter(source=self.pk).exists()

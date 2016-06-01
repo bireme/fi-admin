@@ -149,7 +149,12 @@ FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'L
 
                                   subject_section,
 
-                                  abstract_section
+                                  abstract_section,
+
+                                  indexing_section,
+
+                                  fulltext_section,
+
                                   ]
 
 # Thesis, dissertation (source)
@@ -320,6 +325,10 @@ class TitleAttributes(colander.MappingSchema):
 
 
 class Title(colander.SequenceSchema):
+    title = TitleAttributes(title=_('Title'))
+
+
+class TitleMonographic(colander.SequenceSchema):
     title = TitleAttributes(title=_('Title'))
 
 

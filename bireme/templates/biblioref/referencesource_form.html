@@ -21,7 +21,7 @@
 {% block content %}
 
 <div class='header'>
-    <h2><i class='icon-file' title="{{ document_type }}"></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %}</h2>
+    <h2><i class='icon-file' title="{% if object %}{{ object.document_type }}{% else %}{{ form.document_type }}{% endif %}"></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %}</h2>
     {% if object %}
         <div class='pull-right'>
             <a href="{% url 'list_biblioref_analytics' %}?source={{object.pk}}" class='btn btn-info'><i class='icon-align-justify'></i>{% trans "List analytics" %}</a>
@@ -32,30 +32,27 @@
 
 <div class='body'>
 
-    {% if form.errors %}
+    {% if form.errors or formset_attachment.errors or formset_thematic.errors or formset_descriptor.errors %}
         <p class="errorlist alert alert-error">
-            {% trans "Please check error messages" %}
-            {% for error in form.non_field_errors %}
-                <strong>{{ error|escape }}</strong>
-            {% endfor %}
+          {% trans "Please check errors below" %}
         </p>
+        {{ form.non_field_errors }}
     {% endif %}
-    {% if valid_for_publication != None and not valid_for_publication %}
-        <ul class="errorlist alert alert-error">
-            <li>{% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}</li>
-        </ul>
-    {% endif %}
+
     {{ formset_descriptor.non_form_errors }}
     {{ formset_thematic.non_form_errors }}
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         {% if user_role != 'editor_llxp' %}
-            {% if document_type == 'Mc' or document_type == 'M' or document_type == 'N' or document_type.0 == 'T' %}
+            {% if form.document_type == 'Mc' or form.document_type == 'M' or form.document_type == 'N' or form.document_type.0 == 'T' %}
                 <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
                 <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
             {% endif %}
-            {% if document_type == 'MS' or document_type == 'Mc' or document_type == 'M' or document_type == 'N' %}
+            {% if form.document_type != 'S' %}
+                <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}{% if formset_library.errors and not formset_library.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+            {% endif %}
+            {% if form.document_type == 'MS' or form.document_type == 'Mc' or form.document_type == 'M' or form.document_type == 'N' %}
                 <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
         {% endif %}
@@ -88,7 +85,7 @@
                                             <blockquote>
                                                 <p><strong>{{ field.label }}</strong><p>
                                                 {% if field.name = 'status' %}
-                                                    {% if document_type.0 == 'S' %}
+                                                    {% if form.document_type.0 == 'S' %}
                                                         <span class="label label-success">{% trans "Series source" %}</span>
                                                     {% else %}
                                                         <p>{{ object.get_status_display }}</p>
@@ -130,6 +127,9 @@
                 {% include "biblioref/fieldset_fulltext.html" %}
             {% endif %}
 
+            <!-- LIBRARY FORMSET -->
+            {% include "biblioref/fieldset_library.html" %}
+
             <!-- THEMATIC AREA FORMSET -->
             {% include "biblioref/fieldset_thematic.html" %}
 
@@ -138,14 +138,31 @@
 
         </div>
 
-        <!-- empty formsets (only used at analytic leve) -->
+        <!-- empty formsets (only used at analytic level) -->
         {{ formset_attachment.management_form }}
+
         {{ formset_library.management_form }}
 
-        <div class="control-panel form-submit">
-            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
-        </div>
 
+        <div class="control-panel form-submit">
+            {% if user_can_edit %}
+                {% if user_role == 'editor_llxp' %}
+                    <button class="btn btn-large btn-info">{% trans "Save" %}</button>
+                {% elif not object or object.status == -1 %}
+                    <button class="btn btn-large btn-info">{% trans "Save Draft" %}</button>
+                {% else %}
+                    <button class="btn btn-info btn-large">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
+                {% endif %}
+
+                {% if not user_can_change_status and user_role != 'editor_llxp'  %}
+                    <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'list_biblioref' %}" class="btn btn-large">
+                    {% trans "Back" %}
+                </a>
+            {% endif %}
+        </div>
     </form>
 </div>
 
@@ -285,6 +302,21 @@
             decs_field = row.find('input').attr('name');
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
         }
+
+        $("#save-inprocess").click(function() {
+            // set status to Inprocess (0) = LILACS Express
+            $('#id_status').val('0');
+        });
+
+        $("#save-published").click(function() {
+            // set status to Published (1) = LILACS
+            $('#id_status').val('1');
+        });
+
+        $("#id_status").change(function(){
+            new_status_label = $(this).find("option:selected").text();
+            $('#save_status').text(new_status_label);
+        });
 
         // open all fieldsets when form erros
         {% if form.errors %}

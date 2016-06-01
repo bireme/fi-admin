@@ -115,7 +115,10 @@ class WhodidMiddleware(object):
 
                 # convert JSON to compare properly
                 if isinstance(previous_value, basestring) and previous_value[0:2] == '[{':
-                    previous_value = json.loads(previous_value)
+                    try:
+                        previous_value = json.loads(previous_value)
+                    except ValueError:
+                        pass
 
                 if field_name not in exclude_log_fields and new_value != previous_value:
                     field_change.append({'field_name': field_name, 'previous_value': previous_value,

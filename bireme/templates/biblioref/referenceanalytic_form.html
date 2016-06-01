@@ -27,7 +27,7 @@
 
 
 <div class='header'>
-    <h3><i class='icon-file' title="{{ document_type }}"></i>{% if not object %}{% trans "New Analytic" %}{% else %}{% trans "Edit Analytic" %}{% endif %}</h3>
+    <h3><i class='icon-file' title="{% if object %}{{ object.document_type }}{% else %}{{ form.document_type }}{% endif %}"></i>{% if not object %}{% trans "New Analytic" %}{% else %}{% trans "Edit Analytic" %}{% endif %}</h3>
 </div>
 
 <div class='body'>
@@ -51,7 +51,7 @@
             <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}{% if formset_library.errors and not formset_library.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}{% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
-            {% if document_type.0 != 'M' and document_type.0 != 'T' %}
+            {% if form.document_type != 'Mc' and form.document_type.0 != 'T' %}
                 <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
         {% else %}
@@ -110,11 +110,7 @@
                                     </div>
                                     <fieldset class="accordion-body" id="serial_level">
                                         <h4 class="alert alert-success">
-                                            {% if reference_source.literature_type.0 == 'S' %}
-                                                {{ reference_source }}
-                                            {% else %}
-                                                {{ reference_source.title_monographic }}
-                                            {% endif %}
+                                            {{ reference_source }}
                                         </h4>
                                     </fieldset>
                             </div>
@@ -220,9 +216,9 @@
 
    <script type="text/javascript">
         var decs_field;
-        var document_type = "{{document_type}}";
-        var literature_type = "{{document_type|slice:'0:1'}}";
-        var treatment_level = "{{document_type|slice:'-2:'}}";
+        var document_type = "{{form.document_type}}";
+        var literature_type = "{{form.document_type|slice:'0:1'}}";
+        var treatment_level = "{{form.document_type|slice:'-2:'}}";
         var new_reference = {% if not object %}true{% else %}false{% endif%}
 
         function format_attrlabel(value) {

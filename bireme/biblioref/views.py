@@ -213,7 +213,6 @@ class BiblioRefUpdate(LoginRequiredView):
                 form.save_m2m()
                 return HttpResponseRedirect(self.get_success_url())
         else:
-
             # if not valid for publication return status to original (previous) value
             if self.object:
                 previous_status = self.object.previous_value('status')
@@ -244,6 +243,8 @@ class BiblioRefUpdate(LoginRequiredView):
         if source_id:
             reference_source = ReferenceSource.objects.get(pk=source_id)
             literature_type = reference_source.literature_type
+            # remove congress/project from literature_type
+            literature_type = literature_type.replace('CP', '')
 
             if literature_type == 'S':
                 document_type = 'Sas'
@@ -260,6 +261,7 @@ class BiblioRefUpdate(LoginRequiredView):
             # new source
             else:
                 document_type = self.request.GET.get('document_type')
+
 
         # get list of fields allowed by document_type
         fieldsets = FIELDS_BY_DOCUMENT_TYPE.get(document_type, None)
@@ -391,8 +393,13 @@ class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
 
     # after creation of source present option for creation new analytic
     def get_success_url(self):
-        return 'new-analytic?source=%s' % self.object.pk
+        redirect_url = ''
+        if self.object.literature_type[0] == 'S':
+            redirect_url = 'new-analytic?source=%s' % self.object.pk
+        else:
+            redirect_url = '/bibliographic/'
 
+        return redirect_url
 
 class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):
     """
@@ -451,18 +458,6 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
         ReferenceComplement.objects.filter(source=obj.id).delete()
 
         return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
-
-    # after creation of source present option for creation new analytic
-    def get_success_url(self):
-        user_data = additional_user_info(self.request)
-        user_role = user_data['service_role'].get('LILDBI')
-
-        if user_role == 'editor_llxp':
-            redirect_url = "%s?document_type=S" % reverse_lazy('list_biblioref_sources')
-        else:
-            redirect_url = self.success_url
-
-        return redirect_url
 
 
 def get_class(kls):

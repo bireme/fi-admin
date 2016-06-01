@@ -24,7 +24,7 @@ class SelectDocumentTypeForm(forms.Form):
     DOCUMENT_TYPE_CHOICES = (
         # ('MS', _('Monograph Series')),
         # ('', _('Monograph in a Collection')),
-        # ('M', _('Monograph')),
+        ('M', _('Monograph')),
         # ('N', _('Non conventional')),
         ('S', _('Periodical Series')),
         # ('', _('Collection')),
@@ -138,9 +138,42 @@ class BiblioRefForm(BetterModelForm):
         # change list of lists flatt
         find_list = [val for sublist in list_of_fields for val in sublist]
 
+        # check if field is at fieldset
         is_visible = fieldname in find_list
+        if is_visible:
+            # check if field is not hidden
+            if self.fields[fieldname].widget.is_hidden:
+                is_visible = False
 
         return is_visible
+
+    def check_pontuation(self, pontuation, value, field, message_item):
+        pontuation_with_space_after = "%s " % pontuation
+        pontuation_with_space_before = " %s" % pontuation
+
+        if pontuation in value:
+            if not pontuation_with_space_after in value:
+                message = _("Insert space after %s") % pontuation
+                message = string_concat(message_item, message)
+                self.add_error(field, message)
+            if pontuation_with_space_before in value:
+                message = _("Delete space before %s") % pontuation
+                message = string_concat(message_item, message)
+                self.add_error(field, message)
+
+    def check_all_pontuation(self, value, field, message_item=''):
+        pontuation_list = [',', ';', '.', ':']
+
+        for pontuation in pontuation_list:
+            self.check_pontuation(pontuation, value, field, message_item)
+
+    def check_author_presence(self, data, field_individual, field_corporate):
+        # check presence of individual and corporate author
+        if data.get(field_individual) and data.get(field_corporate):
+            self.add_error(field_individual, _("Individual Author and Corporate Autor present simultaneous"))
+        else:
+            if not data.get(field_individual) and not data.get(field_corporate):
+                self.add_error(field_individual, _("Individual Author or Corporate Author mandatory"))
 
     def clean(self):
         data = self.cleaned_data
@@ -157,13 +190,11 @@ class BiblioRefForm(BetterModelForm):
                 if field_check.strip().endswith('.'):
                     self.add_error(field_name, _("Point at end of field is not allowed"))
 
-        if 'individual_author' in self.fields:
-            # check presence of individual and corporate author
-            if data.get('individual_author') and data.get('corporate_author'):
-                self.add_error('individual_author', _("Individual Author and Corporate Autor present simultaneous"))
-            else:
-                if not data.get('individual_author') and not data.get('corporate_author'):
-                    self.add_error('individual_author', _("Individual Author or Corporate Author mandatory"))
+        if  self.is_visiblefield('individual_author'):
+            self.check_author_presence(data, 'individual_author', 'corporate_author')
+
+        if self.is_visiblefield('individual_author_monographic'):
+            self.check_author_presence(data, 'individual_author_monographic', 'corporate_author_monographic')
 
         if self.is_visiblefield('issue_number'):
             if not data.get('volume_serial') and not data.get('issue_number'):
@@ -179,14 +210,14 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
-
     def clean_corporate_author(self):
         field = 'corporate_author'
-        data = self.cleaned_data[field]
+        data = self.cleaned_data.get(field)
+        status = self.cleaned_data.get('status')
         abbreviation_list = ['edt', 'com', 'coord', 'org']
         literature_type = self.document_type[0]
 
-        if data and self.cleaned_data['status'] != -1:
+        if data and status != -1:
             occ = 0
             for author in data:
                 occ = occ + 1
@@ -204,7 +235,7 @@ class BiblioRefForm(BetterModelForm):
         abbreviation_list = [' JR.', ' JR ', 'Fº', ' jr.', ' jr ', 'fº', ' Jr.', ' Jr ', ' jR.', ' jR ']
         literature_type = self.document_type[0]
         type_of_journal = self.cleaned_data.get('type_of_journal', 'p')
-        status = self.cleaned_data['status']
+        status = self.cleaned_data.get('status')
 
         if self.document_type[0] == 'T':
             if not data:
@@ -292,11 +323,12 @@ class BiblioRefForm(BetterModelForm):
 
     def clean_electronic_address(self):
         field = 'electronic_address'
-        data = self.cleaned_data[field]
+        data = self.cleaned_data.get(field)
+        status = self.cleaned_data.get('status')
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
         url_list = []
 
-        if data and self.cleaned_data['status'] != -1:
+        if data and status != -1:
             occ = 0
             for electronic_address in data:
                 occ = occ + 1
@@ -332,7 +364,9 @@ class BiblioRefForm(BetterModelForm):
         data = self.cleaned_data[field]
         message = ''
 
-        if data and self.is_LILACS and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(field) and not data:
+            self.add_error(field, _("Mandatory"))
+        elif self.is_LILACS and self.cleaned_data['status'] != -1:
             if data == 'c':
                 message = _("Printed music in the Record Type is incompatible with the LILACS Methodology")
             elif data == 'd':
@@ -408,21 +442,69 @@ class BiblioRefForm(BetterModelForm):
             for title in data:
                 occ = occ + 1
                 url = title.get('_u', '')
-                message_item = _("item %s: ") % occ
+                message_item = _("Title %s: ") % occ
                 if self.is_LILACS:
                     if title.get('_i', '') not in LILACS_compatible_languages:
                         message = _("Language incompatible with LILACS")
                         message = string_concat(message_item, message)
                         self.add_error(field, message)
+                # check pontuation errors
+                self.check_all_pontuation(title.get('text'), field, message_item)
+
+        return data
+
+    def clean_title_monographic(self):
+        field = 'title_monographic'
+        data = self.cleaned_data.get(field)
+        LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
+
+        if self.is_visiblefield('title_monographic'):
+            if data:
+                occ = 0
+                for title in data:
+                    occ = occ + 1
+                    url = title.get('_u', '')
+                    message_item = _("Title %s: ") % occ
+                    if self.is_LILACS:
+                        if title.get('_i', '') not in LILACS_compatible_languages:
+                            message = _("Language incompatible with LILACS")
+                            message = string_concat(message_item, message)
+                            self.add_error(field, message)
+                    # check pontuation errors
+                    self.check_all_pontuation(title.get('text'), field, message_item)
+            else:
+                self.add_error(field, _("Mandatory"))
+
+        return data
+
+    def clean_english_title_monographic(self):
+        field = 'english_title_monographic'
+        data = self.cleaned_data.get(field)
+        status = self.cleaned_data.get('status')
+
+        if self.is_visiblefield(field):
+            self.check_all_pontuation(data, field)
+
+            title = self.cleaned_data.get('title_monographic')
+            if title:
+                title_languages = [t.get('_i') for t in title]
+
+            if not(data):
+                if self.is_LILACS and title and not 'en' in title_languages:
+                    self.add_error(field, _("Mandatory"))
+            else:
+                if self.is_LILACS and 'en' in title_languages:
+                    self.add_error(field, _("Invalid fill. Don't translate title in English"))
 
         return data
 
     def clean_english_translated_title(self):
         field = 'english_translated_title'
-        data = self.cleaned_data[field]
+        data = self.cleaned_data.get(field)
+        status = self.cleaned_data.get('status')
         title_languages = []
 
-        if 'a' in self.document_type and self.cleaned_data['status'] == 1:
+        if 'a' in self.document_type and status == 1:
             title = self.cleaned_data.get('title')
             if title:
                 title_languages = [t.get('_i') for t in title]
@@ -516,18 +598,6 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
-
-    def clean_pages_monographic(self):
-        field = 'pages_monographic'
-        data = self.cleaned_data[field]
-
-        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
-            if not(data) and not(self.cleaned_data['electronic_address']):
-                self.add_error(field, 'Electronic medium or Number of pages mandatory')
-
-
-        return data
-
     def clean_thesis_dissertation_institution(self):
         field = 'thesis_dissertation_institution'
         data = self.cleaned_data[field]
@@ -575,10 +645,11 @@ class BiblioRefForm(BetterModelForm):
 
     def clean_text_language(self):
         field = 'text_language'
-        data = self.cleaned_data[field]
+        data = self.cleaned_data.get(field)
+        status = self.cleaned_data.get('status')
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
 
-        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(field) and status != -1:
             if not data:
                 self.add_error(field, _('Mandatory'))
             else:
@@ -628,7 +699,7 @@ class BiblioRefForm(BetterModelForm):
                 analytic_title = analytic_title[0]['text']
                 obj.reference_title = u"{0} | {1}".format(obj.source.reference_title, analytic_title)
             else:
-                obj.reference_title = u"{0}".format(self.cleaned_data['title_monographic'])
+                obj.reference_title = u"{0}".format(self.cleaned_data['title_monographic'][0]['text'])
 
         # for fields with readonly attribute restore the original value for POST data insertions hack
         for name, field in self.fields.items():
