@@ -32,7 +32,7 @@ class SelectDocumentTypeForm(forms.Form):
         # ('T', _('Thesis, Dissertation')),
     )
 
-    document_type = forms.ChoiceField(choices=DOCUMENT_TYPE_CHOICES)
+    document_type = forms.ChoiceField(choices=DOCUMENT_TYPE_CHOICES, label=_('Select document type'))
 
 
 class BiblioRefForm(BetterModelForm):

@@ -1,0 +1,75 @@
+<IsisScript name="search">
+
+    <section name="search">
+        <trace>XOn</trace>
+        <!-- tags
+            9090: lista de mfn ja convertidos
+            9001: numero do proximo ID do registro convertido
+            9002: numero do ID da fonte atual
+        -->
+
+        <field action="replace" tag="9001">1</field>
+
+        <do task="mfnrange">
+            <parm name="db">LILACS_PROCESS</parm>
+            <parm name="gizmo">gizmo_fixture</parm>
+
+            <loop>
+                <field action="import" tag="list">9001, 9090</field>
+
+                <do task="search">
+                    <parm name="db">LILACS_PROCESS</parm>
+                    <parm name="expression"><pft>mhu,v30,"@"v31,"@"v32</pft></parm>
+
+                    <!-- next ID  -->
+                    <field action="replace" tag="9001"><pft>f(val(v9001)+1,1,0)</pft></field>
+
+                    <field action="define" tag="1001">Isis_Current</field>
+                    <loop>
+                        <field action="import" tag="list">9001, 9002, 9090</field>
+                        <!--display><pft>'MFN=', f(mfn(0),1,0), ' - v9090=',v9090</pft></display-->
+                        <flow action="jump"><pft>if v9090:s('!',f(mfn(0),1,0),'!') then 'NEXT' fi</pft></flow>
+
+                        <field action="replace" tag="9000"><pft>if v1001 = '1' then 'SOURCE' else 'ANALYTIC' fi</pft></field>
+                        <!-- ID of source reference -->
+                        <field action="replace" tag="9002"><pft>if v1001 = '1' then v9001 else v9002 fi</pft></field>
+
+                        <flow action="jump"><pft>v9000</pft></flow>
+
+                        <label>SOURCE</label>
+                            <display>
+                                <pft>
+                                    @fixture_reference.pft
+                                    @fixture_referencesource.pft
+                                </pft>
+                            </display>
+                            <!-- add 1 to next ID  -->
+                            <field action="replace" tag="9001"><pft>f(val(v9001)+1,1,0)</pft></field>
+
+                        <label>ANALYTIC</label>
+                            <field action="replace" tag="9000">ANALYTIC</field>
+                            <display>
+                                <pft>
+                                    @fixture_reference.pft
+                                    @fixture_referenceanalytic.pft
+                                </pft>
+                            </display>
+
+                        <!-- add 1 to next ID  -->
+                        <field action="replace" tag="9001"><pft>f(val(v9001)+1,1,0)</pft></field>
+
+                        <field action="replace" tag="9090"><pft>v9090,'!',f(mfn(0),1,0),'!'</pft></field>
+
+                        <!--field action="replace" tag="9090"><pft>v9090,if v9090:s('!',f(mfn(0),1,0),'!') then, else, '!',f(mfn(0),1,0),'!', fi</pft></field-->
+                        <label>NEXT</label>
+                            <field action="export" tag="list">9001, 9002, 9090</field>
+                    </loop>
+                </do>
+
+                <field action="export" tag="list">9001, 9090</field>
+            </loop>
+        </do>
+
+    </section>
+
+</IsisScript>

@@ -1,0 +1,74 @@
+if p(v1) then,
+    '{',/
+
+       c4,'"pk": ', v9001[1],','/
+       c4,'"model": ','"biblioref.referenceanalytic",',/
+
+       c4,'"fields": {',/
+
+       /* individual_author [10] */
+       if p(v10) then,
+            c8,'"individual_author": ', '"[',
+            e1:=nocc(v10),
+            (
+                '{',
+                if v10.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v10,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+
+       /* corporate_author [11] */
+       if p(v11) then,
+            c8,'"corporate_author": ', '"[',
+            e1:=nocc(v11),
+            (
+                '{',
+                if v11.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v11,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+       /* title [12] */
+       if p(v12) then,
+            c8,'"title": ', '"[',
+            e1:=nocc(v12),
+            (
+                '{',
+                if v12.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v12,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+       /* english_translated_title [13] */
+       if p(v13) then,
+            c8,'"english_translated_title": ', '"',v13,'",'/
+       fi,
+
+       /* pages [14] */
+       if p(v14) then,
+          c8,'"pages": ', '"',v14,'",'/
+       fi,
+
+       /* clinical_trial_registry_name [700] */
+       if p(v700) then,
+            c8,'"clinical_trial_registry_name": ', '"',(v700+|\r\n|),'",'/
+       fi,
+
+       c8,'"source": ', '"',v9002[1],'"'/
+
+      c4,'}',/
+    '},'/
+fi,

@@ -1,0 +1,221 @@
+if p(v1) then,
+    '{',/
+
+       c4,'"pk": ', v9001[1],','/
+       c4,'"model": ','"biblioref.referencesource",',/
+
+       c4,'"fields": {',/
+
+       /* individual_author_monographic [16] */
+       if p(v16) then,
+            c8,'"individual_author_monographic": ', '"[',
+            e1:=nocc(v16),
+            (
+                '{',
+                if v16.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v16,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+       /* individual_author_collection [23] */
+       if p(v23) then,
+            c8,'"individual_author_collection": ', '"[',
+            e1:=nocc(v23)
+            (
+                '{',
+                if v23.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v23,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+       /* corporate_author_monographic [17] */
+       if p(v17) then,
+            c8,'"corporate_author_monographic": ', '"[',
+            e1:=nocc(v17),
+            (
+                '{',
+                if v17.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v17,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+       /* corporate_author_monographic [24] */
+       if p(v24) then,
+            c8,'"corporate_author_collection": ', '"[',
+            e1:=nocc(v24),
+            (
+                '{',
+                if v24.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v24,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+       /* title_monographic [18] */
+       if p(v18) then,
+            c8,'"title_monographic": ', '"[',
+            e1:=nocc(v18),
+            (
+                '{',
+                if v18.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v18,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+       /* title_collection [25] */
+       if p(v25) then,
+            c8,'"title_collection": ', '"[',
+            e1:=nocc(v25),
+            (
+                '{',
+                if v25.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v25,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+
+       /* english_title_monographic [19] */
+       if p(v19) then,
+          c8,'"english_title_monographic": ', '"',v19,'",'/,
+       fi,
+
+       /* english_title_collection [26] */
+       if p(v26) then,
+          c8,'"english_translated_title": ', '"',v26,'",'/,
+       fi,
+
+       /* pages_monographic [20] */
+       if p(v20) then,
+          c8,'"pages_monographic": ', '"',v20,'",'/,
+       fi,
+
+       /* volume_monographic [21] */
+       if p(v21) then,
+          c8,'"volume_monographic": ', '"',v21,'",'/
+       fi,
+
+       /* volume_serial [31] */
+       if p(v31) then,
+          c8,'"volume_serial": ', '"',v31,'",'/,
+       fi,
+
+       /* thesis_dissertation_leader [49] */
+       if p(v49) then,
+            c8,'"thesis_dissertation_leader": ', '"[',
+            e1:=nocc(v49),
+            (
+                '{',
+                if v49.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v49,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+       fi,
+
+       /* thesis_dissertation_institution [50] */
+       if p(v50) then,
+          c8,'"thesis_dissertation_institution": ', '"',mid(v50,1,250),'",'/
+       fi
+
+       /* thesis_dissertation_institution [51] */
+       if p(v51) then,
+          c8,'"thesis_dissertation_academic_title": ', '"',v51,'",'/
+       fi
+
+       /* publisher [62] */
+       if p(v62) then,
+            c8,'"publisher": ', '"',(v62+|\r\n|),'",'/
+       fi,
+
+       /* edition [63] */
+       if p(v63) then,
+          c8,'"edition": ', '"',v63[1],'",'/
+       fi,
+
+       /* publication_city [66] */
+       if p(v66) then,
+          c8,'"publication_city": ', '"',v66[1],'",'/
+       fi,
+
+       /* symbol [68] */
+       if p(v68) then,
+            c8,'"symbol": ', '"',(v68+|\r\n|),'",'/
+       fi,
+
+       /* isbn [69] */
+       if p(v69) then,
+          c8,'"isbn": ', '"',v69[1],'",'/
+       fi,
+
+
+      /* Analitica de Seriado */
+      if v06 = 'as' then,
+
+        if p(v30) then,
+          c8,'"title_serial": ', '"',v30,'",'/
+        fi,
+        if p(v31) then,
+          c8,'"volume_serial": ', '"',v31,'",'/,
+        fi,
+        if p(v32) then,
+          c8,'"issue_number": ', '"',v32,'",'/,
+        fi,
+
+        /* publication_date [64] */
+        if p(v64) then,
+          c8,'"publication_date": ', '"',v64[1],'",'/
+        fi,
+
+        /* publication_date_normalized [65] */
+        if p(v65) then,
+          c8,'"publication_date_normalized": ', '"',v65[1],'",'/
+        fi,
+
+        /* descriptive information [38] */
+        if p(v38) then,
+            c8,'"descriptive_information": ', '"[',
+            e1:=nocc(v38),
+            (
+                '{',
+                if v38.1 <> '^' then,
+                    '\"text\": \"',
+                fi
+                v38,'\"}',
+                if iocc < e1 then ', ' fi,
+            )
+            ']",'
+        fi,
+
+      fi,
+
+      /* volume [35] */
+      c8,'"issn": ', '"',v35,'"'/
+
+      c4,'}',/
+    '},'/
+fi,
