@@ -18,6 +18,7 @@ from attachments.models import Attachment
 
 from models import *
 import json
+import re
 
 
 class SelectDocumentTypeForm(forms.Form):
@@ -401,11 +402,29 @@ class BiblioRefForm(BetterModelForm):
         electronic_address = self.cleaned_data.get('electronic_address')
         pages = self.cleaned_data.get('pages')
         pages_monographic = self.cleaned_data.get('pages_monographic')
+        record_type = self.cleaned_data.get('record_type')
+        status = self.cleaned_data.get('status')
 
-        if data and self.is_LILACS and self.cleaned_data['status'] == 1:
+        if data and self.is_LILACS and status == 1:
             if electronic_address:
                 if not pages and not pages_monographic and not data == 's':
                     self.add_error(field, _("For the tradicional material of LILACS which is only in electronic form you should describe it as Electronic"))
+
+        if data and self.is_LILACS and record_type == 'a':
+            if self.document_type[0] == 'S' and data != 's':
+                self.add_error(field, _('For articles, item form must be empty or Eletronic'))
+
+        return data
+
+    def clean_type_of_journal(self):
+        field = 'type_of_journal'
+        data = self.cleaned_data.get(field)
+        record_type = self.cleaned_data.get('record_type')
+        status = self.cleaned_data.get('status')
+
+        if data and self.is_LILACS and record_type == 'a':
+            if self.document_type[0] == 'S' and (data != 'p' or data != 'u'):
+                self.add_error(field, _('For articles, type of journal must be Journal or Separatum'))
 
         return data
 

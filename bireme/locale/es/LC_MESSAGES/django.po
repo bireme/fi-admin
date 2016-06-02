@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-01 16:13-0300\n"
+"POT-Creation-Date: 2016-06-02 11:21-0300\n"
 "PO-Revision-Date: 2016-04-13 10:19-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -213,12 +213,12 @@ msgstr ""
 msgid "Title"
 msgstr "Título"
 
-#: biblioref/field_definitions.py:339 biblioref/forms.py:254
+#: biblioref/field_definitions.py:339 biblioref/forms.py:255
 msgid "Comma abscent"
 msgstr ""
 
-#: biblioref/field_definitions.py:342 biblioref/forms.py:258
-#: biblioref/forms.py:274
+#: biblioref/field_definitions.py:342 biblioref/forms.py:259
+#: biblioref/forms.py:275
 msgid "Insert space after comma"
 msgstr ""
 
@@ -347,275 +347,285 @@ msgstr "Enlace"
 msgid "Clinical Trial"
 msgstr ""
 
-#: biblioref/forms.py:27
+#: biblioref/forms.py:28
 #, fuzzy
 #| msgid "Geographic"
 msgid "Monograph"
 msgstr "Geográfico"
 
-#: biblioref/forms.py:29
+#: biblioref/forms.py:30
 msgid "Periodical Series"
 msgstr ""
 
-#: biblioref/forms.py:32
-msgid "Thesis, Dissertation"
-msgstr ""
+#: biblioref/forms.py:36 templates/biblioref/select_document_type.html:6
+#, fuzzy
+#| msgid "Delete media type"
+msgid "Select document type"
+msgstr "Borrar tipo de media"
 
-#: biblioref/forms.py:156
+#: biblioref/forms.py:157
 #, python-format
 msgid "Insert space after %s"
 msgstr ""
 
-#: biblioref/forms.py:160
+#: biblioref/forms.py:161
 #, python-format
 msgid "Delete space before %s"
 msgstr ""
 
-#: biblioref/forms.py:173
+#: biblioref/forms.py:174
 msgid "Individual Author and Corporate Autor present simultaneous"
 msgstr ""
 
-#: biblioref/forms.py:176
+#: biblioref/forms.py:177
 msgid "Individual Author or Corporate Author mandatory"
 msgstr ""
 
-#: biblioref/forms.py:187
+#: biblioref/forms.py:188
 #, python-format
 msgid "The % simbol don't separete occurences"
 msgstr ""
 
-#: biblioref/forms.py:191 biblioref/forms.py:304
+#: biblioref/forms.py:192 biblioref/forms.py:305
 msgid "Point at end of field is not allowed"
 msgstr ""
 
-#: biblioref/forms.py:201
+#: biblioref/forms.py:202
 msgid "Volume or issue number mandatory"
 msgstr ""
 
-#: biblioref/forms.py:225 biblioref/forms.py:248 biblioref/forms.py:266
+#: biblioref/forms.py:226 biblioref/forms.py:249 biblioref/forms.py:267
 #, fuzzy, python-format
 #| msgid "Authors"
 msgid "Author %s: "
 msgstr "Autores"
 
-#: biblioref/forms.py:227
+#: biblioref/forms.py:228
 msgid "Degree of responsibility incompatible with LILACS"
 msgstr ""
 
-#: biblioref/forms.py:242 biblioref/forms.py:368 biblioref/forms.py:425
-#: biblioref/forms.py:476 biblioref/forms.py:494 biblioref/forms.py:514
-#: biblioref/forms.py:531 biblioref/forms.py:606 biblioref/forms.py:616
-#: biblioref/forms.py:654 biblioref/forms.py:669 biblioref/forms.py:758
-#: biblioref/forms.py:771 biblioref/forms.py:792
+#: biblioref/forms.py:243 biblioref/forms.py:369 biblioref/forms.py:444
+#: biblioref/forms.py:495 biblioref/forms.py:513 biblioref/forms.py:533
+#: biblioref/forms.py:550 biblioref/forms.py:625 biblioref/forms.py:635
+#: biblioref/forms.py:673 biblioref/forms.py:688 biblioref/forms.py:777
+#: biblioref/forms.py:790 biblioref/forms.py:811
 msgid "Mandatory"
 msgstr ""
 
-#: biblioref/forms.py:250
+#: biblioref/forms.py:251
 msgid "Thesis's author anonymous"
 msgstr ""
 
-#: biblioref/forms.py:269
+#: biblioref/forms.py:270
 msgid "Comma absense or error in the word Anon"
 msgstr ""
 
-#: biblioref/forms.py:278
+#: biblioref/forms.py:279
 msgid "Insert space after point"
 msgstr ""
 
-#: biblioref/forms.py:282
+#: biblioref/forms.py:283
 msgid "Invalid abbreviation input Junior and/or Filho"
 msgstr ""
 
-#: biblioref/forms.py:287
+#: biblioref/forms.py:288
 msgid "Affiliation institution level 1 mandatory"
 msgstr ""
 
-#: biblioref/forms.py:292
+#: biblioref/forms.py:293
 #, fuzzy
 msgid "Affiliation country mandatory"
 msgstr "Fecha de publicación"
 
-#: biblioref/forms.py:298
+#: biblioref/forms.py:299
 msgid ""
 "For absent or s.af affiliation do not describe the others affiliation "
 "atributes"
 msgstr ""
 
-#: biblioref/forms.py:305
+#: biblioref/forms.py:306
 #, python-format
 msgid " at subfield %s "
 msgstr ""
 
-#: biblioref/forms.py:336 biblioref/forms.py:577
+#: biblioref/forms.py:337 biblioref/forms.py:596
 #, python-format
 msgid "item %s: "
 msgstr ""
 
-#: biblioref/forms.py:339
+#: biblioref/forms.py:340
 msgid "File extension attribute is mandatory"
 msgstr ""
 
-#: biblioref/forms.py:344
+#: biblioref/forms.py:345
 msgid "File type attribute is mandatory"
 msgstr ""
 
-#: biblioref/forms.py:349 biblioref/forms.py:448 biblioref/forms.py:470
-#: biblioref/forms.py:659
+#: biblioref/forms.py:350 biblioref/forms.py:467 biblioref/forms.py:489
+#: biblioref/forms.py:678
 msgid "Language incompatible with LILACS"
 msgstr ""
 
-#: biblioref/forms.py:356
+#: biblioref/forms.py:357
 #, fuzzy
 #| msgid "Duplicated"
 msgid "URL duplicated"
 msgstr "Duplicado"
 
-#: biblioref/forms.py:371
+#: biblioref/forms.py:372
 msgid ""
 "Printed music in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:373
+#: biblioref/forms.py:374
 msgid ""
 "Manuscript music in the Record Type is incompatible with the LILACS "
 "Methodology"
 msgstr ""
 
-#: biblioref/forms.py:375
+#: biblioref/forms.py:376
 msgid ""
 "Printed cartographic material in the Record Type is incompatible with the "
 "LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:377
+#: biblioref/forms.py:378
 msgid ""
 "Manuscript cartographic material in the Record Type is incompatible with the "
 "LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:379
+#: biblioref/forms.py:380
 msgid ""
 "Musical sound recording in the Record Type is incompatible with the LILACS "
 "Methodology"
 msgstr ""
 
-#: biblioref/forms.py:381
+#: biblioref/forms.py:382
 msgid ""
 "Two-dimensional nonprojectable graphic in the Record Type is incompatible "
 "with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:383
+#: biblioref/forms.py:384
 msgid ""
 "Computer file in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:385
+#: biblioref/forms.py:386
 msgid "Kit in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:387
+#: biblioref/forms.py:388
 msgid ""
 "Mixed material in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:389
+#: biblioref/forms.py:390
 msgid ""
 "Three-dimensional artifact or naturally occurring object in the Record Type "
 "is incompatible with the LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:391
+#: biblioref/forms.py:392
 msgid ""
 "Manuscript language material in the Record Type is incompatible with the "
 "LILACS Methodology"
 msgstr ""
 
-#: biblioref/forms.py:408
+#: biblioref/forms.py:411
 msgid ""
 "For the tradicional material of LILACS which is only in electronic form you "
 "should describe it as Electronic"
 msgstr ""
 
-#: biblioref/forms.py:419
+#: biblioref/forms.py:415
+msgid "For articles, item form must be empty or Eletronic"
+msgstr ""
+
+#: biblioref/forms.py:427
+msgid "For articles, type of journal must be Journal or Separatum"
+msgstr ""
+
+#: biblioref/forms.py:438
 msgid "For LILACS references is mandatory select a journal from the list"
 msgstr ""
 
-#: biblioref/forms.py:422
+#: biblioref/forms.py:441
 msgid ""
 "Please choose one journal from the list or use blank to inform other journal "
 "title"
 msgstr ""
 
-#: biblioref/forms.py:445 biblioref/forms.py:467
+#: biblioref/forms.py:464 biblioref/forms.py:486
 #, fuzzy, python-format
 #| msgid "Title"
 msgid "Title %s: "
 msgstr "Título"
 
-#: biblioref/forms.py:497 biblioref/forms.py:517
+#: biblioref/forms.py:516 biblioref/forms.py:536
 msgid "Invalid fill. Don't translate title in English"
 msgstr ""
 
-#: biblioref/forms.py:528
+#: biblioref/forms.py:547
 msgid "Date without year"
 msgstr ""
 
-#: biblioref/forms.py:544
+#: biblioref/forms.py:563
 msgid ""
 "Entering information in this field is conditional to filling out publication "
 "date field"
 msgstr ""
 
-#: biblioref/forms.py:547 biblioref/forms.py:774
+#: biblioref/forms.py:566 biblioref/forms.py:793
 msgid "Different of 8 characters"
 msgstr ""
 
-#: biblioref/forms.py:551
+#: biblioref/forms.py:570
 msgid "Incompatible with LILACS"
 msgstr ""
 
-#: biblioref/forms.py:555 biblioref/forms.py:778
+#: biblioref/forms.py:574 biblioref/forms.py:797
 msgid "Error in the date"
 msgstr ""
 
-#: biblioref/forms.py:558 biblioref/forms.py:781
+#: biblioref/forms.py:577 biblioref/forms.py:800
 #, fuzzy, python-format
 #| msgid "Publication date"
 msgid "Leave blank, publication date = %s"
 msgstr "Fecha de publicación"
 
-#: biblioref/forms.py:569
+#: biblioref/forms.py:588
 msgid "Do not have more than 4 occurrences, use passim"
 msgstr ""
 
-#: biblioref/forms.py:580
+#: biblioref/forms.py:599
 msgid "If the attribute first is passim, the attribute last should be empty"
 msgstr ""
 
-#: biblioref/forms.py:585
+#: biblioref/forms.py:604
 msgid "Attribute last is missing"
 msgstr ""
 
-#: biblioref/forms.py:590
+#: biblioref/forms.py:609
 msgid "Attribute first is missing"
 msgstr ""
 
-#: biblioref/forms.py:595
+#: biblioref/forms.py:614
 msgid "Square brackets are missing [ ]"
 msgstr ""
 
-#: biblioref/forms.py:627
+#: biblioref/forms.py:646
 msgid ""
 "Entering information in this field is conditional to filling out publication "
 "city field"
 msgstr ""
 
-#: biblioref/forms.py:632
+#: biblioref/forms.py:651
 msgid "LILACS incompatible"
 msgstr ""
 
-#: biblioref/forms.py:642
+#: biblioref/forms.py:661
 msgid "Maximum number of characteres = 9"
 msgstr ""
 
@@ -1164,12 +1174,6 @@ msgstr ""
 #: templates/title/form_preview.html:417
 msgid "Save"
 msgstr "Guardar"
-
-#: country_lista_dividida.txt:17
-#: templates/biblioref/referenceanalytic_form.html:52
-#: templates/biblioref/referencesource_form.html:53
-msgid "Library"
-msgstr ""
 
 #: error_reporting/models.py:14 templates/error_report/list.html:4
 #: templates/events/edit-event.html:333 templates/main/edit-resource.html:345
@@ -2183,6 +2187,11 @@ msgstr "Nuevo enlace"
 msgid "Please check errors below"
 msgstr "Por favor, verifique los campos requeridos"
 
+#: templates/biblioref/referenceanalytic_form.html:52
+#: templates/biblioref/referencesource_form.html:53
+msgid "Library"
+msgstr ""
+
 #: templates/biblioref/referenceanalytic_form.html:55
 #: templates/biblioref/referenceanalytic_form.html:59
 #: templates/biblioref/referencesource_form.html:56
@@ -2294,12 +2303,6 @@ msgstr ""
 #, fuzzy
 msgid "Publication year"
 msgstr "Fecha de publicación"
-
-#: templates/biblioref/select_document_type.html:6
-#, fuzzy
-#| msgid "Delete media type"
-msgid "Select document type"
-msgstr "Borrar tipo de media"
 
 #: templates/biblioref/select_document_type.html:31
 msgid "Select"
