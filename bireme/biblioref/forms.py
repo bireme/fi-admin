@@ -23,13 +23,13 @@ import json
 class SelectDocumentTypeForm(forms.Form):
     DOCUMENT_TYPE_CHOICES = (
         # ('MS', _('Monograph Series')),
-        # ('', _('Monograph in a Collection')),
+        # ('M', _('Monograph in a Collection')),
         ('M', _('Monograph')),
         # ('N', _('Non conventional')),
         ('S', _('Periodical Series')),
-        # ('', _('Collection')),
+        # ('M', _('Collection')),
         # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
-        ('T', _('Thesis, Dissertation')),
+        # ('T', _('Thesis, Dissertation')),
     )
 
     document_type = forms.ChoiceField(choices=DOCUMENT_TYPE_CHOICES)
