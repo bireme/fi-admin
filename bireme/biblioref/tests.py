@@ -32,6 +32,7 @@ form_data['M'] = {
     'status': '-1',
     'LILACS_indexed': True,
     'title_monographic': '[{"text": "Primeira monografia", "_i": "pt"}]',
+    'individual_author_monographic': '[{"text": "Chaves, Juca"}]',
     'english_title_monographic': 'First monographic',
     'record_type': 'a',
     'text_language': 'pt',
