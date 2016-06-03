@@ -13,6 +13,7 @@ from django.conf import settings
 
 from main.models import Descriptor, ResourceThematic
 from utils.forms import DescriptorRequired, ResourceThematicRequired
+from utils.templatetags.app_filters import fieldtype
 from title.models import Title
 from attachments.models import Attachment
 
@@ -30,7 +31,7 @@ class SelectDocumentTypeForm(forms.Form):
         ('S', _('Periodical Series')),
         # ('M', _('Collection')),
         # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
-        # ('T', _('Thesis, Dissertation')),
+        # ('T', _('Thesis/Dissertation')),
     )
 
     document_type = forms.ChoiceField(choices=DOCUMENT_TYPE_CHOICES, label=_('Select document type'))
@@ -142,8 +143,9 @@ class BiblioRefForm(BetterModelForm):
         # check if field is at fieldset
         is_visible = fieldname in find_list
         if is_visible:
+            field = self.fields[fieldname]
             # check if field is not hidden
-            if self.fields[fieldname].widget.is_hidden:
+            if field.widget.is_hidden and not fieldtype(field) == 'JSONFormField':
                 is_visible = False
 
         return is_visible
