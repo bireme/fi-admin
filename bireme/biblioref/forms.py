@@ -570,7 +570,8 @@ class BiblioRefForm(BetterModelForm):
                     # extract year from raw date field
                     raw_date_year = re.search('([0-9]{4})', raw_date).group(1)
                     if not normalized_date[0:4] == raw_date_year:
-                        self.add_error(normalized_field, _("Normalized date year must be '%s'" % raw_date_year))
+                        error_message = _("Normalized date year must be '%s'") % raw_date_year
+                        self.add_error(normalized_field, error_message)
 
                     if self.is_LILACS:
                         if int(normalized_date[:4]) < 1982:

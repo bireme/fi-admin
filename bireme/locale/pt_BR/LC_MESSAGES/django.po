@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 17:40-0300\n"
-"PO-Revision-Date: 2016-06-03 17:42-0306\n"
+"POT-Creation-Date: 2016-06-03 17:55-0300\n"
+"PO-Revision-Date: 2016-06-03 17:55-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -370,9 +370,9 @@ msgstr "Grau de responsabilidade incompatível com LILACS"
 
 #: biblioref/forms.py:245 biblioref/forms.py:371 biblioref/forms.py:446
 #: biblioref/forms.py:497 biblioref/forms.py:515 biblioref/forms.py:535
-#: biblioref/forms.py:552 biblioref/forms.py:633 biblioref/forms.py:643
-#: biblioref/forms.py:681 biblioref/forms.py:696 biblioref/forms.py:785
-#: biblioref/forms.py:798 biblioref/forms.py:819
+#: biblioref/forms.py:552 biblioref/forms.py:634 biblioref/forms.py:644
+#: biblioref/forms.py:682 biblioref/forms.py:697 biblioref/forms.py:786
+#: biblioref/forms.py:799 biblioref/forms.py:820
 msgid "Mandatory"
 msgstr "Obrigatório"
 
@@ -413,7 +413,7 @@ msgstr ""
 msgid " at subfield %s "
 msgstr "no subcampo %s"
 
-#: biblioref/forms.py:339 biblioref/forms.py:604
+#: biblioref/forms.py:339 biblioref/forms.py:605
 #, python-format
 msgid "item %s: "
 msgstr "Item %s:"
@@ -427,7 +427,7 @@ msgid "File type attribute is mandatory"
 msgstr "Atributo de tipo de arquivo é obrigatório"
 
 #: biblioref/forms.py:352 biblioref/forms.py:469 biblioref/forms.py:491
-#: biblioref/forms.py:686
+#: biblioref/forms.py:687
 msgid "Language incompatible with LILACS"
 msgstr "Idioma incompatível com LILACS"
 
@@ -563,51 +563,52 @@ msgstr ""
 "O registro de informação neste campo está condicionado ao preenchimento do "
 "campo data de publicação"
 
-#: biblioref/forms.py:568 biblioref/forms.py:801
+#: biblioref/forms.py:568 biblioref/forms.py:802
 msgid "Different of 8 characters"
 msgstr "Não contem 8 dígitos"
 
 #: biblioref/forms.py:573
 #, python-format
+#| msgid "Normalized date year must be '%s'"
 msgid "Normalized date year must be '%s'"
-msgstr "Ano da data normalizada deve ser '%s'"
+msgstr "Ano da data normalizada deve ser: '%s'"
 
-#: biblioref/forms.py:577
+#: biblioref/forms.py:578
 msgid "Incompatible with LILACS"
 msgstr "Incompatível com LILACS"
 
-#: biblioref/forms.py:581 biblioref/forms.py:805
+#: biblioref/forms.py:582 biblioref/forms.py:806
 msgid "Error in the date"
 msgstr "Erro na data"
 
-#: biblioref/forms.py:585 biblioref/forms.py:808
+#: biblioref/forms.py:586 biblioref/forms.py:809
 #, python-format
 msgid "Leave blank, publication date = %s"
 msgstr "Deixe em branco, data de publicação = %s"
 
-#: biblioref/forms.py:596
+#: biblioref/forms.py:597
 msgid "Do not have more than 4 occurrences, use passim"
 msgstr "Mais que 4 ocorrências não permitido, use passim"
 
-#: biblioref/forms.py:607
+#: biblioref/forms.py:608
 msgid "If the attribute first is passim, the attribute last should be empty"
 msgstr ""
 "Se o atributo número inicial é passim, o atributo número final precisa ser "
 "vazio"
 
-#: biblioref/forms.py:612
+#: biblioref/forms.py:613
 msgid "Attribute last is missing"
 msgstr "Atributo número final não presente"
 
-#: biblioref/forms.py:617
+#: biblioref/forms.py:618
 msgid "Attribute first is missing"
 msgstr "Atributo número inicial não presente"
 
-#: biblioref/forms.py:622
+#: biblioref/forms.py:623
 msgid "Square brackets are missing [ ]"
 msgstr "Colchetes não presentes"
 
-#: biblioref/forms.py:654
+#: biblioref/forms.py:655
 msgid ""
 "Entering information in this field is conditional to filling out publication"
 " city field"
@@ -615,11 +616,11 @@ msgstr ""
 "O preenchimento de informação neste campo está condicionado ao preenchimento"
 " do campo cidade de publicação"
 
-#: biblioref/forms.py:659
+#: biblioref/forms.py:660
 msgid "LILACS incompatible"
 msgstr "Incompatível com a LILACS"
 
-#: biblioref/forms.py:669
+#: biblioref/forms.py:670
 msgid "Maximum number of characteres = 9"
 msgstr "Número máximo de caracteres = 9"
 
@@ -1110,7 +1111,7 @@ msgstr "Registro bibliográfico - Campos locais"
 msgid "Inventory number"
 msgstr "Tombo"
 
-#: biblioref/views.py:505 templates/biblioref/reference_form.html:323
+#: biblioref/views.py:504 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:151
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:324
 #: templates/events/edit-event.html:367 templates/events/edit-type.html:56
