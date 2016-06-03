@@ -131,7 +131,11 @@ FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'LIL
 
                                 subject_section,
 
-                                abstract_section
+                                abstract_section,
+
+                                indexing_section,
+
+                                fulltext_section,
                                 ]
 
 # Monographic (analytic)

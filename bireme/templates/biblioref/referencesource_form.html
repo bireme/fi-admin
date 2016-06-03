@@ -49,16 +49,17 @@
                 <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
                 <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
             {% endif %}
+
+            {% if 'fulltext'|infieldset:form.fieldsets %}
+                <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
+            {% endif %}
+
             {% if form.document_type != 'S' %}
                 <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}{% if formset_library.errors and not formset_library.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
             {% if form.document_type == 'MS' or form.document_type == 'Mc' or form.document_type == 'M' or form.document_type == 'N' %}
                 <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
-        {% endif %}
-
-        {% if 'fulltext'|infieldset:form.fieldsets %}
-            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
         {% endif %}
     </ul>
 
