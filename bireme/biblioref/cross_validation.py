@@ -108,7 +108,7 @@ def check_for_publication(form, formsets, user_data):
         # for journal article (Sas record) check for electronic_address OR fulltext file #159
         if Sas_record:
             valid_url = check_url_or_attachment(form, formsets['attachment'])
-        else:
+        elif form.document_type != 'S':
             # for other types of analytic records check for page or electronic_address #160
             valid_url = check_url_or_page(form, formsets['attachment'])
 

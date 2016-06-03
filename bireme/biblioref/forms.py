@@ -567,6 +567,11 @@ class BiblioRefForm(BetterModelForm):
                     if len(normalized_date) != 8:
                         self.add_error(normalized_field, _("Different of 8 characters"))
 
+                    # extract year from raw date field
+                    raw_date_year = re.search('([0-9]{4})', raw_date).group(1)
+                    if not normalized_date[0:4] == raw_date_year:
+                        self.add_error(normalized_field, _("Normalized date year must be '%s'" % raw_date_year))
+
                     if self.is_LILACS:
                         if int(normalized_date[:4]) < 1982:
                             self.add_error(normalized_field, _("Incompatible with LILACS"))
@@ -574,6 +579,7 @@ class BiblioRefForm(BetterModelForm):
                         if len(raw_date) == 4:
                             if not normalized_date == "%s0000" % raw_date:
                                 self.add_error(normalized_field, _("Error in the date"))
+
             else:
                 if normalized_date:
                     msg = _("Leave blank, publication date = %s") % raw_date
