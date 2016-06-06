@@ -424,7 +424,7 @@ class BiblioRefForm(BetterModelForm):
         record_type = self.cleaned_data.get('record_type')
         status = self.cleaned_data.get('status')
 
-        if data and self.is_LILACS and record_type == 'a':
+        if self.is_LILACS and record_type == 'a' and status != -1:
             if self.document_type[0] == 'S' and (data != 'p' and data != 'u'):
                 self.add_error(field, _('For articles, type of journal must be Journal or Separatum'))
 
