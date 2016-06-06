@@ -217,7 +217,9 @@ class BiblioRefUpdate(LoginRequiredView):
             if self.object:
                 previous_status = self.object.previous_value('status')
                 self.object.status = previous_status
-                form.cleaned_data['status'] = previous_status
+                form.data['status'] = previous_status
+            else:
+                form.data['status'] = '-1'
 
             return self.render_to_response(
                            self.get_context_data(form=form,
