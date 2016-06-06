@@ -280,7 +280,7 @@ class ReferenceAnalytic(Reference):
                                                                 self.source.publication_date_normalized[:4],
                                                                 self.title[0]['text'])
             else:
-                ref_title = u"{0} | {1}".format(self.source.title_monographic,
+                ref_title = u"{0} | {1}".format(self.source.title_monographic[0]['text'],
                                                 self.title[0]['text'])
         else:
             ref_title = self.title[0]['text']

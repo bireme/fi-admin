@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 17:55-0300\n"
+"POT-Creation-Date: 2016-06-06 17:17-0300\n"
 "PO-Revision-Date: 2016-04-13 10:19-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -544,7 +544,8 @@ msgid "For articles, item form must be empty or Eletronic"
 msgstr ""
 
 #: biblioref/forms.py:429
-msgid "For articles, type of journal must be Journal or Separatum"
+msgid ""
+"For articles indexed in LILACS, type of journal must be Journal or Separatum"
 msgstr ""
 
 #: biblioref/forms.py:440
@@ -1165,7 +1166,7 @@ msgstr "Todos recursos"
 msgid "Inventory number"
 msgstr ""
 
-#: biblioref/views.py:504 templates/biblioref/reference_form.html:323
+#: biblioref/views.py:511 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:151
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:324
 #: templates/events/edit-event.html:367 templates/events/edit-type.html:56

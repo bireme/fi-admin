@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 17:55-0300\n"
-"PO-Revision-Date: 2016-06-03 17:55-0306\n"
+"POT-Creation-Date: 2016-06-06 17:17-0300\n"
+"PO-Revision-Date: 2016-06-06 17:18-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -527,8 +527,12 @@ msgid "For articles, item form must be empty or Eletronic"
 msgstr "Para artigos, a forma do item deve ser vazio ou Eletrônico"
 
 #: biblioref/forms.py:429
-msgid "For articles, type of journal must be Journal or Separatum"
-msgstr "Para artigos, o tipo de periódico deve ser Revistas ou Separatas"
+#| msgid "For articles, type of journal must be Journal or Separatum"
+msgid ""
+"For articles indexed in LILACS, type of journal must be Journal or Separatum"
+msgstr ""
+"Para artigos indexados na LILACS, o tipo de periódico deve ser Revistas ou "
+"Separatas"
 
 #: biblioref/forms.py:440
 msgid "For LILACS references is mandatory select a journal from the list"
@@ -569,7 +573,6 @@ msgstr "Não contem 8 dígitos"
 
 #: biblioref/forms.py:573
 #, python-format
-#| msgid "Normalized date year must be '%s'"
 msgid "Normalized date year must be '%s'"
 msgstr "Ano da data normalizada deve ser: '%s'"
 
@@ -1111,7 +1114,7 @@ msgstr "Registro bibliográfico - Campos locais"
 msgid "Inventory number"
 msgstr "Tombo"
 
-#: biblioref/views.py:504 templates/biblioref/reference_form.html:323
+#: biblioref/views.py:511 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:151
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:324
 #: templates/events/edit-event.html:367 templates/events/edit-type.html:56
