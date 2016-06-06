@@ -113,30 +113,30 @@ FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'L
                                   ]
 
 # Monographic (source)
-FIELDS_BY_DOCUMENT_TYPE['M'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                        'record_type', 'item_form'],
-                                             'legend': _('General information')}),
+FIELDS_BY_DOCUMENT_TYPE['Mm'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
+                                                         'record_type', 'item_form'],
+                                              'legend': _('General information')}),
 
-                                ('monographic_level', {'fields': ['individual_author_monographic',
-                                                                  'corporate_author_monographic', 'title_monographic',
-                                                                  'english_title_monographic', 'pages_monographic',
-                                                                  'volume_monographic'],
-                                                       'legend': _('Monographic Level')}),
+                                 ('monographic_level', {'fields': ['individual_author_monographic',
+                                                                   'corporate_author_monographic', 'title_monographic',
+                                                                   'english_title_monographic', 'pages_monographic',
+                                                                   'volume_monographic'],
+                                                        'legend': _('Monographic Level')}),
 
-                                comp_info_section,
+                                 comp_info_section,
 
-                                other_notes_section,
+                                 other_notes_section,
 
-                                imprint_section,
+                                 imprint_section,
 
-                                subject_section,
+                                 subject_section,
 
-                                abstract_section,
+                                 abstract_section,
 
-                                indexing_section,
+                                 indexing_section,
 
-                                fulltext_section,
-                                ]
+                                 fulltext_section,
+                                 ]
 
 # Monographic (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',

@@ -26,7 +26,7 @@ class SelectDocumentTypeForm(forms.Form):
     DOCUMENT_TYPE_CHOICES = (
         # ('MS', _('Monograph Series')),
         # ('M', _('Monograph in a Collection')),
-        ('M', _('Monograph')),
+        ('Mm', _('Monograph')),
         # ('N', _('Non conventional')),
         ('S', _('Periodical Series')),
         # ('M', _('Collection')),

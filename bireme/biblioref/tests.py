@@ -29,7 +29,7 @@ form_data['Sas'] = {
     'individual_author': '[{"text": "Chaves, Juca"}]'
 }
 
-form_data['M'] = {
+form_data['Mm'] = {
     'status': '-1',
     'LILACS_indexed': True,
     'title_monographic': '[{"text": "Primeira monografia", "_i": "pt"}]',
@@ -141,10 +141,10 @@ class BiblioRefTest(BaseTestCase):
         self.login_documentalist()
 
         # test create new monographic draft
-        post_data = form_data['M']
+        post_data = form_data['Mm']
         post_data.update(blank_formsets)
 
-        response = self.client.post('/bibliographic/new-source?document_type=M', post_data)
+        response = self.client.post('/bibliographic/new-source?document_type=Mm', post_data)
         self.assertRedirects(response, '/bibliographic/')
 
         # test list

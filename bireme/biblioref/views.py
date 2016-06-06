@@ -66,7 +66,13 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # filter by specific document type and remove filter by user (filter_owner)
         if document_type:
-            object_list = object_list.filter(literature_type=document_type)
+            if len(document_type) > 1:
+                # treatment for this cases: Mm (source of monographic), MCPm (source of monographic with conference and project)
+                object_list = object_list.filter(literature_type__startswith=document_type[0],
+                                                 treatment_level=document_type[1:])
+            else:
+                object_list = object_list.filter(literature_type=document_type)
+
 
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
@@ -240,13 +246,12 @@ class BiblioRefUpdate(LoginRequiredView):
         reference_source = None
 
         source_id = self.request.GET.get('source', None)
-
         # new analytic
         if source_id:
             reference_source = ReferenceSource.objects.get(pk=source_id)
             literature_type = reference_source.literature_type
             # remove congress/project from literature_type
-            literature_type = literature_type.replace('CP', '')
+            literature_type = re.sub('[CP]', '', literature_type)
 
             if literature_type == 'S':
                 document_type = 'Sas'
