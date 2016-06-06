@@ -543,8 +543,9 @@ class BiblioRefForm(BetterModelForm):
     def clean_publication_date(self):
         field = 'publication_date'
         data = self.cleaned_data[field]
+        status = self.cleaned_data.get('status')
 
-        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(field) and (status != -1 or self.document_type == 'S'):
             if data.isalpha() and data != 's.d' and data != 's.f':
                 self.add_error(field, _("Date without year"))
 
@@ -558,8 +559,9 @@ class BiblioRefForm(BetterModelForm):
         normalized_field = 'publication_date_normalized'
         normalized_date = self.cleaned_data[normalized_field]
         raw_date = self.cleaned_data.get('publication_date')
+        status = self.cleaned_data.get('status')
 
-        if self.is_visiblefield(normalized_field) and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(normalized_field) and (status != -1 or self.document_type == 'S'):
             if raw_date != 's.d' and raw_date != 's.f':
                 if not normalized_date:
                     self.add_error(normalized_field, _("Entering information in this field is conditional to filling out publication date field"))
@@ -578,8 +580,10 @@ class BiblioRefForm(BetterModelForm):
                             self.add_error(normalized_field, _("Incompatible with LILACS"))
 
                         if len(raw_date) == 4:
-                            if not normalized_date == "%s0000" % raw_date:
-                                self.add_error(normalized_field, _("Error in the date"))
+                            incomplete_normalized_date = "%s0000" % raw_date
+                            if not normalized_date == incomplete_normalized_date:
+                                error_message = _("Error in the date, use: %s") % incomplete_normalized_date
+                                self.add_error(normalized_field, error_message)
 
             else:
                 if normalized_date:

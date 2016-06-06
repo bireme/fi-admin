@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-06 17:17-0300\n"
+"POT-Creation-Date: 2016-06-06 17:43-0300\n"
 "PO-Revision-Date: 2016-04-13 10:19-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -406,9 +406,9 @@ msgstr ""
 
 #: biblioref/forms.py:245 biblioref/forms.py:371 biblioref/forms.py:446
 #: biblioref/forms.py:497 biblioref/forms.py:515 biblioref/forms.py:535
-#: biblioref/forms.py:552 biblioref/forms.py:634 biblioref/forms.py:644
-#: biblioref/forms.py:682 biblioref/forms.py:697 biblioref/forms.py:786
-#: biblioref/forms.py:799 biblioref/forms.py:820
+#: biblioref/forms.py:553 biblioref/forms.py:638 biblioref/forms.py:648
+#: biblioref/forms.py:686 biblioref/forms.py:701 biblioref/forms.py:790
+#: biblioref/forms.py:803 biblioref/forms.py:824
 msgid "Mandatory"
 msgstr ""
 
@@ -448,7 +448,7 @@ msgstr ""
 msgid " at subfield %s "
 msgstr ""
 
-#: biblioref/forms.py:339 biblioref/forms.py:605
+#: biblioref/forms.py:339 biblioref/forms.py:609
 #, python-format
 msgid "item %s: "
 msgstr ""
@@ -462,7 +462,7 @@ msgid "File type attribute is mandatory"
 msgstr ""
 
 #: biblioref/forms.py:352 biblioref/forms.py:469 biblioref/forms.py:491
-#: biblioref/forms.py:687
+#: biblioref/forms.py:691
 msgid "Language incompatible with LILACS"
 msgstr ""
 
@@ -568,71 +568,76 @@ msgstr "Título"
 msgid "Invalid fill. Don't translate title in English"
 msgstr ""
 
-#: biblioref/forms.py:549
+#: biblioref/forms.py:550
 msgid "Date without year"
 msgstr ""
 
-#: biblioref/forms.py:565
+#: biblioref/forms.py:567
 msgid ""
 "Entering information in this field is conditional to filling out publication "
 "date field"
 msgstr ""
 
-#: biblioref/forms.py:568 biblioref/forms.py:802
+#: biblioref/forms.py:570 biblioref/forms.py:806
 msgid "Different of 8 characters"
 msgstr ""
 
-#: biblioref/forms.py:573
+#: biblioref/forms.py:575
 #, python-format
 msgid "Normalized date year must be '%s'"
 msgstr ""
 
-#: biblioref/forms.py:578
+#: biblioref/forms.py:580
 msgid "Incompatible with LILACS"
 msgstr ""
 
-#: biblioref/forms.py:582 biblioref/forms.py:806
-msgid "Error in the date"
+#: biblioref/forms.py:585
+#, python-format
+msgid "Error in the date, use: %s"
 msgstr ""
 
-#: biblioref/forms.py:586 biblioref/forms.py:809
+#: biblioref/forms.py:590 biblioref/forms.py:813
 #, fuzzy, python-format
 #| msgid "Publication date"
 msgid "Leave blank, publication date = %s"
 msgstr "Fecha de publicación"
 
-#: biblioref/forms.py:597
+#: biblioref/forms.py:601
 msgid "Do not have more than 4 occurrences, use passim"
 msgstr ""
 
-#: biblioref/forms.py:608
+#: biblioref/forms.py:612
 msgid "If the attribute first is passim, the attribute last should be empty"
 msgstr ""
 
-#: biblioref/forms.py:613
+#: biblioref/forms.py:617
 msgid "Attribute last is missing"
 msgstr ""
 
-#: biblioref/forms.py:618
+#: biblioref/forms.py:622
 msgid "Attribute first is missing"
 msgstr ""
 
-#: biblioref/forms.py:623
+#: biblioref/forms.py:627
 msgid "Square brackets are missing [ ]"
 msgstr ""
 
-#: biblioref/forms.py:655
+#: biblioref/forms.py:659
 msgid ""
 "Entering information in this field is conditional to filling out publication "
 "city field"
 msgstr ""
 
-#: biblioref/forms.py:660
+#: biblioref/forms.py:664
 msgid "LILACS incompatible"
 msgstr ""
 
-#: biblioref/forms.py:670
+#: biblioref/forms.py:674
 msgid "Maximum number of characteres = 9"
+msgstr ""
+
+#: biblioref/forms.py:810
+msgid "Error in the date"
 msgstr ""
 
 #: biblioref/models.py:11 templates/biblioref/reference_list.html:90
