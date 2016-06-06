@@ -224,9 +224,9 @@ class BiblioRefForm(BetterModelForm):
             occ = 0
             for author in data:
                 occ = occ + 1
-                author_resp = author.get('_r', '')
+                author_resp = author.get('_r')
                 message_item = _("Author %s: ") % occ
-                if not author_resp in abbreviation_list:
+                if author_resp and not author_resp in abbreviation_list:
                     message = _("Degree of responsibility incompatible with LILACS")
                     message = string_concat(message_item, message)
                     self.add_error(field, message)
