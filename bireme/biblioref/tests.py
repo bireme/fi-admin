@@ -25,6 +25,7 @@ form_data['Sas'] = {
     'status': '-1',
     'LILACS_indexed': True,
     'title': '[{"text": "Primeira analítica", "_i": "pt"}]',
+    'english_translated_title': 'Hello World',
     'individual_author': '[{"text": "Chaves, Juca"}]'
 }
 
@@ -130,6 +131,7 @@ class BiblioRefTest(BaseTestCase):
         # test publish record
         post_data['electronic_address'] = '[{"_u": "http://fulltext.org", "_i": "pt", "_q": "pdf", "_y": "PDF" }]'
         response = self.client.post('/bibliographic/edit-analytic/2', post_data)
+        print response
         self.assertRedirects(response, '/bibliographic/analytics?source=1')
 
     def test_documentalist(self):

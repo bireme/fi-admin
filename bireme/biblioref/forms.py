@@ -503,7 +503,7 @@ class BiblioRefForm(BetterModelForm):
         data = self.cleaned_data.get(field)
         status = self.cleaned_data.get('status')
 
-        if self.is_visiblefield(field):
+        if self.is_visiblefield(field) and status != -1:
             self.check_all_pontuation(data, field)
 
             title = self.cleaned_data.get('title_monographic')
@@ -525,7 +525,7 @@ class BiblioRefForm(BetterModelForm):
         status = self.cleaned_data.get('status')
         title_languages = []
 
-        if 'a' in self.document_type and status == 1:
+        if 'a' in self.document_type and status != -1:
             title = self.cleaned_data.get('title')
             if title:
                 title_languages = [t.get('_i') for t in title]
