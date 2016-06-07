@@ -194,10 +194,10 @@ class BiblioRefForm(BetterModelForm):
                 if field_check.strip().endswith('.'):
                     self.add_error(field_name, _("Point at end of field is not allowed"))
 
-        if  self.is_visiblefield('individual_author'):
+        if  self.is_visiblefield('individual_author') and self.is_visiblefield('corporate_author'):
             self.check_author_presence(data, 'individual_author', 'corporate_author')
 
-        if self.is_visiblefield('individual_author_monographic'):
+        if self.is_visiblefield('individual_author_monographic') and self.is_visiblefield('corporate_author_monographic'):
             self.check_author_presence(data, 'individual_author_monographic', 'corporate_author_monographic')
 
         if self.is_visiblefield('issue_number'):
