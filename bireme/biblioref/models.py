@@ -212,11 +212,11 @@ class ReferenceSource(Reference):
     # field tags 35
     issn = models.CharField(_('ISSN'), max_length=40, blank=True)
     # field tag 49
-    thesis_dissertation_leader = JSONField(_('Thesis, Dissertation - Leader'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+    thesis_dissertation_leader = JSONField(_('Leader'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 50
-    thesis_dissertation_institution = models.CharField(_('Thesis, Dissertation - Institution'), max_length=300, blank=True)
+    thesis_dissertation_institution = models.CharField(_('Institution to which it is submitted'), max_length=300, blank=True)
     # field tag 51
-    thesis_dissertation_academic_title = models.CharField(_('Thesis, Dissertation - Academic title'), max_length=250, blank=True)
+    thesis_dissertation_academic_title = models.CharField(_('Academic title'), max_length=250, blank=True)
     # field tag 62
     publisher = models.TextField(_('Publisher'), blank=True)
     # field tag 63

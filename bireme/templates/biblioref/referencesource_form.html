@@ -330,5 +330,11 @@
             $("#id_issn").val(issn);
         }
 
+        // update value of a free input text with a controled value
+        function choose_controled_value(list_id, field_id){
+            value_selected = $("#" + list_id + " option:selected").val();
+            $("#id_" + field_id).val(value_selected);
+        }
+
    </script>
 {% endblock %}

@@ -162,34 +162,36 @@ FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'L
                                   ]
 
 # Thesis, dissertation (source)
-FIELDS_BY_DOCUMENT_TYPE['T'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                        'record_type'],
-                                             'legend': _('General information')}),
+FIELDS_BY_DOCUMENT_TYPE['Tm'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
+                                                         'record_type'],
+                                              'legend': _('General information')}),
 
-                                ('monographic_level', {'fields': ['individual_author_monographic',
-                                                                  'title_monographic', 'english_title_monographic',
-                                                                  'pages_monographic'],
-                                                       'legend': _('Monographic Level')}),
+                                 ('monographic_level', {'fields': ['individual_author_monographic',
+                                                                   'title_monographic', 'english_title_monographic',
+                                                                   'pages_monographic'],
+                                                        'legend': _('Monographic Level')}),
 
-                                comp_info_section,
+                                 comp_info_section,
 
-                                ('thesis_notes', {'fields': ['thesis_dissertation_leader',
-                                                             'thesis_dissertation_institution',
-                                                             'thesis_dissertation_academic_title'],
-                                                  'legend': _('Thesis Notes'),
-                                                  'classes': ['collapse']}),
+                                 ('thesis_notes', {'fields': ['thesis_dissertation_leader',
+                                                              'thesis_dissertation_institution',
+                                                              'thesis_dissertation_academic_title'],
+                                                   'legend': _('Thesis Notes'),
+                                                   'classes': ['collapse']}),
 
 
-                                other_notes_section,
+                                 other_notes_section,
 
-                                imprint_section,
+                                 imprint_section,
 
-                                subject_section,
+                                 subject_section,
 
-                                abstract_section,
+                                 abstract_section,
 
-                                fulltext_section,
-                                ]
+                                 indexing_section,
+
+                                 fulltext_section,
+                                 ]
 
 # Thesis, dissertation (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
@@ -211,6 +213,8 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'L
                                   subject_section,
 
                                   abstract_section,
+
+                                  indexing_section,
 
                                   fulltext_section,
                                   ]

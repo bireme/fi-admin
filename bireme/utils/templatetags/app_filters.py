@@ -3,6 +3,8 @@ from django.utils.translation import gettext as _
 from django.utils.safestring import mark_safe
 from django.utils.html import linebreaks
 
+from utils.models import AuxCode
+
 import json
 
 register = template.Library()
@@ -196,10 +198,21 @@ def format_field(data, truncate=False):
 
     return out
 
+
 @register.filter
 def substring_after(text, delim):
     return text.partition(delim)[2]
 
+
 @register.filter
 def substring_before(text, delim):
     return text.partition(delim)[0]
+
+
+@register.filter
+def auxfield(field):
+    # empty value
+    aux_values = [('', '')]
+    aux_values.extend(AuxCode.objects.filter(field=field.name))
+
+    return aux_values

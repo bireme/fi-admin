@@ -112,6 +112,12 @@ class BiblioRefTest(BaseTestCase):
         post_data.update(blank_formsets)
 
         response = self.client.post('/bibliographic/new-source?document_type=S', post_data)
+        # check for mandatory publication date
+        self.assertContains(response, "O registro de informação neste campo está condicionado ao preenchimento do campo data de publicação")
+        # add publication date 
+        post_data['publication_date'] = '2015 mai'
+        post_data['publication_date_normalized'] = '20150501'
+        response = self.client.post('/bibliographic/new-source?document_type=S', post_data)
         self.assertRedirects(response, '/bibliographic/new-analytic?source=1')
 
         # test create new analytic
@@ -179,4 +185,3 @@ class BiblioRefTest(BaseTestCase):
         # complete data and publish document
         post_data['electronic_address'] = '[{"_u": "http://fulltext.org", "_i": "pt", "_q": "pdf", "_y": "PDF" }]'
         response = self.client.post('/bibliographic/edit-analytic/2', post_data)
-        self.assertRedirects(response, '/bibliographic/analytics?source=1')

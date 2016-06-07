@@ -15,6 +15,7 @@ from main.models import Descriptor, ResourceThematic
 from utils.forms import DescriptorRequired, ResourceThematicRequired
 from utils.templatetags.app_filters import fieldtype
 from title.models import Title
+from utils.models import AuxCode
 from attachments.models import Attachment
 
 from models import *
@@ -31,7 +32,7 @@ class SelectDocumentTypeForm(forms.Form):
         ('S', _('Periodical Series')),
         # ('M', _('Collection')),
         # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
-        # ('T', _('Thesis/Dissertation')),
+        ('Tm', _('Thesis/Dissertation')),
     )
 
     document_type = forms.ChoiceField(choices=DOCUMENT_TYPE_CHOICES, label=_('Select document type'))
@@ -636,6 +637,22 @@ class BiblioRefForm(BetterModelForm):
 
         if self.is_visiblefield(field) and self.cleaned_data['status'] != -1 and not data:
             self.add_error(field, _('Mandatory'))
+
+        return data
+
+    def clean_thesis_dissertation_academic_title(self):
+        field = 'thesis_dissertation_academic_title'
+        data = self.cleaned_data[field]
+        status = self.cleaned_data.get('status')
+
+        if self.is_visiblefield(field) and status != -1:
+            if not data:
+                self.add_error(field, _('Mandatory'))
+            else:
+                if self.is_LILACS:
+                    allowed_values = [aux.code for aux in AuxCode.objects.filter(field=field)]
+                    if data not in allowed_values:
+                        self.add_error(field, _('LILACS incompatible'))
 
         return data
 
