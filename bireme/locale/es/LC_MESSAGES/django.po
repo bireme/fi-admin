@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-08 11:32-0300\n"
+"POT-Creation-Date: 2016-06-08 12:29-0300\n"
 "PO-Revision-Date: 2016-04-13 10:19-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,8 +26,8 @@ msgid "Select a file"
 msgstr "Seleccione por búsqueda"
 
 #: attachments/models.py:46 biblioref/field_definitions.py:309
-#: biblioref/field_definitions.py:332 biblioref/field_definitions.py:428
-#: biblioref/field_definitions.py:439 events/models.py:21 help/models.py:26
+#: biblioref/field_definitions.py:332 biblioref/field_definitions.py:431
+#: biblioref/field_definitions.py:442 events/models.py:21 help/models.py:26
 #: help/models.py:53 main/models.py:29 main/models.py:69 main/models.py:97
 #: main/models.py:108 main/models.py:135 multimedia/models.py:21
 #: multimedia/models.py:60 templates/biblioref/fieldset_fulltext.html:21
@@ -60,8 +60,8 @@ msgstr ""
 msgid "Other notes"
 msgstr "Notas de contenido"
 
-#: biblioref/field_definitions.py:46 biblioref/field_definitions.py:425
-#: biblioref/field_definitions.py:432 biblioref/models.py:97
+#: biblioref/field_definitions.py:46 biblioref/field_definitions.py:428
+#: biblioref/field_definitions.py:435 biblioref/models.py:97
 #: main/models.py:234
 msgid "Abstract"
 msgstr "Resumen"
@@ -230,24 +230,24 @@ msgstr ""
 msgid "Format: Lastname, Name"
 msgstr ""
 
-#: biblioref/field_definitions.py:361 biblioref/field_definitions.py:413
+#: biblioref/field_definitions.py:361 biblioref/field_definitions.py:415
 msgid "Affiliation institution level 1"
 msgstr ""
 
-#: biblioref/field_definitions.py:362 biblioref/field_definitions.py:414
+#: biblioref/field_definitions.py:362 biblioref/field_definitions.py:416
 msgid "Affiliation institution level 2"
 msgstr ""
 
-#: biblioref/field_definitions.py:363 biblioref/field_definitions.py:415
+#: biblioref/field_definitions.py:363 biblioref/field_definitions.py:417
 msgid "Affiliation institution level 3"
 msgstr ""
 
-#: biblioref/field_definitions.py:364 biblioref/field_definitions.py:416
+#: biblioref/field_definitions.py:364 biblioref/field_definitions.py:418
 #, fuzzy
 msgid "Affiliation city"
 msgstr "Fecha de publicación"
 
-#: biblioref/field_definitions.py:365 biblioref/field_definitions.py:417
+#: biblioref/field_definitions.py:365 biblioref/field_definitions.py:419
 #, fuzzy
 msgid "Affiliation country"
 msgstr "Fecha de publicación"
@@ -293,58 +293,58 @@ msgstr ""
 msgid "Descriptive information"
 msgstr "Descripción"
 
-#: biblioref/field_definitions.py:412 biblioref/field_definitions.py:421
+#: biblioref/field_definitions.py:414 biblioref/field_definitions.py:424
 #: biblioref/models.py:215
 msgid "Leader"
 msgstr ""
 
-#: biblioref/field_definitions.py:436 templates/suggest/list.html:120
+#: biblioref/field_definitions.py:439 templates/suggest/list.html:120
 msgid "Keyword"
 msgstr "Palabra clave"
 
-#: biblioref/field_definitions.py:437
+#: biblioref/field_definitions.py:440
 msgid "Qualifier"
 msgstr ""
 
-#: biblioref/field_definitions.py:443 biblioref/models.py:101
+#: biblioref/field_definitions.py:446 biblioref/models.py:101
 #, fuzzy
 #| msgid "Add keyword"
 msgid "Author keyword"
 msgstr "Añadir palabra clave"
 
-#: biblioref/field_definitions.py:447 biblioref/field_definitions.py:453
+#: biblioref/field_definitions.py:450 biblioref/field_definitions.py:456
 #: biblioref/models.py:193 biblioref/models.py:270
 #, fuzzy
 #| msgid "Page"
 msgid "Pages"
 msgstr "Página"
 
-#: biblioref/field_definitions.py:448 templates/title/form_preview.html:190
+#: biblioref/field_definitions.py:451 templates/title/form_preview.html:190
 #: templates/title/title_form.html:267 templates/title/title_form.html:344
 #: title/models.py:65 title/models.py:182 title/models.py:210
 msgid "Initial number"
 msgstr ""
 
-#: biblioref/field_definitions.py:449
+#: biblioref/field_definitions.py:452
 #, fuzzy
 msgid "End number"
 msgstr "Autores"
 
-#: biblioref/field_definitions.py:460 biblioref/models.py:331
+#: biblioref/field_definitions.py:463 biblioref/models.py:331
 msgid "Database"
 msgstr ""
 
-#: biblioref/field_definitions.py:462
+#: biblioref/field_definitions.py:465
 #, fuzzy
 msgid "Record number"
 msgstr "Autores"
 
-#: biblioref/field_definitions.py:463 templates/main/resources.html:102
+#: biblioref/field_definitions.py:466 templates/main/resources.html:102
 #: templates/suggest/list.html:77 title/models.py:154
 msgid "URL"
 msgstr "Enlace"
 
-#: biblioref/field_definitions.py:466
+#: biblioref/field_definitions.py:469
 msgid "Clinical Trial"
 msgstr ""
 
@@ -423,8 +423,8 @@ msgstr ""
 
 #: biblioref/forms.py:266
 msgid ""
-"Affiliation information must be provide at 'Institution to which it is "
-"submitted' field"
+"Affiliation information in Thesis/Dissertation must be provide at "
+"'Institution to which it is submitted' field"
 msgstr ""
 
 #: biblioref/forms.py:278

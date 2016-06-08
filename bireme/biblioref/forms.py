@@ -263,7 +263,7 @@ class BiblioRefForm(BetterModelForm):
                         message = string_concat(message_item, message)
                         self.add_error(field, message)
                     if author.get('_1') or author.get('_2') or author.get('_3') or author.get('_c') or author.get('_r'):
-                        message = _("Affiliation information must be provide at 'Institution to which it is submitted' field")
+                        message = _("Affiliation information in Thesis/Dissertation must be provide at 'Institution to which it is submitted' field")
                         message = string_concat(message_item, message)
                         self.add_error(field, message)
 
