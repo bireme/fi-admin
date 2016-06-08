@@ -409,12 +409,15 @@ class DescriptiveInformation(colander.SequenceSchema):
 
 
 class ThesisDissertationLeaderAttributes(colander.MappingSchema):
+    countries_choices = get_aux_country_list()
+
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Leader'))
     _1 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 1'), missing=unicode(''),)
     _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=unicode(''),)
     _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=unicode(''),)
     _c = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation city'), missing=unicode(''),)
-    _p = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation country'), missing=unicode(''),)
+    _p = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation country'),
+                             widget=deform.widget.SelectWidget(values=countries_choices), missing=unicode(''),)
 
 
 class ThesisDissertationLeader(colander.SequenceSchema):
