@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-08 10:41-0300\n"
+"POT-Creation-Date: 2016-06-08 11:32-0300\n"
 "PO-Revision-Date: 2016-04-13 10:19-0300\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -413,7 +413,7 @@ msgstr ""
 #: biblioref/forms.py:503 biblioref/forms.py:521 biblioref/forms.py:541
 #: biblioref/forms.py:559 biblioref/forms.py:644 biblioref/forms.py:655
 #: biblioref/forms.py:670 biblioref/forms.py:708 biblioref/forms.py:723
-#: biblioref/forms.py:812 biblioref/forms.py:825 biblioref/forms.py:846
+#: biblioref/forms.py:825 biblioref/forms.py:838 biblioref/forms.py:859
 msgid "Mandatory"
 msgstr ""
 
@@ -589,7 +589,7 @@ msgid ""
 "date field"
 msgstr ""
 
-#: biblioref/forms.py:576 biblioref/forms.py:828
+#: biblioref/forms.py:576 biblioref/forms.py:841
 msgid "Different of 8 characters"
 msgstr ""
 
@@ -607,7 +607,7 @@ msgstr ""
 msgid "Error in the date, use: %s"
 msgstr ""
 
-#: biblioref/forms.py:596 biblioref/forms.py:835
+#: biblioref/forms.py:596 biblioref/forms.py:848
 #, fuzzy, python-format
 #| msgid "Publication date"
 msgid "Leave blank, publication date = %s"
@@ -647,7 +647,17 @@ msgstr ""
 msgid "Maximum number of characteres = 9"
 msgstr ""
 
-#: biblioref/forms.py:832
+#: biblioref/forms.py:812
+#, fuzzy
+#| msgid "Events of my network"
+msgid "Event name mandatory"
+msgstr "Eventos de mi red"
+
+#: biblioref/forms.py:815
+msgid "Project name OR Project number mandatory"
+msgstr ""
+
+#: biblioref/forms.py:845
 msgid "Error in the date"
 msgstr ""
 

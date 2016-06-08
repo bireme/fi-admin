@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-08 10:41-0300\n"
-"PO-Revision-Date: 2016-06-08 10:42-0306\n"
+"POT-Creation-Date: 2016-06-08 11:32-0300\n"
+"PO-Revision-Date: 2016-06-08 11:33-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -377,7 +377,7 @@ msgstr "Grau de responsabilidade incompatível com LILACS"
 #: biblioref/forms.py:503 biblioref/forms.py:521 biblioref/forms.py:541
 #: biblioref/forms.py:559 biblioref/forms.py:644 biblioref/forms.py:655
 #: biblioref/forms.py:670 biblioref/forms.py:708 biblioref/forms.py:723
-#: biblioref/forms.py:812 biblioref/forms.py:825 biblioref/forms.py:846
+#: biblioref/forms.py:825 biblioref/forms.py:838 biblioref/forms.py:859
 msgid "Mandatory"
 msgstr "Obrigatório"
 
@@ -579,7 +579,7 @@ msgstr ""
 "O registro de informação neste campo está condicionado ao preenchimento do "
 "campo data de publicação"
 
-#: biblioref/forms.py:576 biblioref/forms.py:828
+#: biblioref/forms.py:576 biblioref/forms.py:841
 msgid "Different of 8 characters"
 msgstr "Não contem 8 dígitos"
 
@@ -597,7 +597,7 @@ msgstr "Incompatível com LILACS"
 msgid "Error in the date, use: %s"
 msgstr "Erro na data, use: %s"
 
-#: biblioref/forms.py:596 biblioref/forms.py:835
+#: biblioref/forms.py:596 biblioref/forms.py:848
 #, python-format
 msgid "Leave blank, publication date = %s"
 msgstr "Deixe em branco, data de publicação = %s"
@@ -640,7 +640,17 @@ msgstr ""
 msgid "Maximum number of characteres = 9"
 msgstr "Número máximo de caracteres = 9"
 
-#: biblioref/forms.py:832
+#: biblioref/forms.py:812
+#| msgid "Field mandatory"
+msgid "Event name mandatory"
+msgstr "Nome do evento obrigatório"
+
+#: biblioref/forms.py:815
+#| msgid "Volume or issue number mandatory"
+msgid "Project name OR Project number mandatory"
+msgstr "Nome do Projeto ou Número do Projeto obrigatório"
+
+#: biblioref/forms.py:845
 msgid "Error in the date"
 msgstr "Erro na data"
 

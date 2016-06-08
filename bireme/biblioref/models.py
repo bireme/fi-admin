@@ -273,7 +273,7 @@ class ReferenceAnalytic(Reference):
 
     def __unicode__(self):
         if 'a' in self.treatment_level:
-            if self.literature_type == 'S':
+            if self.literature_type[0] == 'S':
                 ref_title = u"{0}; {1} ({2}), {3} | {4}".format(self.source.title_serial,
                                                                 self.source.volume_serial,
                                                                 self.source.issue_number,

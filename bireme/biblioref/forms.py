@@ -803,6 +803,19 @@ class ComplementForm(forms.ModelForm):
         model = ReferenceComplement
         exclude = ('source',)
 
+    def clean(self):
+        data = self.cleaned_data
+
+        if not data.get('conference_name') and (data.get('conference_sponsoring_institution') or
+           data.get('conference_date') or data.get('conference_normalized_date') or
+           data.get('conference_city') or data.get('conference_country')):
+                self.add_error('conference_name', _("Event name mandatory"))
+
+        if (not data.get('project_name') and not data.get('number')) and data.get('project_sponsoring_institution'):
+            self.add_error('project_name', _("Project name OR Project number mandatory"))
+
+        return data
+
     def clean_conference_date(self):
         field = 'conference_date'
         conference = self.cleaned_data.get('conference_name', '')
