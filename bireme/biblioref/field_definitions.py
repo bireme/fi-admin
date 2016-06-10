@@ -198,7 +198,7 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'L
                                                           'record_type', 'item_form'],
                                                'legend': _('General information')}),
 
-                                  ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
+                                  ('analytic_level', {'fields': ['individual_author', 'title',
                                                                  'english_translated_title', 'pages'],
                                                       'legend': _('Analytic Level')}),
 
