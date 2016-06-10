@@ -268,6 +268,8 @@ class ReferenceAnalytic(Reference):
     english_translated_title = models.CharField(_('English translated title'), max_length=400, blank=True)
     # field tag 14
     pages = JSONField(_('Pages'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+    # field tag 49
+    thesis_dissertation_analytic_leader = JSONField(_('Leader'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 700
     clinical_trial_registry_name = JSONField(_('Clinical trial registry name'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
 

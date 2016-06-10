@@ -204,7 +204,7 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'L
 
                                   comp_info_section,
 
-                                  ('thesis_notes', {'fields': ['thesis_dissertation_leader'],
+                                  ('thesis_notes', {'fields': ['thesis_dissertation_analytic_leader'],
                                                     'legend': _('Thesis Notes'),
                                                     'classes': ['collapse']}),
 
@@ -421,6 +421,9 @@ class ThesisDissertationLeaderAttributes(colander.MappingSchema):
 
 
 class ThesisDissertationLeader(colander.SequenceSchema):
+    item = ThesisDissertationLeaderAttributes(title=_('Leader'))
+
+class ThesisDissertationAnalyticLeader(colander.SequenceSchema):
     item = ThesisDissertationLeaderAttributes(title=_('Leader'))
 
 

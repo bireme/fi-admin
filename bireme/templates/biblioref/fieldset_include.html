@@ -96,6 +96,15 @@
                                         {% endfor %}
                                     </select>
                                 </p>
+                            {% elif field.name == 'thesis_dissertation_analytic_leader' %}
+                                {{ field }}
+                                <br/>
+                                <p>
+                                    {% trans 'Institution to which it is submitted' %}: <strong>{{ reference_source.thesis_dissertation_institution }}</strong>
+                                </p>
+                                <p>
+                                    {% trans 'Academic title' %}: <strong>{{ reference_source.thesis_dissertation_academic_title }}</strong>
+                                </p>
                             {% else %}
                                 {{ field }}
                             {% endif %}
