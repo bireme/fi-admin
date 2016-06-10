@@ -464,19 +464,22 @@ class BiblioRefForm(BetterModelForm):
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
         url_list = []
 
-        if data and self.is_visiblefield('title'):
-            occ = 0
-            for title in data:
-                occ = occ + 1
-                url = title.get('_u', '')
-                message_item = _("Title %s: ") % occ
-                if self.is_LILACS:
-                    if title.get('_i', '') not in LILACS_compatible_languages:
-                        message = _("Language incompatible with LILACS")
-                        message = string_concat(message_item, message)
-                        self.add_error(field, message)
-                # check pontuation errors
-                self.check_all_pontuation(title.get('text'), field, message_item)
+        if self.is_visiblefield('title'):
+            if not data:
+                self.add_error(field, _("Mandatory"))
+            else:
+                occ = 0
+                for title in data:
+                    occ = occ + 1
+                    url = title.get('_u', '')
+                    message_item = _("Title %s: ") % occ
+                    if self.is_LILACS:
+                        if title.get('_i', '') not in LILACS_compatible_languages:
+                            message = _("Language incompatible with LILACS")
+                            message = string_concat(message_item, message)
+                            self.add_error(field, message)
+                    # check pontuation errors
+                    self.check_all_pontuation(title.get('text'), field, message_item)
 
         return data
 

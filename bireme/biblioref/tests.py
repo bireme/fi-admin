@@ -54,6 +54,33 @@ form_data['Mam'] = {
     'record_type': 'a',
 }
 
+form_data['Tm'] = {
+    'status': '-1',
+    'LILACS_indexed': True,
+    'title_monographic': '[{"text": "Primeira tese", "_i": "pt"}]',
+    'individual_author_monographic': '[{"text": "Chaves, Juca"}]',
+    'english_title_monographic': 'Transled title',
+    'electronic_address': '[{"_u": "http://fulltext.org", "_i": "pt", "_q": "pdf", "_y": "PDF" }]',
+    'record_type': 'a',
+    'text_language': 'pt',
+    'publisher': 'EDITORA USP',
+    'publication_date': '2016 mai',
+    'publication_date_normalized': '20160501',
+    'publication_city': 'São Paulo',
+    'publication_country': 1,
+}
+
+form_data['Tam'] = {
+    'status': '-1',
+    'LILACS_indexed': True,
+    'title': '[{"text": "Primeira analítica de tese", "_i": "pt"}]',
+    'english_translated_title': 'Transled title',
+    'individual_author': '[{"text": "Chaves, Juca"}]',
+    'text_language': 'pt',
+    'record_type': 'a',
+}
+
+
 
 blank_formsets = {
     'main-descriptor-content_type-object_id-TOTAL_FORMS': '0',
@@ -95,6 +122,8 @@ class BiblioRefTest(BaseTestCase):
 
         AuxCode.objects.create(code='a', field='record_type', language='pt', label='Material textual')
 
+        AuxCode.objects.create(code='Doutorado', field='thesis_dissertation_academic_title', language='pt', label='Doutorado')
+
         Title.objects.create(id_number='1', record_type='KS', treatment_level='K', cooperative_center_code='BR1.1',
                              status='1', title='Revista de Enfermagem', creation_date='20160525',
                              shortened_title='Rev. Enfermagem', editor_cc_code='BR772', issn='0000-XXXXX')
@@ -114,7 +143,7 @@ class BiblioRefTest(BaseTestCase):
         response = self.client.post('/bibliographic/new-source?document_type=S', post_data)
         # check for mandatory publication date
         self.assertContains(response, "O registro de informação neste campo está condicionado ao preenchimento do campo data de publicação")
-        # add publication date 
+        # add publication date
         post_data['publication_date'] = '2015 mai'
         post_data['publication_date_normalized'] = '20150501'
         response = self.client.post('/bibliographic/new-source?document_type=S', post_data)
@@ -139,13 +168,13 @@ class BiblioRefTest(BaseTestCase):
         response = self.client.post('/bibliographic/edit-analytic/2', post_data)
         self.assertRedirects(response, '/bibliographic/analytics?source=1')
 
-    def test_documentalist(self):
+    def test_dataentry_monographic(self):
         """
         Tests creation of records by editor llxp
         """
         self.login_documentalist()
 
-        # test create new monographic draft
+        # test create draft record
         post_data = form_data['Mm']
         post_data.update(blank_formsets)
 
@@ -156,7 +185,7 @@ class BiblioRefTest(BaseTestCase):
         response = self.client.get('/bibliographic/')
         self.assertContains(response, 'Primeira monografia')
 
-        # test edit and publish monographic
+        # test edit and publish
         post_data['status'] = 1
         post_data.update(primary_descriptor)
         response = self.client.post('/bibliographic/edit-source/1', post_data)
@@ -176,7 +205,7 @@ class BiblioRefTest(BaseTestCase):
         response = self.client.get('/bibliographic/analytics?source=1')
         self.assertContains(response, 'Primeira analítica da primeira monografia')
 
-        # test edit and publish analytic of monographic
+        # test edit and publish analytic
         post_data['status'] = 1
         post_data.update(primary_descriptor)
         response = self.client.post('/bibliographic/edit-analytic/2', post_data)
@@ -185,3 +214,50 @@ class BiblioRefTest(BaseTestCase):
         # complete data and publish document
         post_data['electronic_address'] = '[{"_u": "http://fulltext.org", "_i": "pt", "_q": "pdf", "_y": "PDF" }]'
         response = self.client.post('/bibliographic/edit-analytic/2', post_data)
+        self.assertRedirects(response, '/bibliographic/analytics?source=1')
+
+    def test_dataentry_thesis(self):
+        """
+        Tests creation of records of type Thesis: source (Tm) and analytic (Tam)
+        """
+        self.login_documentalist()
+
+        # test create new source draft
+        post_data = form_data['Tm']
+        post_data.update(blank_formsets)
+
+        response = self.client.post('/bibliographic/new-source?document_type=Tm', post_data)
+        self.assertRedirects(response, '/bibliographic/')
+
+        # test edit and publish source
+        post_data['status'] = 1
+
+        post_data['thesis_dissertation_institution'] = 'USP'
+        post_data['thesis_dissertation_academic_title'] = 'Invalido'
+        post_data.update(primary_descriptor)
+        response = self.client.post('/bibliographic/edit-source/1', post_data)
+        # check validation of thesis_dissertation_academic_title
+        self.assertContains(response, 'Incompatível com a LILACS')
+        post_data['thesis_dissertation_academic_title'] = 'Doutorado'
+        response = self.client.post('/bibliographic/edit-source/1', post_data)
+        self.assertRedirects(response, '/bibliographic/')
+
+        # test create new analytic
+        post_data = form_data['Tam']
+        post_data.update(blank_formsets)
+        response = self.client.post('/bibliographic/new-analytic?source=1', post_data)
+        self.assertRedirects(response, '/bibliographic/analytics?source=1')
+        # check if record is on the list
+        response = self.client.get('/bibliographic/analytics?source=1')
+        self.assertContains(response, 'Primeira analítica de tese')
+
+        # test edit and publish analytic
+        post_data['status'] = 1
+        post_data.update(primary_descriptor)
+        response = self.client.post('/bibliographic/edit-analytic/2', post_data)
+        # check validation of page or url
+        self.assertContains(response, 'Endereço eletrônico, texto completo OU paginação obrigatório')
+        # complete data and publish document
+        post_data['electronic_address'] = '[{"_u": "http://fulltext.org", "_i": "pt", "_q": "pdf", "_y": "PDF" }]'
+        response = self.client.post('/bibliographic/edit-analytic/2', post_data)
+        self.assertRedirects(response, '/bibliographic/analytics?source=1')

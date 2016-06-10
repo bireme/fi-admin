@@ -263,7 +263,7 @@ class ReferenceAnalytic(Reference):
     # field tag 11
     corporate_author = JSONField(_('Corporate author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 12
-    title = JSONField(_('Title'), blank=False, null=True, dump_kwargs={'ensure_ascii': False}, help_text=_("Field mandatory"))
+    title = JSONField(_('Title'), blank=True, null=True, dump_kwargs={'ensure_ascii': False}, help_text=_("Field mandatory"))
     # field tag 13
     english_translated_title = models.CharField(_('English translated title'), max_length=400, blank=True)
     # field tag 14
