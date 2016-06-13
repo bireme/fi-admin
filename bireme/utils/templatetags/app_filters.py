@@ -216,3 +216,8 @@ def auxfield(field):
     aux_values.extend(AuxCode.objects.filter(field=field.name))
 
     return aux_values
+
+@register.filter
+def field_has_error(form, field):
+
+    return form.has_error(field)

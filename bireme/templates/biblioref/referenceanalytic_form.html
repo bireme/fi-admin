@@ -48,7 +48,7 @@
 
         {% if user_role != 'editor_llxp' %}
             <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}{% if formset_descriptor.errors and not formset_descriptor.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
-            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+            <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if form|field_has_error:"electronic_address" or formset_attachment.errors and not formset_attachment.is_valid  %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}{% if formset_library.errors and not formset_library.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}{% if formset_thematic.errors and not formset_thematic.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% if form.document_type != 'Mc' and form.document_type.0 != 'T' %}
@@ -201,6 +201,7 @@
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
    <script src="{% static 'js/jsrender.min.js' %}"></script>
    <script src="{% static 'js/field_assist.js' %}"></script>
+   <script src="{% static 'js/record_type.js' %}"></script>
 
    <script id="itensTemplate" type="text/x-jsrender">
         <li>
@@ -413,78 +414,5 @@
             $("fieldset").removeClass('collapse');
         {% endif %}
 
-        // control display of fields item_form (110), type_of_computer_file (111), type_of_cartographic_material (112)
-        // type_of_journal (113) and type_of_visual_material (114), specific_designation_of_the_material (115)
-        $( "#id_record_type" ).change(function() {
-            record_type = $("#id_record_type option:selected").val();
-            show_hide_field_list(['item_form', 'type_of_computer_file', 'type_of_cartographic_material',
-                                  'type_of_journal', 'type_of_visual_material', 'specific_designation_of_the_material'], 'hide');
-
-            switch(record_type){
-                case "a":
-                    show_hide_field('item_form', 'show');
-                    if (literature_type[0] == "S" && treatment_level == "as"){
-                        show_hide_field('type_of_journal', 'show');
-                    }else{
-                        clear_select_option(['type_of_journal', 'type_of_cartographic_material',
-                                             'type_of_visual_material', 'specific_designation_of_the_material']);
-                    }
-                    break;
-                case "c":
-                case "d":
-                case "i":
-                case "j":
-                case "p":
-                case "t":
-                    show_hide_field('item_form', 'show');
-                    clear_select_option(['type_of_computer_file', 'type_of_cartographic_material',
-                                         'type_of_journal', 'type_of_visual_material', 'specific_designation_of_the_material']);
-                    break;
-                case "f":
-                case "e":
-                    show_hide_field('item_form', 'show');
-                    show_hide_field('type_of_cartographic_material', 'show');
-                    clear_select_option(['type_of_computer_file', 'type_of_journal',
-                                         'type_of_visual_material', 'specific_designation_of_the_material']);
-                    break;
-                case "g":
-                case "o":
-                case "r":
-                    show_hide_field('item_form', 'show');
-                    show_hide_field('type_of_visual_material', 'show');
-                    break;
-                case "k":
-                    show_hide_field('item_form', 'show');
-                    show_hide_field('type_of_visual_material', 'show');
-                    show_hide_field('specific_designation_of_the_material', 'show');
-                    clear_select_option(['type_of_computer_file', 'type_of_cartographic_material', 'type_of_journal']);
-                    break;
-                case "m":
-                    show_hide_field('type_of_computer_file', 'show');
-                    clear_select_option(['item_form', 'type_of_cartographic_material', 'type_of_journal',
-                                         'type_of_visual_material', 'specific_designation_of_the_material']);
-                    break;
-            }
-        });
-
-        function show_hide_field(fieldname, show_hide){
-            if (show_hide == 'show'){
-                $("label[for=id_" + fieldname + "], #id_" + fieldname + "").show();
-            }else{
-                $("label[for=id_" + fieldname + "], #id_" + fieldname + "").hide();
-            }
-        }
-        function show_hide_field_list(fieldlist, show_hide){
-            for (i=0; i< fieldlist.length; i++) {
-                show_hide_field(fieldlist[i], show_hide);
-            }
-        }
-
-        function clear_select_option(fieldlist){
-            for (i=0; i< fieldlist.length; i++) {
-                $("#id_" + fieldlist[i] + "").val("");
-            }
-
-        }
    </script>
 {% endblock %}

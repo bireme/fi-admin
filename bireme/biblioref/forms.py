@@ -30,7 +30,7 @@ class SelectDocumentTypeForm(forms.Form):
         ('Mm', _('Monograph')),
         # ('N', _('Non conventional')),
         ('S', _('Periodical Series')),
-        # ('M', _('Collection')),
+        ('Mc', _('Collection of Monographs')),
         # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
         ('Tm', _('Thesis/Dissertation')),
     )

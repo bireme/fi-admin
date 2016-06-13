@@ -22,7 +22,7 @@
 
 <div class='header'>
     <h2><i class='icon-file' title="{% if object %}{{ object.document_type }}{% else %}{{ form.document_type }}{% endif %}"></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %}</h2>
-    {% if object %}
+    {% if object and form.document_type != 'Mc' %}
         <div class='pull-right'>
             <a href="{% url 'list_biblioref_analytics' %}?source={{object.pk}}" class='btn btn-info'><i class='icon-align-justify'></i>{% trans "List analytics" %}</a>
             <a href="{% url 'create_biblioref_analytic' %}?source={{object.pk}}" class='btn btn-primary'><i class='icon-plus'></i> {% trans "Create analytic" %}</a>
@@ -51,13 +51,13 @@
             {% endif %}
 
             {% if 'fulltext'|infieldset:form.fieldsets %}
-                <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}</a>{% if formset_attachment.errors and not formset_attachment.is_valid %}<i class="icon-warning-sign"></i><span class="mark">*</span>{% endif %}</li>
+                <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if form|field_has_error:"electronic_address" or formset_attachment.errors and not formset_library.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
 
             {% if form.document_type != 'S' %}
                 <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}{% if formset_library.errors and not formset_library.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
-            {% if form.document_type == 'MS' or form.document_type == 'Mc' or form.document_type == 'Mm' or form.document_type == 'N' %}
+            {% if form.document_type == 'MS' or form.document_type == 'Mm' or form.document_type == 'N' %}
                 <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
         {% endif %}
@@ -182,6 +182,7 @@
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
    <script src="{% static 'js/jsrender.min.js' %}"></script>
    <script src="{% static 'js/field_assist.js' %}"></script>
+   <script src="{% static 'js/record_type.js' %}"></script>
 
    <script id="itensTemplate" type="text/x-jsrender">
         <li>
@@ -197,6 +198,10 @@
 
    <script type="text/javascript">
         var decs_field;
+        var document_type = "{{form.document_type}}";
+        var literature_type = "{{form.document_type|slice:'0:1'}}";
+        var treatment_level = "{{form.document_type|slice:'-2:'}}";
+        var new_reference = {% if not object %}true{% else %}false{% endif%}
 
         function format_attrlabel(value) {
 
@@ -295,6 +300,8 @@
             $(document).on("click", "a.add_error_report", function(){
                 $("#error_report_modal").modal("show");
             });
+
+            $("#id_record_type").trigger("change");
 
         })
 

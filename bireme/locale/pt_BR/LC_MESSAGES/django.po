@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-08 12:29-0300\n"
-"PO-Revision-Date: 2016-06-08 12:29-0306\n"
+"POT-Creation-Date: 2016-06-13 16:02-0300\n"
+"PO-Revision-Date: 2016-06-13 16:05-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,9 +23,9 @@ msgstr ""
 msgid "Select a file"
 msgstr "Selecione o arquivo"
 
-#: attachments/models.py:46 biblioref/field_definitions.py:309
-#: biblioref/field_definitions.py:332 biblioref/field_definitions.py:431
-#: biblioref/field_definitions.py:442 events/models.py:21 help/models.py:26
+#: attachments/models.py:46 biblioref/field_definitions.py:344
+#: biblioref/field_definitions.py:367 biblioref/field_definitions.py:469
+#: biblioref/field_definitions.py:480 events/models.py:21 help/models.py:26
 #: help/models.py:53 main/models.py:29 main/models.py:69 main/models.py:97
 #: main/models.py:108 main/models.py:135 multimedia/models.py:21
 #: multimedia/models.py:60 templates/biblioref/fieldset_fulltext.html:21
@@ -52,8 +52,8 @@ msgstr ""
 msgid "Other notes"
 msgstr "Outras notas"
 
-#: biblioref/field_definitions.py:46 biblioref/field_definitions.py:428
-#: biblioref/field_definitions.py:435 biblioref/models.py:97
+#: biblioref/field_definitions.py:46 biblioref/field_definitions.py:466
+#: biblioref/field_definitions.py:473 biblioref/models.py:97
 #: main/models.py:234
 msgid "Abstract"
 msgstr "Resumo"
@@ -74,7 +74,7 @@ msgstr "Campos adicionais de indexação"
 msgid "Imprint"
 msgstr "Imprenta"
 
-#: biblioref/field_definitions.py:70 biblioref/field_definitions.py:306
+#: biblioref/field_definitions.py:70 biblioref/field_definitions.py:341
 #: templates/biblioref/referenceanalytic_form.html:51
 #: templates/biblioref/referenceanalytic_form.html:58
 #: templates/biblioref/referencesource_form.html:54
@@ -82,9 +82,10 @@ msgid "Fulltext"
 msgstr "Texto completo"
 
 #: biblioref/field_definitions.py:77 biblioref/field_definitions.py:92
-#: biblioref/field_definitions.py:118 biblioref/field_definitions.py:144
-#: biblioref/field_definitions.py:167 biblioref/field_definitions.py:199
-#: biblioref/field_definitions.py:225 biblioref/field_definitions.py:247
+#: biblioref/field_definitions.py:120 biblioref/field_definitions.py:148
+#: biblioref/field_definitions.py:173 biblioref/field_definitions.py:200
+#: biblioref/field_definitions.py:232 biblioref/field_definitions.py:258
+#: biblioref/field_definitions.py:280
 msgid "General information"
 msgstr "Informações Gerais"
 
@@ -93,8 +94,8 @@ msgstr "Informações Gerais"
 msgid "Serial level"
 msgstr "Nível Série"
 
-#: biblioref/field_definitions.py:96 biblioref/field_definitions.py:148
-#: biblioref/field_definitions.py:203 biblioref/field_definitions.py:251
+#: biblioref/field_definitions.py:96 biblioref/field_definitions.py:152
+#: biblioref/field_definitions.py:236 biblioref/field_definitions.py:284
 msgid "Analytic Level"
 msgstr "Nível Analítico"
 
@@ -102,77 +103,77 @@ msgstr "Nível Analítico"
 msgid "Content data"
 msgstr "Dados de conteúdo"
 
-#: biblioref/field_definitions.py:124 biblioref/field_definitions.py:172
-#: biblioref/field_definitions.py:231
+#: biblioref/field_definitions.py:126 biblioref/field_definitions.py:179
+#: biblioref/field_definitions.py:205 biblioref/field_definitions.py:264
 msgid "Monographic Level"
 msgstr "Nível Monográfico"
 
-#: biblioref/field_definitions.py:179 biblioref/field_definitions.py:208
+#: biblioref/field_definitions.py:212 biblioref/field_definitions.py:241
 msgid "Thesis Notes"
 msgstr "Notas da Tese"
 
-#: biblioref/field_definitions.py:285
+#: biblioref/field_definitions.py:318
 msgid "Center code"
 msgstr "Código Centro Cooperante"
 
-#: biblioref/field_definitions.py:286
+#: biblioref/field_definitions.py:319
 msgid "Classification number"
 msgstr "Número de classificação"
 
-#: biblioref/field_definitions.py:287
+#: biblioref/field_definitions.py:320
 msgid "Author number"
 msgstr "Número de autor"
 
-#: biblioref/field_definitions.py:288
+#: biblioref/field_definitions.py:321
 msgid "Volumen, inventory number, part"
 msgstr "Volume, tompo, parte, etc"
 
-#: biblioref/field_definitions.py:289
+#: biblioref/field_definitions.py:322
 msgid "Lending system"
 msgstr "Sistema de empréstimo"
 
-#: biblioref/field_definitions.py:293 biblioref/models.py:329
+#: biblioref/field_definitions.py:326 biblioref/models.py:331
 msgid "Call number"
 msgstr "Localização do documento"
 
-#: biblioref/field_definitions.py:303
+#: biblioref/field_definitions.py:338
 msgid "Electric address"
 msgstr "Endereço eletrônico"
 
-#: biblioref/field_definitions.py:312
+#: biblioref/field_definitions.py:347
 msgid "File type"
 msgstr "Tipo de arquivo"
 
-#: biblioref/field_definitions.py:315
+#: biblioref/field_definitions.py:350
 msgid "File extension"
 msgstr "Extensão do arquivo"
 
-#: biblioref/field_definitions.py:317 title/choices.py:133
+#: biblioref/field_definitions.py:352 title/choices.py:133
 msgid "Password"
 msgstr "Senha"
 
-#: biblioref/field_definitions.py:318
+#: biblioref/field_definitions.py:353
 msgid "Logon"
 msgstr "Logon"
 
-#: biblioref/field_definitions.py:319
+#: biblioref/field_definitions.py:354
 msgid "File length"
 msgstr "Tamanho do arquivo"
 
-#: biblioref/field_definitions.py:320
+#: biblioref/field_definitions.py:355
 msgid "No public note"
 msgstr "Nota não pública"
 
-#: biblioref/field_definitions.py:321
+#: biblioref/field_definitions.py:356
 msgid "Public note"
 msgstr "Nota pública"
 
-#: biblioref/field_definitions.py:325 biblioref/models.py:68
+#: biblioref/field_definitions.py:360 biblioref/models.py:68
 msgid "Electronic address"
 msgstr "Endereço eletrônico"
 
-#: biblioref/field_definitions.py:329 biblioref/field_definitions.py:336
-#: biblioref/field_definitions.py:340 biblioref/models.py:60
+#: biblioref/field_definitions.py:364 biblioref/field_definitions.py:371
+#: biblioref/field_definitions.py:375 biblioref/models.py:60
 #: biblioref/models.py:189 biblioref/models.py:201 biblioref/models.py:266
 #: events/models.py:69 main/models.py:220 suggest/models.py:25
 #: suggest/models.py:56 templates/biblioref/reference_list.html:110
@@ -192,128 +193,129 @@ msgstr "Endereço eletrônico"
 msgid "Title"
 msgstr "Título"
 
-#: biblioref/field_definitions.py:347 biblioref/forms.py:258
+#: biblioref/field_definitions.py:382 biblioref/forms.py:258
 msgid "Comma abscent"
 msgstr "Ausência de vírgula"
 
-#: biblioref/field_definitions.py:350 biblioref/forms.py:262
+#: biblioref/field_definitions.py:385 biblioref/forms.py:262
 #: biblioref/forms.py:283
 msgid "Insert space after comma"
 msgstr "Adicionar espaço depois da vírgula"
 
-#: biblioref/field_definitions.py:359
+#: biblioref/field_definitions.py:394
 msgid "Personal author"
 msgstr "Autor pessoal"
 
-#: biblioref/field_definitions.py:360
+#: biblioref/field_definitions.py:395
 msgid "Format: Lastname, Name"
 msgstr "Formato: Sobrenome, Nome"
 
-#: biblioref/field_definitions.py:361 biblioref/field_definitions.py:415
+#: biblioref/field_definitions.py:396 biblioref/field_definitions.py:450
 msgid "Affiliation institution level 1"
 msgstr "Afiliação - Instituição nível 1"
 
-#: biblioref/field_definitions.py:362 biblioref/field_definitions.py:416
+#: biblioref/field_definitions.py:397 biblioref/field_definitions.py:451
 msgid "Affiliation institution level 2"
 msgstr "Afiliação - Instituição nível 2"
 
-#: biblioref/field_definitions.py:363 biblioref/field_definitions.py:417
+#: biblioref/field_definitions.py:398 biblioref/field_definitions.py:452
 msgid "Affiliation institution level 3"
 msgstr "Afiliação - Instituição nível 3"
 
-#: biblioref/field_definitions.py:364 biblioref/field_definitions.py:418
+#: biblioref/field_definitions.py:399 biblioref/field_definitions.py:453
 msgid "Affiliation city"
 msgstr "Afiliação - Cidade"
 
-#: biblioref/field_definitions.py:365 biblioref/field_definitions.py:419
+#: biblioref/field_definitions.py:400 biblioref/field_definitions.py:454
 msgid "Affiliation country"
 msgstr "Afiliação - País"
 
-#: biblioref/field_definitions.py:367
+#: biblioref/field_definitions.py:402
 msgid "Affiliation degree of responsibility"
 msgstr "Afiliação - Grau de responsabilidade"
 
-#: biblioref/field_definitions.py:373 biblioref/field_definitions.py:377
+#: biblioref/field_definitions.py:408 biblioref/field_definitions.py:412
 #: biblioref/models.py:185 biblioref/models.py:197 biblioref/models.py:262
 msgid "Individual author"
 msgstr "Autor pessoal"
 
-#: biblioref/field_definitions.py:385 biblioref/field_definitions.py:393
-#: biblioref/field_definitions.py:397 biblioref/models.py:187
+#: biblioref/field_definitions.py:420 biblioref/field_definitions.py:428
+#: biblioref/field_definitions.py:432 biblioref/models.py:187
 #: biblioref/models.py:199 biblioref/models.py:264
 msgid "Corporate author"
 msgstr "Autor institucional"
 
-#: biblioref/field_definitions.py:387
+#: biblioref/field_definitions.py:422
 msgid "Degree of responsibility"
 msgstr "Grau de responsabilidade"
 
-#: biblioref/field_definitions.py:401 multimedia/models.py:110
+#: biblioref/field_definitions.py:436 multimedia/models.py:110
 msgid "Other physical details"
 msgstr "Outros detalhes físicos"
 
-#: biblioref/field_definitions.py:402 multimedia/models.py:109
+#: biblioref/field_definitions.py:437 multimedia/models.py:109
 msgid "Item extension"
 msgstr "Extensão do item"
 
-#: biblioref/field_definitions.py:403 multimedia/models.py:111
+#: biblioref/field_definitions.py:438 multimedia/models.py:111
 msgid "Dimension"
 msgstr "Dimensão"
 
-#: biblioref/field_definitions.py:404
+#: biblioref/field_definitions.py:439
 msgid "Accompanying material"
 msgstr "Material acompanhante"
 
-#: biblioref/field_definitions.py:408 biblioref/models.py:73
+#: biblioref/field_definitions.py:443 biblioref/models.py:73
 msgid "Descriptive information"
 msgstr "Informação descritiva"
 
-#: biblioref/field_definitions.py:414 biblioref/field_definitions.py:424
-#: biblioref/models.py:215
+#: biblioref/field_definitions.py:449 biblioref/field_definitions.py:459
+#: biblioref/field_definitions.py:462 biblioref/models.py:215
+#: biblioref/models.py:272
 msgid "Leader"
 msgstr "Orientador"
 
-#: biblioref/field_definitions.py:439 templates/suggest/list.html:120
+#: biblioref/field_definitions.py:477 templates/suggest/list.html:120
 msgid "Keyword"
 msgstr "Palavra-chave"
 
-#: biblioref/field_definitions.py:440
+#: biblioref/field_definitions.py:478
 msgid "Qualifier"
 msgstr "Qualificador"
 
-#: biblioref/field_definitions.py:446 biblioref/models.py:101
+#: biblioref/field_definitions.py:484 biblioref/models.py:101
 msgid "Author keyword"
 msgstr "Palavras-chave do autor"
 
-#: biblioref/field_definitions.py:450 biblioref/field_definitions.py:456
+#: biblioref/field_definitions.py:488 biblioref/field_definitions.py:494
 #: biblioref/models.py:193 biblioref/models.py:270
 msgid "Pages"
 msgstr "Páginas"
 
-#: biblioref/field_definitions.py:451 templates/title/form_preview.html:190
+#: biblioref/field_definitions.py:489 templates/title/form_preview.html:190
 #: templates/title/title_form.html:267 templates/title/title_form.html:344
 #: title/models.py:65 title/models.py:182 title/models.py:210
 msgid "Initial number"
 msgstr "Número inicial"
 
-#: biblioref/field_definitions.py:452
+#: biblioref/field_definitions.py:490
 msgid "End number"
 msgstr "Número final"
 
-#: biblioref/field_definitions.py:463 biblioref/models.py:331
+#: biblioref/field_definitions.py:501 biblioref/models.py:333
 msgid "Database"
 msgstr "Base de dados"
 
-#: biblioref/field_definitions.py:465
+#: biblioref/field_definitions.py:503
 msgid "Record number"
 msgstr "Número do registro"
 
-#: biblioref/field_definitions.py:466 templates/main/resources.html:102
+#: biblioref/field_definitions.py:504 templates/main/resources.html:102
 #: templates/suggest/list.html:77 title/models.py:154
 msgid "URL"
 msgstr "URL"
 
-#: biblioref/field_definitions.py:469
+#: biblioref/field_definitions.py:507
 msgid "Clinical Trial"
 msgstr "Registro de Ensaio Clínico"
 
@@ -324,6 +326,11 @@ msgstr "Monografia"
 #: biblioref/forms.py:32
 msgid "Periodical Series"
 msgstr "Série Periódica"
+
+#: biblioref/forms.py:33
+#| msgid "Collections"
+msgid "Collection of Monographs"
+msgstr "Coleção de Monografias"
 
 #: biblioref/forms.py:35
 msgid "Thesis/Dissertation"
@@ -374,10 +381,11 @@ msgid "Degree of responsibility incompatible with LILACS"
 msgstr "Grau de responsabilidade incompatível com LILACS"
 
 #: biblioref/forms.py:246 biblioref/forms.py:377 biblioref/forms.py:452
-#: biblioref/forms.py:503 biblioref/forms.py:521 biblioref/forms.py:541
-#: biblioref/forms.py:559 biblioref/forms.py:644 biblioref/forms.py:655
-#: biblioref/forms.py:670 biblioref/forms.py:708 biblioref/forms.py:723
-#: biblioref/forms.py:825 biblioref/forms.py:838 biblioref/forms.py:859
+#: biblioref/forms.py:469 biblioref/forms.py:506 biblioref/forms.py:524
+#: biblioref/forms.py:544 biblioref/forms.py:562 biblioref/forms.py:647
+#: biblioref/forms.py:658 biblioref/forms.py:673 biblioref/forms.py:711
+#: biblioref/forms.py:726 biblioref/forms.py:828 biblioref/forms.py:841
+#: biblioref/forms.py:862
 msgid "Mandatory"
 msgstr "Obrigatório"
 
@@ -386,9 +394,6 @@ msgid "Thesis's author anonymous"
 msgstr "Autor de tese anônimo"
 
 #: biblioref/forms.py:266
-#| msgid ""
-#| "iliation information must be provide at 'Institution to which it is mitted' "
-#| "field"
 msgid ""
 "Affiliation information in Thesis/Dissertation must be provide at "
 "'Institution to which it is submitted' field"
@@ -429,7 +434,7 @@ msgstr ""
 msgid " at subfield %s "
 msgstr "no subcampo %s"
 
-#: biblioref/forms.py:345 biblioref/forms.py:615
+#: biblioref/forms.py:345 biblioref/forms.py:618
 #, python-format
 msgid "item %s: "
 msgstr "Item %s:"
@@ -442,8 +447,8 @@ msgstr "Atributo de extensão do arquivo é obrigatório"
 msgid "File type attribute is mandatory"
 msgstr "Atributo de tipo de arquivo é obrigatório"
 
-#: biblioref/forms.py:358 biblioref/forms.py:475 biblioref/forms.py:497
-#: biblioref/forms.py:713
+#: biblioref/forms.py:358 biblioref/forms.py:478 biblioref/forms.py:500
+#: biblioref/forms.py:716
 msgid "Language incompatible with LILACS"
 msgstr "Idioma incompatível com LILACS"
 
@@ -561,20 +566,20 @@ msgstr ""
 "Por favor selecione uma revista da lista ou escolha opção vazia para "
 "informar um outro título de revista"
 
-#: biblioref/forms.py:472 biblioref/forms.py:494
+#: biblioref/forms.py:475 biblioref/forms.py:497
 #, python-format
 msgid "Title %s: "
 msgstr "Título %s:"
 
-#: biblioref/forms.py:524 biblioref/forms.py:544
+#: biblioref/forms.py:527 biblioref/forms.py:547
 msgid "Invalid fill. Don't translate title in English"
 msgstr "Preenchimento inválido. Não traduza título em Inglês"
 
-#: biblioref/forms.py:556
+#: biblioref/forms.py:559
 msgid "Date without year"
 msgstr "Data sem ano"
 
-#: biblioref/forms.py:573
+#: biblioref/forms.py:576
 msgid ""
 "Entering information in this field is conditional to filling out publication"
 " date field"
@@ -582,56 +587,56 @@ msgstr ""
 "O registro de informação neste campo está condicionado ao preenchimento do "
 "campo data de publicação"
 
-#: biblioref/forms.py:576 biblioref/forms.py:841
+#: biblioref/forms.py:579 biblioref/forms.py:844
 msgid "Different of 8 characters"
 msgstr "Não contem 8 dígitos"
 
-#: biblioref/forms.py:581
+#: biblioref/forms.py:584
 #, python-format
 msgid "Normalized date year must be '%s'"
 msgstr "Ano da data normalizada deve ser: '%s'"
 
-#: biblioref/forms.py:586
+#: biblioref/forms.py:589
 msgid "Incompatible with LILACS"
 msgstr "Incompatível com LILACS"
 
-#: biblioref/forms.py:591
+#: biblioref/forms.py:594
 #, python-format
 msgid "Error in the date, use: %s"
 msgstr "Erro na data, use: %s"
 
-#: biblioref/forms.py:596 biblioref/forms.py:848
+#: biblioref/forms.py:599 biblioref/forms.py:851
 #, python-format
 msgid "Leave blank, publication date = %s"
 msgstr "Deixe em branco, data de publicação = %s"
 
-#: biblioref/forms.py:607
+#: biblioref/forms.py:610
 msgid "Do not have more than 4 occurrences, use passim"
 msgstr "Mais que 4 ocorrências não permitido, use passim"
 
-#: biblioref/forms.py:618
+#: biblioref/forms.py:621
 msgid "If the attribute first is passim, the attribute last should be empty"
 msgstr ""
 "Se o atributo número inicial é passim, o atributo número final precisa ser "
 "vazio"
 
-#: biblioref/forms.py:623
+#: biblioref/forms.py:626
 msgid "Attribute last is missing"
 msgstr "Atributo número final não presente"
 
-#: biblioref/forms.py:628
+#: biblioref/forms.py:631
 msgid "Attribute first is missing"
 msgstr "Atributo número inicial não presente"
 
-#: biblioref/forms.py:633
+#: biblioref/forms.py:636
 msgid "Square brackets are missing [ ]"
 msgstr "Colchetes não presentes"
 
-#: biblioref/forms.py:660 biblioref/forms.py:686
+#: biblioref/forms.py:663 biblioref/forms.py:689
 msgid "LILACS incompatible"
 msgstr "Incompatível com a LILACS"
 
-#: biblioref/forms.py:681
+#: biblioref/forms.py:684
 msgid ""
 "Entering information in this field is conditional to filling out publication"
 " city field"
@@ -639,19 +644,19 @@ msgstr ""
 "O preenchimento de informação neste campo está condicionado ao preenchimento"
 " do campo cidade de publicação"
 
-#: biblioref/forms.py:696
+#: biblioref/forms.py:699
 msgid "Maximum number of characteres = 9"
 msgstr "Número máximo de caracteres = 9"
 
-#: biblioref/forms.py:812
+#: biblioref/forms.py:815
 msgid "Event name mandatory"
 msgstr "Nome do evento obrigatório"
 
-#: biblioref/forms.py:815
+#: biblioref/forms.py:818
 msgid "Project name OR Project number mandatory"
 msgstr "Nome do Projeto ou Número do Projeto obrigatório"
 
-#: biblioref/forms.py:845
+#: biblioref/forms.py:848
 msgid "Error in the date"
 msgstr "Erro na data"
 
@@ -858,7 +863,7 @@ msgstr "Indexado em LILACS?"
 msgid "Reviewed by BIREME?"
 msgstr "Revisado pela BIREME"
 
-#: biblioref/models.py:62 biblioref/models.py:339 events/models.py:88
+#: biblioref/models.py:62 biblioref/models.py:341 events/models.py:88
 #: main/models.py:240 multimedia/models.py:63 multimedia/models.py:119
 #: templates/multimedia/media_list.html:86 templates/reports/index.html:64
 #: templates/title/title_list.html:100 title/models.py:37
@@ -881,7 +886,7 @@ msgstr "Tipo de registro"
 msgid "Text language"
 msgstr "idioma do texto"
 
-#: biblioref/models.py:77 biblioref/models.py:335
+#: biblioref/models.py:77 biblioref/models.py:337
 msgid "Internal note"
 msgstr "Nota interna"
 
@@ -977,7 +982,7 @@ msgstr "Nota de versão original"
 msgid "Institution as subject"
 msgstr "Instituição como tema"
 
-#: biblioref/models.py:127 biblioref/models.py:337
+#: biblioref/models.py:127 biblioref/models.py:339
 msgid "Local descriptors"
 msgstr "Descritores locais"
 
@@ -1025,11 +1030,11 @@ msgstr "Número do fascículo"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: biblioref/models.py:217
+#: biblioref/models.py:217 templates/biblioref/fieldset_include.html:103
 msgid "Institution to which it is submitted"
 msgstr "Instituição a qual se apresenta"
 
-#: biblioref/models.py:219
+#: biblioref/models.py:219 templates/biblioref/fieldset_include.html:106
 msgid "Academic title"
 msgstr "Título acadêmico"
 
@@ -1069,7 +1074,7 @@ msgstr "Registro bibliográfico - Analítica"
 msgid "Bibliographic Records Analytic"
 msgstr "Registro bibliográfico - Analíticas"
 
-#: biblioref/models.py:260 biblioref/models.py:298 biblioref/models.py:327
+#: biblioref/models.py:260 biblioref/models.py:300 biblioref/models.py:329
 #: help/models.py:24 templates/reports/index.html:43
 msgid "Source"
 msgstr "Fonte de informação"
@@ -1078,63 +1083,63 @@ msgstr "Fonte de informação"
 msgid "Field mandatory"
 msgstr "Campo obrigatório"
 
-#: biblioref/models.py:272
+#: biblioref/models.py:274
 msgid "Clinical trial registry name"
 msgstr "Nome do registro do ensaio clínico"
 
-#: biblioref/models.py:295
+#: biblioref/models.py:297
 msgid "Bibliographic Record Complement"
 msgstr "Complemento do Registro Bibliográfico"
 
-#: biblioref/models.py:296
+#: biblioref/models.py:298
 msgid "Bibliographic Records Complement"
 msgstr "Complemento das Registros Bibliográficos"
 
-#: biblioref/models.py:301
+#: biblioref/models.py:303
 msgid "Conference name"
 msgstr "Nome do evento"
 
-#: biblioref/models.py:303
+#: biblioref/models.py:305
 msgid "Conference Sponsoring Institution"
 msgstr "Instituição patrocinadora do evento"
 
-#: biblioref/models.py:305
+#: biblioref/models.py:307
 msgid "Conference date"
 msgstr "Data do evento"
 
-#: biblioref/models.py:307
+#: biblioref/models.py:309
 msgid "Conference normalized date"
 msgstr "Data normalizada do evento"
 
-#: biblioref/models.py:309
+#: biblioref/models.py:311
 msgid "Conference city"
 msgstr "Cidade do evento"
 
-#: biblioref/models.py:311
+#: biblioref/models.py:313
 msgid "Conference country"
 msgstr "País do evento"
 
-#: biblioref/models.py:313
+#: biblioref/models.py:315
 msgid "Project name"
 msgstr "Nome do projeto"
 
-#: biblioref/models.py:315
+#: biblioref/models.py:317
 msgid "Project number"
 msgstr "Número do projeto"
 
-#: biblioref/models.py:317
+#: biblioref/models.py:319
 msgid "Project - Sponsoring Institution"
 msgstr "Projeto - Instituição patrocinadora"
 
-#: biblioref/models.py:324
+#: biblioref/models.py:326
 msgid "Bibliographic Record Local"
 msgstr "Registro bibliográfico - Campos locais"
 
-#: biblioref/models.py:325
+#: biblioref/models.py:327
 msgid "Bibliographic Records Local"
 msgstr "Registro bibliográfico - Campos locais"
 
-#: biblioref/models.py:333
+#: biblioref/models.py:335
 msgid "Inventory number"
 msgstr "Tombo"
 
@@ -1817,7 +1822,7 @@ msgstr "Selecione pela pesquisa"
 
 #: templates/biblioref/fieldset_indexing.html:70
 #: templates/biblioref/reference_confirm_delete.html:29
-#: templates/biblioref/referenceanalytic_form.html:332
+#: templates/biblioref/referenceanalytic_form.html:333
 #: templates/delete_confirm.html:17
 #: templates/multimedia/media_confirm_delete.html:29
 #: templates/multimedia/mediacollection_confirm_delete.html:33
@@ -1837,7 +1842,7 @@ msgid "Record"
 msgstr "Registro"
 
 #: templates/biblioref/reference_confirm_delete.html:27
-#: templates/biblioref/referenceanalytic_form.html:325
+#: templates/biblioref/referenceanalytic_form.html:326
 #: templates/delete_confirm.html:9
 #: templates/multimedia/media_confirm_delete.html:27
 #: templates/multimedia/mediacollection_confirm_delete.html:31
@@ -1847,7 +1852,7 @@ msgid "Are you sure you want to delete?"
 msgstr "Você tem certeza que deseja apagar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
-#: templates/biblioref/referenceanalytic_form.html:333
+#: templates/biblioref/referenceanalytic_form.html:334
 #: templates/delete_confirm.html:16
 #: templates/multimedia/media_confirm_delete.html:28
 #: templates/multimedia/mediacollection_confirm_delete.html:32
@@ -1968,8 +1973,8 @@ msgid "Suggested"
 msgstr "Sugerido"
 
 #: templates/biblioref/reference_form.html:396
-#: templates/biblioref/referenceanalytic_form.html:267
-#: templates/biblioref/referencesource_form.html:245
+#: templates/biblioref/referenceanalytic_form.html:268
+#: templates/biblioref/referencesource_form.html:250
 #: templates/events/edit-event.html:389 templates/main/edit-resource.html:395
 #: templates/multimedia/media_form.html:343
 #: templates/title/title_form.html:486
@@ -1979,12 +1984,12 @@ msgstr "Adicionar descritor"
 #: templates/biblioref/reference_form.html:397
 #: templates/biblioref/reference_form.html:407
 #: templates/biblioref/reference_form.html:417
-#: templates/biblioref/referenceanalytic_form.html:268
-#: templates/biblioref/referenceanalytic_form.html:278
-#: templates/biblioref/referenceanalytic_form.html:288
-#: templates/biblioref/referencesource_form.html:246
-#: templates/biblioref/referencesource_form.html:256
-#: templates/biblioref/referencesource_form.html:266
+#: templates/biblioref/referenceanalytic_form.html:269
+#: templates/biblioref/referenceanalytic_form.html:279
+#: templates/biblioref/referenceanalytic_form.html:289
+#: templates/biblioref/referencesource_form.html:251
+#: templates/biblioref/referencesource_form.html:261
+#: templates/biblioref/referencesource_form.html:271
 #: templates/events/edit-event.html:390 templates/events/edit-event.html:400
 #: templates/events/edit-event.html:410 templates/events/edit-type.html:72
 #: templates/main/edit-language.html:72 templates/main/edit-resource.html:396
@@ -2002,7 +2007,7 @@ msgid "delete"
 msgstr "apagar"
 
 #: templates/biblioref/reference_form.html:406
-#: templates/biblioref/referencesource_form.html:255
+#: templates/biblioref/referencesource_form.html:260
 #: templates/events/edit-event.html:399 templates/main/edit-resource.html:405
 #: templates/multimedia/media_form.html:353
 #: templates/title/title_form.html:495
@@ -2010,8 +2015,8 @@ msgid "Add keyword"
 msgstr "Adicionar palavra-chave"
 
 #: templates/biblioref/reference_form.html:416
-#: templates/biblioref/referenceanalytic_form.html:287
-#: templates/biblioref/referencesource_form.html:265
+#: templates/biblioref/referenceanalytic_form.html:288
+#: templates/biblioref/referencesource_form.html:270
 #: templates/events/edit-event.html:409 templates/main/edit-resource.html:415
 #: templates/multimedia/media_form.html:363
 msgid "Add thematic area"
@@ -2182,7 +2187,7 @@ msgstr "Publicar"
 msgid "Back"
 msgstr "Voltar"
 
-#: templates/biblioref/referenceanalytic_form.html:277
+#: templates/biblioref/referenceanalytic_form.html:278
 msgid "Add file"
 msgstr "Adicionar arquivo"
 
