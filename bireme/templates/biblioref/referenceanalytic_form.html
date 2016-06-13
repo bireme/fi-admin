@@ -345,6 +345,7 @@
                 }
                 $("#id_record_type").trigger("change");
             }
+
         })
 
         function decs_search(obj){
@@ -413,6 +414,11 @@
         {% if form.errors %}
             $("fieldset").removeClass('collapse');
         {% endif %}
+
+        // fix problem with jquery modal help
+        $('#help_modal').on('hidden', function () {
+          $(this).removeData('modal');
+        });
 
    </script>
 {% endblock %}

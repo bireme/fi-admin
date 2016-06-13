@@ -343,5 +343,10 @@
             $("#id_" + field_id).val(value_selected);
         }
 
+        // fix problem with jquery modal help
+        $('#help_modal').on('hidden', function () {
+          $(this).removeData('modal');
+        });       
+
    </script>
 {% endblock %}

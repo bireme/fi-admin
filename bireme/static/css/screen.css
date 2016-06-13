@@ -470,3 +470,9 @@ div.onlineresource div.check {
     height: 18px;
     margin-left: 5px;
 }
+
+.field_with_help{
+    color: #000;
+    border-bottom: dotted 1px;
+    cursor:help;
+}

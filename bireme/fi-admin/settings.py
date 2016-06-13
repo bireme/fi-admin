@@ -251,9 +251,11 @@ VIEW_DEDUP_ARTICLE_DETAIL = ""
 TINYMCE_JS_URL = "/static/js/tinymce/tinymce.min.js"
 
 TINYMCE_DEFAULT_CONFIG = {
-    'plugins': 'link',
+    'plugins': 'link table code',
     'theme': "modern",
     'menubar': False,
+    'toolbar': 'undo redo | styleselect | bold italic | alignleft aligncenter alignright justify alignjustify | '
+               'bullist numlist outdent indent | link image | table | code ',
     'cleanup_on_startup': True,
     'custom_undo_redo_levels': 10,
 }
