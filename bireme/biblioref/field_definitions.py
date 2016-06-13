@@ -294,11 +294,13 @@ class CallNumber(colander.SequenceSchema):
 
 
 class ElectronicAddressAttributes(colander.MappingSchema):
-    file_type_choices = [(aux.code, aux) for aux in
-                         AuxCode.objects.filter(field='electronic_address_y')]
+    file_type_choices = [('', '')]
+    file_type_choices.extend([(aux.code.encode('utf-8'), aux) for aux in
+                             AuxCode.objects.filter(field='electronic_address_y')])
 
-    file_extension_choices = [(aux.code, aux) for aux in
-                              AuxCode.objects.filter(field='electronic_address_q')]
+    file_extension_choices = [('', '')]
+    file_extension_choices.extend([(aux.code, aux) for aux in
+                                  AuxCode.objects.filter(field='electronic_address_q')])
 
     _u = colander.SchemaNode(colander.String('utf-8'), title=_('Electric address'))
     _g = colander.SchemaNode(colander.Boolean(),
