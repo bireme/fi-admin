@@ -124,9 +124,7 @@
             {% include "biblioref/fieldset_indexing.html" %}
 
             <!-- FULLTEXT FORMSET -->
-            {% if 'fulltext'|infieldset:form.fieldsets %}
-                {% include "biblioref/fieldset_fulltext.html" %}
-            {% endif %}
+            {% include "biblioref/fieldset_fulltext.html" %}
 
             <!-- LIBRARY FORMSET -->
             {% include "biblioref/fieldset_library.html" %}
@@ -139,10 +137,9 @@
 
         </div>
 
-        <!-- empty formsets (only used at analytic level) -->
-        {{ formset_attachment.management_form }}
-
+        <!-- empty formsets (only used at analytic level)
         {{ formset_library.management_form }}
+        -->
 
 
         <div class="control-panel form-submit">
@@ -178,7 +175,8 @@
 {% endblock %}
 
 {% block extrajs %}
-   <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/jquery.formset.min.js' %}"></script>
+   <script src="{% static 'js/jquery.confirm.min.js' %}"></script>
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
    <script src="{% static 'js/jsrender.min.js' %}"></script>
    <script src="{% static 'js/field_assist.js' %}"></script>
@@ -254,6 +252,16 @@
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'descriptor_formset',
                     prefix: '{{ formset_descriptor.prefix }}'
+            });
+
+            $('.attachment-row').formset({
+                    addText : '{% trans "Add file" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'attachment_formset',
+                    prefix: '{{ formset_attachment.prefix }}'
             });
 
             $('.keyword-row').formset({
@@ -346,7 +354,7 @@
         // fix problem with jquery modal help
         $('#help_modal').on('hidden', function () {
           $(this).removeData('modal');
-        });       
+        });
 
    </script>
 {% endblock %}
