@@ -23,8 +23,10 @@ class WhodidMiddleware(object):
 
             mark_whodid = curry(self.mark_whodid, user)
             mark_whodel = curry(self.mark_whodel, user)
+            mark_whoadd = curry(self.mark_whoadd, user)
             signals.pre_save.connect(mark_whodid,  dispatch_uid=(self.__class__, request,), weak=False)
             signals.pre_delete.connect(mark_whodel,  dispatch_uid=(self.__class__, request,), weak=False)
+            signals.post_save.connect(mark_whoadd,  dispatch_uid=(self.__class__, request,), weak=False)
 
     def process_response(self, request, response):
         signals.pre_save.disconnect(dispatch_uid=(self.__class__, request,))
@@ -87,6 +89,20 @@ class WhodidMiddleware(object):
                                                 object_repr=log_repr,
                                                 change_message=fields_change,
                                                 action_flag=log_change_type)
+
+    def mark_whoadd(self, user, sender, instance, created, **kwargs):
+        '''
+        Update log record after save instance to add missing object_id
+        '''
+        if isinstance(instance, AuditLog) and created:
+            # filter by log without object_id from the current user and action_flag = ADDITION
+            log = LogEntry.objects.filter(object_id='None', object_repr=str(instance), action_flag=1, user_id=user.id)
+            if log:
+                # get last log
+                log = log[0]
+                # update log with instance pk
+                log.object_id = instance.id
+                log.save()
 
     def get_changes_in_json(self, instance, new_object, was_deleted):
         field_change = []
