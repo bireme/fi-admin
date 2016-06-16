@@ -83,9 +83,9 @@ form_data['Tam'] = {
 form_data['Mc'] = {
     'status': '-1',
     'LILACS_indexed': True,
-    'title_monographic': '[{"text": "Primeiro registro de coleção de monografias", "_i": "pt"}]',
-    'individual_author_monographic': '[{"text": "Chaves, Juca"}]',
-    'english_title_monographic': 'First monographic',
+    'title_collection': '[{"text": "Primeiro registro de coleção de monografias", "_i": "pt"}]',
+    'english_title_collection': 'First monographic',
+    'individual_author_collection': '[{"text": "Chaves, Juca"}]',
     'record_type': 'a',
     'text_language': 'pt',
     'publisher': 'EDITORA ABC',
@@ -93,6 +93,35 @@ form_data['Mc'] = {
     'publication_date_normalized': '20160501',
     'publication_city': 'São Paulo',
     'publication_country': 1,
+}
+
+form_data['Mmc'] = {
+    'status': '-1',
+    'LILACS_indexed': True,
+    'title_collection': '[{"text": "Registro fonte do tipo Monografia pertencente a uma coleção", "_i": "pt"}]',
+    'individual_author_collection': '[{"text": "Chaves, Juca"}]',
+    'english_title_collection': 'First monographic',
+    'individual_author_collection': '[{"text": "Chaves, Juca"}]',
+    'title_monographic': '[{"text": "Título nivel monografico", "_i": "pt"}]',
+    'english_title_monographic': 'Hello World',
+    'individual_author_monographic': '[{"text": "Chaves, Juca"}]',
+    'record_type': 'a',
+    'text_language': 'pt',
+    'publisher': 'EDITORA ABC',
+    'publication_date': '2016 mai',
+    'publication_date_normalized': '20160501',
+    'publication_city': 'São Paulo',
+    'publication_country': 1,
+}
+
+form_data['Mamc'] = {
+    'status': '-1',
+    'LILACS_indexed': True,
+    'title': '[{"text": "Primeira analítica", "_i": "pt"}]',
+    'english_translated_title': 'Transled title',
+    'text_language': 'pt',
+    'individual_author': '[{"text": "Chaves, Juca"}]',
+    'record_type': 'a',
 }
 
 
@@ -293,9 +322,48 @@ class BiblioRefTest(BaseTestCase):
         post_data['status'] = 1
         post_data.update(primary_descriptor)
         response = self.client.post('/bibliographic/edit-source/1', post_data)
+        self.assertRedirects(response, '/bibliographic/')
+
+    def test_dataentry_monographic_in_a_collecton(self):
+        """
+        Tests creation of records of type Monograph in a Collection (Mmc)
+        """
+        self.login_documentalist()
+
+        # test create new source draft
+        post_data = form_data['Mmc']
+        post_data.update(blank_formsets)
+
+        response = self.client.post('/bibliographic/new-source?document_type=Mmc', post_data)
+        self.assertRedirects(response, '/bibliographic/')
+
+        # test edit and publish source
+        post_data['status'] = 1
+        post_data.update(primary_descriptor)
+        response = self.client.post('/bibliographic/edit-source/1', post_data)
         # check validation of page or url
         self.assertContains(response, 'Endereço eletrônico, texto completo OU paginação obrigatório')
         # complete data and publish document
         post_data['electronic_address'] = '[{"_u": "http://fulltext.org", "_i": "pt", "_q": "pdf", "_y": "PDF" }]'
         response = self.client.post('/bibliographic/edit-source/1', post_data)
         self.assertRedirects(response, '/bibliographic/')
+
+        # test create new analytic
+        post_data = form_data['Mamc']
+        post_data.update(blank_formsets)
+        response = self.client.post('/bibliographic/new-analytic?source=1', post_data)
+        self.assertRedirects(response, '/bibliographic/analytics?source=1')
+        # check if record is on the list
+        response = self.client.get('/bibliographic/analytics?source=1')
+        self.assertContains(response, 'Primeira analítica')
+
+        # test edit and publish analytic
+        post_data['status'] = 1
+        post_data.update(primary_descriptor)
+        response = self.client.post('/bibliographic/edit-analytic/2', post_data)
+        # check validation of page or url
+        self.assertContains(response, 'Endereço eletrônico, texto completo OU paginação obrigatório')
+        # complete data and publish document
+        post_data['electronic_address'] = '[{"_u": "http://fulltext.org", "_i": "pt", "_q": "pdf", "_y": "PDF" }]'
+        response = self.client.post('/bibliographic/edit-analytic/2', post_data)
+        self.assertRedirects(response, '/bibliographic/analytics?source=1')

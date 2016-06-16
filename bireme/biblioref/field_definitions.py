@@ -70,6 +70,21 @@ fulltext_section = ('fulltext', {'fields': ['electronic_address'],
                                  'legend': _('Fulltext'),
                                  })
 
+
+monographic_section = ('monographic_level', {'fields': ['individual_author_monographic',
+                                                        'corporate_author_monographic', 'title_monographic',
+                                                        'english_title_monographic', 'pages_monographic',
+                                                        'volume_monographic'],
+                                             'legend': _('Monographic Level')
+                                             })
+
+
+collection_section = ('collection_level', {'fields': ['individual_author_collection', 'corporate_author_collection',
+                                                      'title_collection', 'english_title_collection', 'total_number_of_volumes'],
+                                           'legend': _('Collection level'),
+                                           })
+
+
 FIELDS_BY_DOCUMENT_TYPE = {}
 
 # Periodical series (source)
@@ -119,11 +134,7 @@ FIELDS_BY_DOCUMENT_TYPE['Mm'] = [('general', {'fields': ['source', 'status', 'LI
                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
                                               'legend': _('General information')}),
 
-                                 ('monographic_level', {'fields': ['individual_author_monographic',
-                                                                   'corporate_author_monographic', 'title_monographic',
-                                                                   'english_title_monographic', 'pages_monographic',
-                                                                   'volume_monographic'],
-                                                        'legend': _('Monographic Level')}),
+                                 monographic_section,
 
                                  comp_info_section,
 
@@ -172,11 +183,7 @@ FIELDS_BY_DOCUMENT_TYPE['Mc'] = [('general', {'fields': ['source', 'status', 'LI
                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
                                               'legend': _('General information')}),
 
-                                 ('monographic_level', {'fields': ['individual_author_monographic',
-                                                                   'corporate_author_monographic', 'title_monographic',
-                                                                   'english_title_monographic', 'pages_monographic',
-                                                                   'volume_monographic'],
-                                                        'legend': _('Monographic Level')}),
+                                 collection_section,
 
                                  comp_info_section,
 
@@ -257,11 +264,7 @@ FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'LIL
                                                         'record_type'],
                                              'legend': _('General information')}),
 
-                                ('monographic_level', {'fields': ['individual_author_monographic',
-                                                                  'corporate_author_monographic',
-                                                                  'title_monographic', 'english_title_monographic',
-                                                                  'pages_monographic', 'volume_monographic'],
-                                                       'legend': _('Monographic Level')}),
+                                monographic_section,
 
                                 comp_info_section,
 
@@ -291,6 +294,59 @@ FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'L
 
                                   abstract_section
                                   ]
+
+
+# Monograph in a Collection (source)
+FIELDS_BY_DOCUMENT_TYPE['Mmc'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
+                                                          'record_type', 'item_form', 'type_of_computer_file',
+                                                          'type_of_cartographic_material', 'type_of_journal',
+                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
+                                               'legend': _('General information')}),
+
+                                  collection_section,
+
+                                  monographic_section,
+
+                                  comp_info_section,
+
+                                  other_notes_section,
+
+                                  imprint_section,
+
+                                  subject_section,
+
+                                  abstract_section,
+
+                                  indexing_section,
+
+                                  fulltext_section,
+                                  ]
+
+
+# Monograph in a Collection (analytic)
+FIELDS_BY_DOCUMENT_TYPE['Mamc'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
+                                                           'record_type', 'item_form', 'type_of_computer_file',
+                                                           'type_of_cartographic_material', 'type_of_journal',
+                                                           'type_of_visual_material', 'specific_designation_of_the_material'],
+                                                'legend': _('General information')}),
+
+                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
+                                                                  'english_translated_title', 'pages'],
+                                                       'legend': _('Analytic Level')}),
+
+                                   comp_info_section,
+
+                                   other_notes_section,
+
+                                   subject_section,
+
+                                   abstract_section,
+
+                                   indexing_section,
+
+                                   fulltext_section,
+
+                                   ]
 
 
 def get_aux_country_list():
@@ -375,6 +431,10 @@ class TitleMonographic(colander.SequenceSchema):
     title = TitleAttributes(title=_('Title'))
 
 
+class TitleCollection(colander.SequenceSchema):
+    title = TitleAttributes(title=_('Title'))
+
+
 class IndividualAuthorAttributes(colander.MappingSchema):
     def validate_author(form, value):
         if value != 'Anon':
@@ -412,6 +472,10 @@ class IndividualAuthorMonographic(colander.SequenceSchema):
     item = IndividualAuthorAttributes(title=_('Individual author'))
 
 
+class IndividualAuthorCollection(colander.SequenceSchema):
+    item = IndividualAuthorAttributes(title=_('Individual author'))
+
+
 class CorporateAuthorAttributes(colander.MappingSchema):
     degree_choices = [('', '')]
     degree_choices.extend([(aux.code, aux) for aux in
@@ -429,6 +493,10 @@ class CorporateAuthor(colander.SequenceSchema):
 
 
 class CorporateAuthorMonographic(colander.SequenceSchema):
+    item = CorporateAuthorAttributes(title=_('Corporate author'))
+
+
+class CorporateAuthorCollection(colander.SequenceSchema):
     item = CorporateAuthorAttributes(title=_('Corporate author'))
 
 

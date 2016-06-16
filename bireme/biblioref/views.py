@@ -250,13 +250,17 @@ class BiblioRefUpdate(LoginRequiredView):
         if source_id:
             reference_source = ReferenceSource.objects.get(pk=source_id)
             literature_type = reference_source.literature_type
+            treatment_level = reference_source.treatment_level
             # remove congress/project from literature_type
             literature_type = re.sub('[CP]', '', literature_type)
 
             if literature_type == 'S':
                 document_type = 'Sas'
             else:
-                document_type = "{0}am".format(literature_type)
+                if 'c' in treatment_level:
+                    document_type = "{0}amc".format(literature_type)
+                else:
+                    document_type = "{0}am".format(literature_type)
 
         # edition/new source
         else:

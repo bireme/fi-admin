@@ -25,17 +25,18 @@ import re
 
 class SelectDocumentTypeForm(forms.Form):
     DOCUMENT_TYPE_CHOICES = (
-        # ('MS', _('Monograph Series')),
-        # ('M', _('Monograph in a Collection')),
+        ('S', _('Journals (Periodical Series)')),
         ('Mm', _('Monograph')),
-        # ('N', _('Non conventional')),
-        ('S', _('Periodical Series')),
-        ('Mc', _('Collection of Monographs')),
-        # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
         ('Tm', _('Thesis/Dissertation')),
+        ('Mmc', _('Monograph in a Collection')),
+        ('Mc', _('Collection of Monographs')),
+        # ('MS', _('Monograph Series')),
+        # ('N', _('Non conventional')),
+        # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
     )
 
     document_type = forms.ChoiceField(choices=DOCUMENT_TYPE_CHOICES, label=_('Select document type'))
+    document_type.widget.attrs['class'] = 'input-xlarge'
 
 
 class BiblioRefForm(BetterModelForm):
@@ -194,11 +195,14 @@ class BiblioRefForm(BetterModelForm):
                 if field_check.strip().endswith('.'):
                     self.add_error(field_name, _("Point at end of field is not allowed"))
 
-        if  self.is_visiblefield('individual_author') and self.is_visiblefield('corporate_author'):
+        if self.is_visiblefield('individual_author') and self.is_visiblefield('corporate_author'):
             self.check_author_presence(data, 'individual_author', 'corporate_author')
 
         if self.is_visiblefield('individual_author_monographic') and self.is_visiblefield('corporate_author_monographic'):
             self.check_author_presence(data, 'individual_author_monographic', 'corporate_author_monographic')
+
+        if self.is_visiblefield('individual_author_collection') and self.is_visiblefield('corporate_author_collection'):
+            self.check_author_presence(data, 'individual_author_collection', 'corporate_author_collection')
 
         if self.is_visiblefield('issue_number'):
             if not data.get('volume_serial') and not data.get('issue_number'):
@@ -328,7 +332,6 @@ class BiblioRefForm(BetterModelForm):
         data = self.validate_author_field('individual_author_monographic')
 
         return data
-
 
     def clean_electronic_address(self):
         field = 'electronic_address'
@@ -549,6 +552,31 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_title_collection(self):
+        field = 'title_collection'
+        data = self.cleaned_data.get(field)
+        LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
+
+        if self.is_visiblefield('title_collection'):
+            if data:
+                occ = 0
+                for title in data:
+                    occ = occ + 1
+                    url = title.get('_u', '')
+                    message_item = _("Title %s: ") % occ
+                    if self.is_LILACS:
+                        if title.get('_i', '') not in LILACS_compatible_languages:
+                            message = _("Language incompatible with LILACS")
+                            message = string_concat(message_item, message)
+                            self.add_error(field, message)
+                    # check pontuation errors
+                    self.check_all_pontuation(title.get('text'), field, message_item)
+            else:
+                self.add_error(field, _("Mandatory"))
+
+        return data
+
+
     def clean_publication_date(self):
         field = 'publication_date'
         data = self.cleaned_data[field]
@@ -756,7 +784,12 @@ class BiblioRefForm(BetterModelForm):
                 analytic_title = analytic_title[0]['text']
                 obj.reference_title = u"{0} | {1}".format(obj.source.reference_title, analytic_title)
             else:
-                obj.reference_title = u"{0}".format(self.cleaned_data['title_monographic'][0]['text'])
+                if self.document_type == 'Mc':
+                    ref_title = self.cleaned_data['title_collection'][0]['text']
+                else:
+                    ref_title = self.cleaned_data['title_monographic'][0]['text']
+
+                obj.reference_title = u"{0}".format(ref_title)
 
         # for fields with readonly attribute restore the original value for POST data insertions hack
         for name, field in self.fields.items():
