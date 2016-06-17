@@ -47,7 +47,7 @@
         {% if user_role != 'editor_llxp' %}
             {% if form.document_type == 'Mc' or form.document_type == 'Mm' or form.document_type == 'N' or form.document_type.0 == 'T' or form.document_type == 'Mmc' %}
                 <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
-                <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
+                <!--li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li-->
             {% endif %}
 
             {% if 'fulltext'|infieldset:form.fieldsets %}
