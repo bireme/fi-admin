@@ -391,7 +391,7 @@ class ElectronicAddressAttributes(colander.MappingSchema):
     file_extension_choices.extend([(aux.code, aux) for aux in
                                   AuxCode.objects.filter(field='electronic_address_q')])
 
-    _u = colander.SchemaNode(colander.String('utf-8'), title=_('Electric address'))
+    _u = colander.SchemaNode(colander.String('utf-8'), title=_('Electronic address'))
     _g = colander.SchemaNode(colander.Boolean(),
                              widget=deform.widget.CheckboxWidget(),
                              label=_('Fulltext'), missing=unicode(''), title='')

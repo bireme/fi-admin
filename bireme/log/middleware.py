@@ -96,7 +96,8 @@ class WhodidMiddleware(object):
         '''
         if isinstance(instance, AuditLog) and created:
             # filter by log without object_id from the current user and action_flag = ADDITION
-            log = LogEntry.objects.filter(object_id='None', object_repr=str(instance), action_flag=1, user_id=user.id)
+            log = LogEntry.objects.filter(object_id='None', object_repr=str(instance), action_flag=1,
+                                          user_id=instance.created_by.id)
             if log:
                 # get last log
                 log = log[0]
