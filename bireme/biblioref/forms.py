@@ -537,7 +537,7 @@ class BiblioRefForm(BetterModelForm):
         status = self.cleaned_data.get('status')
         title_languages = []
 
-        if 'a' in self.document_type and status != -1:
+        if self.is_visiblefield(field) and status != -1:
             title = self.cleaned_data.get('title')
             if title:
                 title_languages = [t.get('_i') for t in title]
