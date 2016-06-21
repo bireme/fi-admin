@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-16 15:38-0300\n"
-"PO-Revision-Date: 2016-06-16 15:39-0306\n"
+"POT-Creation-Date: 2016-06-21 10:59-0300\n"
+"PO-Revision-Date: 2016-06-21 11:27-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgid "Other notes"
 msgstr "Outras notas"
 
 #: biblioref/field_definitions.py:46 biblioref/field_definitions.py:534
-#: biblioref/field_definitions.py:541 biblioref/models.py:97
+#: biblioref/field_definitions.py:541 biblioref/models.py:67
 #: main/models.py:234
 msgid "Abstract"
 msgstr "Resumo"
@@ -85,7 +85,7 @@ msgstr "Texto completo"
 msgid "Monographic Level"
 msgstr "Nível Monográfico"
 
-#: biblioref/field_definitions.py:84 biblioref/models.py:45
+#: biblioref/field_definitions.py:84
 #: templates/biblioref/referenceanalytic_form.html:106
 msgid "Collection level"
 msgstr "Nível de coleção"
@@ -138,12 +138,13 @@ msgstr "Volume, tompo, parte, etc"
 msgid "Lending system"
 msgstr "Sistema de empréstimo"
 
-#: biblioref/field_definitions.py:382 biblioref/models.py:334
+#: biblioref/field_definitions.py:382 biblioref/models.py:304
 msgid "Call number"
 msgstr "Localização do documento"
 
-#: biblioref/field_definitions.py:394
-msgid "Electric address"
+#: biblioref/field_definitions.py:394 biblioref/field_definitions.py:416
+#: biblioref/models.py:38
+msgid "Electronic address"
 msgstr "Endereço eletrônico"
 
 #: biblioref/field_definitions.py:403
@@ -174,14 +175,10 @@ msgstr "Nota não pública"
 msgid "Public note"
 msgstr "Nota pública"
 
-#: biblioref/field_definitions.py:416 biblioref/models.py:68
-msgid "Electronic address"
-msgstr "Endereço eletrônico"
-
 #: biblioref/field_definitions.py:420 biblioref/field_definitions.py:427
 #: biblioref/field_definitions.py:431 biblioref/field_definitions.py:435
-#: biblioref/models.py:60 biblioref/models.py:189 biblioref/models.py:201
-#: biblioref/models.py:269 events/models.py:69 main/models.py:220
+#: biblioref/models.py:30 biblioref/models.py:159 biblioref/models.py:171
+#: biblioref/models.py:239 events/models.py:69 main/models.py:220
 #: suggest/models.py:25 suggest/models.py:56
 #: templates/biblioref/reference_list.html:110
 #: templates/biblioref/referenceanalytic_form.html:122
@@ -244,8 +241,8 @@ msgid "Affiliation degree of responsibility"
 msgstr "Afiliação - Grau de responsabilidade"
 
 #: biblioref/field_definitions.py:468 biblioref/field_definitions.py:472
-#: biblioref/field_definitions.py:476 biblioref/models.py:185
-#: biblioref/models.py:197 biblioref/models.py:265
+#: biblioref/field_definitions.py:476 biblioref/models.py:155
+#: biblioref/models.py:167 biblioref/models.py:235
 #: templates/biblioref/referenceanalytic_form.html:113
 #: templates/biblioref/referenceanalytic_form.html:143
 msgid "Individual author"
@@ -253,7 +250,7 @@ msgstr "Autor pessoal"
 
 #: biblioref/field_definitions.py:484 biblioref/field_definitions.py:492
 #: biblioref/field_definitions.py:496 biblioref/field_definitions.py:500
-#: biblioref/models.py:187 biblioref/models.py:199 biblioref/models.py:267
+#: biblioref/models.py:157 biblioref/models.py:169 biblioref/models.py:237
 #: templates/biblioref/referenceanalytic_form.html:118
 #: templates/biblioref/referenceanalytic_form.html:148
 msgid "Corporate author"
@@ -279,13 +276,13 @@ msgstr "Dimensão"
 msgid "Accompanying material"
 msgstr "Material acompanhante"
 
-#: biblioref/field_definitions.py:511 biblioref/models.py:73
+#: biblioref/field_definitions.py:511 biblioref/models.py:43
 msgid "Descriptive information"
 msgstr "Informação descritiva"
 
 #: biblioref/field_definitions.py:517 biblioref/field_definitions.py:527
-#: biblioref/field_definitions.py:530 biblioref/models.py:215
-#: biblioref/models.py:275
+#: biblioref/field_definitions.py:530 biblioref/models.py:185
+#: biblioref/models.py:245
 msgid "Leader"
 msgstr "Orientador"
 
@@ -297,12 +294,12 @@ msgstr "Palavra-chave"
 msgid "Qualifier"
 msgstr "Qualificador"
 
-#: biblioref/field_definitions.py:552 biblioref/models.py:101
+#: biblioref/field_definitions.py:552 biblioref/models.py:71
 msgid "Author keyword"
 msgstr "Palavras-chave do autor"
 
 #: biblioref/field_definitions.py:556 biblioref/field_definitions.py:562
-#: biblioref/models.py:193 biblioref/models.py:273
+#: biblioref/models.py:163 biblioref/models.py:243
 msgid "Pages"
 msgstr "Páginas"
 
@@ -316,7 +313,7 @@ msgstr "Número inicial"
 msgid "End number"
 msgstr "Número final"
 
-#: biblioref/field_definitions.py:569 biblioref/models.py:336
+#: biblioref/field_definitions.py:569 biblioref/models.py:306
 msgid "Database"
 msgstr "Base de dados"
 
@@ -334,7 +331,6 @@ msgid "Clinical Trial"
 msgstr "Registro de Ensaio Clínico"
 
 #: biblioref/forms.py:28
-#| msgid "Periodical Series (Journals)"
 msgid "Journals (Periodical Series)"
 msgstr "Revistas (Série Periódica)"
 
@@ -735,104 +731,11 @@ msgstr "Recusado"
 msgid "Deleted"
 msgstr "Apagado"
 
-#: biblioref/models.py:19
-msgid "Document published as a periodic series"
-msgstr "Documento publicado em uma série periódica "
-
-#: biblioref/models.py:20
-msgid "Conference papers as a periodic series"
-msgstr "Documento de conferência em uma série periódica "
-
-#: biblioref/models.py:21
-msgid "Paper of project and conference as a periodic series"
-msgstr "Documento de projeto e conferência em uma série periódica"
-
 #: biblioref/models.py:22
-msgid "Project paper as a periodic series"
-msgstr "Documento de projeto em uma série periódica "
-
-#: biblioref/models.py:23
-msgid "Document published as a monograph"
-msgstr "Documento publicado em uma monografia "
-
-#: biblioref/models.py:24
-msgid "Conference paper as a monograph"
-msgstr "Documento de conferência em uma monografia"
-
-#: biblioref/models.py:25
-msgid "Paper of project and conference as a monograph"
-msgstr "Documento de projeto e conferência em uma monografia "
-
-#: biblioref/models.py:26
-msgid "Project paper as a monograph "
-msgstr "Documento de projeto em uma monografia"
-
-#: biblioref/models.py:27
-msgid "Document published as a monographic series "
-msgstr "Documento publicado em uma série monográfica "
-
-#: biblioref/models.py:28
-msgid "Conference paper as a monographic series "
-msgstr "Documento de conferência em uma série monográfica"
-
-#: biblioref/models.py:29
-msgid "Project paper as a monographic series"
-msgstr "Documento de projeto em uma série monográfica"
-
-#: biblioref/models.py:30
-msgid "Thesis, Dissertation (published or not) "
-msgstr "Tese, Dissertação (publicada ou não)"
-
-#: biblioref/models.py:31
-msgid "Thesis, Dissertation as a monographic series"
-msgstr "Tese, Dissertação pertencente a uma séria monográfica"
-
-#: biblioref/models.py:32
-msgid "Non Conventional document"
-msgstr "Documento não convencional "
-
-#: biblioref/models.py:33
-msgid "Conference paper in a non conventional format"
-msgstr "Documento de conferência em forma não convencional "
-
-#: biblioref/models.py:34
-msgid "Project paper in a non conventionally"
-msgstr "Documento de projeto em forma não convencional"
-
-#: biblioref/models.py:38 templates/biblioref/referenceanalytic_form.html:136
-#: templates/biblioref/referenceanalytic_form.html:164
-msgid "Monographic level"
-msgstr "Nível monográfico"
-
-#: biblioref/models.py:39
-msgid "Monographic level of collection"
-msgstr "Nível monográfico de coleção"
-
-#: biblioref/models.py:40
-msgid "Monographic level of serial"
-msgstr "Nível monográfico de série"
-
-#: biblioref/models.py:41
-msgid "Monographic analytical level"
-msgstr "Nível analítico monográfico"
-
-#: biblioref/models.py:42
-msgid "Monographic analytics level of collection"
-msgstr "Nível analítico monográfico de coleção"
-
-#: biblioref/models.py:43
-msgid "Monographic analytics level of serial"
-msgstr "Nível analítico monográfico de série"
-
-#: biblioref/models.py:44
-msgid "Analytics level of serial"
-msgstr "Nível analítico de série"
-
-#: biblioref/models.py:52
 msgid "Bibliographic Record"
 msgstr "Registro bibliográfico"
 
-#: biblioref/models.py:53 templates/biblioref/reference_form.html:9
+#: biblioref/models.py:23 templates/biblioref/reference_form.html:9
 #: templates/biblioref/reference_list.html:5
 #: templates/biblioref/reference_list.html:8
 #: templates/biblioref/reference_list.html:23
@@ -845,7 +748,7 @@ msgstr "Registro bibliográfico"
 msgid "Bibliographic Records"
 msgstr "Registros bibliográficos"
 
-#: biblioref/models.py:55 error_reporting/models.py:35 events/models.py:67
+#: biblioref/models.py:25 error_reporting/models.py:35 events/models.py:67
 #: main/models.py:156 main/models.py:176 main/models.py:196 main/models.py:218
 #: multimedia/models.py:99 suggest/models.py:23 suggest/models.py:54
 #: templates/biblioref/reference_form.html:136
@@ -870,174 +773,174 @@ msgstr "Registros bibliográficos"
 msgid "Status"
 msgstr "Status"
 
-#: biblioref/models.py:56
+#: biblioref/models.py:26
 msgid "LILACS indexed?"
 msgstr "Indexado em LILACS?"
 
-#: biblioref/models.py:57
+#: biblioref/models.py:27
 msgid "Reviewed by BIREME?"
 msgstr "Revisado pela BIREME"
 
-#: biblioref/models.py:62 biblioref/models.py:344 events/models.py:88
+#: biblioref/models.py:32 biblioref/models.py:314 events/models.py:88
 #: main/models.py:240 multimedia/models.py:63 multimedia/models.py:119
 #: templates/multimedia/media_list.html:86 templates/reports/index.html:64
 #: templates/title/title_list.html:100 title/models.py:37
 msgid "Cooperative center"
 msgstr "Centro cooperante"
 
-#: biblioref/models.py:64
+#: biblioref/models.py:34
 msgid "Literature type"
 msgstr "Tipo de literatura"
 
-#: biblioref/models.py:66
+#: biblioref/models.py:36
 msgid "Treatment level"
 msgstr "Nível de tratamento"
 
-#: biblioref/models.py:70 title/models.py:33
+#: biblioref/models.py:40 title/models.py:33
 msgid "Record type"
 msgstr "Tipo de registro"
 
-#: biblioref/models.py:75 title/models.py:81
+#: biblioref/models.py:45 title/models.py:81
 msgid "Text language"
 msgstr "idioma do texto"
 
-#: biblioref/models.py:77 biblioref/models.py:340
+#: biblioref/models.py:47 biblioref/models.py:310
 msgid "Internal note"
 msgstr "Nota interna"
 
-#: biblioref/models.py:79 multimedia/models.py:116
+#: biblioref/models.py:49 multimedia/models.py:116
 msgid "Publication date"
 msgstr "Data de publicação"
 
-#: biblioref/models.py:81
+#: biblioref/models.py:51
 msgid "Publication normalized date"
 msgstr "Data de publicação normalizada"
 
-#: biblioref/models.py:81
+#: biblioref/models.py:51
 msgid "Format: YYYYMMDD"
 msgstr "Formato: AAAAMMDD"
 
-#: biblioref/models.py:83
+#: biblioref/models.py:53
 msgid "Publication type"
 msgstr "Tipo de publicação"
 
-#: biblioref/models.py:85
+#: biblioref/models.py:55
 msgid "Total number of references"
 msgstr "Número total de referências"
 
-#: biblioref/models.py:87
+#: biblioref/models.py:57
 msgid "Time limits (from)"
 msgstr "Alcance temporal (desde)"
 
-#: biblioref/models.py:89
+#: biblioref/models.py:59
 msgid "Time limits (to)"
 msgstr "Alcance temporal (até)"
 
-#: biblioref/models.py:91
+#: biblioref/models.py:61
 msgid "Check tags"
 msgstr "Descritor pré-codificado"
 
-#: biblioref/models.py:93
+#: biblioref/models.py:63
 msgid "Person as subject"
 msgstr "Indivíduo como tema"
 
-#: biblioref/models.py:95
+#: biblioref/models.py:65
 msgid "Non-DeCS Region"
 msgstr "Região não DeCS"
 
-#: biblioref/models.py:99
+#: biblioref/models.py:69
 msgid "Transfer date do database"
 msgstr "Data de transferência para base de dados"
 
-#: biblioref/models.py:103
+#: biblioref/models.py:73
 msgid "Item form"
 msgstr "Forma do item"
 
-#: biblioref/models.py:105
+#: biblioref/models.py:75
 msgid "Type of computer file"
 msgstr "Tipo de arquivo de computador"
 
-#: biblioref/models.py:107
+#: biblioref/models.py:77
 msgid "Type of cartographic material"
 msgstr "Tipo de material cartográfico"
 
-#: biblioref/models.py:109
+#: biblioref/models.py:79
 msgid "Type of journal"
 msgstr "Tipo de periódico"
 
-#: biblioref/models.py:111
+#: biblioref/models.py:81
 msgid "Type of visual material"
 msgstr "Tipo de material visual"
 
-#: biblioref/models.py:113
+#: biblioref/models.py:83
 msgid "Specific designation of the material"
 msgstr "Designação específica do material"
 
-#: biblioref/models.py:115
+#: biblioref/models.py:85
 msgid "General note"
 msgstr "Nota geral"
 
-#: biblioref/models.py:117
+#: biblioref/models.py:87
 msgid "Formatted contents note"
 msgstr "Nota formatada de conteúdo"
 
-#: biblioref/models.py:119
+#: biblioref/models.py:89
 msgid "Additional physical form available note"
 msgstr "Nota de disponibilidade de forma física adicional"
 
-#: biblioref/models.py:121
+#: biblioref/models.py:91
 msgid "Reproduction note"
 msgstr "Nota de reprodução"
 
-#: biblioref/models.py:123
+#: biblioref/models.py:93
 msgid "Original version note"
 msgstr "Nota de versão original"
 
-#: biblioref/models.py:125
+#: biblioref/models.py:95
 msgid "Institution as subject"
 msgstr "Instituição como tema"
 
-#: biblioref/models.py:127 biblioref/models.py:342
+#: biblioref/models.py:97 biblioref/models.py:312
 msgid "Local descriptors"
 msgstr "Descritores locais"
 
-#: biblioref/models.py:130
+#: biblioref/models.py:100
 msgid "Software version"
 msgstr "Versão do software"
 
-#: biblioref/models.py:131
+#: biblioref/models.py:101
 msgid "LILACS id"
 msgstr "Identificador LILACS"
 
-#: biblioref/models.py:181
+#: biblioref/models.py:151
 msgid "Bibliographic Record Source"
 msgstr "Registro bibliográfico - Fonte"
 
-#: biblioref/models.py:182
+#: biblioref/models.py:152
 msgid "Bibliographic Records Source"
 msgstr "Registro bibliográfico - Fontes"
 
-#: biblioref/models.py:191 biblioref/models.py:203 biblioref/models.py:271
+#: biblioref/models.py:161 biblioref/models.py:173 biblioref/models.py:241
 msgid "English translated title"
 msgstr "Título traduzido para o inglês"
 
-#: biblioref/models.py:195 biblioref/models.py:209
+#: biblioref/models.py:165 biblioref/models.py:179
 msgid "Volume"
 msgstr "Volume"
 
-#: biblioref/models.py:205 templates/biblioref/referenceanalytic_form.html:126
+#: biblioref/models.py:175 templates/biblioref/referenceanalytic_form.html:126
 msgid "Total number of volumes"
 msgstr "Número total de volumes"
 
-#: biblioref/models.py:207
+#: biblioref/models.py:177
 msgid "Journal title"
 msgstr "Título da revista"
 
-#: biblioref/models.py:211
+#: biblioref/models.py:181
 msgid "Issue number"
 msgstr "Número do fascículo"
 
-#: biblioref/models.py:213 templates/title/form_preview.html:286
+#: biblioref/models.py:183 templates/title/form_preview.html:286
 #: templates/title/form_preview.html:334 templates/title/title_form.html:341
 #: templates/title/title_form.html:384 templates/title/title_list.html:81
 #: templates/title/title_list.html.py:99 title/models.py:87
@@ -1045,116 +948,116 @@ msgstr "Número do fascículo"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: biblioref/models.py:217 templates/biblioref/fieldset_include.html:103
+#: biblioref/models.py:187 templates/biblioref/fieldset_include.html:103
 msgid "Institution to which it is submitted"
 msgstr "Instituição a qual se apresenta"
 
-#: biblioref/models.py:219 templates/biblioref/fieldset_include.html:106
+#: biblioref/models.py:189 templates/biblioref/fieldset_include.html:106
 msgid "Academic title"
 msgstr "Título acadêmico"
 
-#: biblioref/models.py:221 multimedia/models.py:115
+#: biblioref/models.py:191 multimedia/models.py:115
 msgid "Publisher"
 msgstr "Editora"
 
-#: biblioref/models.py:223
+#: biblioref/models.py:193
 msgid "Edition"
 msgstr "Edição"
 
-#: biblioref/models.py:225
+#: biblioref/models.py:195
 msgid "City of publication"
 msgstr "Cidade de publicação"
 
-#: biblioref/models.py:227
+#: biblioref/models.py:197
 msgid "Publication country"
 msgstr "País de publicação"
 
-#: biblioref/models.py:229
+#: biblioref/models.py:199
 msgid "Symbol"
 msgstr "Símbolo"
 
-#: biblioref/models.py:231
+#: biblioref/models.py:201
 msgid "ISBN"
 msgstr "ISBN"
 
-#: biblioref/models.py:233
+#: biblioref/models.py:203
 msgid "DOI number"
 msgstr "Número DOI"
 
-#: biblioref/models.py:260
+#: biblioref/models.py:230
 msgid "Bibliographic Record Analytic"
 msgstr "Registro bibliográfico - Analítica"
 
-#: biblioref/models.py:261
+#: biblioref/models.py:231
 msgid "Bibliographic Records Analytic"
 msgstr "Registro bibliográfico - Analíticas"
 
-#: biblioref/models.py:263 biblioref/models.py:303 biblioref/models.py:332
+#: biblioref/models.py:233 biblioref/models.py:273 biblioref/models.py:302
 #: help/models.py:24 templates/reports/index.html:43
 msgid "Source"
 msgstr "Fonte de informação"
 
-#: biblioref/models.py:269
+#: biblioref/models.py:239
 msgid "Field mandatory"
 msgstr "Campo obrigatório"
 
-#: biblioref/models.py:277
+#: biblioref/models.py:247
 msgid "Clinical trial registry name"
 msgstr "Nome do registro do ensaio clínico"
 
-#: biblioref/models.py:300
+#: biblioref/models.py:270
 msgid "Bibliographic Record Complement"
 msgstr "Complemento do Registro Bibliográfico"
 
-#: biblioref/models.py:301
+#: biblioref/models.py:271
 msgid "Bibliographic Records Complement"
 msgstr "Complemento das Registros Bibliográficos"
 
-#: biblioref/models.py:306
+#: biblioref/models.py:276
 msgid "Conference name"
 msgstr "Nome do evento"
 
-#: biblioref/models.py:308
+#: biblioref/models.py:278
 msgid "Conference Sponsoring Institution"
 msgstr "Instituição patrocinadora do evento"
 
-#: biblioref/models.py:310
+#: biblioref/models.py:280
 msgid "Conference date"
 msgstr "Data do evento"
 
-#: biblioref/models.py:312
+#: biblioref/models.py:282
 msgid "Conference normalized date"
 msgstr "Data normalizada do evento"
 
-#: biblioref/models.py:314
+#: biblioref/models.py:284
 msgid "Conference city"
 msgstr "Cidade do evento"
 
-#: biblioref/models.py:316
+#: biblioref/models.py:286
 msgid "Conference country"
 msgstr "País do evento"
 
-#: biblioref/models.py:318
+#: biblioref/models.py:288
 msgid "Project name"
 msgstr "Nome do projeto"
 
-#: biblioref/models.py:320
+#: biblioref/models.py:290
 msgid "Project number"
 msgstr "Número do projeto"
 
-#: biblioref/models.py:322
+#: biblioref/models.py:292
 msgid "Project - Sponsoring Institution"
 msgstr "Projeto - Instituição patrocinadora"
 
-#: biblioref/models.py:329
+#: biblioref/models.py:299
 msgid "Bibliographic Record Local"
 msgstr "Registro bibliográfico - Campos locais"
 
-#: biblioref/models.py:330
+#: biblioref/models.py:300
 msgid "Bibliographic Records Local"
 msgstr "Registro bibliográfico - Campos locais"
 
-#: biblioref/models.py:338
+#: biblioref/models.py:308
 msgid "Inventory number"
 msgstr "Tombo"
 
@@ -2168,6 +2071,11 @@ msgstr "Possível artigo duplicado"
 msgid "check"
 msgstr "verificar"
 
+#: templates/biblioref/referenceanalytic_form.html:136
+#: templates/biblioref/referenceanalytic_form.html:164
+msgid "Monographic level"
+msgstr "Nível monográfico"
+
 #: templates/biblioref/referenceanalytic_form.html:193
 #: templates/biblioref/referencesource_form.html:119
 #: templates/modal_log.html:6
@@ -2882,15 +2790,15 @@ msgstr ""
 
 #: text_block/models.py:10
 msgid "Text blocks"
-msgstr ""
+msgstr "Blocos de notas"
 
 #: text_block/models.py:13
 msgid "Slot"
-msgstr ""
+msgstr "Espaço"
 
 #: text_block/models.py:14
 msgid "Order"
-msgstr ""
+msgstr "Ordem"
 
 #: text_block/models.py:15
 msgid "User profile"
@@ -3443,15 +3351,15 @@ msgstr "país"
 
 #: utils/models.py:108
 msgid "auxiliary code"
-msgstr ""
+msgstr "Código auxiliar"
 
 #: utils/models.py:109
 msgid "auxiliary codes"
-msgstr ""
+msgstr "Códigos auxiliares"
 
 #: utils/models.py:114 utils/models.py:142
 msgid "Label"
-msgstr ""
+msgstr "Rótulo"
 
 #: utils/templatetags/app_filters.py:27
 msgid "new"
@@ -3464,6 +3372,75 @@ msgstr "apagado"
 #: utils/templatetags/app_filters.py:164
 msgid "Record created"
 msgstr "Recurso criado"
+
+#~ msgid "Document published as a periodic series"
+#~ msgstr "Documento publicado em uma série periódica "
+
+#~ msgid "Conference papers as a periodic series"
+#~ msgstr "Documento de conferência em uma série periódica "
+
+#~ msgid "Paper of project and conference as a periodic series"
+#~ msgstr "Documento de projeto e conferência em uma série periódica"
+
+#~ msgid "Project paper as a periodic series"
+#~ msgstr "Documento de projeto em uma série periódica "
+
+#~ msgid "Document published as a monograph"
+#~ msgstr "Documento publicado em uma monografia "
+
+#~ msgid "Conference paper as a monograph"
+#~ msgstr "Documento de conferência em uma monografia"
+
+#~ msgid "Paper of project and conference as a monograph"
+#~ msgstr "Documento de projeto e conferência em uma monografia "
+
+#~ msgid "Project paper as a monograph "
+#~ msgstr "Documento de projeto em uma monografia"
+
+#~ msgid "Document published as a monographic series "
+#~ msgstr "Documento publicado em uma série monográfica "
+
+#~ msgid "Conference paper as a monographic series "
+#~ msgstr "Documento de conferência em uma série monográfica"
+
+#~ msgid "Project paper as a monographic series"
+#~ msgstr "Documento de projeto em uma série monográfica"
+
+#~ msgid "Thesis, Dissertation (published or not) "
+#~ msgstr "Tese, Dissertação (publicada ou não)"
+
+#~ msgid "Thesis, Dissertation as a monographic series"
+#~ msgstr "Tese, Dissertação pertencente a uma séria monográfica"
+
+#~ msgid "Non Conventional document"
+#~ msgstr "Documento não convencional "
+
+#~ msgid "Conference paper in a non conventional format"
+#~ msgstr "Documento de conferência em forma não convencional "
+
+#~ msgid "Project paper in a non conventionally"
+#~ msgstr "Documento de projeto em forma não convencional"
+
+#~ msgid "Monographic level of collection"
+#~ msgstr "Nível monográfico de coleção"
+
+#~ msgid "Monographic level of serial"
+#~ msgstr "Nível monográfico de série"
+
+#~ msgid "Monographic analytical level"
+#~ msgstr "Nível analítico monográfico"
+
+#~ msgid "Monographic analytics level of collection"
+#~ msgstr "Nível analítico monográfico de coleção"
+
+#~ msgid "Monographic analytics level of serial"
+#~ msgstr "Nível analítico monográfico de série"
+
+#~ msgid "Analytics level of serial"
+#~ msgstr "Nível analítico de série"
+
+#~ msgid "Electric address"
+#~ msgstr "Endereço eletrônico"
 
 #~ msgid "Institution"
 #~ msgstr "Instituição"

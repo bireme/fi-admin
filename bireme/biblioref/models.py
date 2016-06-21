@@ -15,36 +15,6 @@ STATUS_CHOICES = (
     (3, _('Deleted')),
 )
 
-LITERATURETYPE_CHOICES = (
-    ('S', _('Document published as a periodic series')),
-    ('SC', _('Conference papers as a periodic series')),
-    ('SCP', _('Paper of project and conference as a periodic series')),
-    ('SP', _('Project paper as a periodic series')),
-    ('M', _('Document published as a monograph')),
-    ('MC', _('Conference paper as a monograph')),
-    ('MCP', _('Paper of project and conference as a monograph')),
-    ('MP', _('Project paper as a monograph ')),
-    ('MS', _('Document published as a monographic series ')),
-    ('MSC', _('Conference paper as a monographic series ')),
-    ('MSP', _('Project paper as a monographic series')),
-    ('T', _('Thesis, Dissertation (published or not) ')),
-    ('TS', _('Thesis, Dissertation as a monographic series')),
-    ('N', _('Non Conventional document')),
-    ('NC', _('Conference paper in a non conventional format')),
-    ('NP', _('Project paper in a non conventionally')),
-)
-
-TREATMENTLEVEL_CHOICES = (
-    ('m', _('Monographic level')),
-    ('mc', _('Monographic level of collection')),
-    ('ms', _('Monographic level of serial')),
-    ('am', _('Monographic analytical level')),
-    ('amc', _('Monographic analytics level of collection')),
-    ('ams', _('Monographic analytics level of serial')),
-    ('as', _('Analytics level of serial')),
-    ('c', _('Collection level')),
-)
-
 
 # Bibliographic Record
 class Reference(Generic, AuditLog):
