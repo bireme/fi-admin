@@ -36,12 +36,15 @@ function open_window_with_post(verb, url, data, target) {
     }
 }
 
-function field_assist(field_name){
+function field_assist(field_name, field_id){
+    if ( !field_id ){
+        field_id = field_name
+    }
 
     field_assist_url = '/bibliographic/field_assist/' + field_name + '/',
-    field_value = $('#id_' + field_name).val();
+    field_value = $('#id_' + field_id).val();
 
-    post_params = {'field_value' : field_value };
+    post_params = {'field_value' : field_value, 'field_id': field_id};
 
     open_window_with_post('POST', field_assist_url, post_params, 'field_assist');
     return false;
@@ -55,7 +58,7 @@ function escape_linebreaks(str) {
     ;
 }
 
-function update_field_from_assist(field_name, json_string) {
+function update_field_from_assist(field_name, json_string, field_id) {
 
     var json_string_esc = escape_linebreaks(json_string);
     // convert to json_string to json object
@@ -71,7 +74,7 @@ function update_field_from_assist(field_name, json_string) {
     field_new_value = JSON.stringify(json_data);
 
     // update field with string json and trigger change function
-    $('#id_' + field_name).val(field_new_value).trigger('change');
+    $('#id_' + field_id).val(field_new_value).trigger('change');
 
     // close field assist window
     assist_win.close();
