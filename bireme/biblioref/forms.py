@@ -847,7 +847,7 @@ class ComplementForm(forms.ModelForm):
            data.get('conference_city') or data.get('conference_country')):
                 self.add_error('conference_name', _("Event name mandatory"))
 
-        if (not data.get('project_name') and not data.get('number')) and data.get('project_sponsoring_institution'):
+        if (not data.get('project_name') and not data.get('project_number')) and data.get('project_sponsoring_institution'):
             self.add_error('project_name', _("Project name OR Project number mandatory"))
 
         return data
