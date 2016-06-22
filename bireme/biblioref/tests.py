@@ -205,7 +205,6 @@ class BiblioRefTest(BaseTestCase):
         post_data['text_language'] = 'pt'
         post_data.pop('english_translated_title', None)  # LLXP don't have this field
         response = self.client.post('/bibliographic/edit-analytic/2', post_data)
-        print response
         self.assertContains(response, "Endereço eletrônico OU texto completo obrigatório")
 
         # test publish record

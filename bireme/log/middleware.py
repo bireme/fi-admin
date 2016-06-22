@@ -94,7 +94,7 @@ class WhodidMiddleware(object):
         '''
         Update log record after save instance to add missing object_id
         '''
-        if isinstance(instance, AuditLog) and created:
+        if isinstance(instance, AuditLog) and created and instance.created_by:
             # filter by log without object_id from the current user and action_flag = ADDITION
             log = LogEntry.objects.filter(object_id='None', object_repr=str(instance), action_flag=1,
                                           user_id=instance.created_by.id)
