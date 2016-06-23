@@ -66,7 +66,7 @@
                                 <p class="muted">{{ field.help_text }}</p>
                             {% endif %}
 
-                            {% if field.name == 'title_serial' %}
+                            {% if field.name == 'title_serial' and form.document_type.0 == 'S' %}
                                 <div>
                                     {% if form.fields.title_serial.choices|length > 1 %}
 

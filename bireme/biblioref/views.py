@@ -67,9 +67,10 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         # filter by specific document type and remove filter by user (filter_owner)
         if document_type:
             if len(document_type) > 1:
-                # treatment for this cases: Mm (source of monographic), MCPm (source of monographic with conference and project)
-                object_list = object_list.filter(literature_type__startswith=document_type[0],
-                                                 treatment_level=document_type[1:])
+                literature_type = re.sub('[^A-Z]|[CP]', '', document_type)  # get only uppercase chars excepct CP (congress/project)
+                treatment_level = re.sub('[A-Z]', '', document_type)  # get only lowercase chars
+                object_list = object_list.filter(literature_type__startswith=literature_type,
+                                                 treatment_level=treatment_level)
             else:
                 object_list = object_list.filter(literature_type=document_type)
 
@@ -259,6 +260,8 @@ class BiblioRefUpdate(LoginRequiredView):
             else:
                 if 'c' in treatment_level:
                     document_type = "{0}amc".format(literature_type)
+                elif 's' in treatment_level:
+                    document_type = "{0}ams".format(literature_type)
                 else:
                     document_type = "{0}am".format(literature_type)
 
@@ -268,7 +271,11 @@ class BiblioRefUpdate(LoginRequiredView):
             if self.object:
                 if hasattr(self.object, 'source'):
                     reference_source = self.object.source
-                document_type = "{0}{1}".format(self.object.literature_type[0], self.object.treatment_level)
+
+                # remove congress/project from literature_type
+                literature_type = re.sub('[CP]', '', self.object.literature_type)
+
+                document_type = "{0}{1}".format(literature_type, self.object.treatment_level)
             # new source
             else:
                 document_type = self.request.GET.get('document_type')

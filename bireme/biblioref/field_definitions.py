@@ -84,6 +84,16 @@ collection_section = ('collection_level', {'fields': ['individual_author_collect
                                            'legend': _('Collection level'),
                                            })
 
+serial_section = ('serial_level', {'fields': ['title_serial', 'issn', 'volume_serial',
+                                              'issue_number'],
+                                   'legend': _('Serial level')})
+
+thesis_notes = ('thesis_notes', {'fields': ['thesis_dissertation_leader',
+                                            'thesis_dissertation_institution',
+                                            'thesis_dissertation_academic_title'],
+                                 'legend': _('Thesis Notes'),
+                                 'classes': ['collapse']})
+
 
 FIELDS_BY_DOCUMENT_TYPE = {}
 
@@ -203,7 +213,9 @@ FIELDS_BY_DOCUMENT_TYPE['Mc'] = [('general', {'fields': ['source', 'status', 'LI
 
 # Thesis, dissertation (source)
 FIELDS_BY_DOCUMENT_TYPE['Tm'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                         'record_type'],
+                                                         'record_type', 'item_form', 'type_of_computer_file',
+                                                         'type_of_cartographic_material', 'type_of_journal',
+                                                         'type_of_visual_material', 'specific_designation_of_the_material'],
                                               'legend': _('General information')}),
 
                                  ('monographic_level', {'fields': ['individual_author_monographic',
@@ -213,12 +225,7 @@ FIELDS_BY_DOCUMENT_TYPE['Tm'] = [('general', {'fields': ['source', 'status', 'LI
 
                                  comp_info_section,
 
-                                 ('thesis_notes', {'fields': ['thesis_dissertation_leader',
-                                                              'thesis_dissertation_institution',
-                                                              'thesis_dissertation_academic_title'],
-                                                   'legend': _('Thesis Notes'),
-                                                   'classes': ['collapse']}),
-
+                                 thesis_notes,
 
                                  other_notes_section,
 
@@ -235,7 +242,9 @@ FIELDS_BY_DOCUMENT_TYPE['Tm'] = [('general', {'fields': ['source', 'status', 'LI
 
 # Thesis, dissertation (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                          'record_type', 'item_form'],
+                                                          'record_type', 'item_form', 'type_of_computer_file',
+                                                          'type_of_cartographic_material', 'type_of_journal',
+                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
                                                'legend': _('General information')}),
 
                                   ('analytic_level', {'fields': ['individual_author', 'title',
@@ -261,7 +270,9 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'L
 
 # Non Conventional (source)
 FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                        'record_type'],
+                                                        'record_type','item_form', 'type_of_computer_file',
+                                                        'type_of_cartographic_material', 'type_of_journal',
+                                                        'type_of_visual_material', 'specific_designation_of_the_material'],
                                              'legend': _('General information')}),
 
                                 monographic_section,
@@ -279,7 +290,9 @@ FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'LIL
 
 # Thesis, dissertation (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                          'record_type', 'item_form'],
+                                                          'record_type', 'item_form', 'type_of_computer_file',
+                                                          'type_of_cartographic_material', 'type_of_journal',
+                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
                                                'legend': _('General information')}),
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
@@ -347,6 +360,65 @@ FIELDS_BY_DOCUMENT_TYPE['Mamc'] = [('general', {'fields': ['source', 'status', '
                                    fulltext_section,
 
                                    ]
+
+# Thesis, Dissertation appearing as a Monograph Series (source)
+FIELDS_BY_DOCUMENT_TYPE['TSms'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
+                                                           'record_type', 'item_form', 'type_of_computer_file',
+                                                           'type_of_cartographic_material', 'type_of_journal',
+                                                           'type_of_visual_material', 'specific_designation_of_the_material'],
+                                                'legend': _('General information')}),
+
+                                   serial_section,
+
+                                   ('monographic_level', {'fields': ['individual_author_monographic',
+                                                                     'title_monographic', 'english_title_monographic',
+                                                                     'pages_monographic'],
+                                                          'legend': _('Monographic Level')}),
+
+                                   comp_info_section,
+
+                                   thesis_notes,
+
+                                   other_notes_section,
+
+                                   imprint_section,
+
+                                   subject_section,
+
+                                   abstract_section,
+
+                                   indexing_section,
+
+                                   fulltext_section,
+                                   ]
+
+# Thesis, Dissertation appearing as a Monograph Series (analytic)
+FIELDS_BY_DOCUMENT_TYPE['TSams'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
+                                                            'record_type', 'item_form', 'type_of_computer_file',
+                                                            'type_of_cartographic_material', 'type_of_journal',
+                                                            'type_of_visual_material', 'specific_designation_of_the_material'],
+                                                 'legend': _('General information')}),
+
+                                    ('analytic_level', {'fields': ['individual_author', 'title',
+                                                                   'english_translated_title', 'pages'],
+                                                        'legend': _('Analytic Level')}),
+
+                                    comp_info_section,
+
+                                    ('thesis_notes', {'fields': ['thesis_dissertation_analytic_leader'],
+                                                      'legend': _('Thesis Notes'),
+                                                      'classes': ['collapse']}),
+
+                                    other_notes_section,
+
+                                    subject_section,
+
+                                    abstract_section,
+
+                                    indexing_section,
+
+                                    fulltext_section,
+                                    ]
 
 
 def get_aux_country_list():

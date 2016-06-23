@@ -32,7 +32,7 @@ class SelectDocumentTypeForm(forms.Form):
         ('Mc', _('Collection of Monographs')),
         # ('MS', _('Monograph Series')),
         # ('N', _('Non conventional')),
-        # ('TS', _('Thesis, Dissertation appearing as a Monograph Series')),
+        ('TSms', _('Thesis/Dissertation appearing as a Monograph Series')),
     )
 
     document_type = forms.ChoiceField(choices=DOCUMENT_TYPE_CHOICES, label=_('Select document type'))
@@ -764,8 +764,13 @@ class BiblioRefForm(BetterModelForm):
         if self.reference_source:
             obj.source = self.reference_source
 
-        obj.literature_type = self.document_type[0]
-        obj.treatment_level = self.document_type[1:]
+        # treatment for MS / TS record types
+        if self.document_type.startswith('MS') or self.document_type.startswith('TS'):
+            obj.literature_type = self.document_type[0:2]
+            obj.treatment_level = self.document_type[2:]
+        else:
+            obj.literature_type = self.document_type[0]
+            obj.treatment_level = self.document_type[1:]
 
         if self.document_type[0] == 'S':
             if self.document_type == 'S':
