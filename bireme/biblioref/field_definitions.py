@@ -288,7 +288,7 @@ FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'LIL
                                 abstract_section
                                 ]
 
-# Thesis, dissertation (analytic)
+# Non Conventional (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
                                                           'record_type', 'item_form', 'type_of_computer_file',
                                                           'type_of_cartographic_material', 'type_of_journal',
@@ -419,6 +419,60 @@ FIELDS_BY_DOCUMENT_TYPE['TSams'] = [('general', {'fields': ['source', 'status', 
 
                                     fulltext_section,
                                     ]
+
+# Monograph Series (source)
+FIELDS_BY_DOCUMENT_TYPE['MSms'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
+                                                           'record_type', 'item_form', 'type_of_computer_file',
+                                                           'type_of_cartographic_material', 'type_of_journal',
+                                                           'type_of_visual_material', 'specific_designation_of_the_material'],
+                                                'legend': _('General information')}),
+
+                                   serial_section,
+
+                                   ('monographic_level', {'fields': ['individual_author_monographic',
+                                                                     'corporate_author_monographic', 'title_monographic',
+                                                                     'english_title_monographic', 'pages_monographic'],
+                                                          'legend': _('Monographic Level')}),
+
+                                   comp_info_section,
+
+                                   other_notes_section,
+
+                                   imprint_section,
+
+                                   subject_section,
+
+                                   abstract_section,
+
+                                   indexing_section,
+
+                                   fulltext_section,
+                                   ]
+
+# Monograph Series (analytic)
+FIELDS_BY_DOCUMENT_TYPE['MSams'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
+                                                            'record_type', 'item_form', 'type_of_computer_file',
+                                                            'type_of_cartographic_material', 'type_of_journal',
+                                                            'type_of_visual_material', 'specific_designation_of_the_material'],
+                                                 'legend': _('General information')}),
+
+                                    ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
+                                                                   'english_translated_title', 'pages'],
+                                                        'legend': _('Analytic Level')}),
+
+                                    comp_info_section,
+
+                                    other_notes_section,
+
+                                    subject_section,
+
+                                    abstract_section,
+
+                                    indexing_section,
+
+                                    fulltext_section,
+                                    ]
+
 
 
 def get_aux_country_list():
