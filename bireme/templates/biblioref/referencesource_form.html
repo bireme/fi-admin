@@ -57,7 +57,7 @@
             {% if form.document_type != 'S' %}
                 <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}{% if formset_library.errors and not formset_library.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
-            {% if form.document_type == 'MS' or form.document_type == 'Mm' or form.document_type == 'N' or form.document_type == 'Mmc' or form.document_type == 'MSms'%}
+            {% if form.document_type == 'MS' or form.document_type == 'Mm' or form.document_type.0 == 'N' or form.document_type == 'Mmc' or form.document_type == 'MSms'%}
                 <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
         {% endif %}

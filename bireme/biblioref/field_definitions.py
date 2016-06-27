@@ -269,24 +269,28 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'L
                                   ]
 
 # Non Conventional (source)
-FIELDS_BY_DOCUMENT_TYPE['N'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                        'record_type','item_form', 'type_of_computer_file',
-                                                        'type_of_cartographic_material', 'type_of_journal',
-                                                        'type_of_visual_material', 'specific_designation_of_the_material'],
-                                             'legend': _('General information')}),
+FIELDS_BY_DOCUMENT_TYPE['Nm'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
+                                                         'record_type', 'item_form', 'type_of_computer_file',
+                                                         'type_of_cartographic_material', 'type_of_journal',
+                                                         'type_of_visual_material', 'specific_designation_of_the_material'],
+                                              'legend': _('General information')}),
 
-                                monographic_section,
+                                 monographic_section,
 
-                                comp_info_section,
+                                 comp_info_section,
 
-                                other_notes_section,
+                                 other_notes_section,
 
-                                imprint_section,
+                                 imprint_section,
 
-                                subject_section,
+                                 subject_section,
 
-                                abstract_section
-                                ]
+                                 abstract_section,
+
+                                 indexing_section,
+
+                                 fulltext_section,
+                                 ]
 
 # Non Conventional (analytic)
 FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
@@ -305,7 +309,11 @@ FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'L
 
                                   subject_section,
 
-                                  abstract_section
+                                  abstract_section,
+
+                                  indexing_section,
+
+                                  fulltext_section,
                                   ]
 
 
