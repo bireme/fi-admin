@@ -182,6 +182,7 @@ INSTALLED_APPS = (
     'attachments',
     'help',
     'text_block',
+    'database',
 
 )
 

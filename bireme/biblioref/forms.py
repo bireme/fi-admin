@@ -17,6 +17,7 @@ from utils.templatetags.app_filters import fieldtype
 from title.models import Title
 from utils.models import AuxCode
 from attachments.models import Attachment
+from database.models import Database
 
 from models import *
 import json
@@ -129,6 +130,10 @@ class BiblioRefForm(BetterModelForm):
             country_list.extend(country_list_other)
 
             self.fields['publication_country'].choices = country_list
+
+        if 'indexed_database' in self.fields:
+            database_list = [(db.pk, unicode(db)) for db in Database.objects.filter(regional_index=True)]
+            self.fields['indexed_database'].choices = database_list
 
     def fieldsets(self):
         if not self._fieldset_collection:

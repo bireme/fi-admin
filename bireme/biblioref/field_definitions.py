@@ -36,6 +36,10 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
                  'created_time': 91, 'created_by': 92, 'updated_time': 93, 'system_version': 899,
                  }
 
+
+indexed_databases = ('indexed_database', {'fields': ['indexed_database'],
+                                          'legend': _('Indexed databases')})
+
 other_notes_section = ('other_notes', {'fields': ['general_note', 'formatted_contents_note',
                                        'additional_physical_form_available_note', 'reproduction_note',
                                        'original_version_note', 'internal_note'],
@@ -115,6 +119,8 @@ FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'L
                                                           'type_of_cartographic_material', 'type_of_journal',
                                                           'type_of_visual_material', 'specific_designation_of_the_material'],
                                                'legend': _('General information')}),
+
+                                  indexed_databases,
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
                                                                  'english_translated_title', 'pages'],

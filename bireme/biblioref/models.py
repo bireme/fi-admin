@@ -7,6 +7,8 @@ from utils.fields import JSONField, AuxiliaryChoiceField, MultipleAuxiliaryChoic
 from utils.models import Generic, Country
 from log.models import AuditLog
 
+from database.models import Database
+
 STATUS_CHOICES = (
     (-1, _('Draft')),
     (0, _('Inprocess')),
@@ -30,6 +32,8 @@ class Reference(Generic, AuditLog):
     reference_title = models.TextField(_('Title'), blank=True)
     # field tag 01
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
+    # field tag 04 (normalized by BIREME - regional indexes)
+    indexed_database = models.ManyToManyField(Database, verbose_name=_("Indexed in"), blank=True)
     # field tag 05
     literature_type = models.CharField(_('Literature type'), max_length=10, blank=True)
     # field tag 06

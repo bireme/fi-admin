@@ -258,6 +258,7 @@
    <script src="{% static 'js/jquery.formset.min.js' %}"></script>
    <script src="{% static 'js/jquery.confirm.min.js' %}"></script>
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+   <script src="{% static 'js/multiselect.min.js' %}"></script>
    <script src="{% static 'js/jsrender.min.js' %}"></script>
    <script src="{% static 'js/field_assist.js' %}"></script>
    <script src="{% static 'js/record_type.js' %}"></script>
@@ -396,6 +397,7 @@
 
             // show/hide fields for record_type
             $(document).ready(check_duplication);
+
             if ( $("#id_record_type").length ){
                 // if new record fill with default values
                 if (new_reference && literature_type[0] == "S" && treatment_level == "as"){
@@ -404,6 +406,9 @@
                 }
                 $("#id_record_type").trigger("change");
             }
+
+            // load multiselect plugin (indexed database field)
+            $('#multiselect').multiselect();
 
         })
 

@@ -476,3 +476,21 @@ div.onlineresource div.check {
     border-bottom: dotted 1px;
     cursor:help;
 }
+
+#multiselect, #multiselect_to{
+    width: 240px !important;
+}
+
+#multiselect_to{
+    margin-left: -10px !important;
+}
+
+.multiselect_buttons{
+    width: 20px;
+    float: left;
+    margin: 0 10px 0 -10px;
+}
+.multiselect_label{
+    font-weight: bold;
+    margin-left: -10px;
+}
