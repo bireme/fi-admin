@@ -209,7 +209,7 @@ class BiblioRefForm(BetterModelForm):
         if self.is_visiblefield('individual_author_collection') and self.is_visiblefield('corporate_author_collection'):
             self.check_author_presence(data, 'individual_author_collection', 'corporate_author_collection')
 
-        if self.is_visiblefield('issue_number'):
+        if self.is_visiblefield('issue_number') and self.document_type[0] == 'S':
             if not data.get('volume_serial') and not data.get('issue_number'):
                 self.add_error('volume_serial', _("Volume or issue number mandatory"))
 
@@ -463,6 +463,9 @@ class BiblioRefForm(BetterModelForm):
                 data = title_serial_other
             else:
                 data = title_serial
+
+        if not data and self.document_type == 'TSms':
+            self.add_error('title_serial', _("Mandatory"))
 
         return data
 
