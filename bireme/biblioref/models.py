@@ -178,7 +178,7 @@ class ReferenceSource(Reference):
     # field tags 27
     total_number_of_volumes = models.CharField(_('Total number of volumes'), max_length=10, blank=True)
     # field tags 30
-    title_serial = models.CharField(_('Journal title'), max_length=250, blank=True)
+    title_serial = models.TextField(_('Title'), blank=True)
     # field tags 31
     volume_serial = models.CharField(_('Volume'), max_length=100, blank=True)
     # field tags 32
