@@ -43,6 +43,8 @@
                 <div class="span-4">
                     <div class="input-append" style="margin-left: 10px">
                         <form name="search">
+                            <input type="hidden" name="page" value="">
+                            
                             {% if actions.filter_owner == '*' %}
                                 <input type="hidden" name="filter_owner" value="*"/>
                             {% elif actions.filter_owner == 'network' %}
