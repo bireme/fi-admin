@@ -156,7 +156,6 @@ class BiblioRefUpdate(LoginRequiredView):
 
     def form_valid(self, form):
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
-        formset_thematic = ResourceThematicFormSet(self.request.POST, instance=self.object)
         formset_attachment = AttachmentFormSet(self.request.POST, self.request.FILES, instance=self.object)
         formset_library = LibraryFormSet(self.request.POST, instance=self.object)
         formset_complement = ComplementFormSet(self.request.POST, instance=self.object)
@@ -165,7 +164,6 @@ class BiblioRefUpdate(LoginRequiredView):
         form_valid = form.is_valid()
 
         formset_descriptor_valid = formset_descriptor.is_valid()
-        formset_thematic_valid = formset_thematic.is_valid()
         formset_attachment_valid = formset_attachment.is_valid()
         formset_library_valid = formset_library.is_valid()
         formset_complement_valid = formset_complement.is_valid()
@@ -173,11 +171,10 @@ class BiblioRefUpdate(LoginRequiredView):
         user_data = additional_user_info(self.request)
         # run cross formsets validations
         valid_for_publication = check_for_publication(form, {'descriptor': formset_descriptor,
-                                                             'thematic': formset_thematic,
                                                              'attachment': formset_attachment}, user_data)
 
-        if (form_valid and formset_descriptor_valid and formset_thematic_valid and
-           formset_attachment_valid and formset_complement_valid and valid_for_publication):
+        if (form_valid and formset_descriptor_valid and formset_attachment_valid and
+           formset_complement_valid and valid_for_publication):
 
                 self.object = form.save()
 
@@ -202,9 +199,6 @@ class BiblioRefUpdate(LoginRequiredView):
 
                 formset_descriptor.instance = self.object
                 formset_descriptor.save()
-
-                formset_thematic.instance = self.object
-                formset_thematic.save()
 
                 formset_attachment.instance = self.object
                 formset_attachment.save()
@@ -231,7 +225,6 @@ class BiblioRefUpdate(LoginRequiredView):
             return self.render_to_response(
                            self.get_context_data(form=form,
                                                  formset_descriptor=formset_descriptor,
-                                                 formset_thematic=formset_thematic,
                                                  formset_attachment=formset_attachment,
                                                  formset_library=formset_library,
                                                  formset_complement=formset_complement,
@@ -329,7 +322,6 @@ class BiblioRefUpdate(LoginRequiredView):
 
         if self.request.method == 'GET':
             context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
-            context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
             context['formset_attachment'] = AttachmentFormSet(instance=self.object)
             context['formset_library'] = LibraryFormSet(instance=self.object,
                                                         queryset=ReferenceLocal.objects.filter(cooperative_center_code=user_data['user_cc']))
@@ -470,7 +462,6 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
 
         # delete associated data
         Descriptor.objects.filter(object_id=obj.id, content_type=c_type).delete()
-        ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
         Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ReferenceLocal.objects.filter(source=obj.id).delete()
         ReferenceComplement.objects.filter(source=obj.id).delete()

@@ -32,7 +32,7 @@
 
 <div class='body'>
 
-    {% if form.errors or formset_attachment.errors or formset_thematic.errors or formset_descriptor.errors %}
+    {% if form.errors or formset_attachment.errors or formset_descriptor.errors %}
         <p class="errorlist alert alert-error">
           {% trans "Please check errors below" %}
         </p>
@@ -40,14 +40,12 @@
     {% endif %}
 
     {{ formset_descriptor.non_form_errors }}
-    {{ formset_thematic.non_form_errors }}
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         {% if user_role != 'editor_llxp' %}
             {% if form.document_type == 'Mc' or form.document_type == 'Mm' or form.document_type == 'N' or form.document_type.0 == 'T' or form.document_type == 'Mmc' %}
                 <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
-                <!--li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li-->
             {% endif %}
 
             {% if 'fulltext'|infieldset:form.fieldsets %}
@@ -128,9 +126,6 @@
 
             <!-- LIBRARY FORMSET -->
             {% include "biblioref/fieldset_library.html" %}
-
-            <!-- THEMATIC AREA FORMSET -->
-            {% include "biblioref/fieldset_thematic.html" %}
 
             <!-- COMPLEMENT (PROJECT / EVENT) -->
             {% include "biblioref/fieldset_complement.html" %}
@@ -272,16 +267,6 @@
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'keyword_formset',
                     prefix: '{{ formset_keyword.prefix }}'
-            });
-
-            $('.thematic-row').formset({
-                    addText : '{% trans "Add thematic area" %}',
-                    deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'btn',
-                    keepFieldValues: '.keep-field-value',
-                    formCssClass: 'thematic_formset',
-                    prefix: '{{ formset_thematic.prefix }}'
             });
 
             var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";

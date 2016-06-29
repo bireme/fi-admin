@@ -11,8 +11,8 @@ from django import forms
 from form_utils.forms import BetterModelForm, FieldsetCollection
 from django.conf import settings
 
-from main.models import Descriptor, ResourceThematic
-from utils.forms import DescriptorRequired, ResourceThematicRequired
+from main.models import Descriptor
+from utils.forms import DescriptorRequired
 from utils.templatetags.app_filters import fieldtype
 from title.models import Title
 from utils.models import AuxCode
@@ -907,15 +907,6 @@ class ComplementForm(forms.ModelForm):
         return data
 
 
-class ThematicForm(forms.ModelForm):
-    def save(self, *args, **kwargs):
-        obj = super(ThematicForm, self).save(commit=False)
-        # for bibliographic default value for thematic is admited
-        obj.status = 1
-
-        obj.save()
-
-
 class DescriptorForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         obj = super(DescriptorForm, self).save(commit=False)
@@ -927,9 +918,6 @@ class DescriptorForm(forms.ModelForm):
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,
                                                   exclude=('status',), can_delete=True, extra=1)
-
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
-                                                        exclude=('status',), can_delete=True, extra=1)
 
 AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
                                                   exclude=('short_url',), can_delete=True, extra=1)
