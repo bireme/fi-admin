@@ -446,6 +446,7 @@ class BiblioRefForm(BetterModelForm):
 
     def clean_title_serial(self):
         data = self.cleaned_data['title_serial']
+
         if self.document_type == 'S':
             title_serial = self.cleaned_data.get('title_serial')
             title_serial_other = self.data.get('title_serial_other')
@@ -463,9 +464,9 @@ class BiblioRefForm(BetterModelForm):
                 data = title_serial_other
             else:
                 data = title_serial
-
-        if not data and self.document_type == 'TSms':
-            self.add_error('title_serial', _("Mandatory"))
+        else:
+            if self.is_visiblefield('title_serial') and not data:
+                self.add_error('title_serial', _("Mandatory"))
 
         return data
 
