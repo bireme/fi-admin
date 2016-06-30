@@ -79,7 +79,6 @@
                             {% if field.name == 'title_serial' and form.document_type.0 == 'S' %}
                                 <div>
                                     {% if form.fields.title_serial.choices|length > 1 %}
-
                                         <select id="{{ field.auto_id }}" name="{{ field.name }}" onchange="fill_issn()">
                                         {% for value, label in form.fields.title_serial.choices %}
                                             <option value="{{ value }}"{% if field.value == value %} selected{% endif %} data-issn="{{ label|substring_after:'|' }}">{{ label|substring_before:'|' }}</option>
@@ -139,7 +138,6 @@
                                        </select>
                                     </div>
                                 </div>
-
                             {% else %}
                                 {{ field }}
                             {% endif %}

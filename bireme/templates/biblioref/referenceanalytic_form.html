@@ -175,7 +175,13 @@
                                 {#  indexing and fulltext are loaded as separate tabs #}
                                 {% if fieldset.name != 'indexing' and fieldset.name != 'fulltext' %}
                                     {#  hide other_notes fields from editor_llxp  #}
-                                    {% if user_role == 'editor_llxp' and fieldset.name == 'other_notes' %}
+                                    {% if user_role == 'editor_llxp' %}
+                                        {% if fieldset.name == 'indexed_database' %}
+                                            {# for llxp profile save LILACS (pk=1) at indexed_database field #}
+                                            <input type="hidden" name="indexed_database" value="1"/>
+                                        {% elif fieldset.name != 'other_notes' %}
+                                            {% include "biblioref/fieldset_include.html" %}
+                                        {% endif %}
                                     {% else %}
                                         {% include "biblioref/fieldset_include.html" %}
                                     {% endif %}

@@ -63,6 +63,8 @@ class BiblioRefForm(BetterModelForm):
 
         # hidden not necessary fields for llxp editor profile
         if self.user_role == 'editor_llxp':
+            # hide LILACS_indexed field
+            self.fields['LILACS_indexed'].widget = widgets.HiddenInput()
             # source
             if self.document_type == 'S':
                 self.fields['issn'].widget = widgets.HiddenInput()
@@ -72,10 +74,6 @@ class BiblioRefForm(BetterModelForm):
                 self.fields['item_form'].widget = widgets.HiddenInput()
                 self.fields['type_of_journal'].widget = widgets.HiddenInput()
                 self.fields['english_translated_title'].widget = widgets.HiddenInput()
-
-        # hide LILACS_indexed field for llxp editor profile
-        if self.user_role == 'editor_llxp':
-            self.fields['LILACS_indexed'].widget = widgets.HiddenInput()
 
         # hide BIREME reviewed field for non BIREME users
         if self.user_data['user_cc'] != 'BR1.1':
