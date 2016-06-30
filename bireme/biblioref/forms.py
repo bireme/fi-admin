@@ -248,7 +248,7 @@ class BiblioRefForm(BetterModelForm):
         type_of_journal = self.cleaned_data.get('type_of_journal', 'p')
         status = self.cleaned_data.get('status')
 
-        if self.document_type[0] == 'T':
+        if self.document_type[0] == 'T' and not 'a' in self.document_type:
             if not data:
                 self.add_error(field, _("Mandatory"))
             else:

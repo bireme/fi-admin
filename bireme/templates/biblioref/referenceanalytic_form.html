@@ -96,97 +96,96 @@
 
                         <div id="metadata" class="accordion">
 
-                            {% if reference_source.treatment_level == 'mc' %}
-                                <div class="accordion-group">
-                                    <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-target="#serial_level">
-                                            {% trans 'Collection level' %}
-                                        </a>
-                                    </div>
-                                    <fieldset class="accordion-body" id="serial_level">
-                                        <ul>
-                                            {% if reference_source.individual_author_collection %}
-                                                <li>
-                                                    {% trans 'Individual author' %}: <strong>{{ reference_source.individual_author_collection.0.text }}</strong>
-                                                </li>
-                                            {% endif %}
-                                            {% if reference_source.corporate_author_collection %}
-                                                <li>
-                                                    {% trans 'Corporate author' %}: <strong>{{ reference_source.corporate_author_collection.0.text }}</strong>
-                                                </li>
-                                            {% endif %}
+                        {% if 'c' in reference_source.treatment_level %}
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-target="#serial_level">
+                                        {% trans 'Collection level' %}
+                                    </a>
+                                </div>
+                                <fieldset class="accordion-body" id="serial_level">
+                                    <ul>
+                                        {% if reference_source.individual_author_collection %}
                                             <li>
-                                                {% trans 'Title' %}: <strong>{{ reference_source.title_collection.0.text }}</strong>
+                                                {% trans 'Individual author' %}: <strong>{{ reference_source.individual_author_collection.0.text }}</strong>
                                             </li>
-                                            {% if reference_source.total_number_of_volumes %}
-                                                <li>
-                                                    {% trans 'Total number of volumes' %}: <strong>{{ reference_source.total_number_of_volumes }}</strong>
-                                                </li>
-                                            {% endif %}
-                                        </ul>
-                                    </fieldset>
-                                </div>
-
-                                <div class="accordion-group">
-                                    <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-target="#serial_level">
-                                            {% trans 'Monographic level' %}
-                                        </a>
-                                    </div>
-                                    <fieldset class="accordion-body" id="serial_level">
-                                        <ul>
-                                            {% if reference_source.individual_author_monographic %}
-                                                <li>
-                                                    {% trans 'Individual author' %}: <strong>{{ reference_source.individual_author_monographic.0.text }}</strong>
-                                                </li>
-                                            {% endif %}
-                                            {% if reference_source.corporate_author_collection %}
-                                                <li>
-                                                    {% trans 'Corporate author' %}: <strong>{{ reference_source.corporate_author_monographic.0.text }}</strong>
-                                                </li>
-                                            {% endif %}
-                                            <li>
-                                                {% trans 'Title' %}: <strong>{{ reference_source.title_monographic.0.text }}</strong>
-                                            </li>
-                                        </ul>
-                                    </fieldset>
-                                </div>
-                            {% else %}
-                                <div class="accordion-group">
-                                    <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-target="#serial_level">
-                                            {% if reference_source.literature_type == 'S' %}
-                                                {% trans 'Serial level' %}
-                                            {% else %}
-                                                {% trans 'Monographic level' %}
-                                            {% endif %}
-                                        </a>
-                                    </div>
-                                    <fieldset class="accordion-body" id="serial_level">
-                                        <h4 class="alert alert-success">
-                                            {{ reference_source }}
-                                        </h4>
-                                    </fieldset>
-                                </div>
-                            {% endif %}
-
-
-                            {% for fieldset in form.fieldsets %}
-                                {#  indexing and fulltext are loaded as separate tabs #}
-                                {% if fieldset.name != 'indexing' and fieldset.name != 'fulltext' %}
-                                    {#  hide other_notes fields from editor_llxp  #}
-                                    {% if user_role == 'editor_llxp' %}
-                                        {% if fieldset.name == 'indexed_database' %}
-                                            {# for llxp profile save LILACS (pk=1) at indexed_database field #}
-                                            <input type="hidden" name="indexed_database" value="1"/>
-                                        {% elif fieldset.name != 'other_notes' %}
-                                            {% include "biblioref/fieldset_include.html" %}
                                         {% endif %}
-                                    {% else %}
+                                        {% if reference_source.corporate_author_collection %}
+                                            <li>
+                                                {% trans 'Corporate author' %}: <strong>{{ reference_source.corporate_author_collection.0.text }}</strong>
+                                            </li>
+                                        {% endif %}
+                                        <li>
+                                            {% trans 'Title' %}: <strong>{{ reference_source.title_collection.0.text }}</strong>
+                                        </li>
+                                        {% if reference_source.total_number_of_volumes %}
+                                            <li>
+                                                {% trans 'Total number of volumes' %}: <strong>{{ reference_source.total_number_of_volumes }}</strong>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </fieldset>
+                            </div>
+                        {% endif %}
+                        {% if 'm' in reference_source.treatment_level %}
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-target="#serial_level">
+                                        {% trans 'Monographic level' %}
+                                    </a>
+                                </div>
+                                <fieldset class="accordion-body" id="serial_level">
+                                    <ul>
+                                        {% if reference_source.individual_author_monographic %}
+                                            <li>
+                                                {% trans 'Individual author' %}: <strong>{{ reference_source.individual_author_monographic.0.text }}</strong>
+                                            </li>
+                                        {% endif %}
+                                        {% if reference_source.corporate_author_collection %}
+                                            <li>
+                                                {% trans 'Corporate author' %}: <strong>{{ reference_source.corporate_author_monographic.0.text }}</strong>
+                                            </li>
+                                        {% endif %}
+                                        <li>
+                                            {% trans 'Title' %}: <strong>{{ reference_source.title_monographic.0.text }}</strong>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                            </div>
+                        {% endif %}
+                        {% if reference_source.literature_type == 'S' or 's' in reference_source.treatment_level %}
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-target="#serial_level">
+                                        {% trans 'Serial level' %}
+                                    </a>
+                                </div>
+                                <fieldset class="accordion-body" id="serial_level">
+                                    <ul>
+                                        <li>
+                                            <strong>{{ reference_source }}</strong>
+                                        </li>
+                                    </li>
+                                </fieldset>
+                            </div>
+                        {% endif %}
+
+                        {% for fieldset in form.fieldsets %}
+                            {#  indexing and fulltext are loaded as separate tabs #}
+                            {% if fieldset.name != 'indexing' and fieldset.name != 'fulltext' %}
+                                {#  hide other_notes fields from editor_llxp  #}
+                                {% if user_role == 'editor_llxp' %}
+                                    {% if fieldset.name == 'indexed_database' %}
+                                        {# for llxp profile save LILACS (pk=1) at indexed_database field #}
+                                        <input type="hidden" name="indexed_database" value="1"/>
+                                    {% elif fieldset.name != 'other_notes' %}
                                         {% include "biblioref/fieldset_include.html" %}
                                     {% endif %}
+                                {% else %}
+                                    {% include "biblioref/fieldset_include.html" %}
                                 {% endif %}
-                            {% endfor %}
+                            {% endif %}
+                        {% endfor %}
                         </div>
 
                     {% endif %}
