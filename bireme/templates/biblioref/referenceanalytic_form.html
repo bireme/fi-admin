@@ -317,9 +317,22 @@
             var json_data = jQuery.parseJSON(element_val);
 
             if ( json_data != null ){
-                $('#' + element_id + '_display').html($("#itensTemplate").render(json_data, {format: format_attrlabel}));
+                // special treatment for page field
+                if (element_id == 'id_pages'){
+                    var page_html = '';
+                    for (i = 0; i < json_data.length; i++){
+                        page_info = json_data[i];
+                        page_html += "<li> ";
+                        if (page_info["text"]) page_html += page_info["text"];
+                        if (page_info["_f"]) page_html += " " + page_info["_f"];
+                        if (page_info["_l"]) page_html += "-" + page_info["_l"];
+                        page_html += "</li>";
+                    }
+                    $('#' + element_id + '_display').html(page_html);
+                }else{
+                    $('#' + element_id + '_display').html($("#itensTemplate").render(json_data, {format: format_attrlabel}));
+                }
             }
-
         }
 
         $(function() {
