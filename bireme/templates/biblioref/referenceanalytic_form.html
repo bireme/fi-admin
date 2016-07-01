@@ -137,7 +137,7 @@
                                 <fieldset class="accordion-body" id="serial_level">
                                     <ul>
                                         <li>
-                                            {% trans 'Title' %}: <strong>{{ reference_source.title_monographic.0.text }}</strong>
+                                            <strong>{{ reference_source.title_monographic.0.text }}</strong>
                                         </li>
                                         {% if reference_source.individual_author_monographic %}
                                             <li>
@@ -166,10 +166,14 @@
                                             {% if reference_source.literature_type == 'S' %}
                                                 <strong>{{ reference_source }}</strong>
                                             {% else %}
-                                                <strong>
-                                                    {{ reference_source.title_serial }}
-                                                    {% if reference_source.volume_serial %}; {{ reference_source.volume_serial }} {% endif %}
-                                                    {% if reference_source.issue_number %} ({{ reference_source.issue_number }}) {% endif %}
+
+                                                    <strong>{{ reference_source.title_serial }}</strong>
+                                                    {% if reference_source.volume_serial %}
+                                                        {% trans 'Volume' %}: <strong>{{ reference_source.volume_serial }}</strong>
+                                                    {% endif %}
+                                                    {% if reference_source.issue_number %}
+                                                        {% trans 'Issue number' %}: <strong>{{ reference_source.issue_number }}</strong>
+                                                    {% endif %}
                                                 </strong>
 
                                             {% endif %}
