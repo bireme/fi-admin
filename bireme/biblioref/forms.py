@@ -86,14 +86,19 @@ class BiblioRefForm(BetterModelForm):
             # populate choice title list based on user profile
             if self.user_role == 'editor_llxp':
                 # for LILACS Express editor return only serials with same editor_cc_code of current user
-                title_list = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in title_objects.filter(editor_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
+                titles_from_this_editor = title_objects.filter(editor_cc_code=self.user_data['user_cc']).exclude(indexer_cc_code='')
+                titles_from_this_editor = titles_from_this_editor.order_by('shortened_title')
+                title_list = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_from_this_editor]
             else:
                 # for regular users return a title list splited in two parts:
                 # first journals that is indexed by user center code
-                # last the titles that have indexer_cc_code filled
+                titles_from_this_cc =  title_objects.filter(indexer_cc_code=self.user_data['user_cc']).order_by('shortened_title')
+                # then titles that have indexer_cc_code filled
+                titles_from_other_cc = title_objects.exclude(indexer_cc_code=u'').exclude(indexer_cc_code=self.user_data['user_cc']).order_by('shortened_title')
+
                 title_list = [('', '')]
-                title_list_indexer_code = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in title_objects.filter(indexer_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
-                title_list_other = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in title_objects.exclude(indexer_cc_code=u'').exclude(indexer_cc_code = self.user_data['user_cc']).order_by('shortened_title')]
+                title_list_indexer_code = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_from_this_cc]
+                title_list_other = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_from_other_cc]
 
                 separator = "-----------"
                 label_indexed = separator + __('Indexed by your cooperative center') + separator
