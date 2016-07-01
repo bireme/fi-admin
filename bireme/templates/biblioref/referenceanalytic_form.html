@@ -136,6 +136,9 @@
                                 </div>
                                 <fieldset class="accordion-body" id="serial_level">
                                     <ul>
+                                        <li>
+                                            {% trans 'Title' %}: <strong>{{ reference_source.title_monographic.0.text }}</strong>
+                                        </li>
                                         {% if reference_source.individual_author_monographic %}
                                             <li>
                                                 {% trans 'Individual author' %}: <strong>{{ reference_source.individual_author_monographic.0.text }}</strong>
@@ -146,9 +149,6 @@
                                                 {% trans 'Corporate author' %}: <strong>{{ reference_source.corporate_author_monographic.0.text }}</strong>
                                             </li>
                                         {% endif %}
-                                        <li>
-                                            {% trans 'Title' %}: <strong>{{ reference_source.title_monographic.0.text }}</strong>
-                                        </li>
                                     </ul>
                                 </fieldset>
                             </div>
@@ -163,7 +163,16 @@
                                 <fieldset class="accordion-body" id="serial_level">
                                     <ul>
                                         <li>
-                                            <strong>{{ reference_source }}</strong>
+                                            {% if reference_source.literature_type == 'S' %}
+                                                <strong>{{ reference_source }}</strong>
+                                            {% else %}
+                                                <strong>
+                                                    {{ reference_source.title_serial }}
+                                                    {% if reference_source.volume_serial %}; {{ reference_source.volume_serial }} {% endif %}
+                                                    {% if reference_source.issue_number %} ({{ reference_source.issue_number }}) {% endif %}
+                                                </strong>
+
+                                            {% endif %}
                                         </li>
                                     </li>
                                 </fieldset>
