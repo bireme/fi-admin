@@ -42,7 +42,7 @@ indexed_databases = ('indexed_database', {'fields': ['indexed_database'],
 
 other_notes_section = ('other_notes', {'fields': ['general_note', 'formatted_contents_note',
                                        'additional_physical_form_available_note', 'reproduction_note',
-                                       'original_version_note', 'internal_note'],
+                                       'original_version_note'],
                                        'legend': _('Other notes'),
                                        'classes': ['collapse']})
 
