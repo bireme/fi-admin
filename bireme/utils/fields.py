@@ -82,6 +82,11 @@ class MultipleAuxiliaryChoiceField(models.Field):
             return None
         return json.dumps(value)
 
+    def value_to_string(self, obj):
+        """ Used at serialization, convert JSON to a string """
+        value = self.value_from_object(obj)
+        return json.dumps(value)
+
     def formfield(self, **kwargs):
         """Overwrite  formfield to change html input to select  multiple and populate choiceis with auxiliar codes from database"""
 
