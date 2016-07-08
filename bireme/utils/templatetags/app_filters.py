@@ -56,6 +56,15 @@ def infieldset(name, fieldsets):
 
     return find
 
+@register.filter
+def inintvalues(value, list):
+    # convert parameters to int
+    pkvalue = int(value)
+    pkvalue_list = [int(v) for v in list]
+
+    find = pkvalue in pkvalue_list
+    return find
+
 
 @register.filter
 def profilefield(user, field):

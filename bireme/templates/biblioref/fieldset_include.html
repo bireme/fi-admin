@@ -119,7 +119,13 @@
                                     <div class="span3">
                                         <select multiple="multiple" name="indexed_databases_available" id="multiselect">
                                             {% for value,label in form.indexed_database.field.choices %}
-                                                <option value="{{ value }}">{{ label }}</option>
+                                                {% if form.indexed_database.value %}
+                                                    {% if not value|inintvalues:form.indexed_database.value %}
+                                                        <option value="{{ value }}">{{ label }}</option>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <option value="{{ value }}">{{ label }}</option>
+                                                {% endif %}
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -131,8 +137,14 @@
                                     <div class="span3">
                                        <select name="{{ field.name }}"  id="multiselect_to" class="form-control" multiple="multiple">
                                            {% for value,label in form.indexed_database.field.choices %}
-                                                {% if value in field.value %}
-                                                    <option value="{{ value }}">{{ label }}</option>
+                                                {% if form.indexed_database.value %}
+                                                    {% if value|inintvalues:form.indexed_database.value  %}
+                                                        <option value="{{ value }}">{{ label }}</option>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if value in field.value %}
+                                                        <option value="{{ value }}">{{ label }}</option>
+                                                    {% endif %}
                                                 {% endif %}
                                            {% endfor %}
                                        </select>

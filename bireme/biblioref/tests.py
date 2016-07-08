@@ -169,7 +169,7 @@ class BiblioRefTest(BaseTestCase):
 
         Title.objects.create(id_number='1', record_type='KS', treatment_level='K', cooperative_center_code='BR1.1',
                              status='1', title='Revista de Enfermagem', creation_date='20160525',
-                             shortened_title='Rev. Enfermagem', editor_cc_code='BR772', issn='0000-XXXXX')
+                             shortened_title='Rev. Enfermagem', editor_cc_code='BR772', indexer_cc_code='BR1.1', issn='0000-XXXXX')
 
         Country.objects.create(code='BR', name='Brasil', LA_Caribbean=True)
 
