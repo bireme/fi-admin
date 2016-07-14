@@ -100,6 +100,11 @@ def display_field(context, field):
     if fieldtype(field.field) == 'JSONFormField' and type(field_value) != list:
         field_value = json.loads(field_value)
 
+    # check if field has multiples values (ex. ManyToManyField)
+    if hasattr(field_value, 'all'):
+        # create list of values for presentation
+        field_value = [str(value) for value in field_value.all()]
+
     out = format_field(field_value)
     out = linebreaks(out)
 
