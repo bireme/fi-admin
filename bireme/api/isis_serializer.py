@@ -95,6 +95,6 @@ class ISISSerializer(Serializer):
             else:
                 field_value = str(value)
 
-            id_field = "!v{0}!{1} \n".format(field_number, field_value)
+            id_field = "!v{0:03d}!{1} \n".format(int(field_number), field_value)
 
         return id_field
