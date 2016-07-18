@@ -66,13 +66,10 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # filter by specific document type and remove filter by user (filter_owner)
         if document_type:
-            if len(document_type) > 1:
-                literature_type = re.sub('[^A-Z]|[CP]', '', document_type)  # get only uppercase chars excepct CP (congress/project)
-                treatment_level = re.sub('[A-Z]', '', document_type)  # get only lowercase chars
-                object_list = object_list.filter(literature_type__startswith=literature_type,
-                                                 treatment_level=treatment_level)
-            else:
-                object_list = object_list.filter(literature_type=document_type)
+            literature_type = re.sub('[^A-Z]|[CP]', '', document_type)  # get only uppercase chars excepct CP (congress/project)
+            treatment_level = re.sub('[A-Z]', '', document_type)  # get only lowercase chars
+            object_list = object_list.filter(literature_type__startswith=literature_type,
+                                             treatment_level=treatment_level)
 
 
         if self.actions['order'] == "-":

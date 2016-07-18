@@ -84,6 +84,20 @@
                             <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
                             <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
 
+                            {% trans "Record type" %}:
+                            <select name="document_type">
+                                <option value="">{% trans "All" %}</option>
+                                <option value="S" {% if actions.document_type == 'S' %}selected="true"{% endif %}>{% trans "Journals - Fascicle" %}</option>
+                                <option value="Sas" {% if actions.document_type == 'Sas' %}selected="true"{% endif %}>{% trans "Journals - Article" %}</option>
+                                <option value="Mm" {% if actions.document_type == 'Mm' %}selected="true"{% endif %}>{% trans "Monograph" %}</option>
+                                <option value="Tm" {% if actions.document_type == 'Tm' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation" %}</option>
+                                <option value="Mmc" {% if actions.document_type == 'Mmc' %}selected="true"{% endif %}>{% trans "Monograph in a Collection" %}</option>
+                                <option value="Mc" {% if actions.document_type == 'Mc' %}selected="true"{% endif %}>{% trans "Collection of Monographs" %}</option>
+                                <option value="MSms" {% if actions.document_type == 'MSms' %}selected="true"{% endif %}>{% trans "Monograph Series" %}</option>
+                                <option value="Nm" {% if actions.document_type == 'Nm' %}selected="true"{% endif %}>{% trans "Non conventional" %}</option>
+                                <option value="TSms" {% if actions.document_type == 'TSms' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation appearing as a Monograph Series" %}</option>
+                            </select>
+
                             {% trans "Status" %}:
                             <select name="filter_status">
                                 <option value="">{% trans "All" %}</option>

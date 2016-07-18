@@ -21,6 +21,7 @@ ACTIONS = {
     'filter_thematic': "",
     'filter_created_by_user': "",
     'filter_created_by_cc': "",
+    'document_type': "",
 }
 
 def cookie_lang(request):
