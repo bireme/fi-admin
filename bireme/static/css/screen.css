@@ -461,9 +461,8 @@ div.onlineresource div.check {
 .preview #tab-descriptors { padding-bottom: 10px; }
 
 #field_LILACS_indexed{
-    padding: 7px;
-    border: solid 1px #2f96b4;
-    width: 20%;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 #field_LILACS_indexed input[type="checkbox"]{
     width: 18px;
@@ -493,4 +492,9 @@ div.onlineresource div.check {
 .multiselect_label{
     font-weight: bold;
     margin-left: -10px;
+}
+#indexed_database{
+    padding: 5px 0 5px 0;
+    background-color: #eeeeee;
+
 }

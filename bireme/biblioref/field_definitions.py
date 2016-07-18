@@ -37,7 +37,7 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
                  }
 
 
-indexed_databases = ('indexed_database', {'fields': ['indexed_database'],
+indexed_databases = ('indexed_database', {'fields': ['LILACS_indexed', 'indexed_database', 'BIREME_reviewed'],
                                           'legend': _('Indexed databases')})
 
 other_notes_section = ('other_notes', {'fields': ['general_note', 'formatted_contents_note',
@@ -114,19 +114,20 @@ FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'LILACS_indexe
 
 
 # Periodical series (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                          'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Sas'] = [indexed_databases,
+                                  ('general', {'fields': ['source', 'status', 'record_type', 'item_form',
+                                                          'type_of_computer_file',
                                                           'type_of_cartographic_material', 'type_of_journal',
                                                           'type_of_visual_material', 'specific_designation_of_the_material'],
                                                'legend': _('General information')}),
 
-                                  indexed_databases,
+
 
                                   ('analytic_level', {'fields': ['individual_author', 'corporate_author', 'title',
                                                                  'english_translated_title', 'pages'],
                                                       'legend': _('Analytic Level')}),
 
-                                  ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi'],
+                                  ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi_number'],
                                                  'legend': _('Complementary Information'),
                                                  'classes': ['collapse']}),
 
@@ -144,8 +145,9 @@ FIELDS_BY_DOCUMENT_TYPE['Sas'] = [('general', {'fields': ['source', 'status', 'L
                                   ]
 
 # Monographic (source)
-FIELDS_BY_DOCUMENT_TYPE['Mm'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                         'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Mm'] = [indexed_databases,
+                                 ('general', {'fields': ['source', 'status', 'record_type',
+                                                         'item_form', 'type_of_computer_file',
                                                          'type_of_cartographic_material', 'type_of_journal',
                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
                                               'legend': _('General information')}),
@@ -168,8 +170,9 @@ FIELDS_BY_DOCUMENT_TYPE['Mm'] = [('general', {'fields': ['source', 'status', 'LI
                                  ]
 
 # Monographic (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                          'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Mam'] = [indexed_databases,
+                                  ('general', {'fields': ['source', 'status', 'record_type',
+                                                          'item_form', 'type_of_computer_file',
                                                           'type_of_cartographic_material', 'type_of_journal',
                                                           'type_of_visual_material', 'specific_designation_of_the_material'],
                                                'legend': _('General information')}),
@@ -193,8 +196,9 @@ FIELDS_BY_DOCUMENT_TYPE['Mam'] = [('general', {'fields': ['source', 'status', 'L
                                   ]
 
 # Collection (source)
-FIELDS_BY_DOCUMENT_TYPE['Mc'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                         'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Mc'] = [indexed_databases,
+                                 ('general', {'fields': ['source', 'status', 'record_type',
+                                                         'item_form', 'type_of_computer_file',
                                                          'type_of_cartographic_material', 'type_of_journal',
                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
                                               'legend': _('General information')}),
@@ -218,8 +222,9 @@ FIELDS_BY_DOCUMENT_TYPE['Mc'] = [('general', {'fields': ['source', 'status', 'LI
 
 
 # Thesis, dissertation (source)
-FIELDS_BY_DOCUMENT_TYPE['Tm'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                         'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Tm'] = [indexed_databases,
+                                 ('general', {'fields': ['source', 'status', 'record_type',
+                                                         'item_form', 'type_of_computer_file',
                                                          'type_of_cartographic_material', 'type_of_journal',
                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
                                               'legend': _('General information')}),
@@ -247,8 +252,9 @@ FIELDS_BY_DOCUMENT_TYPE['Tm'] = [('general', {'fields': ['source', 'status', 'LI
                                  ]
 
 # Thesis, dissertation (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                          'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Tam'] = [indexed_databases,
+                                  ('general', {'fields': ['source', 'status', 'record_type',
+                                                          'item_form', 'type_of_computer_file',
                                                           'type_of_cartographic_material', 'type_of_journal',
                                                           'type_of_visual_material', 'specific_designation_of_the_material'],
                                                'legend': _('General information')}),
@@ -275,8 +281,9 @@ FIELDS_BY_DOCUMENT_TYPE['Tam'] = [('general', {'fields': ['source', 'status', 'L
                                   ]
 
 # Non Conventional (source)
-FIELDS_BY_DOCUMENT_TYPE['Nm'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                         'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Nm'] = [indexed_databases,
+                                 ('general', {'fields': ['source', 'status', 'record_type',
+                                                         'item_form', 'type_of_computer_file',
                                                          'type_of_cartographic_material', 'type_of_journal',
                                                          'type_of_visual_material', 'specific_designation_of_the_material'],
                                               'legend': _('General information')}),
@@ -299,8 +306,9 @@ FIELDS_BY_DOCUMENT_TYPE['Nm'] = [('general', {'fields': ['source', 'status', 'LI
                                  ]
 
 # Non Conventional (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                          'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Nam'] = [indexed_databases,
+                                  ('general', {'fields': ['source', 'status', 'record_type',
+                                                          'item_form', 'type_of_computer_file',
                                                           'type_of_cartographic_material', 'type_of_journal',
                                                           'type_of_visual_material', 'specific_designation_of_the_material'],
                                                'legend': _('General information')}),
@@ -324,8 +332,9 @@ FIELDS_BY_DOCUMENT_TYPE['Nam'] = [('general', {'fields': ['source', 'status', 'L
 
 
 # Monograph in a Collection (source)
-FIELDS_BY_DOCUMENT_TYPE['Mmc'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                          'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Mmc'] = [indexed_databases,
+                                  ('general', {'fields': ['source', 'status', 'record_type',
+                                                          'item_form', 'type_of_computer_file',
                                                           'type_of_cartographic_material', 'type_of_journal',
                                                           'type_of_visual_material', 'specific_designation_of_the_material'],
                                                'legend': _('General information')}),
@@ -351,8 +360,9 @@ FIELDS_BY_DOCUMENT_TYPE['Mmc'] = [('general', {'fields': ['source', 'status', 'L
 
 
 # Monograph in a Collection (analytic)
-FIELDS_BY_DOCUMENT_TYPE['Mamc'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                           'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['Mamc'] = [indexed_databases,
+                                   ('general', {'fields': ['source', 'status', 'record_type',
+                                                           'item_form', 'type_of_computer_file',
                                                            'type_of_cartographic_material', 'type_of_journal',
                                                            'type_of_visual_material', 'specific_designation_of_the_material'],
                                                 'legend': _('General information')}),
@@ -376,8 +386,9 @@ FIELDS_BY_DOCUMENT_TYPE['Mamc'] = [('general', {'fields': ['source', 'status', '
                                    ]
 
 # Thesis, Dissertation appearing as a Monograph Series (source)
-FIELDS_BY_DOCUMENT_TYPE['TSms'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                           'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['TSms'] = [indexed_databases,
+                                   ('general', {'fields': ['source', 'status', 'record_type',
+                                                           'item_form', 'type_of_computer_file',
                                                            'type_of_cartographic_material', 'type_of_journal',
                                                            'type_of_visual_material', 'specific_designation_of_the_material'],
                                                 'legend': _('General information')}),
@@ -407,8 +418,9 @@ FIELDS_BY_DOCUMENT_TYPE['TSms'] = [('general', {'fields': ['source', 'status', '
                                    ]
 
 # Thesis, Dissertation appearing as a Monograph Series (analytic)
-FIELDS_BY_DOCUMENT_TYPE['TSams'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                            'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['TSams'] = [indexed_databases,
+                                    ('general', {'fields': ['source', 'status', 'record_type',
+                                                            'item_form', 'type_of_computer_file',
                                                             'type_of_cartographic_material', 'type_of_journal',
                                                             'type_of_visual_material', 'specific_designation_of_the_material'],
                                                  'legend': _('General information')}),
@@ -435,8 +447,9 @@ FIELDS_BY_DOCUMENT_TYPE['TSams'] = [('general', {'fields': ['source', 'status', 
                                     ]
 
 # Monograph Series (source)
-FIELDS_BY_DOCUMENT_TYPE['MSms'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                           'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['MSms'] = [indexed_databases,
+                                   ('general', {'fields': ['source', 'status', 'record_type',
+                                                           'item_form', 'type_of_computer_file',
                                                            'type_of_cartographic_material', 'type_of_journal',
                                                            'type_of_visual_material', 'specific_designation_of_the_material'],
                                                 'legend': _('General information')}),
