@@ -184,13 +184,17 @@
                     <span class="table-header">{% trans "Index range" %}</span>
                     <table class="table table-condensed">
                         <thead>
-                            <th>{% trans "Index source code" %}</th>
+                            <th class="index-code">{% trans "Index source code" %}</th>
                             <th>{% trans "Initial date" %}</th>
                             <th>{% trans "Initial volume" %}</th>
                             <th>{% trans "Initial number" %}</th>
                             <th>{% trans "Final date" %}</th>
                             <th>{% trans "Final volume" %}</th>
                             <th>{% trans "Final number" %}</th>
+                            <th class="indexer-cc-code">{% trans "Indexer center code" %}</th>
+                            <th>{% trans "Copy" %}</th>
+                            <th class="nowrap">{% trans "To distribute" %}</th>
+                            <th>{% trans "Selective" %}</th>
                         </thead>
                         <tbody>
 
@@ -207,12 +211,24 @@
                                     <tr id="indexrange-{{ forloop.counter0 }}" class="indexrange-row{% if form.errors %} error{% endif %} formset-row">
                                         {% for field in form.visible_fields %}
                                             {% if form.DELETE.value = False and field.name != 'DELETE' %}
-                                                <td>
+                                                {% if field.name == 'copy' %}
+                                                    <td class="nowrap">
+                                                {% else %}
+                                                    <td>
+                                                {% endif %}
                                                     {{ field }}
-                                                    {% if field.field|fieldtype != 'CharField' %}
+                                                    {% if field.field|fieldtype not in 'CharField|BooleanField' %}
                                                         {% get_field_display form.instance field %}
                                                     {% else %}
-                                                        {{ field.value }}
+                                                        {% if field.field|fieldtype = 'BooleanField' %}
+                                                            {% if field.value %}
+                                                                <div class="centralize">
+                                                                    <i class='icon-ok'></i>
+                                                                </div>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {{ field.value }}
+                                                        {% endif %}
                                                     {% endif %}
                                                 </td>
                                             {% else %}
@@ -285,6 +301,8 @@
                             <th>{% trans "Title" %}</th>
                             <th>{% trans "ISSN" %}</th>
                             <th>{% trans "Initial year" %}</th>
+                            <th>{% trans "Initial volume" %}</th>
+                            <th>{% trans "Initial number" %}</th>
                         </thead>
                         <tbody>
 

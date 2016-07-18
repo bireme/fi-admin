@@ -228,6 +228,10 @@ class IndexRange(models.Model):
     final_date = models.CharField(_('Final date'), max_length=255, blank=True)
     final_volume = models.CharField(_('Final volume'), max_length=255, blank=True)
     final_number = models.CharField(_('Final number'), max_length=255, blank=True)
+    indexer_cc_code = models.CharField(_('Indexer center code'), max_length=55, blank=True)
+    copy = models.CharField(_('Copy'), max_length=55, choices=COPY_CHOICES, blank=True)
+    distribute = models.BooleanField(_('To distribute'), default=False)
+    selective = models.BooleanField(_('Selective'), default=False)
 
     def __unicode__(self):
         return self.index_code.name

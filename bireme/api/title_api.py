@@ -154,6 +154,10 @@ class TitleResource(CustomResource):
                 text += '^d'+index.final_volume if index.final_volume else ''
                 text += '^e'+index.final_number if index.final_number else ''
                 text += '^f'+index.final_date if index.final_date else ''
+                text += '^g'+index.indexer_cc_code if index.indexer_cc_code else ''
+                text += '^h'+str(int(index.distribute)) if index.distribute else '' # boolean field
+                text += '^i'+index.copy if index.copy else ''
+                text += '^j'+str(int(index.selective)) if index.selective else '' # boolean field
                 bundle.data['index_range'] += [text]
 
         # field tags 510, 520, 530, 540, 550, 560, 610, 620, 650,
