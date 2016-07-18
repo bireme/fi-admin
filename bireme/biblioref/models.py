@@ -215,7 +215,7 @@ class ReferenceSource(Reference):
                                                          self.publication_date_normalized[:4])
         else:
             if self.title_monographic:
-                source_title = u"{0} {1}".format(self.title_monographic[0]['text'])
+                source_title = u"{0}".format(self.title_monographic[0]['text'])
             elif self.title_collection:
                 source_title = u"{0}".format(self.title_collection[0]['text'])
 
