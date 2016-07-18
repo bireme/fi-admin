@@ -70,12 +70,12 @@ class TitleCatalogView(LoginRequiredView, ListView):
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
-        if self.restrict_by_user and self.actions['filter_owner'] != "*":
-            object_list = object_list.filter(created_by=self.request.user)
-        elif self.actions['filter_owner'] == "*":
-            # restrict by cooperative center
-            user_cc = self.request.user.profile.get_attribute('cc')
-            object_list = object_list.filter(cooperative_center_code=user_cc)
+        # if self.restrict_by_user and self.actions['filter_owner'] != "*":
+        #     object_list = object_list.filter(created_by=self.request.user)
+        # elif self.actions['filter_owner'] == "*":
+        #     # restrict by cooperative center
+        #     user_cc = self.request.user.profile.get_attribute('cc')
+        #     object_list = object_list.filter(cooperative_center_code=user_cc)
 
         return object_list
 

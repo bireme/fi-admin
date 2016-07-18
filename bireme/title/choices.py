@@ -22,13 +22,13 @@ ACQUISITION_PRIORITY_CHOICES = (
 )
 
 ACQUISITION_FORM_CHOICES = (
-    ('0', 'Unknown'),
-    ('1A', 'Purchase current'),
-    ('1B', 'Purchase canceled'),
-    ('2A', 'Exchange current'),
-    ('2B', 'Exchange canceled'),
-    ('3A', 'Donation current'),
-    ('3B', 'Donation canceled'),
+    ('0', _('Unknown')),
+    ('1A', _('Purchase current')),
+    ('1B', _('Purchase canceled')),
+    ('2A', _('Exchange current')),
+    ('2B', _('Exchange canceled')),
+    ('3A', _('Donation current')),
+    ('3B', _('Donation canceled')),
 )
 
 TITLE_ALPHABET_CHOICES = (
