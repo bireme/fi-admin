@@ -210,14 +210,14 @@ class ReferenceSource(Reference):
         source_title = ''
         if self.literature_type[0] == 'S':
             source_title = u"{0}; {1} ({2}), {3}".format(self.title_serial,
-                                                           self.volume_serial,
-                                                           self.issue_number,
-                                                           self.publication_date_normalized[:4])
+                                                         self.volume_serial,
+                                                         self.issue_number,
+                                                         self.publication_date_normalized[:4])
         else:
-            if 'c' in self.treatment_level and self.title_collection:
+            if self.title_monographic:
+                source_title = u"{0} {1}".format(self.title_monographic[0]['text'])
+            elif self.title_collection:
                 source_title = u"{0}".format(self.title_collection[0]['text'])
-            elif self.title_monographic:
-                source_title = u"{0} {1}".format(self.title_monographic[0]['text'], self.volume_monographic)
 
         return source_title
 
