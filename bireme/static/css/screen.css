@@ -375,8 +375,24 @@ ul.jsonfield_display li{
     background-color: #f5f5f5;
 }
 
+#indexrange table {
+    margin-left: 0;
+}
+
+#indexrange th.nowrap {
+    white-space: nowrap;
+}
+
+td.indexrange.boolean-field {
+    text-align: center;
+}
+
+td.indexrange select {
+    width: 155px;
+}
+
 td.indexrange input[type="text"] {
-    width: 120px;
+    width: 70px;
 }
 
 td.variance input[type="text"] {
@@ -417,6 +433,16 @@ div.onlineresource div.check {
     margin: 18px 0;
 }
 
+.tab-content #indexrange .table thead th,
+.tab-content #variance .table thead th,
+.tab-content #audit .table thead th {
+    text-align: center;
+}
+
+.centralize {
+    text-align: center;
+}
+
 #help_modal{
     width: 750px;
     margin-left: -375px;
@@ -445,6 +471,15 @@ div.onlineresource div.check {
     padding-top: 0;
     padding-bottom: 0;
     background-color: #FFF !important;
+}
+.preview .table td.nowrap {
+    white-space: nowrap;
+}
+.preview .table th.index-code {
+    width: 180px;
+}
+.preview .table th.indexer-cc-code {
+    width: 70px;
 }
 .preview .textarea { display: inline-flex; }
 .preview span.textarea { font-weight: normal; }

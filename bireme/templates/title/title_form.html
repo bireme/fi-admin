@@ -267,6 +267,10 @@
                             <th>{% trans "Final date" %}</th>
                             <th>{% trans "Final volume" %}</th>
                             <th>{% trans "Final number" %}</th>
+                            <th>{% trans "Indexer center code" %}</th>
+                            <th>{% trans "Copy" %}</th>
+                            <th class="nowrap">{% trans "To distribute" %}</th>
+                            <th>{% trans "Selective" %}</th>
                             <th>{% trans "Delete?" %}</th>
                         </thead>
                         <tbody>
@@ -280,7 +284,11 @@
                             <tr id="indexrange-{{ forloop.counter0 }}" class="indexrange-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for field in form.visible_fields %}
                                     {% if field.name != 'DELETE' %}
-                                        <td class="indexrange">
+                                        {% if field.name in 'distribute|selective' %}
+                                            <td class="indexrange boolean-field">
+                                        {% else %}
+                                            <td class="indexrange">
+                                        {% endif %}
                                             {{ field }}
                                             {{ field.errors }}
                                         </td>

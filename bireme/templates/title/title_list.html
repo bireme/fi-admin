@@ -23,14 +23,17 @@
 
 <!--  header -->
 <div class='header'>
-    <h2><i class='icon-book'></i> {% trans "Titles" %}</h2>
-        <div class='pull-right'>
-            <a href="{% url 'create_title' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Title" %}</a>
-        </div>
+    <h2>
+        <i class='icon-book'></i> {% trans "Titles" %}
+        <span class="badge badge-info" style="vertical-align: middle;">{{ paginator.count }}</span>
+    </h2>
+    <div class='pull-right'>
+        <a href="{% url 'create_title' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Title" %}</a>
+    </div>
 </div>
 
 <div class='body'>
-    <ul class="nav nav-tabs" id='tab'>
+    <!-- <ul class="nav nav-tabs" id='tab'>
         <li class="{% if actions.filter_owner == 'user' or not actions.filter_owner %}active{% endif %}">
             <a href="#tab-my" onclick="filter_owner('user')" data-toggle="tab">
             <strong>{% trans "My titles" %}</strong>
@@ -47,7 +50,7 @@
                {% endif %}
             </a>
         </li>
-    </ul>
+    </ul> -->
 
     <div class="tab-content">
         <div class="tab-pane active">

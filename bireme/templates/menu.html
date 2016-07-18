@@ -44,7 +44,7 @@
                                 {% endif %}
                             {% endif %}
 
-                            {% if service_role.TITLE or service_role.TITLE %}
+                            {% if service_role.TITLE and user_cc = 'BR1.1' %}
                                 <li><a href="{% url 'list_title' %}" title=""><i class="icon-book"></i> {% trans "Journals" %}</a></li>
                             {% endif %}
 
