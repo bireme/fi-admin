@@ -25,7 +25,7 @@ class Reference(Generic, AuditLog):
         verbose_name_plural = _("Bibliographic Records")
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
-    LILACS_indexed = models.BooleanField(_('LILACS indexed?'), default=True)
+    LILACS_indexed = models.BooleanField(_('Validate using LILACS methodology'), default=True)
     BIREME_reviewed = models.BooleanField(_('Reviewed by BIREME?'), default=False)
 
     # title used for display and search of Reference objects
