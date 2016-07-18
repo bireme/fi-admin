@@ -3,6 +3,6 @@ from django.contrib import admin
 
 from models import *
 
-models = [Title, TitleVariance, BVSSpecialty, IndexRange, Audit, OnlineResources, OwnerList, IndexCode]
+models = [Title, TitleVariance, BVSSpecialty, IndexRange, Audit, OnlineResources, OwnerList, IndexCode, Users]
 
 admin.site.register(models)

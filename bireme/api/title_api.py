@@ -108,9 +108,19 @@ class TitleResource(CustomResource):
         audits = Audit.objects.filter(title=bundle.obj.id)
         new_url = OnlineResources.objects.filter(title=bundle.obj.id)
 
+        # m2m fields
+        country = bundle.obj.country.all()
+        text_language = bundle.obj.text_language.all()
+        abstract_language = bundle.obj.abstract_language.all()
+        users = bundle.obj.users.all()
+
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
-        bundle.data['descriptors'] = [{'text': descriptor.text} for descriptor in descriptors] # field tag 440
+        bundle.data['country'] = [c.code for c in country] # field tag 310
+        bundle.data['text_language'] = [tl.acronym for tl in text_language] # field tag 350
+        bundle.data['abstract_language'] = [al.acronym for al in abstract_language] # field tag 360
+        bundle.data['descriptors'] = [descriptor.text for descriptor in descriptors] # field tag 440
+        bundle.data['users'] = [user.code for user in users] # field tag 445
 
         # field tags 230 and 240
         if title_variance:
@@ -123,7 +133,7 @@ class TitleResource(CustomResource):
                 text += '^v'+title.initial_volume if title.initial_volume else ''
                 text += '^n'+title.initial_number if title.initial_number else ''
                 text += '^i'+title.issn if title.issn else ''
-                bundle.data[dict(TITLE_VARIANCE_LABELS)[title.type]] += [{'text': text}]
+                bundle.data[dict(TITLE_VARIANCE_LABELS)[title.type]] += [text]
 
         # field tag 436
         if bvs_specialties:
@@ -131,7 +141,7 @@ class TitleResource(CustomResource):
             for bvs_specialty in bvs_specialties:
                 text = '^a'+bvs_specialty.bvs if bvs_specialty.bvs else ''
                 text += '^b'+bvs_specialty.thematic_area if bvs_specialty.thematic_area else ''
-                bundle.data['bvs_specialties'] += [{'text': text}]
+                bundle.data['bvs_specialties'] += [text]
 
         # field tag 450
         if index_range:
@@ -144,7 +154,7 @@ class TitleResource(CustomResource):
                 text += '^d'+index.final_volume if index.final_volume else ''
                 text += '^e'+index.final_number if index.final_number else ''
                 text += '^f'+index.final_date if index.final_date else ''
-                bundle.data['index_range'] += [{'text': text}]
+                bundle.data['index_range'] += [text]
 
         # field tags 510, 520, 530, 540, 550, 560, 610, 620, 650,
         # 660, 670, 680, 710, 720, 750, 760, 770, 780 and 790
@@ -155,7 +165,7 @@ class TitleResource(CustomResource):
             for audit in audits:
                 text = audit.label if audit.label else ''
                 text += '^i'+audit.issn if audit.issn else ''
-                bundle.data[dict(AUDIT_LABELS)[audit.type]] += [{'text': text}]
+                bundle.data[dict(AUDIT_LABELS)[audit.type]] += [text]
 
         # field tag 999
         if new_url:
@@ -181,6 +191,6 @@ class TitleResource(CustomResource):
                     else:
                         text += '^g'+data.notes
 
-                bundle.data['online'] += [{'text': text}]
+                bundle.data['online'] += [text]
 
         return bundle

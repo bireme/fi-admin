@@ -8,6 +8,18 @@ from main.models import SourceLanguage
 from choices import *
 
 
+class Users(Generic):
+
+    class Meta:
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
+
+    code = models.CharField(_('Code'), max_length=55, blank=True)
+    name = models.CharField(_('Name'), max_length=455, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
 # Title model
 class Title(Generic):
 
@@ -32,7 +44,7 @@ class Title(Generic):
     # field tag 05
     record_type = models.CharField(_('Record type'), max_length=55, default='KS', blank=False)
     # field tag 06
-    treatment_level = models.CharField(_('Title treatment level'), max_length=55, default='K', blank=False)
+    treatment_level = models.CharField(_('Treatment level'), max_length=55, default='K', blank=False)
     # field tag 10
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=False)
     # field tag 20
@@ -94,7 +106,7 @@ class Title(Generic):
     # field tag 435
     thematic_area = models.TextField(_("Thematic area"), blank=True, help_text=_("Enter one per line"))
     # field tag 445
-    user = models.TextField(_("Users"), blank=True, help_text=_("Enter one per line"))
+    users = models.ManyToManyField(Users, related_name="users+", verbose_name=_("Users"), blank=True)
     # field tag 460
     acquisition_form = models.CharField(_('Acquisition Form'), max_length=55, choices=ACQUISITION_FORM_CHOICES, blank=True)
     # field tag 470
@@ -124,25 +136,13 @@ class Title(Generic):
 class OwnerList(Generic):
 
     class Meta:
-        verbose_name = _("Owner List")
+        verbose_name = _("Owners List")
         verbose_name_plural = _("Owners List")
 
     owner = models.CharField(_('Owner'), max_length=455, blank=True)
 
     def __unicode__(self):
         return self.owner
-
-class IndexCode(Generic):
-
-    class Meta:
-        verbose_name = _("Indexing Code")
-        verbose_name_plural = _("Indexing Codes")
-
-    code = models.CharField(_('Code'), max_length=55, blank=True)
-    name = models.CharField(_('Name'), max_length=455, blank=True)
-
-    def __unicode__(self):
-        return self.name
 
 class OnlineResources(models.Model):
 
@@ -197,11 +197,28 @@ class BVSSpecialty(models.Model):
     def __unicode__(self):
         return self.title.title
 
+class IndexCode(Generic):
+
+    class Meta:
+        verbose_name = _("Indexing Code")
+        verbose_name_plural = _("Indexing Codes")
+
+    code = models.CharField(_('Code'), max_length=55, blank=True)
+    name = models.CharField(_('Name'), max_length=455, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
 class IndexRange(models.Model):
 
     class Meta:
         verbose_name = _("Index range")
         verbose_name_plural = _("Index range")
+
+    COPY_CHOICES = (
+        ( 'MI', _('MEDLINE Index')),
+        ( 'MR', _('MEDLINE Record')),
+    )
 
     title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True)
     index_code = models.ForeignKey(IndexCode, verbose_name=_("Index source code"), blank=True, null=True)

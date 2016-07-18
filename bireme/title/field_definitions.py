@@ -19,7 +19,7 @@ field_tag_map = {'local_code': '03', 'record_type': '05', 'treatment_level': '06
                  'publication_level': '330', 'title_alphabet': '340', 'text_language': '350',
                  'abstract_language': '360', 'frequency': '380', 'issn': '400', 'coden': '410',
                  'medline_code': '420', 'classification': '430', 'thematic_area': '435',
-                 'bvs_specialties': '436', 'descriptors': '440', 'user': '445',
+                 'bvs_specialties': '436', 'descriptors': '440', 'users': '445',
                  'index_range': '450', 'acquisition_form': '460', 'acquisition_priority': '470',
                  'comercial_editor': '480', 'city': '490', 'lilacs_index_year': '500',
                  'has_edition': '510', 'is_edition': '520', 'has_subseries': '530',
