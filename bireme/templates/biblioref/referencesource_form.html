@@ -173,6 +173,7 @@
    <script src="{% static 'js/jquery.formset.min.js' %}"></script>
    <script src="{% static 'js/jquery.confirm.min.js' %}"></script>
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+   <script src="{% static 'js/multiselect.min.js' %}"></script>
    <script src="{% static 'js/jsrender.min.js' %}"></script>
    <script src="{% static 'js/field_assist.js' %}"></script>
    <script src="{% static 'js/record_type.js' %}"></script>
@@ -293,9 +294,11 @@
             $(document).on("click", "a.add_error_report", function(){
                 $("#error_report_modal").modal("show");
             });
-
+            // show/hide fields for record_type
             $("#id_record_type").trigger("change");
-
+            
+            // load multiselect plugin (indexed database field)
+            $('#multiselect').multiselect();
         })
 
         function decs_search(obj){

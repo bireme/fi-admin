@@ -410,9 +410,10 @@
                 });
             });
 
-            // show/hide fields for record_type
+            // check duplication
             $(document).ready(check_duplication);
 
+            // show/hide fields for record_type
             if ( $("#id_record_type").length ){
                 // if new record fill with default values
                 if (new_reference && literature_type[0] == "S" && treatment_level == "as"){
