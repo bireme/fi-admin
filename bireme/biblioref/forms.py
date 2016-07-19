@@ -230,16 +230,16 @@ class BiblioRefForm(BetterModelForm):
         field = 'corporate_author'
         data = self.cleaned_data.get(field)
         status = self.cleaned_data.get('status')
-        abbreviation_list = ['edt', 'com', 'coord', 'org']
+        resp_list = ['edt', 'com', 'coord', 'org']
         literature_type = self.document_type[0]
 
-        if data and status != -1:
+        if data and status != -1 and self.is_LILACS:
             occ = 0
             for author in data:
                 occ = occ + 1
                 author_resp = author.get('_r')
                 message_item = _("Author %s: ") % occ
-                if author_resp and not author_resp in abbreviation_list:
+                if author_resp and not author_resp in resp_list:
                     message = _("Degree of responsibility incompatible with LILACS")
                     message = string_concat(message_item, message)
                     self.add_error(field, message)
@@ -249,6 +249,7 @@ class BiblioRefForm(BetterModelForm):
     def validate_author_field(self, field):
         data = self.cleaned_data[field]
         abbreviation_list = [' JR.', ' JR ', 'Fº', ' jr.', ' jr ', 'fº', ' Jr.', ' Jr ', ' jR.', ' jR ']
+        resp_list = ['edt', 'com', 'coord', 'org']
         literature_type = self.document_type[0]
         type_of_journal = self.cleaned_data.get('type_of_journal', 'p')
         status = self.cleaned_data.get('status')
@@ -317,6 +318,12 @@ class BiblioRefForm(BetterModelForm):
                     if status == 1 and (not author.get('_1') or author.get('_1').lower() == 's.af'):
                         if author.get('_2') or author.get('_3') or author.get('_p') or author.get('_c'):
                             message = _("For absent or s.af affiliation do not describe the others affiliation atributes")
+                            message = string_concat(message_item, message)
+                            self.add_error(field, message)
+
+                    if status == 1 and author.get('_r'):
+                        if not author.get('_r') in resp_list:
+                            message = _("Degree of responsibility incompatible with LILACS")
                             message = string_concat(message_item, message)
                             self.add_error(field, message)
 
