@@ -44,7 +44,7 @@
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         {% if user_role != 'editor_llxp' %}
-            {% if form.document_type == 'Mc' or form.document_type == 'Mm' or form.document_type == 'N' or form.document_type.0 == 'T' or form.document_type == 'Mmc' or form.document_type == 'MSms' %}
+            {% if form.document_type == 'Mc' or form.document_type == 'Mm' or form.document_type == 'Nm' or form.document_type.0 == 'T' or form.document_type == 'Mmc' or form.document_type == 'MSms' %}
                 <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
             {% endif %}
 
@@ -296,7 +296,7 @@
             });
             // show/hide fields for record_type
             $("#id_record_type").trigger("change");
-            
+
             // load multiselect plugin (indexed database field)
             $('#multiselect').multiselect();
         })
