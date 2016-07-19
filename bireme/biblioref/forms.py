@@ -321,7 +321,7 @@ class BiblioRefForm(BetterModelForm):
                             message = string_concat(message_item, message)
                             self.add_error(field, message)
 
-                    if status == 1 and author.get('_r'):
+                    if status == 1 and self.is_LILACS and author.get('_r'):
                         if not author.get('_r') in resp_list:
                             message = _("Degree of responsibility incompatible with LILACS")
                             message = string_concat(message_item, message)
