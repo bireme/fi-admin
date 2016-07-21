@@ -6,40 +6,41 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from threading import local
 from log.models import AuditLog
 
 import json
 
+# create a thread local variable to save user
+_user = local()
 
 # FIX https://djangosnippets.org/snippets/2179/
-# http://simionbaws.ro/programming/python-programming/django-python-programming/django-get-current-user-globally-in-the-project/
+# http://stackoverflow.com/questions/862522/django-populate-user-id-when-saving-a-model/862870
 class WhodidMiddleware(object):
     def process_request(self, request):
         if not request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
             if hasattr(request, 'user') and request.user.is_authenticated():
-                user = request.user
+                _user.value = request.user
             else:
-                user = None
+                _user.value = None
 
-            mark_whodid = curry(self.mark_whodid, user)
-            mark_whodel = curry(self.mark_whodel, user)
-            mark_whoadd = curry(self.mark_whoadd, user)
-            signals.pre_save.connect(mark_whodid,  dispatch_uid=(self.__class__, request,), weak=False)
-            signals.pre_delete.connect(mark_whodel,  dispatch_uid=(self.__class__, request,), weak=False)
-            signals.post_save.connect(mark_whoadd,  dispatch_uid=(self.__class__, request,), weak=False)
+            signals.pre_save.connect(self.mark_whodid,  dispatch_uid=(self.__class__, request,), weak=False)
+            signals.pre_delete.connect(self.mark_whodel,  dispatch_uid=(self.__class__, request,), weak=False)
+            signals.post_save.connect(self.mark_whoadd,  dispatch_uid=(self.__class__, request,), weak=False)
 
     def process_response(self, request, response):
         signals.pre_save.disconnect(dispatch_uid=(self.__class__, request,))
         signals.pre_delete.disconnect(dispatch_uid=(self.__class__, request,))
         return response
 
-    def mark_whodel(self, user, sender, instance, **kwargs):
+    def mark_whodel(self, sender, instance, **kwargs):
+        user = self.get_current_user()
         # mark instance as deleted and call mark_whodid function
         instance.was_deleted = True
-        self.mark_whodid(user, sender, instance, **kwargs)
+        self.mark_whodid(sender, instance, **kwargs)
 
-    def mark_whodid(self, user, sender, instance, **kwargs):
-
+    def mark_whodid(self, sender, instance, **kwargs):
+        user = self.get_current_user()
         if 'created_by' in instance._meta.get_all_field_names() and not instance.created_by:
             instance.created_by = user
             instance.created_time = timezone.now()
@@ -90,10 +91,11 @@ class WhodidMiddleware(object):
                                                 change_message=fields_change,
                                                 action_flag=log_change_type)
 
-    def mark_whoadd(self, user, sender, instance, created, **kwargs):
+    def mark_whoadd(self, sender, instance, created, **kwargs):
         '''
         Update log record after save instance to add missing object_id
         '''
+        user = self.get_current_user()
         if isinstance(instance, AuditLog) and created and instance.created_by:
             # filter by log without object_id from the current user and action_flag = ADDITION
             log = LogEntry.objects.filter(object_id='None', object_repr=str(instance), action_flag=1,
@@ -145,3 +147,6 @@ class WhodidMiddleware(object):
             field_change_json = json.dumps(field_change, encoding="utf-8", ensure_ascii=False)
 
         return field_change_json
+
+    def get_current_user(self):
+        return _user.value
