@@ -258,7 +258,7 @@ do
 
 # Faz correcao nos arquivos tentando deixar conteudo mais adequado para comparacao
 # Apaga campos que nao serao necessario a comparacao
-# grep -Ev '!(ID |v002|v091|v092|v093|v776|v778|v899)'
+# grep -Ev '!(ID |v002|v091|v092|v093|v098|v775|v776|v778|v899)'
 # Apaga espacos em branco no final da linha
 # sed 's/ *$//g'
 # Apaga linha em branco
@@ -274,10 +274,16 @@ ARQ1="$file.arq1"
 ARQ2="$file.arq2"
 
 
+#Campos que nao estao sendo considerados porem serao no futuro
+# v087
+# v088
+# v126
+# v999
+
 # ARQ1
-cat ${ARQ1} | grep -Ev '!(ID |v002|v091|v092|v093|v776|v778|v899)' | sed 's/ *$//g' | sed '/^$/d' | sed 'y/áÁàÀãÃâÂéÉêÊíÍóÓõÕôÔúÚçÇ/aAaAaAaAeEeEiIoOoOoOuUcC/' | sort > tmp_ARQ1.lst
+cat ${ARQ1} | grep -Ev '!(ID |v002|v087|v088|v126|v999|v091|v092|v093|v098|v775|v776|v778|v899)' | sed 's/ *$//g' | sed '/^$/d' | sed 'y/áÁàÀãÃâÂéÉêÊíÍóÓõÕôÔúÚçÇ/aAaAaAaAeEeEiIoOoOoOuUcC/' | sort > tmp_ARQ1.lst
 # ARQ2
-cat ${ARQ2} | grep -Ev '!(ID |v002|v091|v092|v093|v776|v778|v899)' | sed 's/ *$//g' | sed '/^$/d' | sed 'y/áÁàÀãÃâÂéÉêÊíÍóÓõÕôÔúÚçÇ/aAaAaAaAeEeEiIoOoOoOuUcC/' | sort > tmp_ARQ2.lst
+cat ${ARQ2} | grep -Ev '!(ID |v002|v087|v088|v126|v999|v091|v092|v093|v098|v775|v776|v778|v899)' | sed 's/ *$//g' | sed '/^$/d' | sed 'y/áÁàÀãÃâÂéÉêÊíÍóÓõÕôÔúÚçÇ/aAaAaAaAeEeEiIoOoOoOuUcC/' | sort > tmp_ARQ2.lst
 
 tmpARQ1="tmp_ARQ1.lst"
 tmpARQ2="tmp_ARQ2.lst"
@@ -288,9 +294,37 @@ echo "--> Realiza a comparacao entre arquivos ${ARQ1}(Origem) e ${ARQ2}(FI-Admin
 existDiff=`diff ${tmpARQ1} ${tmpARQ2} | grep ^\< | wc -l`
 if [ $existDiff -gt 0 ]
 then 
+
+  # Arquivo ORIGEM
+  # trabalha no arquivo de diferenca criando master com v1=tag e v2=conteudo
+  cat ${tmpARQ1} | sed 's/\!/|/g' | sed 's/^|//' > ${tmpARQ1}_tmp1
+
+  # realiza split no conteudo quando ocorrer ^
+  mx seq=${tmpARQ1}_tmp1 "proc=(if v2:'^' then 'Gsplit=2=^' fi)" create=${tmpARQ1}_tmp1 -all now
+  [ -f ${tmpARQ1}_tmp1 ] && rm ${tmpARQ1}_tmp1
+
+  # cria arquivo para comparacao de 786226.arq1
+  mx ${tmpARQ1}_tmp1 lw=0 "pft=(v1[1],'|',v2/)" now | sort > ${tmpARQ1}.x
+  [ -f ${tmpARQ1}_tmp1.xrf ] && rm ${tmpARQ1}_tmp1.{xrf,mst}
+
+
+  # Arquivo FI-Admin
+  # trabalha no arquivo de diferenca criando master com v1=tag e v2=conteudo
+  cat ${tmpARQ2} | sed 's/\!/|/g' | sed 's/^|//' > ${tmpARQ2}_tmp1
+
+  # realiza split no conteudo quando ocorrer ^
+  mx seq=${tmpARQ2}_tmp1 "proc=(if v2:'^' then 'Gsplit=2=^' fi)" create=${tmpARQ2}_tmp1 -all now
+  [ -f ${tmpARQ2}_tmp1 ] && rm ${tmpARQ2}_tmp1
+
+  # cria arquivo para comparacao de 786226.arq2
+  mx ${tmpARQ2}_tmp1 lw=0 "pft=(v1[1],'|',v2/)" now | sort > ${tmpARQ2}.x
+  [ -f ${tmpARQ2}_tmp1.xrf ] && rm ${tmpARQ2}_tmp1.{xrf,mst}
+
+
+
   echo
   echo "+ Linhas que existem em ${ARQ1} mas nao existem em ${ARQ2} ..."
-  diff ${tmpARQ1} ${tmpARQ2} | grep ^\<
+  diff ${tmpARQ1}.x ${tmpARQ2}.x | grep ^\<
   ok1="false"
 else
   ok1="true"
@@ -301,7 +335,7 @@ if [ $existDiff -gt 0 ]
 then 
   echo
   echo "+ Linhas que existem em ${ARQ2} mas nao existem em ${ARQ1} ..."
-  diff ${tmpARQ1} ${tmpARQ2} | grep ^\>
+  diff ${tmpARQ1}.x ${tmpARQ2}.x | grep ^\>
   ok2="false"
 else
   ok2="true"
@@ -314,7 +348,9 @@ fi
 
 # Limpa area de trabalho - locais
 [ -f ${tmpARQ1} ] && rm ${tmpARQ1}
+[ -f ${tmpARQ1}.x ] && rm ${tmpARQ1}.x
 [ -f ${tmpARQ2} ] && rm ${tmpARQ2}
+[ -f ${tmpARQ2}.x ] && rm ${tmpARQ2}.x
 
 unset ARQ1 ARQ2
 unset lARQ1 lARQ2
