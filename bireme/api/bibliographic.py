@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
+from tastypie.constants import ALL
 from tastypie import fields
 
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic
@@ -34,6 +35,7 @@ class ReferenceResource(CustomResource):
         filtering = {
             'update_date': ('gte', 'lte'),
             'status': 'exact',
+            'LILACS_original_id': ALL,
         }
         include_resource_uri = True
 
