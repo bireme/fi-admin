@@ -3,16 +3,13 @@
 # ComparaIds.sh - Realiza a comparacao entre arquivos ID
 # -------------------------------------------------------------------------- #
 #    Corrente : ~/proc/compare/wrk
-#     Chamada : ./ComparaIds.sh <arquivo1> <arquivo2>
-#     Exemplo : ./ComparaIds.sh arquivo_origem.id arquivo_de_comparacao.id
-#    Objetivo : Realizar comparacao entre o arquivo ID que sera insumo da
-#               importacao no sistema Fi-Admim, e o arquivo criado a partir do
-#               processo de exportacao do sistema Fi-Admin.
-# Observacao 1: <arquivo1> é o arquivo original, ou seja, nesse processo
+#     Chamada : ./ComparaIds.sh <arquivo de ID origem>
+#     Exemplo : ./ComparaIds.sh LILACS_SAMPLE_Mm_varios.id
+#    Objetivo : Comparar arquivo origem no formato ID com o conteudo existente
+#               e previamente importado no FI-Admin.
+# Observacao 1: <arquivo de ID origem> é o arquivo original, ou seja, nesse processo
 #               de importação para o FI-Admin esse <arquivo1> é uma arquivo texto ID
 #               resultante da exportação de registro de uma base isis
-#               <arquivo2> é o arquivo criado a partir da exportação no sistema FI-Admin,
-#               ou seja é o registro que foi importado no FI-Admin.
 #
 # Observacao 2: A disposicao para funcionamento devera ser a mostrada abaixo,
 #               ids - deretorio onde estarao os arquivos Id
@@ -41,16 +38,18 @@
 cat > /dev/null <<HISTORICO
 vrs:  1.00 20160715, Fabio Luis de Brito
         - Edicao original
+      1.01 20160726, Fabio Luis de Brito
+        - Fazendo agora lista dinamica dos v2 e posteriormente wget a partir do FI-Admin
 HISTORICO
 
 # -------------------------------------------------------------------------- #
 
 # Verifica passagem de parametro
-if [ "$#" != "2" ]
+if [ "$#" != "1" ]
 then
-  echo "ERRO: Informar nome dos arquivos para comparacao"
-  echo "      Use: ./ComparaIds.sh <arquivo1> <arquivo2>"
-  echo "      Ex.: ./ComparaIds.sh arquivo_origem.id arquivo_de_comparacao.id"
+  echo "ERRO: Informar nome do arquivo ID para comparacao"
+  echo "      Use: ./ComparaIds.sh <arquivo de ID origem>"
+  echo "      Ex.: ./ComparaIds.sh LILACS_SAMPLE_Mm_varios.id"
   exit 1
 fi
 
@@ -68,10 +67,8 @@ DIR_WRK=`echo "$RAIZ/wrk"`
 if [ ! -d $DIR_ID ]; then echo "ERRO! Diretorio $DIR_ID nao existe!"; exit 1; fi
 if [ ! -d $DIR_WRK ]; then echo "ERRO! Diretorio $DIR_WRK nao existe!"; exit 1; fi
 
-# Verifica a existencia dos arquivos informados
+# Verifica a existencia do arquivo informado
 if [ ! -f $DIR_ID/$ARQ1 ]; then echo "ERRO! Arquivo $DIR_ID/$ARQ1 inexistente!"; exit 1; fi
-if [ ! -f $DIR_ID/$ARQ2 ]; then echo "ERRO! Arquivo $DIR_ID/$ARQ2 inexistente!"; exit 1; fi
-if [ $DIR_ID/$ARQ1 == $DIR_ID/$ARQ2 ]; then echo "ERRO! Arquivos informados sao o mesmo!"; exit 1; fi
 
 # Acessa area de trabalho
 cd $DIR_WRK
@@ -80,16 +77,51 @@ clear
 rm *.*
 
 echo "#############################################################################################"
+echo " Etapa 1 - Faz wget dos registros a partir do FI-Admin"
+echo "#############################################################################################"
+
+echo
+echo "--> Cria lista de ID ..."
+echo "$DIR_ID/$ARQ1"
+
+grep v002 $DIR_ID/$ARQ1 | awk -F"\!" '{ print $3 }' | sed 's/ *$//g' > v2.lst
+
+echo
+echo "--> Faz o wget ..."
+for v2 in $(cat v2.lst)
+do
+  wget "http://fi-admin.curso.bvsalud.org/api/bibliographic/?format=isis_id&LILACS_original_id__in=${v2}" -O ${v2}_v2.id
+  # Apaga espacos em branco no final da linha
+  # sed 's/ *$//g'
+  # Apaga linha em branco
+  # sed '/^$/d'
+  cat ${v2}_v2.id | sed 's/ *$//g' | sed '/^$/d' > tmp1
+  mv tmp1 ${v2}_v2.id
+done
+
+# Juntando os arquivos
+touch tmp1
+for file in $(ls -f *_v2.id)
+do
+  cat $file >> tmp1
+done
+
+rm *_v2.id
+mv tmp1 fiadmin.id
+
+
+
+echo "#############################################################################################"
 echo "                                  COMPARA ARQUIVOS ID"
 echo "#############################################################################################"
 
 
 # Avalia se quantidade de registros eh igual nos arquivos
 qtd_arq1=`grep "!ID " $DIR_ID/$ARQ1 | wc -l`
-qtd_arq2=`grep "!ID " $DIR_ID/$ARQ2 | wc -l`
+qtd_arq2=`grep "!ID " fiadmin.id | wc -l`
 if [ $qtd_arq1 -ne $qtd_arq2 ]
 then
-  echo "ATENCAO! quantidade de registros entre os arquivos $ARQ1 e $ARQ2 nao sao iguais"
+  echo "ATENCAO! quantidade de registros entre os arquivos $ARQ1 e fiadmin.id nao sao iguais"
   exit 1
 fi
 
@@ -147,16 +179,14 @@ echo "# Arquivo FI-Admin"
 if [ $qtd_arq2 -gt 1 ]
 then
   echo "--> Particiona arquivos ..."
-  echo "    + Arquivo $ARQ2 com $qtd_arq2 registros."
-  # copia $ARQ1 para $DIR_WRK
-  cp $DIR_ID/$ARQ2 .
+  echo "    + Arquivo fiadmin.id com $qtd_arq2 registros."
 
   # apaga eventual linhas em branco no arquivo
-  cat $ARQ2 | sed '/^$/d' > tmp1
-  mv tmp1 $ARQ2
+  cat fiadmin.id | sed '/^$/d' > tmp1
+  mv tmp1 fiadmin.id
 
   # Coloca tudo em uma so linha por registro
-  cat $ARQ2 | tr -d "\012" | sed 's/!ID /!ID /g' | tr "" "\012" > tmp1
+  cat fiadmin.id | tr -d "\012" | sed 's/!ID /!ID /g' | tr "" "\012" > tmp1
   # retirando primeira linha em branco
   sed '1d' tmp1 > tmp2
 
@@ -190,8 +220,7 @@ then
   done
 
 else
-  echo "--> Arquivo $ARQ2 com apenas 1 registro ..."
-  cp $DIR_ID/$ARQ2 .
+  echo "--> Arquivo fiadmin.id com apenas 1 registro ..."
 fi
 
 echo
@@ -229,8 +258,8 @@ else
   mv $ARQ1 $v2.arq1
 
   # Provendo arquivo Fi-Admin no formato para comparacao
-  v778=`grep v778 $ARQ2 | awk -F"\!" '{ print $3 }' | sed 's/ *$//g'`
-  mv $ARQ2 $v778.arq2
+  v778=`grep v778 fiadmin.id | awk -F"\!" '{ print $3 }' | sed 's/ *$//g'`
+  mv fiadmin.id $v778.arq2
 
   # Compara se sao mesmo registro
   arq1=`ls *.arq1 | awk -F"." '{ print $1 }'`
