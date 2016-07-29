@@ -171,11 +171,11 @@ class TitleResource(CustomResource):
                 text += '^i'+audit.issn if audit.issn else ''
                 bundle.data[dict(AUDIT_LABELS)[audit.type]] += [text]
 
-        # field tag 999
+        # field tags 880 and 999
         if new_url:
             bundle.data['online'] = []
 
-            for data in new_url:
+            for index, data in enumerate(new_url):
                 text = data.issn_online if data.issn_online else ''
                 text += '^a'+data.access_type if data.access_type else ''
                 text += '^b'+data.url if data.url else ''
@@ -185,15 +185,20 @@ class TitleResource(CustomResource):
                 text += '^f'+data.final_period if data.final_period else ''
 
                 if data.notes:
+                    text += '^z'+str(index+1)
+                    bundle.data['online_notes'] = []
+
                     if isinstance(data.notes, basestring) and "\r\n" in data.notes:
                         lines = ''
                         for line in data.notes.split('\r\n'):
                             if line:
                                 lines += line + ' ' if line[-1] == '.' else line + '. '
                         if lines:
-                            text += '^g'+lines
+                            bundle.data['online_notes'] += [lines+'^z'+str(index+1)]
+                            # text += '^g'+lines
                     else:
-                        text += '^g'+data.notes
+                        bundle.data['online_notes'] += [data.notes+'^z'+str(index+1)]
+                        # text += '^g'+data.notes
 
                 bundle.data['online'] += [text]
 
