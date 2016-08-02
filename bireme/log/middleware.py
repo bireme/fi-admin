@@ -149,4 +149,7 @@ class WhodidMiddleware(object):
         return field_change_json
 
     def get_current_user(self):
-        return _user.value
+        if hasattr(_user, 'value'):
+            return _user.value
+        else:
+            return None
