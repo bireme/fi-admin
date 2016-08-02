@@ -191,6 +191,7 @@
                                     {% if fieldset.name == 'indexed_database' %}
                                         {# for llxp profile save LILACS (pk=1) at indexed_database field #}
                                         <input type="hidden" name="indexed_database" value="1"/>
+                                        <input type="hidden" name="LILACS_indexed" value="true"/>
                                     {% elif fieldset.name != 'other_notes' %}
                                         {% include "biblioref/fieldset_include.html" %}
                                     {% endif %}
