@@ -203,8 +203,6 @@ class ReferenceSource(Reference):
     symbol = models.TextField(_('Symbol'), blank=True)
     # field tag 69
     isbn = models.CharField(_('ISBN'), max_length=60, blank=True)
-    # field tag 724
-    doi_number = models.CharField(_('DOI number'), max_length=150, blank=True)
 
     def __unicode__(self):
         source_title = ''
@@ -249,6 +247,8 @@ class ReferenceAnalytic(Reference):
     thesis_dissertation_analytic_leader = JSONField(_('Leader'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 700
     clinical_trial_registry_name = JSONField(_('Clinical trial registry name'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+    # field tag 724
+    doi_number = models.CharField(_('DOI number'), max_length=150, blank=True)
 
     def __unicode__(self):
         if 'a' in self.treatment_level:
