@@ -533,3 +533,15 @@ div.onlineresource div.check {
     background-color: #eeeeee;
 
 }
+.system-notice {
+    position: fixed;
+    left: 0;
+    bottom: 0px;
+    z-index: 9;
+    width: 100%;
+    padding: 10px 10px 10px 30px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #b2eadc;
+    color: #3e4241;
+}
