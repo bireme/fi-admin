@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load app_filters %}
 
 {% block title %}{% trans "Edit Event" %}{% endblock %}
 
@@ -22,13 +23,13 @@
     {% if form.errors %}
         <ul class="errorlist alert alert-error">
             <li>{% trans "Please check required fields" %}</li>
-        </ul>        
+        </ul>
     {% endif %}
     {% if not valid_for_publication %}
         <ul class="errorlist alert alert-error">
             <li>{% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}</li>
         </ul>
-    {% endif %}    
+    {% endif %}
     {{ formset_descriptor.non_form_errors }}
     {{ formset_thematic.non_form_errors }}
 
@@ -89,16 +90,20 @@
                             {% endfor %}
                             {{ form.non_field_errors }}
                             {% for field in form.visible_fields %}
-                                <label for="{{ field.auto_id }}">
-                                    {% if field.field.required %}
-                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                    {% else %}
-                                        {{ field.label }}
-                                    {% endif %}
-                                </label>
-                                <p class="muted">{{ field.help_text }}</p>
+                                {% if field.field|fieldtype == 'BooleanField' %}
+                                    <span>{{ field.label }}</span>
+                                {% else %}
+                                    <label for="{{ field.auto_id }}">
+                                        {% if field.field.required %}
+                                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                        {% else %}
+                                            {{ field.label }}
+                                        {% endif %}
+                                    </label>
+                                {% endif %}
                                 {{ field.errors }}
                                 {{ field }}
+                                <p class="muted">{{ field.help_text }}</p>
                             {% endfor %}
                         </fieldset>
                     {% endif %}
@@ -120,7 +125,7 @@
                                 <ul>
                                 {% for report in event.error_reports.all %}
                                     <li>{{ report.get_code_display }} - {{ report.description }} {{ report.new_link }}</li>
-                                {% endfor %}    
+                                {% endfor %}
                                 </ul>
                             </div>
                         {% endif %}
@@ -168,19 +173,19 @@
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
-                                {% for field in form.visible_fields %}                                    
+                                {% for field in form.visible_fields %}
                                     {% if user_role == 'doc' and field.name == 'status' %}
                                         <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                         <td></td>
                                     {% elif field.name == 'code' %}
                                         {{ field.as_hidden }}
-                                    {% elif field.name == 'text' %}                                        
+                                    {% elif field.name == 'text' %}
                                         <td class="span6">
                                             {{ field.as_hidden }}
                                             <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
                                                 {% if field.value == None %}
                                                     {% trans "Select by search" %}
-                                                {% else %} 
+                                                {% else %}
                                                     {{ field.value}}
                                                 {% endif %}
                                             </div>
@@ -244,12 +249,12 @@
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
-                                {% for field in form.visible_fields %}                                    
+                                {% for field in form.visible_fields %}
                                     {% if user_role == 'doc' and field.name == 'status' %}
                                         <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                         <td></td>
                                     {% elif field.name == 'user_recomendation' %}
-                                        {{ field.as_hidden }}                                        
+                                        {{ field.as_hidden }}
                                         <td style="text-align: center">
                                             {% if field.value == True %}
                                                 <span title="{% trans 'Suggested' %}"><i class="icon-thumbs-up"></i></span>
@@ -328,7 +333,7 @@
 
 {% if not is_new %}
     <div id="error_report_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">      
+        <div class="modal-header">
             <h3 id="myModalLabel">{% trans "Error report" %}</h3>
         </div>
 
@@ -377,7 +382,7 @@
 
    <script type="text/javascript">
         var decs_field;
-        
+
         var placeSearch, autocomplete;
         var componentForm = {
             id_city: 'long_name'
@@ -420,7 +425,7 @@
 
 
             // Listen to message from child window
-            eventer(messageEvent,function(e) {                
+            eventer(messageEvent,function(e) {
                 var decs_data = e.data;
                 var pipe_pos = decs_data.lastIndexOf('|');
                 var decs_text = decs_data.substring(0, pipe_pos);
@@ -429,14 +434,14 @@
                 var decs_row = decs_field.replace( /[A-Za-z_$-]/g, '');
                 // set code, text and label for the new descriptor
                 $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);                
+                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);
                 $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(decs_text);
                 $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
 
             },false);
 
-            $(document).on("click", "a.add_error_report", function(){ 
-                $("#error_report_modal").modal("show");                
+            $(document).on("click", "a.add_error_report", function(){
+                $("#error_report_modal").modal("show");
             });
 
 
@@ -470,7 +475,7 @@
 
           // Get each component of the address from the place details
           // and fill the corresponding field on the form.
-          for (var i = 0; i < place.address_components.length; i++) {            
+          for (var i = 0; i < place.address_components.length; i++) {
             var addressType = place.address_components[i].types[0];
             var addressValue = place.address_components[i].long_name;
 
@@ -485,7 +490,7 @@
                     neighborhood = addressValue;
                     break;
                 case 'locality':
-                    city = addressValue;            
+                    city = addressValue;
             }
           }
 
@@ -499,4 +504,3 @@
 
    </script>
 {% endblock %}
-

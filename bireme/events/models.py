@@ -65,6 +65,7 @@ class Event(Generic):
     )
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
+    not_regional_event = models.BooleanField(_('Do not publish in the regional event directory'), default=False)
 
     title = models.CharField(_('Title'), max_length=455, blank=False)
     start_date = models.DateField(_('Start date'), help_text='DD/MM/YYYY')
