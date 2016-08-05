@@ -20,13 +20,14 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
     official_language = indexes.MultiValueField()
-    official_language_display = indexes.MultiValueField()    
+    official_language_display = indexes.MultiValueField()
     event_type = indexes.MultiValueField()
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
+    not_regional_event = indexes.CharField(model_attr='not_regional_event')
 
     def get_model(self):
         return Event
