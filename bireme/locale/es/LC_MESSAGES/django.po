@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-08-05 10:26-0300\n"
-"PO-Revision-Date: 2016-08-05 10:29-0306\n"
+"PO-Revision-Date: 2016-08-10 10:15-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -951,7 +951,7 @@ msgstr "Registro bibliográfico - Fuentes"
 
 #: biblioref/models.py:165 biblioref/models.py:177 biblioref/models.py:243
 msgid "English translated title"
-msgstr "Título traducido"
+msgstr "Título traducido al inglés"
 
 #: biblioref/models.py:169 biblioref/models.py:183
 #: templates/biblioref/referenceanalytic_form.html:172
