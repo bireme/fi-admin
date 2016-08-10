@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-05 10:26-0300\n"
-"PO-Revision-Date: 2016-08-05 10:29-0306\n"
+"POT-Creation-Date: 2016-08-10 14:26-0300\n"
+"PO-Revision-Date: 2016-08-10 14:27-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1767,6 +1767,10 @@ msgstr "Selecionadas"
 msgid "Other journal title (from refereces not indexed in LILACS)"
 msgstr "Outro título de revista (para referências não indexadas na LILACS)"
 
+#: templates/biblioref/fieldset_include.html:158
+msgid "Show DeCS definition"
+msgstr "Consultar definição no DeCS"
+
 #: templates/biblioref/fieldset_indexing.html:9
 #: templates/biblioref/reference_form.html:135
 #: templates/events/edit-event.html:144 templates/main/edit-resource.html:140
@@ -1787,7 +1791,7 @@ msgstr "Selecione pela pesquisa"
 
 #: templates/biblioref/fieldset_indexing.html:70
 #: templates/biblioref/reference_confirm_delete.html:29
-#: templates/biblioref/referenceanalytic_form.html:409
+#: templates/biblioref/referenceanalytic_form.html:410
 #: templates/delete_confirm.html:17
 #: templates/multimedia/media_confirm_delete.html:29
 #: templates/multimedia/mediacollection_confirm_delete.html:33
@@ -1807,7 +1811,7 @@ msgid "Record"
 msgstr "Registro"
 
 #: templates/biblioref/reference_confirm_delete.html:27
-#: templates/biblioref/referenceanalytic_form.html:402
+#: templates/biblioref/referenceanalytic_form.html:403
 #: templates/delete_confirm.html:9
 #: templates/multimedia/media_confirm_delete.html:27
 #: templates/multimedia/mediacollection_confirm_delete.html:31
@@ -1817,7 +1821,7 @@ msgid "Are you sure you want to delete?"
 msgstr "Você tem certeza que deseja apagar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
-#: templates/biblioref/referenceanalytic_form.html:410
+#: templates/biblioref/referenceanalytic_form.html:411
 #: templates/delete_confirm.html:16
 #: templates/multimedia/media_confirm_delete.html:28
 #: templates/multimedia/mediacollection_confirm_delete.html:32
@@ -1938,8 +1942,8 @@ msgid "Suggested"
 msgstr "Sugerido"
 
 #: templates/biblioref/reference_form.html:396
-#: templates/biblioref/referenceanalytic_form.html:354
-#: templates/biblioref/referencesource_form.html:244
+#: templates/biblioref/referenceanalytic_form.html:355
+#: templates/biblioref/referencesource_form.html:245
 #: templates/events/edit-event.html:394 templates/main/edit-resource.html:395
 #: templates/multimedia/media_form.html:343
 #: templates/title/title_form.html:494
@@ -1949,11 +1953,11 @@ msgstr "Adicionar descritor"
 #: templates/biblioref/reference_form.html:397
 #: templates/biblioref/reference_form.html:407
 #: templates/biblioref/reference_form.html:417
-#: templates/biblioref/referenceanalytic_form.html:355
-#: templates/biblioref/referenceanalytic_form.html:365
-#: templates/biblioref/referencesource_form.html:245
-#: templates/biblioref/referencesource_form.html:255
-#: templates/biblioref/referencesource_form.html:265
+#: templates/biblioref/referenceanalytic_form.html:356
+#: templates/biblioref/referenceanalytic_form.html:366
+#: templates/biblioref/referencesource_form.html:246
+#: templates/biblioref/referencesource_form.html:256
+#: templates/biblioref/referencesource_form.html:266
 #: templates/events/edit-event.html:395 templates/events/edit-event.html:405
 #: templates/events/edit-event.html:415 templates/events/edit-type.html:72
 #: templates/main/edit-language.html:72 templates/main/edit-resource.html:396
@@ -1971,7 +1975,7 @@ msgid "delete"
 msgstr "apagar"
 
 #: templates/biblioref/reference_form.html:406
-#: templates/biblioref/referencesource_form.html:264
+#: templates/biblioref/referencesource_form.html:265
 #: templates/events/edit-event.html:404 templates/main/edit-resource.html:405
 #: templates/multimedia/media_form.html:353
 #: templates/title/title_form.html:503
@@ -2162,8 +2166,8 @@ msgstr "Publicar"
 msgid "Back"
 msgstr "Voltar"
 
-#: templates/biblioref/referenceanalytic_form.html:364
-#: templates/biblioref/referencesource_form.html:254
+#: templates/biblioref/referenceanalytic_form.html:365
+#: templates/biblioref/referencesource_form.html:255
 msgid "Add file"
 msgstr "Adicionar arquivo"
 

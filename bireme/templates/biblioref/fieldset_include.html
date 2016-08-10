@@ -154,6 +154,10 @@
                                 {{ field }}
                             {% endif %}
 
+                            {% if field.name == 'publication_type' or field.name == 'check_tags' %}
+                                <a href="javascript:consult_DeCS('{{ field.auto_id }}', '{{LANGUAGE_CODE|slice:":2"}}')" >{% trans "Show DeCS definition" %}</a>
+                            {% endif %}
+
                         {% endif %}
                     </li>
                 {% endif %}
