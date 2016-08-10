@@ -709,6 +709,7 @@ class PagesAttributes(colander.MappingSchema):
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Pages'), missing=unicode(''),)
     _f = colander.SchemaNode(colander.String('utf-8'), title=_('Initial number'), missing=unicode(''),)
     _l = colander.SchemaNode(colander.String('utf-8'), title=_('End number'), missing=unicode(''),)
+    _e = colander.SchemaNode(colander.String('utf-8'), title=_('Electronic location identifier'), missing=unicode(''),)
 
 
 class Pages(colander.SequenceSchema):

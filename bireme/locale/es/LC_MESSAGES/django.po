@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-10 14:26-0300\n"
-"PO-Revision-Date: 2016-08-10 14:28-0306\n"
+"POT-Creation-Date: 2016-08-10 14:46-0300\n"
+"PO-Revision-Date: 2016-08-10 14:48-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -306,7 +306,7 @@ msgstr "Calificador"
 msgid "Author keyword"
 msgstr "Palabras-llave del autor"
 
-#: biblioref/field_definitions.py:709 biblioref/field_definitions.py:715
+#: biblioref/field_definitions.py:709 biblioref/field_definitions.py:716
 #: biblioref/models.py:167 biblioref/models.py:245
 msgid "Pages"
 msgstr "Páginas"
@@ -322,21 +322,25 @@ msgstr "Número inicial"
 msgid "End number"
 msgstr "Número final"
 
-#: biblioref/field_definitions.py:722 biblioref/models.py:310
+#: biblioref/field_definitions.py:712
+msgid "Electronic location identifier"
+msgstr "Identificador de localización electrónico"
+
+#: biblioref/field_definitions.py:723 biblioref/models.py:310
 #: database/models.py:41
 msgid "Database"
 msgstr "Base de datos"
 
-#: biblioref/field_definitions.py:724
+#: biblioref/field_definitions.py:725
 msgid "Record number"
 msgstr "Número del registro"
 
-#: biblioref/field_definitions.py:725 templates/main/resources.html:102
+#: biblioref/field_definitions.py:726 templates/main/resources.html:102
 #: templates/suggest/list.html:77 title/models.py:154
 msgid "URL"
 msgstr "Enlace"
 
-#: biblioref/field_definitions.py:728
+#: biblioref/field_definitions.py:729
 msgid "Clinical Trial"
 msgstr "Ensayo clínico"
 
@@ -1792,7 +1796,7 @@ msgstr "Seleccione por búsqueda"
 
 #: templates/biblioref/fieldset_indexing.html:70
 #: templates/biblioref/reference_confirm_delete.html:29
-#: templates/biblioref/referenceanalytic_form.html:410
+#: templates/biblioref/referenceanalytic_form.html:411
 #: templates/delete_confirm.html:17
 #: templates/multimedia/media_confirm_delete.html:29
 #: templates/multimedia/mediacollection_confirm_delete.html:33
@@ -1812,7 +1816,7 @@ msgid "Record"
 msgstr "Registro"
 
 #: templates/biblioref/reference_confirm_delete.html:27
-#: templates/biblioref/referenceanalytic_form.html:403
+#: templates/biblioref/referenceanalytic_form.html:404
 #: templates/delete_confirm.html:9
 #: templates/multimedia/media_confirm_delete.html:27
 #: templates/multimedia/mediacollection_confirm_delete.html:31
@@ -1822,7 +1826,7 @@ msgid "Are you sure you want to delete?"
 msgstr "¿Está seguro que desea borrar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
-#: templates/biblioref/referenceanalytic_form.html:411
+#: templates/biblioref/referenceanalytic_form.html:412
 #: templates/delete_confirm.html:16
 #: templates/multimedia/media_confirm_delete.html:28
 #: templates/multimedia/mediacollection_confirm_delete.html:32
@@ -1943,7 +1947,7 @@ msgid "Suggested"
 msgstr "Sugerido"
 
 #: templates/biblioref/reference_form.html:396
-#: templates/biblioref/referenceanalytic_form.html:355
+#: templates/biblioref/referenceanalytic_form.html:356
 #: templates/biblioref/referencesource_form.html:245
 #: templates/events/edit-event.html:394 templates/main/edit-resource.html:395
 #: templates/multimedia/media_form.html:343
@@ -1954,8 +1958,8 @@ msgstr "Añadir descriptor"
 #: templates/biblioref/reference_form.html:397
 #: templates/biblioref/reference_form.html:407
 #: templates/biblioref/reference_form.html:417
-#: templates/biblioref/referenceanalytic_form.html:356
-#: templates/biblioref/referenceanalytic_form.html:366
+#: templates/biblioref/referenceanalytic_form.html:357
+#: templates/biblioref/referenceanalytic_form.html:367
 #: templates/biblioref/referencesource_form.html:246
 #: templates/biblioref/referencesource_form.html:256
 #: templates/biblioref/referencesource_form.html:266
@@ -2167,7 +2171,7 @@ msgstr "Publicar"
 msgid "Back"
 msgstr "Volver"
 
-#: templates/biblioref/referenceanalytic_form.html:365
+#: templates/biblioref/referenceanalytic_form.html:366
 #: templates/biblioref/referencesource_form.html:255
 msgid "Add file"
 msgstr "Añadir archivo"

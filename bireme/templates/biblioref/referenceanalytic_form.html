@@ -341,6 +341,7 @@
                         if (page_info["text"]) page_html += page_info["text"];
                         if (page_info["_f"]) page_html += " " + page_info["_f"];
                         if (page_info["_l"]) page_html += "-" + page_info["_l"];
+                        if (page_info["_e"]) page_html += "e:" + page_info["_e"];
                         page_html += "</li>";
                     }
                     $('#' + element_id + '_display').html(page_html);
