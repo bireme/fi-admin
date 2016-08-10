@@ -82,8 +82,8 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
-        # if is list of a specific source or source type dont't filter by user
-        if source_id or document_type:
+        # if not at main reference list and source or document_type remove filter by user
+        if self.model.__name__ != 'Reference' and (source_id or document_type):
             self.actions['filter_owner'] = '*'
 
         # profile lilacs express editor - restrict by CC code when list sources
