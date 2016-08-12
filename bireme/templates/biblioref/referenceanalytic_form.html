@@ -413,9 +413,6 @@
                 });
             });
 
-            // check duplication
-            $(document).ready(check_duplication);
-
             // show/hide fields for record_type
             if ( $("#id_record_type").length ){
                 // if new record fill with default values
@@ -481,8 +478,8 @@
                               pos = i+1;
                               article = articles[i];
                               $('#dedup_result .modal-body').append($('<div>', {
-                                    html: pos + '. <a href="{{ settings.DEDUP_ARTICLE_DETAIL }}lil-' + article['id'] +'" target="_dedup">' + article['titulo artigo']
-                                      + '</a> - ' + article['titulo da revista'] + ' (' + article['ano de publicacao'] + ')'
+                                    html: pos + '. <a href="{{ settings.DEDUP_ARTICLE_DETAIL }}lil-' + article['id'] +'" target="_dedup">' + article['titulo_artigo']
+                                      + '</a> - ' + article['titulo_revista'] + ' (' + article['ano_publicacao'] + ')'
                               }));
                           }
                       }else{
