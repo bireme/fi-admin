@@ -99,10 +99,11 @@ class Reference(Generic, AuditLog):
     institution_as_subject = models.TextField(_('Institution as subject'), blank=True)
     # field tag 653
     local_descriptors = models.TextField(_('Local descriptors'), blank=True)
-
     # field tag 899
     software_version = models.CharField(_('Software version'), max_length=50, blank=True)
+    # control fields
     LILACS_original_id = models.CharField(_('LILACS id'), max_length=8, blank=True)
+    interoperability_source = models.CharField(_('Interoperability source'), max_length=100, blank=True)
 
     # relations
     logs = GenericRelation(LogEntry)
