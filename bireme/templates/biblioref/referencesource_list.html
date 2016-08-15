@@ -35,7 +35,7 @@
                     <div class="input-append" style="margin-left: 10px">
                         <form name="search">
                             <input type="hidden" name="page" value="">
-                            
+
                             {% if actions.filter_owner == '*' %}
                                 <input type="hidden" name="filter_owner" value="*"/>
                             {% elif actions.filter_owner == 'network' %}
@@ -70,9 +70,6 @@
                                     <a href="{% url 'list_biblioref_analytics' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-list'></i> {% trans "Analytics" %}</a>
                                 {% elif reference.document_type != 'Mc' %}
                                     <a href="{% url 'create_biblioref_analytic' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-plus'></i> {% trans "New Analytic" %}</a>
-                                {% endif %}
-                                {% if reference.created_by_id = user.id and not reference.has_analytic %}
-                                    <a href="{% url 'delete_biblioref' reference.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>
                         </tr>
