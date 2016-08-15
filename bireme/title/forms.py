@@ -76,13 +76,16 @@ class TitleForm(forms.ModelForm):
         obj = super(TitleForm, self).save(commit=False)
 
         # save modifications
-        data = Title.objects.latest('id')
-        if not data:
-            id = 1
-        else:
-            id = data.id
+        if not obj.id_number:
+            data = Title.objects.latest('id')
 
-        obj.id_number = id
+            if not data:
+                id = 1
+            else:
+                id = data.id
+
+            obj.id_number = id
+
         obj.last_change_date = time.strftime('%Y%m%d')
 
         obj.save()
