@@ -36,7 +36,7 @@
                         <option value="resource" {% if params.source == 'resource' %}selected="true"{% endif %}>{% trans "Resources" %}</option>
                         <option value="event" {% if params.source == 'event' %}selected="true"{% endif %}>{% trans "Events" %}</option>
                         <option value="media" {% if params.source == 'media' %}selected="true"{% endif %}>{% trans "Multimedia" %}</option>
-                        <option value="title" {% if params.source == 'title' %}selected="true"{% endif %}>{% trans "Title" %}</option>
+                        <option value="title" {% if params.source == 'title' %}selected="true"{% endif %}>{% trans "Journals" %}</option>
                     </select>
 
                     {% trans "Report" %}:
@@ -166,7 +166,7 @@
                 if ( (report_type == '7' && report_source != 'media') ||
                      ( (report_source == 'reference' || report_source == 'title' ) && report_type == '5' ) ){
 
-                    $("#report_result").html("<div class='well alert'><h2>{% trans "Report not available" %}</h2></div>");
+                    $("#report_result").html("<div class='well alert'><h2>{% trans "Combination (Source x Report / Filter) not available" %}</h2></div>");
                     return false;
                 }
             });

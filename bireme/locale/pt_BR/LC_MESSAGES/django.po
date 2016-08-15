@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-10 14:46-0300\n"
-"PO-Revision-Date: 2016-08-10 14:48-0306\n"
+"POT-Creation-Date: 2016-08-15 11:14-0300\n"
+"PO-Revision-Date: 2016-08-15 11:15-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -196,14 +196,14 @@ msgstr "Nota pública"
 #: templates/biblioref/referencesource_list.html:45
 #: templates/biblioref/referencesource_list.html:56
 #: templates/events/events.html:100 templates/main/resources.html:101
-#: templates/multimedia/media_list.html:118 templates/reports/index.html:39
-#: templates/suggest/list.html:76 templates/suggest/list.html.py:165
-#: templates/title/form_preview.html:301 templates/title/form_preview.html:351
-#: templates/title/title_form.html:348 templates/title/title_form.html:391
-#: templates/title/title_list.html:69 templates/title/title_list.html:101
-#: text_block/models.py:12 text_block/models.py:53 title/models.py:27
-#: title/models.py:59 title/models.py:153 title/models.py:178
-#: title/models.py:193 title/models.py:223 title/models.py:247
+#: templates/multimedia/media_list.html:118 templates/suggest/list.html:76
+#: templates/suggest/list.html.py:165 templates/title/form_preview.html:301
+#: templates/title/form_preview.html:351 templates/title/title_form.html:348
+#: templates/title/title_form.html:391 templates/title/title_list.html:69
+#: templates/title/title_list.html:101 text_block/models.py:12
+#: text_block/models.py:53 title/models.py:27 title/models.py:59
+#: title/models.py:153 title/models.py:178 title/models.py:193
+#: title/models.py:223 title/models.py:247
 msgid "Title"
 msgstr "Título"
 
@@ -2434,7 +2434,7 @@ msgstr "Sugestões"
 msgid "Bibliographic records"
 msgstr "Registros bibliográficos"
 
-#: templates/menu.html:48
+#: templates/menu.html:48 templates/reports/index.html:39
 msgid "Journals"
 msgstr "Revistas"
 
@@ -2588,8 +2588,8 @@ msgid "No data for these criteria"
 msgstr "Nenhum dado para estes critérios"
 
 #: templates/reports/index.html:169
-msgid "Report not available"
-msgstr "Relatório não disponível"
+msgid "Combination (Source x Report / Filter) not available"
+msgstr "Combinação (Fonte x Relatório / Filtro) não disponível"
 
 #: templates/suggest/edit-suggested-event.html:5
 #: templates/suggest/edit-suggested-event.html:15
@@ -3414,6 +3414,9 @@ msgstr "apagado"
 #: utils/templatetags/app_filters.py:178
 msgid "Record created"
 msgstr "Recurso criado"
+
+#~ msgid "Report not available"
+#~ msgstr "Relatório não disponível"
 
 #~ msgid "Databases"
 #~ msgstr "Bases de dados"
