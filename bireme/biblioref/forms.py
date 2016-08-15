@@ -662,6 +662,7 @@ class BiblioRefForm(BetterModelForm):
                     text = page.get('text', '')
                     first = page.get('_f', '')
                     last = page.get('_l', '')
+                    elocation = page.get('_e', '')
                     message_item = _("item %s: ") % occ
 
                     if first == 'passim' and last != '':
@@ -683,6 +684,12 @@ class BiblioRefForm(BetterModelForm):
                         message = _("Square brackets are missing [ ]")
                         message = string_concat(message_item, message)
                         self.add_error(field, message)
+
+                    if elocation != '' and (first or last or text):
+                        message = _("When the electronic location attribute is informed the others attributes should be empty")
+                        message = string_concat(message_item, message)
+                        self.add_error(field, message)
+
 
         return data
 
