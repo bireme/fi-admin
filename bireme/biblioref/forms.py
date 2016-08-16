@@ -21,6 +21,7 @@ from database.models import Database
 
 from models import *
 import json
+import requests
 import re
 
 
@@ -782,8 +783,6 @@ class BiblioRefForm(BetterModelForm):
         return data
 
     def save(self, *args, **kwargs):
-        new_reference = True
-
         obj = super(BiblioRefForm, self).save(commit=False)
 
         # if is a new analytic save reference source info
@@ -839,6 +838,19 @@ class BiblioRefForm(BetterModelForm):
 
         # save object
         obj.save()
+
+        # update DeDup service
+        if self.document_type == 'Sas':
+            dedup_params = {"ano_publicacao": obj.source.publication_date_normalized[:4],
+                            "titulo_artigo": obj.title[0]['text'], "titulo_revista": obj.source.title_serial}
+            json_data = json.dumps(dedup_params, ensure_ascii=True)
+            dedup_headers = {'Content-Type': 'application/json'}
+            ref_id = "fiadmin-{0}".format(obj.id)
+            dedup_url = "{0}/{1}/{2}/{3}".format(settings.DEDUP_PUT_URL, 'lilacs_Sas', 'LILACS_Sas_Three', ref_id)
+            try:
+                dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
+            except:
+                pass
 
         return obj
 

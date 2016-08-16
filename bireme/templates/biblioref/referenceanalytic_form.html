@@ -477,8 +477,15 @@
                           for (i = 0; i < articles.length; i++){
                               pos = i+1;
                               article = articles[i];
+                              article_id = article['id'];
+                              if (article_id.startsWith('fiadmin')){
+                                article_id = article_id.substring(article_id.lastIndexOf('-')+1)
+                                detail_url = '{% url "list_biblioref" %}edit-analytic/' + article_id ;
+                              }else{
+                                detail_url = '{{settings.DEDUP_ARTICLE_DETAIL}}lil-' + article_id;
+                              }
                               $('#dedup_result .modal-body').append($('<div>', {
-                                    html: pos + '. <a href="{{ settings.DEDUP_ARTICLE_DETAIL }}lil-' + article['id'] +'" target="_dedup">' + article['titulo_artigo']
+                                    html: pos + '. <a href="' + detail_url + '" target="_dedup">' + article['titulo_artigo']
                                       + '</a> - ' + article['titulo_revista'] + ' (' + article['ano_publicacao'] + ')'
                               }));
                           }
