@@ -51,12 +51,12 @@ class TitleCatalogView(LoginRequiredView, ListView):
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
-        search_field = self.search_field + '__contains'
+        search_field = self.search_field + '__icontains'
 
         object_list = self.model.objects.filter(**{search_field: self.actions['s']})
 
         if self.actions['short_title'] != '':
-            object_list = object_list.filter(shortened_title__contains=self.actions['short_title'])
+            object_list = object_list.filter(shortened_title__icontains=self.actions['short_title'])
 
         if self.actions['id'] != '':
             object_list = object_list.filter(id_number=self.actions['id'])
