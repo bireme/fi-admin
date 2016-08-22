@@ -5,6 +5,7 @@ from django.conf.urls import patterns, url, include
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.resources import ModelResource
+from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from tastypie import fields
 from main.models import Resource, ResourceThematic, Descriptor, SourceType, SourceLanguage
@@ -18,7 +19,17 @@ class LinkResource(ModelResource):
         queryset = Resource.objects.filter(status=1)
         allowed_methods = ['get']
         resource_name = 'resource'
+        filtering = {
+            'thematic_area_id': 'exact',
+        }
         include_resource_uri = False
+
+    def build_filters(self, filters=None):
+        orm_filters = super(LinkResource, self).build_filters(filters)
+
+        if 'thematic_id' in filters:
+            orm_filters['thematics__thematic_area__exact'] = filters['thematic_area_id']
+        return orm_filters
 
     def prepend_urls(self):
         return [
