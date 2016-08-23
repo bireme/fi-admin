@@ -174,6 +174,7 @@ class TitleResource(CustomResource):
         # field tags 880 and 999
         if new_url:
             bundle.data['online'] = []
+            bundle.data['online_notes'] = []
 
             for index, data in enumerate(new_url):
                 text = data.issn_online if data.issn_online else ''
@@ -184,22 +185,23 @@ class TitleResource(CustomResource):
                 text += '^e'+data.initial_period if data.initial_period else ''
                 text += '^f'+data.final_period if data.final_period else ''
 
-                if data.notes:
-                    text += '^z'+str(index+1)
-                    bundle.data['online_notes'] = []
+                index = '^z'+str(index+1) if text else ''
 
+                if data.notes:
                     if isinstance(data.notes, basestring) and "\r\n" in data.notes:
                         lines = ''
                         for line in data.notes.split('\r\n'):
                             if line:
                                 lines += line + ' ' if line[-1] == '.' else line + '. '
                         if lines:
-                            bundle.data['online_notes'] += [lines+'^z'+str(index+1)]
+                            bundle.data['online_notes'] += [lines+index]
                             # text += '^g'+lines
                     else:
-                        bundle.data['online_notes'] += [data.notes+'^z'+str(index+1)]
+                        bundle.data['online_notes'] += [data.notes+index]
                         # text += '^g'+data.notes
+                else:
+                    bundle.data['online_notes'] += ['^xempty'+index]
 
-                bundle.data['online'] += [text]
+                bundle.data['online'] += [text+index] if text else ''
 
         return bundle
