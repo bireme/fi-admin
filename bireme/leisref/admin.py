@@ -41,8 +41,8 @@ class AttachmentAdmin(generic.GenericTabularInline):
 class ActAdmin(GenericAdmin):
     model = Act
     date_hierarchy = 'created_time'
-    list_display = ('id', 'title', 'created_by', 'status')
-    search_fields = ['id', 'title']
+    list_display = ('id', '__unicode__', 'created_by', 'status')
+    search_fields = ['id', '__unicode__']
     inlines = [ActRelationshipAdmin, AttachmentAdmin, DescriptorAdmin, KeywordAdmin,
                ThematicAreaAdmin, ]
 
