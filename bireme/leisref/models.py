@@ -290,6 +290,6 @@ class Act(Generic, AuditLog):
         if self.title:
             act_title = self.title
         else:
-            act_title = "%s nº %s, de %s" % (self.act_type, self.act_number, self.publication_date)
+            act_title = u"%s no %s, de %s" % (self.act_type, self.act_number, self.publication_date)
 
         return act_title
