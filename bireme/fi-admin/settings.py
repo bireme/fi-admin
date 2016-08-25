@@ -183,6 +183,7 @@ INSTALLED_APPS = (
     'help',
     'text_block',
     'database',
+    'leisref',
 
 )
 
