@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 
-from utils.models import Generic, Country
+from utils.models import Generic
 from main.choices import LANGUAGES_CHOICES
 from main.models import SourceLanguage
 from log.models import AuditLog
@@ -15,6 +15,46 @@ STATUS_CHOICES = (
     (3, _('Deleted')),
 )
 
+
+# ActCountryRegion
+class ActCountryRegion(Generic):
+
+    class Meta:
+        verbose_name = _("Act country/region")
+        verbose_name_plural = _("Act country/region")
+
+    name = models.CharField(_("Name"), max_length=255)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = ActCountryRegionLocal.objects.filter(act_source=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = ActCountryRegionLocal.objects.filter(act_region=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class ActCountryRegionLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    act_region = models.ForeignKey(ActCountryRegion)
+    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
+    name = models.CharField(_("name"), max_length=255)
+
+
 # ActType
 class ActType(Generic):
 
@@ -24,7 +64,7 @@ class ActType(Generic):
 
     name = models.CharField(_("Name"), max_length=255)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
-    scope_country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
@@ -64,7 +104,7 @@ class ActScope(Generic):
 
     name = models.CharField(_("Name"), max_length=255)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
-    scope_country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
@@ -104,7 +144,7 @@ class ActOrganIssuer(Generic):
 
     name = models.CharField(_("Name"), max_length=255)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
-    scope_country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
@@ -144,7 +184,7 @@ class ActSource(Generic):
 
     name = models.CharField(_("Name"), max_length=255)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
-    scope_country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
@@ -184,6 +224,9 @@ class ActRelationType(Generic):
 
     name = models.CharField(_("name"), max_length=155)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
+    label_present = models.CharField(_("Present tense form"), max_length=155)
+    label_past = models.CharField(_("Past form"), max_length=155)
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
@@ -231,8 +274,19 @@ class ActRelationship(Generic):
     act_type = models.ForeignKey(ActType, verbose_name=_("Act type"), blank=True, null=True)
     act_number = models.CharField(_("Act number"), max_length=125, blank=True)
     act_date = models.CharField(_("Date"), max_length=125, blank=True)
-    act_complement = models.CharField(_("Complement"), max_length=125, blank=True)
+    act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
 
+
+# ActURL
+class ActURL(Generic):
+
+    class Meta:
+        verbose_name = _("Act URL")
+        verbose_name_plural = _("Act URLs")
+
+    act_related = models.ForeignKey("leisref.Act")
+    url = models.URLField(_("URL"))
+    language = models.CharField(_("Language"), max_length=10, blank=True, choices=LANGUAGES_CHOICES)
 
 # ActReference
 class Act(Generic, AuditLog):
@@ -241,18 +295,18 @@ class Act(Generic, AuditLog):
         verbose_name_plural = _("Act references")
 
     status = models.SmallIntegerField(_("Status"), choices=STATUS_CHOICES, null=True, default=-1)
+    # tipo do ato
+    act_type = models.ForeignKey(ActType, verbose_name=_("Act type"))
     # número do ato
-    act_number = models.CharField(_("Act number"), max_length=125)
+    act_number = models.CharField(_("Act number"), max_length=125, blank=True)
     # título do ato
     title = models.CharField(_("Title"), max_length=255, blank=True)
-    # tipo do ato
-    act_type = models.ForeignKey(ActType, verbose_name=_("Act type"), blank=True, null=True)
     # denominação do ato
-    denomination = models.TextField(_("Denomination"), blank=True)
+    denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
+    # país/região do alcance do ato
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Act country/region"), blank=True, null=True)
     # alcance do ato
     scope = models.ForeignKey(ActScope, verbose_name=_("Act scope"), blank=True, null=True)
-    # país do alcance do ato
-    scope_country = models.ForeignKey(Country, verbose_name=_("Act scope country"), blank=True, null=True)
     # estado do alcance do ato
     scope_state = models.CharField(_("Act scope state"), max_length=125, blank=True)
     # cidade do alcance do ato
@@ -268,13 +322,15 @@ class Act(Generic, AuditLog):
     # paginação
     pages = models.CharField(_("Pages"), max_length=125, blank=True)
     # data de emissão
-    issue_date = models.CharField(_("Issue date"), max_length=125, blank=True)
+    issue_date = models.DateField(_("Issue date"), help_text='DD/MM/YYYY', blank=True)
     # data de publicação
-    publication_date = models.CharField(_("Publication date"), max_length=125, blank=True)
+    publication_date = models.DateField(_("Publication date"), help_text='DD/MM/YYYY', blank=True)
     # orgão emissor do ato
     organ_issuer = models.ForeignKey(ActOrganIssuer, verbose_name=_("Organ issuer"), blank=True, null=True)
     # idioma do ato
     language = models.ForeignKey(SourceLanguage, verbose_name=_("Language"), blank=True, null=True)
+    # data de vigência do ato
+    effectiveness_date = models.DateField(_("Effectiveness date"), help_text='DD/MM/YYYY', blank=True)
     # vigência do ato
     act_effectiveness = models.CharField(_("Act effectiveness"), max_length=255, blank=True)
     # ementa oficial
@@ -283,8 +339,12 @@ class Act(Generic, AuditLog):
     unofficial_ementa = models.TextField(_("Unofficial ementa"), blank=True)
     # observações
     notes = models.TextField(_("Notes"), blank=True)
-    # republicação do ato
-    republication = models.BooleanField(_('Republication'), default=False)
+    # instituição como tema
+    institution_as_subject = models.TextField(_("Institution as subject"), blank=True)
+    # descritores não autorizados
+    local_descriptors = models.TextField(_("Local descriptors"), blank=True)
+    # descritores não autorizados
+    local_geo_descriptors = models.TextField(_("Local geographic descriptors"), blank=True)
 
     def __unicode__(self):
         if self.title:

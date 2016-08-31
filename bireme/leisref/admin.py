@@ -14,12 +14,6 @@ class DescriptorAdmin(generic.GenericTabularInline):
     extra = 1
 
 
-class KeywordAdmin(generic.GenericTabularInline):
-    model = Keyword
-    exclude = ('status', 'user_recomendation')
-    extra = 1
-
-
 class ThematicAreaAdmin(generic.GenericTabularInline):
     model = ResourceThematic
     exclude = ('status',)
@@ -38,17 +32,22 @@ class AttachmentAdmin(generic.GenericTabularInline):
     extra = 1
 
 
+class ActURLAdmin(admin.TabularInline):
+    model = ActURL
+    extra = 1
+
+
 class ActAdmin(GenericAdmin):
     model = Act
     date_hierarchy = 'created_time'
     list_display = ('id', '__unicode__', 'created_by', 'status')
     search_fields = ['id', '__unicode__']
-    inlines = [ActRelationshipAdmin, AttachmentAdmin, DescriptorAdmin, KeywordAdmin,
-               ThematicAreaAdmin, ]
+    inlines = [ActRelationshipAdmin, ActURLAdmin, AttachmentAdmin, DescriptorAdmin, ThematicAreaAdmin, ]
 
 admin.site.register(Act, ActAdmin)
 admin.site.register(ActType)
 admin.site.register(ActScope)
+admin.site.register(ActCountryRegion)
 admin.site.register(ActOrganIssuer)
 admin.site.register(ActRelationType)
 admin.site.register(ActSource)
