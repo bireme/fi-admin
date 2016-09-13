@@ -9,7 +9,6 @@ from log.models import AuditLog
 
 STATUS_CHOICES = (
     (-1, _('Draft')),
-    (0, _('Inprocess')),
     (1, _('Published')),
     (2, _('Refused')),
     (3, _('Deleted')),
@@ -322,15 +321,15 @@ class Act(Generic, AuditLog):
     # paginação
     pages = models.CharField(_("Pages"), max_length=125, blank=True)
     # data de emissão
-    issue_date = models.DateField(_("Issue date"), help_text='DD/MM/YYYY', blank=True)
+    issue_date = models.DateField(_("Issue date"), help_text='DD/MM/YYYY', blank=True, null=True)
     # data de publicação
-    publication_date = models.DateField(_("Publication date"), help_text='DD/MM/YYYY', blank=True)
+    publication_date = models.DateField(_("Publication date"), help_text='DD/MM/YYYY', blank=True, null=True)
     # orgão emissor do ato
     organ_issuer = models.ForeignKey(ActOrganIssuer, verbose_name=_("Organ issuer"), blank=True, null=True)
     # idioma do ato
     language = models.ForeignKey(SourceLanguage, verbose_name=_("Language"), blank=True, null=True)
     # data de vigência do ato
-    effectiveness_date = models.DateField(_("Effectiveness date"), help_text='DD/MM/YYYY', blank=True)
+    effectiveness_date = models.DateField(_("Effectiveness date"), help_text='DD/MM/YYYY', blank=True, null=True)
     # vigência do ato
     act_effectiveness = models.CharField(_("Act effectiveness"), max_length=255, blank=True)
     # ementa oficial
@@ -350,6 +349,6 @@ class Act(Generic, AuditLog):
         if self.title:
             act_title = self.title
         else:
-            act_title = u"%s no %s, de %s" % (self.act_type, self.act_number, self.publication_date)
+            act_title = u"%s %s, de %s" % (self.act_type, self.act_number, self.publication_date)
 
         return act_title

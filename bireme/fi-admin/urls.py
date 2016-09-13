@@ -99,6 +99,9 @@ urlpatterns = patterns('',
     # Bibliographic Records
     (r'^bibliographic/', include('biblioref.urls')),
 
+    # Bibliographic Records
+    (r'^legislation/', include('leisref.urls')),
+
     # Reports
     (r'^reports/', include('reports.urls')),
 

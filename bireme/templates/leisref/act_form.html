@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Edit Legislation" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'list_legislation' %}">{% trans "Legislation" %}</a> <span class="divider">/</span></li>
+    {% if not object %}<li>{% trans "New Legislation" %}</li>
+    {% else %}<li>{% trans "Edit Legislation" %}</li>{% endif %}
+{% endblock %}
+
+{% block content %}
+
+
+<div class='header'>
+    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Legislation" %}{% else %}{% trans "Edit Legislation" %}{% endif %}</h2>
+</div>
+
+<div class='body'>
+
+    {% if form.errors %}
+        <ul class="errorlist alert alert-error">
+            <li>{% trans "Please check required fields" %}</li>
+        </ul>
+    {% endif %}
+    {% if valid_for_publication != None and not valid_for_publication %}
+        <ul class="errorlist alert alert-error">
+            <li>{% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}</li>
+        </ul>
+    {% endif %}
+    {{ formset_descriptor.non_form_errors }}
+    {{ formset_thematic.non_form_errors }}
+
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
+        <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
+        <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
+    </ul>
+
+    <form method="POST" class="media-form">
+        {% csrf_token %}
+
+        <div class="tab-content">
+            <div id="tab-data" class="tab-pane active">
+                    {% if role == 'doc' and not user_data.is_owner and act %}
+                        <div class="well">
+                            <blockquote>
+                                <p><strong>{% trans 'Identifier' %}</strong><p>
+                                <p>{{ act.id }}</p>
+                            </blockquote>
+
+                            {% for field in form %}
+                                {{ field.as_hidden }}
+                                {{ field.errors }}
+                                <blockquote>
+                                    <p><strong>{{ field.label }}</strong><p>
+                                    {% if field.name = 'status' %}
+                                        <p>{{ act.get_status_display }}</p>
+                                    {% else %}
+                                        <p>{{ field.value|linebreaks }}<p>
+                                    {% endif %}
+                                </blockquote>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+
+                        <fieldset id="metadata">
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            {{ form.non_field_errors }}
+                            {% for field in form.visible_fields %}
+                                    <label for="{{ field.auto_id }}">
+                                        {% if field.field.required %}
+                                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                        {% else %}
+                                            {{ field.label }}
+                                        {% endif %}
+                                    </label>
+                                    <p class="muted">{{ field.help_text }}</p>
+                                    {{ field.errors }}
+                                    {{ field }}
+                            {% endfor %}
+                        </fieldset>
+                    {% endif %}
+
+                    {% comment %}Display administrative information{% endcomment %}
+
+                    {% if media.id %}
+                        <div class="alert alert-info">
+                            <p>{% trans "Act created in" %}: <strong>{{ act.created_time }}</strong> {% trans "by user" %}  <strong>{{ media.created_by.username }}</strong></p>
+                            <p>{% trans "Cooperative center code" %}: <strong>{{ act.cooperative_center_code }}</strong></p>
+                            {% if media.updated_by %}
+                                <p>{% trans "Last edit in" %} <strong>{{ act.updated_time }}</strong> {% trans "by user" %}  <strong>{{ media.updated_by.username }}</strong></p>
+                            {% endif %}
+                        </div>
+
+                    {% endif %}
+            </div>
+
+            <div id='tab-descriptors' class="tab-pane">
+                <fieldset id="descriptors" class="row">
+                    <table class="table table-condensed table-striped span8">
+                        <thead>
+                            <th>{% trans "Descriptors" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Delete?" %}</th>
+                        </thead>
+                        <tbody>
+
+                        {% if descriptor_list %}
+                            {% for descriptor in descriptor_list %}
+                                <tr>
+                                    <td>{{ descriptor.text }}</td>
+                                    <td>
+                                        {% if descriptor.status == 0 %}
+                                            <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
+                                        {% elif descriptor.status == 1 %}
+                                            <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
+                                        {% elif descriptor.status == 2 %}
+                                            <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
+                                        {% elif descriptor.status == 3 %}
+                                            <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
+                                        {% endif %}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ formset_descriptor.management_form }}
+
+                        {% for form in formset_descriptor %}
+                            <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                {% for field in form.visible_fields %}
+                                    {% if field.name == 'status' %}
+                                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="1" class="keep-field-value" />
+                                    {% elif field.name == 'code' %}
+                                        {{ field.as_hidden }}
+                                    {% elif field.name == 'text' %}
+                                        <td class="span9">
+                                            {{ field.as_hidden }}
+                                            <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:decs_search(this)">
+                                                {% spaceless %}
+                                                {% if field.value == None or field.value == '' %}
+                                                    {% trans "Select by search" %}
+                                                {% else %}
+                                                    {{ field.value}}
+                                                {% endif %}
+                                                {% endspaceless %}
+                                            </div>
+                                        </td>
+                                    {% elif field.name != 'DELETE' %}
+                                        <td class="span6">
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td class="span6">
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+
+            </div>
+
+
+            <!-- FULLTEXT FORMSET -->
+            {% include "leisref/fieldset_fulltext.html" %}
+
+            <div id='tab-thematic' class="tab-pane">
+                <fieldset id="thematic">
+                    <table class="table table-condensed table-striped span8">
+                        <thead>
+                            <th>{% trans "Thematic area" %}</th>
+                            <th>{% trans "Delete?" %}</th>
+                        </thead>
+                        <tbody>
+                        {% if thematic_list %}
+                            {% for thematic in thematic_list %}
+                                <tr>
+                                    <td colspan="3">{{ thematic }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ formset_thematic.management_form }}
+
+                        {% for form in formset_thematic %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for field in form.visible_fields %}
+                                    {% if role == 'doc' and field.name == 'status' %}
+                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                    {% elif field.name != 'DELETE' %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="control-panel form-submit">
+            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+
+   <script type="text/javascript">
+        var decs_field;
+
+        $(function() {
+            $('.descriptor-row').formset({
+                    addText : '{% trans "Add descriptor" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'descriptor_formset',
+                    prefix: '{{ formset_descriptor.prefix }}'
+            });
+
+            $('.keyword-row').formset({
+                    addText : '{% trans "Add keyword" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'keyword_formset',
+                    prefix: '{{ formset_keyword.prefix }}'
+            });
+
+            $('.thematic-row').formset({
+                    addText : '{% trans "Add thematic area" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'thematic_formset',
+                    prefix: '{{ formset_thematic.prefix }}'
+            });
+
+            var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+            var eventer = window[eventMethod];
+            var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+
+            // Listen to message from child window
+            eventer(messageEvent,function(e) {
+                var decs_data = e.data;
+                var pipe_pos = decs_data.lastIndexOf('|');
+                var decs_text = decs_data.substring(0, pipe_pos);
+                var decs_code = decs_data.substring(pipe_pos+1);
+
+                var decs_row = decs_field.replace( /[A-Za-z_$-]/g, '');
+                // set code, text and label for the new descriptor
+                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
+                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);
+                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(decs_text);
+                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
+
+            },false);
+
+            $(document).on("click", "a.add_error_report", function(){
+                $("#error_report_modal").modal("show");
+            });
+
+            // Prevent losing data by navigating away from the page
+            $(window).bind('beforeunload', function() {
+                var checkboxcount = $("input:checkbox:checked").length;
+                if(checkboxcount > 0) {
+                    return 'Are you sure?';
+                }
+            });
+
+        })
+
+        function media_collection_list(obj){
+            var row = $(obj).parent();
+            collection_field = row.find('input').attr('name');
+            collection_win = window.open('{% url "list_mediacollections" %}', 'media_collection_list', 'scrollbars=1,width=785,height=590');
+        }
+
+        function dismissRelatedLookupPopup(chosenId, chosenLabel) {
+            $('#id_media_collection').val(chosenId);
+            $('#label_media_collection').text(chosenLabel);
+            collection_win.close();
+        }
+
+        function decs_search(obj){
+            var row = $(obj).parent();
+            decs_field = row.find('input').attr('name');
+            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
+        }
+
+
+   </script>
+{% endblock %}
