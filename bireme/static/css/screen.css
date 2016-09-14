@@ -545,3 +545,7 @@ div.onlineresource div.check {
     background-color: #b2eadc;
     color: #3e4241;
 }
+
+tr.relation-row td input, tr.relation-row td select{
+    width: 160px;
+}

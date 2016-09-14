@@ -34,7 +34,7 @@
                     <tr id="relation-{{ forloop.counter0 }}" class="relation-row{% if form.errors %} error{% endif %} formset-row">
                         {% for field in form.visible_fields %}
                             {% if field.name != 'DELETE' %}
-                                <td>
+                                <td class="{{field.name}}">
                                     {{ field }}
                                     {{ field.errors }}
                                 </td>

@@ -186,6 +186,7 @@ class LeisRefUpdate(LoginRequiredView):
 
         context['settings'] = settings
         context['help_fields'] = get_help_fields('leisref')
+        context['indexing_fields'] = ['local_descriptors', 'local_geo_descriptors', 'institution_as_subject']
 
         if self.object:
             c_type = ContentType.objects.get_for_model(self.get_object())
