@@ -36,6 +36,7 @@
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
         <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-relationship" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Relationship" %}{% if formset_relation.errors and not formset_relation.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
     </ul>
 
@@ -174,9 +175,12 @@
 
             </div>
 
-
             <!-- FULLTEXT FORMSET -->
             {% include "leisref/fieldset_fulltext.html" %}
+
+            <!-- RELATIONSHIP FORMSET -->
+            {% include "leisref/fieldset_relationship.html" %}
+
 
             <div id='tab-thematic' class="tab-pane">
                 <fieldset id="thematic">
@@ -248,14 +252,34 @@
                     prefix: '{{ formset_descriptor.prefix }}'
             });
 
-            $('.keyword-row').formset({
-                    addText : '{% trans "Add keyword" %}',
+            $('.url-row').formset({
+                    addText : '{% trans "Add URL" %}',
                     deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
-                    formCssClass: 'keyword_formset',
-                    prefix: '{{ formset_keyword.prefix }}'
+                    formCssClass: 'url_formset',
+                    prefix: '{{ formset_url.prefix }}'
+            });
+
+            $('.attachment-row').formset({
+                    addText : '{% trans "Add File" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'attachment_formset',
+                    prefix: '{{ formset_attachment.prefix }}'
+            });
+
+            $('.relation-row').formset({
+                    addText : '{% trans "Add Relationship" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'relation_formset',
+                    prefix: '{{ formset_relation.prefix }}'
             });
 
             $('.thematic-row').formset({

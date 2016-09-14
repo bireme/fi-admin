@@ -74,6 +74,9 @@ AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentFor
 
 URLFormSet = inlineformset_factory(Act, ActURL, fields='__all__', can_delete=True, extra=1)
 
+RelationFormSet = inlineformset_factory(Act, ActRelationship, fields='__all__', fk_name='act_related',
+                                        can_delete=True, extra=1)
+
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
                                                         formset=ResourceThematicRequired,
                                                         exclude=('status',), can_delete=True, extra=1)

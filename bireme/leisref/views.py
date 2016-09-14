@@ -101,6 +101,7 @@ class LeisRefUpdate(LoginRequiredView):
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
         formset_url = URLFormSet(self.request.POST, instance=self.object)
         formset_attachment = AttachmentFormSet(self.request.POST, self.request.FILES, instance=self.object)
+        formset_relation = RelationFormSet(self.request.POST, instance=self.object)
         formset_thematic = ResourceThematicFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
@@ -109,6 +110,7 @@ class LeisRefUpdate(LoginRequiredView):
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_attachment_valid = formset_attachment.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
+        formset_relation_valid = formset_relation.is_valid()
         formset_url_valid = formset_url.is_valid()
 
         user_data = additional_user_info(self.request)
@@ -117,7 +119,7 @@ class LeisRefUpdate(LoginRequiredView):
                                                          [formset_descriptor, formset_thematic])
 
         if (form_valid and formset_descriptor_valid and formset_url_valid and formset_thematic_valid and
-           valid_for_publication):
+           formset_relation_valid and valid_for_publication):
 
                 self.object = form.save()
 
@@ -129,6 +131,9 @@ class LeisRefUpdate(LoginRequiredView):
 
                 formset_url.instance = self.object
                 formset_url.save()
+
+                formset_relation.instance = self.object
+                formset_relation.save()
 
                 formset_thematic.instance = self.object
                 formset_thematic.save()
@@ -143,6 +148,7 @@ class LeisRefUpdate(LoginRequiredView):
                                                  formset_descriptor=formset_descriptor,
                                                  formset_attachment=formset_attachment,
                                                  formset_url=formset_url,
+                                                 formset_relation=formset_relation,
                                                  formset_thematic=formset_thematic,
                                                  valid_for_publication=valid_for_publication))
 
@@ -189,6 +195,7 @@ class LeisRefUpdate(LoginRequiredView):
             context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
             context['formset_attachment'] = AttachmentFormSet(instance=self.object)
             context['formset_url'] = URLFormSet(instance=self.object)
+            context['formset_relation'] = RelationFormSet(instance=self.object)
             context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
 
         return context
