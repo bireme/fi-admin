@@ -6,6 +6,7 @@ from utils.models import Generic
 from main.choices import LANGUAGES_CHOICES
 from main.models import SourceLanguage
 from log.models import AuditLog
+from django.template.defaultfilters import date as _date
 
 STATUS_CHOICES = (
     (-1, _('Draft')),
@@ -271,8 +272,9 @@ class ActRelationship(Generic):
     act = models.ForeignKey("leisref.Act", verbose_name=_("Act related"), blank=True, null=True)
     # fields for manual act information
     act_type = models.ForeignKey(ActType, verbose_name=_("Act type"), blank=True, null=True)
-    act_number = models.CharField(_("Act number"), max_length=125, blank=True)
-    act_date = models.CharField(_("Date"), max_length=125, blank=True)
+    act_number = models.PositiveIntegerField(_("Act number"), blank=True)
+    denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
+    issue_date = models.DateField(_("Issue date"), help_text='DD/MM/YYYY', blank=True, null=True)
     act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
 
 
@@ -297,7 +299,7 @@ class Act(Generic, AuditLog):
     # tipo do ato
     act_type = models.ForeignKey(ActType, verbose_name=_("Act type"))
     # número do ato
-    act_number = models.CharField(_("Act number"), max_length=125, blank=True)
+    act_number = models.PositiveIntegerField(_("Act number"), blank=True)
     # título do ato
     title = models.CharField(_("Title"), max_length=255, blank=True)
     # denominação do ato
@@ -349,6 +351,10 @@ class Act(Generic, AuditLog):
         if self.title:
             act_title = self.title
         else:
-            act_title = u"%s %s, de %s" % (self.act_type, self.act_number, self.publication_date)
+            if self.issue_date:
+                act_date = _date(self.issue_date, "d \d\e F \d\e Y")
+                act_title = "{0} {1:d}, de {2}".format(self.act_type, self.act_number, act_date)
+            else:
+                act_title = "{0} {1:d}".format(self.act_type, self.act_number)
 
         return act_title
