@@ -25,14 +25,4 @@ class Migration(migrations.Migration):
             name='issue_date',
             field=models.DateField(help_text=b'DD/MM/YYYY', null=True, verbose_name='Issue date', blank=True),
         ),
-        migrations.AlterField(
-            model_name='act',
-            name='act_number',
-            field=models.PositiveIntegerField(verbose_name='Act number', blank=True),
-        ),
-        migrations.AlterField(
-            model_name='actrelationship',
-            name='act_number',
-            field=models.PositiveIntegerField(verbose_name='Act number', blank=True),
-        ),
     ]

@@ -272,7 +272,7 @@ class ActRelationship(Generic):
     act = models.ForeignKey("leisref.Act", verbose_name=_("Act related"), blank=True, null=True)
     # fields for manual act information
     act_type = models.ForeignKey(ActType, verbose_name=_("Act type"), blank=True, null=True)
-    act_number = models.PositiveIntegerField(_("Act number"), blank=True)
+    act_number = models.CharField(_("Act number"), max_length=125, blank=True)
     denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
     issue_date = models.DateField(_("Issue date"), help_text='DD/MM/YYYY', blank=True, null=True)
     act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
@@ -301,7 +301,7 @@ class Act(Generic, AuditLog):
     # país/região do alcance do ato
     scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Act country/region"), blank=True, null=True)
     # número do ato
-    act_number = models.PositiveIntegerField(_("Act number"), blank=True)
+    act_number = models.CharField(_("Act number"), max_length=125, blank=True)
     # título do ato
     title = models.CharField(_("Title"), max_length=255, blank=True)
     # denominação do ato
@@ -353,8 +353,8 @@ class Act(Generic, AuditLog):
         else:
             if self.issue_date:
                 act_date = _date(self.issue_date, "d \d\e F \d\e Y")
-                act_title = "{0} {1:d}, de {2}".format(self.act_type, self.act_number, act_date)
+                act_title = "{0} {1}, de {2}".format(self.act_type, self.act_number, act_date)
             else:
-                act_title = "{0} {1:d}".format(self.act_type, self.act_number)
+                act_title = "{0} {1}".format(self.act_type, self.act_number)
 
         return act_title
