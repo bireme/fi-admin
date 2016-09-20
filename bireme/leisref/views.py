@@ -244,10 +244,20 @@ class ActDeleteView(LoginRequiredView, DeleteView):
         return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
 
 
-def get_class(kls):
-    parts = kls.split('.')
-    module = ".".join(parts[:-1])
-    m = __import__(module)
-    for comp in parts[1:]:
-        m = getattr(m, comp)
-    return m
+def context_lists(request, region_id):
+    """
+    Receive source and field name and display help text
+    """
+
+    scope_list = [dict({'value': s.id, 'name': unicode(s)}) for s in ActScope.objects.filter(scope_region=region_id)]
+    scope_list = dict({'scope_list': scope_list})
+    source_list = [dict({'value': s.id, 'name': unicode(s)}) for s in ActSource.objects.filter(scope_region=region_id)]
+    source_list = dict({'source_list': source_list})
+    organ_issuer_list = [dict({'value': s.id, 'name': unicode(s)}) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
+    organ_issuer_list = dict({'organ_issuer_list': organ_issuer_list})
+
+    context_lists = dict(scope_list.items() + source_list.items() + organ_issuer_list.items())
+
+    data = simplejson.dumps(context_lists)
+
+    return HttpResponse(data, content_type='application/json')

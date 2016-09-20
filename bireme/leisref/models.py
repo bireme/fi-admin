@@ -298,14 +298,14 @@ class Act(Generic, AuditLog):
     status = models.SmallIntegerField(_("Status"), choices=STATUS_CHOICES, null=True, default=-1)
     # tipo do ato
     act_type = models.ForeignKey(ActType, verbose_name=_("Act type"))
+    # país/região do alcance do ato
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Act country/region"), blank=True, null=True)
     # número do ato
     act_number = models.PositiveIntegerField(_("Act number"), blank=True)
     # título do ato
     title = models.CharField(_("Title"), max_length=255, blank=True)
     # denominação do ato
     denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
-    # país/região do alcance do ato
-    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Act country/region"), blank=True, null=True)
     # alcance do ato
     scope = models.ForeignKey(ActScope, verbose_name=_("Act scope"), blank=True, null=True)
     # estado do alcance do ato

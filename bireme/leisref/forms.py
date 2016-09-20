@@ -28,6 +28,19 @@ class ActForm(forms.ModelForm):
 
         super(ActForm, self).__init__(*args, **kwargs)
 
+        # context options lists based on act scope region
+        if self.instance and self.instance.scope_region:
+            region_id = self.instance.scope_region
+            first_option = [('', '----------')]
+            self.fields['scope'].choices = first_option + [(s.id, unicode(s)) for s in ActScope.objects.filter(scope_region=region_id)]
+            self.fields['source_name'].choices = first_option + [(s.id, unicode(s)) for s in ActSource.objects.filter(scope_region=region_id)]
+            self.fields['organ_issuer'].choices = first_option + [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
+        else:
+            empty_list = [('', '')]
+            self.fields['scope'].choices = empty_list
+            self.fields['source_name'].choices = empty_list
+            self.fields['organ_issuer'].choices = empty_list
+
         if self.user_data['service_role'].get('LeisRef') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 

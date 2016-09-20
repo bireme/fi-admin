@@ -344,18 +344,31 @@
                 }
             });
 
+            $("#id_scope_region").change(function(){
+                region_id = $(this).find("option:selected").val();
+
+                $.ajax({
+                  method: "get",
+                  url: "/legislation/context-lists/" + region_id,
+                  dataType: "json",
+                  success: function(result){
+                      replace_list_options('id_scope', result.scope_list);
+                      replace_list_options('id_source_name', result.source_list);
+                      replace_list_options('id_organ_issuer', result.organ_issuer_list);
+                  }
+               });
+            });
         })
 
-        function media_collection_list(obj){
-            var row = $(obj).parent();
-            collection_field = row.find('input').attr('name');
-            collection_win = window.open('{% url "list_mediacollections" %}', 'media_collection_list', 'scrollbars=1,width=785,height=590');
-        }
-
-        function dismissRelatedLookupPopup(chosenId, chosenLabel) {
-            $('#id_media_collection').val(chosenId);
-            $('#label_media_collection').text(chosenLabel);
-            collection_win.close();
+        function replace_list_options(list_id, option_list){
+            list_selector = '#' + list_id
+            $(list_selector + ' option').remove();
+            $('<option>').val('').text('----------').appendTo(list_selector);
+            for (o = 0; o < option_list.length; o++){
+                option = option_list[o];
+                console.log(option.value + ": " + option.name);
+                $('<option>').val(option.value).text(option.name).appendTo(list_selector);
+            }
         }
 
         function decs_search(obj){
