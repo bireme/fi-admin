@@ -273,8 +273,8 @@ class ActRelationship(Generic):
     # fields for manual act information
     act_type = models.ForeignKey(ActType, verbose_name=_("Act type"), blank=True, null=True)
     act_number = models.CharField(_("Act number"), max_length=125, blank=True)
-    denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
     issue_date = models.DateField(_("Issue date"), help_text='DD/MM/YYYY', blank=True, null=True)
+    denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
     act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
 
 

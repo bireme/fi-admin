@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block top %}{% endblock %}
+
+{% block title %}{% trans "Legislation" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+<div class="row">
+    <div class="span8">
+        <div class="input-append">
+            <strong>Search for Tipo {{ param_type }}, número {{ param_number }} e data de emissão {{ param_date }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class='body'>
+
+    {% if act_list|length > 0 %}
+        <h4>{% trans "Select the legislation" %}</h4>
+        <table class='table'>
+            <thead>
+                <th><a href="javascript:orderby('name');" id="id_title">{% trans "Name" %}</a></th>
+            </thead>
+            <tbody>
+                {% for act in act_list %}
+                    <tr>
+                        <td><a href="#" onclick="opener.dismissRelatedLookupPopup('{{ act.id }}', '{{ act }}' ); return false;">{{ act }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include "pagination_generic.html" %}
+    {% else %}
+        <div class="alert alert-info">
+            {% trans "No legislation was found with this criteria" %}
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}

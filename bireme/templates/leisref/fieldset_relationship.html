@@ -9,18 +9,7 @@
     {% endfor %}
 
     <fieldset id="url">
-        <table class="table table-condensed table-striped span8">
-            <thead>
-                <th>{% trans "Relation type" %}</th>
-                <th>{% trans "Act related" %}</th>
-                <th>{% trans "Act type" %}</th>
-                <th>{% trans "Act number" %}</th>
-                <th>{% trans "Publication date" %}</th>
-                <th>{% trans "Apparatus" %}</th>
-                {% if user_can_edit %}
-                    <th>{% trans "Delete?" %}</th>
-                {% endif %}
-            </thead>
+        <table class="table table-condensed table-striped span10">
             <tbody>
 
             {% if user_can_edit %}
@@ -31,19 +20,46 @@
                     {% for hidden in form.hidden_fields %}
                         {{ hidden }}
                     {% endfor %}
+
                     <tr id="relation-{{ forloop.counter0 }}" class="relation-row{% if form.errors %} error{% endif %} formset-row">
-                        {% for field in form.visible_fields %}
-                            {% if field.name != 'DELETE' %}
-                                <td class="{{field.name}}">
-                                    {{ field }}
-                                    {{ field.errors }}
-                                </td>
-                            {% endif %}
-                        {% endfor %}
+
                         <td>
-                            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                            <div class="row-fluid">
+                                <div class="span3">
+                                    {% trans "Relation type" %}
+                                    {{ form.relation_type }}
+                                </div>
+                                <div class="span3">
+                                    {% trans "Act type" %}
+                                    {{ form.act_type }}
+                                </div>
+                                <div class="span3">
+                                    {% trans "Act number" %}
+                                    {{ form.act_number }}
+                                </div>
+                                <div class="span3">
+                                    {% trans "Issue date" %}
+                                    {{ form.issue_date }}
+                                    <a href="#" onclick="javascript:act_list('{{ forloop.counter0 }}')" style="margin-bottom:10px"><i class="icon-search"></i></a>
+                                </div>
+                            </div>
+                            <div class="hidden">
+                                <div class="row-fluid">
+                                    <div class="span3">
+                                        {% trans "Denomination" %}
+                                        {{ form.denomination }}
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span2">
+                                        {% trans "Apparatus" %}
+                                        {{ form.act_apparatus }}
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
+
                 {% endfor %}
             {% else %}
                 {% for form in formset_relation %}

@@ -378,5 +378,18 @@
         }
 
 
+        function act_list(set_id){
+            var type = $('#id_act_related-' + set_id + '-act_type').find("option:selected").val();
+            var number = $('#id_act_related-' + set_id + '-act_number').val();
+            var date = $('#id_act_related-' + set_id + '-issue_date').val();
+
+            if (type == '' || number == '' || date == ''){
+                alert("{% trans 'Please inform act type, number and issue date' %}");
+                return false;
+            }
+
+            act_win = window.open('{% url "list_acts" %}?type=' + type +'&number=' + number + '&date=' + date, 'act_list', 'scrollbars=1,width=785,height=590');
+        }
+
    </script>
 {% endblock %}

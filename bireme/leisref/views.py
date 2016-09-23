@@ -15,6 +15,7 @@ from attachments.models import Attachment
 from main.models import Descriptor
 from help.models import get_help_fields
 from utils.views import LoginRequiredView
+from datetime import datetime
 from forms import *
 
 import json
@@ -83,9 +84,42 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
 
 class LeisRefListView(LeisRefGenericListView, ListView):
     """
-    Extend BiblioRefGenericListView to list bibliographic records
+    Extend BiblioRefGenericListView to list legislation records
     """
     model = Act
+
+
+class LeisRefActListView(ListView):
+    """
+    List legislation records (used by relationship popup selection window)
+    """
+    model = Act
+    template_name = "leisref/act_list_popup.html"
+    paginate_by = settings.ITEMS_PER_PAGE
+    context_object_name = "act_list"
+
+    def get_queryset(self):
+
+        param_type = self.request.GET.get('type')
+        param_date = self.request.GET.get('date')
+        param_number = self.request.GET.get('number')
+        # convert to datetime (YEAR, MONTH, DAY)
+        param_date_p = param_date.split('/')
+        param_date = datetime(int(param_date_p[2]), int(param_date_p[1]), int(param_date_p[0]))
+
+        object_list = self.model.objects.filter(act_type=param_type, act_number=param_number, issue_date=param_date)
+
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super(LeisRefActListView, self).get_context_data(**kwargs)
+
+        param_type = self.request.GET.get('type')
+        context['param_type'] = ActType.objects.get(pk=param_type)
+        context['param_date'] = self.request.GET.get('date')
+        context['param_number'] = self.request.GET.get('number')
+
+        return context
 
 
 class LeisRefUpdate(LoginRequiredView):
