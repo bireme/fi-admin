@@ -2,6 +2,10 @@
 {% load i18n %}
 {% load static %}
 
+{% block extrahead %}
+<link href="{% static "css/bootstrap-datepicker.min.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}{% trans "Edit Legislation" %}{% endblock %}
 
 {% block breadcrumb %}
@@ -16,6 +20,7 @@
 <div class='header'>
     <h2><i class='icon-file'></i>{% if not object %}{% trans "New Legislation" %}{% else %}{% trans "Edit Legislation" %}{% endif %}</h2>
 </div>
+
 
 <div class='body'>
 
@@ -256,6 +261,10 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   {% if LANGUAGE_CODE != 'en' %}
+       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
+   {% endif %}
 
    <script type="text/javascript">
         var decs_field;
@@ -390,6 +399,11 @@
 
             act_win = window.open('{% url "list_acts" %}?type=' + type +'&number=' + number + '&date=' + date, 'act_list', 'scrollbars=1,width=785,height=590');
         }
+
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            language: '{{LANGUAGE_CODE}}'
+        });
 
    </script>
 {% endblock %}

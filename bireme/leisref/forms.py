@@ -22,6 +22,11 @@ class ActForm(forms.ModelForm):
         exclude = ('cooperative_center_code',)
         fields = '__all__'
 
+    issue_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                                 input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
+    publication_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                                       input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         self.user_data = kwargs.pop('user_data', None)
@@ -40,6 +45,9 @@ class ActForm(forms.ModelForm):
             self.fields['scope'].choices = empty_list
             self.fields['source_name'].choices = empty_list
             self.fields['organ_issuer'].choices = empty_list
+
+        self.fields['issue_date'].widget.attrs['class'] = 'datepicker'
+        self.fields['publication_date'].widget.attrs['class'] = 'datepicker'
 
         if self.user_data['service_role'].get('LeisRef') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
