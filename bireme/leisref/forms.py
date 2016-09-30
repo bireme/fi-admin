@@ -86,6 +86,16 @@ class AttachmentForm(forms.ModelForm):
     attachment_file = forms.FileField(widget=widgets.FileInput)
 
 
+class ActRelatedForm(forms.ModelForm):
+
+    class Meta:
+        model = Act
+        fields = ('status', 'scope_region', 'act_type', 'act_number', 'denomination', 'issue_date')
+
+    issue_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
+                                 input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
+
+
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,
                                                   exclude=('status',), can_delete=True, extra=1)

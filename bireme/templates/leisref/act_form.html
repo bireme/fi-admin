@@ -361,6 +361,7 @@
                   url: "/legislation/context-lists/" + region_id,
                   dataType: "json",
                   success: function(result){
+                      replace_list_options('id_act_type', result.type_list);
                       replace_list_options('id_scope', result.scope_list);
                       replace_list_options('id_source_name', result.source_list);
                       replace_list_options('id_organ_issuer', result.organ_issuer_list);
@@ -386,18 +387,21 @@
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
         }
 
+        function dismissRelatedLookupPopup(chosenId, chosenLabel) {
+            // set code, text and label for the new descriptor
+            $('#label_act_related-' + act_related_row_id + '-act').html(chosenLabel);
+            $('#label_act_related-' + act_related_row_id + '-act').removeClass("placeholder-style");
 
-        function act_list(set_id){
-            var type = $('#id_act_related-' + set_id + '-act_type').find("option:selected").val();
-            var number = $('#id_act_related-' + set_id + '-act_number').val();
-            var date = $('#id_act_related-' + set_id + '-issue_date').val();
+            act_win.close();
+        }
 
-            if (type == '' || number == '' || date == ''){
-                alert("{% trans 'Please inform act type, number and issue date' %}");
-                return false;
-            }
+        function act_related(obj){
+            var row = $(obj).parent();
+            this_name = row.find('input').attr('name');
+            act_related_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
 
-            act_win = window.open('{% url "list_acts" %}?type=' + type +'&number=' + number + '&date=' + date, 'act_list', 'scrollbars=1,width=785,height=590');
+            region_id = $('#id_scope_region').find("option:selected").val();
+            act_win = window.open('{% url "act_related" %}?region=' + region_id, 'act_related', 'scrollbars=1,width=785,height=590');
         }
 
         $('.datepicker').datepicker({

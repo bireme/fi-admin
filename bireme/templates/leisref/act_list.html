@@ -125,7 +125,7 @@
                         <tr>
                             <td><a href="{% url 'edit_legislation' act.id %}">{{ act.id }}</a></td>
                             <td><span title="{{ act }}">{{ act|slice:"50" }}{% if act.title|length > 50 %}...{% endif %}</span></td>
-                            <td>{{ act.status|display_status_label }}</a></td>
+                            <td>{{ act.status_label }}</a></td>
                             <td>
                                 <a href="{% url 'edit_legislation' act.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                                 {% if act.created_by_id = user.id %}

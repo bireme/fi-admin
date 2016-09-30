@@ -9,6 +9,7 @@ from log.models import AuditLog
 from django.template.defaultfilters import date as _date
 
 STATUS_CHOICES = (
+    (-2, _('Related')),
     (-1, _('Draft')),
     (1, _('Published')),
     (2, _('Refused')),
@@ -270,11 +271,6 @@ class ActRelationship(Generic):
     relation_type = models.ForeignKey(ActRelationType, blank=False)
     # field to inform a act already present in database
     act = models.ForeignKey("leisref.Act", verbose_name=_("Act related"), blank=True, null=True)
-    # fields for manual act information
-    act_type = models.ForeignKey(ActType, verbose_name=_("Act type"), blank=True, null=True)
-    act_number = models.CharField(_("Act number"), max_length=125, blank=True)
-    issue_date = models.DateField(_("Issue date"), help_text='DD/MM/YYYY', blank=True, null=True)
-    denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
     act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
 
 
@@ -296,10 +292,10 @@ class Act(Generic, AuditLog):
         verbose_name_plural = _("Act references")
 
     status = models.SmallIntegerField(_("Status"), choices=STATUS_CHOICES, null=True, default=-1)
+    # país/região do alcance do ato
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Act country/region"))
     # tipo do ato
     act_type = models.ForeignKey(ActType, verbose_name=_("Act type"))
-    # país/região do alcance do ato
-    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Act country/region"), blank=True, null=True)
     # número do ato
     act_number = models.CharField(_("Act number"), max_length=125, blank=True)
     # título do ato
@@ -346,6 +342,10 @@ class Act(Generic, AuditLog):
     local_descriptors = models.TextField(_("Local descriptors"), blank=True)
     # descritores não autorizados
     local_geo_descriptors = models.TextField(_("Local geographic descriptors"), blank=True)
+
+    def status_label(self):
+        status_dict = dict(STATUS_CHOICES)
+        return status_dict.get(self.status)
 
     def __unicode__(self):
         if self.title:

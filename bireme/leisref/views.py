@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
+from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
 
@@ -94,30 +95,38 @@ class LeisRefActListView(ListView):
     List legislation records (used by relationship popup selection window)
     """
     model = Act
-    template_name = "leisref/act_list_popup.html"
-    paginate_by = settings.ITEMS_PER_PAGE
+    template_name = "leisref/act_related.html"
+    paginate_by = 10
     context_object_name = "act_list"
 
     def get_queryset(self):
 
+        param_region = self.request.GET.get('region')
         param_type = self.request.GET.get('type')
-        param_date = self.request.GET.get('date')
+        param_year = self.request.GET.get('year')
         param_number = self.request.GET.get('number')
-        # convert to datetime (YEAR, MONTH, DAY)
-        param_date_p = param_date.split('/')
-        param_date = datetime(int(param_date_p[2]), int(param_date_p[1]), int(param_date_p[0]))
 
-        object_list = self.model.objects.filter(act_type=param_type, act_number=param_number, issue_date=param_date)
+        object_list = self.model.objects.filter(scope_region_id=param_region)
+        if param_type:
+            object_list = object_list.filter(act_type=param_type)
+        if param_number:
+            object_list = object_list.filter(act_number__startswith=param_number)
+        if param_year:
+            object_list = object_list.filter(issue_date__year=param_year)
 
         return object_list
 
     def get_context_data(self, **kwargs):
         context = super(LeisRefActListView, self).get_context_data(**kwargs)
 
-        param_type = self.request.GET.get('type')
-        context['param_type'] = ActType.objects.get(pk=param_type)
-        context['param_date'] = self.request.GET.get('date')
-        context['param_number'] = self.request.GET.get('number')
+        region_id = self.request.GET.get('region')
+
+        context['param_region'] = region_id
+        context['param_type'] = self.request.GET.get('type', '')
+        context['param_number'] = self.request.GET.get('number', '')
+        context['param_year'] = self.request.GET.get('year', '')
+        context['param_added'] = self.request.GET.get('added', '')
+        context['act_type_select'] = ActType.objects.filter(scope_region=region_id)
 
         return context
 
@@ -283,15 +292,39 @@ def context_lists(request, region_id):
     Receive source and field name and display help text
     """
 
+    type_list = [dict({'value': t.id, 'name': unicode(t)}) for t in ActType.objects.filter(scope_region=region_id)]
+    type_list = dict({'type_list': type_list})
     scope_list = [dict({'value': s.id, 'name': unicode(s)}) for s in ActScope.objects.filter(scope_region=region_id)]
     scope_list = dict({'scope_list': scope_list})
     source_list = [dict({'value': s.id, 'name': unicode(s)}) for s in ActSource.objects.filter(scope_region=region_id)]
     source_list = dict({'source_list': source_list})
     organ_issuer_list = [dict({'value': s.id, 'name': unicode(s)}) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
     organ_issuer_list = dict({'organ_issuer_list': organ_issuer_list})
-
-    context_lists = dict(scope_list.items() + source_list.items() + organ_issuer_list.items())
+    relation_list = [dict({'value': r.id, 'name': unicode(r)}) for r in ActRelationType.objects.filter(scope_region=region_id)]
+    relation_list = dict({'relation_list': relation_list})
+    # join all lists
+    context_lists = dict(type_list.items() + scope_list.items() + source_list.items() + organ_issuer_list.items() + relation_list.items())
 
     data = simplejson.dumps(context_lists)
 
     return HttpResponse(data, content_type='application/json')
+
+@login_required
+def add_related_act(request):
+    """
+    Add act with minimum fields for relationship
+    """
+    success_url = ''
+    if request.method == 'POST':
+        form = ActRelatedForm(request.POST)
+        region_id = request.POST.get('scope_region')
+        added = 1
+        if form.is_valid():
+            new_act = form.save()
+            success_url = "{0}/?region={1}&number={2}".format(reverse_lazy('act_related'),
+                                                              region_id, new_act.act_number)
+        else:
+            success_url = "{0}/?region={1}&added=0".format(reverse_lazy('act_related'),
+                                                           region_id)
+
+    return HttpResponseRedirect(success_url)
