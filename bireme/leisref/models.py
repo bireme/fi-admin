@@ -270,7 +270,7 @@ class ActRelationship(Generic):
     # relatonship type
     relation_type = models.ForeignKey(ActRelationType, blank=False)
     # field to inform a act already present in database
-    act = models.ForeignKey("leisref.Act", verbose_name=_("Act related"), blank=True, null=True)
+    act_referred = models.ForeignKey("leisref.Act", verbose_name=_("Act related"), blank=True, null=True)
     act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
 
 
@@ -281,7 +281,7 @@ class ActURL(Generic):
         verbose_name = _("Act URL")
         verbose_name_plural = _("Act URLs")
 
-    act_related = models.ForeignKey("leisref.Act")
+    act = models.ForeignKey("leisref.Act")
     url = models.URLField(_("URL"))
     language = models.CharField(_("Language"), max_length=10, blank=True, choices=LANGUAGES_CHOICES)
 

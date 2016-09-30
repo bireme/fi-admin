@@ -22,10 +22,10 @@ class ActForm(forms.ModelForm):
         exclude = ('cooperative_center_code',)
         fields = '__all__'
 
-    issue_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
-                                 input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
-    publication_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'),
-                                       input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
+    issue_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), required=False,
+                                 input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Issue date"))
+    publication_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), required=False,
+                                       input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Publication date"))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -34,7 +34,7 @@ class ActForm(forms.ModelForm):
         super(ActForm, self).__init__(*args, **kwargs)
 
         # context options lists based on act scope region
-        if self.instance and self.instance.scope_region:
+        if self.instance.id and self.instance.scope_region:
             region_id = self.instance.scope_region
             first_option = [('', '----------')]
             self.fields['scope'].choices = first_option + [(s.id, unicode(s)) for s in ActScope.objects.filter(scope_region=region_id)]
