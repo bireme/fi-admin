@@ -258,17 +258,6 @@ class ActRelationTypeLocal(models.Model):
     name = models.CharField(_("name"), max_length=255)
 
 
-# ActURL
-class ActURL(Generic):
-
-    class Meta:
-        verbose_name = _("Act URL")
-        verbose_name_plural = _("Act URLs")
-
-    act = models.ForeignKey("leisref.Act")
-    url = models.URLField(_("URL"))
-    language = models.CharField(_("Language"), max_length=10, blank=True, choices=LANGUAGES_CHOICES)
-
 # ActReference
 class Act(Generic, AuditLog):
     class Meta:
@@ -352,9 +341,21 @@ class ActRelationship(Generic):
         verbose_name_plural = _("Act Relationships")
 
     # field used in django one to one relationship
-    act_related = models.ForeignKey(Act, related_name='act_set')
+    act_related = models.ForeignKey(Act, related_name='related', null=True)
     # relatonship type
     relation_type = models.ForeignKey(ActRelationType, blank=False)
     # field to inform a act already present in database
-    act_referred = models.ForeignKey("leisref.Act", verbose_name=_("Act related"), related_name="referred_set")
+    act_referred = models.ForeignKey(Act, verbose_name=_("Act related"), related_name="referred", null=True)
     act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
+
+
+# ActURL
+class ActURL(Generic):
+
+    class Meta:
+        verbose_name = _("Act URL")
+        verbose_name_plural = _("Act URLs")
+
+    act = models.ForeignKey(Act, null=True)
+    url = models.URLField(_("URL"))
+    language = models.CharField(_("Language"), max_length=10, blank=True, choices=LANGUAGES_CHOICES)

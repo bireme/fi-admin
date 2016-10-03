@@ -389,11 +389,11 @@
 
         function dismissRelatedLookupPopup(chosenId, chosenLabel) {
             // set code, text and label for the new descriptor
-            $('#label_act_related-' + act_related_row_id + '-act_referred').html(chosenLabel);
-            $('#label_act_related-' + act_related_row_id + '-act_referred').removeClass("placeholder-style");
+            $('#label_related-' + act_related_row_id + '-act_referred').html(chosenLabel);
+            $('#label_related-' + act_related_row_id + '-act_referred').removeClass("placeholder-style");
 
             // set the value of hidden input
-            $('#id_act_related-' + act_related_row_id + '-act_referred').val(chosenId);
+            $('#id_related-' + act_related_row_id + '-act_referred').val(chosenId);
 
             act_win.close();
         }

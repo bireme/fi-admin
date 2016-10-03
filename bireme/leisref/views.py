@@ -242,6 +242,10 @@ class LeisRefUpdate(LoginRequiredView):
             context['formset_relation'] = RelationFormSet(instance=self.object)
             context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
 
+        if self.object:
+            context['passive_relationship'] = ActRelationship.objects.filter(act_referred=self.object)
+
+
         return context
 
 
