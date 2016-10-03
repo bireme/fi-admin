@@ -113,8 +113,8 @@ class Migration(migrations.Migration):
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('act_apparatus', models.CharField(max_length=125, verbose_name='Apparatus', blank=True)),
-                ('act_referred', models.ForeignKey(verbose_name='Act related', blank=True, to='leisref.Act', null=True)),
-                ('act_related', models.ForeignKey(related_name='act_related', to='leisref.Act')),
+                ('act_referred', models.ForeignKey(related_name='referred_set', verbose_name='Act related', to='leisref.Act')),
+                ('act_related', models.ForeignKey(related_name='act_set', to='leisref.Act')),
                 ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={

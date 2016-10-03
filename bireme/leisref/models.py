@@ -258,22 +258,6 @@ class ActRelationTypeLocal(models.Model):
     name = models.CharField(_("name"), max_length=255)
 
 
-# ActRelationship
-class ActRelationship(Generic):
-
-    class Meta:
-        verbose_name = _("Act Relationship")
-        verbose_name_plural = _("Act Relationships")
-
-    # field used in django one to one relationship
-    act_related = models.ForeignKey("leisref.Act", related_name='act_related')
-    # relatonship type
-    relation_type = models.ForeignKey(ActRelationType, blank=False)
-    # field to inform a act already present in database
-    act_referred = models.ForeignKey("leisref.Act", verbose_name=_("Act related"), blank=True, null=True)
-    act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
-
-
 # ActURL
 class ActURL(Generic):
 
@@ -358,3 +342,19 @@ class Act(Generic, AuditLog):
                 act_title = "{0} {1}".format(self.act_type, self.act_number)
 
         return act_title
+
+
+# ActRelationship
+class ActRelationship(Generic):
+
+    class Meta:
+        verbose_name = _("Act Relationship")
+        verbose_name_plural = _("Act Relationships")
+
+    # field used in django one to one relationship
+    act_related = models.ForeignKey(Act, related_name='act_set')
+    # relatonship type
+    relation_type = models.ForeignKey(ActRelationType, blank=False)
+    # field to inform a act already present in database
+    act_referred = models.ForeignKey("leisref.Act", verbose_name=_("Act related"), related_name="referred_set")
+    act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
