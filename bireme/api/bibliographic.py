@@ -134,7 +134,8 @@ class ReferenceResource(CustomResource):
 
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
-        bundle.data['descriptors'] = [{'text': descriptor.code} for descriptor in descriptors]
+        bundle.data['descriptors_primary'] = [{'text': descriptor.code} for descriptor in descriptors if descriptor.primary is True]
+        bundle.data['descriptors_secondary'] = [{'text': descriptor.code} for descriptor in descriptors if descriptor.primary is False]
         bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
 
         electronic_address = []
