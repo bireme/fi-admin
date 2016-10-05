@@ -29,7 +29,7 @@ class ActCountryRegion(Generic):
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
-        translation = ActCountryRegionLocal.objects.filter(act_source=self.id)
+        translation = ActCountryRegionLocal.objects.filter(act_region=self.id)
         if translation:
             other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
             translation_list.extend(other_languages)

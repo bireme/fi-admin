@@ -8,6 +8,7 @@ from api.events_api import EventResource
 from api.multimedia_api import MediaResource
 from api.title_api import TitleResource
 from api.bibliographic import ReferenceResource
+from api.legislation import LeisrefResource
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,6 +19,7 @@ event_resource = EventResource()
 media_resource = MediaResource()
 title_resource = TitleResource()
 reference_resource = ReferenceResource()
+leisref_resource = LeisrefResource()
 
 urlpatterns = patterns('',
     # Examples:
@@ -124,6 +126,7 @@ urlpatterns = patterns('',
     (r'^api/', include(media_resource.urls)),
     (r'^api/', include(title_resource.urls)),
     (r'^api/', include(reference_resource.urls)),
+    (r'^api/', include(leisref_resource.urls)),
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
     (r'^api/users/get_user_id/(?P<username>[a-zA-z0-9\.\-]{0,30})/$', 'api.users.get_user_id'),
 

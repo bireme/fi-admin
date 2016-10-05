@@ -1,0 +1,93 @@
+import datetime
+from haystack import indexes
+from main.models import Descriptor, ResourceThematic
+from models import *
+
+from django.contrib.contenttypes.models import ContentType
+
+class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=False)
+    title = indexes.CharField()
+    status = indexes.IntegerField(model_attr='status')
+    scope_region = indexes.CharField()
+    act_type = indexes.CharField()
+    scope = indexes.CharField()
+    scope_state = indexes.CharField(model_attr='scope_state')
+    scope_city = indexes.CharField(model_attr='scope_city')
+    source_name = indexes.CharField()
+    denomination = indexes.CharField(model_attr='denomination')
+    issue_date = indexes.CharField(model_attr='issue_date', default='')
+    publication_date = indexes.CharField(model_attr='publication_date', default='')
+    organ_issuer = indexes.CharField()
+    language = indexes.CharField()
+    official_ementa = indexes.CharField(model_attr='official_ementa')
+    relationship_active = indexes.CharField()
+    relationship_passive = indexes.CharField()
+    thematic_area = indexes.MultiValueField()
+    thematic_area_display = indexes.MultiValueField()
+    created_date = indexes.CharField()
+    descriptor = indexes.MultiValueField()
+    updated_date = indexes.CharField()
+
+    def get_model(self):
+        return Act
+
+    def prepare_title(self, obj):
+        return unicode(obj)
+
+    def prepare_scope_region(self, obj):
+        if obj.scope_region:
+            return obj.scope_region.get_translations()
+
+    def prepare_act_type(self, obj):
+        if obj.act_type:
+            return obj.act_type.get_translations()
+
+    def prepare_scope(self, obj):
+        if obj.scope:
+            return obj.scope.get_translations()
+
+    def prepare_source_name(self, obj):
+        if obj.source_name:
+            return obj.source_name.get_translations()
+
+    def prepare_organ_issuer(self, obj):
+        if obj.organ_issuer:
+            return obj.organ_issuer.get_translations()
+
+    def prepare_language(self, obj):
+        if obj.language:
+            return obj.language.get_translations()
+
+    def prepare_relationship_active(self, obj):
+        active_list = ActRelationship.objects.filter(act_related=obj.pk)
+        active_relationships = ["{0} {1} {2}".format(act.relation_type.label_present, act.act_referred, act.act_apparatus) for act in active_list]
+
+        return active_relationships
+
+    def prepare_relationship_passive(self, obj):
+        active_list = ActRelationship.objects.filter(act_referred=obj.pk)
+        active_relationships = ["{0} {1}".format(act.relation_type.label_past, act.act_related) for act in active_list]
+
+        return active_relationships
+
+    def prepare_thematic_area(self, obj):
+        return [rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
+
+    def prepare_thematic_area_display(self, obj):
+        return ["|".join(rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
+
+    def prepare_descriptor(self, obj):
+        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
+
+    def prepare_created_date(self, obj):
+        if obj.created_time:
+            return obj.created_time.strftime('%Y%m%d')
+
+    def prepare_updated_date(self, obj):
+        if obj.updated_time:
+            return obj.updated_time.strftime('%Y%m%d')
+
+    def index_queryset(self, using=None):
+        """Used when the entire index for model is updated."""
+        return self.get_model().objects.filter(created_time__lte=datetime.datetime.now())
