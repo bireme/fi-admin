@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 10:41-0300\n"
+"POT-Creation-Date: 2016-10-06 11:00-0300\n"
 "PO-Revision-Date: 2016-10-06 10:43-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.7.1\n"
 
@@ -45,8 +45,7 @@ msgstr "Endereço eletrônico OU texto completo obrigatório"
 #: biblioref/cross_validation.py:84
 msgid "For status \"Published\" you must have at least one primary descriptor"
 msgstr ""
-"Para o status \"Publicado\" é necessário ter pelo menos um descritor "
-"primário"
+"Para o status \"Publicado\" é necessário ter pelo menos um descritor primário"
 
 #: biblioref/field_definitions.py:41
 msgid "Indexed databases"
@@ -466,8 +465,7 @@ msgid ""
 "For absent or s.af affiliation do not describe the others affiliation "
 "atributes"
 msgstr ""
-"Para afiliação ausente OU s.af  não descreva os outros atributos da "
-"afiliação"
+"Para afiliação ausente OU s.af  não descreva os outros atributos da afiliação"
 
 #: biblioref/forms.py:334
 #, python-format
@@ -520,8 +518,8 @@ msgstr ""
 
 #: biblioref/forms.py:405
 msgid ""
-"Manuscript cartographic material in the Record Type is incompatible with the"
-" LILACS Methodology"
+"Manuscript cartographic material in the Record Type is incompatible with the "
+"LILACS Methodology"
 msgstr ""
 "Manuscritos de Material Cartográfico no Tipo de Registro é incompatível com "
 "a Metodologia LILACS"
@@ -555,8 +553,7 @@ msgstr "Kit no Tipo de Registro é incompatível com a Metodologia LILACS"
 
 #: biblioref/forms.py:415
 msgid ""
-"Mixed material in the Record Type is incompatible with the LILACS "
-"Methodology"
+"Mixed material in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 "Material misto no Tipo de Registro é incompatível com a Metodologia LILACS"
 
@@ -565,8 +562,8 @@ msgid ""
 "Three-dimensional artifact or naturally occurring object in the Record Type "
 "is incompatible with the LILACS Methodology"
 msgstr ""
-"Material tridimensional, artefato, objeto no Tipo de Registro é incompatível"
-" com a Metodologia LILACS"
+"Material tridimensional, artefato, objeto no Tipo de Registro é incompatível "
+"com a Metodologia LILACS"
 
 #: biblioref/forms.py:419
 msgid ""
@@ -600,8 +597,8 @@ msgstr "Para referências LILACS é obrigatório selecionar uma revista de lista
 
 #: biblioref/forms.py:469
 msgid ""
-"Please choose one journal from the list or use blank to inform other journal"
-" title"
+"Please choose one journal from the list or use blank to inform other journal "
+"title"
 msgstr ""
 "Por favor selecione uma revista da lista ou escolha opção vazia para "
 "informar um outro título de revista"
@@ -621,8 +618,8 @@ msgstr "Data sem ano"
 
 #: biblioref/forms.py:624
 msgid ""
-"Entering information in this field is conditional to filling out publication"
-" date field"
+"Entering information in this field is conditional to filling out publication "
+"date field"
 msgstr ""
 "O registro de informação neste campo está condicionado ao preenchimento do "
 "campo data de publicação"
@@ -686,11 +683,11 @@ msgstr "Incompatível com a LILACS"
 
 #: biblioref/forms.py:739
 msgid ""
-"Entering information in this field is conditional to filling out publication"
-" city field"
+"Entering information in this field is conditional to filling out publication "
+"city field"
 msgstr ""
-"O preenchimento de informação neste campo está condicionado ao preenchimento"
-" do campo cidade de publicação"
+"O preenchimento de informação neste campo está condicionado ao preenchimento "
+"do campo cidade de publicação"
 
 #: biblioref/forms.py:754
 msgid "Maximum number of characteres = 9"
@@ -847,7 +844,7 @@ msgstr "idioma do texto"
 msgid "Internal note"
 msgstr "Nota interna"
 
-#: biblioref/models.py:53 multimedia/models.py:116
+#: biblioref/models.py:53 multimedia/forms.py:27 multimedia/models.py:116
 msgid "Publication date"
 msgstr "Data de publicação"
 
@@ -1254,6 +1251,16 @@ msgstr "Informe editado com sucesso."
 msgid "Report deleted."
 msgstr "Informe apagado."
 
+#: events/forms.py:19 events/models.py:71 suggest/models.py:57
+#: templates/events/events.html:101
+msgid "Start date"
+msgstr "Data de ínicio"
+
+#: events/forms.py:21 events/models.py:72 suggest/models.py:58
+#: templates/events/events.html:102
+msgid "End date"
+msgstr "Data de término"
+
 #: events/models.py:17 events/models.py:48 events/models.py:80
 #: templates/events/edit-type.html:8
 msgid "Event type"
@@ -1329,14 +1336,6 @@ msgstr ""
 "Ex: XIX Congresso Brasileiro de Arritmias Cardíacas. XVII Simpósio Nacional "
 "do DECS-SBCC"
 
-#: events/models.py:71 suggest/models.py:57 templates/events/events.html:101
-msgid "Start date"
-msgstr "Data de ínicio"
-
-#: events/models.py:72 suggest/models.py:58 templates/events/events.html:102
-msgid "End date"
-msgstr "Data de término"
-
 #: events/models.py:74 main/models.py:222 multimedia/models.py:104
 #: suggest/models.py:27 suggest/models.py:60
 msgid "Link"
@@ -1384,8 +1383,8 @@ msgstr "Observações"
 
 #: events/models.py:85
 msgid ""
-"Enter information about institutions that organize and/or sponsor the event,"
-" deadline for submission of papers, simultaneous translation service, event "
+"Enter information about institutions that organize and/or sponsor the event, "
+"deadline for submission of papers, simultaneous translation service, event "
 "program, etc."
 msgstr ""
 "Incluir informações de instituições que organizam e/ou patrocinam o evento, "
@@ -1549,8 +1548,8 @@ msgid ""
 "Transcribe as it appears on the internet resource. If there is no title, "
 "provide a brief, simple but explanatory title"
 msgstr ""
-"Transcrever conforme aparece no recurso de internet. Se não houver, fornecer"
-" um título breve e simples, porém explicativo"
+"Transcrever conforme aparece no recurso de internet. Se não houver, fornecer "
+"um título breve e simples, porém explicativo"
 
 #: main/models.py:224
 msgid "Originator"
@@ -1577,8 +1576,7 @@ msgid ""
 "Enter one per line. Only filled if different from the originator of the "
 "resource"
 msgstr ""
-"Insira um por linha. Somente preenchido se diferente do originador do "
-"recurso"
+"Insira um por linha. Somente preenchido se diferente do originador do recurso"
 
 #: main/models.py:234
 msgid ""
@@ -1781,8 +1779,7 @@ msgstr "BIREME - OPAS - OMS"
 #: templates/base.html:57 templates/suggest/invalid-link.html:59
 #: templates/suggest/thanks.html:41
 msgid "Latin-American and Caribbean Center on Health Sciences Information"
-msgstr ""
-"Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
+msgstr "Centro Latino-Americano e do Caribe de Informação em Ciências da Saúde"
 
 #: templates/base.html:59 templates/suggest/invalid-link.html:61
 #: templates/suggest/thanks.html:43
