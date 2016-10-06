@@ -67,13 +67,13 @@ class Event(Generic):
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
     not_regional_event = models.BooleanField(_('Do not publish in the regional event directory'), default=False)
 
-    title = models.CharField(_('Title'), max_length=455, blank=False)
+    title = models.CharField(_('Title'), max_length=455, blank=False, help_text=_("Enter the full name of the event, as it appears and in the same language. Ex: XIX Congresso Brasileiro de Arritmias Cardiacas. XVII Simposio Nacional do DECS-SBCC"))
     start_date = models.DateField(_('Start date'), help_text='DD/MM/YYYY')
     end_date = models.DateField(_('End date'), help_text='DD/MM/YYYY')
 
-    link = models.URLField(_('Link'), blank=True)
+    link = models.URLField(_('Link'), help_text=_("Enter the link of event portal"), blank=True)
 
-    address = models.CharField(_('Address'), max_length=255, blank=True)
+    address = models.CharField(_('Address'), max_length=255, blank=True, help_text=_("Enter full address of the local of the event to present it in a Google map"))
     city = models.CharField(_('City'), max_length=125, blank=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
 
@@ -82,7 +82,7 @@ class Event(Generic):
 
     contact_email = models.EmailField(_('Contact email'), blank=True)
     contact_info = models.TextField(_("Information for contact"), blank=True)
-    observations = models.TextField(_("Observations"), blank=True)
+    observations = models.TextField(_("Observations"), help_text=_("Enter information about institutions that organize and/or sponsor the event, deadline for submission of papers, simultaneous translation service, event program, etc."), blank=True)
     target_groups = models.TextField(_("Target groups"), blank=True)
 
     # responsible cooperative center
