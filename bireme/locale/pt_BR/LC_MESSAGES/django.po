@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-06 10:20-0300\n"
-"PO-Revision-Date: 2016-10-06 10:22-0306\n"
+"POT-Creation-Date: 2016-10-06 10:41-0300\n"
+"PO-Revision-Date: 2016-10-06 10:43-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1544,9 +1544,25 @@ msgstr "Recomendação de usuário?"
 msgid "Resource"
 msgstr "Recurso"
 
+#: main/models.py:220
+msgid ""
+"Transcribe as it appears on the internet resource. If there is no title, "
+"provide a brief, simple but explanatory title"
+msgstr ""
+"Transcrever conforme aparece no recurso de internet. Se não houver, fornecer"
+" um título breve e simples, porém explicativo"
+
 #: main/models.py:224
 msgid "Originator"
 msgstr "Originador"
+
+#: main/models.py:224
+msgid ""
+"Institutional or personnel name of the responsible for the existence of the "
+"internet resource. Ex. Brazilian Society for Dental Research"
+msgstr ""
+"Nome do responsável institucional ou pessoal pela existência do recurso de "
+"internet. Ex. Sociedade Brasileira de Pesquisa Odontológica"
 
 #: main/models.py:226
 msgid "Originator location"
@@ -1556,12 +1572,19 @@ msgstr "Local geográfico do originador"
 msgid "Authors"
 msgstr "Autores"
 
-#: main/models.py:228 multimedia/models.py:106 multimedia/models.py:107
-#: multimedia/models.py:114 title/models.py:55 title/models.py:67
-#: title/models.py:105 title/models.py:107 title/models.py:121
-#: title/models.py:123 title/models.py:165
-msgid "Enter one per line"
-msgstr "Insira um por linha"
+#: main/models.py:228
+msgid ""
+"Enter one per line. Only filled if different from the originator of the "
+"resource"
+msgstr ""
+"Insira um por linha. Somente preenchido se diferente do originador do "
+"recurso"
+
+#: main/models.py:234
+msgid ""
+"Include information on the content and operation of the internet resource"
+msgstr ""
+"Incluir informações sobre o conteúdo e funcionamento do recurso de internet"
 
 #: main/models.py:236
 msgid "Temporal range"
@@ -1640,6 +1663,13 @@ msgstr "Título original"
 #: multimedia/models.py:103
 msgid "Translated title"
 msgstr "Título traduzido"
+
+#: multimedia/models.py:106 multimedia/models.py:107 multimedia/models.py:114
+#: title/models.py:55 title/models.py:67 title/models.py:105
+#: title/models.py:107 title/models.py:121 title/models.py:123
+#: title/models.py:165
+msgid "Enter one per line"
+msgstr "Insira um por linha"
 
 #: multimedia/models.py:107
 msgid "Contributors"
