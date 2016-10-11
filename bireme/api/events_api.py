@@ -17,6 +17,10 @@ class EventResource(ModelResource):
         queryset = Event.objects.filter(status=1)
         allowed_methods = ['get']
         resource_name = 'event'
+        filtering = {
+            'thematic_area_id': 'exact',
+        }
+        include_resource_uri = False
 
     def prepend_urls(self):
         return [
