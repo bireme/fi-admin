@@ -27,6 +27,13 @@ class MediaResource(ModelResource):
         }
         include_resource_uri = False
 
+    def build_filters(self, filters=None):
+        orm_filters = super(MediaResource, self).build_filters(filters)
+
+        if 'thematic_area_id' in filters:
+            orm_filters['thematics__thematic_area__exact'] = filters['thematic_area_id']
+        return orm_filters
+
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
