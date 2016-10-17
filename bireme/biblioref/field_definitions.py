@@ -26,14 +26,14 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
                  'project_name': '59', 'internal_note': '61', 'publication_date': '64',
                  'publication_date_normalized': '65', 'publication_type': '71', 'total_number_of_references': '72',
                  'time_limits_from': '74', 'time_limits_to': '75', 'check_tags': '76', 'person_as_subject': '78', 'non_decs_region': '82',
-                 'abstract': '83', 'transfer_date_to_database': '84', 'author_keyword': '85', 'descriptors': '87',
-                 'item_form': '110', 'type_of_computer_file': '111', 'type_of_cartographic_material': '112',
+                 'abstract': '83', 'transfer_date_to_database': '84', 'author_keyword': '85', 'descriptors_primary': '87',
+                 'descriptors_secondary': '88', 'item_form': '110', 'type_of_computer_file': '111', 'type_of_cartographic_material': '112',
                  'type_of_journal': '113', 'type_of_visual_material': '114', 'specific_designation_of_the_material': '115',
                  'general_note': '500', 'formatted_contents_note': '505', 'additional_physical_form_available_note': '530',
                  'reproduction_note': '533', 'original_version_note': '534', 'institution_as_subject': '610',
                  'local_descriptors': '653', 'clinical_trial_registry_name': '700', 'doi_number': '724',
-                 'source_control': 98, 'export_control_1': '776', 'export_control_2': 778,
-                 'created_time': 91, 'created_by': 92, 'updated_time': 93, 'system_version': 899,
+                 'source_control': '98', 'export_control_1': '776', 'export_control_2': '778',
+                 'created_time': '91', 'created_by': '92', 'updated_time': '93', 'system_version': '899',
                  }
 
 

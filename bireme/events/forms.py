@@ -16,9 +16,9 @@ import simplejson
 
 class EventForm(forms.ModelForm):
 
-    start_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+    start_date = forms.DateField(label=_('Start date'), widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
-    end_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+    end_date = forms.DateField(label=_('End date'), widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
 
 

@@ -24,7 +24,7 @@ class MediaForm(forms.ModelForm):
         source_language = forms.MultipleChoiceField()
         Media_type = forms.MultipleChoiceField()
 
-    publication_date = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+    publication_date = forms.DateField(label=_('Publication date'), widget=forms.DateInput(format = '%d/%m/%Y'),
                                        input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY')
 
     def __init__(self, *args, **kwargs):

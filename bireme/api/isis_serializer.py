@@ -77,9 +77,6 @@ class ISISSerializer(Serializer):
                 export_control_2 = self.id_field('export_control_2', item['LILACS_original_id'])
                 record_lines.append(export_control_2)
 
-            # sort lines will result a sort by tag number
-            record_lines.sort()
-
             # add lines of record at id export list
             id_lines.extend(record_lines)
             id_lines.append("\n")

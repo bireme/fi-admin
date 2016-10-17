@@ -92,6 +92,7 @@
                             {% for field in form.visible_fields %}
                                 {% if field.field|fieldtype == 'BooleanField' %}
                                     <span>{{ field.label }}</span>
+                                    {{ field }}
                                 {% else %}
                                     <label for="{{ field.auto_id }}">
                                         {% if field.field.required %}
@@ -100,10 +101,11 @@
                                             {{ field.label }}
                                         {% endif %}
                                     </label>
+                                    <p class="muted">{{ field.help_text }}</p>
+                                    {{ field }}
                                 {% endif %}
                                 {{ field.errors }}
-                                {{ field }}
-                                <p class="muted">{{ field.help_text }}</p>
+                                <br/>
                             {% endfor %}
                         </fieldset>
                     {% endif %}
@@ -491,11 +493,22 @@
                     break;
                 case 'locality':
                     city = addressValue;
+                    break;
+                case 'administrative_area_level_1':
+                    area_level_1 = addressValue;
+                    break;
+                case 'administrative_area_level_2':
+                    area_level_2 = addressValue;
+                    break;
+                case 'country':
+                    country = addressValue;
+
             }
           }
 
           // rewrite form elements using Google API information
-          document.getElementById('id_address').value = street_name + ', ' + street_number + ', ' + neighborhood;
+          document.getElementById('id_address').value = street_name + ', ' + street_number + ' - ' +
+                                                        area_level_1 + ' - ' + area_level_2 + ' - ' + country;
           document.getElementById('id_city').value = city;
 
 
