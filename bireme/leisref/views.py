@@ -162,7 +162,7 @@ class LeisRefUpdate(LoginRequiredView):
                                                          [formset_descriptor, formset_thematic])
 
         if (form_valid and formset_descriptor_valid and formset_url_valid and formset_thematic_valid and
-           formset_relation_valid and valid_for_publication):
+           formset_attachment_valid and formset_relation_valid and valid_for_publication):
 
                 self.object = form.save()
 

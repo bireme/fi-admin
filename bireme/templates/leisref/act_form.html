@@ -45,7 +45,7 @@
         <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
     </ul>
 
-    <form method="POST" class="media-form">
+    <form method="POST" enctype="multipart/form-data" class="media-form">
         {% csrf_token %}
 
         <div class="tab-content">
@@ -115,8 +115,8 @@
                     <table class="table table-condensed table-striped span8">
                         <thead>
                             <th>{% trans "Descriptors" %}</th>
-                            <th>{% trans "Status" %}</th>
-                            <th>{% trans "Delete?" %}</th>
+                            <th>{% trans "Primary?" %}</th>
+                            <th></th>
                         </thead>
                         <tbody>
 
@@ -124,18 +124,6 @@
                             {% for descriptor in descriptor_list %}
                                 <tr>
                                     <td>{{ descriptor.text }}</td>
-                                    <td>
-                                        {% if descriptor.status == 0 %}
-                                            <span title="{% trans 'Pending' %}"><i class="icon-minus-sign status-pending"></i></span>
-                                        {% elif descriptor.status == 1 %}
-                                            <span title="{% trans 'Admitted' %}"><i class="icon-ok-sign status-ok"></i></span>
-                                        {% elif descriptor.status == 2 %}
-                                            <span title="{% trans 'Refused' %}"><i class="icon-ban-circle status-del"></i></span>
-                                        {% elif descriptor.status == 3 %}
-                                            <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
-                                        {% endif %}
-                                    </td>
-                                    <td></td>
                                 </tr>
                             {% endfor %}
                         {% endif %}
