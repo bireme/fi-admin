@@ -229,22 +229,35 @@ class ActRelationType(Generic):
     label_past = models.CharField(_("Past form"), max_length=155)
     scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
 
-    def get_translations(self):
-        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+    def get_label_translations(self, field):
+        translation_list = ["%s^%s" % (self.language, getattr(self, field))]
+
         translation = ActRelationTypeLocal.objects.filter(relation_type=self.id)
         if translation:
-            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            other_languages = ["%s^%s" % (trans.language, getattr(trans, field)) for trans in translation]
             translation_list.extend(other_languages)
 
         return translation_list
 
-    def __unicode__(self):
+    def get_label_present_translations(self):
+        return self.get_label_translations('label_present')
+
+    def get_label_past_translations(self):
+        return self.get_label_translations('label_past')
+
+    def get_label(self, field):
         lang_code = get_language()
         translation = ActRelationTypeLocal.objects.filter(relation_type=self.id, language=lang_code)
         if translation:
-            return translation[0].name
+            return getattr(translation[0], field)
         else:
-            return self.name
+            return getattr(self, field)
+
+    def get_label_present(self):
+        return self.get_label('label_present')
+
+    def get_label_past(self):
+        return self.get_label('label_past')
 
 
 class ActRelationTypeLocal(models.Model):
@@ -255,7 +268,8 @@ class ActRelationTypeLocal(models.Model):
 
     relation_type = models.ForeignKey(ActRelationType, verbose_name=_("Act relation type"))
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
-    name = models.CharField(_("name"), max_length=255)
+    label_present = models.CharField(_("Present tense form"), max_length=155)
+    label_past = models.CharField(_("Past form"), max_length=155)
 
 
 # ActReference
