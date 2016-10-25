@@ -67,16 +67,23 @@ class ActForm(forms.ModelForm):
 
 
 class DescriptorForm(forms.ModelForm):
+
+    status = forms.IntegerField(widget=forms.HiddenInput(), initial=1)
+
     def save(self, *args, **kwargs):
         obj = super(DescriptorForm, self).save(commit=False)
-        # for bibliographic default value for descriptor is admited
+        # for legislation default value for descriptor is admited
         obj.status = 1
         obj.save()
 
+
 class ThematicForm(forms.ModelForm):
+
+    status = forms.IntegerField(widget=forms.HiddenInput(), initial=1)
+
     def save(self, *args, **kwargs):
         obj = super(ThematicForm, self).save(commit=False)
-        # for bibliographic default value for descriptor is admited
+        # for legislation default value for descriptor is admited
         obj.status = 1
         obj.save()
 
@@ -98,7 +105,7 @@ class ActRelatedForm(forms.ModelForm):
 
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,
-                                                  exclude=('status',), can_delete=True, extra=1)
+                                                  can_delete=True, extra=1)
 
 AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
                                                   exclude=('short_url',), can_delete=True, extra=1)
@@ -110,4 +117,4 @@ RelationFormSet = inlineformset_factory(Act, ActRelationship, fields='__all__', 
 
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
                                                         formset=ResourceThematicRequired,
-                                                        exclude=('status',), can_delete=True, extra=1)
+                                                        can_delete=True, extra=1)
