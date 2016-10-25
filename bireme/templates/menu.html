@@ -49,8 +49,8 @@
                             {% endif %}
 
                             {% if service_role.LeisRef %}
+                                <li><a href="{% url 'list_legislation' %}" title=""><i class="icon-book"></i> {% trans "Legislation" %}</a></li>
                             {% endif %}
-                            <li><a href="{% url 'list_legislation' %}" title=""><i class="icon-book"></i> {% trans "Legislation" %}</a></li>
 
                             {% if service_role|length > 3 %}
                                     </ul>
