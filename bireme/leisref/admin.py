@@ -67,6 +67,16 @@ class ActRelationTypeAdmin(GenericAdmin):
     inlines = [ActRelationTypeLocalAdmin, ]
 
 
+class ActOrganIssuerLocalAdmin(admin.TabularInline):
+    model = ActOrganIssuerLocal
+    extra = 1
+
+
+class ActOrganIssuerAdmin(GenericAdmin):
+    model = ActOrganIssuer
+    inlines = [ActOrganIssuerLocalAdmin, ]
+
+
 class ActAdmin(GenericAdmin):
     model = Act
     date_hierarchy = 'created_time'
@@ -78,7 +88,7 @@ admin.site.register(Act, ActAdmin)
 admin.site.register(ActType, ActTypeAdmin)
 admin.site.register(ActScope, ActScopeAdmin)
 admin.site.register(ActCountryRegion)
-admin.site.register(ActOrganIssuer)
+admin.site.register(ActOrganIssuer, ActOrganIssuerAdmin)
 admin.site.register(ActRelationType, ActRelationTypeAdmin)
 admin.site.register(ActRelationship)
 admin.site.register(ActSource)
