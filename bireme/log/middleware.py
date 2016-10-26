@@ -131,6 +131,7 @@ class WhodidMiddleware(object):
                     previous_value = ''
 
                 new_value = instance.__dict__.get(field_name)
+                field_type = obj_model._meta.get_field(field_name).get_internal_type()
 
                 # convert JSON to compare properly
                 if isinstance(previous_value, basestring) and previous_value[0:2] == '[{':
@@ -138,6 +139,12 @@ class WhodidMiddleware(object):
                         previous_value = json.loads(previous_value)
                     except ValueError:
                         pass
+
+                if field_type == 'DateField':
+                    if previous_value:
+                        previous_value = previous_value.strftime("%d/%m/%Y")
+                    if new_value:
+                        new_value = new_value.strftime("%d/%m/%Y")
 
                 if field_name not in exclude_log_fields and new_value != previous_value:
                     field_change.append({'field_name': field_name, 'previous_value': previous_value,

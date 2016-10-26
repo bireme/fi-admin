@@ -1,0 +1,96 @@
+{% load app_filters %}
+{% load i18n %}
+
+<div id='tab-relationship' class="tab-pane">
+
+    {% for error in formset_relation.non_form_errors  %}
+        <p class="errorlist alert alert-error">
+            {{ error|escape }}
+        </p>
+    {% endfor %}
+
+    <fieldset id="relationship">
+        <table class="table table-condensed table-striped span10">
+            <thead>
+                <th>{% trans "Relation type" %}</th>
+                <th>{% trans "Legislation" %}</th>
+                <th>{% trans "Apparatus" %}</th>
+                <th>{% trans "Delete?" %}</th>
+            </thead>
+
+            <tbody>
+            {% for passive in passive_relationship %}
+                <tr>
+                    <td>{{ passive.relation_type.get_label_past }}</td>
+                    <td>{{ passive.act_related }}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+
+            {% if user_can_edit %}
+
+                {{ formset_relation.management_form }}
+
+                {% for form in formset_relation %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    <tr id="relation-{{ forloop.counter0 }}" class="relation-row{% if form.errors %} error{% endif %} formset-row relation_formset">
+                        {% for field in form.visible_fields %}
+                            {% if form.instance.pk and field.name != 'DELETE' %}
+                                {{ field.as_hidden }}
+                                {% if field.name == 'act_referred' %}
+                                    <td>
+                                        {{ form.instance.act_referred }}
+                                    </td>
+                                {% elif field.name == 'relation_type' %}
+                                    <td>
+                                        {{ form.instance.relation_type.get_label_present }}
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        {{ field.value }}
+                                    </td>
+                                {% endif %}
+                            {% else %}
+                                {% if field.name == 'act_referred' %}
+                                    <td>
+                                        {{ field.as_hidden }}
+                                        <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:act_related(this)">
+                                            {% spaceless %}
+                                            {% if field.value == None or field.value == '' %}
+                                                {% trans "Select by search" %}
+                                            {% else %}
+                                                {{ field.value }}
+                                            {% endif %}
+                                            {% endspaceless %}
+                                        </div>
+                                    </td>
+                                {% elif field.name != 'DELETE' %}
+                                    <td>
+                                        {{ field }}
+                                    </td>
+                                {% endif %}
+                        {% endif %}
+
+                    {% endfor %}
+                    <td>
+                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            {% else %}
+                {% for form in formset_relation %}
+                    {% for field in form %}
+                        <td>
+                            {{ field }}
+                        </td>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </fieldset>
+
+</div>

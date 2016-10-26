@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block top %}{% endblock %}
+
+{% block extrahead %}
+<link href="{% static "css/bootstrap-datepicker.min.css" %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block title %}{% trans "Legislation" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+<div class="row">
+    <div class="span12">
+        <form name="search">
+            <input type="hidden" name="page" value="{{ actions.page }}">
+            <input type="hidden" name="region" value="{{ param_region }}" />
+            {% trans "Act type" %}:
+            <select name="type" class="input-medium">
+                <option value=""></option>
+                {% for act_type in act_type_select %}
+                    <option value="{{act_type.id}}" {% if param_type|add:"0" == act_type.id %} selected="true"{% endif %}>{{act_type}}</option>
+                {% endfor %}
+            </select>
+            {% trans "Act number" %}:
+            <input type="text" name="number" class="input-small" value="{{ param_number }}">
+            {% trans "Issue year" %}:
+            <input type="text" name="year" class="input-small" value="{{ param_year }}">
+            <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
+        </form>
+    </div>
+</div>
+
+<div>
+    {% if act_list|length > 0 %}
+        <h4>{% trans "Select the legislation" %}</h4>
+        <table class='table'>
+            <thead>
+                <th><a href="javascript:orderby('name');" id="id_title">{% trans "Name" %}</a></th>
+            </thead>
+            <tbody>
+                {% for act in act_list %}
+                    <tr>
+                        <td><a href="#" onclick="opener.dismissRelatedLookupPopup('{{ act.id }}', '{{ act }}' ); return false;">{{ act }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include "pagination_generic.html" %}
+    {% else %}
+        <div class="alert alert-info">
+            {% trans "No legislation was found with this criteria" %}
+        </div>
+    {% endif %}
+
+    <a href="#" onclick="$('#create_new').toggle()" class="btn btn-success"><i class="icon-plus"></i> {% trans "Create new legislation" %}</a>
+
+    <div class="{% if not param_added or param_added == '1' %}hide{% endif %}" id="create_new">
+        {% if param_added == '0' %}
+            <br/>
+            <div class="alert alert-error">
+                {% trans "Legislation not added. Please check the fields and submit again" %}
+            </div>
+        {% endif %}
+
+        <form method="POST" class="new_act_form" action="{% url 'add_related_act' %}">
+            {% csrf_token %}
+            <input type="hidden" name="status" value="-2" />
+            <input type="hidden" name="scope_region" value="{{ param_region }}" />
+
+            <div class="row-fluid" style="margin-top: 20px">
+                <div class="span3">
+                    {% trans "Act type" %}:
+                    <select name="act_type" class="input-medium">
+                        <option value=""></option>
+                        {% for act_type in act_type_select %}
+                            <option value="{{act_type.id}}">{{act_type}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="span3">
+                    {% trans "Act number" %}:
+                    <input type="text" name="act_number" class="input-medium">
+                </div>
+                <div class="span3">
+                    {% trans "Issue date" %}:
+                    <input type="text" name="issue_date" class="input-small datepicker">
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span5">
+                    {% trans "Denomination" %}:
+                    <input type="text" name="denomination" style="width: 330px">
+                    <button class="btn btn-primary btn-large" type="submit">{% trans 'Add' %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   {% if LANGUAGE_CODE != 'en' %}
+       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
+   {% endif %}
+
+   <script type="text/javascript">
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            language: '{{LANGUAGE_CODE}}'
+        });
+    </script>
+{% endblock %}
+
+
+{% block footer %}{% endblock %}
