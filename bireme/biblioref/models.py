@@ -320,3 +320,14 @@ class ReferenceLocal(models.Model):
 
     def __unicode__(self):
         return u"[%s] | %s" % (self.cooperative_center_code, self.source)
+
+
+# Bibliographic Record Alternative ID
+class ReferenceAlternateID(models.Model):
+
+    class Meta:
+        verbose_name = _("Bibliographic Record Alternate ID")
+        verbose_name_plural = _("Bibliographic Alternate ID's")
+
+    reference = models.ForeignKey(Reference, verbose_name=_("Reference"), blank=False)
+    alternate_id = models.CharField(_('Alternate id'), max_length=55, blank=False)
