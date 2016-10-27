@@ -32,7 +32,7 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
                  'general_note': '500', 'formatted_contents_note': '505', 'additional_physical_form_available_note': '530',
                  'reproduction_note': '533', 'original_version_note': '534', 'institution_as_subject': '610',
                  'local_descriptors': '653', 'clinical_trial_registry_name': '700', 'doi_number': '724',
-                 'source_control': '98', 'export_control_1': '776', 'export_control_2': '778',
+                 'source_control': '98', 'export_control_1': '776', 'export_control_2': '778', 'alternate_ids': '779',
                  'created_time': '91', 'created_by': '92', 'updated_time': '93', 'system_version': '899',
                  }
 

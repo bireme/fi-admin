@@ -11,7 +11,7 @@ from tastypie.utils import trailing_slash
 from tastypie.constants import ALL
 from tastypie import fields
 
-from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic
+from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID
 from attachments.models import Attachment
 from isis_serializer import ISISSerializer
 
@@ -131,12 +131,14 @@ class ReferenceResource(CustomResource):
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
         attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        alternate_ids = ReferenceAlternateID.objects.filter(reference_id=bundle.obj.id)
 
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
         bundle.data['descriptors_primary'] = [{'text': descriptor.code} for descriptor in descriptors if descriptor.primary is True]
         bundle.data['descriptors_secondary'] = [{'text': descriptor.code} for descriptor in descriptors if descriptor.primary is False]
         bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
+        bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
 
         electronic_address = []
         for attach in attachments:
