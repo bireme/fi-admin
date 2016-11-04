@@ -15,7 +15,7 @@ from utils.context_processors import additional_user_info
 from attachments.models import Attachment
 from main.models import Descriptor
 from help.models import get_help_fields
-from utils.views import LoginRequiredView
+from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 from datetime import datetime
 from forms import *
 
@@ -29,6 +29,7 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
     paginate_by = settings.ITEMS_PER_PAGE
     context_object_name = "act_list"
     search_field = "act_number"
+    restrict_by_user = True
 
     def dispatch(self, *args, **kwargs):
         return super(LeisRefGenericListView, self).dispatch(*args, **kwargs)
@@ -61,8 +62,9 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
         # filter by user
-        if not self.actions['filter_owner'] or self.actions['filter_owner'] == 'user':
+        if self.restrict_by_user and self.actions['filter_owner'] != "*":
             object_list = object_list.filter(created_by=self.request.user)
+
         # filter by cooperative center
         elif self.actions['filter_owner'] == 'center':
             user_cc = self.request.user.profile.get_attribute('cc')
@@ -332,3 +334,364 @@ def add_related_act(request):
                                                            region_id)
 
     return HttpResponseRedirect(success_url)
+
+
+# ========================= COUNTRY REGION AUX LIST ============================================
+class CountryRegionListView(LeisRefListView, ListView):
+    """
+    List Aux Contry Region
+    """
+    model = ActCountryRegion
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class CountryRegionUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of MediaType objects
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActCountryRegion
+    success_url = reverse_lazy('list_country_region')
+    formset = CountryRegionTranslationFormSet
+    fields = '__all__'
+
+
+class CountryRegionUpdateView(CountryRegionUpdate, UpdateView):
+    """
+    Used as class view for update media type
+    Extend MediaTypeUpdate that do all the work
+    """
+
+
+class CountryRegionCreateView(CountryRegionUpdate, CreateView):
+    """
+    Used as class view for create media type
+    Extend MediaTypeUpdate that do all the work
+    """
+
+
+class CountryRegionDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of MediaType objects
+    """
+    model = ActCountryRegion
+    success_url = reverse_lazy('list_country_region')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(CountryRegionDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj
+# ========================= COUNTRY REGION AUX LIST ============================================
+class CountryRegionListView(LeisRefListView, ListView):
+    """
+    List Aux Contry Region
+    """
+    model = ActCountryRegion
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class CountryRegionUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of country/region
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActCountryRegion
+    success_url = reverse_lazy('list_country_region')
+    formset = CountryRegionTranslationFormSet
+    fields = '__all__'
+
+
+class CountryRegionUpdateView(CountryRegionUpdate, UpdateView):
+    """
+    Used as class view for update country/region
+    Extend Update class that do all the work
+    """
+
+
+class CountryRegionCreateView(CountryRegionUpdate, CreateView):
+    """
+    Used as class view for create country/region
+    Extend Update class that do all the work
+    """
+
+
+class CountryRegionDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of MediaType objects
+    """
+    model = ActCountryRegion
+    success_url = reverse_lazy('list_country_region')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(CountryRegionDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj
+
+
+# ========================= ACT SCOPE AUX LIST ============================================
+class ActScopeListView(LeisRefListView, ListView):
+    """
+    List Aux Act Scope
+    """
+    model = ActScope
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class ActScopeUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of act scope
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActScope
+    success_url = reverse_lazy('list_act_scope')
+    formset = ActScopeTranslationFormSet
+    fields = '__all__'
+
+
+class ActScopeUpdateView(ActScopeUpdate, UpdateView):
+    """
+    Used as class view for update act scope
+    Extend Update class that do all the work
+    """
+
+
+class ActScopeCreateView(ActScopeUpdate, CreateView):
+    """
+    Used as class view for create act scope
+    Extend Update class that do all the work
+    """
+
+
+class ActScopeDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of act scope
+    """
+    model = ActScope
+    success_url = reverse_lazy('list_act_scope')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(ActScopeDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj
+
+# ========================= ACT TYPE AUX LIST ============================================
+class ActTypeListView(LeisRefListView, ListView):
+    """
+    List Aux Act Scope
+    """
+    model = ActType
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class ActTypeUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of act scope
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActType
+    success_url = reverse_lazy('list_act_type')
+    formset = ActTypeTranslationFormSet
+    fields = '__all__'
+
+
+class ActTypeUpdateView(ActTypeUpdate, UpdateView):
+    """
+    Used as class view for update act scope
+    Extend Update class that do all the work
+    """
+
+
+class ActTypeCreateView(ActTypeUpdate, CreateView):
+    """
+    Used as class view for create act scope
+    Extend Update class that do all the work
+    """
+
+
+class ActTypeDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of act scope
+    """
+    model = ActType
+    success_url = reverse_lazy('list_act_type')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(ActTypeDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj
+
+
+# ========================= ACT ORGAN ISSUER AUX LIST ============================================
+class ActOrganListView(LeisRefListView, ListView):
+    """
+    List Aux Act Organ Issuer
+    """
+    model = ActOrganIssuer
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class ActOrganUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of act scope
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActOrganIssuer
+    success_url = reverse_lazy('list_act_organ')
+    formset = ActOrganTranslationFormSet
+    fields = '__all__'
+
+
+class ActOrganUpdateView(ActOrganUpdate, UpdateView):
+    """
+    Used as class view for update act scope
+    Extend update that do all the work
+    """
+
+
+class ActOrganCreateView(ActOrganUpdate, CreateView):
+    """
+    Used as class view for create act scope
+    Extend update that do all the work
+    """
+
+
+class ActOrganDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of act scope
+    """
+    model = ActOrganIssuer
+    success_url = reverse_lazy('list_act_organ')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(ActOrganDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj
+
+
+# ========================= ACT SOURCE AUX LIST ============================================
+class ActSourceListView(LeisRefListView, ListView):
+    """
+    List Aux Act Organ Source
+    """
+    model = ActSource
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class ActSourceUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of act source
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActSource
+    success_url = reverse_lazy('list_act_source')
+    formset = ActSourceTranslationFormSet
+    fields = '__all__'
+
+
+class ActSourceUpdateView(ActSourceUpdate, UpdateView):
+    """
+    Used as class view for update act source
+    Extend update that do all the work
+    """
+
+
+class ActSourceCreateView(ActSourceUpdate, CreateView):
+    """
+    Used as class view for create act source
+    Extend update that do all the work
+    """
+
+
+class ActSourceDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of act source
+    """
+    model = ActSource
+    success_url = reverse_lazy('list_act_source')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(ActSourceDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj
+
+
+# ========================= ACT RELATION TYPE AUX LIST ============================================
+class ActRelTypeListView(LeisRefListView, ListView):
+    """
+    List Aux Act Relation Type
+    """
+    model = ActRelationType
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class ActRelTypeUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of act source
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActRelationType
+    success_url = reverse_lazy('list_act_reltype')
+    formset = ActRelTypeTranslationFormSet
+    fields = '__all__'
+
+
+class ActRelTypeUpdateView(ActRelTypeUpdate, UpdateView):
+    """
+    Used as class view for update act source
+    Extend update that do all the work
+    """
+
+
+class ActRelTypeCreateView(ActRelTypeUpdate, CreateView):
+    """
+    Used as class view for create act source
+    Extend update that do all the work
+    """
+
+
+class ActRelTypeDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of act source
+    """
+    model = ActRelationType
+    success_url = reverse_lazy('list_act_reltype')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(ActRelTypeDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj

@@ -118,3 +118,21 @@ RelationFormSet = inlineformset_factory(Act, ActRelationship, fields='__all__', 
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
                                                         formset=ResourceThematicRequired,
                                                         can_delete=True, extra=1)
+
+CountryRegionTranslationFormSet = inlineformset_factory(ActCountryRegion, ActCountryRegionLocal, fields='__all__',
+                                                        can_delete=True, extra=1)
+
+ActScopeTranslationFormSet = inlineformset_factory(ActScope, ActScopeLocal, fields='__all__',
+                                                   can_delete=True, extra=1)
+
+ActTypeTranslationFormSet = inlineformset_factory(ActType, ActTypeLocal, fields='__all__',
+                                                  can_delete=True, extra=1)
+
+ActOrganTranslationFormSet = inlineformset_factory(ActOrganIssuer, ActOrganIssuerLocal, fields='__all__',
+                                                   can_delete=True, extra=1)
+
+ActSourceTranslationFormSet = inlineformset_factory(ActSource, ActSourceLocal, fields='__all__',
+                                                    can_delete=True, extra=1)
+
+ActRelTypeTranslationFormSet = inlineformset_factory(ActRelationType, ActRelationTypeLocal, fields='__all__',
+                                                     can_delete=True, extra=1)

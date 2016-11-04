@@ -62,7 +62,7 @@
                                 <li><a href="{% url 'list_reports' %}" title=""><i class="icon-file"></i> {% trans "Reports" %}</a></li>
                             {% endif %}
 
-                            {% if user.is_superuser %}
+                            {% if user.is_superuser or service_role.LeisRef == 'admin' %}
                                 <li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_control_tables">
                                         <i class="icon-list"></i>
@@ -70,11 +70,22 @@
                                         <i class="icon-caret-down"></i>
                                     </a>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu_control_tables">
-                                        <li><a href="{% url 'main.views.list_thematics' %}" title=""><i class="icon-tag"></i> {% trans "Thematic areas" %}</a></li>
-                                        <li><a href="{% url 'main.views.list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Source types" %}</a></li>
-                                        <li><a href="{% url 'events.views.list_types' %}" title=""><i class="icon-calendar"></i> {% trans "Event types" %}</a></li>
-                                        <li><a href="{% url 'main.views.list_languages' %}" title=""><i class="icon-flag"></i> {% trans "Languages" %}</a></li>
-                                        <li><a href="{% url 'list_mediatypes' %}" title=""><i class="icon-camera"></i> {% trans "Media types" %}</a></li>
+                                        {% if user.is_superuser  %}
+                                            <li><a href="{% url 'main.views.list_thematics' %}" title=""><i class="icon-tag"></i> {% trans "Thematic areas" %}</a></li>
+                                            <li><a href="{% url 'main.views.list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Source types" %}</a></li>
+                                            <li><a href="{% url 'events.views.list_types' %}" title=""><i class="icon-calendar"></i> {% trans "Event types" %}</a></li>
+                                            <li><a href="{% url 'main.views.list_languages' %}" title=""><i class="icon-flag"></i> {% trans "Languages" %}</a></li>
+                                            <li><a href="{% url 'list_mediatypes' %}" title=""><i class="icon-camera"></i> {% trans "Media types" %}</a></li>
+                                        {% endif %}
+                                        {% if user.is_superuser or service_role.LeisRef = 'admin' %}
+                                            <li><a href="{% url 'list_country_region' %}" title=""><i class="icon-globe"></i> {% trans "Act Country/Region" %}</a></li>
+                                            <li><a href="{% url 'list_act_scope' %}" title=""><i class="icon-sitemap"></i> {% trans "Act Scope" %}</a></li>
+                                            <li><a href="{% url 'list_act_type' %}" title=""><i class="icon-tag"></i> {% trans "Act Type" %}</a></li>
+                                            <li><a href="{% url 'list_act_organ' %}" title=""><i class="icon-briefcase"></i> {% trans "Act Organ Issuer" %}</a></li>
+                                            <li><a href="{% url 'list_act_source' %}" title=""><i class="icon-home"></i> {% trans "Act Source" %}</a></li>
+                                            <li><a href="{% url 'list_act_reltype' %}" title=""><i class="icon-retweet"></i> {% trans "Act Relation Type" %}</a></li>
+                                        {% endif %}
+
                                     </ul>
                                 </li>
                             {% endif %}
