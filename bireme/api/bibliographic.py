@@ -133,10 +133,26 @@ class ReferenceResource(CustomResource):
         attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         alternate_ids = ReferenceAlternateID.objects.filter(reference_id=bundle.obj.id)
 
+        # create lists for primary and secundary descriptors
+        descriptors_primary = []
+        descriptors_secundary = []
+        for descriptor in descriptors:
+            # use text field when code not set (migration records of old DeCS terms)
+            if descriptor.code:
+                descriptor_data = {'text': descriptor.code}
+            else:
+                descriptor_data = {'text': u'^d{0}'.format(descriptor.text)}
+
+            if descriptor.primary:
+                descriptors_primary.append(descriptor_data)
+            else:
+                descriptors_secundary.append(descriptor_data)
+
+
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
-        bundle.data['descriptors_primary'] = [{'text': descriptor.code} for descriptor in descriptors if descriptor.primary is True]
-        bundle.data['descriptors_secondary'] = [{'text': descriptor.code} for descriptor in descriptors if descriptor.primary is False]
+        bundle.data['descriptors_primary'] = descriptors_primary
+        bundle.data['descriptors_secondary'] = descriptors_secundary
         bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
 
