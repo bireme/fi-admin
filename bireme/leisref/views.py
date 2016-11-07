@@ -107,8 +107,13 @@ class LeisRefActListView(ListView):
         param_type = self.request.GET.get('type')
         param_year = self.request.GET.get('year')
         param_number = self.request.GET.get('number')
+        object_list = []
 
-        object_list = self.model.objects.filter(scope_region_id=param_region)
+        if param_region:
+            object_list = self.model.objects.filter(scope_region_id=param_region)
+        else:
+            object_list = self.model.objects.all()
+
         if param_type:
             object_list = object_list.filter(act_type=param_type)
         if param_number:
@@ -120,15 +125,20 @@ class LeisRefActListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(LeisRefActListView, self).get_context_data(**kwargs)
+        act_type_list = []
 
-        region_id = self.request.GET.get('region')
+        param_region = self.request.GET.get('region')
+        if param_region:
+            act_type_list = ActType.objects.filter(scope_region=param_region)
+        else:
+            act_type_list = ActType.objects.all()
 
-        context['param_region'] = region_id
+        context['param_region'] = param_region
         context['param_type'] = self.request.GET.get('type', '')
         context['param_number'] = self.request.GET.get('number', '')
         context['param_year'] = self.request.GET.get('year', '')
         context['param_added'] = self.request.GET.get('added', '')
-        context['act_type_select'] = ActType.objects.filter(scope_region=region_id)
+        context['act_type_select'] = act_type_list
 
         return context
 
