@@ -11,7 +11,7 @@ from tastypie.utils import trailing_slash
 from tastypie.constants import ALL
 from tastypie import fields
 
-from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID
+from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID, ReferenceLocal
 from attachments.models import Attachment
 from isis_serializer import ISISSerializer
 
@@ -106,10 +106,6 @@ class ReferenceResource(CustomResource):
         version_number = version_file.readlines()[0]
         bundle.data['system_version'] = version_number.rstrip()
 
-        # Add LILACS Database
-        if obj.LILACS_indexed:
-            bundle.data['database'] = 'LILACS'
-
         return bundle
 
     def add_fields_to_bundle(self, bundle, obj):
@@ -132,6 +128,7 @@ class ReferenceResource(CustomResource):
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
         attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         alternate_ids = ReferenceAlternateID.objects.filter(reference_id=bundle.obj.id)
+        library_records = ReferenceLocal.objects.filter(source=bundle.obj.id)
 
         # create lists for primary and secundary descriptors
         descriptors_primary = []
@@ -148,6 +145,16 @@ class ReferenceResource(CustomResource):
             else:
                 descriptors_secundary.append(descriptor_data)
 
+        # create list of record databases
+        database_list = [database.acronym for database in bundle.obj.indexed_database.all()]
+
+        local_databases = [library.database for library in library_records]
+        for local_db in local_databases:
+            # split database field for lines (textarea field)
+            db_list = [line.strip() for line in local_db.split('\n') if line.strip()]
+            database_list.extend(db_list)
+
+        # [line.strip() for line in obj.database.split('\n') if line.strip()]
 
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
@@ -155,6 +162,7 @@ class ReferenceResource(CustomResource):
         bundle.data['descriptors_secondary'] = descriptors_secundary
         bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
+        bundle.data['database'] = database_list
 
         electronic_address = []
         for attach in attachments:
