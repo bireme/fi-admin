@@ -33,7 +33,7 @@ class ReferenceResource(CustomResource):
         serializer = ISISSerializer(formats=['json', 'xml', 'isis_id'], field_tag=field_tag_map)
         resource_name = 'bibliographic'
         filtering = {
-            'update_date': ('gte', 'lte'),
+            'updated_time': ('gte', 'lte'),
             'status': 'exact',
             'LILACS_original_id': ALL,
         }
@@ -153,8 +153,6 @@ class ReferenceResource(CustomResource):
             # split database field for lines (textarea field)
             db_list = [line.strip() for line in local_db.split('\n') if line.strip()]
             database_list.extend(db_list)
-
-        # [line.strip() for line in obj.database.split('\n') if line.strip()]
 
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
