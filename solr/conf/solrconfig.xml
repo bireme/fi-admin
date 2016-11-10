@@ -100,6 +100,9 @@
          <str name="facet.field">publication_year</str>
          <str name="facet.field">journal</str>
          <str name="facet.field">database</str>
+         <str name="facet.field">scope_region</str>
+         <str name="facet.field">act_type</str>
+         <str name="facet.field">language</str>
          <str name="facet.limit">20</str>
          <str name="facet.mincount">1</str>
      </lst>
