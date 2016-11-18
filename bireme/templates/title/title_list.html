@@ -116,7 +116,8 @@
                             <td>{{ title.cooperative_center_code }}</td>
                             <td>
                                 <a href="{% url 'edit_title' title.id %}" class='btn btn-mini' title="{% trans 'Edit' %}"><i class='icon-pencil'></i></a>
-                                {% if title.created_by_id = user.id %}
+                                {# if title.created_by_id = user.id #}
+                                {% if user_cc = 'BR1.1' %}
                                     <a href="{% url 'delete_title' title.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>
