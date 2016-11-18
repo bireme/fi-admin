@@ -11,7 +11,7 @@ from tastypie.utils import trailing_slash
 from tastypie.constants import ALL
 from tastypie import fields
 
-from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID, ReferenceLocal
+from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID, ReferenceLocal, ReferenceComplement
 from attachments.models import Attachment
 from isis_serializer import ISISSerializer
 
@@ -129,6 +129,7 @@ class ReferenceResource(CustomResource):
         attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         alternate_ids = ReferenceAlternateID.objects.filter(reference_id=bundle.obj.id)
         library_records = ReferenceLocal.objects.filter(source=bundle.obj.id)
+        complement_data = ReferenceComplement.objects.filter(source=bundle.obj.id)
 
         # create lists for primary and secundary descriptors
         descriptors_primary = []
@@ -182,6 +183,15 @@ class ReferenceResource(CustomResource):
                 bundle.data['electronic_address'].extend(electronic_address)
             else:
                 bundle.data['electronic_address'] = electronic_address
+
+        if complement_data:
+            # add fields of complement (event/project) to bundle
+            complement = complement_data[0]
+            for field in complement._meta.get_fields():
+                if field.name != 'source':
+                    field_value = getattr(complement, field.name, {})
+                    if field_value:
+                        bundle.data[field.name] = copy(field_value)
 
         return bundle
 
