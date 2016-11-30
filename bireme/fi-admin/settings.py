@@ -274,6 +274,9 @@ EXCLUDE_AUDITLOG_FIELDS = ('content_type', 'object_id', 'reference_title',
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
+# set permissions after file upload (444 read only file for security reasons)
+FILE_UPLOAD_PERMISSIONS = 0444
+
 try:
     from settings_local import *
 except ImportError:
