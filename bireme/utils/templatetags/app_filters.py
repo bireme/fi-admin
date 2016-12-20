@@ -203,7 +203,9 @@ def format_field(data, truncate=False):
 
                     out = out + "<br/>"
                 else:
-                    out = ", ".join(data)
+                    # encode list items to utf-8
+                    data_utf8 = [value.encode('utf-8') for value in data]
+                    out = ", ".join(data_utf8)
 
         elif type(data) == unicode:
             out = data.encode('utf-8')

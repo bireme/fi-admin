@@ -6,17 +6,20 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
-from threading import local
 from log.models import AuditLog
 
+import threading
 import json
 
 # create a thread local variable to save user
-_user = local()
+_user = threading.local()
+_m2mfield = threading.local()
+
 
 # FIX https://djangosnippets.org/snippets/2179/
 # http://stackoverflow.com/questions/862522/django-populate-user-id-when-saving-a-model/862870
 class WhodidMiddleware(object):
+
     def process_request(self, request):
         if not request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
             if hasattr(request, 'user') and request.user.is_authenticated():
@@ -25,12 +28,15 @@ class WhodidMiddleware(object):
                 _user.value = None
 
             signals.pre_save.connect(self.mark_whodid,  dispatch_uid=(self.__class__, request,), weak=False)
+            signals.m2m_changed.connect(self.tracking_m2m, dispatch_uid=(self.__class__, request,), weak=False)
             signals.pre_delete.connect(self.mark_whodel,  dispatch_uid=(self.__class__, request,), weak=False)
             signals.post_save.connect(self.mark_whoadd,  dispatch_uid=(self.__class__, request,), weak=False)
 
     def process_response(self, request, response):
         signals.pre_save.disconnect(dispatch_uid=(self.__class__, request,))
         signals.pre_delete.disconnect(dispatch_uid=(self.__class__, request,))
+        signals.m2m_changed.disconnect(dispatch_uid=(self.__class__, request,))
+        signals.post_save.disconnect(dispatch_uid=(self.__class__, request,))
         return response
 
     def mark_whodel(self, sender, instance, **kwargs):
@@ -38,6 +44,41 @@ class WhodidMiddleware(object):
         # mark instance as deleted and call mark_whodid function
         instance.was_deleted = True
         self.mark_whodid(sender, instance, **kwargs)
+
+    # necessary for track ManyToManyField changes
+    def tracking_m2m(self, sender, instance, action, reverse, model, pk_set, **kwargs):
+
+        field_name = sender._meta.model_name.split('_', 1)[1]
+
+        if action == 'pre_clear':
+            # before django clear the relation save as local thread variable the list of values of many to may field
+            previous_ref = getattr(instance, field_name)
+            previous_values = [unicode(i) for i in previous_ref.all()]
+
+            setattr(_m2mfield, field_name, previous_values)
+
+        if action == 'post_add':
+            # compare list of pre-value with current values
+            new_ref = getattr(instance, field_name)
+            new_values = [unicode(i) for i in new_ref.all()]
+            previous_values = getattr(_m2mfield, field_name)
+
+            if new_values != previous_values:
+                user = self.get_current_user()
+                log_object_ct_id = ContentType.objects.get_for_model(instance).pk
+                log_object_id = instance.pk
+                log_repr = str(instance)
+
+                field_change = [{'field_name': field_name, 'previous_value': previous_values,
+                                'new_value': new_values}]
+                field_change_json = json.dumps(field_change, encoding="utf-8", ensure_ascii=False)
+
+                LogEntry.objects.log_action(user_id=user.id,
+                                            content_type_id=log_object_ct_id,
+                                            object_id=log_object_id,
+                                            object_repr=log_repr,
+                                            change_message=field_change_json,
+                                            action_flag=CHANGE)
 
     def mark_whodid(self, sender, instance, **kwargs):
         user = self.get_current_user()
