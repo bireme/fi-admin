@@ -75,7 +75,7 @@ def check_descriptor(form, formset_descriptor):
 
             # check for status and not marked for DELETE
             if data.get('DELETE') == False:
-                if data.get('text') and data.get('code'):
+                if data.get('text'):
                     if data.get('primary') == True:
                         descriptor_primary = True
 
