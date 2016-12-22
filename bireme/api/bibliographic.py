@@ -146,22 +146,13 @@ class ReferenceResource(CustomResource):
             else:
                 descriptors_secundary.append(descriptor_data)
 
-        # create list of record databases
-        database_list = [database.acronym for database in bundle.obj.indexed_database.all()]
-
-        local_databases = [library.database for library in library_records]
-        for local_db in local_databases:
-            # split database field for lines (textarea field)
-            db_list = [line.strip() for line in local_db.split('\n') if line.strip()]
-            database_list.extend(db_list)
-
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
         bundle.data['descriptors_primary'] = descriptors_primary
         bundle.data['descriptors_secondary'] = descriptors_secundary
         bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
-        bundle.data['database'] = database_list
+        bundle.data['database'] = [database.acronym for database in bundle.obj.indexed_database.all()]
 
         electronic_address = []
         for attach in attachments:
@@ -192,6 +183,22 @@ class ReferenceResource(CustomResource):
                     field_value = getattr(complement, field.name, {})
                     if field_value:
                         bundle.data[field.name] = copy(field_value)
+
+        if library_records:
+            # add fields of library records to bundle
+            local_databases = []
+            for library in library_records:
+                for field in library._meta.get_fields():
+                    field_value = getattr(library, field.name, {})
+                    if field.name == 'database':
+                        local_db_list = [line.strip() for line in field_value.split('\n') if line.strip()]
+                        local_databases.extend(local_db_list)
+                    elif field.name != 'source':
+                        bundle.data[field.name] = copy(field_value)
+
+            if local_databases:
+                # add local databases to database field (v04)
+                bundle.data['database'].extend(local_databases)
 
         return bundle
 
