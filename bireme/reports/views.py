@@ -18,6 +18,7 @@ from utils.context_processors import additional_user_info
 from collections import OrderedDict
 from main.models import Descriptor, ThematicArea
 from multimedia.models import Media, MediaCollection
+from title.models import Title, IndexRange
 from utils.views import CSVResponseMixin
 
 
@@ -54,7 +55,7 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                 user_list = User.objects.all()
                 user_filter_list = []
 
-                # if is superuser or is a user from BR1.1 (BIREME) 
+                # if is superuser or is a user from BR1.1 (BIREME)
                 if self.request.user.is_superuser or user_data['user_cc'] == 'BR1.1':
                     user_filter_list = user_list
                 else:
@@ -166,6 +167,12 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
 
                     # sort the result list by total (reverse)
                     report_rows = sorted(report_rows, key=lambda k:k['total'], reverse=True)
+
+            if report == '8':
+                report_rows = OrderedDict
+                serial_list = Title.objects.filter(indexrange__index_code__code='LL').order_by('country')
+
+                report_rows = serial_list.values('shortened_title', 'indexer_cc_code', 'editor_cc_code', 'country__name')
 
 
         return report_rows
