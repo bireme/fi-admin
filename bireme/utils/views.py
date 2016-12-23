@@ -108,7 +108,8 @@ class CSVResponseMixin(object):
             # Write the data from the context somehow
             for item in data:
                 # print item.items()
-                writer.writerow(item.values())
+                encode_values = [value.encode('utf-8') for value in item.values()]
+                writer.writerow(encode_values)
 
             return response
         # Business as usual otherwise
