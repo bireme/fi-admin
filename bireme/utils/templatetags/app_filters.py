@@ -12,6 +12,7 @@ register = template.Library()
 
 def get_status_info(code):
     STATUS = (
+        {'code': -2, 'label': _('Submission'), 'icons': 'icon-upload status-submission', 'label_color': 'inverse'},
         {'code': -1, 'label': _('Draft'), 'icons': 'icon-time status-draft', 'label_color': ''},
         {'code': 0, 'label': 'LILACS-Express', 'icons': 'icon-flag status-pending', 'label_color': 'info'},
         {'code': 1, 'label': _('Published'), 'icons': 'icon-ok-sign status-ok', 'label_color': 'success'},
