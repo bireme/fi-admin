@@ -20,6 +20,7 @@ from main.models import Descriptor, ThematicArea
 from multimedia.models import Media, MediaCollection
 from title.models import Title, IndexRange
 from utils.views import CSVResponseMixin
+from biblioref.models import ReferenceAnalytic
 
 
 class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
@@ -174,6 +175,20 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
 
                 report_rows = serial_list.values('shortened_title', 'indexer_cc_code', 'editor_cc_code', 'country__name')
 
+            # LILACS-Express by Serial
+            if report == '9':
+                # filter by status LILACS-Express and order by serial title
+                llxp_list = ReferenceAnalytic.objects.filter(status=-1).order_by('source__title_serial')
+
+                # summarize by serial
+                report_rows = llxp_list.values('source__title_serial', 'source__volume_serial',
+                                               'source__issue_number').annotate(num_pending=Count('pk')).order_by('-num_pending')
+
+                # add information of indexer cc code
+                for row in report_rows:
+                    current_title = row['source__title_serial']
+                    indexer_cc = Title.objects.get(shortened_title=current_title).indexer_cc_code
+                    row.update({'indexer_cc': indexer_cc})
 
         return report_rows
 
