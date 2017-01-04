@@ -96,9 +96,18 @@ class ReferenceResource(CustomResource):
 
         # Add Source fields to bundle
         if 'source' in bundle.data:
+            import_field_list = ['title_serial', 'volume_serial', 'issue_number', 'issn',
+                                 'individual_author_monographic', 'corporate_author_monographic',
+                                 'title_monographic', 'english_title_monographic', 'pages_monographic',
+                                 'volume_monographic', 'publisher', 'edition', 'publication_city',
+                                 'publication_country', 'symbol', 'isbn', 'individual_author_collection',
+                                 'corporate_author_collection', 'title_collection', 'english_title_collection',
+                                 'total_number_of_volumes', 'thesis_dissertation_leader',
+                                 'thesis_dissertation_institution', 'thesis_dissertation_academic_title']
+
             source_id = bundle.data['source']
             obj_source = ReferenceSource.objects.get(pk=source_id)
-            bundle = self.add_fields_to_bundle(bundle, obj_source)
+            bundle = self.add_fields_to_bundle(bundle, obj_source, import_field_list)
             bundle.data['source_control'] = 'FONTE'
 
         # Add system version control number
@@ -108,13 +117,16 @@ class ReferenceResource(CustomResource):
 
         return bundle
 
-    def add_fields_to_bundle(self, bundle, obj):
+    def add_fields_to_bundle(self, bundle, obj, import_field_list=[]):
         for field in obj._meta.get_fields():
-            # check if field is not already in bundle or has no value in bundle.data
-            if field.name not in bundle.data or not bundle.data.get(field.name):
-                field_value = getattr(obj, field.name, {})
-                if field_value:
-                    # copy value to mantain list (jsonfieds)
+            field_value = getattr(obj, field.name, {})
+            if field_value:
+                # if import_field_list is present check if field is the list
+                if import_field_list:
+                    if field.name in import_field_list:
+                        bundle.data[field.name] = copy(field_value)
+                # check if field is not already in bundle or has no value in bundle.data
+                elif field.name not in bundle.data or not bundle.data.get(field.name):
                     bundle.data[field.name] = copy(field_value)
 
         return bundle
