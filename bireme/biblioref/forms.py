@@ -80,6 +80,11 @@ class BiblioRefForm(BetterModelForm):
         if self.user_data['user_cc'] != 'BR1.1':
             self.fields['BIREME_reviewed'].widget = widgets.HiddenInput()
 
+        # hide unnecessary fields of thesis
+        if self.document_type == 'Tm':
+            self.fields['publisher'].widget = widgets.HiddenInput()
+            self.fields['isbn'].widget = widgets.HiddenInput()
+
         # load serial titles for serial analytic
         if self.document_type == 'S' and not self.reference_source:
             title_objects = Title.objects.all()
@@ -835,6 +840,10 @@ class BiblioRefForm(BetterModelForm):
             # mark source of serial with LLXP status
             elif self.document_type == 'S':
                 obj.status = '0'
+
+        # add default value for publisher field in thesis record
+        if self.document_type == 'Tm':
+            obj.publisher = 's.n'
 
         # save object
         obj.save()
