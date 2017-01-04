@@ -6,16 +6,17 @@ from django.contrib.contenttypes.models import ContentType
 from main.models import Descriptor, ResourceThematic, ThematicArea
 from title.models import Title
 from utils.models import AuxCode
+from database.models import Database
 
 from utils.tests import BaseTestCase
 from models import *
-
 
 form_data = {}
 
 form_data['S'] = {
     'status': '-1',
     'LILACS_indexed': True,
+    'indexed_database': 1,
     'title_serial': 'Rev. Enfermagem',
     'volume_serial': '10',
     'issue_number': '2',
@@ -24,6 +25,7 @@ form_data['S'] = {
 form_data['Sas'] = {
     'status': '-1',
     'LILACS_indexed': True,
+    'indexed_database': 1,
     'title': '[{"text": "Primeira analítica", "_i": "pt"}]',
     'english_translated_title': 'Hello World',
     'individual_author': '[{"text": "Chaves, Juca"}]'
@@ -32,6 +34,7 @@ form_data['Sas'] = {
 form_data['Mm'] = {
     'status': '-1',
     'LILACS_indexed': True,
+    'indexed_database': 1,
     'title_monographic': '[{"text": "Primeira monografia", "_i": "pt"}]',
     'individual_author_monographic': '[{"text": "Chaves, Juca"}]',
     'english_title_monographic': 'First monographic',
@@ -47,6 +50,7 @@ form_data['Mm'] = {
 form_data['Mam'] = {
     'status': '-1',
     'LILACS_indexed': True,
+    'indexed_database': 1,
     'title': '[{"text": "Primeira analítica da primeira monografia", "_i": "pt"}]',
     'english_translated_title': 'Transled title',
     'text_language': 'pt',
@@ -57,6 +61,7 @@ form_data['Mam'] = {
 form_data['Tm'] = {
     'status': '-1',
     'LILACS_indexed': True,
+    'indexed_database': 1,
     'title_monographic': '[{"text": "Primeira tese", "_i": "pt"}]',
     'individual_author_monographic': '[{"text": "Chaves, Juca"}]',
     'english_title_monographic': 'Transled title',
@@ -73,6 +78,7 @@ form_data['Tm'] = {
 form_data['Tam'] = {
     'status': '-1',
     'LILACS_indexed': True,
+    'indexed_database': 1,
     'title': '[{"text": "Primeira analítica de tese", "_i": "pt"}]',
     'english_translated_title': 'Transled title',
     'individual_author': '[{"text": "Chaves, Juca"}]',
@@ -83,6 +89,7 @@ form_data['Tam'] = {
 form_data['Mc'] = {
     'status': '-1',
     'LILACS_indexed': True,
+    'indexed_database': 1,
     'title_collection': '[{"text": "Primeiro registro de coleção de monografias", "_i": "pt"}]',
     'english_title_collection': 'First monographic',
     'individual_author_collection': '[{"text": "Chaves, Juca"}]',
@@ -98,6 +105,7 @@ form_data['Mc'] = {
 form_data['Mmc'] = {
     'status': '-1',
     'LILACS_indexed': True,
+    'indexed_database': 1,
     'title_collection': '[{"text": "Registro fonte do tipo Monografia pertencente a uma coleção", "_i": "pt"}]',
     'individual_author_collection': '[{"text": "Chaves, Juca"}]',
     'english_title_collection': 'First monographic',
@@ -117,6 +125,7 @@ form_data['Mmc'] = {
 form_data['Mamc'] = {
     'status': '-1',
     'LILACS_indexed': True,
+    'indexed_database': 1,
     'title': '[{"text": "Primeira analítica", "_i": "pt"}]',
     'english_translated_title': 'Transled title',
     'text_language': 'pt',
@@ -172,6 +181,7 @@ class BiblioRefTest(BaseTestCase):
                              shortened_title='Rev. Enfermagem', editor_cc_code='BR772', indexer_cc_code='BR1.1', issn='0000-XXXXX')
 
         Country.objects.create(code='BR', name='Brasil', LA_Caribbean=True)
+        Database.objects.create(acronym='LILACS', regional_index=True)
 
     def test_editor_llxp(self):
         """
