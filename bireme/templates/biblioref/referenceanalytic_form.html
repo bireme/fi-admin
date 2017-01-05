@@ -446,7 +446,7 @@
                 event.preventDefault();
                 btn = $(this);
                 $.confirm({
-                    text: "{% trans 'After publication the record can only be modified by an editor. Continue?' %}",
+                    text: "{% trans 'After publication the record can only be modified by a user with editor profile. Continue?' %}",
                         confirm: function(button) {
                             // set status to Published (1) = LILACS
                             $('#id_status').val('1');

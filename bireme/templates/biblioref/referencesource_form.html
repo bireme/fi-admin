@@ -313,9 +313,26 @@
             $('#id_status').val('0');
         });
 
-        $("#save-published").click(function() {
-            // set status to Published (1) = LILACS
-            $('#id_status').val('1');
+        $("#save-published").click(function( event ) {
+            {% if user_role != 'doc' %}
+                $('#id_status').val('1');
+            {% else %}
+                event.preventDefault();
+                btn = $(this);
+                $.confirm({
+                    text: "{% trans 'After publication the record can only be modified by a user with editor profile. Continue?' %}",
+                        confirm: function(button) {
+                            // set status to Published (1) = LILACS
+                            $('#id_status').val('1');
+                            $('.reference-form').submit();
+                        },
+                        cancel: function(button) {
+                            // nothing to do
+                        },
+                        confirmButton: "{% trans 'Yes' %}",
+                        cancelButton: "{% trans 'No' %}"
+                });
+            {% endif %}
         });
 
         $("#id_status").change(function(){
