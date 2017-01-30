@@ -36,6 +36,7 @@ class ReferenceResource(CustomResource):
             'updated_time': ('gte', 'lte'),
             'status': 'exact',
             'LILACS_original_id': ALL,
+            'id': ALL,
         }
         include_resource_uri = True
 
@@ -191,7 +192,7 @@ class ReferenceResource(CustomResource):
             # add fields of complement (event/project) to bundle
             complement = complement_data[0]
             for field in complement._meta.get_fields():
-                if field.name != 'source':
+                if field.name != 'source' and field.name != 'id':
                     field_value = getattr(complement, field.name, {})
                     if field_value:
                         bundle.data[field.name] = copy(field_value)
@@ -205,7 +206,7 @@ class ReferenceResource(CustomResource):
                     if field.name == 'database':
                         local_db_list = [line.strip() for line in field_value.split('\n') if line.strip()]
                         local_databases.extend(local_db_list)
-                    elif field.name != 'source':
+                    elif field.name != 'source' and field.name != 'id':
                         bundle.data[field.name] = copy(field_value)
 
             if local_databases:
