@@ -568,7 +568,7 @@ class BiblioRefForm(BetterModelForm):
                 title_languages = [t.get('_i') for t in title]
 
             if not(data):
-                if self.is_LILACS and title and not 'en' in title_languages:
+                if self.is_LILACS and title and not 'en' in title_languages and status != 0:
                     self.add_error(field, _("Mandatory"))
             else:
                 if self.is_LILACS and 'en' in title_languages:
