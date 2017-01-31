@@ -98,6 +98,7 @@ class ReferenceResource(CustomResource):
         # Add Source fields to bundle
         if 'source' in bundle.data:
             import_field_list = ['title_serial', 'volume_serial', 'issue_number', 'issn',
+                                 'publication_date', 'publication_date_normalized',
                                  'individual_author_monographic', 'corporate_author_monographic',
                                  'title_monographic', 'english_title_monographic', 'pages_monographic',
                                  'volume_monographic', 'publisher', 'edition', 'publication_city',
