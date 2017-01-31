@@ -787,6 +787,16 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_indexed_database(self):
+        field = 'indexed_database'
+        data = self.cleaned_data[field]
+
+        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+            if not data:
+                self.add_error(field, _('Mandatory'))
+
+        return data
+
     def save(self, *args, **kwargs):
         obj = super(BiblioRefForm, self).save(commit=False)
 
