@@ -71,7 +71,7 @@ class Reference(Generic, AuditLog):
     # field tag 83
     abstract = JSONField(_('Abstract'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 84
-    transfer_date_to_database = models.CharField(_('Transfer date do database'), max_length=20, blank=True)
+    transfer_date_to_database = models.CharField(_('Transfer date do database'), max_length=20, blank=True, editable=False)
     # field tag 85
     author_keyword = JSONField(_('Author keyword'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 110
