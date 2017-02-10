@@ -18,7 +18,7 @@ from utils.context_processors import additional_user_info
 from collections import OrderedDict
 from main.models import Descriptor, ThematicArea
 from multimedia.models import Media, MediaCollection
-from title.models import Title, IndexRange
+from title.models import Title, IndexRange, IndexCode
 from utils.views import CSVResponseMixin
 from biblioref.models import ReferenceAnalytic
 
@@ -171,7 +171,12 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
 
             if report == '8':
                 report_rows = OrderedDict
-                serial_list = Title.objects.filter(indexrange__index_code__code='LL').order_by('country')
+                # get LILACS pk for filter in Title table
+                lilacs_code = IndexCode.objects.get(code='LL').pk
+                # filter by LILACS indexed titles
+                serial_list = Title.objects.filter(indexrange__index_code=lilacs_code).order_by('country', 'shortened_title')
+                # exclude titles that doesn't have indexer_cc_code
+                serial_list = serial_list.exclude(indexer_cc_code='', indexrange__indexer_cc_code='')
 
                 report_rows = serial_list.values('shortened_title', 'indexer_cc_code', 'editor_cc_code', 'country__name')
 
