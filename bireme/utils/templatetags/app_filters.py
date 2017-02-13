@@ -228,9 +228,7 @@ def substring_before(text, delim):
 
 @register.filter
 def auxfield(field):
-    # empty value
-    aux_values = [('', '')]
-    aux_values.extend(AuxCode.objects.filter(field=field.name))
+    aux_values = AuxCode.objects.filter(field=field.name)
 
     return aux_values
 

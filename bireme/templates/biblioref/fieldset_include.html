@@ -100,8 +100,9 @@
                                 {{ field }}
                                 <p>
                                     <select  id="thesis_dissertation_academic_title_options" onchange="choose_controled_value(this.id, 'thesis_dissertation_academic_title')">
+                                        <option value=""></option>
                                         {% for academic_title in field|auxfield %}
-                                            <option value="{{ academic_title.code }}">{{ academic_title.label }}</option>
+                                            <option value="{{ academic_title }}">{{ academic_title }}</option>
                                         {% endfor %}
                                     </select>
                                 </p>
