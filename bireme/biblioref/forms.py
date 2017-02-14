@@ -718,7 +718,7 @@ class BiblioRefForm(BetterModelForm):
                 self.add_error(field, _('Mandatory'))
             else:
                 if self.is_LILACS:
-                    allowed_values = [aux.code for aux in AuxCode.objects.filter(field=field)]
+                    allowed_values = [unicode(aux) for aux in AuxCode.objects.filter(field=field)]
                     if data not in allowed_values:
                         self.add_error(field, _('LILACS incompatible'))
 
