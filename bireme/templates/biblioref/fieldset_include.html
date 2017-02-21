@@ -22,7 +22,7 @@
                     {% endif %}
                 {% else %}
                     <li {{ field.row_attrs }} {% if not field.is_hidden %}id="field_{{ field.name }}"{% endif %}>
-                        {% if field.name == 'status' and not user_can_change_status %}
+                        {% if field.name == 'status' and document_type == 'S' or field.name == 'status' and not user_can_change_status %}
                             <p>
                                 {{ field.label }} :
                                 {% if document_type == 'S' %}
@@ -31,7 +31,7 @@
                                     {{ field.value|display_status_label }}
                                 {% endif %}
                             </p>
-                            {{ field }}
+                            {{ field.as_hidden }}
                         {% else %}
                             {% if field.label %}
                                 {% if not field.is_hidden or field.field|fieldtype == 'JSONFormField' %}
