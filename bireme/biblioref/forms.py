@@ -608,7 +608,8 @@ class BiblioRefForm(BetterModelForm):
         status = self.cleaned_data.get('status')
 
         if self.is_visiblefield(field) and (status != -1 or self.document_type == 'S'):
-            if data.isalpha() and data != 's.d' and data != 's.f':
+            search_year = re.search('[0-9]{4}', data)
+            if search_year == None and data != 's.d' and data != 's.f':
                 self.add_error(field, _("Date without year"))
 
             if not data:
@@ -631,22 +632,23 @@ class BiblioRefForm(BetterModelForm):
                     if len(normalized_date) != 8:
                         self.add_error(normalized_field, _("Different of 8 characters"))
 
-                    # extract year from raw date field
-                    raw_date_year = re.search('([0-9]{4})', raw_date).group(1)
-                    if not normalized_date[0:4] == raw_date_year:
-                        error_message = _("Normalized date year must be '%s'") % raw_date_year
-                        self.add_error(normalized_field, error_message)
+                    if self.is_LILACS and int(normalized_date[:4]) < 1982:
+                        self.add_error(normalized_field, _("Incompatible with LILACS"))
 
-                    if self.is_LILACS:
-                        if int(normalized_date[:4]) < 1982:
-                            self.add_error(normalized_field, _("Incompatible with LILACS"))
+                    # extract year from raw date field
+                    search_year = re.search('([0-9]{4})', raw_date)
+                    if search_year != None:
+                        raw_date_year = search_year.group(1)
+
+                        if not normalized_date[0:4] == raw_date_year:
+                            error_message = _("Normalized date year must be '%s'") % raw_date_year
+                            self.add_error(normalized_field, error_message)
 
                         if len(raw_date) == 4:
                             incomplete_normalized_date = "%s0000" % raw_date
                             if not normalized_date == incomplete_normalized_date:
                                 error_message = _("Error in the date, use: %s") % incomplete_normalized_date
                                 self.add_error(normalized_field, error_message)
-
             else:
                 if normalized_date:
                     msg = _("Leave blank, publication date = %s") % raw_date
