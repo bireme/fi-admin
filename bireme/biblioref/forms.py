@@ -111,7 +111,7 @@ class BiblioRefForm(BetterModelForm):
                 title_list_indexer_code = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_indexed_by_this_cc]
                 title_list_other = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_indexed_by_others]
 
-                separator = "-----------"
+                separator = " ----------- "
                 label_indexed = separator + __('Indexed by your cooperative center') + separator
                 label_not_indexed = separator + __('Indexed by other cooperative centers') + separator
 

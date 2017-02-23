@@ -79,14 +79,14 @@
                             {% if field.name == 'title_serial' and form.document_type.0 == 'S' %}
                                 <div>
                                     {% if form.fields.title_serial.choices|length > 1 %}
-                                        <select id="{{ field.auto_id }}" name="{{ field.name }}" onchange="fill_issn()">
+                                        <select id="{{ field.auto_id }}" name="{{ field.name }}" onchange="fill_issn()" size="8">
                                         {% for value, label in form.fields.title_serial.choices %}
                                             <option value="{{ value }}"{% if field.value == value %} selected{% endif %} data-issn="{{ label|substring_after:'|' }}">{{ label|substring_before:'|' }}</option>
                                         {% endfor %}
                                         </select>
                                         {% if user_role != 'editor_llxp' %}
                                             <div>
-                                                <p>{% trans "Other journal title (from refereces not indexed in LILACS)" %}</p>
+                                                <p>{% trans "Other journal title (not indexed in Virtual Health Library)" %}</p>
                                                 <input id="id_title_serial_other" maxlength="80" name="title_serial_other" type="text" value="{%if field.value and not field.value|invalues:form.fields.title_serial.choices %}{{ field.value }}{% elif form.title_serial_other.value  %}{{ form.title_serial_other.value }}{% endif %}">
                                             </div>
                                         {% endif %}
