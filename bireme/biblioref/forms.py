@@ -107,17 +107,18 @@ class BiblioRefForm(BetterModelForm):
                 # second exclude titles where indexer_cc_code is empty and then exclude titles from the current cc (alread listed in titles_indexed_by_this_cc)
                 titles_indexed_by_others = titles_indexed_by_others.exclude(indexrange__indexer_cc_code='').exclude(indexrange__indexer_cc_code=cc_code).order_by('shortened_title')
 
-                title_list = [('', '')]
+                title_list = []
                 title_list_indexer_code = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_indexed_by_this_cc]
                 title_list_other = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_indexed_by_others]
 
-                separator = " ----------- "
+                separator = u' ────────── '
                 label_indexed = separator + __('Indexed by your cooperative center') + separator
                 label_not_indexed = separator + __('Indexed by other cooperative centers') + separator
 
                 if title_list_indexer_code:
                     title_list.extend([('', label_indexed)])
                     title_list.extend(title_list_indexer_code)
+                    title_list.extend([('', '')])
                 title_list.extend([('', label_not_indexed)])
                 title_list.extend(title_list_other)
 
