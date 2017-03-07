@@ -2,6 +2,7 @@ from django import template
 from django.utils.translation import gettext as _
 from django.utils.safestring import mark_safe
 from django.utils.html import linebreaks
+from django.core.exceptions import FieldDoesNotExist
 
 from utils.models import AuxCode
 
@@ -111,6 +112,20 @@ def display_field(context, field):
 
     return out
 
+@register.filter
+def display_json_value(value):
+    if not isinstance(value, basestring):
+        value = str(value)
+        value = value.replace("'", '\"')
+        field_value = value
+    else:
+        if value.startswith('[{'):
+            field_value = json.loads(value)
+        else:
+            field_value = value
+
+    out = format_field(field_value)
+    return out
 
 @register.filter
 def display_status_icon(status):
@@ -205,7 +220,7 @@ def format_field(data, truncate=False):
                     out = out + "<br/>"
                 else:
                     # encode list items to utf-8
-                    data_utf8 = [value.encode('utf-8') for value in data]
+                    data_utf8 = [value.encode('utf-8') if isinstance(value, basestring) else str(value) for value in data]
                     out = ", ".join(data_utf8)
 
         elif type(data) == unicode:
@@ -236,3 +251,23 @@ def auxfield(field):
 def field_has_error(form, field):
 
     return form.has_error(field)
+
+def get_class(kls):
+    parts = kls.split('.')
+    module = ".".join(parts[:-1])
+    m = __import__(module)
+    for comp in parts[1:]:
+        m = getattr(m, comp)
+    return m
+
+
+@register.filter
+def display_field_label(field_name, class_name):
+    model = get_class(class_name)
+    try:
+        field = model._meta.get_field(field_name)
+        field_label = field.verbose_name
+    except FieldDoesNotExist:
+        field_label = field_name
+
+    return field_label.capitalize()

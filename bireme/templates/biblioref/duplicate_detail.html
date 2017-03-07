@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load app_filters %}
+
+{% block top %} {% endblock %}
+{% block breadcrumb_wrap %} {% endblock %}
+
+{% block content %}
+{% if duplicate_list.count > 1  %}
+    <div>
+        <h4>{% trans "Duplicate record list" %}</h4>
+        <table class="table table-striped">
+            <tr>
+                <th>{% trans "#" %}</th>
+                <th>{% trans "Center" %}</th>
+            </tr>
+            {% for duplicate in duplicate_list %}
+                <tr>
+                    <td><a href="?duplicate_id={{duplicate.id}}">{{ forloop.counter }}</a></td>
+                    <td><a href="?duplicate_id={{duplicate.id}}">{{ duplicate.cooperative_center_code }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}
+
+{% if duplicate  %}
+    <h4>{% trans "Duplicate record" %}</h4>
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="active"><a href="#tab-metadata" data-toggle="tab">{% trans "Metadata" %}</a></li>
+        <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
+        <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}</a></li>
+        <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="tab-metadata" class="tab-pane active">
+            <table class="table table-striped">
+            {% for field, value in metadata.fields.items %}
+                <tr>
+                    <td>{{field|display_field_label:'biblioref.models.ReferenceAnalytic'}}</td><td>{{value|display_json_value|safe}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+
+        <div id='tab-descriptors' class="tab-pane">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>{% trans "Descriptor" %}</th>
+                        <th>{% trans "Primary?" %}</th>
+                    </tr>
+                </thead>
+            {% for descriptor in indexing %}
+                <tr>
+                  <td>{{descriptor.fields.text}}</td>
+                  <td>{{descriptor.fields.primary}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+
+        <div id="tab-library" class="tab-pane">
+            <table class="table table-striped">
+                {% for field, value in library.fields.items %}
+                <tr>
+                    <td>{{field|display_field_label:'biblioref.models.ReferenceLocal'}}</td><td>{{value|display_json_value|safe}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div id="tab-complement" class="tab-pane">
+            <table class="table table-striped">
+            {% for field, value in complement.fields.items %}
+                <tr>
+                    <td>{{field|display_field_label:'biblioref.models.ReferenceComplement'}}</td><td>{{value|display_json_value|safe}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block footer %}{% endblock %}
