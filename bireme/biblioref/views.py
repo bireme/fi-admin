@@ -553,3 +553,30 @@ def field_assist(request, **kwargs):
         'field_id': field_id,
         'deform_dependencies': form.get_widget_resources()
     })
+
+@csrf_exempt
+def view_duplicates(request, reference_id):
+    """
+    Present list of duplicates references (identified at migration process)
+    """
+    duplicate_list = ReferenceDuplicate.objects.filter(reference=reference_id)
+    metadata = indexing = library = {}
+    duplicate = None
+
+    duplicate_id = request.GET.get('duplicate_id')
+    if duplicate_id:
+        duplicate = ReferenceDuplicate.objects.get(pk=duplicate_id)
+    elif duplicate_list.count() == 1:
+        duplicate = duplicate_list[0]
+
+    if duplicate:
+        metadata = json.loads(duplicate.metadata_json)
+        indexing = json.loads(duplicate.indexing_json)
+        library = json.loads(duplicate.library_json)
+
+    return render_to_response('biblioref/duplicate_detail.html', {'duplicate_list': duplicate_list,
+                                                                  'duplicate': duplicate,
+                                                                  'metadata': metadata,
+                                                                  'indexing': indexing,
+                                                                  'library': library
+                                                                  })

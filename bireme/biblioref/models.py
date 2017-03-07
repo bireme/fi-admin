@@ -149,6 +149,10 @@ class Reference(Generic, AuditLog):
     def document_type(self):
         return "%s%s" % (self.literature_type, self.treatment_level)
 
+    def has_duplicates(self):
+        has_duplicates = ReferenceDuplicate.objects.filter(reference=self.pk).exists()
+
+        return has_duplicates
 
 # Source
 class ReferenceSource(Reference):
@@ -332,3 +336,18 @@ class ReferenceAlternateID(models.Model):
 
     reference = models.ForeignKey(Reference, verbose_name=_("Reference"), blank=False)
     alternate_id = models.CharField(_('Alternate id'), max_length=55, blank=False)
+
+
+# Bibliographic Record Duplicates (Migration)
+class ReferenceDuplicate(models.Model):
+    class Meta:
+        verbose_name = _("Bibliographic Record Migration Duplicate" )
+        verbose_name_plural = _("Bibliographic Migration Duplicates Records")
+
+    reference = models.ForeignKey(Reference, verbose_name=_("Reference"), blank=False)
+    metadata_json = models.TextField(_('Metadata JSON'), blank=True)
+    indexing_json = models.TextField(_('Indexing JSON'), blank=True)
+    complement_json = models.TextField(_('Event/Project JSON'), blank=True)
+    library_json = models.TextField(_('Library JSON'), blank=True)
+    others_json = models.TextField(_('Other fields JSON'), blank=True)
+    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)

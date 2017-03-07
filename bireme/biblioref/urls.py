@@ -17,4 +17,5 @@ urlpatterns = [
 
     url(r'^field_assist/(?P<field_name>\w+)/', field_assist, name='field_assist'),
 
+    url(r'^duplicates/(?P<reference_id>\d+)/', view_duplicates, name='view_duplicates'),
 ]
