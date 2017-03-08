@@ -8,7 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
-from tastypie.constants import ALL
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID, ReferenceLocal, ReferenceComplement
@@ -18,6 +18,7 @@ from isis_serializer import ISISSerializer
 from tastypie_custom import CustomResource
 
 from main.models import Descriptor, ResourceThematic
+from database.models import Database
 from biblioref.field_definitions import field_tag_map
 
 import os
@@ -36,9 +37,21 @@ class ReferenceResource(CustomResource):
             'updated_time': ('gte', 'lte'),
             'status': 'exact',
             'LILACS_original_id': ALL,
-            'id': ALL,
+            'indexed_database': ALL,
+            'id': ALL
         }
         include_resource_uri = True
+
+
+    def build_filters(self, filters=None):
+        orm_filters = super(ReferenceResource, self).build_filters(filters)
+
+        if 'indexed_database' in filters:
+            filter_db = filters['indexed_database']
+            filter_db_id = Database.objects.get(acronym=filter_db)
+            orm_filters['indexed_database__exact'] = filter_db_id
+            
+        return orm_filters
 
     def prepend_urls(self):
         return [
