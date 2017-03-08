@@ -101,7 +101,7 @@ class Media(Generic):
     media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"), null=True, blank=True)
     title = models.CharField(_('Original title'), max_length=455, blank=False)
     title_translated = models.CharField(_('Translated title'), max_length=455, blank=True)
-    link = models.URLField(_('Link'), blank=False)
+    link = models.URLField(_('Link'), max_length=255, blank=False)
     description = models.TextField(_("Description"), blank=True)
     authors = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
     contributors = models.TextField(_('Contributors'), blank=True, help_text=_("Enter one per line"))
