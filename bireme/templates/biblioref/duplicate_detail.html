@@ -11,7 +11,7 @@
         <h4>{% trans "Duplicate record list" %}</h4>
         <table class="table table-striped">
             <tr>
-                <th>{% trans "#" %}</th>
+                <th>#</th>
                 <th>{% trans "Center" %}</th>
             </tr>
             {% for duplicate in duplicate_list %}
@@ -31,6 +31,7 @@
         <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
         <li><a href="#tab-library" data-toggle="tab"><i class="icon-home"></i> {% trans "Library" %}</a></li>
         <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}</a></li>
+        <li><a href="#tab-other" data-toggle="tab"><i class="icon-plus-sign"></i> {% trans "Others" %}</a></li>
     </ul>
 
     <div class="tab-content">
@@ -80,6 +81,17 @@
             {% endfor %}
             </table>
         </div>
+
+        <div id="tab-other" class="tab-pane">
+            <table class="table table-striped">
+            {% for field, value in other.fields.items %}
+                <tr>
+                    <td>{{field}}</td><td>{{value|display_json_value|safe}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+
     </div>
     {% endif %}
 {% endblock %}

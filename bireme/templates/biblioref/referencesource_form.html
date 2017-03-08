@@ -112,9 +112,14 @@
 
                     {% endif %}
 
-                    <!-- display changes log -->
+                    <!-- display changes log and duplicates -->
                     {%if object.pk %}
-                        <i class="icon icon-time"></i> <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/">{% trans "Changes history" %}</a>
+                        <div class="btn-group pull-right">
+                            <button class="btn"><i class="icon icon-time"></i> <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/">{% trans "Changes history" %}</a></button>
+                            {%if object.has_duplicates %}
+                                <button class="btn"><i class="icon icon-retweet"></i> <a href="/bibliographic/duplicates/{{object.id}}/" target="_blank">{% trans "Duplicates" %}</a></button>
+                            {% endif %}
+                        </div>
                     {% endif %}
             </div>
 

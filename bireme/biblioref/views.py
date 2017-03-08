@@ -560,7 +560,7 @@ def view_duplicates(request, reference_id):
     Present list of duplicates references (identified at migration process)
     """
     duplicate_list = ReferenceDuplicate.objects.filter(reference=reference_id)
-    metadata = indexing = library = {}
+    metadata = indexing = library = complement = other = {}
     duplicate = None
 
     duplicate_id = request.GET.get('duplicate_id')
@@ -570,13 +570,21 @@ def view_duplicates(request, reference_id):
         duplicate = duplicate_list[0]
 
     if duplicate:
-        metadata = json.loads(duplicate.metadata_json)
-        indexing = json.loads(duplicate.indexing_json)
-        library = json.loads(duplicate.library_json)
+        try:
+            metadata = json.loads(duplicate.metadata_json)
+            indexing = json.loads(duplicate.indexing_json)
+            library = json.loads(duplicate.library_json)
+            complement = json.loads(duplicate.complement_json)
+            other = json.loads(duplicate.others_json)
+        except:
+            # ignore possible errors at json load at field (eg. empty field)
+            pass
 
     return render_to_response('biblioref/duplicate_detail.html', {'duplicate_list': duplicate_list,
                                                                   'duplicate': duplicate,
                                                                   'metadata': metadata,
                                                                   'indexing': indexing,
-                                                                  'library': library
+                                                                  'library': library,
+                                                                  'complement': complement,
+                                                                  'other': other,
                                                                   })

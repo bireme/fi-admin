@@ -341,8 +341,8 @@ class ReferenceAlternateID(models.Model):
 # Bibliographic Record Duplicates (Migration)
 class ReferenceDuplicate(models.Model):
     class Meta:
-        verbose_name = _("Bibliographic Record Migration Duplicate" )
-        verbose_name_plural = _("Bibliographic Migration Duplicates Records")
+        verbose_name = _("Duplicate Bibliographic Record" )
+        verbose_name_plural = _("Duplicate Bibliographic Records")
 
     reference = models.ForeignKey(Reference, verbose_name=_("Reference"), blank=False)
     metadata_json = models.TextField(_('Metadata JSON'), blank=True)
