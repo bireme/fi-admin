@@ -71,7 +71,7 @@ class Event(Generic):
     start_date = models.DateField(_('Start date'), help_text='DD/MM/YYYY')
     end_date = models.DateField(_('End date'), help_text='DD/MM/YYYY')
 
-    link = models.URLField(_('Link'), help_text=_("Enter the link of event portal"), blank=True)
+    link = models.URLField(_('Link'), max_length=255, help_text=_("Enter the link of event portal"), blank=True)
 
     address = models.CharField(_('Address'), max_length=255, blank=True, help_text=_("Enter full address of the local of the event to present it in a Google map"))
     city = models.CharField(_('City'), max_length=125, blank=True)

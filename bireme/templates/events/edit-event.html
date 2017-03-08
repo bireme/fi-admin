@@ -5,6 +5,15 @@
 
 {% block title %}{% trans "Edit Event" %}{% endblock %}
 
+{% block extrahead %}
+    <style>
+        input[type="url"]{
+            width: 560px;
+        }
+    </style>
+{% endblock %}
+
+
 {% block breadcrumb %}
     <li><a href="{% url 'events.views.list_events' %}">{% trans "Events" %}</a> <span class="divider">/</span></li>
     {% if is_new %}<li>{% trans "New Event" %}</li>
