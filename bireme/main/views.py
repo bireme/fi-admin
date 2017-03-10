@@ -23,8 +23,8 @@ from utils.forms import is_valid_for_publication
 from django.conf import settings
 from datetime import datetime
 from models import *
-from events.models import Event
 from suggest.models import *
+from help.models import get_help_fields
 from text_block.models import TextBlock
 from forms import *
 from error_reporting.forms import ErrorReportForm
@@ -224,6 +224,7 @@ def create_edit_resource(request, **kwargs):
     output['settings'] = settings
     output['user_data'] = user_data
     output['user_role'] = user_role
+    output['help_fields'] = get_help_fields('resources')
 
     return render_to_response('main/edit-resource.html', output, context_instance=RequestContext(request))
 

@@ -17,11 +17,11 @@
 </div>
 
 <div class='body'>
-    
+
     {% if form.errors %}
         <ul class="errorlist alert alert-error">
             <li>{% trans "Please check required fields" %}</li>
-        </ul>        
+        </ul>
     {% endif %}
     {% if not valid_for_publication %}
         <ul class="errorlist alert alert-error">
@@ -89,10 +89,16 @@
                             {{ form.non_field_errors }}
                             {% for field in form.visible_fields %}
                                 <label for="{{ field.auto_id }}">
+                                    {% if field.name in help_fields %}
+                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/resources/{{field.name}}/" class="field_with_help">
+                                    {% endif %}
                                     {% if field.field.required %}
                                         <span class="required">{{ field.label }} <span class="mark">*</span></span>
                                     {% else %}
                                         {{ field.label }}
+                                    {% endif %}
+                                    {% if field.name in help_fields %}
+                                        </a>
                                     {% endif %}
                                 </label>
                                 <p class="muted">{{ field.help_text }}</p>
@@ -120,7 +126,7 @@
                                 <ul>
                                 {% for report in resource.error_reports.all %}
                                     <li>{{ report.get_code_display }} - {{ report.description }} {{ report.new_link }}</li>
-                                {% endfor %}    
+                                {% endfor %}
                                 </ul>
                             </div>
                         {% endif %}
@@ -164,24 +170,24 @@
 
                         {{ formset_descriptor.management_form }}
 
-                        {% for form in formset_descriptor %}                            
+                        {% for form in formset_descriptor %}
                             <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
-                                {% for field in form.visible_fields %}                                    
+                                {% for field in form.visible_fields %}
                                     {% if user_role == 'doc' and field.name == 'status' %}
                                         <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                         <td></td>
                                     {% elif field.name == 'code' %}
                                         {{ field.as_hidden }}
-                                    {% elif field.name == 'text' %}                                        
+                                    {% elif field.name == 'text' %}
                                         <td class="span6">
                                             {{ field.as_hidden }}
                                             <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
                                                 {% if field.value == None %}
                                                     {% trans "Select by search" %}
-                                                {% else %} 
+                                                {% else %}
                                                     {{ field.value}}
                                                 {% endif %}
                                             </div>
@@ -240,17 +246,17 @@
 
                         {{ formset_keyword.management_form }}
 
-                        {% for form in formset_keyword %}                            
+                        {% for form in formset_keyword %}
                             <tr id="keyword-{{ forloop.counter0 }}" class="keyword-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
-                                {% for field in form.visible_fields %}                                    
+                                {% for field in form.visible_fields %}
                                     {% if user_role == 'doc' and field.name == 'status' %}
                                         <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                         <td></td>
                                     {% elif field.name == 'user_recomendation' %}
-                                        {{ field.as_hidden }}                                        
+                                        {{ field.as_hidden }}
                                         <td style="text-align: center">
                                             {% if field.value == True %}
                                                 <span title="{% trans 'Suggested' %}"><i class="icon-thumbs-up"></i></span>
@@ -297,7 +303,7 @@
                                         {% elif thematic.status == 3 %}
                                             <span title="{% trans 'Deleted' %}"><i class="icon-minus-sign status-del"></i></span>
                                         {% endif %}
-                                    </td>                                    
+                                    </td>
                                 </tr>
                             {% endfor %}
                         {% endif %}
@@ -318,7 +324,7 @@
                                             {{ field.errors }}
                                         </td>
                                     {% endif %}
-                                {% endfor %}  
+                                {% endfor %}
                                 <td><!-- status --></td>
                                 <td>
                                     {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
@@ -340,7 +346,7 @@
 
 {% if not is_new %}
     <div id="error_report_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">      
+        <div class="modal-header">
             <h3 id="myModalLabel">{% trans "Error report" %}</h3>
         </div>
 
@@ -379,6 +385,10 @@
             </form>
         </div>
     </div>
+{% endif %}
+
+{% if help_fields %}
+    {% include "modal_help.html" %}
 {% endif %}
 
 {% endblock %}
@@ -425,7 +435,7 @@
 
 
             // Listen to message from child window
-            eventer(messageEvent,function(e) {                
+            eventer(messageEvent,function(e) {
                 var decs_data = e.data;
                 var pipe_pos = decs_data.lastIndexOf('|');
                 var decs_text = decs_data.substring(0, pipe_pos);
@@ -434,14 +444,14 @@
                 var decs_row = decs_field.replace( /[A-Za-z_$-]/g, '');
                 // set code, text and label for the new descriptor
                 $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);                
+                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);
                 $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(decs_text);
                 $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
 
             },false);
 
-            $(document).on("click", "a.add_error_report", function(){ 
-                $("#error_report_modal").modal("show");                
+            $(document).on("click", "a.add_error_report", function(){
+                $("#error_report_modal").modal("show");
             });
 
         })
@@ -454,4 +464,3 @@
 
    </script>
 {% endblock %}
-
