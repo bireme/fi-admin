@@ -50,7 +50,7 @@ class ReferenceResource(CustomResource):
             filter_db = filters['indexed_database']
             filter_db_id = Database.objects.get(acronym=filter_db)
             orm_filters['indexed_database__exact'] = filter_db_id
-            
+
         return orm_filters
 
     def prepend_urls(self):
@@ -135,6 +135,13 @@ class ReferenceResource(CustomResource):
     def add_fields_to_bundle(self, bundle, obj, import_field_list=[]):
         for field in obj._meta.get_fields():
             field_value = getattr(obj, field.name, {})
+
+            # check if field has multiples values (ex. ManyToManyField)
+            if hasattr(field_value, 'all'):
+                # if field is empty skip to next field
+                if not field_value.all().exists():
+                    continue
+
             if field_value:
                 # if import_field_list is present check if field is the list
                 if import_field_list:
@@ -179,7 +186,7 @@ class ReferenceResource(CustomResource):
         bundle.data['descriptors_secondary'] = descriptors_secundary
         bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
-        bundle.data['database'] = [database.acronym for database in bundle.obj.indexed_database.all()]
+        bundle.data['indexed_database'] = [database.acronym for database in bundle.obj.indexed_database.all()]
 
         electronic_address = []
         for attach in attachments:
@@ -225,7 +232,7 @@ class ReferenceResource(CustomResource):
 
             if local_databases:
                 # add local databases to database field (v04)
-                bundle.data['database'].extend(local_databases)
+                bundle.data['database'] = local_databases
 
         return bundle
 
