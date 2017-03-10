@@ -11,6 +11,7 @@ LANGUAGES_CHOICES = (
 SOURCE_CHOICES = [
     ('resources', _('Resources')),
     ('events', _('Events')),
+    ('multimedia', _('Multimedia')),
     ('biblioref', _('Bibliographic Reference')),
 ]
 

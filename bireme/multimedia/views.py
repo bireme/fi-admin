@@ -16,6 +16,7 @@ from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
 
 from main.models import ThematicArea
+from help.models import get_help_fields
 
 from models import *
 from forms import *
@@ -176,6 +177,7 @@ class MediaUpdate(LoginRequiredView):
         context['user_data'] = user_data
         context['role'] = user_role
         context['settings'] = settings
+        context['help_fields'] = get_help_fields('multimedia')
 
         if self.request.method == 'GET':
             # special treatment for user of type documentalist is edit media from other user
