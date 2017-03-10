@@ -19,6 +19,7 @@ from django.template import RequestContext
 from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
 from utils.forms import is_valid_for_publication
+from help.models import get_help_fields
 from django.conf import settings
 from datetime import datetime
 from models import *
@@ -69,7 +70,7 @@ def list_events(request):
     if actions['order'] == "-":
         events = events.order_by("%s%s" % (actions["order"], actions["orderby"]))
 
-    if actions['filter_owner'] == "network":        
+    if actions['filter_owner'] == "network":
         events = events.filter(cooperative_center_code__in=user_data['ccs'])
     elif actions['filter_owner'] != "*":
         events = events.filter(created_by=request.user)
@@ -131,16 +132,16 @@ def create_edit_event(request, **kwargs):
         formset_thematic   = ResourceThematicFormSet(request.POST, instance=event)
 
         # run all validation before for display formset errors at form
-        form_valid = form.is_valid() 
-        formset_descriptor_valid = formset_descriptor.is_valid() 
-        formset_keyword_valid = formset_keyword.is_valid() 
+        form_valid = form.is_valid()
+        formset_descriptor_valid = formset_descriptor.is_valid()
+        formset_keyword_valid = formset_keyword.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
-        valid_for_publication = is_valid_for_publication(form, 
+        valid_for_publication = is_valid_for_publication(form,
             [formset_descriptor, formset_keyword, formset_thematic])
 
-        if (form_valid and formset_descriptor_valid and formset_keyword_valid 
+        if (form_valid and formset_descriptor_valid and formset_keyword_valid
                 and formset_thematic_valid and valid_for_publication):
 
             if not event.id:
@@ -179,7 +180,7 @@ def create_edit_event(request, **kwargs):
             formset_thematic = ResourceThematicFormSet(instance=event, queryset=pending_thematic_from_user)
         else:
             formset_descriptor = DescriptorFormSet(instance=event)
-            formset_keyword  = KeywordFormSet(instance=event)            
+            formset_keyword  = KeywordFormSet(instance=event)
             formset_thematic = ResourceThematicFormSet(instance=event)
 
     output['form'] = form
@@ -188,7 +189,7 @@ def create_edit_event(request, **kwargs):
     output['formset_thematic'] = formset_thematic
     output['form_error_report'] = form_error_report
     output['valid_for_publication'] = valid_for_publication
-    
+
     output['event'] = event
     output['descriptor_list'] = descriptor_list
     output['keyword_list'] = keyword_list
@@ -197,6 +198,7 @@ def create_edit_event(request, **kwargs):
     output['user_data'] = user_data
     output['user_role'] = user_role
     output['content_type'] = ct.id
+    output['help_fields'] = get_help_fields('events')
 
     return render_to_response('events/edit-event.html', output, context_instance=RequestContext(request))
 
