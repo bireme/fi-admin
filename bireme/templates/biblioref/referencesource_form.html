@@ -155,6 +155,10 @@
                 {% if not user_can_change_status and user_role != 'editor_llxp'  %}
                     <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
                 {% endif %}
+                
+                {% if user_can_change_status and object.status < 1 %}
+                    <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
+                {% endif %}
             {% else %}
                 <a href="{% url 'list_biblioref' %}" class="btn btn-large">
                     {% trans "Back" %}

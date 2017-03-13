@@ -248,6 +248,10 @@
                     {% else %}
                         <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
                     {% endif %}
+                {% else %}
+                    {% if object.status < 1 %}
+                        <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
+                    {% endif %}
                 {% endif %}
             {% else %}
                 <a href="{% url 'list_biblioref_analytics' %}?source={{reference_source.id}}" class="btn btn-large">
