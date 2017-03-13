@@ -170,7 +170,7 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                     report_rows = sorted(report_rows, key=lambda k:k['total'], reverse=True)
 
             if report == '8':
-                report_rows = OrderedDict
+                report_rows = OrderedDict()
                 # get LILACS pk for filter in Title table
                 lilacs_code = IndexCode.objects.get(code='LL').pk
                 # filter by LILACS indexed titles
@@ -194,6 +194,11 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                     current_title = row['source__title_serial']
                     indexer_cc = Title.objects.get(shortened_title=current_title).indexer_cc_code
                     row.update({'indexer_cc': indexer_cc})
+
+            if report == '10':
+                report_rows = OrderedDict()
+                serial_list = Title.objects.all().order_by('status')
+                report_rows = serial_list.values('shortened_title', 'status', 'issn', 'country__name')
 
         return report_rows
 

@@ -50,6 +50,7 @@
                         <option value="7" {% if params.report == '7' %}selected="true"{% endif %}>{% trans "Medias by Media Collection" %}</option>
                         <option value="8" {% if params.report == '8' %}selected="true"{% endif %}>{% trans "LILACS serial by Country" %}</option>
                         <option value="9" {% if params.report == '9' %}selected="true"{% endif %}>{% trans "LILACS-Express by serial" %}</option>
+                        <option value="10" {% if params.report == '10' %}selected="true"{% endif %}>{% trans "Serial by Publish Status" %}</option>
                     </select>
 
                     <button class="btn" type="submit">{% trans "Execute" %}</button>
@@ -96,36 +97,62 @@
         <div id="report_result">
             <table class='table'>
                 <thead>
-                    {% for key, value in report_rows.0.items %}
-                        <th>{% trans key|capfirst %}</th>
-                    {% endfor %}
+                    {% if params.report == '10' %}
+                        {% for key, value in report_rows.0.items reversed %}
+                            <th>{% trans key|capfirst %}</th>
+                        {% endfor %}
+                    {% else %}
+                        {% for key, value in report_rows.0.items %}
+                            <th>{% trans key|capfirst %}</th>
+                        {% endfor %}
+                    {% endif %}
                 </thead>
                 <tbody>
                     {% for row in report_rows %}
                         <tr>
-                        {% for key, value in row.items %}
-                            <td>
-                                {% if params.report == '3' and key == 'year' %}
-                                    {{ value|date:"Y" }}
-                                {% elif params.report == '4' and key == 'month' %}
-                                    {{ value|date:"m/Y" }}
-                                {% elif params.source == 'reference' and key == 'status' %}
-                                    {{ value|display_status }}
-                                {% elif key == 'status' %}
-                                    {% if value == 0 %}
-                                        {% trans "Pending" %}
-                                    {% elif value == 1 %}
-                                        {% trans "Admitted" %}
-                                    {% elif value == 2 %}
-                                        {% trans "Refused" %}
-                                    {% elif value == 3 %}
-                                        {% trans "Deleted" %}
+                        {% if params.report == '10' %}
+                            {% for key, value in row.items reversed %}
+                                <td>
+                                    {% if key == 'status' %}
+                                        {% if value == 'C' %}
+                                            {% trans "Current" %}
+                                        {% elif value == '?' %}
+                                            {% trans "Unknown" %}
+                                        {% elif value == 'D' %}
+                                            {% trans "Suspended or closed" %}
+                                        {% else %}
+                                            {{ value }}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ value }}
                                     {% endif %}
-                                {% else %}
-                                    {{ value }}
-                                {% endif %}
                                 </td>
-                        {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            {% for key, value in row.items %}
+                                <td>
+                                    {% if params.report == '3' and key == 'year' %}
+                                        {{ value|date:"Y" }}
+                                    {% elif params.report == '4' and key == 'month' %}
+                                        {{ value|date:"m/Y" }}
+                                    {% elif params.source == 'reference' and key == 'status' %}
+                                        {{ value|display_status }}
+                                    {% elif key == 'status' %}
+                                        {% if value == 0 %}
+                                            {% trans "Pending" %}
+                                        {% elif value == 1 %}
+                                            {% trans "Admitted" %}
+                                        {% elif value == 2 %}
+                                            {% trans "Refused" %}
+                                        {% elif value == 3 %}
+                                            {% trans "Deleted" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ value }}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
