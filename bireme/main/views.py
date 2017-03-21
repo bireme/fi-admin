@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth.views import logout
 
-from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 
 from django.utils.translation import ugettext_lazy as _
@@ -25,7 +24,6 @@ from datetime import datetime
 from models import *
 from suggest.models import *
 from help.models import get_help_fields
-from text_block.models import TextBlock
 from forms import *
 from error_reporting.forms import ErrorReportForm
 
@@ -35,25 +33,7 @@ import os
 
 from decorators import *
 
-@login_required
-def dashboard(request):
-    output = {}
-
-    current_user = request.user
-    recent_actions = LogEntry.objects.filter(user=current_user)[:20]
-    user_data = additional_user_info(request)
-    user_roles = ['']
-    user_roles.extend([role for role in user_data['service_role'].values()])
-
-    # retrive text blocks
-    text_blocks = TextBlock.objects.filter(slot='dashboard', user_profile__in=user_roles).order_by('order')
-
-    output['recent_actions'] = recent_actions
-    output['text_blocks'] = text_blocks
-
-    return render_to_response('main/index.html', output, context_instance=RequestContext(request))
-
-############ Main table Resources #############
+############ Resources (LIS) #############
 
 @login_required
 def list_resources(request):

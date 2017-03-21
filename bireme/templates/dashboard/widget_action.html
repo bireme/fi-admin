@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<ul class="unstyled">
+    {% for action in recent_actions %}
+        <li>
+            {% if action.action_flag == 1 %}
+                <i class="icon-file" title="{% trans "Created" %}"></i>
+            {% elif action.action_flag == 2 %}
+                <i class="icon-pencil" title="{% trans "Modified" %}"></i>
+            {% endif %}
+            {{ action.action_time }} - {{ action.object_repr }}
+        </li>
+    {% endfor %}
+</ul>

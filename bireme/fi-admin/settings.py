@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     'biremelogin',
 
     'api',
+    'dashboard',
     'main',
     'events',
     'suggest',
