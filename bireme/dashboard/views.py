@@ -57,7 +57,7 @@ def changed_by_other_user(request):
         changed_by_other_user = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
                                                 .exclude(user=current_user).order_by('object_id')
         # group result (one line for each reference)
-        changed_by_other_user = changed_by_other_user.values('object_id', 'object_repr', 'user').annotate(total=Count('object_id'))
+        changed_by_other_user = changed_by_other_user.values('content_type_id', 'object_id', 'object_repr', 'user').annotate(total=Count('object_id'))
 
         changed_by_other_list.extend(changed_by_other_user)
 
@@ -95,7 +95,7 @@ def changed_by_other_cc(request):
 
         if log_list:
             # group result by id (one line for each reference)
-            log_list = log_list.values('object_id', 'object_repr', 'user').annotate(total=Count('object_id'))
+            log_list = log_list.values('content_type_id', 'object_id', 'object_repr', 'user').annotate(total=Count('object_id'))
             result_list.extend(log_list)
 
     output['reference_list'] = result_list

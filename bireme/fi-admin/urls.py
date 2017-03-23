@@ -137,7 +137,7 @@ urlpatterns = patterns('',
 
     (r'^maintenance/', TemplateView.as_view(template_name="maintenance.html")),
 
-    (r'^$', 'dashboard.views.widgets'),
+    url(r'^$', 'dashboard.views.widgets', name='dashboard'),
     (r'^dashboard/', include('dashboard.urls')),
 
     # tinymce wysiwyg editor

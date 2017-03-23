@@ -1,12 +1,69 @@
-from django.http import HttpResponse
+#! coding: utf-8
+from django.core.urlresolvers import reverse, reverse_lazy
 
 from django.shortcuts import render_to_response
 from django.contrib.admin.models import LogEntry
+from django.views.generic.edit import UpdateView
+from utils.views import LoginRequiredView
+from django.template import RequestContext
+
+from models import LogReview
+from forms import LogReviewForm
 
 def view_log(request, ctype_id, obj_id):
     """
-    Receive source and field name and display help text
+    List all changes of a object
     """
     logs = LogEntry.objects.filter(content_type_id=ctype_id, object_id=obj_id)
 
     return render_to_response('log/list.html', {'logs': logs})
+
+
+def review_log(request, ctype_id, obj_id):
+    """
+    Display list of record changes and allow user to select status (approved/not approved)
+    """
+
+    logs = LogEntry.objects.filter(content_type_id=ctype_id, object_id=obj_id)
+
+    return render_to_response('log/review.html', {'logs': logs},
+                              context_instance=RequestContext(request))
+
+
+def update_review(request):
+    """
+    Create log review objects with status (approved/not approved) of each record change
+    """
+
+    not_approved_list = []
+    # Iterate for all params in the form
+    for param, value in request.POST.iteritems():
+        # check for review params (review_ID-OF-LOGENTRY)
+        if 'review_' in param and value != '':
+            # extract logentry id from param name
+            log_id = param.split('_')[1]
+            # get or create a new object at logreview table
+            log_review, created = LogReview.objects.get_or_create(log_id=log_id)
+            log_review.log_id = log_id
+            log_review.status = value
+            log_review.save()
+
+            if value == '-1':
+                # create list of no approved changes for user manually fix on record
+                not_approved_list.append(log_id)
+
+    # if user has not approved one or more changes present list for final revision
+    if not_approved_list:
+        # get log entry objects for display
+        not_approved_logs = LogEntry.objects.filter(id__in=not_approved_list)
+        # get content type and ID of first logentry to redirect user to edit source or analytic page
+        reference_type = not_approved_logs[0].content_type.model
+        reference_id = not_approved_logs[0].object_id
+
+        return render_to_response('log/review_notapproved.html',
+                                  {'logs': not_approved_logs, 'reference_type': reference_type,
+                                   'reference_id': reference_id},
+                                  context_instance=RequestContext(request))
+
+    else:
+        return redirect('dashboard')

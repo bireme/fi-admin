@@ -178,13 +178,14 @@ INSTALLED_APPS = (
     'multimedia',
     'title',
     'biblioref',
+    'leisref',
     'reports',
     'utils',
     'attachments',
     'help',
+    'log',
     'text_block',
     'database',
-    'leisref',
 
 )
 
