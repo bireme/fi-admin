@@ -69,6 +69,7 @@ def changed_by_other_user(request):
             result_list[log.object_id] = log
 
     output['reference_list'] = result_list.values()
+    output['review_type'] = 'user'
 
     return render_to_response('dashboard/widget.html', output)
 
@@ -106,5 +107,6 @@ def changed_by_other_cc(request):
                 result_list[log.object_id] = log
 
     output['reference_list'] = result_list.values()
+    output['review_type'] = 'cc'
 
     return render_to_response('dashboard/widget.html', output)

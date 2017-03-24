@@ -1,7 +1,7 @@
 #! coding: utf-8
 from django.core.urlresolvers import reverse, reverse_lazy
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.contrib.admin.models import LogEntry
 from django.views.generic.edit import UpdateView
 from utils.views import LoginRequiredView
@@ -19,14 +19,31 @@ def view_log(request, ctype_id, obj_id):
     return render_to_response('log/list.html', {'logs': logs})
 
 
-def review_log(request, ctype_id, obj_id):
+def review_log(request, type, ctype_id, obj_id):
     """
     Display list of record changes and allow user to select status (approved/not approved)
     """
+    current_user = request.user
 
-    logs = LogEntry.objects.filter(content_type_id=ctype_id, object_id=obj_id)
+    log_list = LogEntry.objects.filter(content_type_id=ctype_id, object_id=obj_id)
 
-    return render_to_response('log/review.html', {'logs': logs},
+    if type == 'user':
+        # exclude changes made by the current user
+        log_list = log_list.exclude(user=current_user)
+    elif type == 'cc':
+        current_user_cc = current_user.profile.get_attribute('cc')
+        # exclude from log list users from same cc as current user
+        exclude_user_list = []
+        for log in log_list:
+            log_user_cc = log.user.profile.get_attribute('cc')
+            if log_user_cc == current_user_cc:
+                exclude_user_list.append(log.user)
+
+        if exclude_user_list:
+            log_list = log_list.exclude(user__in=exclude_user_list)
+
+
+    return render_to_response('log/review.html', {'logs': log_list},
                               context_instance=RequestContext(request))
 
 
@@ -36,7 +53,7 @@ def update_review(request):
     """
 
     not_approved_list = []
-    # Iterate for all params in the form
+    # iterate for all params in the form
     for param, value in request.POST.iteritems():
         # check for review params (review_ID-OF-LOGENTRY)
         if 'review_' in param and value != '':

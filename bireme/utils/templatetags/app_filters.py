@@ -153,12 +153,16 @@ def display_status(status):
 @register.filter()
 def log_json_changes(obj):
     log_str = ''
+    data = None
 
     if obj.change_message and obj.change_message != '':
-        data = json.loads(obj.change_message)
-        model = obj.content_type.model_class()
+        try:
+            data = json.loads(obj.change_message)
+        except:
+            log_str = obj.change_message
 
         if type(data) is list:
+            model = obj.content_type.model_class()
             for change in data:
                 # ignore changes from where previous and new are null or blank. Ex. null to blank
                 if not change['previous_value'] and not change['new_value']:
