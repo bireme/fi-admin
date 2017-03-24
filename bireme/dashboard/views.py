@@ -1,4 +1,5 @@
 #! coding: utf-8
+from collections import defaultdict
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 
@@ -47,21 +48,27 @@ def changed_by_other_user(request):
     output = {}
 
     current_user = request.user
-    changed_by_other_list = []
+    log_list = []
+    result_list = defaultdict(list)
 
+    # get references created by current user
     refs_from_user = Reference.objects.filter(created_by=current_user)
     for reference in refs_from_user:
         # get correct class (source our analytic)
         c_type = ContentType.objects.get_for_model(reference.child_class())
         # filter by logs of current reference, change type and made by other users
         changed_by_other_user = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
-                                                .exclude(user=current_user).order_by('object_id')
-        # group result (one line for each reference)
-        changed_by_other_user = changed_by_other_user.values('content_type_id', 'object_id', 'object_repr', 'user').annotate(total=Count('object_id'))
+                                                .exclude(user=current_user).order_by('-id')
 
-        changed_by_other_list.extend(changed_by_other_user)
+        log_list.extend(changed_by_other_user)
 
-    output['reference_list'] = changed_by_other_list
+    # group result (one line for each reference)
+    if log_list:
+        # group result by id (one line for each reference)
+        for log in log_list:
+            result_list[log.object_id] = log
+
+    output['reference_list'] = result_list.values()
 
     return render_to_response('dashboard/widget.html', output)
 
@@ -71,7 +78,7 @@ def changed_by_other_cc(request):
 
     current_user = request.user
     current_user_cc = current_user.profile.get_attribute('cc')
-    result_list = []
+    result_list = defaultdict(list)
 
     # get last references of current user cooperative center
     refs_from_cc = Reference.objects.filter(cooperative_center_code=current_user_cc).order_by('-id')[:100]
@@ -81,7 +88,7 @@ def changed_by_other_cc(request):
         c_type = ContentType.objects.get_for_model(reference.child_class())
         # filter by logs of current reference, change type and made by other users
         log_list = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
-                                   .exclude(user=current_user).order_by('object_id')
+                                   .exclude(user=current_user).order_by('-id')
 
         # create list of log users of same cc
         exclude_user_list = []
@@ -95,9 +102,9 @@ def changed_by_other_cc(request):
 
         if log_list:
             # group result by id (one line for each reference)
-            log_list = log_list.values('content_type_id', 'object_id', 'object_repr', 'user').annotate(total=Count('object_id'))
-            result_list.extend(log_list)
+            for log in log_list:
+                result_list[log.object_id] = log
 
-    output['reference_list'] = result_list
+    output['reference_list'] = result_list.values()
 
     return render_to_response('dashboard/widget.html', output)

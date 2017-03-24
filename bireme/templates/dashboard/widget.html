@@ -1,7 +1,9 @@
-<ul class="unstyled">
+<table class="table">
     {% for ref in reference_list %}
-        <li>
-            <a href="/log/review/{{ref.content_type_id}}/{{ref.object_id}}/">{{ ref.object_repr }}</a>
-        </li>
+        <tr>
+            <td>
+                <a href="/log/review/{{ref.content_type_id}}/{{ref.object_id}}/">{{ ref.object_repr }}</a>
+            </td>
+        </tr>
     {% endfor %}
-</ul>
+</table>
