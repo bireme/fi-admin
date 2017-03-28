@@ -621,6 +621,10 @@ def refs_changed_by_other_cc(current_user):
         log_list = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
                                    .exclude(user=current_user).order_by('-id')
 
+        if log_list:
+            # exclude from list all changes that was already reviewed (logreview is created)
+            log_list = log_list.exclude(logreview__isnull=False)
+
         # create list of log users of same cc
         exclude_user_list = []
         for log in log_list:
@@ -653,6 +657,9 @@ def refs_changed_by_other_user(current_user):
         # filter by logs of current reference, change type and made by other users
         changed_by_other_user = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
                                                 .exclude(user=current_user).order_by('-id')
+        if changed_by_other_user:
+            # exclude from list all changes that was already reviewed (logreview is created)
+            changed_by_other_user = changed_by_other_user.exclude(logreview__isnull=False)
 
         log_list.extend(changed_by_other_user)
 
