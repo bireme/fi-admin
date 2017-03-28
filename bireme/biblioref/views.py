@@ -101,7 +101,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         # filter by titles of responsibility of current user CC
         elif self.actions['filter_owner'] == 'indexed':
             user_cc = self.request.user.profile.get_attribute('cc')
-            titles_indexed = [t.shortened_title for t in Title.objects.filter(indexer_cc_code=user_cc)]
+            titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
             filter_title_qs = Q()
             for title in titles_indexed:
                 filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title)
@@ -671,3 +671,21 @@ def refs_changed_by_other_user(current_user):
 
 
     return result_list
+
+
+def refs_llxp_for_indexing(current_user):
+
+    user_cc = current_user.profile.get_attribute('cc')
+
+    # first filter by LLXP records
+    ref_list = Reference.objects.filter(status=0)
+
+    titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
+    filter_title_qs = Q()
+    for title in titles_indexed:
+        filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title)
+
+    # filter by titles indexed by current user cc
+    ref_list = ref_list.filter(filter_title_qs)
+
+    return ref_list

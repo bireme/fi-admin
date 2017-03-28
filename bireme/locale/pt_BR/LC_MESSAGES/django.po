@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-28 11:20-0300\n"
-"PO-Revision-Date: 2017-03-28 11:25-0306\n"
+"POT-Creation-Date: 2017-03-28 14:59-0300\n"
+"PO-Revision-Date: 2017-03-28 15:00-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2534,7 +2534,6 @@ msgid "Remove"
 msgstr "Apagar"
 
 #: templates/biblioref/reference_list.html:174
-#| msgid "Review"
 msgid "review"
 msgstr "revisar"
 
@@ -2691,6 +2690,11 @@ msgstr "Sucesso!"
 #: templates/dashboard/index.html:26
 msgid "Recent actions"
 msgstr "Ações recentes"
+
+#: templates/dashboard/index.html:53
+#| msgid "LILACS-Express records to be indexed"
+msgid "LILACS-Express records for indexing"
+msgstr "Registros LILACS-Express para indexação"
 
 #: templates/dashboard/widget_action.html:7
 msgid "Created"

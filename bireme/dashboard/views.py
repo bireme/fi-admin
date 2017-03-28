@@ -1,7 +1,7 @@
 #! coding: utf-8
 from collections import defaultdict
 from django.shortcuts import redirect, render_to_response, get_object_or_404
-from biblioref.views import refs_changed_by_other_cc, refs_changed_by_other_user
+from biblioref.views import refs_changed_by_other_cc, refs_changed_by_other_user, refs_llxp_for_indexing
 from django.template import RequestContext
 
 from utils.context_processors import additional_user_info
@@ -35,7 +35,7 @@ def widgets(request):
 
 def last_actions(request):
     output = {}
-    
+
     current_user = request.user
     recent_actions = LogEntry.objects.filter(user=current_user)
     output['recent_actions'] = recent_actions[:10]
@@ -58,4 +58,15 @@ def changed_by_others(request, review_type):
     output['reference_list'] = ref_list
     output['review_type'] = review_type
 
-    return render_to_response('dashboard/widget.html', output)
+    return render_to_response('dashboard/widget_log_review.html', output)
+
+
+def llxp_indexed_by_cc(request):
+    output = {}
+    ref_list = []
+
+    ref_list = refs_llxp_for_indexing(request.user)
+
+    output['reference_list'] = ref_list[:10]
+
+    return render_to_response('dashboard/widget_edit_reference.html', output)
