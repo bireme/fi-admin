@@ -115,9 +115,9 @@
                     <!-- display changes log and duplicates -->
                     {%if object.pk %}
                         <div class="btn-group pull-right">
-                            <button class="btn"><i class="icon icon-time"></i> <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/">{% trans "Changes history" %}</a></button>
+                            <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
                             {%if object.has_duplicates %}
-                                <button class="btn"><i class="icon icon-retweet"></i> <a href="/bibliographic/duplicates/{{object.id}}/" target="_blank">{% trans "Duplicates" %}</a></button>
+                                <a href="/bibliographic/duplicates/{{object.id}}/" target="_blank" class="btn"><i class="icon icon-retweet"></i> {% trans "Duplicates" %}</a>
                             {% endif %}
                         </div>
                     {% endif %}
@@ -155,7 +155,7 @@
                 {% if not user_can_change_status and user_role != 'editor_llxp'  %}
                     <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
                 {% endif %}
-                
+
                 {% if user_can_change_status and object.status < 1 %}
                     <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
                 {% endif %}
