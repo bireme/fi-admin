@@ -72,51 +72,80 @@
                 </a>
             </li>
         {% endif %}
+        {% if user_role != 'xedi' %}
+            <li class="{% if actions.filter_owner == 'review' %}active{% endif %}">
+                <a href="#tab-network" onclick="filter_owner('review')" data-toggle="tab">
+                    <strong>{% trans "Colaboration review" %}</strong>
+                </a>
+            </li>
+        {% endif %}
+
     </ul>
 
     <div class="tab-content">
         <div class="tab-pane active">
-            <div class="row">
-                <div class="span-4">
-                    <div class="input-append" style="margin-left: 10px">
-                        <form name="search">
-                            <input type="hidden" name="page" value="">
-                            <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
-                            <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
+            {% if actions.filter_owner != 'review' %}
+                <div class="row">
+                    <div class="span-4">
+                        <div class="input-append" style="margin-left: 10px">
+                            <form name="search">
+                                <input type="hidden" name="page" value="">
+                                <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+                                <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
 
-                            {% trans "Record type" %}:
-                            <select name="document_type">
-                                <option value="">{% trans "All" %}</option>
-                                <option value="S" {% if actions.document_type == 'S' %}selected="true"{% endif %}>{% trans "Journals - Fascicle" %}</option>
-                                <option value="Sas" {% if actions.document_type == 'Sas' %}selected="true"{% endif %}>{% trans "Journals - Article" %}</option>
-                                <option value="Mm" {% if actions.document_type == 'Mm' %}selected="true"{% endif %}>{% trans "Monograph" %}</option>
-                                <option value="Tm" {% if actions.document_type == 'Tm' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation" %}</option>
-                                <option value="Mmc" {% if actions.document_type == 'Mmc' %}selected="true"{% endif %}>{% trans "Monograph in a Collection" %}</option>
-                                <option value="Mc" {% if actions.document_type == 'Mc' %}selected="true"{% endif %}>{% trans "Collection of Monographs" %}</option>
-                                <option value="MSms" {% if actions.document_type == 'MSms' %}selected="true"{% endif %}>{% trans "Monograph Series" %}</option>
-                                <option value="Nm" {% if actions.document_type == 'Nm' %}selected="true"{% endif %}>{% trans "Non conventional" %}</option>
-                                <option value="TSms" {% if actions.document_type == 'TSms' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation appearing as a Monograph Series" %}</option>
-                            </select>
+                                {% trans "Record type" %}:
+                                <select name="document_type">
+                                    <option value="">{% trans "All" %}</option>
+                                    <option value="S" {% if actions.document_type == 'S' %}selected="true"{% endif %}>{% trans "Journals - Fascicle" %}</option>
+                                    <option value="Sas" {% if actions.document_type == 'Sas' %}selected="true"{% endif %}>{% trans "Journals - Article" %}</option>
+                                    <option value="Mm" {% if actions.document_type == 'Mm' %}selected="true"{% endif %}>{% trans "Monograph" %}</option>
+                                    <option value="Tm" {% if actions.document_type == 'Tm' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation" %}</option>
+                                    <option value="Mmc" {% if actions.document_type == 'Mmc' %}selected="true"{% endif %}>{% trans "Monograph in a Collection" %}</option>
+                                    <option value="Mc" {% if actions.document_type == 'Mc' %}selected="true"{% endif %}>{% trans "Collection of Monographs" %}</option>
+                                    <option value="MSms" {% if actions.document_type == 'MSms' %}selected="true"{% endif %}>{% trans "Monograph Series" %}</option>
+                                    <option value="Nm" {% if actions.document_type == 'Nm' %}selected="true"{% endif %}>{% trans "Non conventional" %}</option>
+                                    <option value="TSms" {% if actions.document_type == 'TSms' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation appearing as a Monograph Series" %}</option>
+                                </select>
 
-                            {% trans "Status" %}:
-                            <select name="filter_status">
-                                <option value="">{% trans "All" %}</option>
-                                <option value="-1" {% if actions.filter_status == '-1' %}selected="true"{% endif %}>{% trans "Draft" %}</option>
-                                <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "LILACS-Express" %}</option>
-                                <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Published" %}</option>
-                                <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
-                                <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
-                            </select>
-                            <button class="btn" type="submit"><i class='icon-search'></i></button>
-                        </form>
+                                {% trans "Status" %}:
+                                <select name="filter_status">
+                                    <option value="">{% trans "All" %}</option>
+                                    <option value="-1" {% if actions.filter_status == '-1' %}selected="true"{% endif %}>{% trans "Draft" %}</option>
+                                    <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "LILACS-Express" %}</option>
+                                    <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Published" %}</option>
+                                    <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
+                                    <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
+                                </select>
+                                <button class="btn" type="submit"><i class='icon-search'></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    {% if actions.filter_owner == 'network' and user_data.networks %}
+                        <div class="span-4">
+                            {% trans "Networks" %} : {{ user_data.networks|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="span-6">
+                        <div class="input-append" style="margin-left: 10px">
+                            <form name="review">
+                                <input type="hidden" name="page" value="">
+                                <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+
+                                {% trans "Filter by" %}:
+                                <select name="review_type" class="input-xlarge">
+                                    <option value="cc" {% if actions.review_type == 'cc' %}selected="true"{% endif %}>{% trans "Changed by other cooperative center" %}</option>
+                                    <option value="user" {% if actions.review_type == 'user' %}selected="true"{% endif %}>{% trans "Changed by other users" %}</option>
+                                </select>
+                                <button class="btn" type="submit"><i class='icon-search'></i></button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                {% if actions.filter_owner == 'network' and user_data.networks %}
-                    <div class="span-4">
-                        {% trans "Networks" %} : {{ user_data.networks|join:", " }}
-                    </div>
-                {% endif %}
-            </div>
+
+            {% endif %}
 
             <table class='table'>
                 <thead>
@@ -134,11 +163,15 @@
                                 {% if reference.literature_type == 'S' and not 'a' in reference.treatment_level %}<span class="label label-success">{% trans "Series source" %}</span>{% else %}{{ reference.status|display_status_label }}{% endif %}
                             </td>
                             <td nowrap="1">
-                                <a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if reference.created_by_id = user.id and reference.status == -1  %}
-                                    {% if 'a' in reference.treatment_level or not reference.has_analytic %}
-                                        <a href="{% url 'delete_biblioref' reference.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                {% if actions.filter_owner != 'review' %}
+                                    <a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                    {% if reference.created_by_id = user.id and reference.status == -1  %}
+                                        {% if 'a' in reference.treatment_level or not reference.has_analytic %}
+                                            <a href="{% url 'delete_biblioref' reference.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                        {% endif %}
                                     {% endif %}
+                                {% else %}
+                                    <a href="/log/review/{% if actions.review_type %}{{actions.review_type}}{% else %}cc{% endif %}/{{reference.get_content_type_id}}/{{reference.id}}/" class='btn btn-mini'>{% trans "review" %}</a>
                                 {% endif %}
                             </td>
                         </tr>

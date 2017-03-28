@@ -36,7 +36,7 @@
         </table>
     </div>
     <div class="alert alert-danger">
-        <strong>{% trans "For each not approved change you may need change the record" %}</strong>
+        <strong>{% trans "For each not approved change you need change the record" %}</strong>
     </div>
     <a href="{% if 'analytic' in reference_type %}{% url 'edit_biblioref_analytic' reference_id %}{% else %}{% url 'edit_biblioref_source' reference_id %}{% endif %}" target="_blank" class="btn btn-large btn-info">{% trans "Update record" %}</a>
 

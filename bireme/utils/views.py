@@ -22,6 +22,7 @@ ACTIONS = {
     'filter_created_by_user': "",
     'filter_created_by_cc': "",
     'document_type': "",
+    'review_type': "",
 }
 
 def cookie_lang(request):

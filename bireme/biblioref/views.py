@@ -1,4 +1,5 @@
 #! coding: utf-8
+from collections import defaultdict
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
@@ -109,6 +110,20 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             if self.actions['filter_status'] == '':
                 self.actions['filter_status'] = 0
                 object_list = object_list.filter(status=0)
+        # filter by records changed by others
+        elif self.actions['filter_owner'] == 'review':
+            if self.actions['review_type'] == 'user':
+                ref_list = refs_changed_by_other_user(self.request.user)
+            else:
+                ref_list = refs_changed_by_other_cc(self.request.user)
+
+            if ref_list:
+                # get only ID's from filter reference list
+                reference_id_list = ref_list.keys
+                object_list = object_list.filter(id__in=reference_id_list)
+            else:
+                object_list = object_list.none()
+
 
         return object_list
 
@@ -588,3 +603,64 @@ def view_duplicates(request, reference_id):
                                                                   'complement': complement,
                                                                   'other': other,
                                                                   })
+
+def refs_changed_by_other_cc(current_user):
+    """
+    Return dictionary with id of reference and log object changed by other cooperative centers
+    """
+    current_user_cc = current_user.profile.get_attribute('cc')
+    result_list = defaultdict(list)
+
+    # get last references of current user cooperative center
+    refs_from_cc = Reference.objects.filter(cooperative_center_code=current_user_cc).order_by('-id')[:100]
+
+    for reference in refs_from_cc:
+        # get correct class (source our analytic)
+        c_type = reference.get_content_type_id
+        # filter by logs of current reference, change type and made by other users
+        log_list = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
+                                   .exclude(user=current_user).order_by('-id')
+
+        # create list of log users of same cc
+        exclude_user_list = []
+        for log in log_list:
+            log_user_cc = log.user.profile.get_attribute('cc')
+            if log_user_cc == current_user_cc:
+                exclude_user_list.append(log.user)
+        # exclude from log list users from same cc as current user
+        if exclude_user_list:
+            log_list = log_list.exclude(user__in=exclude_user_list)
+
+        if log_list:
+            # group result by id (one line for each reference)
+            for log in log_list:
+                result_list[log.object_id] = log
+
+    return result_list
+
+def refs_changed_by_other_user(current_user):
+    """
+    Return dictionary with id of reference and log object changed by other user
+    """
+    log_list = []
+    result_list = defaultdict(list)
+
+    # get references created by current user
+    refs_from_user = Reference.objects.filter(created_by=current_user)
+    for reference in refs_from_user:
+        # get correct class (source our analytic)
+        c_type = reference.get_content_type_id
+        # filter by logs of current reference, change type and made by other users
+        changed_by_other_user = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
+                                                .exclude(user=current_user).order_by('-id')
+
+        log_list.extend(changed_by_other_user)
+
+    # group result (one line for each reference)
+    if log_list:
+        # group result by id (one line for each reference)
+        for log in log_list:
+            result_list[log.object_id] = log
+
+
+    return result_list

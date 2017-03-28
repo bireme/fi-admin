@@ -1,6 +1,7 @@
 #! coding: utf-8
 from collections import defaultdict
 from django.shortcuts import redirect, render_to_response, get_object_or_404
+from biblioref.views import refs_changed_by_other_cc, refs_changed_by_other_user
 from django.template import RequestContext
 
 from utils.context_processors import additional_user_info
@@ -19,7 +20,6 @@ def widgets(request):
     output = {}
 
     current_user = request.user
-    recent_actions = LogEntry.objects.filter(user=current_user)[:20]
     user_data = additional_user_info(request)
     user_roles = ['']
     user_roles.extend([role for role in user_data['service_role'].values()])
@@ -27,7 +27,6 @@ def widgets(request):
     # retrive text blocks
     text_blocks = TextBlock.objects.filter(slot='dashboard', user_profile__in=user_roles).order_by('order')
 
-    output['recent_actions'] = recent_actions
     output['text_blocks'] = text_blocks
 
     return render_to_response('dashboard/index.html', output,
@@ -36,77 +35,27 @@ def widgets(request):
 
 def last_actions(request):
     output = {}
-
+    
     current_user = request.user
-    recent_actions = LogEntry.objects.filter(user=current_user)[:20]
-    output['recent_actions'] = recent_actions
+    recent_actions = LogEntry.objects.filter(user=current_user)
+    output['recent_actions'] = recent_actions[:10]
 
     return render_to_response('dashboard/widget_action.html', output)
 
 
-def changed_by_other_user(request):
+def changed_by_others(request, review_type):
     output = {}
+    ref_list = []
 
-    current_user = request.user
-    log_list = []
-    result_list = defaultdict(list)
+    if review_type == 'user':
+        ref_list = refs_changed_by_other_user(request.user)
+    elif review_type == 'cc':
+        ref_list = refs_changed_by_other_cc(request.user)
 
-    # get references created by current user
-    refs_from_user = Reference.objects.filter(created_by=current_user)
-    for reference in refs_from_user:
-        # get correct class (source our analytic)
-        c_type = ContentType.objects.get_for_model(reference.child_class())
-        # filter by logs of current reference, change type and made by other users
-        changed_by_other_user = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
-                                                .exclude(user=current_user).order_by('-id')
+    if ref_list:
+        ref_list = ref_list.values()
 
-        log_list.extend(changed_by_other_user)
-
-    # group result (one line for each reference)
-    if log_list:
-        # group result by id (one line for each reference)
-        for log in log_list:
-            result_list[log.object_id] = log
-
-    output['reference_list'] = result_list.values()
-    output['review_type'] = 'user'
-
-    return render_to_response('dashboard/widget.html', output)
-
-
-def changed_by_other_cc(request):
-    output = {}
-
-    current_user = request.user
-    current_user_cc = current_user.profile.get_attribute('cc')
-    result_list = defaultdict(list)
-
-    # get last references of current user cooperative center
-    refs_from_cc = Reference.objects.filter(cooperative_center_code=current_user_cc).order_by('-id')[:100]
-
-    for reference in refs_from_cc:
-        # get correct class (source our analytic)
-        c_type = ContentType.objects.get_for_model(reference.child_class())
-        # filter by logs of current reference, change type and made by other users
-        log_list = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
-                                   .exclude(user=current_user).order_by('-id')
-
-        # create list of log users of same cc
-        exclude_user_list = []
-        for log in log_list:
-            log_user_cc = log.user.profile.get_attribute('cc')
-            if log_user_cc == current_user_cc:
-                exclude_user_list.append(log.user)
-        # exclude from log list users from same cc as current user
-        if exclude_user_list:
-            log_list = log_list.exclude(user__in=exclude_user_list)
-
-        if log_list:
-            # group result by id (one line for each reference)
-            for log in log_list:
-                result_list[log.object_id] = log
-
-    output['reference_list'] = result_list.values()
-    output['review_type'] = 'cc'
+    output['reference_list'] = ref_list
+    output['review_type'] = review_type
 
     return render_to_response('dashboard/widget.html', output)

@@ -2,6 +2,7 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 from django.contrib.contenttypes.generic import GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
 from utils.fields import JSONField, AuxiliaryChoiceField, MultipleAuxiliaryChoiceField
 from utils.models import Generic, Country
@@ -153,6 +154,16 @@ class Reference(Generic, AuditLog):
         has_duplicates = ReferenceDuplicate.objects.filter(reference=self.pk).exists()
 
         return has_duplicates
+
+    def get_content_type_id(self):
+        if 'a' in self.treatment_level:
+            ref_class = ReferenceAnalytic
+        else:
+            ref_class = ReferenceSource
+
+        content_type=ContentType.objects.get_for_model(ref_class).pk
+
+        return content_type
 
 # Source
 class ReferenceSource(Reference):
