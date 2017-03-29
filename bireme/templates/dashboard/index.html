@@ -49,11 +49,13 @@
                 <div id="changed_by_other_cc"></div>
             </div>
 
-            <div class="well sidebar-nav">
-                <h3>{% trans "LILACS-Express records for indexing" %}</h3>
+            {% if service_role.LILDBI == 'doc' or service_role.LILDBI == 'edi' %}
+                <div class="well sidebar-nav">
+                    <h3>{% trans "LILACS-Express records for indexing" %}</h3>
 
-                <div id="llxp_indexed_by_cc"></div>
-            </div>
+                    <div id="llxp_indexed_by_cc"></div>
+                </div>
+            {% endif %}
 
         </div>
     </div>
@@ -67,7 +69,9 @@
         load_widget_content('/dashboard/last_actions', '#last_actions')
         load_widget_content('/dashboard/changed_by_others/user/', '#changed_by_other_user')
         load_widget_content('/dashboard/changed_by_others/cc/', '#changed_by_other_cc')
+        {% if service_role.LILDBI == 'doc' or service_role.LILDBI == 'edi' %}
         load_widget_content('/dashboard/llxp_indexed_by_cc/', '#llxp_indexed_by_cc')
+        {% endif %}
     })
 
     function load_widget_content(widget_url, target_div){
