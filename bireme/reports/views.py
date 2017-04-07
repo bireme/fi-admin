@@ -183,16 +183,23 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
             # LILACS-Express by Serial
             if report == '9':
                 # filter by status LILACS-Express and order by serial title
-                llxp_list = ReferenceAnalytic.objects.filter(status=-1).order_by('source__title_serial')
+                llxp_list = ReferenceAnalytic.objects.filter(status=0).order_by('source__title_serial')
 
                 # summarize by serial
                 report_rows = llxp_list.values('source__title_serial', 'source__volume_serial',
                                                'source__issue_number').annotate(num_pending=Count('pk')).order_by('-num_pending')
 
                 # add information of indexer cc code
+                lilacs_code = IndexCode.objects.get(code='LL').pk
                 for row in report_rows:
+                    indexer_cc = ''
                     current_title = row['source__title_serial']
-                    indexer_cc = Title.objects.get(shortened_title=current_title).indexer_cc_code
+                    title_obj = Title.objects.filter(shortened_title=current_title)[0]
+
+                    indexrange =  IndexRange.objects.filter(title=title_obj, index_code=lilacs_code)
+                    if indexrange:
+                        indexer_cc = indexrange[0].indexer_cc_code
+
                     row.update({'indexer_cc': indexer_cc})
 
             if report == '10':
