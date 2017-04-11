@@ -1,5 +1,11 @@
-{% for ref in reference_list %}
-    <p>
-        <a href="/log/review/{{review_type}}/{{ref.content_type_id}}/{{ref.object_id}}/">{{ ref.object_repr }}</a>
-    </p>
-{% endfor %}
+{% load i18n %}
+
+{% if reference_list %}
+    {% for ref in reference_list %}
+        <p>
+            <a href="/log/review/{{review_type}}/{{ref.content_type_id}}/{{ref.object_id}}/">{{ ref.object_repr }}</a>
+        </p>
+    {% endfor %}
+{% else %}
+    {% trans "No records found" %}
+{% endif %}
