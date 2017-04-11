@@ -1,4 +1,5 @@
 import datetime
+import json
 from haystack import indexes
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic
@@ -7,11 +8,11 @@ from django.contrib.contenttypes.models import ContentType
 
 class RefereceIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    reference_title = indexes.MultiValueField(model_attr='title', null=True)
-    reference_abstract = indexes.MultiValueField(model_attr='abstract', null=True)
+    reference_title = indexes.MultiValueField(null=True)
+    author = indexes.MultiValueField(null=True)
+    reference_abstract = indexes.MultiValueField()
     reference_source = indexes.CharField()
-    author = indexes.MultiValueField(model_attr='individual_author', null=True)
-    link = indexes.MultiValueField(model_attr='electronic_address', null=True)
+    link = indexes.MultiValueField()
     publication_type = indexes.CharField()
     # database = indexes.MultiValueField()
     publication_language = indexes.MultiValueField()
@@ -30,15 +31,21 @@ class RefereceIndex(indexes.SearchIndex, indexes.Indexable):
         return ReferenceAnalytic
 
     def prepare_reference_title(self, obj):
-        return [occ['text'] for occ in obj.title]
+        if obj.title and type(obj.title) == list:
+            return [occ['text'] for occ in obj.title]
 
     def prepare_author(self, obj):
-        if obj.individual_author:
+        if obj.individual_author and type(obj.individual_author) == list:
             return [occ['text'] for occ in obj.individual_author]
 
     def prepare_link(self, obj):
         if obj.electronic_address:
-            return [occ['_u'] for occ in obj.electronic_address]
+            if type(obj.electronic_address) == list:
+                link_list = obj.electronic_address
+            else:
+                link_list = json.loads(obj.electronic_address)
+
+            return [occ['_u'] for occ in link_list]
 
     def prepare_reference_abstract(self, obj):
         if obj.abstract and type(obj.abstract) == list:
@@ -78,7 +85,7 @@ class RefereceIndex(indexes.SearchIndex, indexes.Indexable):
         return ["|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
     def prepare_descriptor(self, obj):
-        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
+        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
     def prepare_created_date(self, obj):
         if obj.created_time:
@@ -87,8 +94,6 @@ class RefereceIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_updated_date(self, obj):
         if obj.updated_time:
             return obj.updated_time.strftime('%Y%m%d')
-
-
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
