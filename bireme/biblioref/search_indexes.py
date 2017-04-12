@@ -16,7 +16,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     reference_source = indexes.CharField()
     link = indexes.MultiValueField()
     publication_type = indexes.CharField()
-    # database = indexes.MultiValueField()
+    database = indexes.MultiValueField()
     publication_language = indexes.MultiValueField()
     publication_year = indexes.CharField()
     journal = indexes.CharField()
@@ -60,7 +60,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
             return [occ for occ in obj.text_language]
 
     def prepare_database(self, obj):
-        return [line.strip() for line in obj.database.split('\n') if line.strip()]
+        return [occ for occ in obj.indexed_database.all()]
 
     def prepare_journal(self, obj):
         return obj.source.title_serial
@@ -111,6 +111,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     reference_abstract = indexes.MultiValueField()
     link = indexes.MultiValueField()
     publication_type = indexes.CharField()
+    database = indexes.MultiValueField()
     publication_language = indexes.MultiValueField()
     publication_year = indexes.CharField()
 
@@ -164,7 +165,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
             return [occ for occ in obj.text_language]
 
     def prepare_database(self, obj):
-        return [line.strip() for line in obj.database.split('\n') if line.strip()]
+        return [occ for occ in obj.indexed_database.all()]
 
     def prepare_publication_type(self, obj):
         publication_type = ''
