@@ -128,10 +128,6 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_reference_title(self, obj):
         title = ''
-        # if is a article source skip from index
-        if obj.title_serial:
-            raise SkipDocument
-
         if obj.title_monographic:
             title = self.get_field_values(obj.title_monographic)
         elif obj.title_collection:
@@ -169,6 +165,10 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_publication_type(self, obj):
         publication_type = ''
+        # avoid indexing article source (onyl analytics)
+        if obj.literature_type[0] == 'S':
+            raise SkipDocument
+
         if obj.literature_type[0] == 'T':
             publication_type = 'thesis'
         elif obj.literature_type[0] == 'M':
