@@ -1,5 +1,6 @@
 import datetime
 from haystack import indexes
+from haystack.exceptions import SkipDocument
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
 from models import Title
 
@@ -16,6 +17,12 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Title
+
+    def prepare_status(self, obj):
+        if obj.status == 'C':
+            return 1
+        else:
+            raise SkipDocument
 
     def prepare_descriptor(self, obj):
         return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
