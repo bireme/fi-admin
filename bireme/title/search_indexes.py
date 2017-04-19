@@ -8,20 +8,14 @@ from django.contrib.contenttypes.models import ContentType
 class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
+    status = indexes.CharField(model_attr='status')
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
-    status = indexes.IntegerField(model_attr='status')
 
     def get_model(self):
         return Title
-
-    def should_update(self, instance, **kwargs):
-        if instance.status != 0:
-            return True
-
-        return False
 
     def prepare_descriptor(self, obj):
         return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
