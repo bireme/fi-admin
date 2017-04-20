@@ -24,6 +24,9 @@
 <!--  header -->
 <div class='header'>
     <h2><i class='icon-file'></i> {% trans "Select or create a source" %}</h2>
+    <div class='pull-right'>
+        <a href="{% url 'create_biblioref_source' %}?document_type={{ document_type }}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Source" %}</a>
+    </div>
 </div>
 
 <div class='body'>
@@ -79,7 +82,7 @@
 
             {% include "pagination_generic.html" %}
 
-            <div class='pull-left'>
+            <div class='pull-right'>
                 <a href="{% url 'create_biblioref_source' %}?document_type={{ document_type }}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Source" %}</a>
             </div>
 
