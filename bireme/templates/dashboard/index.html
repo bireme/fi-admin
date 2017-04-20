@@ -27,13 +27,11 @@
                 <div id="last_actions"></div>
             </div>
 
-            {% if user_cc = 'BR1.1' %}
             <div class="well sidebar-nav">
                 <h3>{% trans "Changed by other users" %}</h3>
 
                 <div id="changed_by_other_user"></div>
             </div>
-            {% endif %}
         </div>
 
         <div class="span6">
@@ -44,13 +42,11 @@
                 </div>
             {% endfor %}
 
-            {% if user_cc = 'BR1.1' %}
             <div class="well sidebar-nav">
                 <h3>{% trans "Changed by other cooperative center" %}</h3>
 
                 <div id="changed_by_other_cc"></div>
             </div>
-            {% endif %}
 
             {% if service_role.LILDBI == 'doc' or service_role.LILDBI == 'edi' %}
                 <div class="well sidebar-nav">
@@ -59,7 +55,6 @@
                     <div id="llxp_indexed_by_cc"></div>
                 </div>
             {% endif %}
-
         </div>
     </div>
 {% endblock %}
@@ -67,13 +62,10 @@
 {% block extrajs %}
 
 <script type="text/javascript">
-
     $(function() {
         load_widget_content('/dashboard/last_actions', '#last_actions')
-        {% if user_cc = 'BR1.1' %}
         load_widget_content('/dashboard/changed_by_others/user/', '#changed_by_other_user')
         load_widget_content('/dashboard/changed_by_others/cc/', '#changed_by_other_cc')
-        {% endif %}
         {% if service_role.LILDBI == 'doc' or service_role.LILDBI == 'edi' %}
         load_widget_content('/dashboard/llxp_indexed_by_cc/', '#llxp_indexed_by_cc')
         {% endif %}
