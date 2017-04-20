@@ -64,7 +64,10 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             search_field = search_parts[0] + '__icontains'
             search = search_parts[1]
 
-        object_list = self.model.objects.filter(**{search_field: search})
+        if search:
+            object_list = self.model.objects.filter(**{search_field: search})
+        else:
+            object_list = self.model.objects.all()
 
         if source_id:
             object_list = object_list.filter(source_id=source_id)
