@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-11 15:16-0300\n"
-"PO-Revision-Date: 2017-04-11 15:18-0306\n"
+"POT-Creation-Date: 2017-04-24 15:40-0300\n"
+"PO-Revision-Date: 2017-04-24 15:43-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1163,7 +1163,7 @@ msgstr "Dados locais JSON"
 msgid "Other fields JSON"
 msgstr "Outros campos JSON"
 
-#: biblioref/views.py:532 templates/biblioref/reference_form.html:323
+#: biblioref/views.py:535 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:148
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:346
 #: templates/events/edit-event.html:389 templates/events/edit-type.html:56
@@ -1714,7 +1714,7 @@ msgid "Editor LILACS-Express"
 msgstr "Editor LILACS-Express"
 
 #: main/choices.py:25 templates/dashboard/index.html:5
-#: templates/dashboard/index.html.py:20 templates/menu.html:11
+#: templates/dashboard/index.html.py:19 templates/menu.html:11
 msgid "Dashboard"
 msgstr "Painel de controle"
 
@@ -2473,7 +2473,7 @@ msgid "LILACS-Express"
 msgstr "LILACS-Express"
 
 #: templates/biblioref/reference_list.html:125
-#: templates/dashboard/index.html:20 templates/events/events.html:92
+#: templates/dashboard/index.html:19 templates/events/events.html:92
 #: templates/leisref/act_list.html:111 templates/main/resources.html:93
 #: templates/multimedia/media_list.html:110 templates/suggest/list.html:63
 #: templates/title/title_list.html:93
@@ -2485,12 +2485,12 @@ msgid "Filter by"
 msgstr "Filtrar por"
 
 #: templates/biblioref/reference_list.html:139
-#: templates/dashboard/index.html:47
+#: templates/dashboard/index.html:46
 msgid "Changed by other cooperative center"
 msgstr "Modificados por outros centros cooperantes"
 
 #: templates/biblioref/reference_list.html:140
-#: templates/dashboard/index.html:32
+#: templates/dashboard/index.html:31
 msgid "Changed by other users"
 msgstr "Modificado por outros usuários"
 
@@ -2683,15 +2683,15 @@ msgstr "Ano de publicação"
 msgid "Select"
 msgstr "Selecione"
 
-#: templates/dashboard/index.html:13
+#: templates/dashboard/index.html:12
 msgid "Success!"
 msgstr "Sucesso!"
 
-#: templates/dashboard/index.html:26
+#: templates/dashboard/index.html:25
 msgid "Recent actions"
 msgstr "Ações recentes"
 
-#: templates/dashboard/index.html:54
+#: templates/dashboard/index.html:53
 msgid "LILACS-Express records for indexing"
 msgstr "Registros LILACS-Express para indexação"
 
@@ -2705,7 +2705,6 @@ msgstr "Modificado"
 
 #: templates/dashboard/widget_edit_reference.html:10
 #: templates/dashboard/widget_log_review.html:10
-#| msgid "My records"
 msgid "No records found"
 msgstr "Nenhum registro foi encontrado"
 
@@ -3230,6 +3229,42 @@ msgstr "Página"
 #: templates/pagination.html:22 templates/pagination_generic.html:22
 msgid "of"
 msgstr "de"
+
+#: templates/reports/dummy-translate.html:1
+msgid "source__title_serial"
+msgstr "Título da revisa"
+
+#: templates/reports/dummy-translate.html:2
+msgid "indexer_cc"
+msgstr "Centro indexador"
+
+#: templates/reports/dummy-translate.html:3
+msgid "num_pending"
+msgstr "Total pendente"
+
+#: templates/reports/dummy-translate.html:4
+#| msgid "Shortened title"
+msgid "shortened_title"
+msgstr "Título abreviado"
+
+#: templates/reports/dummy-translate.html:5
+#| msgid "country"
+msgid "country__name"
+msgstr "País"
+
+#: templates/reports/dummy-translate.html:6
+msgid "issn"
+msgstr "ISSN"
+
+#: templates/reports/dummy-translate.html:7
+#| msgid "Editor code"
+msgid "editor_cc_code"
+msgstr "Código do editor"
+
+#: templates/reports/dummy-translate.html:8
+#| msgid "indexer_cc"
+msgid "indexer_cc_code"
+msgstr "Centro indexador"
 
 #: templates/reports/index.html:42
 msgid "Report"
