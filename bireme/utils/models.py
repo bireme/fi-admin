@@ -114,13 +114,19 @@ class AuxCode(Generic):
     label = models.CharField(_("Label"), max_length=255)
 
     def get_translations(self):
-        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation_list = ["%s^%s" % (self.language, self.label.strip())]
         translation = AuxCodeLocal.objects.filter(auxcode_id=self.id)
         if translation:
-            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            other_languages = ["%s^%s" % (trans.language, trans.label.strip()) for trans in translation]
             translation_list.extend(other_languages)
 
         return translation_list
+
+    def get_all_labels(self):
+        label_list = [self.label]
+        label_list.extend([local.label for local in AuxCodeLocal.objects.filter(auxcode_id=self.id)])
+
+        return label_list
 
     def __unicode__(self):
         lang_code = get_language()
@@ -140,3 +146,6 @@ class AuxCodeLocal(models.Model):
     auxcode = models.ForeignKey(AuxCode, verbose_name=_("Source type"))
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     label = models.CharField(_("Label"), max_length=255)
+
+    def __unicode__(self):
+        return self.label
