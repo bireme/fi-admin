@@ -27,6 +27,7 @@ def review_log(request, type, ctype_id, obj_id):
 
     log_list = LogEntry.objects.filter(content_type_id=ctype_id, object_id=obj_id)
 
+
     if type == 'user':
         # exclude changes made by the current user
         log_list = log_list.exclude(user=current_user)
@@ -42,8 +43,13 @@ def review_log(request, type, ctype_id, obj_id):
         if exclude_user_list:
             log_list = log_list.exclude(user__in=exclude_user_list)
 
+    if log_list:
+        reference_type = log_list[0].content_type.model
+        reference_id = log_list[0].object_id
 
-    return render_to_response('log/review.html', {'logs': log_list},
+    return render_to_response('log/review.html', {'logs': log_list,
+                                                  'reference_type': reference_type,
+                                                  'reference_id': reference_id},
                               context_instance=RequestContext(request))
 
 

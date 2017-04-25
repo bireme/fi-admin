@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-25 15:18-0300\n"
-"PO-Revision-Date: 2017-04-25 15:38-0306\n"
+"POT-Creation-Date: 2017-04-25 16:46-0300\n"
+"PO-Revision-Date: 2017-04-25 16:47-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1165,7 +1165,7 @@ msgstr "Datos locales JSON"
 msgid "Other fields JSON"
 msgstr "Otros campos JSON"
 
-#: biblioref/views.py:543 templates/biblioref/reference_form.html:323
+#: biblioref/views.py:540 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:153
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:346
 #: templates/events/edit-event.html:389 templates/events/edit-type.html:56
@@ -3131,10 +3131,9 @@ msgid "Review changes"
 msgstr "Revisar cambios"
 
 #: templates/log/review.html:15
-#, fuzzy
 #| msgid "Delete record"
 msgid "view complete record"
-msgstr "Borrar registro"
+msgstr "ver registro completo"
 
 #: templates/log/review.html:28 templates/log/review_notapproved.html:25
 msgid "Review"
@@ -3415,7 +3414,6 @@ msgid "Medias by Media Collection"
 msgstr "Medios por Colección de Medios"
 
 #: templates/reports/index.html:51
-#| msgid "LILACS serial by Country"
 msgid "LILACS journal by Country"
 msgstr "Revistas LILACS por País"
 

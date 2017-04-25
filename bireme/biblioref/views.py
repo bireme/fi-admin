@@ -335,6 +335,11 @@ class BiblioRefUpdate(LoginRequiredView):
             context['user_can_edit'] = True
             context['user_can_change_status'] = True
 
+        view_mode = self.request.GET.get('view_mode', None)
+        if view_mode:
+            context['view_mode'] = True
+            context['user_can_edit'] = False
+
         context['settings'] = settings
         context['help_fields'] = get_help_fields('biblioref')
 

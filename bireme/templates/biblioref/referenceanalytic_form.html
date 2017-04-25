@@ -3,6 +3,11 @@
 {% load static %}
 {% load app_filters %}
 
+{% if view_mode %}
+    {% block top %}{% endblock %}
+    {% block footer %}{% endblock %}
+{% endif %}
+
 {% block extrahead %}
 <link href="{% static "css/animate.min.css" %}" rel="stylesheet">
 {% endblock %}

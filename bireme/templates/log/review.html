@@ -12,6 +12,7 @@
 
 <div class='header'>
     <h2><i class='icon-ok'></i>{% trans "Review changes" %}</h2>
+    <h4>{{ logs.0.object_repr }} [<a href="{% if 'analytic' in reference_type %}{% url 'edit_biblioref_analytic' reference_id %}{% else %}{% url 'edit_biblioref_source' reference_id %}{% endif %}?view_mode=1" target="_blank">{% trans "view complete record" %}</a>]</h4>
 </div>
 
 <div class='body'>
