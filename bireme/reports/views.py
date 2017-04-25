@@ -178,7 +178,7 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                 # exclude titles that doesn't have indexer_cc_code
                 serial_list = serial_list.exclude(indexer_cc_code='', indexrange__indexer_cc_code='')
 
-                report_rows = serial_list.values('shortened_title', 'indexer_cc_code', 'editor_cc_code', 'country__name')
+                report_rows = serial_list.values('shortened_title', 'indexer_cc_code', 'editor_cc_code', 'country__name', 'issn')
 
             # LILACS-Express by Serial
             if report == '9':
