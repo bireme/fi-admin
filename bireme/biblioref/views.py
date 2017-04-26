@@ -105,14 +105,20 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         elif self.actions['filter_owner'] == 'indexed':
             user_cc = self.request.user.profile.get_attribute('cc')
             titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
-            filter_title_qs = Q()
-            for title in titles_indexed:
-                filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title)
-            # by default filter by LILACS express references
-            object_list = object_list.filter(filter_title_qs)
-            if self.actions['filter_status'] == '':
-                self.actions['filter_status'] = 0
-                object_list = object_list.filter(status=0)
+            if titles_indexed:
+                filter_title_qs = Q()
+                for title in titles_indexed:
+                    filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title)
+
+                object_list = object_list.filter(filter_title_qs)
+                # by default filter by LILACS express references
+                if self.actions['filter_status'] == '':
+                    self.actions['filter_status'] = 0
+                    object_list = object_list.filter(status=0)
+            else:
+                # if no indexed journals are found return a empty list
+                object_list = self.model.objects.none()
+
         # filter by records changed by others
         elif self.actions['filter_owner'] == 'review':
             if self.actions['review_type'] == 'user':
