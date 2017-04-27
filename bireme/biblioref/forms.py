@@ -102,10 +102,12 @@ class BiblioRefForm(BetterModelForm):
                 titles_indexed_by_this_cc = title_objects.filter(indexrange__indexer_cc_code=cc_code).order_by('shortened_title').distinct()
 
                 # 2- titles that has indexed by other centers
-                # first exclude titles that has not information about indexing
-                titles_indexed_by_others = title_objects.exclude(indexrange__isnull=True)
-                # second exclude titles where indexer_cc_code is empty and then exclude titles from the current cc (alread listed in titles_indexed_by_this_cc)
-                titles_indexed_by_others = titles_indexed_by_others.exclude(indexrange__indexer_cc_code='').exclude(indexrange__indexer_cc_code=cc_code).order_by('shortened_title')
+                # -exclude titles that has not records in indexrange and then exclude titles from the current cc (alread listed in titles_indexed_by_this_cc)
+                titles_indexed_by_others = title_objects.exclude(indexrange__isnull=True).exclude(indexrange__indexer_cc_code=cc_code)
+                # -filter by titles thas has at least one indexer_cc_code (diff from empty string)
+                titles_indexed_by_others = titles_indexed_by_others.filter(indexrange__indexer_cc_code__gt='').distinct()
+                # -sort by short title
+                titles_indexed_by_others = titles_indexed_by_others.order_by('shortened_title')
 
                 title_list = []
                 title_list_indexer_code = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_indexed_by_this_cc]
