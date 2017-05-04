@@ -52,6 +52,10 @@
                                 <li><a href="{% url 'list_legislation' %}" title=""><i class="icon-book"></i> {% trans "Legislation" %}</a></li>
                             {% endif %}
 
+                            {% if service_role.OER %}
+                                <li><a href="{% url 'list_oer' %}" title=""><i class="icon-share"></i> {% trans "Educational resources" %}</a></li>
+                            {% endif %}
+
                             {% if service_role|length > 3 %}
                                     </ul>
                                 </li>

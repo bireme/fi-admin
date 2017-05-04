@@ -132,6 +132,8 @@ MIDDLEWARE_CLASSES = (
     'log.middleware.WhodidMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    # Uncomment for Debug Toolbar
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -161,6 +163,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 
     #'django_extensions',
+    #'debug_toolbar',
+
     'haystack',
     'tastypie',
     'rosetta',
@@ -179,6 +183,7 @@ INSTALLED_APPS = (
     'title',
     'biblioref',
     'leisref',
+    'oer',
     'reports',
     'utils',
     'attachments',
@@ -278,6 +283,11 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # set permissions after file upload (444 read only file for security reasons)
 FILE_UPLOAD_PERMISSIONS = 0444
+
+# Debug toolbar settings
+DEBUG_TOOLBAR = False
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+INTERNAL_IPS = ('127.0.0.1',)
 
 try:
     from settings_local import *

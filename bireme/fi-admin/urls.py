@@ -101,8 +101,11 @@ urlpatterns = patterns('',
     # Bibliographic Records
     (r'^bibliographic/', include('biblioref.urls')),
 
-    # Bibliographic Records
+    # Legislation
     (r'^legislation/', include('leisref.urls')),
+
+    # Open Educational Resource
+    (r'^oer/', include('oer.urls')),
 
     # Reports
     (r'^reports/', include('reports.urls')),
@@ -149,4 +152,10 @@ urlpatterns = patterns('',
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += patterns('',
         url(r'^rosetta/', include('rosetta.urls')),
+    )
+
+if settings.DEBUG_TOOLBAR:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
     )
