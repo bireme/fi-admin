@@ -81,11 +81,9 @@ AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentFor
 
 URLFormSet = inlineformset_factory(OER, OERURL, fields='__all__', can_delete=True, extra=1)
 
+RelationFormSet = inlineformset_factory(OER, Relationship, fields='__all__', fk_name='oer_related',
+                                        can_delete=True, extra=1)
 
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
                                                         formset=ResourceThematicRequired,
                                                         can_delete=True, extra=1)
-
-
-OERTypeTranslationFormSet = inlineformset_factory(OERType, OERTypeLocal, fields='__all__',
-                                                  can_delete=True, extra=1)

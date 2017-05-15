@@ -2,10 +2,6 @@
 {% load i18n %}
 {% load static %}
 
-{% block extrahead %}
-<link href="{% static "css/bootstrap-datepicker.min.css" %}" rel="stylesheet">
-{% endblock %}
-
 {% block title %}{% trans "Edit Resource" %}{% endblock %}
 
 {% block breadcrumb %}
@@ -40,7 +36,8 @@
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
-        <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Educational resource" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-relationship" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Relationship" %}{% if formset_relation.errors and not formset_relation.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
     </ul>
 
@@ -49,11 +46,11 @@
 
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
-                    {% if role == 'doc' and not user_data.is_owner and act %}
+                    {% if role == 'doc' and not user_data.is_owner and oer %}
                         <div class="well">
                             <blockquote>
                                 <p><strong>{% trans 'Identifier' %}</strong><p>
-                                <p>{{ act.id }}</p>
+                                <p>{{ oer.id }}</p>
                             </blockquote>
 
                             {% for field in form %}
@@ -62,7 +59,7 @@
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
                                     {% if field.name = 'status' %}
-                                        <p>{{ act.get_status_display }}</p>
+                                        <p>{{ oer.get_status_display }}</p>
                                     {% else %}
                                         <p>{{ field.value|linebreaks }}<p>
                                     {% endif %}
@@ -98,10 +95,10 @@
 
                     {% if media.id %}
                         <div class="alert alert-info">
-                            <p>{% trans "Act created in" %}: <strong>{{ act.created_time }}</strong> {% trans "by user" %}  <strong>{{ media.created_by.username }}</strong></p>
-                            <p>{% trans "Cooperative center code" %}: <strong>{{ act.cooperative_center_code }}</strong></p>
+                            <p>{% trans "Created in" %}: <strong>{{ oer.created_time }}</strong> {% trans "by user" %}  <strong>{{ media.created_by.username }}</strong></p>
+                            <p>{% trans "Cooperative center code" %}: <strong>{{ oer.cooperative_center_code }}</strong></p>
                             {% if media.updated_by %}
-                                <p>{% trans "Last edit in" %} <strong>{{ act.updated_time }}</strong> {% trans "by user" %}  <strong>{{ media.updated_by.username }}</strong></p>
+                                <p>{% trans "Last edit in" %} <strong>{{ oer.updated_time }}</strong> {% trans "by user" %}  <strong>{{ media.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
 
@@ -187,10 +184,10 @@
             </div>
 
             <!-- FULLTEXT FORMSET -->
-            {% include "leisref/fieldset_fulltext.html" %}
+            {% include "oer/fieldset_fulltext.html" %}
 
             <!-- RELATIONSHIP FORMSET -->
-            {% include "leisref/fieldset_relationship.html" %}
+            {% include "oer/fieldset_relationship.html" %}
 
 
             <div id='tab-thematic' class="tab-pane">
@@ -262,10 +259,6 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
-   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
-   {% if LANGUAGE_CODE != 'en' %}
-       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
-   {% endif %}
 
    <script type="text/javascript">
         var decs_field;
@@ -354,33 +347,7 @@
                 }
             });
 
-            $("#id_scope_region").change(function(){
-                region_id = $(this).find("option:selected").val();
-
-                $.ajax({
-                  method: "get",
-                  url: "/legislation/context-lists/" + region_id,
-                  dataType: "json",
-                  success: function(result){
-                      replace_list_options('id_act_type', result.type_list);
-                      replace_list_options('id_scope', result.scope_list);
-                      replace_list_options('id_source_name', result.source_list);
-                      replace_list_options('id_organ_issuer', result.organ_issuer_list);
-                  }
-               });
-            });
         })
-
-        function replace_list_options(list_id, option_list){
-            list_selector = '#' + list_id
-            $(list_selector + ' option').remove();
-            $('<option>').val('').text('----------').appendTo(list_selector);
-            for (o = 0; o < option_list.length; o++){
-                option = option_list[o];
-                console.log(option.value + ": " + option.name);
-                $('<option>').val(option.value).text(option.name).appendTo(list_selector);
-            }
-        }
 
         function decs_search(obj){
             var row = $(obj).parent();
@@ -390,28 +357,22 @@
 
         function dismissRelatedLookupPopup(chosenId, chosenLabel) {
             // set code, text and label for the new descriptor
-            $('#label_related-' + act_related_row_id + '-act_referred').html(chosenLabel);
-            $('#label_related-' + act_related_row_id + '-act_referred').removeClass("placeholder-style");
+            $('#label_related-' + oer_related_row_id + '-oer_referred').html(chosenLabel);
+            $('#label_related-' + oer_related_row_id + '-oer_referred').removeClass("placeholder-style");
 
             // set the value of hidden input
-            $('#id_related-' + act_related_row_id + '-act_referred').val(chosenId);
+            $('#id_related-' + oer_related_row_id + '-oer_referred').val(chosenId);
 
-            act_win.close();
+            oer_win.close();
         }
 
-        function act_related(obj){
+        function oer_related(obj){
             var row = $(obj).parent();
             this_name = row.find('input').attr('name');
-            act_related_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
+            oer_related_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
 
-            region_id = $('#id_scope_region').find("option:selected").val();
-            act_win = window.open('{% url "act_related" %}?region=' + region_id, 'act_related', 'scrollbars=1,width=785,height=590');
+            oer_win = window.open('{% url "oer_related" %}?current_oer=' + {{ oer.id }}, 'oer_related', 'scrollbars=1,width=785,height=590');
         }
-
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-            language: '{{LANGUAGE_CODE}}'
-        });
 
         $("#save-published").click(function() {
             // set status to Published (1)
