@@ -94,6 +94,42 @@ class OERListView(OERGenericListView, ListView):
     """
     model = OER
 
+class OERRelatedListView(ListView):
+    """
+    List resources (used by relationship popup selection window)
+    """
+    model = OER
+    template_name = "oer/oer_related.html"
+    paginate_by = 10
+    context_object_name = "oer_list"
+
+    def get_queryset(self):
+        object_list = []
+
+        param_search = self.request.GET.get('s')
+        param_current = self.request.GET.get('current_oer')
+
+        if param_search:
+            object_list = self.model.objects.filter(title__icontains=param_search)
+        else:
+            object_list = self.model.objects.all()
+
+        if param_current:
+            object_list = object_list.exclude(id=param_current)
+
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super(OERRelatedListView, self).get_context_data(**kwargs)
+
+        param_search = self.request.GET.get('s')
+        param_current = self.request.GET.get('current_oer')
+
+        context['param_search'] = param_search
+        context['param_current'] = param_current
+
+        return context
+
 
 class OERUpdate(LoginRequiredView):
     """
@@ -108,6 +144,7 @@ class OERUpdate(LoginRequiredView):
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
         formset_url = URLFormSet(self.request.POST, instance=self.object)
         formset_attachment = AttachmentFormSet(self.request.POST, self.request.FILES, instance=self.object)
+        formset_relation = RelationFormSet(self.request.POST, instance=self.object)
         formset_thematic = ResourceThematicFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
@@ -116,6 +153,7 @@ class OERUpdate(LoginRequiredView):
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_attachment_valid = formset_attachment.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
+        formset_relation_valid = formset_relation.is_valid()
         formset_url_valid = formset_url.is_valid()
 
         user_data = additional_user_info(self.request)
@@ -124,7 +162,7 @@ class OERUpdate(LoginRequiredView):
                                                          [formset_descriptor, formset_thematic])
 
         if (form_valid and formset_descriptor_valid and formset_url_valid and formset_thematic_valid and
-           formset_attachment_valid and valid_for_publication):
+            formset_relation_valid and formset_attachment_valid and valid_for_publication):
 
                 self.object = form.save()
 
@@ -136,6 +174,9 @@ class OERUpdate(LoginRequiredView):
 
                 formset_url.instance = self.object
                 formset_url.save()
+
+                formset_relation.instance = self.object
+                formset_relation.save()
 
                 formset_thematic.instance = self.object
                 formset_thematic.save()
@@ -150,6 +191,7 @@ class OERUpdate(LoginRequiredView):
                                                  formset_descriptor=formset_descriptor,
                                                  formset_attachment=formset_attachment,
                                                  formset_url=formset_url,
+                                                 formset_relation=formset_relation,
                                                  formset_thematic=formset_thematic,
                                                  valid_for_publication=valid_for_publication))
 
@@ -197,6 +239,7 @@ class OERUpdate(LoginRequiredView):
             context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
             context['formset_attachment'] = AttachmentFormSet(instance=self.object)
             context['formset_url'] = URLFormSet(instance=self.object)
+            context['formset_relation'] = RelationFormSet(instance=self.object)
             context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
 
         return context
@@ -241,55 +284,3 @@ class OERDeleteView(LoginRequiredView, DeleteView):
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
 
         return super(OERDeleteView, self).delete(request, *args, **kwargs)
-
-
-# ========================= ACT TYPE AUX LIST ============================================
-class OERTypeListView(OERListView, ListView):
-    """
-    List Aux OER Type
-    """
-    model = OERType
-    context_object_name = "aux_list"
-    search_field = "name"
-    restrict_by_user = False
-
-
-class OERTypeUpdate(GenericUpdateWithOneFormset):
-    """
-    Handle creation and update of act scope
-    Use GenericUpdateWithOneFormset to render form and formset
-    """
-    model = OERType
-    success_url = reverse_lazy('list_act_type')
-    formset = OERTypeTranslationFormSet
-    fields = '__all__'
-
-
-class OERTypeUpdateView(OERTypeUpdate, UpdateView):
-    """
-    Used as class view for update act scope
-    Extend Update class that do all the work
-    """
-
-
-class OERTypeCreateView(OERTypeUpdate, CreateView):
-    """
-    Used as class view for create act scope
-    Extend Update class that do all the work
-    """
-
-
-class OERTypeDeleteView(LoginRequiredView, DeleteView):
-    """
-    Handle delete of act scope
-    """
-    model = OERType
-    success_url = reverse_lazy('list_oer_type')
-
-    def get_object(self, queryset=None):
-        """ Hook to ensure object is owned by request.user. """
-        obj = super(OERTypeDeleteView, self).get_object()
-
-        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
-            return HttpResponse('Unauthorized', status=401)
-        return obj

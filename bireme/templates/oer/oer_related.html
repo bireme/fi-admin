@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block top %}{% endblock %}
+
+{% block title %}{% trans "Resources" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="span12">
+        <form name="search">
+            <input type="hidden" name="page" value="{{ actions.page }}">
+            <input type="hidden" name="current_oer" value="{{ param_current }}">
+            {% trans "Search" %}:
+            <input type="text" name="s" value="{% if param_search %}{{ param_search }}{% endif %}">
+            <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
+        </form>
+    </div>
+</div>
+
+<div>
+    {% if oer_list|length > 0 %}
+        <h4>{% trans "Select the resource" %}</h4>
+        <table class='table'>
+            <tbody>
+                {% for oer in oer_list %}
+                    <tr>
+                        <td><a href="#" onclick="opener.dismissRelatedLookupPopup('{{ oer.id }}', '{{ oer }}' ); return false;">{{ oer }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include "pagination_generic.html" %}
+    {% elif param_search %}
+        <div class="alert alert-info">
+            {% trans "No resources found" %}
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
