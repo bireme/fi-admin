@@ -36,8 +36,16 @@
             {% endif %}
             </a>
         </li>
+        <li class="{% if actions.filter_owner == 'center' %}active{% endif %}">
+            <a href="#tab-center" onclick="filter_owner('center')" data-toggle="tab">
+                <strong>{% trans "Resources of my center" %}</strong>
+               {% if  actions.filter_owner == 'center' %}
+                   <span class="badge badge-info">{{ paginator.count }}</span>
+               {% endif %}
+            </a>
+        </li>
         <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
-            <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
+            <a href="#tab-all" onclick="filter_owner('*')" data-toggle="tab">
                 <strong>{% trans "All resources" %}</strong>
                {% if  actions.filter_owner == '*' %}
                    <span class="badge badge-info">{{ paginator.count }}</span>

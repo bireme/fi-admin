@@ -339,6 +339,12 @@ class RelationType(Generic):
         else:
             return getattr(self, field)
 
+    def get_label_present(self):
+        return self.get_label('label_present')
+
+    def get_label_past(self):
+        return self.get_label('label_past')
+
     def __unicode__(self):
         return self.get_label('label_present')
 
