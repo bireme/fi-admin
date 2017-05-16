@@ -221,11 +221,13 @@ class OERUpdate(LoginRequiredView):
 
         # create flag that control if user have permission to edit the reference
         if user_role == 'doc':
+            # documentalist can create and edit your own records
             context['user_can_edit'] = True if not self.object or self.object.created_by == self.request.user else False
             context['user_can_change_status'] = False
-        else:
-            context['user_can_edit'] = True
-            context['user_can_change_status'] = True
+        elif user_role == 'edi':
+            # editor can create, edit and change status (publish) your and institution records
+            context['user_can_edit'] = True if not self.object or self.object.cooperative_center_code == user_data['user_cc'] else False
+            context['user_can_change_status'] = True if not self.object or self.object.cooperative_center_code == user_data['user_cc'] else False
 
         context['settings'] = settings
         context['help_fields'] = get_help_fields('oer')

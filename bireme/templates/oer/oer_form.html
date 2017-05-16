@@ -242,7 +242,7 @@
                     <button class="btn btn-info btn-large">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
                 {% endif %}
 
-                {% if object.status == -1 or object.status == -2 %}
+                {% if user_can_change_status %}
                     <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
                 {% endif %}
             {% else %}

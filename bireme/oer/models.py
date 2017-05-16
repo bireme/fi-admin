@@ -302,6 +302,8 @@ class OER(Generic, AuditLog):
     technical_requirements = models.CharField(_("Technical requirements"), max_length=155, blank=True)
     # tempo tipico de aprendizagem
     typical_learning_time = models.CharField(_("Typical learning time"), max_length=115, blank=True)
+    # responsible cooperative center
+    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
     def __unicode__(self):
         return self.title
