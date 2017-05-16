@@ -30,8 +30,8 @@ class Type(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
+        translation = TypeLocal.objects.filter(oer_type=self.id, language=lang_code)
         if translation:
-            translation = TypeLocal.objects.filter(oer_type=self.id, language=lang_code)
             return translation[0].name
         else:
             return self.name
@@ -330,6 +330,14 @@ class RelationType(Generic):
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     label_present = models.CharField(_("Present tense form"), max_length=155)
     label_past = models.CharField(_("Past form"), max_length=155)
+
+    def get_label(self, field):
+        lang_code = get_language()
+        translation = RelationTypeLocal.objects.filter(relation_type=self.id, language=lang_code)
+        if translation:
+            return getattr(translation[0], field)
+        else:
+            return getattr(self, field)
 
     def __unicode__(self):
         return self.get_label('label_present')
