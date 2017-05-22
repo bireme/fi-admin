@@ -1,12 +1,13 @@
-import datetime
-import json
+from django.conf import settings
 from haystack import indexes
 from haystack.exceptions import SkipDocument
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic
-
+from attachments.models import Attachment
 from django.contrib.contenttypes.models import ContentType
 
+import datetime
+import json
 
 class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -41,8 +42,17 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
             return self.get_field_values(obj.individual_author)
 
     def prepare_link(self, obj):
-        if obj.electronic_address:
-            return self.get_field_values(obj.electronic_address, '_u')
+        electronic_address = []
+        electronic_address = self.get_field_values(obj.electronic_address, '_u')
+        attachments = Attachment.objects.filter(object_id=obj.id,
+                                                content_type=ContentType.objects.get_for_model(obj))
+
+        for attach in attachments:
+            view_url = "%sdocument/view/%s" % (settings.SITE_URL,  attach.short_url)
+            electronic_address.append(view_url)
+
+        if electronic_address:
+            return electronic_address
 
     def prepare_reference_abstract(self, obj):
         if obj.abstract:
@@ -149,8 +159,17 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         return author_list
 
     def prepare_link(self, obj):
-        if obj.electronic_address:
-            return self.get_field_values(obj.electronic_address, '_u')
+        electronic_address = []
+        electronic_address = self.get_field_values(obj.electronic_address, '_u')
+        attachments = Attachment.objects.filter(object_id=obj.id,
+                                                content_type=ContentType.objects.get_for_model(obj))
+
+        for attach in attachments:
+            view_url = "%sdocument/view/%s" % (settings.SITE_URL,  attach.short_url)
+            electronic_address.append(view_url)
+
+        if electronic_address:
+            return electronic_address
 
     def prepare_reference_abstract(self, obj):
         if obj.abstract:
