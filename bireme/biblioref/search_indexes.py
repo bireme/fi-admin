@@ -43,7 +43,9 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_link(self, obj):
         electronic_address = []
-        electronic_address = self.get_field_values(obj.electronic_address, '_u')
+        if obj.electronic_address:
+            electronic_address = self.get_field_values(obj.electronic_address, '_u')
+
         attachments = Attachment.objects.filter(object_id=obj.id,
                                                 content_type=ContentType.objects.get_for_model(obj))
 
@@ -160,7 +162,9 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_link(self, obj):
         electronic_address = []
-        electronic_address = self.get_field_values(obj.electronic_address, '_u')
+        if obj.electronic_address:
+            electronic_address = self.get_field_values(obj.electronic_address, '_u')
+
         attachments = Attachment.objects.filter(object_id=obj.id,
                                                 content_type=ContentType.objects.get_for_model(obj))
 
