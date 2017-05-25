@@ -36,15 +36,15 @@ function open_window_with_post(verb, url, data, target) {
     }
 }
 
-function field_assist(field_name, field_id){
-    if ( !field_id ){
-        field_id = field_name
-    }
+function field_assist(field_name, field_id, module_name){
+    // set default args values
+    field_id = typeof field_id !== 'undefined' ? field_id : field_name;
+    module_name = typeof module_name !== 'undefined' ? module_name : 'biblioref';
 
-    field_assist_url = '/bibliographic/field_assist/' + field_name + '/',
+    field_assist_url = '/utils/field_assist/' + field_name + '/',
     field_value = $('#id_' + field_id).val();
 
-    post_params = {'field_value' : field_value, 'field_id': field_id};
+    post_params = {'field_value' : field_value, 'field_id': field_id, 'module_name': module_name};
 
     open_window_with_post('POST', field_assist_url, post_params, 'field_assist');
     return false;

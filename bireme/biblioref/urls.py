@@ -15,7 +15,5 @@ urlpatterns = [
     url(r'^sources?$', BiblioRefListSourceView.as_view(), name='list_biblioref_sources'),
     url(r'^delete/(?P<pk>\d+)/?$', BiblioRefDeleteView.as_view(), name='delete_biblioref'),
 
-    url(r'^field_assist/(?P<field_name>\w+)/', field_assist, name='field_assist'),
-
     url(r'^duplicates/(?P<reference_id>\d+)/', view_duplicates, name='view_duplicates'),
 ]

@@ -57,6 +57,7 @@
 
         {% if field_id %}
             $('<input>').attr({type: 'hidden', name: 'field_id', value:'{{field_id}}'}).appendTo('form#deform');
+            $('<input>').attr({type: 'hidden', name: 'module_name', value:'{{module_name}}'}).appendTo('form#deform');
         {% endif %}
 
     </script>
