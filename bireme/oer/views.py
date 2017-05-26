@@ -5,11 +5,13 @@ from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.contenttypes.models import ContentType
 
 from django.shortcuts import render_to_response
 
-from utils.views import ACTIONS
+from pkg_resources import resource_filename
+from utils.views import ACTIONS, get_class
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
 from attachments.models import Attachment
@@ -20,6 +22,8 @@ from datetime import datetime
 from forms import *
 
 import json
+import colander
+import deform
 
 
 class OERGenericListView(LoginRequiredView, ListView):
@@ -157,12 +161,9 @@ class OERUpdate(LoginRequiredView):
         formset_url_valid = formset_url.is_valid()
 
         user_data = additional_user_info(self.request)
-        # run cross formsets validations
-        valid_for_publication = is_valid_for_publication(form,
-                                                         [formset_descriptor, formset_thematic])
 
         if (form_valid and formset_descriptor_valid and formset_url_valid and formset_thematic_valid and
-            formset_relation_valid and formset_attachment_valid and valid_for_publication):
+            formset_relation_valid and formset_attachment_valid):
 
                 self.object = form.save()
 
@@ -192,8 +193,7 @@ class OERUpdate(LoginRequiredView):
                                                  formset_attachment=formset_attachment,
                                                  formset_url=formset_url,
                                                  formset_relation=formset_relation,
-                                                 formset_thematic=formset_thematic,
-                                                 valid_for_publication=valid_for_publication))
+                                                 formset_thematic=formset_thematic))
 
     def form_invalid(self, form):
         # force use of form_valid method to run all validations
@@ -286,3 +286,75 @@ class OERDeleteView(LoginRequiredView, DeleteView):
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
 
         return super(OERDeleteView, self).delete(request, *args, **kwargs)
+
+@csrf_exempt
+def field_assist(request, **kwargs):
+
+    # add search_path to override deform templates
+    custom_deform_templates = '%s/templates/deform' % settings.PROJECT_ROOT_PATH
+    deform_templates = resource_filename('deform', 'templates')
+    search_path = (custom_deform_templates, deform_templates)
+    deform.Form.set_zpt_renderer(search_path)
+
+    field_name = kwargs.get('field_name')
+    # get previous value from field (json)
+    field_value = request.POST.get('field_value', '')
+    field_id = request.POST.get('field_id', field_name)
+
+    formid = request.POST.get('__formid__', '')
+
+    field_name_camelcase = field_name.title().replace('_', '')
+    field_full_classname = 'oer.field_definitions.{0}'.format(field_name_camelcase)
+
+    field_definition = get_class(field_full_classname)
+
+    appstruct = None
+    field_json = None
+    min_len_param = 1
+    # if previous_value allow delete the first ocurrence
+    if field_value and field_value != '[]':
+        min_len_param = 0
+
+    class Schema(colander.MappingSchema):
+        data = field_definition()
+
+    schema = Schema()
+    form = deform.Form(schema, buttons=[deform.Button('submit', _('Save'),
+                       css_class='btn btn-primary btn-large')], use_ajax=False)
+    form['data'].widget = deform.widget.SequenceWidget(min_len=min_len_param, orderable=True)
+
+    # check if is a submit of deform form
+    if request.method == 'POST' and formid == 'deform':
+        controls = parse_qsl(request.body, keep_blank_values=True)
+        try:
+            # If all goes well, deform returns a simple python structure of
+            # the data. You use this same structure to populate a form with
+            # data from permanent storage
+            appstruct = form.validate(controls)
+        except ValidationFailure, e:
+            # The exception contains a reference to the form object
+            rendered = e.render()
+        else:
+            # form validated - create field_json with content and return to form render
+            field_json = json.dumps(appstruct)
+            rendered = form.render(appstruct)
+
+    # otherwise is the open assist popup with or without field value
+    else:
+        if field_value:
+            # add wrap element (data) to json
+            field_value = '{"data" : %s}' % field_value
+            appstruct = json.loads(field_value)
+
+            rendered = form.render(appstruct)
+        else:
+            # new reference
+            rendered = form.render()
+
+    return render_to_response('biblioref/field_assist.html', {
+        'form': rendered,
+        'field_json': field_json,
+        'field_name': field_name,
+        'field_id': field_id,
+        'deform_dependencies': form.get_widget_resources()
+    })

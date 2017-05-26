@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^edit/(?P<pk>\d+)/?$', OERUpdateView.as_view(), name='edit_oer'),
     url(r'^delete/(?P<pk>\d+)/?$', OERDeleteView.as_view(), name='delete_oer'),
     url(r'^oer-related/?$', OERRelatedListView.as_view(), name='oer_related'),
+    
+    url(r'^field_assist/(?P<field_name>\w+)/', field_assist, name='field_assist'),
 ]

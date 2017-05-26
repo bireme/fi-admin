@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load app_filters %}
 
 {% block title %}{% trans "Edit Resource" %}{% endblock %}
 
@@ -46,63 +47,75 @@
 
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
-                    {% if role == 'doc' and not user_data.is_owner and oer %}
-                        <div class="well">
+                <fieldset id="metadata">
+                {% for field in form %}
+                    {% if not user_can_edit %}
+                        {% if field.value %}
                             <blockquote>
-                                <p><strong>{% trans 'Identifier' %}</strong><p>
-                                <p>{{ oer.id }}</p>
+                                <p><strong>{{ field.label }}</strong><p>
+                                <p>{% display_field field %}<p>
                             </blockquote>
-
-                            {% for field in form %}
-                                {{ field.as_hidden }}
-                                {{ field.errors }}
-                                <blockquote>
-                                    <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
-                                        <p>{{ oer.get_status_display }}</p>
-                                    {% else %}
-                                        <p>{{ field.value|linebreaks }}<p>
-                                    {% endif %}
-                                </blockquote>
-                            {% endfor %}
-                        </div>
-
+                        {% endif %}
                     {% else %}
-
-                        <fieldset id="metadata">
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                            {{ form.non_field_errors }}
-                            {% for field in form.visible_fields %}
-                                {% if field.name not in indexing_fields %}
-                                    <label for="{{ field.auto_id }}">
-                                        {% if field.field.required %}
-                                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                        <span {{ field.row_attrs }} {% if not field.is_hidden %}id="field_{{ field.name }}"{% endif %}>
+                            {% if field.name == 'status' and not user_can_change_status %}
+                                <p>
+                                    {{ field.label }} : {{ field.value|display_status_label }}
+                                </p>
+                                {{ field.as_hidden }}
+                            {% else %}
+                                {% if field.label %}
+                                    {% if not field.is_hidden or field.field|fieldtype == 'JSONFormField' %}
+                                        {% if field.field|fieldtype == 'BooleanField' %}
+                                            <span>{{ field.label }}</span>
                                         {% else %}
-                                            {{ field.label }}
+                                            <label for="{{ field.auto_id }}">
+                                                {% if field.name in help_fields %}
+                                                    <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/" class="field_with_help">{{ field.label }}</a>
+                                                {% else %}
+                                                    {{ field.label }}
+                                                {% endif %}
+                                                {% if field.field.required %}
+                                                    <span class="mark">*</span>
+                                                {% endif %}
+                                            </label>
                                         {% endif %}
-                                    </label>
-                                    <p class="muted">{{ field.help_text }}</p>
-                                    {{ field.errors }}
-                                    {{ field }}
+                                    {% endif %}
                                 {% endif %}
-                            {% endfor %}
-                        </fieldset>
-                    {% endif %}
 
-                    {% comment %}Display administrative information{% endcomment %}
+                                {{ field.errors }}
 
-                    {% if media.id %}
-                        <div class="alert alert-info">
-                            <p>{% trans "Created in" %}: <strong>{{ oer.created_time }}</strong> {% trans "by user" %}  <strong>{{ media.created_by.username }}</strong></p>
-                            <p>{% trans "Cooperative center code" %}: <strong>{{ oer.cooperative_center_code }}</strong></p>
-                            {% if media.updated_by %}
-                                <p>{% trans "Last edit in" %} <strong>{{ oer.updated_time }}</strong> {% trans "by user" %}  <strong>{{ media.updated_by.username }}</strong></p>
+                                {% if field.field|fieldtype == 'JSONFormField' %}
+                                    <div class="row">
+                                        <a onclick="javascript:field_assist('{{field.html_name}}', '{{field.html_name}}', 'oer')" href="javascript:void(0);">
+                                            <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                                        </a>
+                                    </div>
+                                {% endif %}
+
+                                {% if field.help_text and field.help_text != 'Enter valid JSON' %}
+                                    <p class="muted">{{ field.help_text }}</p>
+                                {% endif %}
+
+                                {{ field }}
+
                             {% endif %}
-                        </div>
+                        {% endif %}
+                    </span>
+                {% endfor %}
 
-                    {% endif %}
+                {% comment %}Display administrative information{% endcomment %}
+
+                {% if oer.id %}
+                    <div class="alert alert-info">
+                        <p>{% trans "Created in" %}: <strong>{{ oer.created_time }}</strong> {% trans "by user" %}  <strong>{{ oer.created_by.username }}</strong></p>
+                        <p>{% trans "Cooperative center code" %}: <strong>{{ oer.cooperative_center_code }}</strong></p>
+                        {% if oer.updated_by %}
+                            <p>{% trans "Last edit in" %} <strong>{{ oer.updated_time }}</strong> {% trans "by user" %}  <strong>{{ oer.updated_by.username }}</strong></p>
+                        {% endif %}
+                    </div>
+
+                {% endif %}
             </div>
 
             <div id='tab-descriptors' class="tab-pane">
@@ -259,9 +272,72 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/field_assist.js' %}"></script>
+   <script src="{% static 'js/jsrender.min.js' %}"></script>
+
+   <script id="itensTemplate" type="text/x-jsrender">
+        <li>
+            [[props tmpl="#keyPropTemplate" /]]
+        </li>
+   </script>
+
+   <script id="keyPropTemplate" type="text/x-jsrender">
+        [[if prop]]
+            <strong>[[>~format(key)]]</strong> [[>prop]]
+        [[/if]]
+   </script>
 
    <script type="text/javascript">
         var decs_field;
+
+        function format_attrlabel(value) {
+            if ( value != 'text'){
+                label = value.replace('_','')
+                return  label + ':'
+            }else{
+                return ''
+            }
+        }
+
+        function format_attrlabel(value) {
+            if ( value != 'text'){
+                label = value.replace('_','')
+                return  label + ':'
+            }else{
+                return ''
+            }
+        }
+
+        // change default delimiters of jsrender
+        $.views.settings.delimiters("[[","]]");
+
+        // render JSON fields for display
+        $(".jsonfield").each(function() {
+            var field_value = $(this).val();
+
+            // check if hidden value starts with [ or { (JSON object)
+            if ( field_value.match(/^[\[|\{]/) ) {
+               display_json_value( $(this) );
+            }
+        });
+
+        // watch for change of hidden fields (JSON elements)
+        $(".jsonfield").bind("change", function() {
+            display_json_value( $(this) );
+
+        });
+
+        // function responsible for display JSON elements using jsrender template
+        function display_json_value(element){
+            var element_id = $(element).attr('id');
+            var element_val = $('#' + element_id).val();
+
+            var json_data = jQuery.parseJSON(element_val);
+
+            if ( json_data != null ){
+                $('#' + element_id + '_display').html($("#itensTemplate").render(json_data, {format: format_attrlabel}));
+            }
+        }
 
         $(function() {
             $('.descriptor-row').formset({
@@ -371,7 +447,7 @@
             this_name = row.find('input').attr('name');
             oer_related_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
 
-            oer_win = window.open('{% url "oer_related" %}?current_oer=' + {{ oer.id }}, 'oer_related', 'scrollbars=1,width=785,height=590');
+            oer_win = window.open('{% url "oer_related" %}?current_oer={% if oer.id %}{{ oer.id }}{% endif %}','oer_related', 'scrollbars=1,width=785,height=590');
         }
 
         $("#save-published").click(function() {

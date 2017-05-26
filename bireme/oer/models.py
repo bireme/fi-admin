@@ -253,13 +253,45 @@ class AudienceLocal(models.Model):
     name = models.CharField(_("name"), max_length=115)
 
 
+# Learning Resource Type
+class LearningResourceType(Generic):
+
+    class Meta:
+        verbose_name = _("Learning resource type")
+        verbose_name_plural = _("Learning resource types")
+
+    name = models.CharField(_("Name"), max_length=115)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = CourseTypeLocal.objects.filter(coursetype=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class LearningResourceTypeLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    coursetype = models.ForeignKey(LearningResourceType, verbose_name=_("Learning resource type"))
+    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
+    name = models.CharField(_("name"), max_length=115)
+
+
 # Recurso Educacional Aberto
 class OER(Generic, AuditLog):
     class Meta:
-        verbose_name = _("OER reference")
-        verbose_name_plural = _("OER references")
+        verbose_name = _("Open Educational Resource")
+        verbose_name_plural = _("Open Educational Resources")
 
     status = models.SmallIntegerField(_("Status"), choices=STATUS_CHOICES, null=True, default=-1)
+    # indica que é um registro CVSP
+    CVSP_resource = models.BooleanField(_('CVSP resource'), default=False)
     # título do recurso educacional
     title = models.CharField(_("Title"), max_length=255, blank=False)
     # objetivos
@@ -269,7 +301,7 @@ class OER(Generic, AuditLog):
     # responsável pela criação do recurso
     creator = JSONField(_('Creator'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # contribuidores
-    contributor = JSONField(_('Creator'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+    contributor = JSONField(_('Contributor'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # tipo do recurso
     type = models.ForeignKey(Type, verbose_name=_("Type"), blank=True, null=True)
     # idioma do recurso
@@ -282,6 +314,8 @@ class OER(Generic, AuditLog):
     format = models.ManyToManyField(Format, verbose_name=_("Format"), blank=True)
     # tipo de interatividade
     interactivity_type = models.ForeignKey(InteractivityType, verbose_name=_("Interactivity type"), blank=True, null=True)
+    # tipo de recurso de aprendizagem
+    learning_resource_type = models.ForeignKey(LearningResourceType, verbose_name=_("Learning resource type"), blank=True, null=True)
     # dificuldade
     difficulty = models.ForeignKey(Difficulty, verbose_name=_("Difficulty"), blank=True, null=True)
     # nível de agregação
@@ -304,6 +338,8 @@ class OER(Generic, AuditLog):
     typical_learning_time = models.CharField(_("Typical learning time"), max_length=115, blank=True)
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
+    # identificação do nó CVSP
+    cvsp_node = models.CharField(_('CVSP node'), max_length=55, blank=True)
 
     def __unicode__(self):
         return self.title
@@ -330,8 +366,8 @@ class RelationType(Generic):
 
     name = models.CharField(_("name"), max_length=155)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
-    label_present = models.CharField(_("Present tense form"), max_length=155)
-    label_past = models.CharField(_("Past form"), max_length=155)
+    label_active = models.CharField(_("Active form"), max_length=155)
+    label_passive = models.CharField(_("Passive form"), max_length=155)
 
     def get_label(self, field):
         lang_code = get_language()
@@ -341,14 +377,14 @@ class RelationType(Generic):
         else:
             return getattr(self, field)
 
-    def get_label_present(self):
-        return self.get_label('label_present')
+    def get_label_active(self):
+        return self.get_label('label_active')
 
-    def get_label_past(self):
-        return self.get_label('label_past')
+    def get_label_passive(self):
+        return self.get_label('label_passive')
 
     def __unicode__(self):
-        return self.get_label('label_present')
+        return self.get_label('label_active')
 
 class RelationTypeLocal(models.Model):
 
@@ -358,8 +394,8 @@ class RelationTypeLocal(models.Model):
 
     relation_type = models.ForeignKey(RelationType, verbose_name=_("Relation type"))
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
-    label_present = models.CharField(_("Present tense form"), max_length=155)
-    label_past = models.CharField(_("Past form"), max_length=155)
+    label_active = models.CharField(_("Active form"), max_length=155)
+    label_passive = models.CharField(_("Passive form"), max_length=155)
 
 
 # OER Relationship
