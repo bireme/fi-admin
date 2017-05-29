@@ -3,10 +3,8 @@
 {% load static %}
 {% load app_filters %}
 
-{% if view_mode %}
-    {% block top %}{% endblock %}
-    {% block footer %}{% endblock %}
-{% endif %}
+{% block top %}{% if not view_mode %}{{ block.super }}{% endif %}{% endblock %}
+{% block footer %}{% if not view_mode %}{{ block.super }}{% endif %}{% endblock %}
 
 {% block extrahead %}
 <link href="{% static "css/animate.min.css" %}" rel="stylesheet">
@@ -29,8 +27,6 @@
 {% endblock %}
 
 {% block content %}
-
-
 <div class='header'>
     <h3><i class='icon-file' title="{% if object %}{{ object.document_type }}{% else %}{{ form.document_type }}{% endif %}"></i>{% if not object %}{% trans "New Analytic" %}{% else %}{% trans "Edit Analytic" %}{% endif %}</h3>
 </div>
