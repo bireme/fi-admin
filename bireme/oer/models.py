@@ -9,7 +9,6 @@ from main.choices import LANGUAGES_CHOICES
 from utils.fields import JSONField
 
 STATUS_CHOICES = (
-    (-2, _('Related')),
     (-1, _('Draft')),
     (1, _('Published')),
     (2, _('Refused')),
@@ -283,6 +282,36 @@ class LearningResourceTypeLocal(models.Model):
     name = models.CharField(_("name"), max_length=115)
 
 
+# Learning Context
+class LearningContext(Generic):
+
+    class Meta:
+        verbose_name = _("Learning context")
+        verbose_name_plural = _("Learning contexts")
+
+    name = models.CharField(_("Name"), max_length=115)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = LearningContextLocal.objects.filter(learningcontext=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class LearningContextLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    learningcontext = models.ForeignKey(LearningContext, verbose_name=_("Learning context"))
+    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
+    name = models.CharField(_("name"), max_length=115)
+
+
 # Recurso Educacional Aberto
 class OER(Generic, AuditLog):
     class Meta:
@@ -316,6 +345,8 @@ class OER(Generic, AuditLog):
     interactivity_type = models.ForeignKey(InteractivityType, verbose_name=_("Interactivity type"), blank=True, null=True)
     # tipo de recurso de aprendizagem
     learning_resource_type = models.ForeignKey(LearningResourceType, verbose_name=_("Learning resource type"), blank=True, null=True)
+    # contexto de aprendizagem
+    learning_context = models.ForeignKey(LearningContext, verbose_name=_("Learning context"), blank=True, null=True)
     # dificuldade
     difficulty = models.ForeignKey(Difficulty, verbose_name=_("Difficulty"), blank=True, null=True)
     # nível de agregação
