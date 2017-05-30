@@ -222,7 +222,7 @@ class OERUpdate(LoginRequiredView):
         # create flag that control if user have permission to edit the reference
         if user_role == 'doc':
             # documentalist can create and edit your own records
-            context['user_can_edit'] = True if not self.object or self.object.created_by == self.request.user else False
+            context['user_can_edit'] = True if not self.object or ((self.object.created_by == self.request.user) and self.object.status < 1) else False
             context['user_can_change_status'] = False
         elif user_role == 'edi':
             # editor can create, edit and change status (publish) your and institution records
