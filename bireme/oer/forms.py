@@ -31,6 +31,21 @@ class OERForm(forms.ModelForm):
         if self.user_data['service_role'].get('OER') == 'doc':
             self.fields['status'].widget = widgets.HiddenInput()
 
+    def clean(self):
+        data = self.cleaned_data
+        status = data.get('status')
+        required_fields = ['learning_objectives', 'description', 'creator', 'type', 'language',
+                           'license', 'learning_context']
+
+        for field in required_fields:
+            value = data[field]
+
+            if status == 1 and not value:
+                self.add_error(field, _("Required for publication"))
+
+        return data
+
+
     def save(self, *args, **kwargs):
         obj = super(OERForm, self).save(commit=False)
 
