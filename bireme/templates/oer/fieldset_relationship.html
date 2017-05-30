@@ -14,7 +14,9 @@
             <thead>
                 <th>{% trans "Relation type" %}</th>
                 <th>{% trans "Resource" %}</th>
-                <th>{% trans "Delete?" %}</th>
+                {% if user_can_edit %}
+                    <th>{% trans "Delete?" %}</th>
+                {% endif %}
             </thead>
 
             <tbody>
@@ -81,11 +83,21 @@
                 {% endfor %}
             {% else %}
                 {% for form in formset_relation %}
-                    {% for field in form %}
+                    <tr>
+                    {% if field.name == 'oer_referred' %}
                         <td>
-                            {{ field }}
+                            {{ form.instance.oer_referred }}
                         </td>
-                    {% endfor %}
+                    {% elif field.name == 'relation_type' %}
+                        <td>
+                            {{ form.instance.relation_type.get_label_present }}
+                        </td>
+                    {% else %}
+                        <td>
+                            {{ field.value }}
+                        </td>
+                    {% endif %}
+                    </tr>
                 {% endfor %}
             {% endif %}
             </tbody>

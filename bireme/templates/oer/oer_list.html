@@ -136,7 +136,7 @@
                             <td>{{ oer.status|display_status_label }}</td>
                             <td>
                                 <a href="{% url 'edit_oer' oer.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if oer.created_by_id = user.id %}
+                                {% if oer.created_by_id = user.id and oer.status < 1 %}
                                     <a href="{% url 'delete_oer' oer.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>

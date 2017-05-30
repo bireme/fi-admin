@@ -53,11 +53,15 @@
                         {% if field.value %}
                             <blockquote>
                                 <p><strong>{{ field.label }}</strong><p>
-                                <p>{% display_field field %}<p>
+                                {% if field.name == 'status'  %}
+                                    <p>{{ field.value|display_status_label }}</p>
+                                {% else %}
+                                    <p>{% display_field field %}<p>
+                                {% endif %}
                             </blockquote>
                         {% endif %}
                     {% else %}
-                        <span {{ field.row_attrs }} {% if not field.is_hidden %}id="field_{{ field.name }}"{% endif %}>
+                        <li {{ field.row_attrs }} {% if not field.is_hidden %}id="field_{{ field.name }}"{% endif %}>
                             {% if field.name == 'status' and not user_can_change_status %}
                                 <p>
                                     {{ field.label }} : {{ field.value|display_status_label }}
@@ -101,7 +105,7 @@
 
                             {% endif %}
                         {% endif %}
-                    </span>
+                    </li>
                 {% endfor %}
 
                 {% comment %}Display administrative information{% endcomment %}
@@ -128,52 +132,59 @@
                             <th></th>
                         </thead>
                         <tbody>
+                        {% if user_can_edit %}
+                            {{ formset_descriptor.management_form }}
 
-                        {% if descriptor_list %}
-                            {% for descriptor in descriptor_list %}
+                            {% for form in formset_descriptor %}
+                                <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    {% for field in form.visible_fields %}
+                                        {% if field.name == 'status' %}
+                                            <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="1" class="keep-field-value" />
+                                        {% elif field.name == 'code' %}
+                                            {{ field.as_hidden }}
+                                        {% elif field.name == 'text' %}
+                                            <td class="span9">
+                                                {{ field.as_hidden }}
+                                                <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:decs_search(this)">
+                                                    {% spaceless %}
+                                                    {% if field.value == None or field.value == '' %}
+                                                        {% trans "Select by search" %}
+                                                    {% else %}
+                                                        {{ field.value}}
+                                                    {% endif %}
+                                                    {% endspaceless %}
+                                                </div>
+                                            </td>
+                                        {% elif field.name != 'DELETE' %}
+                                            <td class="span6">
+                                                {{ field }}
+                                                {{ field.errors }}
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td class="span6">
+                                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            {% for form in formset_descriptor %}
                                 <tr>
-                                    <td>{{ descriptor.text }}</td>
+                                {% if form.instance.id %}
+                                    {% for field in form %}
+                                        {% if field.name == 'text' or field.name == 'primary' %}
+                                            <td>
+                                                {{field.value}}
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                                 </tr>
                             {% endfor %}
                         {% endif %}
-
-                        {{ formset_descriptor.management_form }}
-
-                        {% for form in formset_descriptor %}
-                            <tr id="descriptor-{{ forloop.counter0 }}" class="descriptor-row{% if form.errors %} error{% endif %} formset-row">
-                                {% for hidden in form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
-                                {% for field in form.visible_fields %}
-                                    {% if field.name == 'status' %}
-                                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="1" class="keep-field-value" />
-                                    {% elif field.name == 'code' %}
-                                        {{ field.as_hidden }}
-                                    {% elif field.name == 'text' %}
-                                        <td class="span9">
-                                            {{ field.as_hidden }}
-                                            <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:decs_search(this)">
-                                                {% spaceless %}
-                                                {% if field.value == None or field.value == '' %}
-                                                    {% trans "Select by search" %}
-                                                {% else %}
-                                                    {{ field.value}}
-                                                {% endif %}
-                                                {% endspaceless %}
-                                            </div>
-                                        </td>
-                                    {% elif field.name != 'DELETE' %}
-                                        <td class="span6">
-                                            {{ field }}
-                                            {{ field.errors }}
-                                        </td>
-                                    {% endif %}
-                                {% endfor %}
-                                <td class="span6">
-                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
                         </tbody>
                     </table>
                 </fieldset>
@@ -208,39 +219,47 @@
                     <table class="table table-condensed table-striped span8">
                         <thead>
                             <th>{% trans "Thematic area" %}</th>
-                            <th>{% trans "Delete?" %}</th>
+                            {% if user_can_edit %}
+                                <th>{% trans "Delete?" %}</th>
+                            {% endif %}
                         </thead>
                         <tbody>
-                        {% if thematic_list %}
-                            {% for thematic in thematic_list %}
-                                <tr>
-                                    <td colspan="3">{{ thematic }}</td>
+                        {% if user_can_edit %}
+                            {{ formset_thematic.management_form }}
+
+                            {% for form in formset_thematic %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
+                                    {% for field in form.visible_fields %}
+                                        {% if role == 'doc' and field.name == 'status' %}
+                                           <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                        {% elif field.name != 'DELETE' %}
+                                            <td>
+                                                {{ field }}
+                                                {{ field.errors }}
+                                            </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td>
+                                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
-                        {% endif %}
-
-                        {{ formset_thematic.management_form }}
-
-                        {% for form in formset_thematic %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                            <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
-                                {% for field in form.visible_fields %}
-                                    {% if role == 'doc' and field.name == 'status' %}
-                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                    {% elif field.name != 'DELETE' %}
+                        {% else %}
+                            {% for form in formset_thematic %}
+                                <tr>
+                                {% for field in form %}
+                                    {% if field.name == 'thematic_area' %}
                                         <td>
-                                            {{ field }}
-                                            {{ field.errors }}
+                                            {{ form.instance.thematic_area }}
                                         </td>
                                     {% endif %}
                                 {% endfor %}
-                                <td>
-                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                         </tbody>
                     </table>
                 </fieldset>
