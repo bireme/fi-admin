@@ -63,6 +63,7 @@ FREQUENCY_CHOICES = (
     ('Q', _('Quarterly (four times a year)')),
     ('S', _('Semimonthly (twice per month)')),
     ('T', _('Triannual (three times a year)')),
+    ('U', _('Continuously updated')),
     ('W', _('Weekly')),
     ('Z', _('Other frequencies')),
     ('?', _('Unknown frequency')),
