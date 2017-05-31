@@ -10,7 +10,6 @@ from django.db.models import Q
 
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
-from deform.exception import ValidationFailure
 
 from field_definitions import FIELDS_BY_DOCUMENT_TYPE
 

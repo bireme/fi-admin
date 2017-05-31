@@ -48,6 +48,7 @@
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
                 <fieldset id="metadata">
+                    <ul>
                 {% for field in form %}
                     {% if not user_can_edit %}
                         {% if field.value %}
@@ -107,6 +108,8 @@
                         {% endif %}
                     </li>
                 {% endfor %}
+                    </ul>
+                </fieldset>
 
                 {% comment %}Display administrative information{% endcomment %}
 

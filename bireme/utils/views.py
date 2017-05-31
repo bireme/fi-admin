@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 from django.shortcuts import render_to_response
+from deform.exception import ValidationFailure
 
 from main.decorators import *
 from urlparse import parse_qsl

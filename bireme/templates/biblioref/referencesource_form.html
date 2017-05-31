@@ -3,10 +3,8 @@
 {% load static %}
 {% load app_filters %}
 
-{% if view_mode %}
-    {% block top %}{% endblock %}
-    {% block footer %}{% endblock %}
-{% endif %}
+{% block top %}{% if not view_mode %}{{ block.super }}{% endif %}{% endblock %}
+{% block footer %}{% if not view_mode %}{{ block.super }}{% endif %}{% endblock %}
 
 {% block title %}{% trans "Edit Source" %}{% endblock %}
 
