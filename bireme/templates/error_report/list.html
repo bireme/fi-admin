@@ -22,7 +22,7 @@
     <h2><i class='icon-thumbs-up'></i> {% trans "Error reports" %}</h2>
 </div>
 
-<div class='body'>    
+<div class='body'>
     <ul class="nav nav-tabs" id='tab'>
         {% if service_role.LIS %}
             <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}">
@@ -40,12 +40,12 @@
                     <strong>{% trans "Events" %}</strong>
                     {% if actions.type == 'events' %}
                         <span class="badge badge-info">{{ pagination.paginator.count }}</span>
-                    {% endif %}                
+                    {% endif %}
                 </a>
-            </li>        
+            </li>
         {% endif %}
     </ul>
-    
+
     {% if actions.type == 'resources' or not actions.type %}
       <div class="tab-content">
         <div class="tab-pane active" id="tab-resources">
@@ -59,7 +59,8 @@
             <div class='pull-right'>
                 <div class="input-append">
                     <form name="search">
-                        <input type="hidden" name="type" value="resources"/>                        
+                        <input type="hidden" name="page" value="">
+                        <input type="hidden" name="type" value="resources"/>
                         <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
                         <button class="btn" type="submit"><i class='icon-search'></i></button>
                     </form>
@@ -106,7 +107,7 @@
             {% include "pagination.html" %}
           </div>
         {%endif%}
-        
+
         {% if actions.type == 'events'%}
           <div class="tab-pane active" id="tab-events">
             {% if actions.s %}
@@ -119,6 +120,7 @@
             <div class='pull-right'>
                 <div class="input-append">
                     <form name="search">
+                        <input type="hidden" name="page" value="">
                         <input type="hidden" name="type" value="events"/>
                         <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
                         <button class="btn" type="submit"><i class='icon-search'></i></button>
