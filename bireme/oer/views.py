@@ -244,6 +244,10 @@ class OERUpdate(LoginRequiredView):
             context['formset_relation'] = RelationFormSet(instance=self.object)
             context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
 
+        if self.object:
+            context['passive_relationship'] = Relationship.objects.filter(oer_referred=self.object)
+
+
         return context
 
 

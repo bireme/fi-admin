@@ -22,7 +22,7 @@
             <tbody>
             {% for passive in passive_relationship %}
                 <tr>
-                    <td>{{ passive.relation_type.get_label_past }}</td>
+                    <td>{{ passive.relation_type.get_label_passive }}</td>
                     <td>{{ passive.oer_related }}</td>
                     <td></td>
                 </tr>
@@ -46,7 +46,7 @@
                                     </td>
                                 {% elif field.name == 'relation_type' %}
                                     <td>
-                                        {{ form.instance.relation_type.get_label_present }}
+                                        {{ form.instance.relation_type.get_label_active }}
                                     </td>
                                 {% else %}
                                     <td>
