@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-30 15:16-0300\n"
-"PO-Revision-Date: 2017-05-30 15:19-0306\n"
+"POT-Creation-Date: 2017-05-31 17:54-0300\n"
+"PO-Revision-Date: 2017-05-31 17:59-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -89,7 +89,7 @@ msgstr "Imprenta"
 #: biblioref/field_definitions.py:74 biblioref/field_definitions.py:550
 #: templates/biblioref/referenceanalytic_form.html:50
 #: templates/biblioref/referenceanalytic_form.html:56
-#: templates/biblioref/referencesource_form.html:57
+#: templates/biblioref/referencesource_form.html:55
 #: templates/leisref/act_form.html:43
 msgid "Fulltext"
 msgstr "Texto completo"
@@ -173,7 +173,7 @@ msgstr "Tipo de arquivo"
 msgid "File extension"
 msgstr "Extensão do arquivo"
 
-#: biblioref/field_definitions.py:561 title/choices.py:133
+#: biblioref/field_definitions.py:561 title/choices.py:134
 msgid "Password"
 msgstr "Senha"
 
@@ -803,7 +803,7 @@ msgstr "Registro bibliográfico"
 #: templates/biblioref/reference_list.html:23
 #: templates/biblioref/referenceanalytic_form.html:22
 #: templates/biblioref/referenceanalytic_list.html:14
-#: templates/biblioref/referencesource_form.html:20
+#: templates/biblioref/referencesource_form.html:18
 #: templates/biblioref/referencesource_list.html:8
 #: templates/biblioref/referencesource_list.html:10
 #: templates/biblioref/select_document_type.html:9
@@ -820,7 +820,7 @@ msgstr "Registros bibliográficos"
 #: templates/biblioref/reference_list.html:110
 #: templates/biblioref/reference_list.html:154
 #: templates/biblioref/referenceanalytic_list.html:66
-#: templates/error_report/list.html:75 templates/error_report/list.html:134
+#: templates/error_report/list.html:76 templates/error_report/list.html:136
 #: templates/events/edit-event.html:162 templates/events/edit-event.html:232
 #: templates/events/edit-event.html:304 templates/events/events.html:71
 #: templates/events/events.html.py:103 templates/leisref/act_list.html:64
@@ -1270,7 +1270,7 @@ msgstr "Informes de erro"
 #: multimedia/models.py:93 suggest/models.py:16 suggest/models.py:48
 #: templates/biblioref/reference_form.html:148
 #: templates/biblioref/reference_form.html:221
-#: templates/error_report/list.html:89 templates/error_report/list.html:147
+#: templates/error_report/list.html:90 templates/error_report/list.html:149
 #: templates/events/edit-event.html:173 templates/events/edit-event.html:244
 #: templates/events/events.html:74 templates/events/events.html.py:119
 #: templates/leisref/act_list.html:67 templates/main/edit-resource.html:158
@@ -1287,15 +1287,15 @@ msgstr "Informes de erro"
 msgid "Pending"
 msgstr "Pendente"
 
-#: error_reporting/models.py:19 templates/error_report/list.html:91
+#: error_reporting/models.py:19 templates/error_report/list.html:92
 msgid "Fixed"
 msgstr "Corrigido"
 
-#: error_reporting/models.py:20 templates/error_report/list.html:93
+#: error_reporting/models.py:20 templates/error_report/list.html:94
 msgid "Invalid"
 msgstr "Inválido"
 
-#: error_reporting/models.py:21 templates/error_report/list.html:95
+#: error_reporting/models.py:21 templates/error_report/list.html:96
 msgid "SPAM"
 msgstr "SPAM"
 
@@ -1321,7 +1321,7 @@ msgstr "Tipo de erro"
 
 #: error_reporting/models.py:37 multimedia/models.py:56
 #: multimedia/models.py:82 multimedia/models.py:105 oer/models.py:329
-#: templates/error_report/list.html:72 templates/error_report/list.html:132
+#: templates/error_report/list.html:73 templates/error_report/list.html:134
 msgid "Description"
 msgstr "Descrição"
 
@@ -1407,7 +1407,7 @@ msgstr "Eventos"
 #: suggest/models.py:17 suggest/models.py:49
 #: templates/biblioref/reference_form.html:150
 #: templates/biblioref/reference_form.html:223
-#: templates/error_report/list.html:149 templates/events/edit-event.html:175
+#: templates/error_report/list.html:151 templates/events/edit-event.html:175
 #: templates/events/edit-event.html:246 templates/events/events.html:75
 #: templates/events/events.html.py:121 templates/leisref/act_list.html:68
 #: templates/main/edit-resource.html:160 templates/main/edit-resource.html:231
@@ -1776,7 +1776,7 @@ msgstr "Idiomas da fonte"
 #: templates/leisref/act_form.html:202 templates/leisref/act_list.html:95
 #: templates/main/edit-resource.html:288 templates/main/edit-thematic.html:8
 #: templates/main/resources.html:79 templates/multimedia/media_form.html:298
-#: templates/multimedia/media_list.html:94 templates/oer/oer_form.html:222
+#: templates/multimedia/media_list.html:94 templates/oer/oer_form.html:225
 #: templates/oer/oer_list.html:103 templates/reports/index.html:80
 #: title/models.py:107 title/models.py:195
 msgid "Thematic area"
@@ -1804,7 +1804,7 @@ msgstr "Código"
 #: main/models.py:177 templates/biblioref/duplicate_detail.html:53
 #: templates/biblioref/fieldset_indexing.html:10
 #: templates/biblioref/reference_form.html:137
-#: templates/leisref/act_form.html:119 templates/oer/oer_form.html:132
+#: templates/leisref/act_form.html:119 templates/oer/oer_form.html:135
 msgid "Primary?"
 msgstr "Primário?"
 
@@ -1816,8 +1816,8 @@ msgstr "Texto"
 msgid "User recomendation?"
 msgstr "Recomendação de usuário?"
 
-#: main/models.py:207 templates/error_report/list.html:71
-#: templates/error_report/list.html:73
+#: main/models.py:207 templates/error_report/list.html:72
+#: templates/error_report/list.html:74
 #: templates/oer/fieldset_relationship.html:16 templates/oer/oer_list.html:127
 #: templates/suggest/list.html:121
 msgid "Resource"
@@ -1912,8 +1912,8 @@ msgstr "Tipo de mídia"
 msgid "Media types"
 msgstr "Tipos de mídia"
 
-#: multimedia/models.py:57 templates/error_report/list.html:74
-#: templates/error_report/list.html:133 templates/log/list.html:8
+#: multimedia/models.py:57 templates/error_report/list.html:75
+#: templates/error_report/list.html:135 templates/log/list.html:8
 #: templates/log/review.html:24 templates/log/review_notapproved.html:21
 #: templates/suggest/list.html:78 templates/suggest/list.html.py:122
 #: templates/suggest/list.html:166
@@ -1976,7 +1976,6 @@ msgid "Contributor"
 msgstr "Contribuidor"
 
 #: oer/forms.py:44
-#| msgid "Republication"
 msgid "Required for publication"
 msgstr "Obrigatório para publicação"
 
@@ -2056,12 +2055,10 @@ msgid "Learning resource types"
 msgstr "Tipos de recursos de aprendizagem"
 
 #: oer/models.py:289 oer/models.py:310 oer/models.py:349
-#| msgid "Learning objectives"
 msgid "Learning context"
 msgstr "Contexto de aprendizagem"
 
 #: oer/models.py:290
-#| msgid "Learning objectives"
 msgid "Learning contexts"
 msgstr "Contextos de aprendizagem"
 
@@ -2148,8 +2145,8 @@ msgstr "Relacionamentos"
 msgid "OER related"
 msgstr "Objeto relacionado"
 
-#: oer/views.py:322 templates/biblioref/reference_form.html:323
-#: templates/biblioref/referencesource_form.html:153
+#: oer/views.py:326 templates/biblioref/reference_form.html:323
+#: templates/biblioref/referencesource_form.html:151
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:346
 #: templates/events/edit-event.html:389 templates/events/edit-type.html:56
 #: templates/leisref/actcountryregion_form.html:55
@@ -2165,7 +2162,7 @@ msgstr "Objeto relacionado"
 #: templates/multimedia/mediatype_form.html:56
 #: templates/suggest/edit-suggested-event.html:58
 #: templates/suggest/edit-suggested-resource.html:59
-#: templates/title/form_preview.html:435 utils/views.py:179
+#: templates/title/form_preview.html:435 utils/views.py:180
 msgid "Save"
 msgstr "Gravar"
 
@@ -2292,7 +2289,7 @@ msgstr "Registro duplicado"
 #: templates/biblioref/duplicate_detail.html:30
 #: templates/biblioref/reference_form.html:37
 #: templates/biblioref/referenceanalytic_form.html:46
-#: templates/biblioref/referencesource_form.html:50
+#: templates/biblioref/referencesource_form.html:48
 #: templates/events/edit-event.html:46 templates/leisref/act_form.html:41
 #: templates/main/edit-resource.html:35
 #: templates/multimedia/media_form.html:44 templates/oer/oer_form.html:38
@@ -2303,7 +2300,7 @@ msgstr "Metadados"
 #: templates/biblioref/duplicate_detail.html:31
 #: templates/biblioref/reference_form.html:38
 #: templates/biblioref/referenceanalytic_form.html:49
-#: templates/biblioref/referencesource_form.html:53
+#: templates/biblioref/referencesource_form.html:51
 #: templates/events/edit-event.html:47 templates/leisref/act_form.html:42
 #: templates/main/edit-resource.html:36
 #: templates/multimedia/media_form.html:45 templates/oer/oer_form.html:39
@@ -2312,14 +2309,14 @@ msgstr "Indexação"
 
 #: templates/biblioref/duplicate_detail.html:32
 #: templates/biblioref/referenceanalytic_form.html:51
-#: templates/biblioref/referencesource_form.html:61
+#: templates/biblioref/referencesource_form.html:59
 msgid "Library"
 msgstr "Biblioteca"
 
 #: templates/biblioref/duplicate_detail.html:33
 #: templates/biblioref/referenceanalytic_form.html:53
 #: templates/biblioref/referenceanalytic_form.html:57
-#: templates/biblioref/referencesource_form.html:64
+#: templates/biblioref/referencesource_form.html:62
 msgid "Event/Project"
 msgstr "Evento/Projeto"
 
@@ -2356,7 +2353,7 @@ msgstr "Arquivo"
 #: templates/multimedia/media_form.html:300
 #: templates/oer/fieldset_fulltext.html:17
 #: templates/oer/fieldset_fulltext.html:77
-#: templates/oer/fieldset_relationship.html:18 templates/oer/oer_form.html:224
+#: templates/oer/fieldset_relationship.html:18 templates/oer/oer_form.html:227
 #: templates/title/title_form.html:138 templates/title/title_form.html:210
 #: templates/title/title_form.html:284 templates/title/title_form.html:323
 #: templates/title/title_form.html:362 templates/title/title_form.html:402
@@ -2365,7 +2362,7 @@ msgstr "Apagar?"
 
 #: templates/biblioref/fieldset_include.html:29
 #: templates/biblioref/reference_list.html:163
-#: templates/biblioref/referencesource_form.html:93
+#: templates/biblioref/referencesource_form.html:91
 msgid "Series source"
 msgstr "Fonte"
 
@@ -2385,7 +2382,7 @@ msgstr "Consultar definição no DeCS"
 #: templates/biblioref/reference_form.html:135
 #: templates/events/edit-event.html:161 templates/leisref/act_form.html:118
 #: templates/main/edit-resource.html:146
-#: templates/multimedia/media_form.html:154 templates/oer/oer_form.html:131
+#: templates/multimedia/media_form.html:154 templates/oer/oer_form.html:134
 #: templates/title/form_preview.html:112 templates/title/title_form.html:43
 #: templates/title/title_form.html:136
 msgid "Descriptors"
@@ -2397,7 +2394,7 @@ msgstr "Descritores"
 #: templates/leisref/fieldset_relationship.html:62
 #: templates/main/edit-resource.html:190
 #: templates/multimedia/media_form.html:102
-#: templates/multimedia/media_form.html:199 templates/oer/oer_form.html:155
+#: templates/multimedia/media_form.html:199 templates/oer/oer_form.html:158
 #: templates/title/title_form.html:181
 msgid "Select by search"
 msgstr "Selecione pela pesquisa"
@@ -2406,7 +2403,7 @@ msgstr "Selecione pela pesquisa"
 #: templates/biblioref/reference_confirm_delete.html:29
 #: templates/biblioref/referenceanalytic_form.html:420
 #: templates/biblioref/referenceanalytic_form.html:467
-#: templates/biblioref/referencesource_form.html:346
+#: templates/biblioref/referencesource_form.html:344
 #: templates/delete_confirm.html:17
 #: templates/multimedia/media_confirm_delete.html:29
 #: templates/multimedia/mediacollection_confirm_delete.html:33
@@ -2440,7 +2437,7 @@ msgstr "Você tem certeza que deseja apagar?"
 #: templates/biblioref/reference_confirm_delete.html:28
 #: templates/biblioref/referenceanalytic_form.html:421
 #: templates/biblioref/referenceanalytic_form.html:468
-#: templates/biblioref/referencesource_form.html:347
+#: templates/biblioref/referencesource_form.html:345
 #: templates/delete_confirm.html:16
 #: templates/multimedia/media_confirm_delete.html:28
 #: templates/multimedia/mediacollection_confirm_delete.html:32
@@ -2495,7 +2492,7 @@ msgstr ""
 
 #: templates/biblioref/reference_form.html:51
 #: templates/biblioref/referenceanalytic_form.html:74
-#: templates/biblioref/referencesource_form.html:78
+#: templates/biblioref/referencesource_form.html:76
 #: templates/events/edit-event.html:60 templates/leisref/act_form.html:56
 #: templates/main/edit-resource.html:49
 #: templates/multimedia/media_form.html:58
@@ -2514,8 +2511,8 @@ msgstr "Mídia criada em"
 #: templates/leisref/act_form.html:103 templates/leisref/act_form.html:106
 #: templates/main/edit-resource.html:117 templates/main/edit-resource.html:120
 #: templates/multimedia/media_form.html:140
-#: templates/multimedia/media_form.html:143 templates/oer/oer_form.html:116
-#: templates/oer/oer_form.html.py:119 templates/title/title_form.html:123
+#: templates/multimedia/media_form.html:143 templates/oer/oer_form.html:119
+#: templates/oer/oer_form.html.py:122 templates/title/title_form.html:123
 #: templates/title/title_form.html:126
 msgid "by user"
 msgstr "pelo usuário"
@@ -2523,7 +2520,7 @@ msgstr "pelo usuário"
 #: templates/biblioref/reference_form.html:122
 #: templates/events/edit-event.html:134 templates/leisref/act_form.html:104
 #: templates/main/edit-resource.html:118
-#: templates/multimedia/media_form.html:141 templates/oer/oer_form.html:117
+#: templates/multimedia/media_form.html:141 templates/oer/oer_form.html:120
 #: templates/title/title_form.html:124
 msgid "Cooperative center code"
 msgstr "Código Centro Cooperante"
@@ -2531,7 +2528,7 @@ msgstr "Código Centro Cooperante"
 #: templates/biblioref/reference_form.html:124
 #: templates/events/edit-event.html:136 templates/leisref/act_form.html:106
 #: templates/main/edit-resource.html:120
-#: templates/multimedia/media_form.html:143 templates/oer/oer_form.html:119
+#: templates/multimedia/media_form.html:143 templates/oer/oer_form.html:122
 #: templates/title/title_form.html:126
 msgid "Last edit in"
 msgstr "Última edição realizada em"
@@ -2554,10 +2551,10 @@ msgstr "Sugerido"
 
 #: templates/biblioref/reference_form.html:396
 #: templates/biblioref/referenceanalytic_form.html:365
-#: templates/biblioref/referencesource_form.html:259
+#: templates/biblioref/referencesource_form.html:257
 #: templates/events/edit-event.html:415 templates/leisref/act_form.html:277
 #: templates/main/edit-resource.html:405
-#: templates/multimedia/media_form.html:361 templates/oer/oer_form.html:364
+#: templates/multimedia/media_form.html:361 templates/oer/oer_form.html:367
 #: templates/title/title_form.html:503
 msgid "Add descriptor"
 msgstr "Adicionar descritor"
@@ -2567,9 +2564,9 @@ msgstr "Adicionar descritor"
 #: templates/biblioref/reference_form.html:417
 #: templates/biblioref/referenceanalytic_form.html:366
 #: templates/biblioref/referenceanalytic_form.html:376
-#: templates/biblioref/referencesource_form.html:260
-#: templates/biblioref/referencesource_form.html:270
-#: templates/biblioref/referencesource_form.html:280
+#: templates/biblioref/referencesource_form.html:258
+#: templates/biblioref/referencesource_form.html:268
+#: templates/biblioref/referencesource_form.html:278
 #: templates/events/edit-event.html:416 templates/events/edit-event.html:426
 #: templates/events/edit-event.html:436 templates/events/edit-type.html:72
 #: templates/leisref/act_form.html:278 templates/leisref/act_form.html:288
@@ -2587,9 +2584,9 @@ msgstr "Adicionar descritor"
 #: templates/multimedia/media_form.html:372
 #: templates/multimedia/media_form.html:382
 #: templates/multimedia/mediacollection_form.html:72
-#: templates/multimedia/mediatype_form.html:74 templates/oer/oer_form.html:365
-#: templates/oer/oer_form.html.py:375 templates/oer/oer_form.html:385
-#: templates/oer/oer_form.html.py:395 templates/oer/oer_form.html:405
+#: templates/multimedia/mediatype_form.html:74 templates/oer/oer_form.html:368
+#: templates/oer/oer_form.html.py:378 templates/oer/oer_form.html:388
+#: templates/oer/oer_form.html.py:398 templates/oer/oer_form.html:408
 #: templates/title/title_form.html:504 templates/title/title_form.html:513
 #: templates/title/title_form.html:522 templates/title/title_form.html:531
 #: templates/title/title_form.html:540 templates/title/title_form.html:549
@@ -2598,7 +2595,7 @@ msgid "delete"
 msgstr "apagar"
 
 #: templates/biblioref/reference_form.html:406
-#: templates/biblioref/referencesource_form.html:279
+#: templates/biblioref/referencesource_form.html:277
 #: templates/events/edit-event.html:425 templates/main/edit-resource.html:415
 #: templates/multimedia/media_form.html:371
 #: templates/title/title_form.html:512
@@ -2608,7 +2605,7 @@ msgstr "Adicionar palavra-chave"
 #: templates/biblioref/reference_form.html:416
 #: templates/events/edit-event.html:435 templates/leisref/act_form.html:317
 #: templates/main/edit-resource.html:425
-#: templates/multimedia/media_form.html:381 templates/oer/oer_form.html:404
+#: templates/multimedia/media_form.html:381 templates/oer/oer_form.html:407
 msgid "Add thematic area"
 msgstr "Adicionar área temática"
 
@@ -2637,8 +2634,8 @@ msgid "Colaboration review"
 msgstr "Revisão de colaboração"
 
 #: templates/biblioref/reference_list.html:94
-#: templates/error_report/list.html:54 templates/error_report/list.html:63
-#: templates/error_report/list.html:114 templates/error_report/list.html:123
+#: templates/error_report/list.html:54 templates/error_report/list.html:64
+#: templates/error_report/list.html:115 templates/error_report/list.html:125
 #: templates/events/events.html:69 templates/events/types.html:30
 #: templates/events/types.html.py:38 templates/leisref/act_list.html:62
 #: templates/leisref/actcountryregion_list.html:30
@@ -2718,7 +2715,7 @@ msgstr "Modificado por outros usuários"
 #: templates/biblioref/reference_list.html:155
 #: templates/biblioref/referenceanalytic_list.html:67
 #: templates/biblioref/referencesource_list.html:61
-#: templates/error_report/list.html:76 templates/error_report/list.html:135
+#: templates/error_report/list.html:77 templates/error_report/list.html:137
 #: templates/events/edit-event.html:305 templates/events/events.html:104
 #: templates/events/types.html:48 templates/leisref/act_list.html:121
 #: templates/leisref/actcountryregion_list.html:48
@@ -2778,7 +2775,7 @@ msgid "New Analytic"
 msgstr "Nova Analítica"
 
 #: templates/biblioref/referenceanalytic_form.html:38
-#: templates/biblioref/referencesource_form.html:42
+#: templates/biblioref/referencesource_form.html:40
 msgid "Please check errors below"
 msgstr "Por favor verifique os erros abaixo"
 
@@ -2796,25 +2793,25 @@ msgid "Monographic level"
 msgstr "Nível monográfico"
 
 #: templates/biblioref/referenceanalytic_form.html:211
-#: templates/biblioref/referencesource_form.html:123
+#: templates/biblioref/referencesource_form.html:121
 #: templates/modal_log.html:6
 msgid "Changes history"
 msgstr "Histórico de mudanças"
 
 #: templates/biblioref/referenceanalytic_form.html:213
-#: templates/biblioref/referencesource_form.html:125
+#: templates/biblioref/referencesource_form.html:123
 msgid "Duplicates"
 msgstr "Duplicados"
 
 #: templates/biblioref/referenceanalytic_form.html:237
-#: templates/biblioref/referencesource_form.html:155
-#: templates/leisref/act_form.html:245 templates/oer/oer_form.html:273
+#: templates/biblioref/referencesource_form.html:153
+#: templates/leisref/act_form.html:245 templates/oer/oer_form.html:276
 msgid "Save Draft"
 msgstr "Gravar Rascunho"
 
 #: templates/biblioref/referenceanalytic_form.html:239
-#: templates/biblioref/referencesource_form.html:157
-#: templates/leisref/act_form.html:247 templates/oer/oer_form.html:275
+#: templates/biblioref/referencesource_form.html:155
+#: templates/leisref/act_form.html:247 templates/oer/oer_form.html:278
 msgid "Save as"
 msgstr "Gravar como"
 
@@ -2828,26 +2825,26 @@ msgstr "Publicar como LILACS-Express"
 
 #: templates/biblioref/referenceanalytic_form.html:250
 #: templates/biblioref/referenceanalytic_form.html:254
-#: templates/biblioref/referencesource_form.html:161
-#: templates/biblioref/referencesource_form.html:165
-#: templates/leisref/act_form.html:251 templates/oer/oer_form.html:279
+#: templates/biblioref/referencesource_form.html:159
+#: templates/biblioref/referencesource_form.html:163
+#: templates/leisref/act_form.html:251 templates/oer/oer_form.html:282
 msgid "Publish"
 msgstr "Publicar"
 
 #: templates/biblioref/referenceanalytic_form.html:259
-#: templates/biblioref/referencesource_form.html:169
-#: templates/leisref/act_form.html:255 templates/oer/oer_form.html:283
+#: templates/biblioref/referencesource_form.html:167
+#: templates/leisref/act_form.html:255 templates/oer/oer_form.html:286
 #: templates/suggest/invalid-link.html:51 templates/suggest/thanks.html:33
 msgid "Back"
 msgstr "Voltar"
 
 #: templates/biblioref/referenceanalytic_form.html:375
-#: templates/biblioref/referencesource_form.html:269
+#: templates/biblioref/referencesource_form.html:267
 msgid "Add file"
 msgstr "Adicionar arquivo"
 
 #: templates/biblioref/referenceanalytic_form.html:458
-#: templates/biblioref/referencesource_form.html:337
+#: templates/biblioref/referencesource_form.html:335
 msgid ""
 "After publication the record can only be modified by a user with editor "
 "profile. Continue?"
@@ -2867,24 +2864,24 @@ msgstr "Analíticas"
 msgid "Edit or create an analytic"
 msgstr "Edite ou crie uma analítica"
 
-#: templates/biblioref/referencesource_form.html:11
-#: templates/biblioref/referencesource_form.html:23
-#: templates/biblioref/referencesource_form.html:29
+#: templates/biblioref/referencesource_form.html:9
+#: templates/biblioref/referencesource_form.html:21
+#: templates/biblioref/referencesource_form.html:27
 msgid "Edit Source"
 msgstr "Editar Fonte"
 
-#: templates/biblioref/referencesource_form.html:22
-#: templates/biblioref/referencesource_form.html:29
+#: templates/biblioref/referencesource_form.html:20
+#: templates/biblioref/referencesource_form.html:27
 #: templates/biblioref/referencesource_list.html:28
 #: templates/biblioref/referencesource_list.html:86
 msgid "New Source"
 msgstr "Nova Fonte"
 
-#: templates/biblioref/referencesource_form.html:32
+#: templates/biblioref/referencesource_form.html:30
 msgid "List analytics"
 msgstr "Listar analíticas"
 
-#: templates/biblioref/referencesource_form.html:33
+#: templates/biblioref/referencesource_form.html:31
 msgid "Create analytic"
 msgstr "Criar analítica"
 
@@ -2953,7 +2950,7 @@ msgstr "Editar o recurso deste informe"
 msgid "Posted on"
 msgstr "Enviado em"
 
-#: templates/error_report/list.html:55 templates/error_report/list.html:115
+#: templates/error_report/list.html:55 templates/error_report/list.html:116
 #: templates/events/types.html:31
 #: templates/leisref/actcountryregion_list.html:31
 #: templates/leisref/actorganissuer_list.html:31
@@ -3045,15 +3042,15 @@ msgstr "Nova Legislação"
 msgid "Act created in"
 msgstr "Legislação criada em"
 
-#: templates/leisref/act_form.html:287 templates/oer/oer_form.html:374
+#: templates/leisref/act_form.html:287 templates/oer/oer_form.html:377
 msgid "Add URL"
 msgstr "Adicionar Endereço Eletrônico"
 
-#: templates/leisref/act_form.html:297 templates/oer/oer_form.html:384
+#: templates/leisref/act_form.html:297 templates/oer/oer_form.html:387
 msgid "Add File"
 msgstr "Adicionar Arquivo"
 
-#: templates/leisref/act_form.html:307 templates/oer/oer_form.html:394
+#: templates/leisref/act_form.html:307 templates/oer/oer_form.html:397
 msgid "Add Relationship"
 msgstr "Adicionar Relacionamento"
 
@@ -3460,7 +3457,7 @@ msgstr "Apagar recurso"
 msgid "Educational resource"
 msgstr "Recursos educacional"
 
-#: templates/oer/oer_form.html:116
+#: templates/oer/oer_form.html:119
 msgid "Created in"
 msgstr "Criado em"
 
@@ -4027,114 +4024,118 @@ msgid "Triannual (three times a year)"
 msgstr "Quadrimestral"
 
 #: title/choices.py:66
+msgid "Continuously updated"
+msgstr "Publicação contínua"
+
+#: title/choices.py:67
 msgid "Weekly"
 msgstr "Semanal"
 
-#: title/choices.py:67
+#: title/choices.py:68
 msgid "Other frequencies"
 msgstr "Outras frequências"
 
-#: title/choices.py:68
+#: title/choices.py:69
 msgid "Unknown frequency"
 msgstr "Frequência desconhecida"
 
-#: title/choices.py:72
+#: title/choices.py:73
 msgid "Has edition in another language"
 msgstr "Tem edição em outro idioma"
 
-#: title/choices.py:73
+#: title/choices.py:74
 msgid "It is edition in another language"
 msgstr "É edição em outro idioma"
 
-#: title/choices.py:74
+#: title/choices.py:75
 msgid "Has subseries"
 msgstr "Tem subsérie"
 
-#: title/choices.py:75
+#: title/choices.py:76
 msgid "It is subseries of"
 msgstr "É subsérie de"
 
-#: title/choices.py:76
+#: title/choices.py:77
 msgid "Has supplement or insertion"
 msgstr "Tem suplemento ou inserção"
 
-#: title/choices.py:77
+#: title/choices.py:78
 msgid "It is supplement or insertion"
 msgstr "É suplemento ou inserção"
 
-#: title/choices.py:78
+#: title/choices.py:79
 msgid "Continuation of"
 msgstr "Continuação de"
 
-#: title/choices.py:79
+#: title/choices.py:80
 msgid "Partial continuation of"
 msgstr "Continuação parcial de "
 
-#: title/choices.py:80
+#: title/choices.py:81
 msgid "Absorbed"
 msgstr "Absorveu"
 
-#: title/choices.py:81
+#: title/choices.py:82
 msgid "Absorbed in part"
 msgstr "Absorveu em parte"
 
-#: title/choices.py:82
+#: title/choices.py:83
 msgid "Formed by subdivision of"
 msgstr "Formado pela subdivisão de"
 
-#: title/choices.py:83
+#: title/choices.py:84
 msgid "Fusion of...with..."
 msgstr "Fusão de...com..."
 
-#: title/choices.py:84
+#: title/choices.py:85
 msgid "Continued by"
 msgstr "Continuado por"
 
-#: title/choices.py:85
+#: title/choices.py:86
 msgid "Continued in part by"
 msgstr "Continuado em parte por"
 
-#: title/choices.py:86
+#: title/choices.py:87
 msgid "Absorbed by"
 msgstr "Absorvido por"
 
-#: title/choices.py:87
+#: title/choices.py:88
 msgid "Absorbed in part by"
 msgstr "Absorvido em parte por"
 
-#: title/choices.py:88
+#: title/choices.py:89
 msgid "Subdivided into"
 msgstr "Subdivido em"
 
-#: title/choices.py:89
+#: title/choices.py:90
 msgid "Merged with"
 msgstr "Fundiu-se com"
 
-#: title/choices.py:90
+#: title/choices.py:91
 msgid "To form"
 msgstr "Para formar"
 
-#: title/choices.py:124 title/choices.py:131
+#: title/choices.py:125 title/choices.py:132
 msgid "Free"
 msgstr "Livre"
 
-#: title/choices.py:125
+#: title/choices.py:126
 msgid "Free for subscribers"
 msgstr "Livre para assinantes"
 
-#: title/choices.py:126
+#: title/choices.py:127
 msgid "Requires ONLINE subscription"
 msgstr "Exige assinatura ONLINE"
 
-#: title/choices.py:127
+#: title/choices.py:128
 msgid "Requires ONLINE/PRINT subscription"
 msgstr "Exige assinatura ONLINE/PRINT"
 
-#: title/choices.py:132
+#: title/choices.py:133
 msgid "IP"
 msgstr "IP"
 
-#: title/choices.py:134
+#: title/choices.py:135
 msgid "IP/Password"
 msgstr "IP/Password"
 
