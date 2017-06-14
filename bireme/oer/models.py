@@ -312,6 +312,36 @@ class LearningContextLocal(models.Model):
     name = models.CharField(_("name"), max_length=115)
 
 
+# Structure
+class Structure(Generic):
+
+    class Meta:
+        verbose_name = _("Structure")
+        verbose_name_plural = _("Structures")
+
+    name = models.CharField(_("Name"), max_length=115)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = StructureLocal.objects.filter(structure=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class StructureLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    structure = models.ForeignKey(Structure, verbose_name=_("Structure"))
+    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
+    name = models.CharField(_("name"), max_length=115)
+
+
 # Recurso Educacional Aberto
 class OER(Generic, AuditLog):
     class Meta:
@@ -337,6 +367,8 @@ class OER(Generic, AuditLog):
     language = models.ForeignKey(SourceLanguage, verbose_name=_("Language"), blank=True, null=True)
     # tipo do curso
     course_type = models.ManyToManyField(CourseType, verbose_name=_("Course type"), blank=True)
+    # estrutura
+    structure = models.ForeignKey(Structure, verbose_name=_("Structure"), blank=True, null=True)
     # tipo de recurso técnico
     tec_resource_type = models.ManyToManyField(TecResourceType, verbose_name=_("Technical resource type"), blank=True)
     # formato

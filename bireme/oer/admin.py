@@ -122,6 +122,16 @@ class LearningResourceTypeAdmin(GenericAdmin):
     inlines = [LearningResourceTypeLocalAdmin, ]
 
 
+class StructureLocalAdmin(admin.TabularInline):
+    model = StructureLocal
+    extra = 1
+
+
+class StructureAdmin(GenericAdmin):
+    model = Structure
+    inlines = [StructureLocalAdmin, ]
+
+
 admin.site.register(Type, TypeAdmin)
 admin.site.register(License, LicenseAdmin)
 admin.site.register(CourseType, CourseTypeAdmin)
@@ -133,3 +143,4 @@ admin.site.register(Audience, AudienceAdmin)
 admin.site.register(RelationType, RelationTypeAdmin)
 admin.site.register(LearningContext, LearningContextAdmin)
 admin.site.register(LearningResourceType, LearningResourceTypeAdmin)
+admin.site.register(Structure, StructureAdmin)
