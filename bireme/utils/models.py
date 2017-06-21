@@ -109,7 +109,7 @@ class AuxCode(Generic):
         verbose_name_plural = _("auxiliary codes")
 
     code = models.CharField(_("Code"), max_length=155)
-    field = models.CharField(_("Field name"), max_length=35)
+    field = models.CharField(_("Field name"), max_length=50)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     label = models.CharField(_("Label"), max_length=255)
 
