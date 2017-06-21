@@ -82,7 +82,7 @@ class TitleForm(forms.ModelForm):
             if not data:
                 id = 1
             else:
-                id = data.id
+                id = data.id + 1
 
             obj.id_number = id
 
