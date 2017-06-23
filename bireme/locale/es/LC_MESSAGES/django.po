@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-31 17:54-0300\n"
-"PO-Revision-Date: 2017-05-31 18:00-0306\n"
+"POT-Creation-Date: 2017-06-23 12:36-0300\n"
+"PO-Revision-Date: 2017-06-23 12:42-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -31,8 +31,9 @@ msgstr "Seleccione el archivo"
 #: main/models.py:29 main/models.py:69 main/models.py:97 main/models.py:108
 #: main/models.py:135 multimedia/models.py:21 multimedia/models.py:60
 #: oer/models.py:28 oer/models.py:57 oer/models.py:86 oer/models.py:116
-#: oer/models.py:146 oer/models.py:175 oer/models.py:204 oer/models.py:233
-#: oer/models.py:263 oer/models.py:293 oer/models.py:337 oer/models.py:388
+#: oer/models.py:146 oer/models.py:175 oer/models.py:204 oer/models.py:235
+#: oer/models.py:264 oer/models.py:294 oer/models.py:324 oer/models.py:354
+#: oer/models.py:398 oer/models.py:453
 #: templates/biblioref/fieldset_fulltext.html:21
 #: templates/leisref/fieldset_fulltext.html:15
 #: templates/leisref/fieldset_fulltext.html:75
@@ -197,7 +198,7 @@ msgstr "Nota pública"
 #: biblioref/field_definitions.py:584 biblioref/field_definitions.py:588
 #: biblioref/models.py:34 biblioref/models.py:180 biblioref/models.py:192
 #: biblioref/models.py:198 biblioref/models.py:258 events/models.py:70
-#: leisref/models.py:291 main/models.py:220 oer/models.py:325
+#: leisref/models.py:291 main/models.py:220 oer/models.py:386
 #: suggest/models.py:25 suggest/models.py:56
 #: templates/biblioref/reference_list.html:153
 #: templates/biblioref/referenceanalytic_form.html:120
@@ -351,8 +352,8 @@ msgstr "Base de datos"
 msgid "Record number"
 msgstr "Número del registro"
 
-#: biblioref/field_definitions.py:726 leisref/models.py:376 oer/models.py:383
-#: oer/models.py:387 templates/leisref/fieldset_fulltext.html:14
+#: biblioref/field_definitions.py:726 leisref/models.py:376 oer/models.py:448
+#: oer/models.py:452 templates/leisref/fieldset_fulltext.html:14
 #: templates/main/resources.html:102 templates/oer/fieldset_fulltext.html:14
 #: templates/suggest/list.html:77 title/models.py:154
 msgid "URL"
@@ -815,7 +816,7 @@ msgstr "Registro Bibliográficos"
 #: biblioref/models.py:29 error_reporting/models.py:35 events/models.py:67
 #: leisref/models.py:283 log/models.py:25 main/models.py:156
 #: main/models.py:176 main/models.py:196 main/models.py:218
-#: multimedia/models.py:99 oer/models.py:321 suggest/models.py:23
+#: multimedia/models.py:99 oer/models.py:382 suggest/models.py:23
 #: suggest/models.py:54 templates/biblioref/reference_form.html:136
 #: templates/biblioref/reference_form.html:209
 #: templates/biblioref/reference_form.html:281
@@ -850,7 +851,7 @@ msgstr "Revisado por BIREME?"
 
 #: biblioref/models.py:36 biblioref/models.py:335 biblioref/models.py:364
 #: events/models.py:89 main/models.py:240 multimedia/models.py:63
-#: multimedia/models.py:119 oer/models.py:371
+#: multimedia/models.py:119 oer/models.py:436
 #: templates/leisref/act_list.html:87 templates/multimedia/media_list.html:86
 #: templates/oer/oer_list.html:95 templates/reports/index.html:72
 #: templates/title/title_list.html:105 title/models.py:49
@@ -1032,7 +1033,7 @@ msgstr "Institución a la cual se presenta"
 msgid "Academic title"
 msgstr "Título academico"
 
-#: biblioref/models.py:212 multimedia/models.py:115 oer/models.py:359
+#: biblioref/models.py:212 multimedia/models.py:115 oer/models.py:424
 msgid "Publisher"
 msgstr "Editor"
 
@@ -1207,8 +1208,9 @@ msgstr "Sigla"
 #: main/models.py:109 main/models.py:136 multimedia/models.py:22
 #: oer/field_definitions.py:49 oer/models.py:27 oer/models.py:56
 #: oer/models.py:85 oer/models.py:115 oer/models.py:145 oer/models.py:174
-#: oer/models.py:203 oer/models.py:232 oer/models.py:262 oer/models.py:292
-#: templates/events/types.html:47 templates/leisref/act_related.html:50
+#: oer/models.py:203 oer/models.py:234 oer/models.py:263 oer/models.py:293
+#: oer/models.py:323 oer/models.py:353 templates/events/types.html:47
+#: templates/leisref/act_related.html:50
 #: templates/leisref/actcountryregion_list.html:47
 #: templates/leisref/actorganissuer_list.html:47
 #: templates/leisref/actrelationtype_list.html:47
@@ -1240,9 +1242,9 @@ msgstr "Indizado en el Centro Cooperante"
 #: leisref/models.py:227 leisref/models.py:272 main/models.py:57
 #: multimedia/models.py:49 multimedia/models.py:80 multimedia/models.py:108
 #: oer/models.py:46 oer/models.py:74 oer/models.py:104 oer/models.py:134
-#: oer/models.py:164 oer/models.py:193 oer/models.py:222 oer/models.py:251
-#: oer/models.py:281 oer/models.py:311 oer/models.py:399 oer/models.py:427
-#: utils/models.py:101
+#: oer/models.py:164 oer/models.py:193 oer/models.py:222 oer/models.py:253
+#: oer/models.py:282 oer/models.py:312 oer/models.py:342 oer/models.py:372
+#: oer/models.py:464 oer/models.py:492 utils/models.py:101
 msgid "language"
 msgstr "idioma"
 
@@ -1251,8 +1253,9 @@ msgstr "idioma"
 #: leisref/models.py:216 leisref/models.py:226 main/models.py:58
 #: multimedia/models.py:50 multimedia/models.py:81 oer/models.py:47
 #: oer/models.py:75 oer/models.py:105 oer/models.py:135 oer/models.py:165
-#: oer/models.py:194 oer/models.py:223 oer/models.py:252 oer/models.py:282
-#: oer/models.py:312 oer/models.py:398 utils/models.py:81 utils/models.py:102
+#: oer/models.py:194 oer/models.py:223 oer/models.py:254 oer/models.py:283
+#: oer/models.py:313 oer/models.py:343 oer/models.py:373 oer/models.py:463
+#: utils/models.py:81 utils/models.py:102
 msgid "name"
 msgstr "nombre"
 
@@ -1322,7 +1325,7 @@ msgid "Error type"
 msgstr "Tipo de error"
 
 #: error_reporting/models.py:37 multimedia/models.py:56
-#: multimedia/models.py:82 multimedia/models.py:105 oer/models.py:329
+#: multimedia/models.py:82 multimedia/models.py:105 oer/models.py:390
 #: templates/error_report/list.html:73 templates/error_report/list.html:134
 msgid "Description"
 msgstr "Descripción"
@@ -1366,8 +1369,9 @@ msgstr "Tipos de evento"
 #: main/models.py:93 main/models.py:131 multimedia/models.py:45
 #: multimedia/models.py:76 oer/models.py:42 oer/models.py:70 oer/models.py:100
 #: oer/models.py:130 oer/models.py:160 oer/models.py:189 oer/models.py:218
-#: oer/models.py:247 oer/models.py:277 oer/models.py:307 oer/models.py:423
-#: text_block/models.py:48 utils/models.py:143
+#: oer/models.py:249 oer/models.py:278 oer/models.py:308 oer/models.py:338
+#: oer/models.py:368 oer/models.py:488 text_block/models.py:48
+#: utils/models.py:143
 msgid "Translation"
 msgstr "Traducción"
 
@@ -1377,8 +1381,9 @@ msgstr "Traducción"
 #: main/models.py:94 main/models.py:132 multimedia/models.py:46
 #: multimedia/models.py:77 oer/models.py:43 oer/models.py:71 oer/models.py:101
 #: oer/models.py:131 oer/models.py:161 oer/models.py:190 oer/models.py:219
-#: oer/models.py:248 oer/models.py:278 oer/models.py:308 oer/models.py:424
-#: templates/admin/base_site.html:13 templates/events/edit-type.html:36
+#: oer/models.py:250 oer/models.py:279 oer/models.py:309 oer/models.py:339
+#: oer/models.py:369 oer/models.py:489 templates/admin/base_site.html:13
+#: templates/events/edit-type.html:36
 #: templates/leisref/actcountryregion_form.html:35
 #: templates/leisref/actorganissuer_form.html:35
 #: templates/leisref/actrelationtype_form.html:38
@@ -1970,11 +1975,11 @@ msgstr "Notas de la versión"
 msgid "Related links"
 msgstr "Enlaces relacionados"
 
-#: oer/field_definitions.py:63 oer/models.py:331
+#: oer/field_definitions.py:63 oer/models.py:392
 msgid "Creator"
 msgstr "Criador"
 
-#: oer/field_definitions.py:67 oer/models.py:333
+#: oer/field_definitions.py:67 oer/models.py:394
 msgid "Contributor"
 msgstr "Colaborador"
 
@@ -1982,7 +1987,7 @@ msgstr "Colaborador"
 msgid "Required for publication"
 msgstr "Requerido para la publicación"
 
-#: oer/models.py:24 oer/models.py:45 oer/models.py:335
+#: oer/models.py:24 oer/models.py:45 oer/models.py:396
 #: templates/title/form_preview.html:300 templates/title/form_preview.html:350
 #: templates/title/title_form.html:356 templates/title/title_form.html:399
 #: title/models.py:177 title/models.py:246
@@ -2001,7 +2006,7 @@ msgstr "Licencia"
 msgid "Licenses"
 msgstr "Licencias"
 
-#: oer/models.py:82 oer/models.py:103 oer/models.py:339
+#: oer/models.py:82 oer/models.py:103 oer/models.py:400
 msgid "Course type"
 msgstr "Tipo de curso"
 
@@ -2017,15 +2022,15 @@ msgstr "Tipo de Recurso Técnico"
 msgid "Technical Resource Types"
 msgstr "Tipos de Recurso Técnico"
 
-#: oer/models.py:133 oer/models.py:341
+#: oer/models.py:133 oer/models.py:404
 msgid "Technical resource type"
 msgstr "Tipo de recurso técnico"
 
-#: oer/models.py:142 oer/models.py:143 oer/models.py:163 oer/models.py:343
+#: oer/models.py:142 oer/models.py:143 oer/models.py:163 oer/models.py:406
 msgid "Format"
 msgstr "Formato"
 
-#: oer/models.py:171 oer/models.py:192 oer/models.py:345
+#: oer/models.py:171 oer/models.py:192 oer/models.py:408
 msgid "Interactivity type"
 msgstr "Tipo de interactividad"
 
@@ -2033,118 +2038,136 @@ msgstr "Tipo de interactividad"
 msgid "Interactivity types"
 msgstr "Tipos de interactividad"
 
-#: oer/models.py:200 oer/models.py:221 oer/models.py:351
+#: oer/models.py:200 oer/models.py:221 oer/models.py:412
+#| msgid "Interactivity type"
+msgid "Interactivity level"
+msgstr "Nivel de interactividad"
+
+#: oer/models.py:201
+#| msgid "Interactivity types"
+msgid "Interactivity levels"
+msgstr "Niveles de interactividad"
+
+#: oer/models.py:231 oer/models.py:252 oer/models.py:416
 msgid "Difficulty"
 msgstr "Dificultad"
 
-#: oer/models.py:201
+#: oer/models.py:232
 msgid "Difficulties"
 msgstr "Dificultades"
 
-#: oer/models.py:229 oer/models.py:250 oer/models.py:355
+#: oer/models.py:260 oer/models.py:281 oer/models.py:420
 msgid "Audience"
 msgstr "Audiencia"
 
-#: oer/models.py:230
+#: oer/models.py:261
 msgid "Audiences"
 msgstr "Audiencias"
 
-#: oer/models.py:259 oer/models.py:280 oer/models.py:347
+#: oer/models.py:290 oer/models.py:311 oer/models.py:410
 msgid "Learning resource type"
 msgstr "Tipo de recursos de aprendizaje"
 
-#: oer/models.py:260
+#: oer/models.py:291
 msgid "Learning resource types"
 msgstr "Tipos de recursos de aprendizaje"
 
-#: oer/models.py:289 oer/models.py:310 oer/models.py:349
+#: oer/models.py:320 oer/models.py:341 oer/models.py:414
 msgid "Learning context"
 msgstr "Contexto de aprendizaje"
 
-#: oer/models.py:290
+#: oer/models.py:321
 msgid "Learning contexts"
 msgstr "Contextos de aprendizaje"
 
-#: oer/models.py:318
+#: oer/models.py:350 oer/models.py:371 oer/models.py:402
+msgid "Structure"
+msgstr "Estructura"
+
+#: oer/models.py:351
+msgid "Structures"
+msgstr "Estructuras"
+
+#: oer/models.py:379
 msgid "Open Educational Resource"
 msgstr "Recurso Educacional Abierto"
 
-#: oer/models.py:319
+#: oer/models.py:380
 msgid "Open Educational Resources"
 msgstr "Recurso Educacionales Abiertos"
 
-#: oer/models.py:323
+#: oer/models.py:384
 msgid "CVSP resource"
 msgstr "Recursos CVSP"
 
-#: oer/models.py:327
+#: oer/models.py:388
 msgid "Learning objectives"
 msgstr "Objetivos de aprendizaje"
 
-#: oer/models.py:353
+#: oer/models.py:418
 msgid "Aggregation Level"
 msgstr "Nivel de agregación"
 
-#: oer/models.py:357
+#: oer/models.py:422
 msgid "Rights license"
 msgstr "Licencia de derechos"
 
-#: oer/models.py:361
+#: oer/models.py:426
 msgid "Free keywords"
 msgstr "Palabras-llave libres"
 
-#: oer/models.py:363
+#: oer/models.py:428
 msgid "Duration"
 msgstr "Duración"
 
-#: oer/models.py:365
+#: oer/models.py:430
 msgid "Size"
 msgstr "Tamaño"
 
-#: oer/models.py:367
+#: oer/models.py:432
 msgid "Technical requirements"
 msgstr "Requerimientos técnicos"
 
-#: oer/models.py:369
+#: oer/models.py:434
 msgid "Typical learning time"
 msgstr "Tiempo de aprendizaje típico"
 
-#: oer/models.py:373
+#: oer/models.py:438
 msgid "CVSP node"
 msgstr "Nodo CVSP"
 
-#: oer/models.py:384
+#: oer/models.py:449
 msgid "URLs"
 msgstr "Direcciones electrónicas"
 
-#: oer/models.py:395 oer/models.py:426
+#: oer/models.py:460 oer/models.py:491
 #: templates/leisref/fieldset_relationship.html:15
 #: templates/oer/fieldset_relationship.html:15
 msgid "Relation type"
 msgstr "Tipo de relación"
 
-#: oer/models.py:396
+#: oer/models.py:461
 msgid "Relation types"
 msgstr "Tipos de relación"
 
-#: oer/models.py:400 oer/models.py:428
+#: oer/models.py:465 oer/models.py:493
 msgid "Active form"
 msgstr "Forma activa"
 
-#: oer/models.py:401 oer/models.py:429
+#: oer/models.py:466 oer/models.py:494
 msgid "Passive form"
 msgstr "Forma pasiva"
 
-#: oer/models.py:436 templates/leisref/act_form.html:44
+#: oer/models.py:501 templates/leisref/act_form.html:44
 #: templates/oer/oer_form.html:41
 msgid "Relationship"
 msgstr "Relación"
 
-#: oer/models.py:437
+#: oer/models.py:502
 msgid "Relationships"
 msgstr "Relaciones"
 
-#: oer/models.py:444
+#: oer/models.py:509
 msgid "OER related"
 msgstr "Recurso relacionado"
 
@@ -3457,8 +3480,9 @@ msgid "Delete resource"
 msgstr "Borrar recurso"
 
 #: templates/oer/oer_form.html:40
-msgid "Educational resource"
-msgstr "Recursos educacional"
+#| msgid "Learning objectives"
+msgid "Learning object"
+msgstr "Objeto de aprendizaje"
 
 #: templates/oer/oer_form.html:119
 msgid "Created in"
@@ -4418,6 +4442,9 @@ msgstr "borrado"
 #: utils/templatetags/app_filters.py:198
 msgid "Record created"
 msgstr "Registro creado"
+
+#~ msgid "Educational resource"
+#~ msgstr "Recursos educacional"
 
 #~ msgid "Mask"
 #~ msgstr "código"
