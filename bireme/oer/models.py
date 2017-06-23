@@ -193,6 +193,37 @@ class InteractivityTypeLocal(models.Model):
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
+# OER Interactivity level
+class InteractivityLevel(Generic):
+
+    class Meta:
+        verbose_name = _("Interactivity level")
+        verbose_name_plural = _("Interactivity levels")
+
+    name = models.CharField(_("Name"), max_length=115)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = InteractivityLevelLocal.objects.filter(interactivitylevel=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class InteractivityLevelLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    interactivitylevel = models.ForeignKey(InteractivityLevel, verbose_name=_("Interactivity level"))
+    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
+    name = models.CharField(_("name"), max_length=115)
+
+
+
 # OER Difficulty
 class Difficulty(Generic):
 
@@ -377,6 +408,8 @@ class OER(Generic, AuditLog):
     interactivity_type = models.ForeignKey(InteractivityType, verbose_name=_("Interactivity type"), blank=True, null=True)
     # tipo de recurso de aprendizagem
     learning_resource_type = models.ForeignKey(LearningResourceType, verbose_name=_("Learning resource type"), blank=True, null=True)
+    # nivel de interatividade
+    interactivity_level = models.ForeignKey(InteractivityLevel, verbose_name=_("Interactivity level"), blank=True, null=True)
     # contexto de aprendizagem
     learning_context = models.ForeignKey(LearningContext, verbose_name=_("Learning context"), blank=True, null=True)
     # dificuldade

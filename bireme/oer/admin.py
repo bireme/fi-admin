@@ -66,6 +66,16 @@ class InteractivityTypeAdmin(GenericAdmin):
     inlines = [InteractivityTypeLocalAdmin, ]
 
 
+class InteractivityLevelLocalAdmin(admin.TabularInline):
+    model = InteractivityLevelLocal
+    extra = 1
+
+
+class InteractivityLevelAdmin(GenericAdmin):
+    model = InteractivityLevel
+    inlines = [InteractivityLevelLocalAdmin, ]
+
+
 class DifficultyLocalAdmin(admin.TabularInline):
     model = DifficultyLocal
     extra = 1
@@ -138,6 +148,7 @@ admin.site.register(CourseType, CourseTypeAdmin)
 admin.site.register(TecResourceType, TecResourceTypeAdmin)
 admin.site.register(Format, FormatAdmin)
 admin.site.register(InteractivityType, InteractivityTypeAdmin)
+admin.site.register(InteractivityLevel, InteractivityLevelAdmin)
 admin.site.register(Difficulty, DifficultyAdmin)
 admin.site.register(Audience, AudienceAdmin)
 admin.site.register(RelationType, RelationTypeAdmin)
