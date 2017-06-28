@@ -381,7 +381,7 @@ class OER(Generic, AuditLog):
 
     status = models.SmallIntegerField(_("Status"), choices=STATUS_CHOICES, null=True, default=-1)
     # indica que é um registro CVSP
-    CVSP_resource = models.BooleanField(_('CVSP resource'), default=False)
+    CVSP_resource = models.BooleanField(_('CVSP resource'), default=True)
     # título do recurso educacional
     title = models.CharField(_("Title"), max_length=255, blank=False)
     # objetivos

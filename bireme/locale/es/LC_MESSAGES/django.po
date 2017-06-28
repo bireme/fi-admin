@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-23 12:36-0300\n"
-"PO-Revision-Date: 2017-06-23 12:42-0306\n"
+"POT-Creation-Date: 2017-06-28 11:58-0300\n"
+"PO-Revision-Date: 2017-06-28 12:00-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2039,12 +2039,10 @@ msgid "Interactivity types"
 msgstr "Tipos de interactividad"
 
 #: oer/models.py:200 oer/models.py:221 oer/models.py:412
-#| msgid "Interactivity type"
 msgid "Interactivity level"
 msgstr "Nivel de interactividad"
 
 #: oer/models.py:201
-#| msgid "Interactivity types"
 msgid "Interactivity levels"
 msgstr "Niveles de interactividad"
 
@@ -3480,7 +3478,6 @@ msgid "Delete resource"
 msgstr "Borrar recurso"
 
 #: templates/oer/oer_form.html:40
-#| msgid "Learning objectives"
 msgid "Learning object"
 msgstr "Objeto de aprendizaje"
 
@@ -3489,8 +3486,9 @@ msgid "Created in"
 msgstr "Creado en"
 
 #: templates/oer/oer_list.html:41
-msgid "Resources of my center"
-msgstr "Recursos de mi centro"
+#| msgid "Resources of my network"
+msgid "Resources of my institution"
+msgstr "Recurso de mi institución"
 
 #: templates/oer/oer_related.html:26
 msgid "Select the resource"
@@ -4442,6 +4440,9 @@ msgstr "borrado"
 #: utils/templatetags/app_filters.py:198
 msgid "Record created"
 msgstr "Registro creado"
+
+#~ msgid "Resources of my center"
+#~ msgstr "Recursos de mi centro"
 
 #~ msgid "Educational resource"
 #~ msgstr "Recursos educacional"

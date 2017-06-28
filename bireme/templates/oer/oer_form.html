@@ -80,7 +80,7 @@
                                                 {% else %}
                                                     {{ field.label }}
                                                 {% endif %}
-                                                {% if field.field.required %}
+                                                {% if field.field.required or field.name in mandatory_fields %}
                                                     <span class="mark">*</span>
                                                 {% endif %}
                                             </label>

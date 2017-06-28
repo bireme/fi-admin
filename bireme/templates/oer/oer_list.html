@@ -38,7 +38,7 @@
         </li>
         <li class="{% if actions.filter_owner == 'center' %}active{% endif %}">
             <a href="#tab-center" onclick="filter_owner('center')" data-toggle="tab">
-                <strong>{% trans "Resources of my center" %}</strong>
+                <strong>{% trans "Resources of my institution" %}</strong>
                {% if  actions.filter_owner == 'center' %}
                    <span class="badge badge-info">{{ paginator.count }}</span>
                {% endif %}

@@ -69,9 +69,8 @@ class OERGenericListView(LoginRequiredView, ListView):
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
         # filter by user
-        if self.restrict_by_user and self.actions['filter_owner'] != "*":
+        if not self.actions['filter_owner'] or self.actions['filter_owner'] == 'user':
             object_list = object_list.filter(created_by=self.request.user)
-
         # filter by cooperative center
         elif self.actions['filter_owner'] == 'center':
             user_cc = self.request.user.profile.get_attribute('cc')
@@ -231,7 +230,8 @@ class OERUpdate(LoginRequiredView):
 
         context['settings'] = settings
         context['help_fields'] = get_help_fields('oer')
-        context['indexing_fields'] = ['local_descriptors', 'local_geo_descriptors', 'institution_as_subject']
+        context['mandatory_fields'] = ['learning_objectives', 'description', 'type', 'learning_context',
+                                       'language', 'creator', 'license']
 
         if self.object:
             c_type = ContentType.objects.get_for_model(self.get_object())
