@@ -48,24 +48,16 @@
                 </div>
             {% endblock %}
 
-            {% block footer %}
-            <div class='content' id="footer">
-                    <p>
-                        <img src="{% static "image/logo-BIREME.png" %}" title="BIREME/OPAS/OMS" />
-
-                        <b class="bireme">{% trans "BIREME - PAHO - WHO" %}</b><br>
-                        {% trans "Latin-American and Caribbean Center on Health Sciences Information" %}<br>
-
-                        <a href="http://www.paho.org/bireme" title="{% trans 'BIREME Institutional Site' %}">http://www.paho.org/bireme</a><br>
-                        <small>v{% include 'version.txt' %} | <a target="_blank" href="http://github.com/bireme/lis-admin" title="{% trans "project source code" %}">{% trans "project source code" %}</a></small>
-                    </p>
+        </div>
+        {% block footer %}
+            <div  id="footer">
+                <img src="{% static 'image/' %}logo-bireme-{{ LANGUAGE_CODE|slice:":2" }}.png" title="BIREME/OPAS/OMS" /><br/>
             </div>
             <!--div class="system-notice">
               Atenção: O sistema FI-ADMIN estará em manutenção hoje (02/08/2016) no período das 15:00hs às 17:00hs.
             </div-->
-            {% endblock %}
+        {% endblock %}
 
-        </div>
 
         <!-- javascript files -->
 

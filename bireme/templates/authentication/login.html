@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% load i18n %}
 
 {% block "title" %}{% trans "Login" %} | {{ block.super }}{% endblock %}
@@ -23,18 +24,9 @@
 {% block content %}
 
     <div id="loginForm">
-        <div class="row">
-            <div class="logo" id="logo">
-                <h1><span>{% trans "LIS" %}</span></h1>
-            </div>
-        </div>
-
+        <h1 class="form-signin-heading">FI-ADMIN</h1>
         <form class="form-signin" action="{% url 'django.contrib.auth.views.login' %}" method="post" name="login">
-
             {% csrf_token %}<input type="hidden" name="next" value="{% url 'dashboard.views.widgets' %}" />
-
-            <h2 class="form-signin-heading">{% trans "Login" %}</h2>
-
             {% if form.non_field_errors %}
                 <div class="alert alert-error">
                     {{ form.non_field_errors.as_text  }}
@@ -42,17 +34,16 @@
             {% endif %}
 
             {{ form.username.errors }}
-            <input type="text" class="input-block-level" name="username" id="id_username" placeholder="Username or email">
+            <input type="text" class="input-block-level" name="username" id="id_username" placeholder="{% trans "Email" %}">
 
             {{ form.password.errors }}
-            <input type="password" class="input-block-level" placeholder="Password" name="password">
+            <input type="password" class="input-block-level" placeholder="{% trans "Password" %}" name="password">
 
             <button class="btn btn-large btn-primary" type="submit">{% trans "Login" %}</button>
             <br/><br/>
             <p><a href="{{ BIREMELOGIN_BASE_URL }}/accounts/password/reset/">{% trans "Forgot your password?" %}</a></p>
         </form>
-    </div> <!-- /#loginForm -->
+
+    </div> <!-- /#loginForm  #C6DAC9  #005bae #4E6251-->
 
 {% endblock %}
-
-{% block footer %}{% endblock %}
