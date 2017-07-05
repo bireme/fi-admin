@@ -116,23 +116,28 @@ def get_decs_id(string):
         # busca termo nos 3 idiomas
         for lang in lang_list:
             service_url = '{}?bool={}+{}&lang={}'.format(decs_service_url, search_code, term_query, lang)
-
-            request = urllib2.urlopen(service_url)
-            response_xml = request.read()
-            request.close()
+            response_xml = ''
             try:
-                xml_dict = xmltodict.parse(response_xml)
-            except KeyError:
-                xml_dict = {'decsvmx':''}
+                request = urllib2.urlopen(service_url)
+                response_xml = request.read()
+                request.close()
+            except BadStatusLine:
+                logging.warning('erro "BadStatusLine" na requisicao "{0}"'.format(service_url))
 
-            if 'decsws_response' in xml_dict['decsvmx']:
+            if response_xml:
                 try:
-                    vmx_response = xml_dict['decsvmx']['decsws_response'][0]
+                    xml_dict = xmltodict.parse(response_xml)
                 except KeyError:
-                    vmx_response = xml_dict['decsvmx']['decsws_response']
+                    xml_dict = {'decsvmx':''}
 
-                decs_id = vmx_response['record_list']['record']['@mfn']
-                break;
+                if 'decsws_response' in xml_dict['decsvmx']:
+                    try:
+                        vmx_response = xml_dict['decsvmx']['decsws_response'][0]
+                    except KeyError:
+                        vmx_response = xml_dict['decsvmx']['decsws_response']
+
+                    decs_id = vmx_response['record_list']['record']['@mfn']
+                    break;
 
     if decs_id == '':
         logging.warning('termo DeCS nao localizado "{0}"'.format(string))
