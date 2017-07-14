@@ -14,7 +14,7 @@ from django.conf import settings
 from main.models import Descriptor
 from utils.forms import DescriptorRequired
 from utils.templatetags.app_filters import fieldtype
-from title.models import Title
+from title.models import Title, IndexRange
 from utils.models import AuxCode
 from attachments.models import Attachment
 from database.models import Database
@@ -85,6 +85,7 @@ class BiblioRefForm(BetterModelForm):
             self.fields['publisher'].widget = widgets.HiddenInput()
             self.fields['isbn'].widget = widgets.HiddenInput()
 
+
         # load serial titles for serial analytic
         if self.document_type == 'S' and not self.reference_source:
             title_objects = Title.objects.all()
@@ -149,8 +150,32 @@ class BiblioRefForm(BetterModelForm):
             self.fields['publication_country'].choices = country_list
 
         if 'indexed_database' in self.fields:
-            database_list = [(db.pk, unicode(db)) for db in Database.objects.filter(regional_index=True)]
-            self.fields['indexed_database'].choices = database_list
+            regional_indexes = Database.objects.filter(regional_index=True)
+            # populate field option with all regional indexes
+            self.fields['indexed_database'].choices = [(db.pk, unicode(db)) for db in regional_indexes]
+
+            # if is a new article search in Title for indexes (databases) that index the article journal
+            if self.document_type == 'Sas' and not self.instance.pk:
+                selected_indexes = []
+                # get article source title
+                title_source = self.reference_source.title_serial
+                # get title detail
+                title_record = Title.objects.get(shortened_title=title_source)
+                # get indexes (databases) where title is indexed. Filter by final date empty = status current
+                title_index_list = IndexRange.objects.filter(title=title_record, final_date='')
+                # create a acronym list for compare
+                title_acronym_list = [idx.index_code.name  for idx in title_index_list]
+
+                # check if index is present in title index list
+                for idx in regional_indexes:
+                    # if title is indexed by database append
+                    if idx.acronym in title_acronym_list:
+                        selected_indexes.append(str(idx.pk))
+
+                # automatic mark current article with indexes where journal are indexed
+                if selected_indexes:
+                    self.initial['indexed_database'] = selected_indexes
+
 
     def fieldsets(self):
         if not self._fieldset_collection:
