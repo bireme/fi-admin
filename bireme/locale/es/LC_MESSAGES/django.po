@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-28 11:58-0300\n"
-"PO-Revision-Date: 2017-06-28 12:00-0306\n"
+"PO-Revision-Date: 2017-07-19 11:22-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3380,7 +3380,7 @@ msgstr "Revistas"
 #: templates/oer/oer_list.html:5 templates/oer/oer_list.html.py:8
 #: templates/oer/oer_list.html:23
 msgid "Educational resources"
-msgstr "Recursos educacionais"
+msgstr "Recursos educacionales"
 
 #: templates/menu.html:66 templates/reports/index.html:5
 #: templates/reports/index.html.py:8 templates/reports/index.html:23
