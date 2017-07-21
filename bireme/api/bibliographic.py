@@ -227,7 +227,7 @@ class ReferenceResource(CustomResource):
                     if field.name == 'database':
                         local_db_list = [line.strip() for line in field_value.split('\n') if line.strip()]
                         local_databases.extend(local_db_list)
-                    elif field.name != 'source' and field.name != 'id':
+                    elif field.name != 'source' and field.name != 'id' and field.name != 'cooperative_center_code':
                         bundle.data[field.name] = copy(field_value)
 
             if local_databases:
