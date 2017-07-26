@@ -308,16 +308,36 @@ def context_lists(request, region_id):
     Receive source and field name and display help text
     """
 
-    type_list = [dict({'value': t.id, 'name': unicode(t)}) for t in ActType.objects.filter(scope_region=region_id)]
+    # act type
+    type_objects = [(s.id, unicode(s)) for s in ActType.objects.filter(scope_region=region_id)]
+    type_objects.sort(key=lambda tup: tup[1])
+    type_list = [dict({'value': t[0], 'name': t[1]}) for t in type_objects]
     type_list = dict({'type_list': type_list})
-    scope_list = [dict({'value': s.id, 'name': unicode(s)}) for s in ActScope.objects.filter(scope_region=region_id)]
+
+    # act scopes
+    scope_objects = [(s.id, unicode(s)) for s in ActScope.objects.filter(scope_region=region_id)]
+    scope_objects.sort(key=lambda tup: tup[1])
+    scope_list = [dict({'value': s[0], 'name':s[1]}) for s in scope_objects]
     scope_list = dict({'scope_list': scope_list})
-    source_list = [dict({'value': s.id, 'name': unicode(s)}) for s in ActSource.objects.filter(scope_region=region_id)]
+
+    # act sources
+    source_objects = [(s.id, unicode(s)) for s in ActSource.objects.filter(scope_region=region_id)]
+    source_objects.sort(key=lambda tup: tup[1])
+    source_list = [dict({'value': s[0], 'name': s[1]}) for s in source_objects]
     source_list = dict({'source_list': source_list})
-    organ_issuer_list = [dict({'value': s.id, 'name': unicode(s)}) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
+
+    # act organ_issuer
+    organ_issuer_objects = [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
+    organ_issuer_objects.sort(key=lambda tup: tup[1])
+    organ_issuer_list = [dict({'value': s[0], 'name': s[1]}) for s in organ_issuer_objects]
     organ_issuer_list = dict({'organ_issuer_list': organ_issuer_list})
-    relation_list = [dict({'value': r.id, 'name': unicode(r)}) for r in ActRelationType.objects.filter(scope_region=region_id)]
+
+    # act relation types
+    relation_objects = [(s.id, unicode(s)) for s in ActRelationType.objects.filter(scope_region=region_id)]
+    relation_objects.sort(key=lambda tup: tup[1])
+    relation_list = [dict({'value': r[0], 'name': r[1]}) for r in relation_objects]
     relation_list = dict({'relation_list': relation_list})
+
     # join all lists
     context_lists = dict(type_list.items() + scope_list.items() + source_list.items() + organ_issuer_list.items() + relation_list.items())
 

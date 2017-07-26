@@ -37,11 +37,24 @@ class ActForm(forms.ModelForm):
         if self.instance.id and self.instance.scope_region:
             region_id = self.instance.scope_region
             first_option = [('', '----------')]
-            self.fields['scope'].choices = first_option + [(s.id, unicode(s)) for s in ActScope.objects.filter(scope_region=region_id)]
-            self.fields['source_name'].choices = first_option + [(s.id, unicode(s)) for s in ActSource.objects.filter(scope_region=region_id)]
-            self.fields['organ_issuer'].choices = first_option + [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
+
+            # create context lists and sort by name
+            type_choices = [(s.id, unicode(s)) for s in ActType.objects.filter(scope_region=region_id)]
+            type_choices.sort(key=lambda tup: tup[1])
+            scope_choices = [(s.id, unicode(s)) for s in ActScope.objects.filter(scope_region=region_id)]
+            scope_choices.sort(key=lambda tup: tup[1])
+            source_choices = [(s.id, unicode(s)) for s in ActSource.objects.filter(scope_region=region_id)]
+            source_choices.sort(key=lambda tup: tup[1])
+            organ_choices = [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
+            organ_choices.sort(key=lambda tup: tup[1])
+
+            self.fields['act_type'].choices = first_option + type_choices
+            self.fields['scope'].choices = first_option + scope_choices
+            self.fields['source_name'].choices = first_option + source_choices
+            self.fields['organ_issuer'].choices = first_option + organ_choices
         else:
             empty_list = [('', '')]
+            self.fields['act_type'].choices = empty_list
             self.fields['scope'].choices = empty_list
             self.fields['source_name'].choices = empty_list
             self.fields['organ_issuer'].choices = empty_list
