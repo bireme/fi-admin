@@ -90,7 +90,13 @@ class ThematicForm(forms.ModelForm):
 
 class AttachmentForm(forms.ModelForm):
     # change widget from attachment_file field for simple select
-    attachment_file = forms.FileField(widget=widgets.FileInput)
+    attachment_file = forms.FileField(widget=widgets.FileInput(attrs={'class': 'input-xxlarge'}))
+
+
+class URLForm(forms.ModelForm):
+    # add class to field
+    url = forms.URLField(widget=widgets.URLInput(attrs={'class': 'input-xxlarge'}))
+
 
 
 class ActRelatedForm(forms.ModelForm):
@@ -110,7 +116,7 @@ DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorFor
 AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
                                                   exclude=('short_url',), can_delete=True, extra=1)
 
-URLFormSet = inlineformset_factory(Act, ActURL, fields='__all__', can_delete=True, extra=1)
+URLFormSet = inlineformset_factory(Act, ActURL, form=URLForm, fields='__all__', can_delete=True, extra=1)
 
 RelationFormSet = inlineformset_factory(Act, ActRelationship, fields='__all__', fk_name='act_related',
                                         can_delete=True, extra=1)
