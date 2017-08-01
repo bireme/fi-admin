@@ -364,6 +364,8 @@ class Act(Generic, AuditLog):
     scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Act country/region"))
     # tipo do ato
     act_type = models.ForeignKey(ActType, verbose_name=_("Act type"))
+    # lei revisada
+    reviewed = models.BooleanField(_('Reviewed?'), default=False)
     # número do ato
     act_number = models.CharField(_("Act number"), max_length=125, blank=True)
     # título do ato

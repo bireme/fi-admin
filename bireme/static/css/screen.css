@@ -510,11 +510,12 @@ div.onlineresource div.check {
 }
 .preview #tab-descriptors { padding-bottom: 10px; }
 
-#field_LILACS_indexed, #field_CVSP_resource{
+#field_LILACS_indexed, #field_CVSP_resource, #field_reviewed{
     margin-bottom: 10px;
     font-weight: bold;
 }
-#field_LILACS_indexed input[type="checkbox"], #field_CVSP_resource input[type="checkbox"]{
+#field_LILACS_indexed input[type="checkbox"], #field_CVSP_resource input[type="checkbox"],
+#field_reviewed input[type="checkbox"] {
     width: 18px;
     height: 18px;
     margin-left: 5px;
