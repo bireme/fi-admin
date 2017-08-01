@@ -338,8 +338,22 @@ def context_lists(request, region_id):
     relation_list = [dict({'value': r[0], 'name': r[1]}) for r in relation_objects]
     relation_list = dict({'relation_list': relation_list})
 
+    # act scope state
+    state_objects = [(s.id, unicode(s)) for s in ActState.objects.filter(scope_region=region_id)]
+    state_objects.sort(key=lambda tup: tup[1])
+    state_list = [dict({'value': r[0], 'name': r[1]}) for r in state_objects]
+    state_list = dict({'state_list': state_list})
+
+    # act scope city
+    city_objects = [(s.id, unicode(s)) for s in ActCity.objects.filter(scope_region=region_id)]
+    city_objects.sort(key=lambda tup: tup[1])
+    city_list = [dict({'value': r[0], 'name': r[1]}) for r in city_objects]
+    city_list = dict({'city_list': city_list})
+
     # join all lists
-    context_lists = dict(type_list.items() + scope_list.items() + source_list.items() + organ_issuer_list.items() + relation_list.items())
+    context_lists = dict(type_list.items() + scope_list.items() + source_list.items() +
+                         organ_issuer_list.items() + relation_list.items() + state_list.items() +
+                         city_list.items())
 
     data = simplejson.dumps(context_lists)
 
@@ -399,56 +413,6 @@ class CountryRegionCreateView(CountryRegionUpdate, CreateView):
     """
     Used as class view for create media type
     Extend MediaTypeUpdate that do all the work
-    """
-
-
-class CountryRegionDeleteView(LoginRequiredView, DeleteView):
-    """
-    Handle delete of MediaType objects
-    """
-    model = ActCountryRegion
-    success_url = reverse_lazy('list_country_region')
-
-    def get_object(self, queryset=None):
-        """ Hook to ensure object is owned by request.user. """
-        obj = super(CountryRegionDeleteView, self).get_object()
-
-        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
-            return HttpResponse('Unauthorized', status=401)
-        return obj
-# ========================= COUNTRY REGION AUX LIST ============================================
-class CountryRegionListView(LeisRefListView, ListView):
-    """
-    List Aux Contry Region
-    """
-    model = ActCountryRegion
-    context_object_name = "aux_list"
-    search_field = "name"
-    restrict_by_user = False
-
-
-class CountryRegionUpdate(GenericUpdateWithOneFormset):
-    """
-    Handle creation and update of country/region
-    Use GenericUpdateWithOneFormset to render form and formset
-    """
-    model = ActCountryRegion
-    success_url = reverse_lazy('list_country_region')
-    formset = CountryRegionTranslationFormSet
-    fields = '__all__'
-
-
-class CountryRegionUpdateView(CountryRegionUpdate, UpdateView):
-    """
-    Used as class view for update country/region
-    Extend Update class that do all the work
-    """
-
-
-class CountryRegionCreateView(CountryRegionUpdate, CreateView):
-    """
-    Used as class view for create country/region
-    Extend Update class that do all the work
     """
 
 
@@ -721,6 +685,108 @@ class ActRelTypeDeleteView(LoginRequiredView, DeleteView):
     def get_object(self, queryset=None):
         """ Hook to ensure object is owned by request.user. """
         obj = super(ActRelTypeDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj
+
+# ========================= ACT SCOPE STATE AUX LIST ============================================
+class ActStateListView(LeisRefListView, ListView):
+    """
+    List Aux Act Scope State
+    """
+    model = ActState
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class ActStateUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of act source
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActState
+    success_url = reverse_lazy('list_act_state')
+    formset = ActStateTranslationFormSet
+    fields = '__all__'
+
+
+class ActStateUpdateView(ActStateUpdate, UpdateView):
+    """
+    Used as class view for update act source
+    Extend update that do all the work
+    """
+
+
+class ActStateCreateView(ActStateUpdate, CreateView):
+    """
+    Used as class view for create act source
+    Extend update that do all the work
+    """
+
+
+class ActStateDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of act source
+    """
+    model = ActState
+    success_url = reverse_lazy('list_act_state')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(ActStateDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj
+
+# ========================= ACT SCOPE CITY AUX LIST ============================================
+class ActCityListView(LeisRefListView, ListView):
+    """
+    List Aux Act Scope City
+    """
+    model = ActCity
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class ActCityUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of act source
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActCity
+    success_url = reverse_lazy('list_act_city')
+    formset = ActCityTranslationFormSet
+    fields = '__all__'
+
+
+class ActCityUpdateView(ActCityUpdate, UpdateView):
+    """
+    Used as class view for update act source
+    Extend update that do all the work
+    """
+
+
+class ActCityCreateView(ActCityUpdate, CreateView):
+    """
+    Used as class view for create act source
+    Extend update that do all the work
+    """
+
+
+class ActCityDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of act source
+    """
+    model = ActCity
+    success_url = reverse_lazy('list_act_city')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(ActCityDeleteView, self).get_object()
 
         if not self.request.user.is_superuser or not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)

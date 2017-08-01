@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Edit Act Scope State" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'list_act_scope' %}">{% trans "Act Scope State" %}</a> <span class="divider">/</span></li>
+    {% if not object %}<li>{% trans "New Act Scope State" %}</li>
+    {% else %}<li>{% trans "Edit Act Scope State" %}</li>{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-globe'></i>{% if not object %}{% trans "New Act Scope State" %}{% else %}{% trans "Edit Act Scope State" %}{% endif %}</h2>
+</div>
+
+<div class='body'>
+    <form method="POST" class="form-inline">
+        {% csrf_token %}
+
+        <fieldset>
+            <div class="well">
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                {{ field.label_tag }}
+                {{ field.errors }}
+                {{ field }}
+            {% endfor %}
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>{% trans "Translations" %}</legend>
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div  id="translation-{{ forloop.counter0 }}" class="well translation-row{% if form.errors %} error{% endif %}">
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    {% for field in form.visible_fields %}
+                        <span class="translation-field">
+                            {{ field.errors }}
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </span>
+                    {% endfor %}
+                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                </div>
+            {% endfor %}
+        </fieldset>
+
+        <div class="control-panel form-submit">
+            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
+
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+
+   <script type="text/javascript">
+        var prevent_data_lost = false;
+
+        $(function() {
+            $('.translation-row').formset({
+                    addText : '{% trans "Add translation" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign',
+                    deleteCssClass : 'icon-minus-sign',
+                    prefix: '{{ formset.prefix }}'
+            });
+        })
+
+        $('input:text,input:checkbox,input:radio,textarea,select').one('change', function() {
+            prevent_data_lost = true;
+        })
+        $( "form" ).submit(function(){
+           prevent_data_lost = false;
+        })
+
+        // Prevent losing data by navigating away from the page
+        $(window).bind('beforeunload', function() {
+            if (prevent_data_lost) {
+                return 'Are you sure?';
+            }
+        });
+
+   </script>
+{% endblock %}

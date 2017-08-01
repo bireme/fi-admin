@@ -274,6 +274,85 @@ class ActRelationTypeLocal(models.Model):
     label_past = models.CharField(_("Past form"), max_length=155)
 
 
+# ActState
+class ActState(Generic):
+
+    class Meta:
+        verbose_name = _("Act state")
+        verbose_name_plural = _("Act states")
+
+    name = models.CharField(_("Name"), max_length=255)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
+
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = ActStateLocal.objects.filter(act_state=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = ActStateLocal.objects.filter(act_state=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class ActStateLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    act_state = models.ForeignKey(ActState)
+    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
+    name = models.CharField(_("name"), max_length=255)
+
+# ActCity
+class ActCity(Generic):
+
+    class Meta:
+        verbose_name = _("Act city")
+        verbose_name_plural = _("Act cities")
+
+    name = models.CharField(_("Name"), max_length=255)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
+
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = ActCityLocal.objects.filter(act_city=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = ActCityLocal.objects.filter(act_city=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class ActCityLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    act_city = models.ForeignKey(ActCity)
+    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
+    name = models.CharField(_("name"), max_length=255)
+
+
 # ActReference
 class Act(Generic, AuditLog):
     class Meta:
@@ -294,9 +373,9 @@ class Act(Generic, AuditLog):
     # alcance do ato
     scope = models.ForeignKey(ActScope, verbose_name=_("Act scope"), blank=True, null=True)
     # estado do alcance do ato
-    scope_state = models.CharField(_("Act scope state"), max_length=125, blank=True)
+    scope_state = models.ForeignKey(ActState, verbose_name=_("Act scope state"), blank=True, null=True)
     # cidade do alcance do ato
-    scope_city = models.CharField(_("Act scope city"), max_length=125, blank=True)
+    scope_city = models.ForeignKey(ActCity, verbose_name=_("Act scope city"), blank=True, null=True)
     # grupo geográfico do ato
     scope_geo_group = models.CharField(_("Act scope geographic group"), max_length=125, blank=True)
     # nome da fonte

@@ -47,17 +47,25 @@ class ActForm(forms.ModelForm):
             source_choices.sort(key=lambda tup: tup[1])
             organ_choices = [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
             organ_choices.sort(key=lambda tup: tup[1])
+            state_choices = [(s.id, unicode(s)) for s in ActState.objects.filter(scope_region=region_id)]
+            state_choices.sort(key=lambda tup: tup[1])
+            city_choices = [(s.id, unicode(s)) for s in ActCity.objects.filter(scope_region=region_id)]
+            city_choices.sort(key=lambda tup: tup[1])
 
             self.fields['act_type'].choices = first_option + type_choices
             self.fields['scope'].choices = first_option + scope_choices
             self.fields['source_name'].choices = first_option + source_choices
             self.fields['organ_issuer'].choices = first_option + organ_choices
+            self.fields['scope_state'].choices = first_option + state_choices
+            self.fields['scope_city'].choices = first_option + city_choices
         else:
             empty_list = [('', '')]
             self.fields['act_type'].choices = empty_list
             self.fields['scope'].choices = empty_list
             self.fields['source_name'].choices = empty_list
             self.fields['organ_issuer'].choices = empty_list
+            self.fields['scope_state'].choices = empty_list
+            self.fields['scope_city'].choices = empty_list
 
         self.fields['issue_date'].widget.attrs['class'] = 'datepicker'
         self.fields['publication_date'].widget.attrs['class'] = 'datepicker'
@@ -155,3 +163,9 @@ ActSourceTranslationFormSet = inlineformset_factory(ActSource, ActSourceLocal, f
 
 ActRelTypeTranslationFormSet = inlineformset_factory(ActRelationType, ActRelationTypeLocal, fields='__all__',
                                                      can_delete=True, extra=1)
+
+ActStateTranslationFormSet = inlineformset_factory(ActState, ActStateLocal, fields='__all__',
+                                                    can_delete=True, extra=1)
+
+ActCityTranslationFormSet = inlineformset_factory(ActCity, ActCityLocal, fields='__all__',
+                                                    can_delete=True, extra=1)

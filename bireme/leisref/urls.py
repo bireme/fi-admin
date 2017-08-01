@@ -48,5 +48,16 @@ urlpatterns = [
     url(r'^aux-act-reltype/edit/(?P<pk>\d+)/?$', ActRelTypeUpdateView.as_view(), name='edit_act_reltype'),
     url(r'^aux-act-reltype/delete/(?P<pk>\d+)/?$', ActRelTypeDeleteView.as_view(), name='delete_act_reltype'),
 
+    # Aux Act Scope State
+    url(r'^aux-act-state/?$', ActStateListView.as_view(), name='list_act_state'),
+    url(r'^aux-act-state/new/?$', ActStateCreateView.as_view(), name='create_act_state'),
+    url(r'^aux-act-state/edit/(?P<pk>\d+)/?$', ActStateUpdateView.as_view(), name='edit_act_state'),
+    url(r'^aux-act-state/delete/(?P<pk>\d+)/?$', ActStateDeleteView.as_view(), name='delete_act_state'),
+
+    # Aux Act Scope City
+    url(r'^aux-act-city/?$', ActCityListView.as_view(), name='list_act_city'),
+    url(r'^aux-act-city/new/?$', ActCityCreateView.as_view(), name='create_act_city'),
+    url(r'^aux-act-city/edit/(?P<pk>\d+)/?$', ActCityUpdateView.as_view(), name='edit_act_city'),
+    url(r'^aux-act-city/delete/(?P<pk>\d+)/?$', ActCityDeleteView.as_view(), name='delete_act_city'),
 
 ]
