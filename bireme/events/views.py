@@ -56,7 +56,21 @@ def list_events(request):
         page = actions['page']
 
     user_data = additional_user_info(request)
-    events = Event.objects.filter(title__icontains=actions['s'])
+
+    search = actions['s']
+    search_field = 'title__icontains'
+
+    # search by field
+    if ':' in search:
+        search_parts = search.split(':')
+        search_field = search_parts[0] + '__icontains'
+        search = search_parts[1]
+
+    if search:
+        events = Event.objects.filter(**{search_field: search})
+    else:
+        events = Event.objects.all()
+
 
     if actions['filter_status'] != '':
         events = events.filter(status=actions['filter_status'])
