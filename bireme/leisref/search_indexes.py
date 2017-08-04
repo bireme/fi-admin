@@ -16,8 +16,8 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     act_type = indexes.CharField()
     act_number = indexes.CharField(model_attr='act_number')
     scope = indexes.CharField()
-    scope_state = indexes.CharField(model_attr='scope_state')
-    scope_city = indexes.CharField(model_attr='scope_city')
+    scope_state = indexes.CharField()
+    scope_city = indexes.CharField()
     source_name = indexes.CharField()
     denomination = indexes.CharField(model_attr='denomination')
     issue_date = indexes.CharField(model_attr='issue_date', default='')
@@ -60,6 +60,16 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_organ_issuer(self, obj):
         if obj.organ_issuer:
             translations = obj.organ_issuer.get_translations()
+            return "|".join(translations)
+
+    def prepare_scope_state(self, obj):
+        if obj.scope_state:
+            translations = obj.scope_state.get_translations()
+            return "|".join(translations)
+
+    def prepare_scope_city(self, obj):
+        if obj.scope_city:
+            translations = obj.scope_city.get_translations()
             return "|".join(translations)
 
     def prepare_language(self, obj):

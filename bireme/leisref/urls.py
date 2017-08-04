@@ -10,7 +10,9 @@ urlpatterns = [
     url(r'^edit/(?P<pk>\d+)/?$', ActUpdateView.as_view(), name='edit_legislation'),
     url(r'^delete/(?P<pk>\d+)/?$', ActDeleteView.as_view(), name='delete_legislation'),
     url(r'^add-related-act/', add_related_act, name='add_related_act'),
+
     url(r'^context-lists/(?P<region_id>\d+)/?$', context_lists, name='get_context_lists'),
+    url(r'^check-dup/(?P<act_type>\d+)/(?P<act_number>\w+)?$', check_duplication, name='act_check_duplication'),
 
     # Aux Country/Region
     url(r'^aux-country-region/?$', CountryRegionListView.as_view(), name='list_country_region'),

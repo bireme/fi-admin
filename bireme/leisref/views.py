@@ -87,7 +87,7 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
 
 class LeisRefListView(LeisRefGenericListView, ListView):
     """
-    Extend BiblioRefGenericListView to list legislation records
+    Extend LeisRefGenericListView to list legislation records
     """
     model = Act
 
@@ -277,13 +277,13 @@ class ActCreateView(LeisRefUpdate, CreateView):
 
 class ActDeleteView(LoginRequiredView, DeleteView):
     """
-    Handle delete of BiblioRef objects
+    Handle delete of Act objects
     """
     model = Act
     success_url = reverse_lazy('list_legislation')
 
     def get_object(self, queryset=None):
-        obj = super(BiblioRefDeleteView, self).get_object()
+        obj = super(ActDeleteView, self).get_object()
         """ Hook to ensure object is owned by request.user. """
         if not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)
@@ -291,28 +291,37 @@ class ActDeleteView(LoginRequiredView, DeleteView):
         return obj
 
     def delete(self, request, *args, **kwargs):
-        obj = super(BiblioRefDeleteView, self).get_object()
-        child_class = obj.child_class()
-        c_type = ContentType.objects.get_for_model(child_class)
+        obj = super(ActDeleteView, self).get_object()
+        c_type = ContentType.objects.get_for_model(obj)
 
         # delete associated data
         Descriptor.objects.filter(object_id=obj.id, content_type=c_type).delete()
         Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
 
-        return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
+        return super(ActDeleteView, self).delete(request, *args, **kwargs)
 
 
-def context_lists(request, region_id):
+def check_duplication(request, act_type, act_number):
     """
     Receive source and field name and display help text
     """
+    dup_list = []
+    dup_list = [dict({'id': act.id, 'title': unicode(act)}) for act in Act.objects.filter(act_type=act_type,
+                                                                                         act_number=act_number)]
+
+    data = simplejson.dumps(dup_list)
+
+    return HttpResponse(data, content_type='application/json')
+
+
+def context_lists(request, region_id):
 
     # act type
     type_objects = [(s.id, unicode(s)) for s in ActType.objects.filter(scope_region=region_id)]
     type_objects.sort(key=lambda tup: tup[1])
-    type_list = [dict({'value': t[0], 'name': t[1]}) for t in type_objects]
     type_list = dict({'type_list': type_list})
+    type_list = [dict({'value': t[0], 'name': t[1]}) for t in type_objects]
 
     # act scopes
     scope_objects = [(s.id, unicode(s)) for s in ActScope.objects.filter(scope_region=region_id)]
@@ -358,6 +367,7 @@ def context_lists(request, region_id):
     data = simplejson.dumps(context_lists)
 
     return HttpResponse(data, content_type='application/json')
+
 
 @login_required
 def add_related_act(request):

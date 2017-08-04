@@ -46,7 +46,12 @@
         <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
     </ul>
 
-    <form method="POST" enctype="multipart/form-data" class="media-form">
+    <div class="dedup-alert well fixed-alert" style="display: none">
+        <button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;&nbsp;&times;</button>
+        <strong><i class="icon icon-warning-sign"></i> {% trans "Possible duplication" %} <a href="#" data-toggle="modal" data-target="#dedup_result">({% trans "check" %})</a></strong>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="act-form">
         {% csrf_token %}
 
         <div class="tab-content">
@@ -108,12 +113,12 @@
 
                     {% comment %}Display administrative information{% endcomment %}
 
-                    {% if media.id %}
+                    {% if act.id %}
                         <div class="alert alert-info">
-                            <p>{% trans "Act created in" %}: <strong>{{ act.created_time }}</strong> {% trans "by user" %}  <strong>{{ media.created_by.username }}</strong></p>
+                            <p>{% trans "Act created in" %}: <strong>{{ act.created_time }}</strong> {% trans "by user" %}  <strong>{{ act.created_by.username }}</strong></p>
                             <p>{% trans "Cooperative center code" %}: <strong>{{ act.cooperative_center_code }}</strong></p>
-                            {% if media.updated_by %}
-                                <p>{% trans "Last edit in" %} <strong>{{ act.updated_time }}</strong> {% trans "by user" %}  <strong>{{ media.updated_by.username }}</strong></p>
+                            {% if act.updated_by %}
+                                <p>{% trans "Last edit in" %} <strong>{{ act.updated_time }}</strong> {% trans "by user" %}  <strong>{{ act.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
 
@@ -270,6 +275,8 @@
     </form>
 </div>
 
+{% include "modal_dedup.html" %}
+
 {% endblock %}
 
 {% block extrajs %}
@@ -391,7 +398,7 @@
             $('<option>').val('').text('----------').appendTo(list_selector);
             for (o = 0; o < option_list.length; o++){
                 option = option_list[o];
-                console.log(option.value + ": " + option.name);
+                // console.log(option.value + ": " + option.name);
                 $('<option>').val(option.value).text(option.name).appendTo(list_selector);
             }
         }
@@ -437,5 +444,44 @@
             $('#save_status').text(new_status_label);
         });
 
+        // watch for change at specific fields for duplicated dectection
+        $("#id_act_number").bind("change", check_duplication);
+
+        function check_duplication() {
+            status = $('#id_status').val();
+            act_number_val = $("#id_act_number").val();
+            act_type_val = $("#id_act_type").val();
+
+            check_url = '{% url "act_check_duplication" "9999" "act_number" %}';
+            check_url = check_url.replace('9999', act_type_val);
+            check_url = check_url.replace('act_number', act_number_val);
+            console.log(check_url);
+
+            if (status < 1 && act_number_val){
+                $.ajax({
+                  method: "get",
+                  url: check_url,
+                  dataType: "json",
+                  success: function(dup_list){
+                      if (dup_list.length > 0) {
+                          $('.dedup-alert').show();
+                          $('.dedup-alert').addClass('animated shake');
+                          $('#dedup_result .modal-body').empty();
+                          for (i = 0; i < dup_list.length; i++){
+                              pos = i+1;
+                              act = dup_list[i];
+                              act_id = act['id'];
+                              detail_url = '{% url "list_legislation" %}edit/' + act_id ;
+                              $('#dedup_result .modal-body').append($('<div>', {
+                                    html: pos + '. <a href="' + detail_url + '" target="_dedup">' + act['title'] + '</a></div>'
+                              }));
+                          }
+                      }else{
+                        $('.dedup-alert').hide();
+                      }
+                  }
+               });
+           }
+        };
    </script>
 {% endblock %}
