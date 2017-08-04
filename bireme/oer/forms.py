@@ -54,6 +54,16 @@ class OERForm(forms.ModelForm):
             if hasattr(field.widget.attrs, 'readonly'):
                 setattr(obj, name, field.widget.original_value)
 
+        # add information about cvsp node based on user network (ex. CVSP-OPS ==> cvsp_node = ops)
+        if not obj.cvsp_node:
+            user_network = self.user_data['networks']
+            cvsp_network = next((node for node in user_network if node.startswith('CVSP')), None)
+            if cvsp_network:
+                cvsp_node = cvsp_network.split("-",1)[1]
+                cvsp_node = cvsp_node.lower()
+
+                obj.cvsp_node = cvsp_node
+
         # save modifications
         obj.save()
 

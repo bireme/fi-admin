@@ -116,7 +116,10 @@
                 {% if oer.id %}
                     <div class="alert alert-info">
                         <p>{% trans "Created in" %}: <strong>{{ oer.created_time }}</strong> {% trans "by user" %}  <strong>{{ oer.created_by.username }}</strong></p>
-                        <p>{% trans "Cooperative center code" %}: <strong>{{ oer.cooperative_center_code }}</strong></p>
+                        <p>
+                            {% trans "Cooperative center code" %}: <strong>{{ oer.cooperative_center_code }}</strong>
+                            {% if oer.cvsp_node %} | {% trans "CVSP node" %}: <strong>{{ oer.cvsp_node }}</strong> {% endif %}
+                        </p>
                         {% if oer.updated_by %}
                             <p>{% trans "Last edit in" %} <strong>{{ oer.updated_time }}</strong> {% trans "by user" %}  <strong>{{ oer.updated_by.username }}</strong></p>
                         {% endif %}
