@@ -83,6 +83,7 @@
                                         {% endif %}
                                         {% if user.is_superuser or service_role.LeisRef = 'admin' %}
                                             <li><a href="{% url 'list_country_region' %}" title=""><i class="icon-globe"></i> {% trans "Act Country/Region" %}</a></li>
+                                            <li><a href="{% url 'list_act_collection' %}" title=""><i class="icon-folder-open"></i> {% trans "Act Collection" %}</a></li>
                                             <li><a href="{% url 'list_act_scope' %}" title=""><i class="icon-sitemap"></i> {% trans "Act Scope" %}</a></li>
                                             <li><a href="{% url 'list_act_type' %}" title=""><i class="icon-tag"></i> {% trans "Act Type" %}</a></li>
                                             <li><a href="{% url 'list_act_organ' %}" title=""><i class="icon-briefcase"></i> {% trans "Act Organ Issuer" %}</a></li>

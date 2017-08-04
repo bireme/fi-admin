@@ -62,4 +62,10 @@ urlpatterns = [
     url(r'^aux-act-city/edit/(?P<pk>\d+)/?$', ActCityUpdateView.as_view(), name='edit_act_city'),
     url(r'^aux-act-city/delete/(?P<pk>\d+)/?$', ActCityDeleteView.as_view(), name='delete_act_city'),
 
+    # Aux Act collection
+    url(r'^aux-act-collection/?$', ActCollectionListView.as_view(), name='list_act_collection'),
+    url(r'^aux-act-collection/new/?$', ActCollectionCreateView.as_view(), name='create_act_collection'),
+    url(r'^aux-act-collection/edit/(?P<pk>\d+)/?$', ActCollectionUpdateView.as_view(), name='edit_act_collection'),
+    url(r'^aux-act-collection/delete/(?P<pk>\d+)/?$', ActCollectionDeleteView.as_view(), name='delete_act_collection'),
+
 ]

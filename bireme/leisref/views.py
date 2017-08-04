@@ -320,8 +320,8 @@ def context_lists(request, region_id):
     # act type
     type_objects = [(s.id, unicode(s)) for s in ActType.objects.filter(scope_region=region_id)]
     type_objects.sort(key=lambda tup: tup[1])
-    type_list = dict({'type_list': type_list})
     type_list = [dict({'value': t[0], 'name': t[1]}) for t in type_objects]
+    type_list = dict({'type_list': type_list})
 
     # act scopes
     scope_objects = [(s.id, unicode(s)) for s in ActScope.objects.filter(scope_region=region_id)]
@@ -359,10 +359,16 @@ def context_lists(request, region_id):
     city_list = [dict({'value': r[0], 'name': r[1]}) for r in city_objects]
     city_list = dict({'city_list': city_list})
 
+    # act collection
+    collection_objects = [(s.id, unicode(s)) for s in ActCollection.objects.filter(scope_region=region_id)]
+    collection_objects.sort(key=lambda tup: tup[1])
+    collection_list = [dict({'value': r[0], 'name': r[1]}) for r in collection_objects]
+    collection_list = dict({'collection_list': collection_list})
+
     # join all lists
     context_lists = dict(type_list.items() + scope_list.items() + source_list.items() +
                          organ_issuer_list.items() + relation_list.items() + state_list.items() +
-                         city_list.items())
+                         city_list.items() + collection_list.items() )
 
     data = simplejson.dumps(context_lists)
 
@@ -797,6 +803,57 @@ class ActCityDeleteView(LoginRequiredView, DeleteView):
     def get_object(self, queryset=None):
         """ Hook to ensure object is owned by request.user. """
         obj = super(ActCityDeleteView, self).get_object()
+
+        if not self.request.user.is_superuser or not obj.created_by == self.request.user:
+            return HttpResponse('Unauthorized', status=401)
+        return obj
+
+# ========================= ACT COLLECTION AUX LIST ============================================
+class ActCollectionListView(LeisRefListView, ListView):
+    """
+    List Aux Act Collection
+    """
+    model = ActCollection
+    context_object_name = "aux_list"
+    search_field = "name"
+    restrict_by_user = False
+
+
+class ActCollectionUpdate(GenericUpdateWithOneFormset):
+    """
+    Handle creation and update of act source
+    Use GenericUpdateWithOneFormset to render form and formset
+    """
+    model = ActCollection
+    success_url = reverse_lazy('list_act_collection')
+    formset = ActCollectionTranslationFormSet
+    fields = '__all__'
+
+
+class ActCollectionUpdateView(ActCollectionUpdate, UpdateView):
+    """
+    Used as class view for update act source
+    Extend update that do all the work
+    """
+
+
+class ActCollectionCreateView(ActCollectionUpdate, CreateView):
+    """
+    Used as class view for create act source
+    Extend update that do all the work
+    """
+
+
+class ActCollectionDeleteView(LoginRequiredView, DeleteView):
+    """
+    Handle delete of act source
+    """
+    model = ActCollection
+    success_url = reverse_lazy('list_act_collection')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(ActCollectionDeleteView, self).get_object()
 
         if not self.request.user.is_superuser or not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)

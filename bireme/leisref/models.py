@@ -353,6 +353,46 @@ class ActCityLocal(models.Model):
     name = models.CharField(_("name"), max_length=255)
 
 
+# ActCollection
+class ActCollection(Generic):
+
+    class Meta:
+        verbose_name = _("Act collection")
+        verbose_name_plural = _("Act collections")
+
+    name = models.CharField(_("Name"), max_length=255)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
+
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = ActCollectionLocal.objects.filter(act_collection=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = ActCollectionLocal.objects.filter(act_collection=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class ActCollectionLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    act_collection = models.ForeignKey(ActCollection)
+    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
+    name = models.CharField(_("name"), max_length=255)
+
+
 # ActReference
 class Act(Generic, AuditLog):
     class Meta:
@@ -372,6 +412,8 @@ class Act(Generic, AuditLog):
     title = models.CharField(_("Title"), max_length=255, blank=True)
     # denominação do ato
     denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
+    # collection
+    act_collection = models.ForeignKey(ActCollection, verbose_name=_("Collection"), blank=True, null=True)
     # alcance do ato
     scope = models.ForeignKey(ActScope, verbose_name=_("Act scope"), blank=True, null=True)
     # estado do alcance do ato

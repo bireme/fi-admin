@@ -51,6 +51,8 @@ class ActForm(forms.ModelForm):
             state_choices.sort(key=lambda tup: tup[1])
             city_choices = [(s.id, unicode(s)) for s in ActCity.objects.filter(scope_region=region_id)]
             city_choices.sort(key=lambda tup: tup[1])
+            collection_choices = [(s.id, unicode(s)) for s in ActCollection.objects.filter(scope_region=region_id)]
+            collection_choices.sort(key=lambda tup: tup[1])
 
             self.fields['act_type'].choices = first_option + type_choices
             self.fields['scope'].choices = first_option + scope_choices
@@ -58,6 +60,7 @@ class ActForm(forms.ModelForm):
             self.fields['organ_issuer'].choices = first_option + organ_choices
             self.fields['scope_state'].choices = first_option + state_choices
             self.fields['scope_city'].choices = first_option + city_choices
+            self.fields['act_collection'].choices = first_option + collection_choices
         else:
             empty_list = [('', '')]
             self.fields['act_type'].choices = empty_list
@@ -66,6 +69,7 @@ class ActForm(forms.ModelForm):
             self.fields['organ_issuer'].choices = empty_list
             self.fields['scope_state'].choices = empty_list
             self.fields['scope_city'].choices = empty_list
+            self.fields['act_collection'].choices = empty_list
 
         self.fields['issue_date'].widget.attrs['class'] = 'datepicker'
         self.fields['publication_date'].widget.attrs['class'] = 'datepicker'
@@ -168,4 +172,7 @@ ActStateTranslationFormSet = inlineformset_factory(ActState, ActStateLocal, fiel
                                                     can_delete=True, extra=1)
 
 ActCityTranslationFormSet = inlineformset_factory(ActCity, ActCityLocal, fields='__all__',
-                                                    can_delete=True, extra=1)
+                                                   can_delete=True, extra=1)
+
+ActCollectionTranslationFormSet = inlineformset_factory(ActCollection, ActCollectionLocal, fields='__all__',
+                                                         can_delete=True, extra=1)
