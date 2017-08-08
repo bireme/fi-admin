@@ -160,22 +160,26 @@ class BiblioRefForm(BetterModelForm):
                 # get article source title
                 title_source = self.reference_source.title_serial
                 # get title detail
-                title_record = Title.objects.get(shortened_title=title_source)
-                # get indexes (databases) where title is indexed. Filter by final date empty = status current
-                title_index_list = IndexRange.objects.filter(title=title_record, final_date='')
-                # create a acronym list for compare
-                title_acronym_list = [idx.index_code.name  for idx in title_index_list]
+                try:
+                    title_record = Title.objects.get(shortened_title=title_source)
+                except Title.DoesNotExist:
+                    title_record = None
+                # if title found retrieve databases that index the title
+                if title_record:
+                    # get indexes (databases) where title is indexed. Filter by final date empty = status current
+                    title_index_list = IndexRange.objects.filter(title=title_record, final_date='')
+                    # create a acronym list for compare
+                    title_acronym_list = [idx.index_code.name  for idx in title_index_list]
 
-                # check if index is present in title index list
-                for idx in regional_indexes:
-                    # if title is indexed by database append
-                    if idx.acronym in title_acronym_list:
-                        selected_indexes.append(str(idx.pk))
+                    # check if index is present in title index list
+                    for idx in regional_indexes:
+                        # if title is indexed by database append
+                        if idx.acronym in title_acronym_list:
+                            selected_indexes.append(str(idx.pk))
 
-                # automatic mark current article with indexes where journal are indexed
-                if selected_indexes:
-                    self.initial['indexed_database'] = selected_indexes
-
+                    # automatic mark current article with indexes where journal are indexed
+                    if selected_indexes:
+                        self.initial['indexed_database'] = selected_indexes
 
     def fieldsets(self):
         if not self._fieldset_collection:
