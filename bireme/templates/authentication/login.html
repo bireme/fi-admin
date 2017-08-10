@@ -25,6 +25,7 @@
 
     <div id="loginForm">
         <h1 class="form-signin-heading">FI-ADMIN</h1>
+        <h3 class="form-signin-heading">{% trans "Information Sources Management" %}</h3>
         <form class="form-signin" action="{% url 'django.contrib.auth.views.login' %}" method="post" name="login">
             {% csrf_token %}<input type="hidden" name="next" value="{% url 'dashboard.views.widgets' %}" />
             {% if form.non_field_errors %}
@@ -45,5 +46,7 @@
         </form>
 
     </div> <!-- /#loginForm  #C6DAC9  #005bae #4E6251-->
-
+    <div style="text-align: right; margin: 0 10px 10px 0;">
+        * {% trans "works best in browsers" %} <img src="{% static 'image/' %}chrome-firefox.jpg" width="60" title="Chrome / Firefox "/>
+    </div>
 {% endblock %}

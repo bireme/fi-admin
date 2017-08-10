@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-10 11:28-0300\n"
-"PO-Revision-Date: 2017-08-10 11:37-0306\n"
+"POT-Creation-Date: 2017-08-10 12:25-0300\n"
+"PO-Revision-Date: 2017-08-10 12:30-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -175,7 +175,7 @@ msgstr "Tipo de arquivo"
 msgid "File extension"
 msgstr "Extensão do arquivo"
 
-#: biblioref/field_definitions.py:561 templates/authentication/login.html:40
+#: biblioref/field_definitions.py:561 templates/authentication/login.html:41
 #: title/choices.py:134
 msgid "Password"
 msgstr "Senha"
@@ -1182,18 +1182,18 @@ msgstr "Dados locais JSON"
 msgid "Other fields JSON"
 msgstr "Outros campos JSON"
 
-#: database/models.py:8 main/choices.py:6 templates/menu.html:105
-#: templates/menu.html.py:111 utils/models.py:14
+#: database/models.py:8 main/choices.py:6 templates/menu.html:108
+#: utils/models.py:14
 msgid "English"
 msgstr "Inglês"
 
-#: database/models.py:9 main/choices.py:7 templates/menu.html:107
-#: templates/menu.html.py:112 utils/models.py:15
+#: database/models.py:9 main/choices.py:7 templates/menu.html:109
+#: utils/models.py:15
 msgid "Portuguese"
 msgstr "Português"
 
-#: database/models.py:10 main/choices.py:8 templates/menu.html:106
-#: templates/menu.html.py:113 utils/models.py:16
+#: database/models.py:10 main/choices.py:8 templates/menu.html:110
+#: utils/models.py:16
 msgid "Spanish"
 msgstr "Espanhol"
 
@@ -2284,18 +2284,27 @@ msgid "FI-ADMIN Administration"
 msgstr "FI-ADMIN Administração"
 
 #: templates/authentication/login.html:5
-#: templates/authentication/login.html:42
+#: templates/authentication/login.html:43
 #: templates/authentication/logout.html:17
 msgid "Login"
 msgstr "Login"
 
-#: templates/authentication/login.html:37
+#: templates/authentication/login.html:28
+#| msgid "Information Source"
+msgid "Information Sources Management"
+msgstr "Gerenciamento de Fontes de Informação"
+
+#: templates/authentication/login.html:38
 msgid "Email"
 msgstr "Email"
 
-#: templates/authentication/login.html:44
+#: templates/authentication/login.html:45
 msgid "Forgot your password?"
 msgstr "Esqueceu sua senha?"
+
+#: templates/authentication/login.html:50
+msgid "works best in browsers"
+msgstr "funciona melhor nos navegadores"
 
 #: templates/authentication/logout.html:11
 #: templates/suggest/invalid-link.html:16 templates/suggest/thanks.html:16
@@ -2850,7 +2859,6 @@ msgstr "Nova Analítica"
 
 #: templates/biblioref/referenceanalytic_form.html:38
 #: templates/biblioref/referencesource_form.html:40
-#| msgid "Please check error messages"
 msgid "Please check error messages in the respective fields"
 msgstr ""
 "Por favor verifique mensagens de erros nos respectivos campos de dados"
@@ -3116,7 +3124,7 @@ msgstr "Apagar legislação"
 #: templates/leisref/act_form.html:13 templates/leisref/act_list.html:5
 #: templates/leisref/act_list.html.py:8 templates/leisref/act_list.html:23
 #: templates/leisref/act_list.html:119 templates/leisref/act_related.html:12
-#: templates/leisref/fieldset_relationship.html:16 templates/menu.html:52
+#: templates/leisref/fieldset_relationship.html:16 templates/menu.html:48
 msgid "Legislation"
 msgstr "Legislação"
 
@@ -3496,24 +3504,24 @@ msgstr "BIREME - OPAS - OMS"
 msgid "Information Source"
 msgstr "Fonte de informação"
 
-#: templates/menu.html:36 templates/suggest/list.html:4
-#: templates/suggest/list.html.py:22
-msgid "Suggestions"
-msgstr "Sugestões"
-
-#: templates/menu.html:41 templates/menu.html.py:43
+#: templates/menu.html:37 templates/menu.html.py:39
 msgid "Bibliographic records"
 msgstr "Registros bibliográficos"
 
-#: templates/menu.html:48 templates/reports/index.html:39
+#: templates/menu.html:44 templates/reports/index.html:39
 msgid "Journals"
 msgstr "Revistas"
 
-#: templates/menu.html:56 templates/oer/oer_confirm_delete.html:8
+#: templates/menu.html:52 templates/oer/oer_confirm_delete.html:8
 #: templates/oer/oer_list.html:5 templates/oer/oer_list.html.py:8
 #: templates/oer/oer_list.html:23
 msgid "Educational resources"
 msgstr "Recursos educacionais"
+
+#: templates/menu.html:61 templates/suggest/list.html:4
+#: templates/suggest/list.html.py:22
+msgid "Suggestions"
+msgstr "Sugestões"
 
 #: templates/menu.html:66 templates/reports/index.html:5
 #: templates/reports/index.html.py:8 templates/reports/index.html:23
@@ -3529,7 +3537,7 @@ msgstr "Listas controladas"
 msgid "Languages"
 msgstr "Idiomas"
 
-#: templates/menu.html:128
+#: templates/menu.html:125
 msgid "Logout"
 msgstr "Sair do sistema"
 
