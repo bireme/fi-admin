@@ -35,7 +35,7 @@
 
     {% if form.errors or formset_attachment.errors or formset_descriptor.errors %}
         <p class="errorlist alert alert-error">
-          {% trans "Please check errors below" %}
+          {% trans "Please check error messages in the respective fields" %}
         </p>
         {{ form.non_field_errors }}
     {% endif %}
