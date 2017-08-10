@@ -103,7 +103,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             if titles_indexed:
                 filter_title_qs = Q()
                 for title in titles_indexed:
-                    filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title)
+                    filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title) | Q(referencesource__title_serial=title)
 
                 object_list = object_list.filter(filter_title_qs)
                 # by default filter by LILACS express references
