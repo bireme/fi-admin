@@ -166,7 +166,7 @@
                                 {% if actions.filter_owner != 'review' %}
                                     <a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                                     {% if reference.created_by_id = user.id  %}
-                                        {% if 'a' in reference.treatment_level and reference.status != 1 %}
+                                        {% if 'a' in reference.treatment_level and reference.status == -1 %}
                                             <a href="{% url 'delete_biblioref' reference.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                         {% elif not reference.has_analytic %}
                                             <a href="{% url 'delete_biblioref' reference.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
