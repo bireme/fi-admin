@@ -32,10 +32,6 @@
                                 <li><a href="{% url 'list_media' %}" title=""><i class="icon-camera"></i> {% trans "Multimedia" %}</a></li>
                             {% endif %}
 
-                            {% if service_role.DirEve or service_role.LIS %}
-                                <li><a href="{% url 'suggest.views.list_suggestions' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggestions" %}</a></li>
-                            {% endif %}
-
                             {% if service_role.LILDBI %}
                                 {% if service_role.LILDBI = 'editor_llxp' %}
                                     <li><a href="{% url 'list_biblioref_sources' %}?document_type=S" title=""><i class="icon-book"></i> {% trans "Bibliographic records" %}</a></li>
@@ -59,6 +55,10 @@
                             {% if service_role|length > 3 %}
                                     </ul>
                                 </li>
+                            {% endif %}
+
+                            {% if service_role.DirEve or service_role.LIS %}
+                                <li><a href="{% url 'suggest.views.list_suggestions' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggestions" %}</a></li>
                             {% endif %}
 
                             {% if service_role.DirEve = 'edi' or service_role.LIS == 'edi' or service_role.LILDBI = 'edi' %}
@@ -102,9 +102,6 @@
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_language">
                                     <i class="icon-flag"></i>
-                                    {% if LANGUAGE_CODE == 'en' %}{% trans "English"|capfirst %}{% endif %}
-                                    {% if LANGUAGE_CODE == 'es' %}{% trans "Spanish"|capfirst %}{% endif %}
-                                    {% if LANGUAGE_CODE == 'pt-br' %}{% trans "Portuguese"|capfirst %}{% endif %}
                                     <i class="icon-caret-down"></i>
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu_language">
@@ -121,7 +118,7 @@
                             </li>
                             -->
                             <li class="dropdow">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_user"><i class="icon-user icon-white"></i>{{ user_name }} ({{ user_cc }})
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_user"><i class="icon-user icon-white"></i>{{ user_name|truncatechars:20 }} ({{ user_cc }})
                                 </a>
                                 <ul class="dropdown-menu" role="user_menu" aria-labelledby="menu_user">
                                     <li><a href="{% url 'django.contrib.auth.views.logout' %}" title="Logout">
