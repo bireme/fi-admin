@@ -17,7 +17,7 @@ form#setlang {
 }
 /* Wrapper for page content to push down footer */
 .wrap {
-    padding: 0 0 50px;
+    padding: 0 0 30px;
     position: relative;
     min-height: 84%;
     border: solid 1px #fff;
@@ -29,7 +29,7 @@ ul.alert {
 /* Set the fixed height of the footer here */
 #push,
 #footer {
-    height: 80px;
+    height: 90px;
 }
 #footer {
     background: #414141;
@@ -53,7 +53,7 @@ ul.alert {
 .content.login {
     padding: 0;
     width: 410px;
-    margin: 10% auto;
+    margin: 4% auto;
 }
 .navbar .logged {
     margin: 5px 0 10px 15px;
