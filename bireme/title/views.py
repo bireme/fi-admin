@@ -211,7 +211,7 @@ class TitleUpdate(LoginRequiredView):
         context['settings'] = settings
 
         if Title.objects.count() > 0:
-            context['next_id'] = Title.objects.latest('id').id + 1
+            context['next_id'] = get_next_autoincrement(Title)
         else:
             context['next_id'] = 1
 
