@@ -32,7 +32,7 @@ class TitleForm(forms.ModelForm):
         status = self.cleaned_data['status'] if 'status' in self.cleaned_data else None
         message = ''
 
-        if status and'C' in status:
+        if status and 'C' in status:
             if not data:
                 message = _("The initial date field is mandatory when publish status field value is 'current'")
 

@@ -252,7 +252,13 @@ class Audit(models.Model):
 
 def get_next_autoincrement(Model):
     cursor = connection.cursor()
-    cursor.execute("SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = '%s' AND table_schema = DATABASE()" % Model._meta.db_table)
+    engine = connection.vendor
+
+    if engine == 'sqlite':
+        cursor.execute("SELECT SEQ FROM sqlite_sequence WHERE name = '%s'" % Model._meta.db_table)
+    if engine == 'mysql':
+        cursor.execute("SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = '%s' AND table_schema = DATABASE()" % Model._meta.db_table)
+
     row = cursor.fetchone()
     cursor.close()
     return row[0]
