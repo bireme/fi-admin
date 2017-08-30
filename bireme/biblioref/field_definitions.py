@@ -553,10 +553,10 @@ class ElectronicAddressAttributes(colander.MappingSchema):
                              title=_('Language'))
     _y = colander.SchemaNode(colander.String('utf-8'),
                              widget=deform.widget.SelectWidget(values=file_type_choices),
-                             title=_('File type'), missing=unicode(''),)
+                             title=_('File type'))
     _q = colander.SchemaNode(colander.String('utf-8'),
                              widget=deform.widget.SelectWidget(values=file_extension_choices),
-                             title=_('File extension'), missing=unicode(''),)
+                             title=_('File extension'))
 
     _k = colander.SchemaNode(colander.String('utf-8'), title=_('Password'), missing=unicode(''),)
     _l = colander.SchemaNode(colander.String('utf-8'), title=_('Logon'), missing=unicode(''),)
