@@ -11,6 +11,7 @@ from log.models import AuditLog
 from database.models import Database
 
 STATUS_CHOICES = (
+    (-3, _('Migration')),
     (-2, _('Submission')),
     (-1, _('Draft')),
     (0, _('Inprocess')),
