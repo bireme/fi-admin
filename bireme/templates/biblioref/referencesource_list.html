@@ -74,6 +74,17 @@
                                 {% elif reference.document_type != 'Mc' %}
                                     <a href="{% url 'create_biblioref_analytic' %}?source={{reference.id}}" class='btn btn-mini'><i class='icon-plus'></i> {% trans "New Analytic" %}</a>
                                 {% endif %}
+                                {% if reference.created_by_id = user.id  %}
+                                    {% if reference.literature_type == 'S' %}
+                                        {% if not reference.has_analytic %}
+                                            <a href="{% url 'delete_biblioref' reference.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if reference.status == -1 %}
+                                            <a href="{% url 'delete_biblioref' reference.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
