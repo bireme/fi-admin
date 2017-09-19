@@ -94,7 +94,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         return ["|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
     def prepare_descriptor(self, obj):
-        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
+        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), primary=True)]
 
     def prepare_created_date(self, obj):
         if obj.created_time:
