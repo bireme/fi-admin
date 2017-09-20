@@ -190,6 +190,7 @@
    <field name="reference_title" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
    <field name="reference_abstract" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
    <field name="reference_source" type="string" indexed="false" stored="true" multiValued="false"/>
+   <field name="indexed_database" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="database" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="journal" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="publication_year" type="string" indexed="true" stored="true" multiValued="false"/>
