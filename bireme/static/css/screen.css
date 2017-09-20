@@ -326,6 +326,10 @@ fieldset.metadata input[type=text], fieldset.metadata textarea, fieldset.metadat
     width: 140px;
  }
 
+input[type=file] {
+    width: 100%;
+}
+
 .placeholder-style{
     color: #999999;
 }
