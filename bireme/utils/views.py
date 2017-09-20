@@ -200,9 +200,21 @@ def field_assist(request, **kwargs):
     # otherwise is the open assist popup with or without field value
     else:
         if field_value:
-            # add wrap element (data) to json
-            field_value = '{"data" : %s}' % field_value
-            appstruct = json.loads(field_value)
+            # convert to json
+            field_value_json = json.loads(field_value)
+            # check if conversion result in list (OK) otherwise try to fix
+            if type(field_value_json) != list:
+                # check if original value is code as string
+                if field_value.startswith('"'):
+                    # remove first and last " of string
+                    field_value = field_value[1:-1]
+                # unescape string
+                field_value = field_value.replace('\\"','"').replace('\\r\\n', '\r\n')
+                # convert again
+                field_value_json = json.loads(field_value)
+
+            appstruct = {}
+            appstruct['data'] = field_value_json
 
             rendered = form.render(appstruct)
         else:
