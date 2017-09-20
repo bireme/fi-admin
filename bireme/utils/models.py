@@ -77,6 +77,15 @@ class Country(Generic):
 
     objects = CountryManager()
 
+    def get_translations(self):
+        translation_list = ["%s^%s" % ('en', self.name.strip())]
+        translation = CountryLocal.objects.filter(country=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
     def __unicode__(self):
         lang_code = get_language()
         translation = CountryLocal.objects.filter(country=self.id, language=lang_code)
