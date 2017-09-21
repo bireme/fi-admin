@@ -14,7 +14,7 @@
 {% block content %}
 
 <div class='header'>
-    <h2><i class='icon-book'></i>{% if not object %}{% trans "New Title" %}{% if next_id %} - ID: {{ next_id }}{% endif %}{% else %}{% trans "Edit Title" %}{% if object.id %} - ID: {{ object.id }}{% endif %}{% endif %}</h2>
+    <h2><i class='icon-book'></i>{% if not object %}{% trans "New Title" %}{% if next_id %} - ID: {{ next_id }}{% endif %}{% else %}{% trans "Edit Title" %}{% if object.id %} - ID: {{ object.id_number }}{% endif %}{% endif %}</h2>
 </div>
 
 <div class='body'>

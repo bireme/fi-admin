@@ -83,7 +83,7 @@ class TitleForm(forms.ModelForm):
             if not data:
                 id = 1
             else:
-                id = get_next_autoincrement(Title)
+                id = int(data.id_number) + 1
 
             obj.id_number = id
 

@@ -1,6 +1,6 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
-from django.db import models, connection
+from django.db import models
 from django.utils import timezone
 from utils.models import Generic, Country
 from django.contrib.contenttypes.generic import GenericRelation
@@ -249,16 +249,3 @@ class Audit(models.Model):
 
     def __unicode__(self):
         return self.label
-
-def get_next_autoincrement(Model):
-    cursor = connection.cursor()
-    engine = connection.vendor
-
-    if engine == 'sqlite':
-        cursor.execute("SELECT SEQ FROM sqlite_sequence WHERE name = '%s'" % Model._meta.db_table)
-    if engine == 'mysql':
-        cursor.execute("SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = '%s' AND table_schema = DATABASE()" % Model._meta.db_table)
-
-    row = cursor.fetchone()
-    cursor.close()
-    return row[0]
