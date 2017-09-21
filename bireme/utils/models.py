@@ -10,12 +10,6 @@ from main import choices
 
 #from datetime import datetime
 
-LANGUAGES_CHOICES = (
-    ('en', _('English')), # default language
-    ('pt-br', _('Portuguese')),
-    ('es', _('Spanish')),
-)
-
 class Generic(models.Model):
 
     def __init__(self, *args, **kwargs):
@@ -83,6 +77,15 @@ class Country(Generic):
 
     objects = CountryManager()
 
+    def get_translations(self):
+        translation_list = ["%s^%s" % ('en', self.name.strip())]
+        translation = CountryLocal.objects.filter(country=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
     def __unicode__(self):
         lang_code = get_language()
         translation = CountryLocal.objects.filter(country=self.id, language=lang_code)
@@ -98,7 +101,7 @@ class CountryLocal(models.Model):
         verbose_name_plural = "Translations"
 
     country = models.ForeignKey(Country, verbose_name=_("country"))
-    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
+    language = models.CharField(_("language"), max_length=10, choices=choices.LANGUAGES_CHOICES[1:])
     name = models.CharField(_("name"), max_length=255)
 
 # Auxiliar table of codes

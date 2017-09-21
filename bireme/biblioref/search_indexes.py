@@ -2,7 +2,7 @@ from django.conf import settings
 from haystack import indexes
 from haystack.exceptions import SkipDocument
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
-from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic
+from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceLocal
 from attachments.models import Attachment
 from django.contrib.contenttypes.models import ContentType
 
@@ -17,6 +17,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     reference_source = indexes.CharField()
     link = indexes.MultiValueField()
     publication_type = indexes.CharField()
+    indexed_database = indexes.MultiValueField()
     database = indexes.MultiValueField()
     publication_language = indexes.MultiValueField()
     publication_year = indexes.CharField()
@@ -71,18 +72,24 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.text_language:
             return [occ for occ in obj.text_language]
 
-    def prepare_database(self, obj):
+    def prepare_indexed_database(self, obj):
         return [occ for occ in obj.indexed_database.all()]
+
+    def prepare_database(self, obj):
+        db_list = []
+        library_records = ReferenceLocal.objects.filter(source=obj.id)
+        if library_records:
+            for library in library_records:
+                local_db_list = [line.strip() for line in library.database.split('\r\n') if line.strip()]
+                db_list.extend(local_db_list)
+
+        return [occ for occ in db_list]
 
     def prepare_journal(self, obj):
         return obj.source.title_serial
 
     def prepare_publication_type(self, obj):
-        publication_type = ''
-        if obj.literature_type[0] == 'S':
-            publication_type = 'article'
-
-        return publication_type
+        return obj.literature_type
 
     def prepare_publication_year(self, obj):
         return obj.source.publication_date_normalized[:4]
@@ -94,7 +101,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         return ["|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
     def prepare_descriptor(self, obj):
-        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
+        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), primary=True)]
 
     def prepare_created_date(self, obj):
         if obj.created_time:
@@ -123,9 +130,11 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     reference_abstract = indexes.MultiValueField()
     link = indexes.MultiValueField()
     publication_type = indexes.CharField()
+    indexed_database = indexes.MultiValueField()
     database = indexes.MultiValueField()
     publication_language = indexes.MultiValueField()
     publication_year = indexes.CharField()
+    publication_country = indexes.CharField()
 
     descriptor = indexes.MultiValueField()
     thematic_area = indexes.MultiValueField()
@@ -183,21 +192,28 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.text_language:
             return [occ for occ in obj.text_language]
 
-    def prepare_database(self, obj):
+    def prepare_indexed_database(self, obj):
         return [occ for occ in obj.indexed_database.all()]
 
+    def prepare_database(self, obj):
+        db_list = []
+        library_records = ReferenceLocal.objects.filter(source=obj.id)
+        if library_records:
+            for library in library_records:
+                local_db_list = [line.strip() for line in library.database.split('\r\n') if line.strip()]
+                db_list.extend(local_db_list)
+
+        return [occ for occ in db_list]
+
     def prepare_publication_type(self, obj):
-        publication_type = ''
         # avoid indexing article source (onyl analytics)
         if obj.literature_type[0] == 'S':
             raise SkipDocument
 
-        if obj.literature_type[0] == 'T':
-            publication_type = 'thesis'
-        elif obj.literature_type[0] == 'M':
-            publication_type = 'monographic'
+        return obj.literature_type
 
-        return publication_type
+    def prepare_publication_country(self, obj):
+        return ["|".join(obj.publication_country.get_translations())]
 
     def prepare_publication_year(self, obj):
         return obj.publication_date_normalized[:4]
@@ -209,7 +225,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         return ["|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
     def prepare_descriptor(self, obj):
-        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
+        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), primary=True)]
 
     def prepare_created_date(self, obj):
         if obj.created_time:

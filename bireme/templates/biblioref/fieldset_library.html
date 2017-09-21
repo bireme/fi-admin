@@ -24,7 +24,7 @@
                 {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
                     <label for="{{ field.auto_id }}">
                         {% if field.name in help_fields %}
-                            <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/">{{ field.label }}</a>
+                            <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/" class="field_with_help">{{ field.label }}</a>
                         {% else %}
                             {{ field.label }}
                         {% endif %}

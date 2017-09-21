@@ -6,6 +6,7 @@ LANGUAGES_CHOICES = (
     ('en', _('English')), # default language
     ('pt-br', _('Portuguese')),
     ('es', _('Spanish')),
+    ('fr', _('French')),
 )
 
 SOURCE_CHOICES = [
