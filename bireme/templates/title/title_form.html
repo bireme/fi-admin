@@ -43,8 +43,8 @@
         <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Descriptors" %}</a></li>
         <li><a href="#tab-indexrange" data-toggle="tab"><i class="icon-tags"></i> {% trans "Index range" %}</a></li>
         <li><a href="#tab-specialty" data-toggle="tab"><i class="icon-tags"></i> {% trans "BVS Specialties" %}</a></li>
-        <li><a href="#tab-variance" data-toggle="tab"><i class="icon-tags"></i> {% trans "Title variances" %}</a></li>
-        <li><a href="#tab-audit" data-toggle="tab"><i class="icon-tags"></i> {% trans "Audit" %}</a></li>
+        <li><a href="#tab-variance" class="{% if formset_variance.errors and not formset_variance.is_valid %}alert-error{% endif %}" data-toggle="tab"><i class="icon-tags"></i> {% trans "Title variances" %}</a></li>
+        <li><a href="#tab-audit" class="{% if formset_audit.errors and not formset_audit.is_valid %}alert-error{% endif %}" data-toggle="tab"><i class="icon-tags"></i> {% trans "Audit" %}</a></li>
         <li><a href="#tab-onlineresource" data-toggle="tab"><i class="icon-link"></i> {% trans "Online resources" %}</a></li>
     </ul>
 
@@ -377,7 +377,9 @@
                                             <td class="variance">
                                         {% endif %}
                                             {{ field }}
-                                            {{ field.errors }}
+                                            <div style="position: relative; width: 350%;">
+                                                {{ field.errors }}
+                                            </div>
                                         </td>
                                     {% endif %}
                                 {% endfor %}
@@ -413,7 +415,9 @@
                                     {% if field.name != 'DELETE' %}
                                         <td>
                                             {{ field }}
-                                            {{ field.errors }}
+                                            <div style="position: relative; width: 300%;">
+                                                {{ field.errors }}
+                                            </div>
                                         </td>
                                     {% endif %}
                                 {% endfor %}
