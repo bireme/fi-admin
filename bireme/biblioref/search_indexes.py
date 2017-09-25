@@ -89,7 +89,8 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         return obj.source.title_serial
 
     def prepare_publication_type(self, obj):
-        return obj.literature_type
+        literature_type = obj.literature_type.replace('CP', '')
+        return literature_type
 
     def prepare_publication_year(self, obj):
         return obj.source.publication_date_normalized[:4]
@@ -210,10 +211,12 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.literature_type[0] == 'S':
             raise SkipDocument
 
-        return obj.literature_type
+        literature_type = obj.literature_type.replace('CP', '')
+        return literature_type
 
     def prepare_publication_country(self, obj):
-        return ["|".join(obj.publication_country.get_translations())]
+        if obj.publication_country:
+            return ["|".join(obj.publication_country.get_translations())]
 
     def prepare_publication_year(self, obj):
         return obj.publication_date_normalized[:4]
