@@ -108,7 +108,7 @@
                 <tbody>
                     {% for title in titles %}
                         <tr>
-                            <td><a href="{% url 'edit_title' title.id %}">{{ title.id }}</a></td>
+                            <td><a href="{% url 'edit_title' title.id %}">{{ title.id_number }}</a></td>
                             <td><span title="{{ title.title }}">{{ title.title|slice:"50" }}{% if title.title|length > 50 %}...{% endif %}{% if title.section_title %}<i> - {{ title.section_title }}</i>{% endif %}</span></td>
                             <td>{{ title.issn }}</td>
                             <td>{{ title.indexer_cc_code }}</td>

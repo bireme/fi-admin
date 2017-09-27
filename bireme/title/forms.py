@@ -16,6 +16,7 @@ from utils.forms import DescriptorRequired
 import simplejson
 import time
 
+
 class TitleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -32,7 +33,7 @@ class TitleForm(forms.ModelForm):
         status = self.cleaned_data['status'] if 'status' in self.cleaned_data else None
         message = ''
 
-        if status and'C' in status:
+        if status and 'C' in status:
             if not data:
                 message = _("The initial date field is mandatory when publish status field value is 'current'")
 
@@ -82,7 +83,7 @@ class TitleForm(forms.ModelForm):
             if not data:
                 id = 1
             else:
-                id = data.id + 1
+                id = int(data.id_number) + 1
 
             obj.id_number = id
 
@@ -93,7 +94,7 @@ class TitleForm(forms.ModelForm):
         return obj
 
     class Meta:
-        model  = Title
+        model = Title
         exclude = ( 'id_number', 'record_type', 'treatment_level', 'cooperative_center_code', 'last_change_date', )
 
 
@@ -114,12 +115,53 @@ class OnlineResourcesForm(forms.ModelForm):
         exclude = ( 'creation_date', 'tco', 'ndb', 'pca', 'access_control', )
 
 
+class TitleVarianceForm(forms.ModelForm):
+    def clean(self):
+        field = 'type'
+        data = self.cleaned_data
+        type = data.get(field)
+        label = data.get('label') if 'label' in data else None
+        issn = data.get('issn') if 'issn' in data else None
+        initial_year = data.get('initial_year') if 'initial_year' in data else None
+        initial_volume = data.get('initial_volume') if 'initial_volume' in data else None
+        initial_number = data.get('initial_number') if 'initial_number' in data else None
+        message = ''
+
+        if label or issn:
+            if not type:
+                message = _("The type field is mandatory when title, ISSN, initial year, initial volume or initial number fields value are not empty")
+
+        if message:
+            self.add_error(field, message)
+
+        return data
+
+
+class AuditForm(forms.ModelForm):
+    def clean(self):
+        field = 'type'
+        data = self.cleaned_data
+        type = data.get(field)
+        label = data.get('label') if 'label' in data else None
+        issn = data.get('issn') if 'issn' in data else None
+        message = ''
+
+        if label or issn:
+            if not type:
+                message = _("The type field is mandatory when title or ISSN fields value are not empty")
+
+        if message:
+            self.add_error(field, message)
+
+        return data
+
+
 # Definition of inline formsets
 
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1, exclude=('primary', ))
 KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
 OnlineResourcesFormSet = inlineformset_factory(Title, OnlineResources, form=OnlineResourcesForm, can_delete=True, extra=1)
+AuditFormSet = inlineformset_factory(Title, Audit, form=AuditForm, fields = '__all__', can_delete=True, extra=1)
+TitleVarianceFormSet = inlineformset_factory(Title, TitleVariance, form=TitleVarianceForm, fields='__all__', can_delete=True, extra=1)
 BVSSpecialtyFormSet = inlineformset_factory(Title, BVSSpecialty, fields='__all__', can_delete=True, extra=1)
-TitleVarianceFormSet = inlineformset_factory(Title, TitleVariance, fields='__all__', can_delete=True, extra=1)
 IndexRangeFormSet = inlineformset_factory(Title, IndexRange, fields='__all__', can_delete=True, extra=1)
-AuditFormSet = inlineformset_factory(Title, Audit, fields='__all__', can_delete=True, extra=1)
