@@ -5,9 +5,11 @@ from main.models import Descriptor, Keyword, SourceLanguage, SourceType, Resourc
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceLocal
 from attachments.models import Attachment
 from django.contrib.contenttypes.models import ContentType
+from utils.models import AuxCode
 
 import datetime
 import json
+import re
 
 class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -69,8 +71,14 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         return source
 
     def prepare_publication_language(self, obj):
+        lang_list = []
         if obj.text_language:
-            return [occ for occ in obj.text_language]
+            for code in obj.text_language:
+                aux_code = AuxCode.objects.get(field='text_language', code=code)
+                lang_translations = "|".join(aux_code.get_translations())
+                lang_list.append(lang_translations)
+
+            return lang_list
 
     def prepare_indexed_database(self, obj):
         return [occ for occ in obj.indexed_database.all()]
@@ -89,7 +97,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         return obj.source.title_serial
 
     def prepare_publication_type(self, obj):
-        literature_type = obj.literature_type.replace('CP', '')
+        literature_type = re.sub('[CP]', '', obj.literature_type)
         return literature_type
 
     def prepare_publication_year(self, obj):
@@ -190,8 +198,14 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
             return self.get_field_values(obj.abstract)
 
     def prepare_publication_language(self, obj):
+        lang_list = []
         if obj.text_language:
-            return [occ for occ in obj.text_language]
+            for code in obj.text_language:
+                aux_code = AuxCode.objects.get(field='text_language', code=code)
+                lang_translations = "|".join(aux_code.get_translations())
+                lang_list.append(lang_translations)
+
+            return lang_list
 
     def prepare_indexed_database(self, obj):
         return [occ for occ in obj.indexed_database.all()]
@@ -211,7 +225,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.literature_type[0] == 'S':
             raise SkipDocument
 
-        literature_type = obj.literature_type.replace('CP', '')
+        literature_type = re.sub('[CP]', '', obj.literature_type)
         return literature_type
 
     def prepare_publication_country(self, obj):
