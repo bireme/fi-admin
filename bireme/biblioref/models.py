@@ -180,7 +180,7 @@ class ReferenceSource(Reference):
     # field tags 18
     title_monographic = JSONField(_('Title'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tags 19
-    english_title_monographic = models.CharField(_('English translated title'), max_length=250, blank=True)
+    english_title_monographic = models.CharField(_('English translated title'), max_length=400, blank=True)
     # field tag 20
     pages_monographic = models.CharField(_('Pages'), max_length=80, blank=True)
     # field tags 21
