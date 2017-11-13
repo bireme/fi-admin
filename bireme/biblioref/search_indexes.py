@@ -26,6 +26,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     journal = indexes.CharField()
 
     descriptor = indexes.MultiValueField()
+    mh = indexes.MultiValueField()
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
 
@@ -110,7 +111,12 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         return ["|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
     def prepare_descriptor(self, obj):
+        # used for filter / populate with primary descriptors (mj)
         return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), primary=True)]
+
+    def prepare_mh(self, obj):
+        # used for search and record presentation / populate with all descriptors (mh)
+        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
     def prepare_created_date(self, obj):
         if obj.created_time:
@@ -146,6 +152,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     publication_country = indexes.CharField()
 
     descriptor = indexes.MultiValueField()
+    mh = indexes.MultiValueField()
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
 
@@ -242,7 +249,12 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         return ["|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
     def prepare_descriptor(self, obj):
+        # used for filter / populate with primary descriptors (mj)
         return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), primary=True)]
+
+    def prepare_mh(self, obj):
+        # used for search and record presentation / populate with all descriptors (mh)
+        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
     def prepare_created_date(self, obj):
         if obj.created_time:

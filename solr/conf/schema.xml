@@ -206,7 +206,8 @@
    <field name="ti" type="text" indexed="true" stored="false" multiValued="true" />
    <field name="au" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="kw" type="text" indexed="true" stored="false" multiValued="true"/>
-   <field name="mh" type="decs_keyword" indexed="true"  stored="false" multiValued="true" />
+   <field name="mh" type="decs_keyword" indexed="true"  stored="true" multiValued="true" />
+   <field name="mj" type="decs_keyword" indexed="true"  stored="true" multiValued="true" />
 
    <!-- Dynamic field definitions -->
    <dynamicField name="*" type="text" indexed="true" stored="true" multiValued="true"/>
@@ -234,6 +235,7 @@
  <copyField source="descriptor" dest="tw"/>
  <copyField source="keyword" dest="tw"/>
  <copyField source="description" dest="tw"/>
+ <copyField source="mh" dest="tw"/>
 
  <copyField source="reference_title" dest="tw"/>
  <copyField source="reference_abstract" dest="tw"/>
