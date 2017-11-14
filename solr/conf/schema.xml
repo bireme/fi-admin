@@ -241,6 +241,7 @@
  <copyField source="reference_abstract" dest="tw"/>
 
  <copyField source="descriptor" dest="descriptor_filter"/>
+ <copyField source="mj" dest="descriptor_filter"/>
 
  <!-- Compatibility with portal-org indexes -->
  <copyField source="title" dest="ti"/>

@@ -25,7 +25,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     publication_year = indexes.CharField()
     journal = indexes.CharField()
 
-    descriptor = indexes.MultiValueField()
+    mj = indexes.MultiValueField()
     mh = indexes.MultiValueField()
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
@@ -110,8 +110,8 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_thematic_area_display(self, obj):
         return ["|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
-    def prepare_descriptor(self, obj):
-        # used for filter / populate with primary descriptors (mj)
+    def prepare_mj(self, obj):
+        # used for filter / populate with primary descriptors
         return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), primary=True)]
 
     def prepare_mh(self, obj):
@@ -151,7 +151,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     publication_year = indexes.CharField()
     publication_country = indexes.CharField()
 
-    descriptor = indexes.MultiValueField()
+    mj = indexes.MultiValueField()
     mh = indexes.MultiValueField()
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
@@ -248,8 +248,8 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_thematic_area_display(self, obj):
         return ["|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
 
-    def prepare_descriptor(self, obj):
-        # used for filter / populate with primary descriptors (mj)
+    def prepare_mj(self, obj):
+        # used for filter / populate with primary descriptors
         return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), primary=True)]
 
     def prepare_mh(self, obj):
