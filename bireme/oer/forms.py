@@ -97,6 +97,10 @@ class AttachmentForm(forms.ModelForm):
     attachment_file = forms.FileField(widget=widgets.FileInput)
 
 
+class URLForm(forms.ModelForm):
+    url = forms.URLField(widget=widgets.URLInput(attrs={'class': 'input-xxlarge'}))
+
+
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,
                                                   can_delete=True, extra=1)
@@ -104,7 +108,7 @@ DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorFor
 AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
                                                   exclude=('short_url',), can_delete=True, extra=1)
 
-URLFormSet = inlineformset_factory(OER, OERURL, fields='__all__', can_delete=True, extra=1)
+URLFormSet = inlineformset_factory(OER, OERURL, form=URLForm, fields='__all__', can_delete=True, extra=1)
 
 RelationFormSet = inlineformset_factory(OER, Relationship, fields='__all__', fk_name='oer_related',
                                         can_delete=True, extra=1)
