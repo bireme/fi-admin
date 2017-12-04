@@ -82,7 +82,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
             return lang_list
 
     def prepare_indexed_database(self, obj):
-        return [occ for occ in obj.indexed_database.all()]
+        return [occ.acronym for occ in obj.indexed_database.all()]
 
     def prepare_database(self, obj):
         db_list = []
@@ -215,7 +215,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
             return lang_list
 
     def prepare_indexed_database(self, obj):
-        return [occ for occ in obj.indexed_database.all()]
+        return [occ.acronym for occ in obj.indexed_database.all()]
 
     def prepare_database(self, obj):
         db_list = []
