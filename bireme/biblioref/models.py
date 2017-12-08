@@ -242,6 +242,10 @@ class ReferenceSource(Reference):
 
         return exist_analytic
 
+    def count_analytic(self):
+        count_analytic = ReferenceAnalytic.objects.filter(source=self.pk).count()
+
+        return count_analytic
 
 # Bibliographic Records Analytic
 class ReferenceAnalytic(Reference):
