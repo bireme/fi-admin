@@ -84,6 +84,18 @@ class ActAdmin(GenericAdmin):
     search_fields = ['id', '__unicode__']
     inlines = [ActRelationshipAdmin, ActURLAdmin, AttachmentAdmin, DescriptorAdmin, ThematicAreaAdmin, ]
 
+
+class DatabaseLocalAdmin(admin.TabularInline):
+    model = DatabaseLocal
+    extra = 0
+
+
+class DatabaseAdmin(GenericAdmin):
+    model = Database
+    inlines = [DatabaseLocalAdmin, ]
+    search_fields = list_display = ['acronym', 'name']
+
+
 admin.site.register(Act, ActAdmin)
 admin.site.register(ActType, ActTypeAdmin)
 admin.site.register(ActScope, ActScopeAdmin)
@@ -92,3 +104,4 @@ admin.site.register(ActOrganIssuer, ActOrganIssuerAdmin)
 admin.site.register(ActRelationType, ActRelationTypeAdmin)
 admin.site.register(ActRelationship)
 admin.site.register(ActSource)
+admin.site.register(Database, DatabaseAdmin)

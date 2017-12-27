@@ -557,11 +557,12 @@ div.onlineresource div.check {
     font-weight: bold;
     margin-left: -10px;
 }
+
 #indexed_database{
     padding: 5px 0 5px 0;
-    background-color: #eeeeee;
-
+    background-color: #F2F1F0;
 }
+
 .system-notice {
     position: fixed;
     left: 0;
