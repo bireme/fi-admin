@@ -146,8 +146,7 @@ URLFormSet = inlineformset_factory(Act, ActURL, form=URLForm, fields='__all__', 
 RelationFormSet = inlineformset_factory(Act, ActRelationship, fields='__all__', fk_name='act_related',
                                         can_delete=True, extra=1)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
-                                                        formset=ResourceThematicRequired,
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,                                                        
                                                         can_delete=True, extra=1)
 
 CountryRegionTranslationFormSet = inlineformset_factory(ActCountryRegion, ActCountryRegionLocal, fields='__all__',
