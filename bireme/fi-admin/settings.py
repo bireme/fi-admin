@@ -192,6 +192,8 @@ INSTALLED_APPS = (
     'text_block',
     'database',
 
+    'thesaurus',
+
 )
 
 # A sample logging configuration. The only tangible logging

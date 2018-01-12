@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Delete Qualifier" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        <a href="{% url 'list_qualifier' %}">{% trans "Thesaurus" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li>{% trans "Delete Qualifier" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-book'></i>{% trans "Delete Qualifier" %}</h2>
+</div>
+
+<div class='body'>
+    <form method="POST" class="serial-form">
+        <blockquote>
+            <h3>{{ object.qualifier_ui }}</h3>
+        </blockquote>
+
+        {% csrf_token %}
+
+        <div class="alert">
+            <p><strong>{% trans "Are you sure you want to delete?" %}</strong></p>
+            <a href="{% url 'list_qualifier' %}" class="btn">{% trans 'No' %}</a>
+            <input type="submit" class="btn btn-danger delete" value="{% trans 'Yes' %}"></input>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "Thesaurus" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+
+<!--  header -->
+<div class='header'>
+    <h2>
+        <i class='icon-file'></i> {% trans "Qualifiers" %}
+        <span class="badge badge-info" style="vertical-align: middle;">{{ paginator.count }}</span>
+    </h2>
+    <div class='pull-right'>
+        <a href="{% url 'create_qualifier' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Qualifier" %}</a>
+    </div>
+</div>
+
+<div class='body'>    
+    <ul class="nav nav-tabs" id='tab'>
+            <li class="">
+                <a href="{% url 'list_descriptor' %}"><strong>{% trans "Descriptors" %}</strong></a>
+            </li>
+            <li class="active">
+                <a href="{% url 'list_qualifier' %}"><strong>{% trans "Qualifier" %}</strong></a>
+            </li>
+    </ul>
+
+
+<div class="row">
+    <div class="span12">
+        <form name="search">
+            <input type="hidden" name="page" value="{{ actions.page }}">
+            {% trans "Qualifier" %}:
+            <input type="text" name="qualifier_name" class="input-medium" value="{{ param_qualifier_name }}">&nbsp;
+            {% trans "Abbreviation" %}:
+            <input type="text" name="abbreviation" class="input-small" value="{{ param_abbreviation }}">&nbsp;
+            {% trans "MESH Qualifier UI" %}:
+            <input type="text" name="qualifier_ui" class="input-small" value="{{ param_qualifier_ui }}">&nbsp;
+            {% trans "DeCS Qualifier UI" %}:
+            <input type="text" name="decs_code" class="input-small" value="{{ param_decs_code }}">
+            <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
+        </form>
+    </div>
+</div>
+
+
+          <div class="tab-pane active" id="tab-qualifier">
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Qualifier Name" %}</a></th>
+                    <th><a href="javascript:orderby('link');" id="id_link">{% trans "Abbreviation" %}</a></th>
+                    <th><a href="javascript:orderby('link');" id="id_link">{% trans "MESH Qualifier UI" %}</a></th>
+                    <th><a href="javascript:orderby('date');" id="id_date">{% trans "DeCS Qualifer UI" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for obj in registers %}
+                        <tr>
+                            <td><a href="{% url 'edit_qualifier' obj.id %}">{{ obj.id }}</a></td>
+                            <td>
+                              <!-- vem resultado da busca -->
+                              {% if obj.qualifiers__qualifier_name %}
+
+                                {{ obj.qualifiers__qualifier_name }}
+
+                              {% else %}
+                                <!-- vem no todo -->
+                                {% if obj.qualifier_name %}
+
+                                  {% for qualif in obj.qualifier_name %}
+
+                                      {{ qualif }} <br>
+
+                                  {% endfor %}
+
+                                {% endif %}
+
+                              {% endif  %}
+
+                            </td>
+                            <td>{{ obj.abbreviation }}</td>
+                            <td>{{ obj.qualifier_ui }}</td>
+                            <td>{{ obj.decs_code }}</td>
+                            <td>
+                                <a href="{% url 'edit_qualifier' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                <a href="{% url 'delete_qualifier' obj.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination_generic.html" %}
+
+          </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

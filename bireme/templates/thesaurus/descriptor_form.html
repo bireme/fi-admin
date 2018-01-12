@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+
+{% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
+
+
+{% block breadcrumb %}
+	{% if not object %}
+		<li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+		<span class="divider">/</span></li>
+		<li>{% trans "New Descriptor" %}</li>
+	{% else %}
+        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <span class="divider">/</span></li>
+		<li>{% trans "Edit Descriptor" %}</li>
+	{% endif %}
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+
+<!--  header -->
+<div class='header'>
+    <h2><i class='icon-book'></i>
+    	{% if not object %}
+    		{% trans "New Descriptor" %}
+    		{% if next_id %}
+    			 - ID: {{ next_id }}
+    		{% endif %}
+    	{% else %}
+    		{% trans "Edit Descriptor" %}
+    		{% if object.id %}
+    			 - ID: {{ object.descriptor_ui }} - {{ object.decs_code }}
+    		{% endif %}
+    	{% endif %}</h2>
+</div>
+
+<div class='body'>    
+    <ul class="nav nav-tabs" id='tab'>
+            <li class="active">
+                <a href="#tab-identifierdesc" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
+            </li>
+            <li class="">
+                <a href="#tab-descriptiondesc" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
+            </li>
+            <li class="">
+                <a href="#tab-treenumberslistdesc" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
+            </li>
+            <li class="">
+                <a href="#tab-previousindexinglistdesc" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
+            </li>
+
+<!--
+            <li class="">
+                <a href="#tab-conceptlistdesc" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
+            </li>
+-->
+            <li class="">
+                <a href="#tab-termlistdesc" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
+            </li>
+
+
+    </ul>
+
+
+    <form method="POST" class="title-form">
+    {% csrf_token %}
+
+
+
+        <div class="tab-content">
+            <div id="tab-identifierdesc" class="tab-pane active">
+                <fieldset id="identifier">
+                <table class="table table-condensed table-striped span8">
+                    <thead>
+                        <th>{{ form.thesaurus.label }}</th>
+                        <th>{{ form.active.label }}</th>
+                        <th>{{ form.nlm_class_number.label }}</th>
+                    </thead>
+                    <tr>
+                        <td>
+                            <input type="text" name="{{ form.thesaurus.label }}" value="{{ form.thesaurus.value }}">
+                            {{ form.thesaurus.attribute.key }}
+                        </td>
+                        <td>
+                            <input type="checkbox" name="{{ form.active.label }}" value="{{ form.active.value }}">
+                        </td>
+                        <td>
+                            <input type="text" name="{{ form.nlm_class_number.label }}" value="{% if form.nlm_class_number.value %}{{ form.nlm_class_number.value }}{% endif %}">
+                        </td>
+                    </tr>
+                    <thead>
+                        <th>{{ form.descriptor_ui.label }}</th>
+                        <th>{{ form.decs_code.label }}</th>
+                        <th>{{ form.external_code.label }}</th>
+                    </thead>
+                    <tr>
+                        <td>
+                            <input type="text" name="{{ form.descriptor_ui.label }}" value="{% if form.descriptor_ui.value %}{{ form.descriptor_ui.value }}{% endif %}">
+                        </td>
+                        <td>
+                            <input type="text" name="{{ form.decs_code.label }}" value="{% if form.decs_code.value %}{{ form.decs_code.value }}{% endif %}">
+                        </td>
+                        <td>
+                            <input type="text" name="{{ form.external_code.label }}" value="{% if form.external_code.value %}{{ form.external_code.value }}{% endif %}">
+                        </td>
+                    </tr>
+                    <thead>
+                        <th>{{ form.date_created.label }}</th>
+                        <th>{{ form.date_revised.label }}</th>
+                        <th>{{ form.date_established.label }}</th>
+                    </thead>
+                    <tr>
+                        <td>
+                            <input type="text" name="{{ form.date_created.label }}" value="{% if form.date_created.value %}{{ form.date_created.value }}{% endif %}">
+                        </td>
+                        <td>
+                            <input type="text" name="{{ form.date_revised.label }}" value="{% if form.date_revised.value %}{{ form.date_revised.value }}{% endif %}">
+                        </td>
+                        <td>
+                            <input type="text" name="{{ form.date_established.label }}" value="{% if form.date_established.value %}{{ form.date_established.value }}{% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.abbreviation.label }}</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" name="{{ form.abbreviation.label }}" value="{% if form.abbreviation.value %}{{ form.abbreviation.value }}{% endif %}">
+
+                        </td>
+                    </tr>
+
+                </table>
+                </fieldset>
+
+            </div>
+
+            <div id="tab-descriptiondesc" class="tab-pane">
+                <div class="well">
+                    {{ formset_descriptor.as_p }}
+                </div>
+            </div>
+
+            <div id="tab-treenumberslistdesc" class="tab-pane">
+                <div class="well">
+                    {{ formset_category.as_p }}
+                </div>
+            </div>
+
+            <div id="tab-previousindexinglistdesc" class="tab-pane">
+                <div class="well">
+                    {{ formset_previous.as_p }}
+                </div>
+            </div>
+
+<!--
+            <div id="tab-conceptlistdesc" class="tab-pane">
+                <div class="well">
+
+                </div>
+            </div>
+-->
+            <div id="tab-termlistdesc" class="tab-pane">
+                <div class="well">
+                    {{ formset_term.as_p }}
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel form-submit">
+            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+        </div>
+
+
+    </form>
+</div>
+
+{% endblock %}
+
