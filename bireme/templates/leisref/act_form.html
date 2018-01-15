@@ -32,7 +32,7 @@
     {% endif %}
     {% if valid_for_publication != None and not valid_for_publication %}
         <ul class="errorlist alert alert-error">
-            <li>{% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}</li>
+            <li>{% trans "For status admitted you must have at least one descriptor" %}</li>
         </ul>
     {% endif %}
     {{ formset_descriptor.non_form_errors }}
