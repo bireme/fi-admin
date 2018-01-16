@@ -112,6 +112,37 @@ class TreeNumbersListQualif(models.Model):
         return self.id
 
 
+# # ConceptList
+# class ConceptListQualif(models.Model):
+
+#     class Meta:
+#         verbose_name = _("Concept")
+#         verbose_name_plural = _("Concepts")
+
+
+#     identifier = models.ForeignKey(IdentifierQualif, blank=False)
+
+#     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+
+#     # PreferredConcept
+#     preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
+
+#     # ConceptUI
+#     concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, null=True, blank=True)
+
+#     # ConceptName
+#     concept_name = models.CharField(_("Concept name"), max_length=250, null=True, blank=True)
+
+#     # CASN1Name
+#     casn1_name = models.TextField(_("Chemical abstract"), max_length=1000, null=True, blank=True)
+
+#     # RegistryNumber
+#     registry_number = models.CharField(_("Registry number from CAS"), max_length=250, null=True, blank=True)
+
+
+#     def __unicode__(self):
+#         return '%s' % (self.id)
+
 
 # TermListQualif
 class TermListQualif(models.Model):

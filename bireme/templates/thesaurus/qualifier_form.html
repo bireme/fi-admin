@@ -58,11 +58,11 @@
                 <a href="#tab-previousindexinglistdesc" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
             </li>
 -->
-<!--
+
             <li class="">
-                <a href="#tab-conceptlistdesc" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
+                <a href="#tab-conceptlistqualif" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
             </li>
--->
+
             <li class="">
                 <a href="#tab-termlistqualif" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
             </li>
@@ -84,6 +84,12 @@
             <div id="tab-descriptionqualif" class="tab-pane">
                 <div class="well">
                     {{ formset_descriptor.as_p }}
+                </div>
+            </div>
+
+            <div id="tab-conceptlistqualif" class="tab-pane">
+                <div class="well">
+                    {{ formset_concept.as_p }}
                 </div>
             </div>
 

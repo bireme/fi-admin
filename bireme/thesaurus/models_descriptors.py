@@ -172,12 +172,6 @@ class ConceptListDesc(models.Model):
         verbose_name = _("Concept")
         verbose_name_plural = _("Concepts")
 
-    RELATION_NAME_OPTION=(
-        ('BRD','BRD - Broader'),
-        ('NRW','NRW - Narrower'),
-        ('REL','REL - Related but not broader or narrower'),
-    )
-
 
     identifier = models.ForeignKey(IdentifierDesc, blank=False)
 
@@ -198,17 +192,36 @@ class ConceptListDesc(models.Model):
     # RegistryNumber
     registry_number = models.CharField(_("Registry number from CAS"), max_length=250, null=True, blank=True)
 
-    # ConceptRelation RelationName
-    relation_name = models.CharField(_("Concept relation"), choices=RELATION_NAME_OPTION, max_length=3, blank=True)
-
-    # Concept1UI
-    concept1_ui = models.CharField(_("First concept in then Concept relation"), max_length=250, null=True, blank=True)
-
-    # Concept2UI
-    concept2_ui = models.CharField(_("Second concept in then Concept relation"), max_length=250, null=True, blank=True)
 
     def __unicode__(self):
         return '%s' % (self.id)
+
+
+# class ConceptRelationDesc(models.Model):
+
+#     class Meta:
+#         verbose_name = _("Concept")
+#         verbose_name_plural = _("Concepts")
+
+#     RELATION_NAME_OPTION=(
+#         ('BRD','BRD - Broader'),
+#         ('NRW','NRW - Narrower'),
+#         ('REL','REL - Related but not broader or narrower'),
+#     )
+
+#     relation = models.ForeignKey(ConceptListDesc, blank=True)
+
+#     # ConceptRelation RelationName
+#     relation_name = models.CharField(_("Concept relation"), choices=RELATION_NAME_OPTION, max_length=3, blank=True)
+
+#     # Concept1UI
+#     concept1_ui = models.CharField(_("First concept in then Concept relation"), max_length=250, null=True, blank=True)
+
+#     # Concept2UI
+#     concept2_ui = models.CharField(_("Second concept in then Concept relation"), max_length=250, null=True, blank=True)
+
+#     def __unicode__(self):
+#         return '%s' % (self.id)
 
 
 # TermList

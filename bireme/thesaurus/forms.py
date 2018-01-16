@@ -43,6 +43,11 @@ class TreeNumbersListQualifForm(forms.ModelForm):
         model = TreeNumbersListQualif
         fields = '__all__'
 
+# class ConceptListQualifForm(forms.ModelForm):
+#     class Meta:
+#         model = ConceptListQualif
+#         fields = '__all__'
+
 class TermListQualifForm(forms.ModelForm):
     class Meta:
         model = TermListQualif
@@ -80,9 +85,14 @@ class PreviousIndexingListDescForm(forms.ModelForm):
         model = PreviousIndexingListDesc
         exclude = ()
 
-# class ConceptListDescFormForm(forms.ModelForm):
+class ConceptListDescForm(forms.ModelForm):
+    class Meta:
+        model = ConceptListDesc
+        exclude = ()
+
+# class ConceptRelationDescForm(forms.ModelForm):
 #     class Meta:
-#         model = ConceptListDescForm
+#         model = ConceptRelationDesc
 #         exclude = ()
 
 class TermListDescForm(forms.ModelForm):
@@ -119,13 +129,21 @@ PreviousIndexingListDescFormSet = inlineformset_factory(
     extra=1
     )
 
-# ConceptListDescFormSet = inlineformset_factory(
-    # IdentifierDesc,
-    # ConceptListDesc,
-    # form=ConceptListDescForm,
-    # fields='__all__',
-    # extra=1
-    # )
+ConceptListDescFormSet = inlineformset_factory(
+    IdentifierDesc,
+    ConceptListDesc,
+    form=ConceptListDescForm,
+    fields='__all__',
+    extra=1
+    )
+
+# ConceptRelationDescFormSet = inlineformset_factory(
+#     IdentifierDesc,
+#     ConceptRelationDesc,
+#     form=ConceptRelationDescForm,
+#     fields='__all__',
+#     extra=1
+#     )
 
 TermListDescFormSet = inlineformset_factory(
     IdentifierDesc,
@@ -151,6 +169,16 @@ TreeNumbersListQualifFormSet = inlineformset_factory(
     fields='__all__',
     extra=1
     )
+
+
+# ConceptListQualifFormSet = inlineformset_factory(
+#     IdentifierDesc,
+#     ConceptListQualif,
+#     form=ConceptListQualifForm,
+#     fields='__all__',
+#     extra=1
+#     )
+
 
 TermListQualifFormSet = inlineformset_factory(
     IdentifierQualif,
