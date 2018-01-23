@@ -65,7 +65,7 @@ class ActType(Generic):
 
     name = models.CharField(_("Name"), max_length=255)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
-    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
+    scope_region = models.ManyToManyField(ActCountryRegion, verbose_name=_("Country/Region"), blank=True)
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
