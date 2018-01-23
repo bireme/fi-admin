@@ -79,7 +79,6 @@ class ActOrganIssuerAdmin(GenericAdmin):
 
 class ActAdmin(GenericAdmin):
     model = Act
-    date_hierarchy = 'created_time'
     list_display = ('id', '__unicode__', 'scope_region', 'act_type', 'act_number',
                     'act_collection', 'scope', 'scope_state', 'scope_city',
                     'source_name', 'organ_issuer', 'created_by', 'status')
