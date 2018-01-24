@@ -10,7 +10,6 @@ from django.db.models import Q
 from django.shortcuts import render_to_response
 
 from utils.views import ACTIONS
-from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
 from attachments.models import Attachment
 from main.models import Descriptor
@@ -201,8 +200,7 @@ class LeisRefUpdate(LoginRequiredView):
                                                  formset_attachment=formset_attachment,
                                                  formset_url=formset_url,
                                                  formset_relation=formset_relation,
-                                                 formset_thematic=formset_thematic,
-                                                 valid_for_publication=valid_for_publication))
+                                                 formset_thematic=formset_thematic))
 
     def form_invalid(self, form):
             # force use of form_valid method to run all validations
