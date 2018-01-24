@@ -6,7 +6,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
-
+from django.db.models import Q
 from django.shortcuts import render_to_response
 
 from utils.views import ACTIONS
@@ -169,12 +169,9 @@ class LeisRefUpdate(LoginRequiredView):
         formset_url_valid = formset_url.is_valid()
 
         user_data = additional_user_info(self.request)
-        # run cross formsets validations
-        valid_for_publication = is_valid_for_publication(form,
-                                                         [formset_descriptor, formset_thematic])
 
         if (form_valid and formset_descriptor_valid and formset_url_valid and formset_thematic_valid and
-           formset_attachment_valid and formset_relation_valid and valid_for_publication):
+           formset_attachment_valid and formset_relation_valid):
 
                 self.object = form.save()
 
@@ -318,31 +315,31 @@ def check_duplication(request, act_type, act_number):
 def context_lists(request, region_id):
 
     # act type
-    type_objects = [(s.id, unicode(s)) for s in ActType.objects.filter(scope_region=region_id)]
+    type_objects = [(s.id, unicode(s)) for s in ActType.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
     type_objects.sort(key=lambda tup: tup[1])
     type_list = [dict({'value': t[0], 'name': t[1]}) for t in type_objects]
     type_list = dict({'type_list': type_list})
 
     # act scopes
-    scope_objects = [(s.id, unicode(s)) for s in ActScope.objects.filter(scope_region=region_id)]
+    scope_objects = [(s.id, unicode(s)) for s in ActScope.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
     scope_objects.sort(key=lambda tup: tup[1])
     scope_list = [dict({'value': s[0], 'name':s[1]}) for s in scope_objects]
     scope_list = dict({'scope_list': scope_list})
 
     # act sources
-    source_objects = [(s.id, unicode(s)) for s in ActSource.objects.filter(scope_region=region_id)]
+    source_objects = [(s.id, unicode(s)) for s in ActSource.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
     source_objects.sort(key=lambda tup: tup[1])
     source_list = [dict({'value': s[0], 'name': s[1]}) for s in source_objects]
     source_list = dict({'source_list': source_list})
 
     # act organ_issuer
-    organ_issuer_objects = [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
+    organ_issuer_objects = [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
     organ_issuer_objects.sort(key=lambda tup: tup[1])
     organ_issuer_list = [dict({'value': s[0], 'name': s[1]}) for s in organ_issuer_objects]
     organ_issuer_list = dict({'organ_issuer_list': organ_issuer_list})
 
     # act relation types
-    relation_objects = [(s.id, unicode(s)) for s in ActRelationType.objects.filter(scope_region=region_id)]
+    relation_objects = [(s.id, unicode(s)) for s in ActRelationType.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
     relation_objects.sort(key=lambda tup: tup[1])
     relation_list = [dict({'value': r[0], 'name': r[1]}) for r in relation_objects]
     relation_list = dict({'relation_list': relation_list})
@@ -360,7 +357,7 @@ def context_lists(request, region_id):
     city_list = dict({'city_list': city_list})
 
     # act collection
-    collection_objects = [(s.id, unicode(s)) for s in ActCollection.objects.filter(scope_region=region_id)]
+    collection_objects = [(s.id, unicode(s)) for s in ActCollection.objects.all()]
     collection_objects.sort(key=lambda tup: tup[1])
     collection_list = [dict({'value': r[0], 'name': r[1]}) for r in collection_objects]
     collection_list = dict({'collection_list': collection_list})

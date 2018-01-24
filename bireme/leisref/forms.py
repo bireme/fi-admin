@@ -3,6 +3,7 @@ from django.forms.models import inlineformset_factory
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
 
 from django.forms import widgets
+from django.db.models import Q
 from django.conf import settings
 from django import forms
 
@@ -39,19 +40,19 @@ class ActForm(forms.ModelForm):
             first_option = [('', '----------')]
 
             # create context lists and sort by name
-            type_choices = [(s.id, unicode(s)) for s in ActType.objects.filter(scope_region=region_id)]
+            type_choices = [(s.id, unicode(s)) for s in ActType.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
             type_choices.sort(key=lambda tup: tup[1])
-            scope_choices = [(s.id, unicode(s)) for s in ActScope.objects.filter(scope_region=region_id)]
+            scope_choices = [(s.id, unicode(s)) for s in ActScope.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
             scope_choices.sort(key=lambda tup: tup[1])
-            source_choices = [(s.id, unicode(s)) for s in ActSource.objects.filter(scope_region=region_id)]
+            source_choices = [(s.id, unicode(s)) for s in ActSource.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
             source_choices.sort(key=lambda tup: tup[1])
-            organ_choices = [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(scope_region=region_id)]
+            organ_choices = [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
             organ_choices.sort(key=lambda tup: tup[1])
             state_choices = [(s.id, unicode(s)) for s in ActState.objects.filter(scope_region=region_id)]
             state_choices.sort(key=lambda tup: tup[1])
             city_choices = [(s.id, unicode(s)) for s in ActCity.objects.filter(scope_region=region_id)]
             city_choices.sort(key=lambda tup: tup[1])
-            collection_choices = [(s.id, unicode(s)) for s in ActCollection.objects.filter(scope_region=region_id)]
+            collection_choices = [(s.id, unicode(s)) for s in ActCollection.objects.all()]
             collection_choices.sort(key=lambda tup: tup[1])
 
             self.fields['act_type'].choices = first_option + type_choices
