@@ -83,7 +83,7 @@ class ActAdmin(GenericAdmin):
                     'act_collection', 'scope', 'scope_state', 'scope_city',
                     'source_name', 'organ_issuer', 'created_by', 'status')
     search_fields = ['id', '__unicode__']
-    list_filter = ('status','act_type', 'scope', 'act_collection',)
+    list_filter = ('status','act_type', 'scope', 'act_collection', 'organ_issuer',)
     inlines = [ActRelationshipAdmin, ActURLAdmin, AttachmentAdmin, DescriptorAdmin, ThematicAreaAdmin, ]
 
 class ActCollectionLocalAdmin(admin.TabularInline):
