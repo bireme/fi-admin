@@ -19,6 +19,8 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     scope_state = indexes.CharField()
     scope_city = indexes.CharField()
     source_name = indexes.CharField()
+    indexed_database = indexes.MultiValueField()
+    collection = indexes.MultiValueField()
     denomination = indexes.CharField(model_attr='denomination')
     issue_date = indexes.CharField(model_attr='issue_date', default='')
     publication_date = indexes.CharField(model_attr='publication_date', default='')
@@ -77,6 +79,14 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.language:
             translations = obj.language.get_translations()
             return "|".join(translations)
+
+    def prepare_collection(self, obj):
+        if obj.act_collection:
+            translations = obj.act_collection.get_translations()
+            return "|".join(translations)
+
+    def prepare_indexed_database(self, obj):
+        return [occ.acronym for occ in obj.indexed_database.all()]
 
     def prepare_publication_year(self, obj):
         if obj.issue_date:

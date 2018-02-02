@@ -101,6 +101,7 @@
          <str name="facet.field">journal</str>
          <str name="facet.field">indexed_database</str>
          <str name="facet.field">database</str>
+         <str name="facet.field">collection</str>
          <str name="facet.field">scope_region</str>
          <str name="facet.field">act_type</str>
          <str name="facet.field">language</str>

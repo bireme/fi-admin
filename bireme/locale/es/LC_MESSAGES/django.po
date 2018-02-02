@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-04 14:55-0200\n"
-"PO-Revision-Date: 2017-12-04 14:59-0306\n"
+"PO-Revision-Date: 2018-01-31 13:16-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1557,12 +1557,12 @@ msgstr "Relacionado"
 
 #: leisref/models.py:24 leisref/models.py:25 leisref/models.py:404
 msgid "Act country/region"
-msgstr "País/Región de alcance do ato"
+msgstr "País/Región de alcance del acto"
 
 #: leisref/models.py:63 leisref/models.py:94 leisref/models.py:406
 #: templates/leisref/act_related.html:29 templates/leisref/act_related.html:85
 msgid "Act type"
-msgstr "Tipo de ato"
+msgstr "Tipo del acto"
 
 #: leisref/models.py:64
 msgid "Act types"
