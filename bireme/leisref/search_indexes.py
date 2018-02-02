@@ -40,7 +40,8 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_scope_region(self, obj):
         if obj.scope_region:
-            return obj.scope_region.get_translations()
+            translations = obj.scope_region.get_translations()
+            return "|".join(translations)
 
     def prepare_act_type(self, obj):
         if obj.act_type:
