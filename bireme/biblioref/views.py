@@ -19,6 +19,7 @@ from utils.context_processors import additional_user_info
 from attachments.models import Attachment
 from main.models import Descriptor
 from title.models import Title
+from database.models import Database
 from help.models import get_help_fields
 from utils.views import LoginRequiredView
 from forms import *
@@ -69,6 +70,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
+
+        if self.actions['filter_indexed_database'] != '':
+            object_list = object_list.filter(indexed_database=self.actions['filter_indexed_database'])
 
         # filter by specific document type and remove filter by user (filter_owner)
         if document_type:
@@ -141,6 +145,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         context['document_type'] = self.request.GET.get('document_type')
         context['source_id'] = self.request.GET.get('source')
         context['user_role'] = user_role
+        context['indexed_database_list'] = Database.objects.all().order_by('name')
         if source_id:
             context['reference_source'] = ReferenceSource.objects.get(pk=source_id)
 

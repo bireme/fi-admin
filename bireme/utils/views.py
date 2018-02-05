@@ -31,6 +31,7 @@ ACTIONS = {
     'filter_thematic': "",
     'filter_created_by_user': "",
     'filter_created_by_cc': "",
+    'filter_indexed_database': "",
     'document_type': "",
     'review_type': "",
 }
