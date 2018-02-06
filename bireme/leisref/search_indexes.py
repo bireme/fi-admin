@@ -100,7 +100,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
             ref_type = "|".join(act.act_referred.act_type.get_translations())
             ref_number = act.act_referred.act_number
             ref_date = act.act_referred.issue_date
-            ref_lnk = "leisref.act.{0}".format(act.act_referred.id) if act.act_referred.status == 1 else ''
+            ref_lnk = "leisref.act.{0}".format(act.act_referred.id) if act.act_referred.status in [-2, 1] else ''
             active_relation = u"{0}@{1}@{2}@{3}@{4}@{5}".format(label_present, ref_type, ref_number,
                                                                ref_date, act.act_apparatus, ref_lnk)
             active_relationships.append(active_relation)
@@ -113,7 +113,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
         for act in act_list:
             label_past = "|".join(act.relation_type.get_label_past_translations())
             act_type = "|".join(obj.act_type.get_translations())
-            ref_lnk = "leisref.act.{0}".format(act.act_related.id) if act.act_related.status == 1 else ''
+            ref_lnk = "leisref.act.{0}".format(act.act_related.id) if act.act_related.status in [-2, 1] else ''
             passive_relation = u"{0}@{1}@{2}@{3}@{4}".format(label_past, act_type, act.act_related.act_number,
                                                             act.act_related.issue_date, ref_lnk)
             passive_relationships.append(passive_relation)
