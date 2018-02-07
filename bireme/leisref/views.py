@@ -822,7 +822,8 @@ class ActCollectionUpdate(GenericUpdateWithOneFormset):
     model = ActCollection
     success_url = reverse_lazy('list_act_collection')
     formset = ActCollectionTranslationFormSet
-    fields = '__all__'
+    # exclude scope_region field of the list
+    fields = ('name', 'language')
 
 
 class ActCollectionUpdateView(ActCollectionUpdate, UpdateView):
