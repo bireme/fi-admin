@@ -1,7 +1,7 @@
 {% extends "base.html" %}
+{% load app_filters %}
 {% load i18n %}
 {% load static %}
-
 
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
@@ -70,76 +70,61 @@
     </ul>
 
 
-    <form method="POST" class="title-form">
+    <form method="POST" class="form-horizontal" enctype="multipart/form-data">
     {% csrf_token %}
 
-
-
         <div class="tab-content">
+
             <div id="tab-identifierdesc" class="tab-pane active">
-                <fieldset id="identifier">
-                <table class="table table-condensed table-striped span8">
+
+                {% for field in form.visible_fields %}
+                    {% if field.errors %}
+                        <font>Error : </font>{{ field.label }}{{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+
+                <table class="table table-condensed span8">
                     <thead>
                         <th>{{ form.thesaurus.label }}</th>
                         <th>{{ form.active.label }}</th>
-                        <th>{{ form.nlm_class_number.label }}</th>
                     </thead>
                     <tr>
-                        <td>
-                            <input type="text" name="{{ form.thesaurus.label }}" value="{{ form.thesaurus.value }}">
-                            {{ form.thesaurus.attribute.key }}
-                        </td>
-                        <td>
-                            <input type="checkbox" name="{{ form.active.label }}" value="{{ form.active.value }}">
-                        </td>
-                        <td>
-                            <input type="text" name="{{ form.nlm_class_number.label }}" value="{% if form.nlm_class_number.value %}{{ form.nlm_class_number.value }}{% endif %}">
-                        </td>
+                        <td>{{ form.thesaurus }}</td>
+                        <td>{{ form.active }}</td>
                     </tr>
+
                     <thead>
                         <th>{{ form.descriptor_ui.label }}</th>
                         <th>{{ form.decs_code.label }}</th>
                         <th>{{ form.external_code.label }}</th>
+                        <th>{{ form.nlm_class_number.label }}</th>
                     </thead>
                     <tr>
-                        <td>
-                            <input type="text" name="{{ form.descriptor_ui.label }}" value="{% if form.descriptor_ui.value %}{{ form.descriptor_ui.value }}{% endif %}">
-                        </td>
-                        <td>
-                            <input type="text" name="{{ form.decs_code.label }}" value="{% if form.decs_code.value %}{{ form.decs_code.value }}{% endif %}">
-                        </td>
-                        <td>
-                            <input type="text" name="{{ form.external_code.label }}" value="{% if form.external_code.value %}{{ form.external_code.value }}{% endif %}">
-                        </td>
+                        <td>{{ form.descriptor_ui }}</td>
+                        <td>{{ form.decs_code }}</td>
+                        <td>{{ form.external_code }}</td>
+                        <td>{{ form.nlm_class_number }}</td>
                     </tr>
+
                     <thead>
+                        <th>{{ form.descriptor_class.label }}</th>
                         <th>{{ form.date_created.label }}</th>
                         <th>{{ form.date_revised.label }}</th>
                         <th>{{ form.date_established.label }}</th>
                     </thead>
                     <tr>
-                        <td>
-                            <input type="text" name="{{ form.date_created.label }}" value="{% if form.date_created.value %}{{ form.date_created.value }}{% endif %}">
-                        </td>
-                        <td>
-                            <input type="text" name="{{ form.date_revised.label }}" value="{% if form.date_revised.value %}{{ form.date_revised.value }}{% endif %}">
-                        </td>
-                        <td>
-                            <input type="text" name="{{ form.date_established.label }}" value="{% if form.date_established.value %}{{ form.date_established.value }}{% endif %}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>{{ form.abbreviation.label }}</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="text" name="{{ form.abbreviation.label }}" value="{% if form.abbreviation.value %}{{ form.abbreviation.value }}{% endif %}">
-
-                        </td>
+                        <td>{{ form.descriptor_class }}</td>
+                        <td>{{ form.date_created }}</td>
+                        <td>{{ form.date_revised }}</td>
+                        <td>{{ form.date_established }}</td>
                     </tr>
 
+                    <tr>
+                        <td colspan=4>
+                            {{ form.abbreviation }}
+                    </tr>
+ 
                 </table>
-                </fieldset>
 
             </div>
 
@@ -180,7 +165,29 @@
 
 
     </form>
+
+<!-- http://djangoweb.blogspot.com.br/2015/08/como-usar-o-filterhorizontalfilterverti.html#gpluscomments -->
+ <script src="{% static "site/js/jquery.js" %}"></script>
+ <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
+    <script type="text/javascript" src="/admin/jsi18n/"></script>
+    <script type="text/javascript" src="{% static "admin/js/core.js" %}"></script>
+    <script type="text/javascript" src="{% static "admin/js/SelectBox.js" %}"></script>
+    <script type="text/javascript" src="{% static "admin/js/SelectFilter2.js" %}"></script>
+    <script type="text/javascript">
+     // PARAMETROS DO SELECT FILTER:
+     // ID do seu elemento select
+     // NAME do seu elemento select
+     // 0 - para filter_horizontal / 1 para filter_vertical
+     // Caminho do admin para source de imagens utilizadas
+
+        addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "abbreviation", 1, "/static/admin/"); });
+    </script>
+
+
 </div>
+
+
+
 
 {% endblock %}
 

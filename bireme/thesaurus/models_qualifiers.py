@@ -59,8 +59,18 @@ class IdentifierQualif(models.Model):
     # DateEstablished
     date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
 
+    # def __unicode__(self):
+    #     return self.abbreviation
+
     def __unicode__(self):
-        return self.abbreviation
+        lang_code = get_language()
+        translation = DescriptionQualif.objects.filter(identifier_id=self.id, language_code=lang_code)
+        if translation:
+            treatment1 = translation[0].qualifier_name.replace('/','').upper()
+            return '%s%s%s' % (self.abbreviation,' - ',treatment1)
+        else:
+            return '%s%s' % (self.abbreviation,' - without description')
+
 
 
 

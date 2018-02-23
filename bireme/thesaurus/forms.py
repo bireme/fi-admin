@@ -5,10 +5,6 @@ from django.shortcuts import get_object_or_404
 from django.forms.models import inlineformset_factory
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
 
-from django.forms import widgets
-from django.conf import settings
-
-from django import forms
 
 from thesaurus.models_thesaurus import Thesaurus
 from thesaurus.models_qualifiers import *
@@ -19,6 +15,12 @@ from thesaurus.models_descriptors import *
 
 
 from django.utils.translation import ugettext_lazy as _
+
+from django.forms import widgets
+from django import forms
+from form_utils.forms import BetterModelForm, FieldsetCollection
+from django.conf import settings
+
 
 
 class ThesaurusForm(forms.ModelForm):
@@ -54,21 +56,12 @@ class TermListQualifForm(forms.ModelForm):
         fields = '__all__'
 
 # Descriptor ------------------------------------------------------------------
-class IdentifierDescForm(forms.ModelForm):
+# class IdentifierDescForm(forms.ModelForm):
+class IdentifierDescForm(BetterModelForm):
     class Meta:
         model = IdentifierDesc
         # exclude = ()
         fields = '__all__'
-
-    # date_created = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), required=False,
-    #                              input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date created"))
-
-    # date_revised = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), required=False,
-    #                              input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date revised"))
-
-    # date_established = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), required=False,
-    #                              input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date established"))
-
 
 class DescriptionDescForm(forms.ModelForm):
     class Meta:

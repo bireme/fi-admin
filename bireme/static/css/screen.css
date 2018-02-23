@@ -569,3 +569,45 @@ div.onlineresource div.check {
 tr.relation-row td input, tr.relation-row td select{
     width: 160px;
 }
+
+
+
+.stacked{
+  display: flex;    
+  width: 100%; 
+/*  border: solid 1px red*/
+}
+
+.stacked H2{
+    float: left;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+}
+
+
+/* left column - esquerda - DIV*/
+.selector-available { 
+    width: 230px;
+/*    border: solid 1px blue*/
+}
+
+/* middle column - meio - UL*/
+.selector-chooser {
+    flex: selector-available;
+    width: 65px;
+    height: 40px;
+    margin-left: 1px;
+    margin-top: 70px;
+/*    border: solid 1px black*/
+}
+
+/* right column - esquerda - DIV*/
+.selector-chosen {
+    flex: selector-chosen;
+    width: 270px;
+    min-width: 100px;
+/*    border: solid 1px black*/
+}
+

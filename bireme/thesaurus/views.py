@@ -47,7 +47,7 @@ class DescUpdate(LoginRequiredView):
         formset_descriptor = DescriptionDescFormSet(self.request.POST, instance=self.object)
         formset_category = TreeNumbersListDescFormSet(self.request.POST, instance=self.object)
         formset_concept = ConceptListDescFormSet(self.request.POST, instance=self.object)
-        formset_concept_relation = ConceptRelationDescFormSet(self.request.POST, instance=self.object)
+        # formset_concept_relation = ConceptRelationDescFormSet(self.request.POST, instance=self.object)
         formset_previous = PreviousIndexingListDescFormSet(self.request.POST, instance=self.object)        
         formset_term = TermListDescFormSet(self.request.POST, instance=self.object)
 
@@ -60,8 +60,12 @@ class DescUpdate(LoginRequiredView):
         formset_previous_valid = formset_previous.is_valid()
         formset_term_valid = formset_term.is_valid()
 
-        if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_concept_relation_valid and formset_previous_valid and formset_term_valid):
+        if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid and formset_term_valid):
         # if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_concept_relation_valid and formset_previous_valid and formset_term_valid):
+
+
+            # print '%s%s' % ('DEBUG: ',form.cleaned_data)
+
             self.object = form.save()
 
             formset_descriptor.instance = self.object
