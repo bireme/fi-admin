@@ -572,6 +572,8 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 
+
+/* Horizontal filter */
 .stacked{
   display: flex;    
   width: 100%; 
@@ -586,11 +588,17 @@ tr.relation-row td input, tr.relation-row td select{
     color: #333;
 }
 
-
 /* left column - esquerda - DIV*/
 .selector-available { 
-    width: 230px;
+    width: 245px;
 /*    border: solid 1px blue*/
+}
+
+/* lupa */
+.selector-filter IMG {
+    position:relative;
+    top: 40px;
+    left: 55px;
 }
 
 /* middle column - meio - UL*/
@@ -599,7 +607,7 @@ tr.relation-row td input, tr.relation-row td select{
     width: 65px;
     height: 40px;
     margin-left: 1px;
-    margin-top: 70px;
+    margin-top: 60px;
 /*    border: solid 1px black*/
 }
 
@@ -610,4 +618,3 @@ tr.relation-row td input, tr.relation-row td select{
     min-width: 100px;
 /*    border: solid 1px black*/
 }
-
