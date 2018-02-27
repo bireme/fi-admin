@@ -614,7 +614,13 @@ tr.relation-row td input, tr.relation-row td select{
 /* right column - esquerda - DIV*/
 .selector-chosen {
     flex: selector-chosen;
-    width: 270px;
+    width: 260px;
     min-width: 100px;
+/*    border: solid 1px black*/
+}
+
+.identifierdesc,.descriptiondesc TH,TD {
+    text-align: left;
+    padding: 2px;
 /*    border: solid 1px black*/
 }

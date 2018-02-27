@@ -99,6 +99,9 @@ class DescUpdate(LoginRequiredView):
         context['formset_previous'] = PreviousIndexingListDescFormSet(instance=self.object)
         context['formset_term'] = TermListDescFormSet(instance=self.object)
 
+        context['descriptor_info'] = get_language()
+
+
         return context
 
 

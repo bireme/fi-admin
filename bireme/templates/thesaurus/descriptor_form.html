@@ -38,10 +38,20 @@
     		{% endif %}
     	{% else %}
     		{% trans "Edit Descriptor" %}
-    		{% if object.id %}
+
+            {% for desc in formset_descriptor %}
+                {% if descriptor_info == desc.language_code.value %}
+                    : {{ desc.descriptor_name.value }}
+                {% endif %}
+            {% endfor %}
+
+<!--     		{% if object.id %}
     			 - ID: {{ object.descriptor_ui }} - {{ object.decs_code }}
     		{% endif %}
+ -->
     	{% endif %}</h2>
+
+
 </div>
 
 <div class='body'>    
@@ -83,7 +93,7 @@
                     {% endif %}
                 {% endfor %}
 
-                <table class="table table-condensed span8">
+                <table class="identifierdesc">
                     <thead>
                         <th>{{ form.thesaurus.label }}</th>
                         <th>{{ form.active.label }}</th>
@@ -108,9 +118,15 @@
 
                     <thead>
                         <th>{{ form.descriptor_class.label }}</th>
-                        <th>{{ form.date_created.label }}</th>
-                        <th>{{ form.date_revised.label }}</th>
-                        <th>{{ form.date_established.label }}</th>
+                        <th>{{ form.date_created.label }}
+                            <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
+                        </th>
+                        <th>{{ form.date_revised.label }}
+                            <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
+                        </th>
+                        <th>{{ form.date_established.label }}
+                            <font color="#999"><i>{{ form.date_established.help_text }}</i></font>
+                        </th>
                     </thead>
                     <tr>
                         <td>{{ form.descriptor_class }}</td>

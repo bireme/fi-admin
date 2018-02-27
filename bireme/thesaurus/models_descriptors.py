@@ -49,7 +49,7 @@ class IdentifierDesc(models.Model):
 
     active = models.BooleanField(_("Enabled"), default=False, help_text=_("Check to set it to active"))
 
-    thesaurus = models.ForeignKey(Thesaurus, null=True, blank=True, default=None)
+    thesaurus = models.ForeignKey(Thesaurus, null=True, blank=False, default=None)
 
     # DescriptorClass
     descriptor_class = models.CharField(_("Descriptor class"), choices=DESCRIPTOR_CLASS_CODE, max_length=2, blank=True)
@@ -75,7 +75,7 @@ class IdentifierDesc(models.Model):
     # DateEstablished
     date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
 
-    abbreviation = models.ManyToManyField(IdentifierQualif, verbose_name='Abbreviation', blank=False)
+    abbreviation = models.ManyToManyField(IdentifierQualif, verbose_name='Abbreviation', blank=True)
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -114,23 +114,8 @@ class DescriptionDesc(models.Model):
     consider_also = models.CharField(_("Consider also"), max_length=250, null=True, blank=True)
 
     def __unicode__(self):
-        # return '%s' % (self.descriptor_name)
-        # return '%s%s%s' % (self.descriptor_name,' - ',self.language_code)
         return '%s%s%s%s' % (self.descriptor_name,' (',self.language_code,')')
 
-
-    # def __unicode__(self):
-    #     lang_code = get_language()
-    #     translation = DescriptionDesc.objects.filter(identifier_id=self.id, language_code=lang_code)
-    #     if translation:
-    #         return translation[0].descriptor_name
-    #     else:
-    #         return lang_code
-
-    # def __unicode__(self):
-    #     lang_code = get_language()
-    #     return '%s %s' % (self.descriptor_name, self.language_code)
-    # #   return '%s %s' % (self.descriptor_name, self.lang_code)
 
 
 # Tree numbers for descriptors

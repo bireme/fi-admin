@@ -56,8 +56,8 @@ class TermListQualifForm(forms.ModelForm):
         fields = '__all__'
 
 # Descriptor ------------------------------------------------------------------
-# class IdentifierDescForm(forms.ModelForm):
-class IdentifierDescForm(BetterModelForm):
+class IdentifierDescForm(forms.ModelForm):
+# class IdentifierDescForm(BetterModelForm):
     class Meta:
         model = IdentifierDesc
         # exclude = ()
