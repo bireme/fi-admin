@@ -31,9 +31,10 @@
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
-        <li><a href="#tab-person" data-toggle="tab"><i class="icon-user"></i> {% trans "Persons" %}</a></li>
-        <li><a href="#tab-contact" data-toggle="tab"><i class="icon-book"></i>  {% trans "Phones/Emails" %}{% if formset_relation.errors and not formset_relation.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
-        <li><a href="#tab-url" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Sites" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-person" data-toggle="tab"><i class="icon-user"></i> {% trans "Persons" %}{% if formset_person.errors and not formset_person.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-contact" data-toggle="tab"><i class="icon-book"></i>  {% trans "Phones/Emails" %}{% if formset_phone.errors and not formset_phone.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-url" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Sites" %}{% if formset_url.errors and not formset_url.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-relationship" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Units" %}{% if formset_relation.errors and not formset_relation.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
     </ul>
 
     <div class="dedup-alert well fixed-alert" style="display: none">
@@ -172,6 +173,9 @@
             <!-- URL FORMSET -->
             {% include "institution/fieldset_url.html" %}
 
+            <!-- RELATIONSHIP FORMSET -->
+            {% include "institution/fieldset_relationship.html" %}
+
             <div id='tab-thematic' class="tab-pane">
                 <fieldset id="thematic">
                     <table class="table table-condensed table-striped span8">
@@ -293,6 +297,16 @@
                     prefix: '{{ formset_email.prefix }}'
             });
 
+            $('.relation-row').formset({
+                    addText : '{% trans "Add Unit" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'relationship_formset',
+                    prefix: '{{ formset_relationship.prefix }}'
+            });
+
             $('.thematic-row').formset({
                     addText : '{% trans "Add thematic area" %}',
                     deleteText: '{% trans "delete" %}',
@@ -360,28 +374,23 @@
 
         function dismissRelatedLookupPopup(chosenId, chosenLabel) {
             // set code, text and label for the new descriptor
-            $('#label_related-' + act_related_row_id + '-act_referred').html(chosenLabel);
-            $('#label_related-' + act_related_row_id + '-act_referred').removeClass("placeholder-style");
+            $('#label_related-' + inst_related_row_id + '-inst_related').html(chosenLabel);
+            $('#label_related-' + inst_related_row_id + '-inst_related').removeClass("placeholder-style");
 
             // set the value of hidden input
-            $('#id_related-' + act_related_row_id + '-act_referred').val(chosenId);
+            $('#id_related-' + inst_related_row_id + '-inst_related').val(chosenId);
 
-            act_win.close();
+            inst_win.close();
         }
 
-        function act_related(obj){
+        function inst_related(obj){
             var row = $(obj).parent();
             this_name = row.find('input').attr('name');
-            act_related_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
+            inst_related_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
 
-            region_id = $('#id_scope_region').find("option:selected").val();
-            act_win = window.open('{% url "act_related" %}?region=' + region_id, 'act_related', 'scrollbars=1,width=785,height=590');
+            country_id = $('#id_country').find("option:selected").val();
+            inst_win = window.open('{% url "institution_related" %}?country=' + country_id, 'inst_related', 'scrollbars=1,width=785,height=590');
         }
-
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-            language: '{{LANGUAGE_CODE}}'
-        });
 
         $("#save-published").click(function() {
             // set status to Published (1)

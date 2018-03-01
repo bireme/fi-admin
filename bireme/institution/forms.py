@@ -38,6 +38,23 @@ class PhoneForm(forms.ModelForm):
     phone_number = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-medium'}))
 
 
+class InstRelatedForm(forms.ModelForm):
+    class Meta:
+        model = Institution
+        fields = ('status', 'type', 'name', 'acronym', 'country')
+
+    name = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-xxlarge'}))
+
+    def clean_name(self):
+        data = self.cleaned_data.get('name')
+
+        has_inst = Institution.objects.filter(name__iexact=data).exists()
+        if has_inst:
+            message = _("This institution already exist")
+            self.add_error('name', message)        
+
+        return data
+
 
 # definition of inline formsets
 URLFormSet = inlineformset_factory(Institution, URL, form=URLForm,
@@ -51,3 +68,7 @@ PhoneFormSet = inlineformset_factory(Institution, ContactPhone, form=PhoneForm,
 
 EmailFormSet = inlineformset_factory(Institution, ContactEmail, form=EmailForm,
                                      fields='__all__', can_delete=True, extra=1)
+
+RelationFormSet = inlineformset_factory(Institution, Relationship,
+                                        fields='__all__', fk_name='institution',
+                                        can_delete=True, extra=1)

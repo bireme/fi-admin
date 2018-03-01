@@ -183,6 +183,7 @@ INSTALLED_APPS = (
     'title',
     'biblioref',
     'leisref',
+    'institution',
     'oer',
     'reports',
     'utils',

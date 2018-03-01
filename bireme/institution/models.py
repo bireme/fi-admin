@@ -7,6 +7,7 @@ from utils.models import Generic, Country
 from log.models import AuditLog
 
 STATUS_CHOICES = (
+    (-2, _('Institution related')),
     (-1, _('Draft')),
     (1, _('Published')),
     (2, _('Refused')),
@@ -61,7 +62,7 @@ class Institution(Generic, AuditLog):
 
     status = models.SmallIntegerField(_("Status"), choices=STATUS_CHOICES, null=True, default=-1)
     type = models.ForeignKey(Type, verbose_name=_("Type"))
-    name = models.CharField(_("Name"), max_length=254, blank=True)
+    name = models.CharField(_("Name"), max_length=254, blank=True, unique=True)
     acronym = models.CharField(_("Acronym"), max_length=55, blank=True)
     cc_code = models.CharField(_('Center code'), max_length=55, blank=True)
     country = models.ForeignKey(Country, verbose_name=_("Country"))
@@ -128,9 +129,12 @@ class ContactPerson(models.Model):
         verbose_name_plural = _("Contact persons")
 
     institution = models.ForeignKey(Institution, null=True)
-    prefix = models.CharField(_("Prefix"), max_length=45, choices=PREFIX_CHOICES)
-    name = models.CharField(_("Name"), max_length=155)
-    job_title = models.CharField(_("Job title"), max_length=155)
+    prefix = models.CharField(_("Prefix"), max_length=45, choices=PREFIX_CHOICES, blank=True)
+    name = models.CharField(_("Name"), max_length=155, blank=True)
+    job_title = models.CharField(_("Job title"), max_length=155, blank=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 # Institution URL
@@ -147,3 +151,22 @@ class URL(models.Model):
     institution = models.ForeignKey(Institution, null=True)
     url_type = models.CharField(_("Type"), max_length=75, choices=URL_CHOICES)
     url = models.URLField(_("URL"), max_length=300)
+
+# Relationship
+class Relationship(models.Model):
+    LEVEL_CHOICES = (
+        ('2', _('Second level')),
+        ('3', _('Third level')),
+        ('4', _('Fourth level')),
+    )
+
+    class Meta:
+        verbose_name = _("Relationship")
+        verbose_name_plural = _("Relationships")
+
+    # field used in django one to one relationship
+    institution = models.ForeignKey(Institution, related_name='related', null=True)
+    # relatonship level
+    relation_level = models.CharField(_("Level"), max_length=45, choices=LEVEL_CHOICES)
+    # field to inform a institution already present in database
+    inst_related = models.ForeignKey(Institution, verbose_name=_("Institution"), related_name="referred", null=True)

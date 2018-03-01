@@ -7,7 +7,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from django.db.models import Q
 
 from utils.views import ACTIONS
@@ -22,7 +22,6 @@ class InstGenericListView(LoginRequiredView, ListView):
     Handle list view for legislation records objects
     """
     paginate_by = settings.ITEMS_PER_PAGE
-    context_object_name = "inst_list"
     search_field = "name"
 
     def dispatch(self, *args, **kwargs):
@@ -79,6 +78,40 @@ class InstListView(InstGenericListView, ListView):
     """
     model = Institution
 
+class RelatedListView(ListView):
+    """
+    List legislation records (used by relationship popup selection window)
+    """
+    model = Institution
+    template_name = "institution/institution_related.html"
+    paginate_by = 10
+
+    def get_queryset(self):
+
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        search = self.actions['s']
+        param_country = self.request.GET.get('country')
+        object_list = []
+
+        if search:
+            object_list = self.model.objects.filter(name__icontains=search, country=param_country)
+        else:
+            object_list = self.model.objects.filter(country=param_country)
+
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super(RelatedListView, self).get_context_data(**kwargs)
+
+        context['form'] = InstRelatedForm()
+        context['param_country'] = self.request.GET.get('country')
+        context['actions'] = self.actions
+
+        return context
 
 class InstUpdate(LoginRequiredView):
     """
@@ -93,6 +126,7 @@ class InstUpdate(LoginRequiredView):
         formset_phone = PhoneFormSet(self.request.POST, instance=self.object)
         formset_email = EmailFormSet(self.request.POST, instance=self.object)
         formset_url = URLFormSet(self.request.POST, instance=self.object)
+        formset_relation = RelationFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
@@ -101,11 +135,12 @@ class InstUpdate(LoginRequiredView):
         formset_phone_valid = formset_phone.is_valid()
         formset_email_valid = formset_email.is_valid()
         formset_url_valid = formset_url.is_valid()
+        formset_relation_valid = formset_relation.is_valid()
 
         user_data = additional_user_info(self.request)
 
         if (form_valid and formset_person_valid and formset_phone_valid and
-            formset_email_valid and formset_url_valid):
+            formset_email_valid and formset_url_valid and formset_relation_valid):
 
                 self.object = form.save()
 
@@ -121,8 +156,12 @@ class InstUpdate(LoginRequiredView):
                 formset_url.instance = self.object
                 formset_url.save()
 
+                formset_relation.instance = self.object
+                formset_relation.save()
+
                 # save metadata
-                form.save()
+                form.save(commit=False)
+                form.save_m2m()
 
                 return HttpResponseRedirect(self.get_success_url())
         else:
@@ -131,7 +170,8 @@ class InstUpdate(LoginRequiredView):
                                                  formset_person=formset_person,
                                                  formset_phone=formset_phone,
                                                  formset_email=formset_email,
-                                                 formset_url=formset_url))
+                                                 formset_url=formset_url,
+                                                 formset_relation=formset_relation))
 
 
     def form_invalid(self, form):
@@ -170,6 +210,7 @@ class InstUpdate(LoginRequiredView):
             context['formset_phone'] = PhoneFormSet(instance=self.object)
             context['formset_email'] = EmailFormSet(instance=self.object)
             context['formset_url'] = URLFormSet(instance=self.object)
+            context['formset_relation'] = RelationFormSet(instance=self.object)
 
         return context
 
@@ -211,5 +252,27 @@ class InstDeleteView(LoginRequiredView, DeleteView):
         ContactPhone.objects.filter(institution_id=obj.id).delete()
         ContactEmail.objects.filter(institution_id=obj.id).delete()
         URL.objects.filter(institution_id=obj.id).delete()
+        Relationship.objects.filter(institution_id=obj.id).delete()
 
         return super(InstDeleteView, self).delete(request, *args, **kwargs)
+
+
+@login_required
+def add_related_inst(request):
+    """
+    Add institution with minimum fields for relationship
+    """
+    success_url = ''
+    if request.method == 'POST':
+        form = InstRelatedForm(request.POST)
+        print form.errors
+        if form.is_valid():
+            new_inst = form.save()
+            success_url = "{0}/?s={1}&country={2}".format(reverse_lazy('institution_related'),
+                                                            new_inst, new_inst.country.id)
+        else:
+            param_country = request.POST.get('country')
+            return render(request, 'institution/institution_related.html',
+                          {'form': form, 'param_country': param_country})
+
+    return HttpResponseRedirect(success_url)

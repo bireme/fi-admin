@@ -2,7 +2,6 @@
 
 {% block menu %}
     {% if user.is_authenticated %}
-
         <div class="navbar navbar-fixed-top" id="menu">
             <div class="navbar-inner">
                 <div class="container-fluid">
@@ -46,6 +45,10 @@
 
                             {% if service_role.LeisRef %}
                                 <li><a href="{% url 'list_legislation' %}" title=""><i class="icon-book"></i> {% trans "Legislation" %}</a></li>
+                            {% endif %}
+
+                            {% if service_role.DirIns %}
+                                <li><a href="{% url 'list_institution' %}" title=""><i class="icon-home"></i> {% trans "Institutions" %}</a></li>
                             {% endif %}
 
                             {% if service_role.OER %}
@@ -129,7 +132,7 @@
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     {% endif %}
 {% endblock %}
