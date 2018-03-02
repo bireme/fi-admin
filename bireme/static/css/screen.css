@@ -619,8 +619,9 @@ tr.relation-row td input, tr.relation-row td select{
 /*    border: solid 1px black*/
 }
 
-.identifierdesc,.descriptiondesc TH,TD {
+.identifierdesc, .descriptiondesc th td {
     text-align: left;
     padding: 2px;
 /*    border: solid 1px black*/
 }
+

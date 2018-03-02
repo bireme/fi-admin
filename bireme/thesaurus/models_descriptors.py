@@ -124,6 +124,7 @@ class TreeNumbersListDesc(models.Model):
     class Meta:
         verbose_name = _("Tree number for descriptor")
         verbose_name_plural = _("Tree numbers for descriptors")
+        ordering = ('tree_number',)
 
     identifier = models.ForeignKey(IdentifierDesc, blank=False)
 
