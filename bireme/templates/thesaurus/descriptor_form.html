@@ -150,9 +150,92 @@
             </div>
 
             <div id="tab-descriptiondesc" class="tab-pane">
-                <div class="well">
+<!--                 <div class="well">
                     {{ formset_descriptor.as_p }}
-                </div>
+                </div> -->
+                <fieldset id="descriptiondesc">
+
+                    {{ formset_descriptor.management_form }}
+
+                    {% for form in formset_descriptor %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                        <table class="descriptiondesc">
+
+<!--                             <tr colspan="4">
+                                <td class="term-origin">{{ form.descriptor_name.value }} | {{ form.language_code.value }}</td>
+                            </tr>
+ -->
+
+
+                            <tr colspan="4">
+                                <td>{{ form.descriptor_name.value }} | {{ form.language_code.value }}</td>
+                            </tr>
+
+
+                            <tr colspan="4" bgcolor="#ffffff" style="border: solid 1px #cccccc; background-color: #eeeeee;">
+                                <td class="td-r">{{ form.descriptor_name.label_tag }}</td>
+                                <td class="td-l">
+                                {{ form.name.errors }}
+                                {{ form.descriptor_name }}
+                                </td>
+
+                                <td class="td-r">{{ form.language_code.label_tag }}</td>
+                                <td class="td-l">
+                                {{ form.name.errors }}
+                                {{ form.language_code }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.annotation.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.name.errors }}
+                                {{ form.annotation }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.history_note.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.name.errors }}
+                                {{ form.history_note }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.online_note.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.name.errors }}
+                                {{ form.online_note }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.scope_note.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.name.errors }}
+                                {{ form.scope_note }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.public_mesh_note.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.name.errors }}
+                                {{ form.public_mesh_note }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.consider_also.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.name.errors }}
+                                {{ form.consider_also }}
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                    {% endfor %}
+
+                </fieldset>
+
             </div>
 
 
@@ -200,6 +283,7 @@
 
 
             </div>
+
 
             <div id="tab-previousindexinglistdesc" class="tab-pane">
                 <div class="well">

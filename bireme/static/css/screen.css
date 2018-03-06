@@ -575,7 +575,7 @@ tr.relation-row td input, tr.relation-row td select{
 
 /* Horizontal filter */
 .stacked{
-  display: flex;    
+  display: flex;
   width: 100%; 
 /*  border: solid 1px red*/
 }
@@ -619,9 +619,94 @@ tr.relation-row td input, tr.relation-row td select{
 /*    border: solid 1px black*/
 }
 
-.identifierdesc, .descriptiondesc th td {
+
+
+
+
+
+.identifierdesc th td {
     text-align: left;
     padding: 2px;
 /*    border: solid 1px black*/
 }
 
+
+.descriptiondesc {
+    width: 90%;
+/*    border: solid 1px #cccccc;*/
+/*    background-color: #eeeeee;*/
+}
+
+/*#999*/
+/*#ffffff*/
+/*#b94a48*/
+/*    border: 1px solid #cccccc;
+    background-color: #eeeeee;*/
+
+.descriptiondesc textarea {
+    width: 98%;
+/*    height: 55px;*/
+    height: 50px;
+}
+
+.descriptiondesc label{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+}
+
+.descriptiondesc td {
+    text-align:left;
+}
+
+.descriptiondesc .td-r{
+    text-align: right;
+}
+
+.descriptiondesc .td-l{
+    text-align: left;
+}
+
+.descriptiondesc .td-l input[type=text]{
+    text-align: left;
+/*    background: #cccccc; */
+    width:350px;
+/*    border:1px solid #000000;*/
+}
+
+/*
+.descriptiondesc .term-origin{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+}
+
+*/
+
+
+
+
+.tudo { 
+    display: flex;
+}
+
+.bloco1 { 
+    flex: bloco1;
+    width: 100px;
+    border: solid 1px green
+}
+
+.bloco2 { 
+    flex: bloco2;
+    width: 100px;
+ /*   margin-left: 35%;*/
+    border: solid 1px red
+}
+
+.bloco3 { 
+    flex: bloco3;
+    width: 100px;
+    border: solid 1px red
+}
