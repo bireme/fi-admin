@@ -2,6 +2,7 @@ import datetime
 from haystack import indexes
 from main.models import Descriptor, Keyword, SourceLanguage, ResourceThematic
 from attachments.models import Attachment
+from django.conf import settings
 from models import *
 
 import json

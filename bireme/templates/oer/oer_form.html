@@ -436,18 +436,6 @@
 
             },false);
 
-            $(document).on("click", "a.add_error_report", function(){
-                $("#error_report_modal").modal("show");
-            });
-
-            // Prevent losing data by navigating away from the page
-            $(window).bind('beforeunload', function() {
-                var checkboxcount = $("input:checkbox:checked").length;
-                if(checkboxcount > 0) {
-                    return 'Are you sure?';
-                }
-            });
-
         })
 
         function decs_search(obj){
