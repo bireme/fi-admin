@@ -621,9 +621,6 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 
-
-
-
 .identifierdesc th td {
     text-align: left;
     padding: 2px;
@@ -631,21 +628,14 @@ tr.relation-row td input, tr.relation-row td select{
 }
 
 
+
 .descriptiondesc {
     width: 90%;
-/*    border: solid 1px #cccccc;*/
-/*    background-color: #eeeeee;*/
+    border: solid 1px #cccccc;
 }
-
-/*#999*/
-/*#ffffff*/
-/*#b94a48*/
-/*    border: 1px solid #cccccc;
-    background-color: #eeeeee;*/
 
 .descriptiondesc textarea {
     width: 98%;
-/*    height: 55px;*/
     height: 50px;
 }
 
@@ -670,20 +660,18 @@ tr.relation-row td input, tr.relation-row td select{
 
 .descriptiondesc .td-l input[type=text]{
     text-align: left;
-/*    background: #cccccc; */
     width:350px;
-/*    border:1px solid #000000;*/
 }
 
-/*
 .descriptiondesc .term-origin{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 15px;
     color: #333;
+    background-color: #eeeeee;
 }
 
-*/
+
 
 
 
