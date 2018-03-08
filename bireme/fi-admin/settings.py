@@ -285,6 +285,15 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 # set permissions after file upload (444 read only file for security reasons)
 FILE_UPLOAD_PERMISSIONS = 0444
 
+# set max upload size
+# 10MB - 10485760
+# 20MB - 20971520
+# 50MB - 5242880
+# 100MB 104857600
+# 250MB - 214958080
+# 500MB - 429916160
+MAX_UPLOAD_SIZE = "5242880"
+
 # Debug toolbar settings
 DEBUG_TOOLBAR = False
 DEBUG_TOOLBAR_PATCH_SETTINGS = False

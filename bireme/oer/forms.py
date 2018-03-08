@@ -7,6 +7,7 @@ from django.conf import settings
 from django import forms
 
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import filesizeformat
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 
@@ -91,6 +92,16 @@ class ThematicForm(forms.ModelForm):
 class AttachmentForm(forms.ModelForm):
     # change widget from attachment_file field for simple select
     attachment_file = forms.FileField(widget=widgets.FileInput)
+
+    def clean_attachment_file(self):
+        data = self.cleaned_data['attachment_file']
+        if data.size > int(settings.MAX_UPLOAD_SIZE):
+            raise forms.ValidationError(_('Maximum allowed size %(max)s. Current filesize %(size)s') % ({
+                                           'max': filesizeformat(settings.MAX_UPLOAD_SIZE),
+                                           'size': filesizeformat(data.size)
+                                           }))
+
+        return data
 
 
 class URLForm(forms.ModelForm):

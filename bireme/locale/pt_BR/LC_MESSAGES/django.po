@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-01 17:29-0300\n"
-"PO-Revision-Date: 2018-03-01 17:33-0306\n"
+"POT-Creation-Date: 2018-03-07 18:01-0300\n"
+"PO-Revision-Date: 2018-03-07 18:04-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -823,7 +823,7 @@ msgid "Bibliographic Records"
 msgstr "Registros bibliográficos"
 
 #: biblioref/models.py:30 error_reporting/models.py:35 events/models.py:67
-#: institution/models.py:63 leisref/models.py:432 log/models.py:25
+#: institution/models.py:63 leisref/models.py:432 log/models.py:58
 #: main/models.py:156 main/models.py:176 main/models.py:196 main/models.py:218
 #: multimedia/models.py:99 oer/models.py:382 suggest/models.py:23
 #: suggest/models.py:54 templates/biblioref/reference_form.html:136
@@ -1578,7 +1578,6 @@ msgid "This institution already exist"
 msgstr "Esta instituição já existe"
 
 #: institution/models.py:10
-#| msgid "Institution type"
 msgid "Institution related"
 msgstr "Instituição relacionada"
 
@@ -1702,17 +1701,14 @@ msgid "URLs"
 msgstr "Endereços eletrônicos"
 
 #: institution/models.py:158
-#| msgid "Collection level"
 msgid "Second level"
 msgstr "Segundo nível"
 
 #: institution/models.py:159
-#| msgid "Treatment level"
 msgid "Third level"
 msgstr "Terceiro nível"
 
 #: institution/models.py:160
-#| msgid "Monographic level"
 msgid "Fourth level"
 msgstr "Quarto nível"
 
@@ -1919,12 +1915,12 @@ msgstr "Endereço eletrônico"
 msgid "Act URLs"
 msgstr "Endereços eletrônicos"
 
-#: log/models.py:7 templates/log/review.html:41
+#: log/models.py:8 templates/log/review.html:41
 #: templates/log/review.html.py:47 templates/log/review_notapproved.html:33
 msgid "Not approved"
 msgstr "Não aprovado"
 
-#: log/models.py:8 templates/log/review.html:39
+#: log/models.py:9 templates/log/review.html:39
 #: templates/log/review.html.py:46
 msgid "Approved"
 msgstr "Aprovado"
@@ -2216,9 +2212,14 @@ msgstr "Criador"
 msgid "Contributor"
 msgstr "Contribuidor"
 
-#: oer/forms.py:44
+#: oer/forms.py:45
 msgid "Required for publication"
 msgstr "Obrigatório para publicação"
+
+#: oer/forms.py:99
+#, python-format
+msgid "Maximum allowed size %(max)s. Current filesize %(size)s"
+msgstr "Tamanho máximo permitido %(max)s. Tamanho do arquivo %(size)s"
 
 #: oer/models.py:25
 msgid "Types"
@@ -3351,7 +3352,6 @@ msgstr "Número do telefone"
 #: templates/institution/institution_confirm_delete.html:5
 #: templates/institution/institution_confirm_delete.html:9
 #: templates/institution/institution_confirm_delete.html:15
-#| msgid "My institution"
 msgid "Delete institution"
 msgstr "Apagar instituição"
 
@@ -3405,7 +3405,6 @@ msgid "Add Email"
 msgstr "Adicionar Email"
 
 #: templates/institution/institution_form.html:302
-#| msgid "Add Site"
 msgid "Add Unit"
 msgstr "Adicionar Unidade"
 
@@ -3418,17 +3417,14 @@ msgid "All instutions"
 msgstr "Todas instituições"
 
 #: templates/institution/institution_related.html:40
-#| msgid "Select the legislation"
 msgid "Select the institution"
 msgstr "Selecione a instituição"
 
 #: templates/institution/institution_related.html:57
-#| msgid "Institution as subject"
 msgid "No institution was found"
 msgstr "Nenhuma instituição encontrada"
 
 #: templates/institution/institution_related.html:61
-#| msgid "Create new legislation"
 msgid "Create new institution related"
 msgstr "Criar nova instituição relacionada"
 
