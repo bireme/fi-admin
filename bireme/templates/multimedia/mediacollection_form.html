@@ -64,8 +64,6 @@
    <script src="{% static 'js/jquery.formset.js' %}"></script>
 
    <script type="text/javascript">
-        var prevent_data_lost = false;
-
         $(function() {
             $('.translation-row').formset({
                     addText : '{% trans "Add translation" %}',
@@ -73,23 +71,8 @@
                     addCssClass : 'icon-plus-sign',
                     deleteCssClass : 'icon-minus-sign',
                     prefix: '{{ formset.prefix }}'
-            }); 
+            });
         })
-
-        $('input:text,input:checkbox,input:radio,textarea,select').one('change', function() {
-            prevent_data_lost = true;
-        })
-        $( "form" ).submit(function(){
-           prevent_data_lost = false;  
-        })
-
-        // Prevent losing data by navigating away from the page
-        $(window).bind('beforeunload', function() {
-            if (prevent_data_lost) {
-                return 'Are you sure?';
-            }
-        });
-
    </script>
 {% endblock %}
 
