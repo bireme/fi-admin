@@ -140,13 +140,15 @@
 
 
             <div id="tab-descriptiondesc" class="tab-pane">
+
+
                 <fieldset id="descriptiondesc">
+
                     {{ formset_descriptor.management_form }}
                     {% for form in formset_descriptor %}
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
-
 
                         <table class="descriptiondesc">
                             <tr>
@@ -165,59 +167,52 @@
                             {% endif %}
 
                         <input name="{{descriptors}}_DELETE" id="id_{{descriptors}}_DELETE" type="hidden">
+
                                 </td>
                             </tr>
                             <tr>
                                 <td class="td-r">{{ form.descriptor_name.label_tag }}</td>
                                 <td class="td-l">
-                                {{ form.name.errors }}
                                 {{ form.descriptor_name }}
                                 </td>
                                 <td class="td-r">{{ form.language_code.label_tag }}</td>
                                 <td class="td-l">
-                                {{ form.name.errors }}
                                 {{ form.language_code }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="td-r" colspan="1">{{ form.annotation.label_tag }}</td>
                                 <td colspan="3">
-                                {{ form.name.errors }}
                                 {{ form.annotation }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="td-r" colspan="1">{{ form.history_note.label_tag }}</td>
                                 <td colspan="3">
-                                {{ form.name.errors }}
                                 {{ form.history_note }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="td-r" colspan="1">{{ form.online_note.label_tag }}</td>
                                 <td colspan="3">
-                                {{ form.name.errors }}
                                 {{ form.online_note }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="td-r" colspan="1">{{ form.scope_note.label_tag }}</td>
                                 <td colspan="3">
-                                {{ form.name.errors }}
                                 {{ form.scope_note }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="td-r" colspan="1">{{ form.public_mesh_note.label_tag }}</td>
                                 <td colspan="3">
-                                {{ form.name.errors }}
                                 {{ form.public_mesh_note }}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="td-r" colspan="1">{{ form.consider_also.label_tag }}</td>
                                 <td colspan="3">
-                                {{ form.name.errors }}
                                 {{ form.consider_also }}
                                 </td>
                             </tr>
@@ -285,7 +280,7 @@
 
     </form>
 
-<!-- http://djangoweb.blogspot.com.br/2015/08/como-usar-o-filterhorizontalfilterverti.html#gpluscomments -->
+
  <script src="{% static "site/js/jquery.js" %}"></script>
  <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
     <script type="text/javascript" src="/admin/jsi18n/"></script>
@@ -345,11 +340,11 @@
                         alert('{% trans "Warning" %}: '+$(this).val());
                         return false
                     } else {
-                        $(this).val;                        
+                        $(this).val;
                     }
 
                 } else {
-                    // É par - está errado
+                    // se eh par está errado
                     if ( tam != 0 ){
                         alert('{% trans "Warning" %}: '+$(this).val());
                         return false
@@ -358,7 +353,6 @@
             });
 
             $('.form-horizontal').on('submit', function() {
-                // if (confirm('{% trans "Add Tree Number" %}')) {
                 if (confirm('{% trans "Save" %}?')) {
                     return true;
                 } else {
@@ -377,7 +371,15 @@
                 }
             });
 
-
+            
+            // Alerta sobre não preenchimento
+            $('[id^="id_descriptors-"]').on('blur', function() {
+                val = $(this).val();
+                if ( val == '' ){
+                    alert('{% trans "Warning" %}');
+                    return false;
+                }
+            });
 
 
 

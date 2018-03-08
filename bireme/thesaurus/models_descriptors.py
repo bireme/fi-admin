@@ -93,7 +93,7 @@ class DescriptionDesc(models.Model):
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # DescriptorName
-    descriptor_name = models.CharField(_("Term name"), max_length=250, blank=False)
+    descriptor_name = models.CharField(_("Term name"), max_length=250, null=True, blank=True)
 
     # Annotation
     annotation = models.TextField(_("Annotation"), max_length=1500, null=True, blank=True)
