@@ -203,8 +203,11 @@ class TitleUpdate(LoginRequiredView):
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('Title')
         user_id = self.request.user.id
+
         if self.object:
             user_data['is_owner'] = True if self.object.created_by == self.request.user else False
+            c_type = ContentType.objects.get_for_model(self.get_object())
+            context['c_type'] = c_type
 
         context['user_data'] = user_data
         context['role'] = user_role

@@ -100,6 +100,7 @@ class WhodidMiddleware(object):
             has_changes = getattr(instance, 'changed_fields', False)
             was_deleted = getattr(instance, 'was_deleted', False)
             inline_model = getattr(instance, 'content_object', False)
+            related_model = getattr(instance, 'get_parent', False)
 
             # log if new, changed or deleted
             if new_object or has_changes or was_deleted:
@@ -109,6 +110,10 @@ class WhodidMiddleware(object):
                     log_object_ct_id = instance.content_type.pk
                     log_object_id = instance.content_object.pk
                     log_repr = str(instance.content_object)
+                elif related_model:
+                    log_object_ct_id = ContentType.objects.get_for_model(instance.get_parent()).pk
+                    log_object_id = instance.get_parent().pk
+                    log_repr = str(instance.get_parent())
                 else:
                     log_object_ct_id = ContentType.objects.get_for_model(instance).pk
                     log_object_id = instance.pk
@@ -165,14 +170,23 @@ class WhodidMiddleware(object):
         else:
             # get previous attributes values of object
             obj = obj_model.objects.get(pk=instance.id)
+
             for field_name in instance.changed_fields:
+                field_type = obj_model._meta.get_field(field_name).get_internal_type()
+
                 if instance.id:
-                    previous_value = obj.__dict__.get(field_name)
+                    if field_type == 'ForeignKey':
+                        previous_value = unicode(getattr(obj, field_name))
+                    else:
+                        previous_value = obj.__dict__.get(field_name)
                 else:
                     previous_value = ''
 
-                new_value = instance.__dict__.get(field_name)
-                field_type = obj_model._meta.get_field(field_name).get_internal_type()
+
+                if field_type == 'ForeignKey':
+                    new_value = unicode(getattr(instance, field_name))
+                else:
+                    new_value = instance.__dict__.get(field_name)
 
                 # convert JSON to compare properly
                 if isinstance(previous_value, basestring) and previous_value[0:2] == '[{':
