@@ -654,6 +654,15 @@ tr.relation-row td input, tr.relation-row td select{
     text-align: right;
 }
 
+.descriptiondesc .td-r-del{
+    text-align: right;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+    background-color: #eeeeee;
+}
+
 .descriptiondesc .td-l{
     text-align: left;
 }

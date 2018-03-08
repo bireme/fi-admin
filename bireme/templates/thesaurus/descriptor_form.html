@@ -7,15 +7,15 @@
 
 
 {% block breadcrumb %}
-	{% if not object %}
-		<li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
-		<span class="divider">/</span></li>
-		<li>{% trans "New Descriptor" %}</li>
-	{% else %}
+    {% if not object %}
         <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
-		<li>{% trans "Edit Descriptor" %}</li>
-	{% endif %}
+        <li>{% trans "New Descriptor" %}</li>
+    {% else %}
+        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <span class="divider">/</span></li>
+        <li>{% trans "Edit Descriptor" %}</li>
+    {% endif %}
 {% endblock %}
 
 
@@ -31,13 +31,13 @@
 <!--  header -->
 <div class='header'>
     <h2><i class='icon-book'></i>
-    	{% if not object %}
-    		{% trans "New Descriptor" %}
-    		{% if next_id %}
-    			 - ID: {{ next_id }}
-    		{% endif %}
-    	{% else %}
-    		{% trans "Edit Descriptor" %}
+        {% if not object %}
+            {% trans "New Descriptor" %}
+            {% if next_id %}
+                 - ID: {{ next_id }}
+            {% endif %}
+        {% else %}
+            {% trans "Edit Descriptor" %}
 
             {% for desc in formset_descriptor %}
                 {% if descriptor_info == desc.language_code.value %}
@@ -45,11 +45,11 @@
                 {% endif %}
             {% endfor %}
 
-<!--     		{% if object.id %}
-    			 - ID: {{ object.descriptor_ui }} - {{ object.decs_code }}
-    		{% endif %}
+<!--            {% if object.id %}
+                 - ID: {{ object.descriptor_ui }} - {{ object.decs_code }}
+            {% endif %}
  -->
-    	{% endif %}</h2>
+        {% endif %}</h2>
 
 
 </div>
@@ -138,6 +138,7 @@
                 </fieldset>
             </div>
 
+
             <div id="tab-descriptiondesc" class="tab-pane">
                 <fieldset id="descriptiondesc">
                     {{ formset_descriptor.management_form }}
@@ -145,9 +146,26 @@
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
+
+
                         <table class="descriptiondesc">
                             <tr>
-                                <td colspan="4" class="term-origin">&nbsp;{{ form.descriptor_name.value }} ({{ form.language_code.value }})</td>
+
+                            {% if form.instance.pk %}
+                                <td colspan="3" class="term-origin">&nbsp;
+                                    {{ form.descriptor_name.value }} ({{ form.language_code.value }})
+                                </td>
+                                <td colspan="1" class="td-r-del">
+                                    {% trans 'Remove' %}? {{ form.DELETE }}
+                                </td>
+                            {% else %}
+                                <td colspan="4" class="term-origin">&nbsp;
+                                    {% trans 'New Record' %}
+                                </td>
+                            {% endif %}
+
+  <input name="{{descriptors}}_DELETE" id="id_{{descriptors}}_DELETE" type="hidden">                              
+                                </td>
                             </tr>
                             <tr>
                                 <td class="td-r">{{ form.descriptor_name.label_tag }}</td>
