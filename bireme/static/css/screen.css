@@ -672,6 +672,15 @@ tr.relation-row td input, tr.relation-row td select{
     width:350px;
 }
 
+
+
+.previousindexinglistdesc th td {
+    text-align: center;
+    padding: 2px;
+}
+
+
+
 .descriptiondesc .term-origin{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;

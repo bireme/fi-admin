@@ -255,9 +255,39 @@
 
 
             <div id="tab-previousindexinglistdesc" class="tab-pane">
-                <div class="well">
+                <fieldset id="previousindexinglistdesc">
+
+                    <table class="previousindexinglistdesc">
+                        <thead>
+                            <th>{% trans "Previous Index" %}</th>
+                            <th>{% trans "Language" %}</th>
+                            <th>{% trans "Delete?" %}</th>
+                        </thead>
+                        <tbody>
+                        {{ formset_previous.management_form }}
+
+                        {% for form in formset_previous %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <tr id="category-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for field in form.visible_fields %}
+                               <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                <td>
+                                    {{ field }}
+                                    {{ field.errors }}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+
+<!--                 <div class="well">
                     {{ formset_previous.as_p }}
                 </div>
+ -->
             </div>
 
             <div id="tab-conceptlistdesc" class="tab-pane">
@@ -322,6 +352,17 @@
                     formCssClass: 'category_formset',
                     prefix: '{{ formset_category.prefix }}'
             });
+
+            $('.previous-row').formset({
+                    addText : '{% trans "Add Previous Index" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'previous_formset',
+                    prefix: '{{ formset_previous.prefix }}'
+            });
+
 
             $('[id^="id_treenumberslistdesc_set-"]').on('blur', function() {
                 val = $(this).val();

@@ -145,7 +145,9 @@ class PreviousIndexingListDesc(models.Model):
     identifier = models.ForeignKey(IdentifierDesc, blank=False)
 
     # PreviousIndexing
-    previous_indexing = models.CharField(_("Previous indexing"), max_length=250, null=True, blank=True)
+    previous_indexing = models.CharField(_("Previous indexing"), max_length=1000, null=True, blank=True)
+
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     def __unicode__(self):
         return '%s' % (self.id)
