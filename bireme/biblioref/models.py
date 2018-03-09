@@ -123,16 +123,20 @@ class Reference(Generic, AuditLog):
 
     def __unicode__(self):
         if 'a' in self.treatment_level:
-            ref_child = ReferenceAnalytic.objects.get(id=self.pk)
-            if self.literature_type[0] == 'S':
-                ref_title = u"{0}; {1} ({2}), {3} | {4}".format(ref_child.source.title_serial,
-                                                                ref_child.source.volume_serial,
-                                                                ref_child.source.issue_number,
-                                                                ref_child.source.publication_date_normalized[:4],
-                                                                ref_child.title[0]['text'])
-            else:
-                ref_title = u"{0} | {1}".format(ref_child.source.title_monographic[0]['text'],
-                                                ref_child.title[0]['text'])
+            try:
+                ref_child = ReferenceAnalytic.objects.get(id=self.pk)
+                if self.literature_type[0] == 'S':
+                    ref_title = u"{0}; {1} ({2}), {3} | {4}".format(ref_child.source.title_serial,
+                                                                    ref_child.source.volume_serial,
+                                                                    ref_child.source.issue_number,
+                                                                    ref_child.source.publication_date_normalized[:4],
+                                                                    ref_child.title[0]['text'])
+                else:
+                    ref_title = u"{0} | {1}".format(ref_child.source.title_monographic[0]['text'],
+                                                    ref_child.title[0]['text'])
+            except:
+                # if errors in format dynamic title use raw reference_title field
+                ref_title = self.reference_title
         else:
             ref_child = ReferenceSource.objects.get(id=self.pk)
             ref_title = ref_child.__unicode__()
