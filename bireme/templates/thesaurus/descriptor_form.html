@@ -284,16 +284,70 @@
                     </table>
                 </fieldset>
 
-<!--                 <div class="well">
-                    {{ formset_previous.as_p }}
-                </div>
- -->
             </div>
 
             <div id="tab-conceptlistdesc" class="tab-pane">
-                <div class="well">
+<!--                 <div class="well">
                     {{ formset_concept.as_p }}
                 </div>
+ -->
+
+                <fieldset id="conceptlistdesc">
+
+                    {{ formset_concept.management_form }}
+                    {% for form in formset_concept %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                        <table class="conceptlistdesc" border="0">
+                            <tr>
+
+                            {% if form.instance.pk %}
+                                <td colspan="3" class="term-origin">&nbsp;
+                                    {{ form.concept_name.value }} ({{ form.language_code.value }})
+                                </td>
+                                <td colspan="1" class="td-r-del">
+                                    {% trans 'Remove' %}? {{ form.DELETE }}
+                                </td>
+                            {% else %}
+                                <td colspan="4" class="term-origin">&nbsp;
+                                    {% trans 'New Record' %}
+                                </td>
+                            {% endif %}
+
+                            <input name="{{conceptlistdesc}}_DELETE" id="id_{{conceptlistdesc}}_DELETE" type="hidden">
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td width="20%">{{ form.language_code.label_tag }}</td>
+                                <td width="40%">{{ form.concept_name.label_tag }}</td>
+                                <td  colspan="2">{{ form.concept_ui.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td width="20%">{{ form.language_code }}</td>
+                                <td width="40%" class="concept_name">{{ form.concept_name }}</td>
+                                <td colspan="2">{{ form.concept_ui }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" width="60%">{{ form.casn1_name.label_tag }}</td>
+                                <td width="15%">{{ form.preferred_concept.label_tag }}</td>
+                                <td width="25%">{{ form.registry_number.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="casn1" width="60%">{{ form.casn1_name }}</td>
+                                <td width="15%" valign="top">{{ form.preferred_concept }}</td>
+                                <td width="25%" valign="top">{{ form.registry_number }}</td>
+                            </tr>
+
+                        </table>
+                        <br>
+                    {% endfor %}
+                </fieldset>
+
+
             </div>
 
             <div id="tab-termlistdesc" class="tab-pane">
