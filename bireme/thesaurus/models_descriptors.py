@@ -218,6 +218,8 @@ class TermListDesc(models.Model):
     class Meta:
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
+        ordering = ('language_code','term_string',)
+
 
     LEXICALTAG_OPTION=(
         ('ABB','ABB - Abbreviation'),

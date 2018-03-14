@@ -44,11 +44,6 @@
                     : {{ desc.descriptor_name.value }}
                 {% endif %}
             {% endfor %}
-
-<!--            {% if object.id %}
-                 - ID: {{ object.descriptor_ui }} - {{ object.decs_code }}
-            {% endif %}
- -->
         {% endif %}</h2>
 
 
@@ -140,8 +135,6 @@
 
 
             <div id="tab-descriptiondesc" class="tab-pane">
-
-
                 <fieldset id="descriptiondesc">
 
                     {{ formset_descriptor.management_form }}
@@ -150,19 +143,32 @@
                             {{ hidden }}
                         {% endfor %}
 
+                    <table class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#descriptiondesc_{{ form.instance.pk }}">
+                            <font size="2">
+                                {% if form.instance.pk %}
+                                    <font color="#333">
+                                    {{ form.descriptor_name.value }} ({{ form.language_code.value }})
+                                    </font>
+                                {% else %}
+                                    {% trans 'New Record' %}
+                                {% endif %}
+                            </font>
+                        </a>
+                    </table>
+
+                    <div id="descriptiondesc_{{ form.instance.pk }}" class="panel-collapse collapse">
+
+
                         <table class="descriptiondesc">
                             <tr>
 
                             {% if form.instance.pk %}
-                                <td colspan="3" class="term-origin">&nbsp;
-                                    {{ form.descriptor_name.value }} ({{ form.language_code.value }})
-                                </td>
-                                <td colspan="1" class="td-r-del">
+                                <td colspan="4" class="td-r-del">
                                     {% trans 'Remove' %}? {{ form.DELETE }}
                                 </td>
                             {% else %}
                                 <td colspan="4" class="term-origin">&nbsp;
-                                    {% trans 'New Record' %}
                                 </td>
                             {% endif %}
 
@@ -218,6 +224,7 @@
                             </tr>
                         </table>
                         <br>
+                    </div>
                     {% endfor %}
                 </fieldset>
             </div>
@@ -287,10 +294,6 @@
             </div>
 
             <div id="tab-conceptlistdesc" class="tab-pane">
-<!--                 <div class="well">
-                    {{ formset_concept.as_p }}
-                </div>
- -->
 
                 <fieldset id="conceptlistdesc">
 
@@ -300,19 +303,31 @@
                             {{ hidden }}
                         {% endfor %}
 
+                    <table class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#conceptlistdesc_{{ form.instance.pk }}">
+                            <font size="2">
+                                {% if form.instance.pk %}
+                                    <font color="#333">
+                                    {{ form.concept_name.value }} ({{ form.language_code.value }})
+                                    </font>
+                                {% else %}
+                                    {% trans 'New Record' %}
+                                {% endif %}
+                            </font>
+                        </a>
+                    </table>
+
+                    <div id="conceptlistdesc_{{ form.instance.pk }}" class="panel-collapse collapse">
+
                         <table class="conceptlistdesc" border="0">
                             <tr>
 
                             {% if form.instance.pk %}
-                                <td colspan="3" class="term-origin">&nbsp;
-                                    {{ form.concept_name.value }} ({{ form.language_code.value }})
-                                </td>
-                                <td colspan="1" class="td-r-del">
+                                <td colspan="4" class="td-r-del">
                                     {% trans 'Remove' %}? {{ form.DELETE }}
                                 </td>
                             {% else %}
                                 <td colspan="4" class="term-origin">&nbsp;
-                                    {% trans 'New Record' %}
                                 </td>
                             {% endif %}
 
@@ -322,13 +337,13 @@
                             </tr>
 
                             <tr>
-                                <td width="20%">{{ form.language_code.label_tag }}</td>
                                 <td width="40%">{{ form.concept_name.label_tag }}</td>
+                                <td width="20%">{{ form.language_code.label_tag }}</td>
                                 <td  colspan="2">{{ form.concept_ui.label_tag }}</td>
                             </tr>
                             <tr>
-                                <td width="20%">{{ form.language_code }}</td>
                                 <td width="40%" class="concept_name">{{ form.concept_name }}</td>
+                                <td width="20%">{{ form.language_code }}</td>
                                 <td colspan="2">{{ form.concept_ui }}</td>
                             </tr>
                             <tr>
@@ -344,16 +359,87 @@
 
                         </table>
                         <br>
+                    </div>
                     {% endfor %}
                 </fieldset>
-
 
             </div>
 
             <div id="tab-termlistdesc" class="tab-pane">
-                <div class="well">
-                    {{ formset_term.as_p }}
-                </div>
+
+                <fieldset id="termlistdesc">
+
+                    {{ formset_term.management_form }}
+                    {% for form in formset_term %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                    <table class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#termlistdesc_{{ form.instance.pk }}">
+                            <font size="2">
+                                {% if form.instance.pk %}
+                                    <font color="#333">
+                                    {{ form.term_string.value }} ({{ form.language_code.value }})
+                                    </font>
+                                {% else %}
+                                    {% trans 'New Record' %}
+                                {% endif %}
+                            </font>
+                        </a>
+                    </table>
+
+                    <div id="termlistdesc_{{ form.instance.pk }}" class="panel-collapse collapse">
+                        <table class="termlistdesc" border="0">
+                            <tr>
+
+                            {% if form.instance.pk %}
+                                <td colspan="5" class="td-r-del">
+                                    {% trans 'Remove' %}? {{ form.DELETE }}
+                                </td>
+                            {% else %}
+                                <td colspan="5" class="term-origin">&nbsp;
+                                </td>
+                            {% endif %}
+
+                            <input name="{{termlistdesc}}_DELETE" id="id_{{termlistdesc}}_DELETE" type="hidden">
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" class="term_string" width="40%">{{ form.term_string.label_tag }}</td>
+                                <td>{{ form.language_code.label_tag }}</td>
+                                <td>{{ form.term_ui.label_tag }}</td>
+                                <td>{{ form.date_created.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="term_string" width="40%">{{ form.term_string }}</td>
+                                <td>{{ form.language_code }}</td>
+                                <td>{{ form.term_ui }}</td>
+                                <td>{{ form.date_created }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.concept_preferred_term.label_tag }}</td>
+                                <td>{{ form.is_permuted_term.label_tag }}</td>
+                                <td>{{ form.lexical_tag.label_tag }}</td>
+                                <td>{{ form.record_preferred_term.label_tag }}</td>
+                                <td>{{ form.entry_version.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.concept_preferred_term }}</td>
+                                <td>{{ form.is_permuted_term }}</td>
+                                <td>{{ form.lexical_tag }}</td>
+                                <td>{{ form.record_preferred_term }}</td>
+                                <td>{{ form.entry_version }}</td>
+                            </tr>
+                        </table>
+                        <br>
+                    </div>
+                    {% endfor %}
+
+                </fieldset>
+
             </div>
         </div>
 
@@ -390,6 +476,10 @@
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+
+
+
    {% if LANGUAGE_CODE != 'en' %}
        <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
    {% endif %}

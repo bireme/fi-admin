@@ -588,10 +588,9 @@ tr.relation-row td input, tr.relation-row td select{
     color: #333;
 }
 
-/* left column - esquerda - DIV*/
+/* left column - DIV*/
 .selector-available { 
     width: 245px;
-/*    border: solid 1px blue*/
 }
 
 /* lupa */
@@ -601,22 +600,24 @@ tr.relation-row td input, tr.relation-row td select{
     left: 55px;
 }
 
-/* middle column - meio - UL*/
+/* middle column - UL*/
 .selector-chooser {
     flex: selector-available;
     width: 65px;
     height: 40px;
     margin-left: 1px;
     margin-top: 60px;
-/*    border: solid 1px black*/
 }
 
-/* right column - esquerda - DIV*/
+/* right column - DIV*/
 .selector-chosen {
     flex: selector-chosen;
     width: 260px;
     min-width: 100px;
-/*    border: solid 1px black*/
+}
+
+.selector-chosen .filtered{
+    height: 115px;
 }
 
 
@@ -624,12 +625,11 @@ tr.relation-row td input, tr.relation-row td select{
 .identifierdesc th td {
     text-align: left;
     padding: 2px;
-/*    border: solid 1px black*/
 }
 
 
 
-.descriptiondesc {
+.descriptiondesc, .conceptlistdesc, .termlistdesc {
     width: 90%;
     border: solid 1px #cccccc;
 }
@@ -641,7 +641,6 @@ tr.relation-row td input, tr.relation-row td select{
 
 .descriptiondesc label{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight: bold;
     font-size: 13px;
     color: #333;
 }
@@ -654,7 +653,7 @@ tr.relation-row td input, tr.relation-row td select{
     text-align: right;
 }
 
-.descriptiondesc .td-r-del, .conceptlistdesc .td-r-del{
+.descriptiondesc .td-r-del, .conceptlistdesc .td-r-del, .termlistdesc .td-r-del{
     text-align: right;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
@@ -667,9 +666,9 @@ tr.relation-row td input, tr.relation-row td select{
     text-align: left;
 }
 
-.descriptiondesc .td-l input[type=text]{
+.descriptiondesc .td-l input[type=text], .conceptlistdesc .concept_name input[type=text], .termlistdesc .term_string input[type=text]{
     text-align: left;
-    width:350px;
+    width:450px;
 }
 
 
@@ -681,7 +680,7 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 
-.descriptiondesc .term-origin, .conceptlistdesc .term-origin{
+.descriptiondesc .term-origin, .conceptlistdesc .term-origin, .termlistdesc .term-origin{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
     font-size: 15px;
@@ -691,25 +690,13 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 
-.conceptlistdesc {
-    width: 90%;
-    padding: 2px;
-    border: solid 1px #cccccc;
-}
-
 .conceptlistdesc label{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight: bold;
     font-size: 13px;
     color: #333;
     height: 10px;
 }
 
-
-.conceptlistdesc .concept_name input[type=text]{
-    text-align: left;
-    width:350px;
-}
 
 /*conceptlistdesc*/
 .casn1 textarea {
@@ -717,27 +704,3 @@ tr.relation-row td input, tr.relation-row td select{
     height: 35px;
 }
 
-
-
-.tudo { 
-    display: flex;
-}
-
-.bloco1 { 
-    flex: bloco1;
-    width: 100px;
-    border: solid 1px green
-}
-
-.bloco2 { 
-    flex: bloco2;
-    width: 100px;
- /*   margin-left: 35%;*/
-    border: solid 1px red
-}
-
-.bloco3 { 
-    flex: bloco3;
-    width: 100px;
-    border: solid 1px red
-}
