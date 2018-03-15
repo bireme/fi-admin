@@ -21,6 +21,7 @@ from database.models import Database
 
 from models import *
 import json
+import simplejson
 import requests
 import re
 
@@ -1008,6 +1009,17 @@ class DescriptorForm(forms.ModelForm):
         obj.status = 1
 
         obj.save()
+        # if is first center to index the reference save the code in indexer_cc_code
+        reference = Reference.objects.get(id=obj.object_id)
+        # check if reference already have indexer_cc_code info
+        if not reference.indexer_cc_code:
+            # get user profile cc code
+            user = obj.created_by
+            user_data = simplejson.loads(user.profile.data)
+            # fill reference field
+            reference.indexer_cc_code = user_data.get('cc','')
+            # update record
+            reference.save()
 
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,

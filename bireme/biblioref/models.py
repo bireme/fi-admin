@@ -107,6 +107,8 @@ class Reference(Generic, AuditLog):
     # control fields
     LILACS_original_id = models.CharField(_('LILACS id'), max_length=8, blank=True, editable=False)
     interoperability_source = models.CharField(_('Interoperability source'), max_length=100, blank=True, editable=False)
+    # code of first CC that indexed the record
+    indexer_cc_code = models.CharField(_('Indexed by'), max_length=55, blank=True)
 
     # relations
     logs = GenericRelation(LogEntry)
