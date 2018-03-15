@@ -48,7 +48,7 @@ class IdentifierQualif(models.Model):
     external_code = models.CharField(_("External Qualifier UI"), max_length=250, null=True, blank=True)
 
     # Abbreviation
-    abbreviation = models.CharField(_("Abbreviation"), max_length=4, null=True, blank=True)
+    abbreviation = models.CharField(_("Abbreviation"), max_length=4, null=True, blank=False)
 
     # DateCreated
     date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True, null=True)

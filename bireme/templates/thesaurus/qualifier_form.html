@@ -75,11 +75,75 @@
     {% csrf_token %}
 
         <div class="tab-content">
-            <div id="tab-identifierqualif" class="tab-pane active">
-                <div class="well">
+
+<!--
+thesaurus
+abbreviation
+active
+
+qualifier_ui
+decs_code
+external_code
+
+date_created
+date_revised
+date_established
+-->
+
+<!--                 <div class="well">
                     {{ form.as_p }}
                 </div>
+ -->
+
+            <div id="tab-identifierqualif" class="tab-pane active">
+                <fieldset id="identifierqualif">
+                    {% for field in form.visible_fields %}
+                        {% if field.errors %}
+                            <font>Error : </font>{{ field.label }}{{ field.errors }}
+                        {% endif %}
+                    {% endfor %}
+                    <table class="identifierqualif">
+                        <thead>
+                            <th>{{ form.thesaurus.label }}</th>
+                            <th>{{ form.abbreviation.label }}</th>
+                            <th>{{ form.active.label }}</th>
+                        </thead>
+                        <tr>
+                            <td>{{ form.thesaurus }}</td>
+                            <td><center>{{ form.abbreviation }}</center></td>
+                            <td><center>{{ form.active }}</center></td>
+                        </tr>
+                        <thead>
+                            <th>{{ form.qualifier_ui.label }}</th>
+                            <th>{{ form.decs_code.label }}</th>
+                            <th>{{ form.external_code.label }}</th>
+                        </thead>
+                        <tr>
+                            <td>{{ form.qualifier_ui }}</td>
+                            <td>{{ form.decs_code }}</td>
+                            <td>{{ form.external_code }}</td>
+                        </tr>
+                        <thead>
+                            <th>{{ form.date_created.label }}
+                                <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
+                            </th>
+                            <th>{{ form.date_revised.label }}
+                                <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
+                            </th>
+                            <th>{{ form.date_established.label }}
+                                <font color="#999"><i>{{ form.date_established.help_text }}</i></font>
+                            </th>
+                        </thead>
+                        <tr>
+                            <td>{{ form.date_created }}</td>
+                            <td>{{ form.date_revised }}</td>
+                            <td>{{ form.date_established }}</td>
+                        </tr>
+                    </table>
+                </fieldset>
             </div>
+
+
 
             <div id="tab-descriptionqualif" class="tab-pane">
                 <div class="well">
