@@ -34,12 +34,18 @@
     		{% if next_id %}
     			 - ID: {{ next_id }}
     		{% endif %}
-    	{% else %}
-    		{% trans "Edit Qualifier" %}
-    		{% if object.id %}
-    			 - ID: {{ object.qualifier_ui }} - {{ object.decs_code }}
-    		{% endif %}
-    	{% endif %}</h2>
+
+        {% else %}
+
+            {% trans "Edit Qualifier" %}
+
+            {% for qualif in formset_descriptor %}
+                {% if qualifier_info == qualif.language_code.value %}
+                    : {{ qualif.qualifier_name.value }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}</h2>
+
 </div>
 
 <div class='body'>    
@@ -53,12 +59,6 @@
             <li class="">
                 <a href="#tab-treenumberslistqualif" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
             </li>
-<!--
-            <li class="">
-                <a href="#tab-previousindexinglistdesc" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
-            </li>
--->
-
             <li class="">
                 <a href="#tab-conceptlistqualif" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
             </li>
@@ -87,17 +87,19 @@
                 </div>
             </div>
 
+            <div id="tab-treenumberslistqualif" class="tab-pane">
+                <div class="well">
+                    {{ formset_category.as_p }}
+                </div>
+            </div>
+
             <div id="tab-conceptlistqualif" class="tab-pane">
                 <div class="well">
                     {{ formset_concept.as_p }}
                 </div>
             </div>
 
-            <div id="tab-treenumberslistqualif" class="tab-pane">
-                <div class="well">
-                    {{ formset_category.as_p }}
-                </div>
-            </div>
+
             <div id="tab-termlistqualif" class="tab-pane">
                 <div class="well">
                     {{ formset_term.as_p }}

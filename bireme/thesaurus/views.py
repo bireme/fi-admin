@@ -133,7 +133,7 @@ class DescListView(LoginRequiredView, ListView):
     """
     List descriptor records (used by relationship popup selection window)
     """
-    template_name = "thesaurus/descriptor_list.html"
+    template_name = "thesaurus/thesaurus_home.html"
     context_object_name = "registers"
     paginate_by = settings.ITEMS_PER_PAGE
 
@@ -216,6 +216,8 @@ class QualifUpdate(LoginRequiredView):
         context['formset_category'] = TreeNumbersListQualifFormSet(instance=self.object)
         # context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
         context['formset_term'] = TermListQualifFormSet(instance=self.object)
+
+        context['qualifier_info'] = get_language()
 
         return context
 
