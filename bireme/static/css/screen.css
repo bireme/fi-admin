@@ -629,12 +629,12 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 
-.descriptiondesc, .conceptlistdesc, .termlistdesc {
+.descriptiondesc, .conceptlistdesc, .termlistdesc, .descriptionqualif {
     width: 90%;
     border: solid 1px #cccccc;
 }
 
-.descriptiondesc textarea {
+.descriptiondesc textarea, .descriptionqualif textarea{
     width: 98%;
     height: 50px;
 }
@@ -649,11 +649,11 @@ tr.relation-row td input, tr.relation-row td select{
     text-align:left;
 }
 
-.descriptiondesc .td-r{
+.descriptiondesc .td-r, .descriptionqualif .td-r{
     text-align: right;
 }
 
-.descriptiondesc .td-r-del, .conceptlistdesc .td-r-del, .termlistdesc .td-r-del{
+.descriptiondesc .td-r-del, .conceptlistdesc .td-r-del, .termlistdesc .td-r-del, .descriptionqualif .td-r-del{
     text-align: right;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
@@ -662,11 +662,11 @@ tr.relation-row td input, tr.relation-row td select{
     background-color: #eeeeee;
 }
 
-.descriptiondesc .td-l{
+.descriptiondesc .td-l, .descriptionqualif .td-l{
     text-align: left;
 }
 
-.descriptiondesc .td-l input[type=text], .conceptlistdesc .concept_name input[type=text], .termlistdesc .term_string input[type=text]{
+.descriptiondesc .td-l input[type=text], .conceptlistdesc .concept_name input[type=text], .termlistdesc .term_string input[type=text], .descriptionqualif .td-l input[type=text]{
     text-align: left;
     width:450px;
 }
@@ -680,7 +680,7 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 
-.descriptiondesc .term-origin, .conceptlistdesc .term-origin, .termlistdesc .term-origin{
+.descriptiondesc .term-origin, .conceptlistdesc .term-origin, .termlistdesc .term-origin, .descriptionqualif .term-origin{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
     font-size: 15px;

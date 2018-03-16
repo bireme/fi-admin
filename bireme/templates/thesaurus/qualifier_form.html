@@ -1,5 +1,8 @@
 {% extends "base.html" %}
+{% load app_filters %}
 {% load i18n %}
+{% load static %}
+
 
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
@@ -76,25 +79,6 @@
 
         <div class="tab-content">
 
-<!--
-thesaurus
-abbreviation
-active
-
-qualifier_ui
-decs_code
-external_code
-
-date_created
-date_revised
-date_established
--->
-
-<!--                 <div class="well">
-                    {{ form.as_p }}
-                </div>
- -->
-
             <div id="tab-identifierqualif" class="tab-pane active">
                 <fieldset id="identifierqualif">
                     {% for field in form.visible_fields %}
@@ -144,12 +128,89 @@ date_established
             </div>
 
 
-
             <div id="tab-descriptionqualif" class="tab-pane">
-                <div class="well">
-                    {{ formset_descriptor.as_p }}
-                </div>
+                <fieldset id="descriptionqualif">
+
+                    {{ formset_descriptor.management_form }}
+                    {% for form in formset_descriptor %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                    <table class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#descriptionqualif_{{ form.instance.pk }}">
+                            <font size="2">
+                                {% if form.instance.pk %}
+                                    <font color="#333">
+                                    {{ form.qualifier_name.value }} ({{ form.language_code.value }})
+                                    </font>
+                                {% else %}
+                                    {% trans 'New Record' %}
+                                {% endif %}
+                            </font>
+                        </a>
+                    </table>
+
+                    <div id="descriptionqualif_{{ form.instance.pk }}" class="panel-collapse collapse">
+
+
+                        <table class="descriptionqualif">
+                            <tr>
+
+                            {% if form.instance.pk %}
+                                <td colspan="4" class="td-r-del">
+                                    {% trans 'Remove' %}? {{ form.DELETE }}
+                                </td>
+                            {% else %}
+                                <td colspan="4" class="term-origin">&nbsp;
+                                </td>
+                            {% endif %}
+
+                        <input name="{{descriptionqualif}}_DELETE" id="id_{{descriptionqualif}}_DELETE" type="hidden">
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r">{{ form.qualifier_name.label_tag }}</td>
+                                <td class="td-l">
+                                {{ form.qualifier_name }}
+                                </td>
+                                <td class="td-r">{{ form.language_code.label_tag }}</td>
+                                <td class="td-l">
+                                {{ form.language_code }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.annotation.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.annotation }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.history_note.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.history_note }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.online_note.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.online_note }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="td-r" colspan="1">{{ form.scope_note.label_tag }}</td>
+                                <td colspan="3">
+                                {{ form.scope_note }}
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                    </div>
+                    {% endfor %}
+                </fieldset>
             </div>
+
 
             <div id="tab-treenumberslistqualif" class="tab-pane">
                 <div class="well">
@@ -178,5 +239,48 @@ date_established
 
     </form>
 </div>
+
+{% endblock %}
+
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            $('.act-form').on('submit', function() {
+                if (confirm('{% trans "Save" %}?')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+
+            $('[id$="-DELETE"]').on('click', function() {
+                val = $(this).val();
+                if (confirm('{% trans "Delete" %}?')) {
+                    return true;
+                } else {
+                    return false;
+
+                }
+            });
+
+            
+            // Alerta sobre não preenchimento
+            $('[id^="qualifiers-"]').on('blur', function() {
+                val = $(this).val();
+                if ( val == '' ){
+                    alert('{% trans "Warning" %}');
+                    return false;
+                }
+            });
+
+
+        })
+   </script>
 
 {% endblock %}

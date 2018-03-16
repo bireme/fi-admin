@@ -75,7 +75,7 @@
     </ul>
 
 
-    <form method="POST" class="form-horizontal" enctype="multipart/form-data">
+    <form method="POST" class="act-form" enctype="multipart/form-data">
     {% csrf_token %}
 
         <div class="tab-content">
@@ -537,7 +537,7 @@
                 }
             });
 
-            $('.form-horizontal').on('submit', function() {
+            $('.act-form').on('submit', function() {
                 if (confirm('{% trans "Save" %}?')) {
                     return true;
                 } else {
