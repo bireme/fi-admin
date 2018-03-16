@@ -27,7 +27,7 @@
                     {% for hidden in form.hidden_fields %}
                         {{ hidden }}
                     {% endfor %}
-                    <tr id="person-{{ forloop.counter0 }}" class="url-row{% if form.errors %} error{% endif %} formset-person">
+                    <tr id="person-{{ forloop.counter0 }}" class="person-row{% if form.errors %} error{% endif %} formset-person">
                         {% for field in form.visible_fields %}
                             {% if field.name != 'DELETE' %}
                                 <td>

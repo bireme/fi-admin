@@ -210,6 +210,9 @@
                         <div class="alert alert-info">
                             <p>{% trans "Record created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
                             <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
+                            {% if object.indexer_cc_code and object.indexer_cc_code != object.cooperative_center_code %}
+                                <p>{% trans "Indexer cooperative center code" %}: <strong>{{ object.indexer_cc_code }}</strong></p>
+                            {% endif %}
                             {% if object.updated_by %}
                                 <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
                             {% endif %}

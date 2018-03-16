@@ -82,7 +82,7 @@ class Institution(Generic, AuditLog):
         return status_dict.get(self.status)
 
 # Contact phone
-class ContactPhone(models.Model):
+class ContactPhone(models.Model, AuditLog):
     PHONE_CHOICES = (
         ('main', _('Main')),
         ('extension', _('Extension')),
@@ -99,9 +99,15 @@ class ContactPhone(models.Model):
     country_code = models.CharField(_("Country code"), max_length=4)
     phone_number = models.CharField(_("Number"), max_length=55)
 
+    def get_parent(self):
+        return self.institution
+
+    def __unicode__(self):
+        return u"{0} - {1} - ({2}) {3}".format(self.phone_type, self.phone_name,
+                                               self.country_code, self.phone_number)
 
 # Contact emails
-class ContactEmail(models.Model):
+class ContactEmail(models.Model, AuditLog):
     EMAIL_CHOICES = (
         ('main', _('Main')),
         ('other', _('Other')),
@@ -116,8 +122,15 @@ class ContactEmail(models.Model):
     email_name = models.CharField(_("Name"), max_length=85)
     email = models.EmailField(_("Email"), max_length=155)
 
+    def get_parent(self):
+        return self.institution
+
+    def __unicode__(self):
+        return u"{0} - {1} - {2}".format(self.email_type, self.email_name, self.email)
+
+
 # Contact person
-class ContactPerson(models.Model):
+class ContactPerson(models.Model, AuditLog):
     PREFIX_CHOICES = (
         ('Mr.', _('Mr.')),
         ('Mrs.', _('Mrs.')),
@@ -133,12 +146,15 @@ class ContactPerson(models.Model):
     name = models.CharField(_("Name"), max_length=155, blank=True)
     job_title = models.CharField(_("Job title"), max_length=155, blank=True)
 
+    def get_parent(self):
+        return self.institution
+
     def __unicode__(self):
-        return self.name
+        return u"{0} {1} ({2})".format(self.prefix, self.name, self.job_title)
 
 
 # Institution URL
-class URL(models.Model):
+class URL(models.Model, AuditLog):
     URL_CHOICES = (
         ('main', _('Main')),
         ('other', _('Other')),
@@ -152,8 +168,14 @@ class URL(models.Model):
     url_type = models.CharField(_("Type"), max_length=75, choices=URL_CHOICES)
     url = models.URLField(_("URL"), max_length=300)
 
+    def get_parent(self):
+        return self.institution
+
+    def __unicode__(self):
+        return u"{0} - {1}".format(self.url_type, self.url)
+
 # Relationship
-class Relationship(models.Model):
+class Relationship(models.Model, AuditLog):
     LEVEL_CHOICES = (
         ('2', _('Second level')),
         ('3', _('Third level')),
@@ -170,3 +192,9 @@ class Relationship(models.Model):
     relation_level = models.CharField(_("Level"), max_length=45, choices=LEVEL_CHOICES)
     # field to inform a institution already present in database
     inst_related = models.ForeignKey(Institution, verbose_name=_("Institution"), related_name="referred", null=True)
+
+    def get_parent(self):
+        return self.institution
+
+    def __unicode__(self):
+        return u"{0} - {1}".format(self.relation_level, self.inst_related)

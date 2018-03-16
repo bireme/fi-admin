@@ -101,7 +101,7 @@ class WhodidMiddleware(object):
             was_deleted = getattr(instance, 'was_deleted', False)
             inline_model = getattr(instance, 'content_object', False)
             related_model = getattr(instance, 'get_parent', False)
-
+    
             # log if new, changed or deleted
             if new_object or has_changes or was_deleted:
                 fields_change = self.get_changes_in_json(instance, new_object, was_deleted)
@@ -142,10 +142,10 @@ class WhodidMiddleware(object):
         Update log record after save instance to add missing object_id
         '''
         user = self.get_current_user()
-        if isinstance(instance, AuditLog) and created and instance.created_by:
+        if isinstance(instance, AuditLog) and created:
             # filter by log without object_id from the current user and action_flag = ADDITION
             log = LogEntry.objects.filter(object_id='None', object_repr=str(instance), action_flag=1,
-                                          user_id=instance.created_by.id)
+                                          user_id=user.id)
             if log:
                 # get last log
                 log = log[0]

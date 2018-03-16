@@ -152,15 +152,17 @@
 
                     {% comment %}Display administrative information{% endcomment %}
 
-                    {% if act.id %}
+                    {% if object.id %}
                         <div class="alert alert-info">
-                            <p>{% trans "Created in" %}: <strong>{{ act.created_time }}</strong> {% trans "by user" %}  <strong>{{ act.created_by.username }}</strong></p>
-                            <p>{% trans "Cooperative center code" %}: <strong>{{ act.cooperative_center_code }}</strong></p>
+                            <p>{% trans "Created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
+                            <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
                             {% if act.updated_by %}
-                                <p>{% trans "Last edit in" %} <strong>{{ act.updated_time }}</strong> {% trans "by user" %}  <strong>{{ act.updated_by.username }}</strong></p>
+                                <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
-
+                        <div class="btn-group pull-right">
+                            <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                        </div>
                     {% endif %}
             </div>
 
@@ -240,6 +242,10 @@
 
     </form>
 </div>
+
+{% if object.id %}
+    {% include "modal_log.html" %}
+{% endif %}
 
 {% include "modal_dedup.html" %}
 
