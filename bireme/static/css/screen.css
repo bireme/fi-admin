@@ -629,7 +629,7 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 
-.descriptiondesc, .conceptlistdesc, .termlistdesc, .descriptionqualif {
+.descriptiondesc, .conceptlistdesc, .termlistdesc, .descriptionqualif, .conceptlistqualif {
     width: 90%;
     border: solid 1px #cccccc;
 }
@@ -653,7 +653,7 @@ tr.relation-row td input, tr.relation-row td select{
     text-align: right;
 }
 
-.descriptiondesc .td-r-del, .conceptlistdesc .td-r-del, .termlistdesc .td-r-del, .descriptionqualif .td-r-del{
+.descriptiondesc .td-r-del, .conceptlistdesc .td-r-del, .termlistdesc .td-r-del, .descriptionqualif .td-r-del, .conceptlistqualif .td-r-del{
     text-align: right;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
@@ -662,25 +662,21 @@ tr.relation-row td input, tr.relation-row td select{
     background-color: #eeeeee;
 }
 
-.descriptiondesc .td-l, .descriptionqualif .td-l{
+.descriptiondesc .td-l, .descriptionqualif .td-l, .conceptlistqualif .td-l{
     text-align: left;
 }
 
-.descriptiondesc .td-l input[type=text], .conceptlistdesc .concept_name input[type=text], .termlistdesc .term_string input[type=text], .descriptionqualif .td-l input[type=text]{
+.descriptiondesc .td-l input[type=text], .conceptlistdesc .concept_name input[type=text], .termlistdesc .term_string input[type=text], .descriptionqualif .td-l input[type=text], .conceptlistqualif .concept_name input[type=text]{
     text-align: left;
     width:450px;
 }
 
-
-
-.previousindexinglistdesc th td {
+.previousindexinglistdesc th td, .treenumberslistqualif th td{
     text-align: center;
     padding: 2px;
 }
 
-
-
-.descriptiondesc .term-origin, .conceptlistdesc .term-origin, .termlistdesc .term-origin, .descriptionqualif .term-origin{
+.descriptiondesc .term-origin, .conceptlistdesc .term-origin, .termlistdesc .term-origin, .descriptionqualif .term-origin, .conceptlistqualif .term-origin{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
     font-size: 15px;
@@ -688,19 +684,22 @@ tr.relation-row td input, tr.relation-row td select{
     background-color: #eeeeee;
 }
 
-
-
-.conceptlistdesc label{
+.conceptlistdesc label, .conceptlistqualif label{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 13px;
     color: #333;
     height: 10px;
 }
 
-
 /*conceptlistdesc*/
 .casn1 textarea {
     width: 98%;
     height: 35px;
 }
+
+.category-row .btn, .previous-row .btn{
+    margin-top: -10px;
+    margin-left: 5px;
+}
+
 

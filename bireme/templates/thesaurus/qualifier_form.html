@@ -142,7 +142,7 @@
                             <font size="2">
                                 {% if form.instance.pk %}
                                     <font color="#333">
-                                    {{ form.qualifier_name.value }} ({{ form.language_code.value }})
+                                    <b>{{ form.qualifier_name.value }} ({{ form.language_code.value }})</b>
                                     </font>
                                 {% else %}
                                     {% trans 'New Record' %}
@@ -213,15 +213,126 @@
 
 
             <div id="tab-treenumberslistqualif" class="tab-pane">
-                <div class="well">
-                    {{ formset_category.as_p }}
-                </div>
+                <fieldset id="treenumberslistqualif">
+
+                    <table class="treenumberslistqualif">
+                        <thead>
+                            <th>{% trans "Tree Numbers List" %}</th>
+                            <th>{% trans "Delete?" %}</th>
+                        </thead>
+                        <tbody>
+                        {{ formset_category.management_form }}
+
+                        {% for form in formset_category %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <tr id="category-{{ forloop.counter0 }}" class="category-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for field in form.visible_fields %}
+                               <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                <td>
+                                    {{ field }}
+                                    {{ field.errors }}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
             </div>
 
-            <div id="tab-conceptlistqualif" class="tab-pane">
+
+<!--             <div id="tab-conceptlistqualif" class="tab-pane">
                 <div class="well">
                     {{ formset_concept.as_p }}
                 </div>
+            </div>
+ -->
+
+
+            <div id="tab-conceptlistqualif" class="tab-pane">
+
+                <fieldset id="conceptlistqualif">
+
+                    {{ formset_concept.management_form }}
+                    {% for form in formset_concept %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                    <table class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#conceptlistqualif_{{ form.instance.pk }}">
+                            <font size="2">
+                                {% if form.instance.pk %}
+                                    <font color="#333">
+                                    <b>{{ form.concept_name.value }} ({{ form.language_code.value }})</b>
+                                    </font>
+                                {% else %}
+                                    {% trans 'New Record' %}
+                                {% endif %}
+                            </font>
+                        </a>
+                    </table>
+
+                    <div id="conceptlistqualif_{{ form.instance.pk }}" class="panel-collapse collapse">
+
+                        <table class="conceptlistqualif" border="0">
+                            <tr>
+
+                            {% if form.instance.pk %}
+                                <td colspan="4" class="td-r-del">
+                                    {% trans 'Remove' %}? {{ form.DELETE }}
+                                </td>
+                            {% else %}
+                                <td colspan="4" class="term-origin">&nbsp;
+                                </td>
+                            {% endif %}
+
+                            <input name="{{conceptlistqualif}}_DELETE" id="id_{{conceptlistqualif}}_DELETE" type="hidden">
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>{{ form.concept_name.label_tag }}</td>
+                                <td>{{ form.language_code.label_tag }}</td>
+                                <td>{{ form.concept_ui.label_tag }}</td>
+                                <td>{{ form.preferred_concept.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td class="concept_name">{{ form.concept_name }}</td>
+                                <td>{{ form.language_code }}</td>
+                                <td>{{ form.concept_ui }}</td>
+                                <td>{{ form.preferred_concept }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">{{ form.casn1_name.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="casn1">{{ form.casn1_name }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">{{ form.scope_note.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="casn1">{{ form.scope_note }}</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4">{{ form.registry_number.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">{{ form.registry_number }}</td>
+                            </tr>
+
+
+                        </table>
+                        <br>
+                    </div>
+                    {% endfor %}
+                </fieldset>
+
             </div>
 
 
@@ -250,6 +361,17 @@
 
     <script type="text/javascript">
         $(function() {
+
+            $('.category-row').formset({
+                    addText : '{% trans "Add Tree Number" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'category_formset',
+                    prefix: '{{ formset_category.prefix }}'
+            });
+
             $('.act-form').on('submit', function() {
                 if (confirm('{% trans "Save" %}?')) {
                     return true;

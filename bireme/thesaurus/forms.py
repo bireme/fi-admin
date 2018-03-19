@@ -45,10 +45,10 @@ class TreeNumbersListQualifForm(forms.ModelForm):
         model = TreeNumbersListQualif
         fields = '__all__'
 
-# class ConceptListQualifForm(forms.ModelForm):
-#     class Meta:
-#         model = ConceptListQualif
-#         fields = '__all__'
+class ConceptListQualifForm(forms.ModelForm):
+    class Meta:
+        model = ConceptListQualif
+        fields = '__all__'
 
 class TermListQualifForm(forms.ModelForm):
     class Meta:
@@ -164,13 +164,13 @@ TreeNumbersListQualifFormSet = inlineformset_factory(
     )
 
 
-# ConceptListQualifFormSet = inlineformset_factory(
-#     IdentifierDesc,
-#     ConceptListQualif,
-#     form=ConceptListQualifForm,
-#     fields='__all__',
-#     extra=1
-#     )
+ConceptListQualifFormSet = inlineformset_factory(
+    IdentifierQualif,
+    ConceptListQualif,
+    form=ConceptListQualifForm,
+    fields='__all__',
+    extra=1
+    )
 
 
 TermListQualifFormSet = inlineformset_factory(

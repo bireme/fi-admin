@@ -148,7 +148,7 @@
                             <font size="2">
                                 {% if form.instance.pk %}
                                     <font color="#333">
-                                    {{ form.descriptor_name.value }} ({{ form.language_code.value }})
+                                    <b>{{ form.descriptor_name.value }} ({{ form.language_code.value }})</b>
                                     </font>
                                 {% else %}
                                     {% trans 'New Record' %}
@@ -202,12 +202,6 @@
                                 <td class="td-r" colspan="1">{{ form.online_note.label_tag }}</td>
                                 <td colspan="3">
                                 {{ form.online_note }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="td-r" colspan="1">{{ form.scope_note.label_tag }}</td>
-                                <td colspan="3">
-                                {{ form.scope_note }}
                                 </td>
                             </tr>
                             <tr>
@@ -308,7 +302,7 @@
                             <font size="2">
                                 {% if form.instance.pk %}
                                     <font color="#333">
-                                    {{ form.concept_name.value }} ({{ form.language_code.value }})
+                                    <b>{{ form.concept_name.value }} ({{ form.language_code.value }})</b>
                                     </font>
                                 {% else %}
                                     {% trans 'New Record' %}
@@ -337,25 +331,38 @@
                             </tr>
 
                             <tr>
-                                <td width="40%">{{ form.concept_name.label_tag }}</td>
-                                <td width="20%">{{ form.language_code.label_tag }}</td>
-                                <td  colspan="2">{{ form.concept_ui.label_tag }}</td>
+                                <td>{{ form.concept_name.label_tag }}</td>
+                                <td>{{ form.language_code.label_tag }}</td>
+                                <td>{{ form.concept_ui.label_tag }}</td>
+                                <td>{{ form.preferred_concept.label_tag }}</td>
                             </tr>
                             <tr>
-                                <td width="40%" class="concept_name">{{ form.concept_name }}</td>
-                                <td width="20%">{{ form.language_code }}</td>
-                                <td colspan="2">{{ form.concept_ui }}</td>
+                                <td class="concept_name">{{ form.concept_name }}</td>
+                                <td>{{ form.language_code }}</td>
+                                <td>{{ form.concept_ui }}</td>
+                                <td>{{ form.preferred_concept }}</td>
                             </tr>
                             <tr>
-                                <td colspan="2" width="60%">{{ form.casn1_name.label_tag }}</td>
-                                <td width="15%">{{ form.preferred_concept.label_tag }}</td>
-                                <td width="25%">{{ form.registry_number.label_tag }}</td>
+                                <td colspan="4">{{ form.casn1_name.label_tag }}</td>
                             </tr>
                             <tr>
-                                <td colspan="2" class="casn1" width="60%">{{ form.casn1_name }}</td>
-                                <td width="15%" valign="top">{{ form.preferred_concept }}</td>
-                                <td width="25%" valign="top">{{ form.registry_number }}</td>
+                                <td colspan="4" class="casn1">{{ form.casn1_name }}</td>
                             </tr>
+                            <tr>
+                                <td colspan="4">{{ form.scope_note.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="casn1">{{ form.scope_note }}</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4">{{ form.registry_number.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">{{ form.registry_number }}</td>
+                            </tr>
+
+
 
                         </table>
                         <br>
@@ -380,7 +387,7 @@
                             <font size="2">
                                 {% if form.instance.pk %}
                                     <font color="#333">
-                                    {{ form.term_string.value }} ({{ form.language_code.value }})
+                                    <b>{{ form.term_string.value }} ({{ form.language_code.value }})</b>
                                     </font>
                                 {% else %}
                                     {% trans 'New Record' %}

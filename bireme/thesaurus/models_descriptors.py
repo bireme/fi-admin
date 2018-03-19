@@ -104,9 +104,6 @@ class DescriptionDesc(models.Model):
     # OnlineNote
     online_note = models.TextField(_("Online note"), max_length=1500, null=True, blank=True)
 
-    # ScopeNote (esse campo pertence a ConceptList porem ele esta traduzido)
-    scope_note = models.TextField(_("Scope note"), max_length=1500, null=True, blank=True)
-
     # PublicMeSHNote
     public_mesh_note = models.TextField(_("Public MeSH note"), max_length=1500, null=True, blank=True)
 
@@ -179,6 +176,9 @@ class ConceptListDesc(models.Model):
 
     # RegistryNumber
     registry_number = models.CharField(_("Registry number from CAS"), max_length=250, null=True, blank=True)
+
+    # ScopeNote
+    scope_note = models.TextField(_("Scope note"), max_length=1500, null=True, blank=True)
 
 
     def __unicode__(self):

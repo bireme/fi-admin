@@ -180,18 +180,17 @@ class QualifUpdate(LoginRequiredView):
     def form_valid(self, form):
         formset_descriptor = DescriptionQualifFormSet(self.request.POST, instance=self.object)
         formset_category = TreeNumbersListQualifFormSet(self.request.POST, instance=self.object)
-        # formset_concept = ConceptListQualifFormSet(self.request.POST, instance=self.object)
+        formset_concept = ConceptListQualifFormSet(self.request.POST, instance=self.object)
         formset_term = TermListQualifFormSet(self.request.POST, instance=self.object)        
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_category_valid = formset_category.is_valid()
-        # formset_concept_valid = formset_concept.is_valid()
+        formset_concept_valid = formset_concept.is_valid()
         formset_term_valid = formset_term.is_valid()
 
-        # if (form_valid and formset_descriptor_valid and formset_concept_valid and formset_category_valid and formset_term_valid):
-        if (form_valid and formset_descriptor_valid and formset_category_valid and formset_term_valid):
+        if (form_valid and formset_descriptor_valid and formset_concept_valid and formset_category_valid and formset_term_valid):
             self.object = form.save()
 
             formset_descriptor.instance = self.object
@@ -200,8 +199,8 @@ class QualifUpdate(LoginRequiredView):
             formset_category.instance = self.object
             formset_category.save()
 
-            # formset_concept.instance = self.object
-            # formset_concept.save()
+            formset_concept.instance = self.object
+            formset_concept.save()
 
             formset_term.instance = self.object
             formset_term.save()
@@ -214,7 +213,7 @@ class QualifUpdate(LoginRequiredView):
         context = super(QualifUpdate, self).get_context_data(**kwargs)
         context['formset_descriptor'] = DescriptionQualifFormSet(instance=self.object)
         context['formset_category'] = TreeNumbersListQualifFormSet(instance=self.object)
-        # context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
+        context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
         context['formset_term'] = TermListQualifFormSet(instance=self.object)
 
         context['qualifier_info'] = get_language()
