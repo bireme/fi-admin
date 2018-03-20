@@ -243,14 +243,6 @@
             </div>
 
 
-<!--             <div id="tab-conceptlistqualif" class="tab-pane">
-                <div class="well">
-                    {{ formset_concept.as_p }}
-                </div>
-            </div>
- -->
-
-
             <div id="tab-conceptlistqualif" class="tab-pane">
 
                 <fieldset id="conceptlistqualif">
@@ -337,16 +329,87 @@
 
 
             <div id="tab-termlistqualif" class="tab-pane">
-                <div class="well">
-                    {{ formset_term.as_p }}
-                </div>
-            </div>
+                <fieldset id="termlistqualif">
 
-            <div class="control-panel form-submit">
-                <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
-            </div>
+                    {{ formset_term.management_form }}
+                    {% for form in formset_term %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                    <table class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#termlistqualif_{{ form.instance.pk }}">
+                            <font size="2">
+                                {% if form.instance.pk %}
+                                    <font color="#333">
+                                    <b>{{ form.term_string.value }} ({{ form.language_code.value }})</b>
+                                    </font>
+                                {% else %}
+                                    {% trans 'New Record' %}
+                                {% endif %}
+                            </font>
+                        </a>
+                    </table>
+
+                    <div id="termlistqualif_{{ form.instance.pk }}" class="panel-collapse collapse">
+                        <table class="termlistqualif" border="0">
+                            <tr>
+
+                            {% if form.instance.pk %}
+                                <td colspan="5" class="td-r-del">
+                                    {% trans 'Remove' %}? {{ form.DELETE }}
+                                </td>
+                            {% else %}
+                                <td colspan="5" class="term-origin">&nbsp;
+                                </td>
+                            {% endif %}
+
+                            <input name="{{termlistqualif}}_DELETE" id="id_{{termlistqualif}}_DELETE" type="hidden">
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" class="term_string" width="40%">{{ form.term_string.label_tag }}</td>
+                                <td>{{ form.language_code.label_tag }}</td>
+                                <td>{{ form.term_ui.label_tag }}</td>
+                                <td>{{ form.date_created.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="term_string" width="40%">{{ form.term_string }}</td>
+                                <td>{{ form.language_code }}</td>
+                                <td>{{ form.term_ui }}</td>
+                                <td>{{ form.date_created }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.concept_preferred_term.label_tag }}</td>
+                                <td>{{ form.is_permuted_term.label_tag }}</td>
+                                <td>{{ form.lexical_tag.label_tag }}</td>
+                                <td>{{ form.record_preferred_term.label_tag }}</td>
+                                <td>{{ form.entry_version.label_tag }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.concept_preferred_term }}</td>
+                                <td>{{ form.is_permuted_term }}</td>
+                                <td>{{ form.lexical_tag }}</td>
+                                <td>{{ form.record_preferred_term }}</td>
+                                <td>{{ form.entry_version }}</td>
+                            </tr>
+                        </table>
+                        <br>
+                    </div>
+                    {% endfor %}
+
+                </fieldset>
+
 
         </div>
+
+        <div class="control-panel form-submit">
+            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+        </div>
+
+
 
     </form>
 </div>
