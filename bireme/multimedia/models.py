@@ -7,6 +7,7 @@ from utils.models import Generic, Country
 from main.choices import LANGUAGES_CHOICES
 
 from django.contrib.contenttypes.generic import GenericRelation
+from log.models import AuditLog
 
 from main.models import SourceLanguage, ResourceThematic
 
@@ -83,7 +84,7 @@ class MediaCollectionLocal(models.Model):
 
 
 # Media model
-class Media(Generic):
+class Media(Generic, AuditLog):
 
     class Meta:
         verbose_name = _("Media")

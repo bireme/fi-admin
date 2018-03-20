@@ -142,7 +142,9 @@
                                 <p>{% trans "Last edit in" %} <strong>{{ media.updated_time }}</strong> {% trans "by user" %}  <strong>{{ media.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
-
+                        <div class="btn-group pull-right">
+                            <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{media.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                        </div>
                     {% endif %}
             </div>
 
@@ -345,6 +347,10 @@
 
 {% if help_fields %}
     {% include "modal_help.html" %}
+{% endif %}
+
+{% if object.id %}
+    {% include "modal_log.html" %}
 {% endif %}
 
 {% endblock %}
