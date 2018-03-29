@@ -4,49 +4,37 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <title>{% trans "Suggested resources" %}</title>
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
 
         <!-- Bootstrap/CSS files -->
         <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
         <link href="{% static "bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet">
         <link href="{% static "fort-awesome/css/font-awesome.css" %}" rel="stylesheet">
         <link href="{% static "css/screen.css" %}" rel="stylesheet">
-
-        <title>{% trans "LIS" %}</title>
-
-        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
-
     </head>
 
     <body>
-
-    <div class="container">
-
-       <div class="hero-unit">
-           <h1>{% trans 'Thank you' %}</h1>
-            {% if type = 'event' %}
-                <p>{% trans 'Your suggestion will be evaluated and if approved will be included in the Events Directory' %}</p>
-            {% else %}
-                <p>{% trans 'Your suggestion will be evaluated and if approved will be included in the Health Information Locator' %}</p>
-            {% endif %}
-            <p><a href="javascript:history.back()" class="btn btn-primary btn-large">&laquo; {% trans 'Back' %}</a></p>
-       </div>
-
-        <div class='content' id="footer">
-            <p>
-                <img src="{% static "image/logo-BIREME.png" %}" title="BIREME/OPAS/OMS" />
-
-                <b class="bireme">{% trans "BIREME - PAHO - WHO" %}</b><br>
-                {% trans "Latin-American and Caribbean Center on Health Sciences Information" %}<br>
-
-                <a href="http://www.paho.org/bireme" title="{% trans 'BIREME Institutional Site' %}">http://www.paho.org/bireme</a><br>
-                <small>v{% include 'version.txt' %} | <a target="_blank" href="http://github.com/bireme/lis-admin" title="{% trans "project source code" %}">{% trans "project source code" %}</a></small>
-            </p>
-        </div>
-
-    </div> <!-- /container -->
-
+        <div class="container">
+           <div class="hero-unit">
+               <h1>{% trans 'Thank you' %}</h1>
+                {% if type = 'event' %}
+                    <p>{% trans 'Your suggestion will be evaluated and if approved will be included in the Events Directory' %}</p>
+                {% else %}
+                    <p>{% trans 'Your suggestion will be evaluated and if approved will be included in the Health Information Locator' %}</p>
+                {% endif %}
+                <p><a href="javascript:history.back()" class="btn btn-primary btn-large">&laquo; {% trans 'Back' %}</a></p>
+           </div>
+           <div id="footer">
+               <img src="{% static 'image/' %}logo-bireme-{{ LANGUAGE_CODE|slice:":2" }}.png" title="BIREME/OPAS/OMS" /><br/>
+               <div class="terms_politic">
+                   <a href="http://politicas.bireme.org/terminos/{{ LANGUAGE_CODE|slice:":2" }}/" target="_blank">{% trans "Terms and conditions of use" %}</a> |
+                   <a href="http://politicas.bireme.org/privacidad/{{ LANGUAGE_CODE|slice:":2" }}/" target="_blank">{% trans "Privacy Policy" %}</a>
+               </div>
+           </div>
+        </div> <!-- /container -->
     </body>
 </html>
-
