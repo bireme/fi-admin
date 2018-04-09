@@ -28,6 +28,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     organ_issuer = indexes.CharField()
     language = indexes.CharField()
     official_ementa = indexes.CharField(model_attr='official_ementa')
+    unofficial_ementa = indexes.CharField(model_attr='unofficial_ementa')
     relationship_active = indexes.CharField()
     relationship_passive = indexes.CharField()
     thematic_area = indexes.MultiValueField()
