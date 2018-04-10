@@ -5,17 +5,12 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.contenttypes.models import ContentType
-
-from django.conf import settings
 
 from utils.views import ACTIONS
 from django.views import generic
 from utils.views import LoginRequiredView, SuperUserRequiredView, GenericUpdateWithOneFormset
-from utils.forms import is_valid_for_publication
-from utils.context_processors import additional_user_info
-
 
 from django.conf import settings
 
@@ -40,9 +35,6 @@ class DescUpdate(LoginRequiredView):
     form_class = IdentifierDescForm
     template_name = "thesaurus/descriptor_form.html"
 
-    def dispatch(self, *args, **kwargs):
-        return super(DescUpdate, self).dispatch(*args, **kwargs)
-
     def form_valid(self, form):
         formset_descriptor = DescriptionDescFormSet(self.request.POST, instance=self.object)
         formset_category = TreeNumbersListDescFormSet(self.request.POST, instance=self.object)
@@ -62,9 +54,6 @@ class DescUpdate(LoginRequiredView):
 
         if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid and formset_term_valid):
         # if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_concept_relation_valid and formset_previous_valid and formset_term_valid):
-
-
-            # print '%s%s' % ('DEBUG: ',form.cleaned_data)
 
             self.object = form.save()
 
@@ -90,31 +79,53 @@ class DescUpdate(LoginRequiredView):
             # form.save_m2m()
             return HttpResponseRedirect(self.get_success_url())
 
+        else:
+            return self.render_to_response(
+                        self.get_context_data(
+                                            form=form,
+                                            formset_descriptor=formset_descriptor,
+                                            formset_category=formset_category,
+                                            formset_concept=formset_concept,
+                                            formset_previous=formset_previous,
+                                            formset_term=formset_term
+                                            )
+                                        )
+
+    def form_invalid(self, form):
+        # force use of form_valid method to run all validations
+        return self.form_valid(form)
+
+
     def get_context_data(self, **kwargs):
         context = super(DescUpdate, self).get_context_data(**kwargs)
-        context['formset_descriptor'] = DescriptionDescFormSet(instance=self.object)
-        context['formset_category'] = TreeNumbersListDescFormSet(instance=self.object)
-        context['formset_concept'] = ConceptListDescFormSet(instance=self.object)
-        # context['formset_concept_relation'] = ConceptRelationDescFormSet(instance=self.object)
-        context['formset_previous'] = PreviousIndexingListDescFormSet(instance=self.object)
-        context['formset_term'] = TermListDescFormSet(instance=self.object)
 
-        context['descriptor_info'] = get_language()
+        if self.request.method == 'GET':
 
+            context['formset_descriptor'] = DescriptionDescFormSet(instance=self.object)
+            context['formset_category'] = TreeNumbersListDescFormSet(instance=self.object)
+            context['formset_concept'] = ConceptListDescFormSet(instance=self.object)
 
+            # context['formset_concept_relation'] = ConceptRelationDescFormSet(instance=self.object)
+
+            context['formset_previous'] = PreviousIndexingListDescFormSet(instance=self.object)
+            context['formset_term'] = TermListDescFormSet(instance=self.object)
+
+            context['descriptor_info'] = get_language()
+       
         return context
 
-
-class DescCreateView(DescUpdate, CreateView):
-    """
-    Used as class view to create Descriptors
-    Extend DescUpdate that do all the work
-    """
 
 
 class DescUpdateView(DescUpdate, UpdateView):
     """
     Used as class view to update Descriptors
+    Extend DescUpdate that do all the workTemefos
+    """
+
+
+class DescCreateView(DescUpdate, CreateView):
+    """
+    Used as class view to create Descriptors
     Extend DescUpdate that do all the work
     """
 
@@ -161,6 +172,16 @@ class DescListView(LoginRequiredView, ListView):
             )
 
         return object_list
+
+
+# class DescConceptRelationView(LoginRequiredView, FormView):
+#     """
+#     Handle creation and update of Concept List Descriptors objects
+#     """
+#     success_url = reverse_lazy('list_descriptor')
+#     form_class = ConceptRelationDescForm
+#     template_name = "thesaurus/edit_concept_relation_descriptor_form.html"
+
 
 
 

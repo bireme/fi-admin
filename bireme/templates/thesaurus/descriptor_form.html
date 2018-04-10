@@ -20,12 +20,6 @@
 
 
 {% block content %}
-<form name="actions">
-    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
-    <input type="hidden" name="order" value="{{ actions.order }}">
-    <input type="hidden" name="page" value="{{ actions.page }}">
-    <input type='hidden' name="s"  value="{{ actions.s }}">
-</form>
 
 
 <!--  header -->
@@ -50,43 +44,57 @@
 </div>
 
 <div class='body'>    
+
+{% if form.errors or formset_descriptor.errors or formset_category.errors or formset_concept.errors or formset_previous.errors or formset_term.errors %}
+    <ul class="errorlist alert alert-error">
+        <li>{% trans "Please check required fields" %}</li>
+    </ul>
+{% endif %}
+
+
     <ul class="nav nav-tabs" id='tab'>
-            <li class="active">
-                <a href="#tab-identifierdesc" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
-            </li>
-            <li class="">
-                <a href="#tab-descriptiondesc" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
-            </li>
-            <li class="">
-                <a href="#tab-treenumberslistdesc" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
-            </li>
-            <li class="">
-                <a href="#tab-previousindexinglistdesc" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
-            </li>
-            <li class="">
-                <a href="#tab-conceptlistdesc" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
-            </li>
+        <li>
+            <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
+        </li>
 
-            <li class="">
-                <a href="#tab-termlistdesc" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
-            </li>
+        <li>
+            <a href="#tab-descriptiondesc" class="{% if formset_descriptor.errors and not formset_descriptor.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
+        </li>
 
+        <li>
+            <a href="#tab-treenumberslistdesc" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
+        </li>
 
+        <li>
+            <a href="#tab-previousindexinglistdesc" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
+        </li>
+
+        <li>
+            <a href="#tab-conceptlistdesc" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
+        </li>
+
+        <li>
+            <a href="#tab-termlistdesc" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
+        </li>
     </ul>
 
 
-    <form method="POST" class="act-form" enctype="multipart/form-data">
+    <form method="POST" class="act-form" encrypt="multipart/form-data">
+
+
     {% csrf_token %}
 
         <div class="tab-content">
 
             <div id="tab-identifierdesc" class="tab-pane active">
                 <fieldset id="identifierdesc">
+
                     {% for field in form.visible_fields %}
                         {% if field.errors %}
                             <font>Error : </font>{{ field.label }}{{ field.errors }}
                         {% endif %}
                     {% endfor %}
+
                     <table class="identifierdesc">
                         <thead>
                             <th>{{ form.thesaurus.label }}</th>
@@ -130,6 +138,7 @@
                             <td colspan=4>{{ form.abbreviation }}</td>
                         </tr>
                     </table>
+
                 </fieldset>
             </div>
 
@@ -137,11 +146,21 @@
             <div id="tab-descriptiondesc" class="tab-pane">
                 <fieldset id="descriptiondesc">
 
-                    {{ formset_descriptor.management_form }}
-                    {% for form in formset_descriptor %}
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
+
+                {{ formset_descriptor.management_form }}
+
+                {% for form in formset_descriptor %}
+
+
+                    {% for field in form.visible_fields %}
+                        {% if field.errors %}
+                            <font>Error : </font>{{ field.label }}{{ field.errors }}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
 
                     <table class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-target="#descriptiondesc_{{ form.instance.pk }}">
@@ -157,7 +176,8 @@
                         </a>
                     </table>
 
-                    <div id="descriptiondesc_{{ form.instance.pk }}" class="panel-collapse collapse">
+
+                    <div id="descriptiondesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
 
 
                         <table class="descriptiondesc">
@@ -176,15 +196,13 @@
 
                                 </td>
                             </tr>
+
+
                             <tr>
-                                <td class="td-r">{{ form.descriptor_name.label_tag }}</td>
-                                <td class="td-l">
-                                {{ form.descriptor_name }}
-                                </td>
+                                <td class="td-r" >{{ form.descriptor_name.label_tag }}</td>
+                                <td class="td-l">{{ form.descriptor_name }}</td>
                                 <td class="td-r">{{ form.language_code.label_tag }}</td>
-                                <td class="td-l">
-                                {{ form.language_code }}
-                                </td>
+                                <td class="td-l">{{ form.language_code }}</td>
                             </tr>
                             <tr>
                                 <td class="td-r" colspan="1">{{ form.annotation.label_tag }}</td>
@@ -219,9 +237,12 @@
                         </table>
                         <br>
                     </div>
-                    {% endfor %}
+
+                {% endfor %}
+
                 </fieldset>
             </div>
+
 
 
             <div id="tab-treenumberslistdesc" class="tab-pane">
@@ -448,7 +469,11 @@
                 </fieldset>
 
             </div>
+
+
         </div>
+
+
 
         <div class="control-panel form-submit">
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
@@ -565,13 +590,13 @@
 
             
             // Alerta sobre não preenchimento
-            $('[id^="id_descriptors-"]').on('blur', function() {
-                val = $(this).val();
-                if ( val == '' ){
-                    alert('{% trans "Warning" %}');
-                    return false;
-                }
-            });
+            // $('[id^="id_descriptors-"]').on('blur', function() {
+            //     val = $(this).val();
+            //     if ( val == '' ){
+            //         alert('{% trans "Warning" %}');
+            //         return false;
+            //     }
+            // });
 
 
 

@@ -39,25 +39,25 @@ class IdentifierQualif(models.Model):
     thesaurus = models.ForeignKey(Thesaurus, null=True, blank=True, default=None)
 
     # MESH Qualifier Unique Identifier
-    qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, null=True, blank=True)
+    qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True)
 
     # BIREME Qualifier Unique Identifier
-    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, null=True, blank=True)
+    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True)
 
     # External Qualifier Unique Identifier
-    external_code = models.CharField(_("External Qualifier UI"), max_length=250, null=True, blank=True)
+    external_code = models.CharField(_("External Qualifier UI"), max_length=250, blank=True)
 
     # Abbreviation
-    abbreviation = models.CharField(_("Abbreviation"), max_length=4, null=True, blank=False)
+    abbreviation = models.CharField(_("Abbreviation"), max_length=4, blank=False)
 
     # DateCreated
-    date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True, null=True)
+    date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True)
 
     # DateRevised
-    date_revised =  models.DateField(_("Date revised"), help_text='DD/MM/YYYY', blank=True, null=True)
+    date_revised =  models.DateField(_("Date revised"), help_text='DD/MM/YYYY', blank=True)
 
     # DateEstablished
-    date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
+    date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True)
 
     # def __unicode__(self):
     #     return self.abbreviation
@@ -89,13 +89,13 @@ class DescriptionQualif(models.Model):
     qualifier_name = models.CharField(_("Qualifier name"), max_length=250, blank=True)
 
     # Annotation
-    annotation = models.TextField(_("Annotation"), max_length=1500, null=True, blank=True)
+    annotation = models.TextField(_("Annotation"), max_length=1500, blank=True)
 
     # HistoryNote
-    history_note = models.TextField(_("History note"), max_length=1500, null=True, blank=True)
+    history_note = models.TextField(_("History note"), max_length=1500, blank=True)
 
     # OnlineNote
-    online_note = models.TextField(_("Online note"), max_length=1500, null=True, blank=True)
+    online_note = models.TextField(_("Online note"), max_length=1500, blank=True)
 
     def __unicode__(self):
         # return self.qualifier_name
@@ -114,7 +114,7 @@ class TreeNumbersListQualif(models.Model):
     identifier = models.ForeignKey(IdentifierQualif, blank=False)
 
     # Tree Number
-    tree_number = models.CharField(_("Tree number"), max_length=250, null=True, blank=True)
+    tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
 
     def __unicode__(self):
         return self.id
@@ -136,19 +136,19 @@ class ConceptListQualif(models.Model):
     preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
 
     # ConceptUI
-    concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, null=True, blank=True)
+    concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, blank=True)
 
     # ConceptName
-    concept_name = models.CharField(_("Concept name"), max_length=250, null=True, blank=True)
+    concept_name = models.CharField(_("Concept name"), max_length=250, blank=True)
 
     # CASN1Name
-    casn1_name = models.TextField(_("Chemical abstract"), max_length=1000, null=True, blank=True)
+    casn1_name = models.TextField(_("Chemical abstract"), max_length=1000, blank=True)
 
     # RegistryNumber
-    registry_number = models.CharField(_("Registry number from CAS"), max_length=250, null=True, blank=True)
+    registry_number = models.CharField(_("Registry number from CAS"), max_length=250, blank=True)
 
     # ScopeNote
-    scope_note = models.TextField(_("Scope note"), max_length=1500, null=True, blank=True)
+    scope_note = models.TextField(_("Scope note"), max_length=1500, blank=True)
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -190,7 +190,7 @@ class TermListQualif(models.Model):
     record_preferred_term = models.CharField(_("Record preferred term"), choices=YN_OPTION, max_length=1, blank=True)
 
     # TermUI
-    term_ui = models.CharField(_("Term unique identifier"), max_length=250, null=True, blank=True)
+    term_ui = models.CharField(_("Term unique identifier"), max_length=250, blank=True)
 
     # String
     term_string = models.CharField(_("String"), max_length=250, blank=False)
@@ -199,7 +199,7 @@ class TermListQualif(models.Model):
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
 
     # DateCreated
-    date_created = models.DateField(_("Date created"), null=True, blank=True)
+    date_created = models.DateField(_("Date created"), blank=True)
 
     def __unicode__(self):
         return self.id
