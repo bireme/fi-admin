@@ -54,7 +54,7 @@ class IdentifierDesc(models.Model):
     descriptor_class = models.CharField(_("Descriptor class"), choices=DESCRIPTOR_CLASS_CODE, max_length=2, blank=True)
 
     # MESH Descriptor Unique Identifier
-    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=False)
+    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
 
     # BIREME Descriptor Unique Identifier
     decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=False)
@@ -66,13 +66,13 @@ class IdentifierDesc(models.Model):
     nlm_class_number = models.CharField(_("NLM classification number"), max_length=250, blank=True)
 
     # DateCreated
-    date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True)
+    date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     # DateRevised
-    date_revised =  models.DateField(_("Date revised"), help_text='DD/MM/YYYY', blank=True)
+    date_revised =  models.DateField(_("Date revised"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     # DateEstablished
-    date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True)
+    date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     abbreviation = models.ManyToManyField(IdentifierQualif, verbose_name='Abbreviation', blank=True)
 
@@ -269,7 +269,7 @@ class TermListDesc(models.Model):
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
 
     # DateCreated
-    date_created = models.DateField(_("Date created"), blank=True)
+    date_created = models.DateField(_("Date created"), blank=True, null=True)
 
     def __unicode__(self):
         return '%s' % (self.id)

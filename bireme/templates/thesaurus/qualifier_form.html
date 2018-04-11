@@ -3,9 +3,7 @@
 {% load i18n %}
 {% load static %}
 
-
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
-
 
 {% block breadcrumb %}
 	{% if not object %}
@@ -19,15 +17,7 @@
 	{% endif %}
 {% endblock %}
 
-
 {% block content %}
-<form name="actions">
-    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
-    <input type="hidden" name="order" value="{{ actions.order }}">
-    <input type="hidden" name="page" value="{{ actions.page }}">
-    <input type='hidden' name="s"  value="{{ actions.s }}">
-</form>
-
 
 <!--  header -->
 <div class='header'>
@@ -37,37 +27,40 @@
     		{% if next_id %}
     			 - ID: {{ next_id }}
     		{% endif %}
-
         {% else %}
-
             {% trans "Edit Qualifier" %}
-
             {% for qualif in formset_descriptor %}
                 {% if qualifier_info == qualif.language_code.value %}
                     : {{ qualif.qualifier_name.value }}
                 {% endif %}
             {% endfor %}
         {% endif %}</h2>
-
 </div>
 
-<div class='body'>    
-    <ul class="nav nav-tabs" id='tab'>
-            <li class="active">
-                <a href="#tab-identifierqualif" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
-            </li>
-            <li class="">
-                <a href="#tab-descriptionqualif" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
-            </li>
-            <li class="">
-                <a href="#tab-treenumberslistqualif" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
-            </li>
-            <li class="">
-                <a href="#tab-conceptlistqualif" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
-            </li>
+<div class='body'>
 
-            <li class="">
-                <a href="#tab-termlistqualif" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
+
+{% if form.errors or formset_descriptor.errors or formset_category.errors or formset_concept.errors or formset_term.errors %}
+    <ul class="errorlist alert alert-error">
+        <li>{% trans "Please check required fields" %}</li>
+    </ul>
+{% endif %}
+
+    <ul class="nav nav-tabs" id='tab'>
+            <li>
+                <a href="#tab-identifierqualif" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
+            </li>
+            <li>
+                <a href="#tab-descriptionqualif" class="{% if formset_descriptor.errors and not formset_descriptor.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
+            </li>
+            <li>
+                <a href="#tab-treenumberslistqualif" class="{% if formset_category.errors and not formset_category.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
+            </li>
+            <li>
+                <a href="#tab-conceptlistqualif" class="{% if formset_concept.errors and not formset_concept.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
+            </li>
+            <li>
+                <a href="#tab-termlistqualif" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
             </li>
 
 
@@ -81,11 +74,13 @@
 
             <div id="tab-identifierqualif" class="tab-pane active">
                 <fieldset id="identifierqualif">
+
                     {% for field in form.visible_fields %}
                         {% if field.errors %}
-                            <font>Error : </font>{{ field.label }}{{ field.errors }}
+                            {{ field.label }}{{ field.errors }}
                         {% endif %}
                     {% endfor %}
+
                     <table class="identifierqualif">
                         <thead>
                             <th>{{ form.thesaurus.label }}</th>
@@ -133,6 +128,13 @@
 
                     {{ formset_descriptor.management_form }}
                     {% for form in formset_descriptor %}
+
+                        {% for field in form.visible_fields %}
+                            {% if field.errors %}
+                                {{ field.label }}{{ field.errors }}
+                            {% endif %}
+                        {% endfor %}
+
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
@@ -151,8 +153,7 @@
                         </a>
                     </table>
 
-                    <div id="descriptionqualif_{{ form.instance.pk }}" class="panel-collapse collapse">
-
+                    <div id="descriptionqualif_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
 
                         <table class="descriptionqualif">
                             <tr>
@@ -249,6 +250,13 @@
 
                     {{ formset_concept.management_form }}
                     {% for form in formset_concept %}
+
+                        {% for field in form.visible_fields %}
+                            {% if field.errors %}
+                                {{ field.label }}{{ field.errors }}
+                            {% endif %}
+                        {% endfor %}
+
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
@@ -267,7 +275,7 @@
                         </a>
                     </table>
 
-                    <div id="conceptlistqualif_{{ form.instance.pk }}" class="panel-collapse collapse">
+                    <div id="conceptlistqualif_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
 
                         <table class="conceptlistqualif" border="0">
                             <tr>
@@ -333,6 +341,13 @@
 
                     {{ formset_term.management_form }}
                     {% for form in formset_term %}
+
+                        {% for field in form.visible_fields %}
+                            {% if field.errors %}
+                                {{ field.label }}{{ field.errors }}
+                            {% endif %}
+                        {% endfor %}
+
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
@@ -351,7 +366,8 @@
                         </a>
                     </table>
 
-                    <div id="termlistqualif_{{ form.instance.pk }}" class="panel-collapse collapse">
+                    <div id="termlistqualif_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+
                         <table class="termlistqualif" border="0">
                             <tr>
 
@@ -434,6 +450,37 @@
                     formCssClass: 'category_formset',
                     prefix: '{{ formset_category.prefix }}'
             });
+
+
+            $('[id^="id_treenumberslistqualif_set-"]').on('blur', function() {
+                val = $(this).val();
+                $(this).val(val.replace(/\s/g, ''));
+
+                tam = val.length;
+                // alert(tam);
+                if( tam % 2 !== 0 ){
+                    // É impar
+                    // alert("Impar "+tam);
+                    // Verifica quantidade de pontos
+                    qtd_pontos = ((tam + 1) / 4) - 1;
+                    // alert('Numero de pontos:'+qtd_pontos);
+                    if ( !( (parseFloat(qtd_pontos) == parseInt(qtd_pontos)) && !isNaN(qtd_pontos) ) ) {
+                        // alert("Não é inteiro"+qtd_pontos)
+                        alert('{% trans "Warning" %}: '+$(this).val());
+                        return false
+                    } else {
+                        $(this).val;
+                    }
+
+                } else {
+                    // se eh par está errado
+                    if ( tam != 0 ){
+                        alert('{% trans "Warning" %}: '+$(this).val());
+                        return false
+                    }
+                }
+            });
+
 
             $('.act-form').on('submit', function() {
                 if (confirm('{% trans "Save" %}?')) {

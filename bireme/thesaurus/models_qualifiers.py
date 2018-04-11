@@ -42,7 +42,7 @@ class IdentifierQualif(models.Model):
     qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True)
 
     # BIREME Qualifier Unique Identifier
-    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True)
+    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=False)
 
     # External Qualifier Unique Identifier
     external_code = models.CharField(_("External Qualifier UI"), max_length=250, blank=True)
@@ -51,13 +51,13 @@ class IdentifierQualif(models.Model):
     abbreviation = models.CharField(_("Abbreviation"), max_length=4, blank=False)
 
     # DateCreated
-    date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True)
+    date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     # DateRevised
-    date_revised =  models.DateField(_("Date revised"), help_text='DD/MM/YYYY', blank=True)
+    date_revised =  models.DateField(_("Date revised"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     # DateEstablished
-    date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True)
+    date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     # def __unicode__(self):
     #     return self.abbreviation
@@ -83,10 +83,10 @@ class DescriptionQualif(models.Model):
 
     identifier = models.ForeignKey(IdentifierQualif, related_name="qualifiers")
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
     # QualifierName
-    qualifier_name = models.CharField(_("Qualifier name"), max_length=250, blank=True)
+    qualifier_name = models.CharField(_("Qualifier name"), max_length=250, blank=False)
 
     # Annotation
     annotation = models.TextField(_("Annotation"), max_length=1500, blank=True)
@@ -114,7 +114,7 @@ class TreeNumbersListQualif(models.Model):
     identifier = models.ForeignKey(IdentifierQualif, blank=False)
 
     # Tree Number
-    tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
+    tree_number = models.CharField(_("Tree number"), max_length=250, blank=False)
 
     def __unicode__(self):
         return self.id
@@ -130,7 +130,7 @@ class ConceptListQualif(models.Model):
 
     identifier = models.ForeignKey(IdentifierQualif, blank=False)
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
     # PreferredConcept
     preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
@@ -139,7 +139,7 @@ class ConceptListQualif(models.Model):
     concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, blank=True)
 
     # ConceptName
-    concept_name = models.CharField(_("Concept name"), max_length=250, blank=True)
+    concept_name = models.CharField(_("Concept name"), max_length=250, blank=False)
 
     # CASN1Name
     casn1_name = models.TextField(_("Chemical abstract"), max_length=1000, blank=True)
@@ -175,7 +175,7 @@ class TermListQualif(models.Model):
 
     identifier = models.ForeignKey(IdentifierQualif, blank=False)
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
     # ConceptPreferredTermYN
     concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=True)
@@ -199,7 +199,7 @@ class TermListQualif(models.Model):
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
 
     # DateCreated
-    date_created = models.DateField(_("Date created"), blank=True)
+    date_created = models.DateField(_("Date created"), blank=True, null=True)
 
     def __unicode__(self):
         return self.id

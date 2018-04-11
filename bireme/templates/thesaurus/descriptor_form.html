@@ -5,7 +5,6 @@
 
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
-
 {% block breadcrumb %}
     {% if not object %}
         <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
@@ -18,9 +17,7 @@
     {% endif %}
 {% endblock %}
 
-
 {% block content %}
-
 
 <!--  header -->
 <div class='header'>
@@ -32,15 +29,12 @@
             {% endif %}
         {% else %}
             {% trans "Edit Descriptor" %}
-
             {% for desc in formset_descriptor %}
                 {% if descriptor_info == desc.language_code.value %}
                     : {{ desc.descriptor_name.value }}
                 {% endif %}
             {% endfor %}
         {% endif %}</h2>
-
-
 </div>
 
 <div class='body'>    
@@ -425,7 +419,6 @@
                     </table>
 
                     <div id="termlistdesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
-
 
                         <table class="termlistdesc" border="0">
                             <tr>

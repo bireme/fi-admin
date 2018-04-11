@@ -229,15 +229,33 @@ class QualifUpdate(LoginRequiredView):
             form.save()
             return HttpResponseRedirect(self.get_success_url())
 
+        else:
+            return self.render_to_response(
+                        self.get_context_data(
+                                            form=form,
+                                            formset_descriptor=formset_descriptor,
+                                            formset_category=formset_category,
+                                            formset_concept=formset_concept,
+                                            formset_term=formset_term
+                                            )
+                                        )
+
+    def form_invalid(self, form):
+        # force use of form_valid method to run all validations
+        return self.form_valid(form)
+
 
     def get_context_data(self, **kwargs):
         context = super(QualifUpdate, self).get_context_data(**kwargs)
-        context['formset_descriptor'] = DescriptionQualifFormSet(instance=self.object)
-        context['formset_category'] = TreeNumbersListQualifFormSet(instance=self.object)
-        context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
-        context['formset_term'] = TermListQualifFormSet(instance=self.object)
 
-        context['qualifier_info'] = get_language()
+        if self.request.method == 'GET':
+
+            context['formset_descriptor'] = DescriptionQualifFormSet(instance=self.object)
+            context['formset_category'] = TreeNumbersListQualifFormSet(instance=self.object)
+            context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
+            context['formset_term'] = TermListQualifFormSet(instance=self.object)
+
+            context['qualifier_info'] = get_language()
 
         return context
 
