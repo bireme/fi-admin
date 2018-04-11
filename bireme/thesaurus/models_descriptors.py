@@ -54,10 +54,10 @@ class IdentifierDesc(models.Model):
     descriptor_class = models.CharField(_("Descriptor class"), choices=DESCRIPTOR_CLASS_CODE, max_length=2, blank=True)
 
     # MESH Descriptor Unique Identifier
-    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
+    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=False)
 
     # BIREME Descriptor Unique Identifier
-    decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=True)
+    decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=False)
 
     # External Descriptor Unique Identifier
     external_code = models.CharField(_("External Descriptor UI"), max_length=250, blank=True)
@@ -76,8 +76,11 @@ class IdentifierDesc(models.Model):
 
     abbreviation = models.ManyToManyField(IdentifierQualif, verbose_name='Abbreviation', blank=True)
 
+    # def __unicode__(self):
+    #     return '%s' % (self.id)
+
     def __unicode__(self):
-        return '%s' % (self.id)
+        return self.descriptor_ui
 
 
 
@@ -126,7 +129,7 @@ class TreeNumbersListDesc(models.Model):
     identifier = models.ForeignKey(IdentifierDesc, blank=True)
 
     # Tree Number
-    tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
+    tree_number = models.CharField(_("Tree number"), max_length=250, blank=False)
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -143,9 +146,9 @@ class PreviousIndexingListDesc(models.Model):
     identifier = models.ForeignKey(IdentifierDesc, blank=True)
 
     # PreviousIndexing
-    previous_indexing = models.CharField(_("Previous indexing"), max_length=1000, blank=True)
+    previous_indexing = models.CharField(_("Previous indexing"), max_length=1000, blank=False)
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -164,7 +167,7 @@ class ConceptListDesc(models.Model):
 
     # concept_relation = models.ForeignKey(ConceptRelationDesc, verbose_name=_("ID da relacao"), blank=True, null=True)
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
     # PreferredConcept
     preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
@@ -173,7 +176,7 @@ class ConceptListDesc(models.Model):
     concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, blank=True)
 
     # ConceptName
-    concept_name = models.CharField(_("Concept name"), max_length=250, blank=True)
+    concept_name = models.CharField(_("Concept name"), max_length=250, blank=False)
 
     # CASN1Name
     casn1_name = models.TextField(_("Chemical abstract"), max_length=1000, blank=True)
@@ -242,7 +245,7 @@ class TermListDesc(models.Model):
 
     identifier = models.ForeignKey(IdentifierDesc, blank=True)
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
     # ConceptPreferredTermYN
     concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=True)
@@ -260,7 +263,7 @@ class TermListDesc(models.Model):
     term_ui = models.CharField(_("Term unique identifier"), max_length=250, blank=True)
 
     # String
-    term_string = models.CharField(_("String"), max_length=250, blank=True)
+    term_string = models.CharField(_("String"), max_length=250, blank=False)
 
     # EntryVersion
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)

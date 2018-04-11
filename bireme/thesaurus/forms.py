@@ -18,6 +18,8 @@ from form_utils.forms import BetterModelForm, FieldsetCollection
 from django.conf import settings
 
 
+from django.core.exceptions import ValidationError
+
 
 class ThesaurusForm(forms.ModelForm):
     class Meta:
@@ -56,14 +58,6 @@ class IdentifierDescForm(forms.ModelForm):
         model = IdentifierDesc
         fields = '__all__'
 
-    def clean_decs_code(self):
-        data = self.cleaned_data.get('decs_code')
-        if not data:
-            message = _("Campo obrigatorio - teste decs_code")
-            self.add_error('decs_code',message)
-
-        return data
-
 
 class DescriptionDescForm(forms.ModelForm):
     class Meta:
@@ -84,6 +78,7 @@ class DescriptionDescForm(forms.ModelForm):
 class TreeNumbersListDescForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
+
 
 class PreviousIndexingListDescForm(forms.ModelForm):
     class Meta:

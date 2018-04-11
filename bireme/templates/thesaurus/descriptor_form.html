@@ -45,7 +45,7 @@
 
 <div class='body'>    
 
-{% if form.errors or formset_descriptor.errors or formset_category.errors or formset_concept.errors or formset_previous.errors or formset_term.errors %}
+{% if form.errors or formset_descriptor.errors or formset_category.errors or formset_previous.errors or formset_concept.errors or formset_term.errors %}
     <ul class="errorlist alert alert-error">
         <li>{% trans "Please check required fields" %}</li>
     </ul>
@@ -56,25 +56,20 @@
         <li>
             <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
         </li>
-
         <li>
             <a href="#tab-descriptiondesc" class="{% if formset_descriptor.errors and not formset_descriptor.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
         </li>
-
         <li>
-            <a href="#tab-treenumberslistdesc" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
+            <a href="#tab-treenumberslistdesc" class="{% if formset_category.errors and not formset_category.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
         </li>
-
         <li>
-            <a href="#tab-previousindexinglistdesc" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
+            <a href="#tab-previousindexinglistdesc" class="{% if formset_previous.errors and not formset_previous.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
         </li>
-
         <li>
-            <a href="#tab-conceptlistdesc" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
+            <a href="#tab-conceptlistdesc" class="{% if formset_concept.errors and not formset_concept.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
         </li>
-
         <li>
-            <a href="#tab-termlistdesc" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
+            <a href="#tab-termlistdesc" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
         </li>
     </ul>
 
@@ -91,7 +86,7 @@
 
                     {% for field in form.visible_fields %}
                         {% if field.errors %}
-                            <font>Error : </font>{{ field.label }}{{ field.errors }}
+                            {{ field.label }}{{ field.errors }}
                         {% endif %}
                     {% endfor %}
 
@@ -151,10 +146,9 @@
 
                 {% for form in formset_descriptor %}
 
-
                     {% for field in form.visible_fields %}
                         {% if field.errors %}
-                            <font>Error : </font>{{ field.label }}{{ field.errors }}
+                            {{ field.label }}{{ field.errors }}
                         {% endif %}
                     {% endfor %}
 
@@ -292,9 +286,8 @@
                             {% for hidden in form.hidden_fields %}
                                 {{ hidden }}
                             {% endfor %}
-                            <tr id="category-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
+                            <tr id="previous-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for field in form.visible_fields %}
-                               <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                 <td>
                                     {{ field }}
                                     {{ field.errors }}
@@ -314,6 +307,13 @@
 
                     {{ formset_concept.management_form }}
                     {% for form in formset_concept %}
+
+                        {% for field in form.visible_fields %}
+                            {% if field.errors %}
+                                {{ field.label }}{{ field.errors }}
+                            {% endif %}
+                        {% endfor %}
+
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
@@ -332,7 +332,7 @@
                         </a>
                     </table>
 
-                    <div id="conceptlistdesc_{{ form.instance.pk }}" class="panel-collapse collapse">
+                    <div id="conceptlistdesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
 
                         <table class="conceptlistdesc" border="0">
                             <tr>
@@ -399,6 +399,13 @@
 
                     {{ formset_term.management_form }}
                     {% for form in formset_term %}
+
+                        {% for field in form.visible_fields %}
+                            {% if field.errors %}
+                                {{ field.label }}{{ field.errors }}
+                            {% endif %}
+                        {% endfor %}
+
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
@@ -417,7 +424,9 @@
                         </a>
                     </table>
 
-                    <div id="termlistdesc_{{ form.instance.pk }}" class="panel-collapse collapse">
+                    <div id="termlistdesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+
+
                         <table class="termlistdesc" border="0">
                             <tr>
 
