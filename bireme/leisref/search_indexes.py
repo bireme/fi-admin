@@ -84,7 +84,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_collection(self, obj):
         if obj.act_collection:
             translations = ["|".join(col.get_translations()) for col in obj.act_collection.all()]
-            return "|".join(translations)
+            return translations
 
     def prepare_indexed_database(self, obj):
         return [occ.acronym for occ in obj.indexed_database.all()]
