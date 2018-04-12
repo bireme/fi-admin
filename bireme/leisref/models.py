@@ -445,7 +445,7 @@ class Act(Generic, AuditLog):
     # base de dados
     indexed_database = models.ManyToManyField(Database, verbose_name=_("Indexed in"), blank=True)
     # collection
-    act_collection = models.ForeignKey(ActCollection, verbose_name=_("Collection"), blank=True, null=True)
+    act_collection = models.ManyToManyField(ActCollection, verbose_name=_("Collection"), blank=True)
     # alcance do ato
     scope = models.ForeignKey(ActScope, verbose_name=_("Act scope"), blank=True, null=True)
     # estado do alcance do ato

@@ -83,7 +83,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_collection(self, obj):
         if obj.act_collection:
-            translations = obj.act_collection.get_translations()
+            translations = ["|".join(col.get_translations()) for col in obj.act_collection.all()]
             return "|".join(translations)
 
     def prepare_indexed_database(self, obj):

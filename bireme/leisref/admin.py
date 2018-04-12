@@ -80,8 +80,8 @@ class ActOrganIssuerAdmin(GenericAdmin):
 class ActAdmin(GenericAdmin):
     model = Act
     list_display = ('id', '__unicode__', 'scope_region', 'act_type', 'act_number',
-                    'act_collection', 'scope', 'scope_state', 'scope_city',
-                    'source_name', 'organ_issuer', 'created_by', 'status')
+                    'scope', 'scope_state', 'scope_city','source_name',
+                    'organ_issuer', 'created_by', 'status')
     search_fields = ['id', '__unicode__']
     list_filter = ('status','act_type', 'scope', 'act_collection', 'organ_issuer',)
     inlines = [ActRelationshipAdmin, ActURLAdmin, AttachmentAdmin, DescriptorAdmin, ThematicAreaAdmin, ]
