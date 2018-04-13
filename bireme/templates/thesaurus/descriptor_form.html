@@ -78,9 +78,11 @@
             <div id="tab-identifierdesc" class="tab-pane active">
                 <fieldset id="identifierdesc">
 
+                    {{ form.non_field_errors.as_ul }}
+
                     {% for field in form.visible_fields %}
                         {% if field.errors %}
-                            {{ field.label }}{{ field.errors }}
+                            <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                         {% endif %}
                     {% endfor %}
 
@@ -135,14 +137,15 @@
             <div id="tab-descriptiondesc" class="tab-pane">
                 <fieldset id="descriptiondesc">
 
-
                 {{ formset_descriptor.management_form }}
 
                 {% for form in formset_descriptor %}
 
+                    {{ form.non_field_errors.as_ul }}
+
                     {% for field in form.visible_fields %}
                         {% if field.errors %}
-                            {{ field.label }}{{ field.errors }}
+                            <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                         {% endif %}
                     {% endfor %}
 
@@ -302,9 +305,11 @@
                     {{ formset_concept.management_form }}
                     {% for form in formset_concept %}
 
+                        {{ form.non_field_errors.as_ul }}
+
                         {% for field in form.visible_fields %}
                             {% if field.errors %}
-                                {{ field.label }}{{ field.errors }}
+                                <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                             {% endif %}
                         {% endfor %}
 
@@ -394,11 +399,14 @@
                     {{ formset_term.management_form }}
                     {% for form in formset_term %}
 
+                        {{ form.non_field_errors.as_ul }}
+
                         {% for field in form.visible_fields %}
                             {% if field.errors %}
-                                {{ field.label }}{{ field.errors }}
+                                <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                             {% endif %}
                         {% endfor %}
+
 
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
@@ -476,11 +484,10 @@
         </div>
 
 
-
         <div class="control-panel form-submit">
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+            <button onclick="goCancel()" class="btn btn-large btn-danger">{% trans "Cancel" %}</button>
         </div>
-
 
     </form>
 
@@ -519,6 +526,10 @@
    {% endif %}
 
    <script type="text/javascript">
+
+        function goCancel() {
+            window.location.href = "{% url 'list_descriptor' %}";
+        }
 
         $(function() {
             $('.category-row').formset({
@@ -590,7 +601,7 @@
                 }
             });
 
-            
+
             // Alerta sobre não preenchimento
             // $('[id^="id_descriptors-"]').on('blur', function() {
             //     val = $(this).val();

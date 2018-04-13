@@ -99,6 +99,14 @@ class DescUpdate(LoginRequiredView):
     def get_context_data(self, **kwargs):
         context = super(DescUpdate, self).get_context_data(**kwargs)
 
+        context['descriptor_info'] = get_language()
+
+        if IdentifierDesc.objects.count() > 0:
+            context['next_id'] = int(IdentifierDesc.objects.latest('id').id) + 60000
+        else:
+            context['next_id'] = 1
+
+
         if self.request.method == 'GET':
 
             context['formset_descriptor'] = DescriptionDescFormSet(instance=self.object)
@@ -110,7 +118,6 @@ class DescUpdate(LoginRequiredView):
             context['formset_previous'] = PreviousIndexingListDescFormSet(instance=self.object)
             context['formset_term'] = TermListDescFormSet(instance=self.object)
 
-            context['descriptor_info'] = get_language()
        
         return context
 

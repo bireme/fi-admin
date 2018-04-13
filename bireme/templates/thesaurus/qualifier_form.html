@@ -75,11 +75,14 @@
             <div id="tab-identifierqualif" class="tab-pane active">
                 <fieldset id="identifierqualif">
 
+                    {{ form.non_field_errors.as_ul }}
+
                     {% for field in form.visible_fields %}
                         {% if field.errors %}
-                            {{ field.label }}{{ field.errors }}
+                            <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                         {% endif %}
                     {% endfor %}
+
 
                     <table class="identifierqualif">
                         <thead>
@@ -127,11 +130,14 @@
                 <fieldset id="descriptionqualif">
 
                     {{ formset_descriptor.management_form }}
+
                     {% for form in formset_descriptor %}
+
+                        {{ form.non_field_errors.as_ul }}
 
                         {% for field in form.visible_fields %}
                             {% if field.errors %}
-                                {{ field.label }}{{ field.errors }}
+                                <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                             {% endif %}
                         {% endfor %}
 
@@ -251,9 +257,11 @@
                     {{ formset_concept.management_form }}
                     {% for form in formset_concept %}
 
+                        {{ form.non_field_errors.as_ul }}
+
                         {% for field in form.visible_fields %}
                             {% if field.errors %}
-                                {{ field.label }}{{ field.errors }}
+                                <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                             {% endif %}
                         {% endfor %}
 
@@ -342,9 +350,11 @@
                     {{ formset_term.management_form }}
                     {% for form in formset_term %}
 
+                        {{ form.non_field_errors.as_ul }}
+
                         {% for field in form.visible_fields %}
                             {% if field.errors %}
-                                {{ field.label }}{{ field.errors }}
+                                <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                             {% endif %}
                         {% endfor %}
 
@@ -423,9 +433,8 @@
 
         <div class="control-panel form-submit">
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+            <button onclick="goCancel()" class="btn btn-large btn-danger">{% trans "Cancel" %}</button>
         </div>
-
-
 
     </form>
 </div>
@@ -439,6 +448,12 @@
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
 
     <script type="text/javascript">
+
+        function goCancel() {
+            window.location.href = "{% url 'list_qualifier' %}";
+        }
+
+
         $(function() {
 
             $('.category-row').formset({

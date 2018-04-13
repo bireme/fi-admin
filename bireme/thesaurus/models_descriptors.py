@@ -90,6 +90,7 @@ class DescriptionDesc(models.Model):
     class Meta:
         verbose_name = _("Description")
         verbose_name_plural = _("Descriptions")
+        unique_together = ('language_code','descriptor_name')
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="descriptors", blank=True)
 

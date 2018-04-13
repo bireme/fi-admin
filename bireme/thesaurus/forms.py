@@ -19,6 +19,7 @@ from django.conf import settings
 
 
 from django.core.exceptions import ValidationError
+from django.core.exceptions import NON_FIELD_ERRORS
 
 
 class ThesaurusForm(forms.ModelForm):
@@ -63,16 +64,12 @@ class DescriptionDescForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
 
-    # def clean(self):
-    #     field = 'descriptor_name'
-    #     data = self.cleaned_data
-    #     descriptor_name = data.get(field)
-
-    #     if not descriptor_name:
-    #         message = _("Campo obrigatorio - teste descriptor_name")
-    #         self.add_error(field,message)
-
-    #     return data
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                # 'unique_together': "%(model_name)s's %(field_labels)s are not unique.",
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
 
 
 class TreeNumbersListDescForm(forms.ModelForm):
