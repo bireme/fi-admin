@@ -433,7 +433,7 @@
 
         <div class="control-panel form-submit">
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
-            <button onclick="goCancel()" class="btn btn-large btn-danger">{% trans "Cancel" %}</button>
+            <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
         </div>
 
     </form>
@@ -448,11 +448,6 @@
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
 
     <script type="text/javascript">
-
-        function goCancel() {
-            window.location.href = "{% url 'list_qualifier' %}";
-        }
-
 
         $(function() {
 
@@ -517,14 +512,14 @@
             });
 
             
-            // Alerta sobre não preenchimento
-            $('[id^="qualifiers-"]').on('blur', function() {
-                val = $(this).val();
-                if ( val == '' ){
-                    alert('{% trans "Warning" %}');
-                    return false;
-                }
-            });
+            // // Alerta sobre não preenchimento
+            // $('[id^="qualifiers-"]').on('blur', function() {
+            //     val = $(this).val();
+            //     if ( val == '' ){
+            //         alert('{% trans "Warning" %}');
+            //         return false;
+            //     }
+            // });
 
 
         })

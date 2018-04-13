@@ -486,7 +486,7 @@
 
         <div class="control-panel form-submit">
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
-            <button onclick="goCancel()" class="btn btn-large btn-danger">{% trans "Cancel" %}</button>
+            <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
         </div>
 
     </form>
@@ -527,9 +527,6 @@
 
    <script type="text/javascript">
 
-        function goCancel() {
-            window.location.href = "{% url 'list_descriptor' %}";
-        }
 
         $(function() {
             $('.category-row').formset({
@@ -589,7 +586,6 @@
                     return false;
                 }
             });
-
 
             $('[id$="-DELETE"]').on('click', function() {
                 val = $(this).val();
