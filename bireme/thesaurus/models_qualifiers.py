@@ -33,16 +33,17 @@ class IdentifierQualif(models.Model):
         verbose_name = _("Qualifier")
         verbose_name_plural = _("Qualifiers")
         ordering = ('abbreviation',)
+        unique_together = ('thesaurus','abbreviation')
 
     active = models.BooleanField(_("Enabled"), default=False, help_text=_("Check to set it to active"))
 
     thesaurus = models.ForeignKey(Thesaurus, null=True, blank=True, default=None)
 
     # MESH Qualifier Unique Identifier
-    qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True)
+    qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True, unique=True)
 
     # BIREME Qualifier Unique Identifier
-    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=False)
+    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=False, unique=True)
 
     # External Qualifier Unique Identifier
     external_code = models.CharField(_("External Qualifier UI"), max_length=250, blank=True)
@@ -80,6 +81,8 @@ class DescriptionQualif(models.Model):
     class Meta:
         verbose_name = _("Description of Qualifier")
         verbose_name_plural = _("Descriptions of Qualifier")
+        unique_together = ('language_code','qualifier_name')
+
 
     identifier = models.ForeignKey(IdentifierQualif, related_name="qualifiers")
 
@@ -110,6 +113,7 @@ class TreeNumbersListQualif(models.Model):
         verbose_name = _("Tree number for qualifier")
         verbose_name_plural = _("Tree numbers for qualifiers")
         ordering = ('tree_number',)
+        unique_together = ('identifier','tree_number')
 
     identifier = models.ForeignKey(IdentifierQualif, blank=False)
 
@@ -126,7 +130,7 @@ class ConceptListQualif(models.Model):
     class Meta:
         verbose_name = _("Concept")
         verbose_name_plural = _("Concepts")
-
+        unique_together = ('identifier','language_code','concept_name')
 
     identifier = models.ForeignKey(IdentifierQualif, blank=False)
 
@@ -160,6 +164,7 @@ class TermListQualif(models.Model):
     class Meta:
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
+        unique_together = ('identifier','term_string','language_code')
 
     LEXICALTAG_OPTION=(
         ('ABB','ABB - Abbreviation'),

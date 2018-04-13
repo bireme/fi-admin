@@ -231,6 +231,9 @@
                         {{ formset_category.management_form }}
 
                         {% for form in formset_category %}
+
+                            {{ form.non_field_errors.as_ul }}
+
                             {% for hidden in form.hidden_fields %}
                                 {{ hidden }}
                             {% endfor %}

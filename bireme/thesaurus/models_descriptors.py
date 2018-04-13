@@ -54,10 +54,10 @@ class IdentifierDesc(models.Model):
     descriptor_class = models.CharField(_("Descriptor class"), choices=DESCRIPTOR_CLASS_CODE, max_length=2, blank=True)
 
     # MESH Descriptor Unique Identifier
-    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
+    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True, unique=True)
 
     # BIREME Descriptor Unique Identifier
-    decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=False)
+    decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=False, unique=True)
 
     # External Descriptor Unique Identifier
     external_code = models.CharField(_("External Descriptor UI"), max_length=250, blank=True)
@@ -126,6 +126,7 @@ class TreeNumbersListDesc(models.Model):
         verbose_name = _("Tree number for descriptor")
         verbose_name_plural = _("Tree numbers for descriptors")
         ordering = ('tree_number',)
+        unique_together = ('identifier','tree_number')
 
     identifier = models.ForeignKey(IdentifierDesc, blank=True)
 
@@ -162,6 +163,7 @@ class ConceptListDesc(models.Model):
     class Meta:
         verbose_name = _("Concept")
         verbose_name_plural = _("Concepts")
+        unique_together = ('identifier','language_code','concept_name')
 
 
     identifier = models.ForeignKey(IdentifierDesc, blank=True)
@@ -230,7 +232,7 @@ class TermListDesc(models.Model):
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
         ordering = ('language_code','term_string',)
-
+        unique_together = ('identifier','term_string','language_code')
 
     LEXICALTAG_OPTION=(
         ('ABB','ABB - Abbreviation'),

@@ -38,10 +38,22 @@ class DescriptionQualifForm(forms.ModelForm):
         model = DescriptionQualif
         fields = '__all__'
 
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
+
 class TreeNumbersListQualifForm(forms.ModelForm):
     class Meta:
         model = TreeNumbersListQualif
         fields = '__all__'
+
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
 
 class ConceptListQualifForm(forms.ModelForm):
     class Meta:
@@ -76,6 +88,11 @@ class TreeNumbersListDescForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
 
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
 
 class PreviousIndexingListDescForm(forms.ModelForm):
     class Meta:
