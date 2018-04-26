@@ -30,12 +30,14 @@
         {% else %}
             {% trans "Edit Qualifier" %}
             {% for qualif in formset_descriptor %}
+                <input type="hidden" name="qualifier_info" value="{{ qualifier_info }}">
                 {% if qualifier_info == qualif.language_code.value %}
                     : {{ qualif.qualifier_name.value }}
                 {% endif %}
             {% endfor %}
         {% endif %}</h2>
 </div>
+
 
 <div class='body'>
 
@@ -431,12 +433,11 @@
 
                 </fieldset>
 
-
         </div>
 
         <div class="control-panel form-submit">
-            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
         </div>
 
     </form>

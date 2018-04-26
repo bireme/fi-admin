@@ -5,30 +5,12 @@ from django.utils import timezone
 from utils.models import Generic, Country
 from django.contrib.contenttypes.generic import GenericRelation
 from main.models import SourceLanguage
-# from choices import *
-
-# from __future__ import unicode_literals
-
-# from django.contrib.auth.models import User
+from choices import *
 
 from multiselectfield import MultiSelectField
 
 from .models_thesaurus import Thesaurus
 from .models_qualifiers import *
-
-
-LANGUAGE_CODE_MESH=(
-            ('en', _("English")),
-            ('es', _("Spanish Latin America")),
-            ('pt-br', _("Portuguese")),
-            ('es-es', _("Spanish Spain")),
-            ('fr', _("French")),
-)
-
-YN_OPTION=(
-    ('Y','Yes'),('N','No')
-)
-
 
 
 # thesaurus fields
@@ -38,13 +20,6 @@ class IdentifierDesc(models.Model):
         verbose_name = _("Descriptor")
         verbose_name_plural = _("Descriptors")
         ordering = ('decs_code',)
-
-    DESCRIPTOR_CLASS_CODE=(
-                ('1', _("1 - Topical Descriptor")),
-                ('2', _("2 - Publication Types, for example Review")),
-                ('3', _("3 - Check Tag, e.g., Male - no tree number")),
-                ('4', _("4 - Geographic Descriptor")),
-    )
 
     active = models.BooleanField(_("Enabled"), default=False, help_text=_("Check to set it to active"))
 
@@ -75,9 +50,6 @@ class IdentifierDesc(models.Model):
     date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     abbreviation = models.ManyToManyField(IdentifierQualif, verbose_name='Abbreviation', blank=True)
-
-    # def __unicode__(self):
-    #     return '%s' % (self.id)
 
     def __unicode__(self):
         return self.descriptor_ui
@@ -128,7 +100,7 @@ class TreeNumbersListDesc(models.Model):
         ordering = ('tree_number',)
         unique_together = ('identifier','tree_number')
 
-    identifier = models.ForeignKey(IdentifierDesc, blank=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="dtreenumbers")
 
     # Tree Number
     tree_number = models.CharField(_("Tree number"), max_length=250, blank=False)
@@ -202,12 +174,6 @@ class ConceptListDesc(models.Model):
 #         verbose_name = _("Concept")
 #         verbose_name_plural = _("Concepts")
 
-#     RELATION_NAME_OPTION=(
-#         ('BRD','BRD - Broader'),
-#         ('NRW','NRW - Narrower'),
-#         ('REL','REL - Related but not broader or narrower'),
-#     )
-
 #     # relation = models.ForeignKey(ConceptListDesc, blank=True)
 #     concept_relation = models.ForeignKey(ConceptListDesc, verbose_name=_("ID da relacao"), blank=True, null=True)
 
@@ -233,18 +199,6 @@ class TermListDesc(models.Model):
         verbose_name_plural = _("Terms")
         ordering = ('language_code','term_string',)
         unique_together = ('identifier','term_string','language_code')
-
-    LEXICALTAG_OPTION=(
-        ('ABB','ABB - Abbreviation'),
-        ('ABX','ABX - Embedded abbreviation'),
-        ('ACR','ACR - Acronym'),
-        ('ACX','ACX - Embedded acronym'),
-        ('EPO','EPO - Eponym'),
-        ('LAB','LAB - Lab number'),
-        ('NAM','NAM - Proper name'),
-        ('NON','NON - None'),
-        ('TRD','TRD - Trade name'),
-    )
 
     identifier = models.ForeignKey(IdentifierDesc, blank=True)
 

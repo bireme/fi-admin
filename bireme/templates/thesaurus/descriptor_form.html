@@ -30,6 +30,7 @@
         {% else %}
             {% trans "Edit Descriptor" %}
             {% for desc in formset_descriptor %}
+                <input type="hidden" name="descriptor_info" value="{{ descriptor_info }}">
                 {% if descriptor_info == desc.language_code.value %}
                     : {{ desc.descriptor_name.value }}
                 {% endif %}
@@ -488,8 +489,8 @@
 
 
         <div class="control-panel form-submit">
-            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
         </div>
 
     </form>

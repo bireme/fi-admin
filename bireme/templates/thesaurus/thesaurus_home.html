@@ -13,7 +13,16 @@
     <input type="hidden" name="orderby" value="{{ actions.orderby }}">
     <input type="hidden" name="order" value="{{ actions.order }}">
     <input type="hidden" name="page" value="{{ actions.page }}">
-    <input type='hidden' name="s"  value="{{ actions.s }}">
+
+    <input type="hidden" name="descriptor_name" value="{{ actions.descriptor_name }}">
+    <input type="hidden" name="filter_language" value="{{ actions.filter_language }}">
+    <input type="hidden" name="descriptor_ui" value="{{ actions.descriptor_ui }}">
+    <input type="hidden" name="decs_code" value="{{ actions.decs_code }}">
+    <input type="hidden" name="tree_number" value="{{ actions.tree_number }}">
+
+    <input type="hidden" name="visited" value="{{ actions.visited }}">
+
+
 </form>
 
 
@@ -21,13 +30,14 @@
 <div class='header'>
     <h2>
         <i class='icon-file'></i> {% trans "Descriptors" %}
+        {% if paginator.count %}
         <span class="badge badge-info" style="vertical-align: middle;">{{ paginator.count }}</span>
+        {% endif %}
     </h2>
     <div class='pull-right'>
         <a href="{% url 'create_descriptor' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Descriptor" %}</a>
     </div>
 </div>
-
 
 <div class='body'>    
     <ul class="nav nav-tabs" id='tab'>
@@ -39,90 +49,84 @@
             </li>
     </ul>
 
-<!--
-{% if registers %}
-  Cheio
-  {% for obj in object_list %}
-    {{ obj.descriptor_ui }}
-    {{ obj.id }}
-    {{ obj.descriptors__descriptor_name }}
-  <br>
-  {% endfor %}
-{% else %}
-  Vazio
-{% endif %}
--->
 
-{{ param_descriptor_name }}
+    <div class="row">
+        <div class="span12">
+            <form name="search">
+                <input type="hidden" name="page" value="">
+                <input type="hidden" name="visited" value="ok">
+
+                {% trans "Descriptor" %}:
+                <input type="text" name="descriptor_name" class="input-big" value="{{ actions.descriptor_name }}">&nbsp;
 
 
-<div class="row">
-    <div class="span12">
-        <form name="search">
-            <input type="hidden" name="page" value="{{ actions.page }}">
-            {% trans "Descriptor" %}:
-            <input type="text" name="descriptor_name" class="input-big" value="{{ param_descriptor_name }}">&nbsp;
-            {% trans "MESH Descriptor UI" %}:
-            <input type="text" name="descriptor_ui" class="input-small" value="{{ param_descriptor_ui }}">&nbsp;
-            {% trans "DeCS Descriptor UI" %}:
-            <input type="text" name="decs_code" class="input-small" value="{{ param_decs_code }}">
-            <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
-        </form>
+                {% trans "Language" %}:
+                <select name="filter_language">
+                    <option value="">{% trans "All" %}</option>
+                    <option value="en" {% if actions.filter_language == 'en' %}selected="true"{% endif %}>{% trans "English" %}</option>
+                    <option value="es" {% if actions.filter_language == 'es' %}selected="true"{% endif %}>{% trans "Spanish Latin America" %}</option>
+                    <option value="pt-br" {% if actions.filter_language == 'pt-br' %}selected="true"{% endif %}>{% trans "Portuguese" %}</option>
+                    <option value="es-es" {% if actions.filter_language == 'es-es' %}selected="true"{% endif %}>{% trans "Spanish Spain" %}</option>
+                    <option value="fr" {% if actions.filter_language == 'fr' %}selected="true"{% endif %}>{% trans "French" %}</option>
+                </select>
+
+                <br>
+
+                {% trans "MESH Descriptor UI" %}:
+                <input type="text" name="descriptor_ui" class="input-small" value="{{ actions.descriptor_ui }}">&nbsp;
+
+                {% trans "DeCS Descriptor UI" %}:
+                <input type="text" name="decs_code" class="input-small" value="{{ actions.decs_code }}">
+
+                {% trans "Tree Number" %}:
+                <input type="text" name="tree_number" class="input-medium" value="{{ actions.tree_number }}">
+
+                <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
+            </form>
+        </div>
     </div>
-</div>
 
     
-      <div class="tab-content">
+    <div class="tab-content">
         <div class="tab-pane active" id="tab-descriptor">
 
-            <table class='table'>
-                <thead>
-                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
-                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Description Name" %}</a></th>
-                    <th><a href="javascript:orderby('link');" id="id_link">{% trans "MESH Descriptor UI" %}</a></th>
-                    <th><a href="javascript:orderby('date');" id="id_date">{% trans "DeCS Descriptor UI" %}</a></th>
-                    <th>{% trans "Actions" %}</th>
-                </thead>
-                <tbody>
-                    {% for obj in registers %}
-                        <tr>
-                            <td><a href="{% url 'edit_descriptor' obj.id %}">{{ obj.id }}</a></td>
-                            <td><span title="{{ obj_name }}">
-                              <!-- vem resultado da busca -->
-                              {% if obj.descriptors__descriptor_name %}
+        <table class='table'>
+            <thead>
+<!--                 <th><a href="javascript:orderby('id');" id="id_id">#</a></th> -->
+                <th><a href="javascript:orderby('descriptors__descriptor_name');" id="id_descriptor_name">{% trans "Description Name" %}</a></th>
+                <th><a href="javascript:orderby('descriptor_ui');" id="id_descriptor_ui">{% trans "MESH Descriptor UI" %}</a></th>
+                <th><a href="javascript:orderby('decs_code');" id="id_decs_code">{% trans "DeCS Descriptor UI" %}</a></th>
+                <th>{% trans "Actions" %}</th>
+            </thead>
+            <tbody>
 
-                                {{ obj.descriptors__descriptor_name }}
+            {% for obj in registers %}
+                <tr>
+<!--                     <td><a href="{% url 'edit_descriptor' obj.id %}">{{ obj.id }}</a></td> -->
+                    <td>{{ obj.descriptors__descriptor_name }} ({{ obj.descriptors__language_code }})</td>
+                    <td>{{ obj.descriptor_ui }}</td>
+                    <td>{{ obj.decs_code }}</td>
+                    <td>
+                        <a href="{% url 'edit_descriptor' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                        <a href="{% url 'delete_descriptor' obj.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                    </td>
+                </tr>
+            {% empty %}
+                {% if actions.visited %}
+                    <tr>
+                        <td colspan="4">{% trans "No results found" %}</td>
+                    </tr>
+                {% endif %}
 
-                              {% else %}
-                                <!-- vem no todo -->
-                                {% if obj.descriptor_name %}
+            {% endfor %}
 
-                                  {% for desc in obj.descriptor_name %}
+            </tbody>
+        </table>
 
-                                        {{ desc }}<br>
+        {% include "pagination_generic.html" %}
 
-                                  {% endfor %}
+        </div>
 
-                                {% endif %}
-
-                              {% endif  %}
-
-                            </span></td>
-                            <td><span title="{{ obj.descriptor_ui }}">{{ obj.descriptor_ui }}</span></td>
-                            <td><span title="{{ obj.decs_code }}">{{ obj.decs_code }}</span></td>
-                            <td>
-                                <a href="{% url 'edit_descriptor' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                <a href="{% url 'delete_descriptor' obj.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            {% include "pagination_generic.html" %}
-
-          </div>
-        
     </div>
 
 </div>

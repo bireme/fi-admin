@@ -8,7 +8,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.contenttypes.models import ContentType
 
-from utils.views import ACTIONS
+# from utils.views import ACTIONS
 from django.views import generic
 from utils.views import LoginRequiredView, SuperUserRequiredView, GenericUpdateWithOneFormset
 
@@ -18,11 +18,35 @@ from models import *
 from forms import *
 
 from django.db.models import Prefetch
+from django.db.models import Q
 
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.core.paginator import Paginator
 
 
+ITEMS_PER_PAGE = 10
+
+
+# form actions
+ACTIONS = {
+    'descriptor_name': '',
+    'filter_language': '',
+    'descriptor_ui': '',
+
+    'qualifier_name': '',
+    'abbreviation': '',
+    'qualifier_ui': '',
+
+    'decs_code': '',
+    'tree_number': '',
+
+    'orderby': 'id',
+    'order': '-',
+    'page': 1,
+
+    'visited': '',
+
+}
 
 # Descriptors ------------------------------------------------------------------------
 
@@ -153,32 +177,65 @@ class DescListView(LoginRequiredView, ListView):
     """
     template_name = "thesaurus/thesaurus_home.html"
     context_object_name = "registers"
-    paginate_by = settings.ITEMS_PER_PAGE
+    # paginate_by = settings.ITEMS_PER_PAGE
+    paginate_by = ITEMS_PER_PAGE
 
     def get_queryset(self):
         lang_code = get_language()
-        param_descriptor_name = self.request.GET.get('descriptor_name')
-        param_descriptor_ui = self.request.GET.get('descriptor_ui')
-        param_decs_code = self.request.GET.get('decs_code')
         object_list = []
 
-        if param_descriptor_name:
-            object_list = IdentifierDesc.objects.filter(
-                descriptors__descriptor_name__icontains=param_descriptor_name,
-                descriptors__language_code=lang_code
-            ).values('id','descriptor_ui','decs_code','descriptors__descriptor_name')
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
+        # AND performance
+        if self.actions['descriptor_name']:
+            object_list = IdentifierDesc.objects.filter(descriptors__descriptor_name__icontains=self.actions['descriptor_name']).values('id','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
         else:
-            object_list = IdentifierDesc.objects.prefetch_related(
-                Prefetch(
-                    "descriptors",
-                    # queryset=DescriptionDesc.objects.filter(language_code=lang_code),
-                    queryset=DescriptionDesc.objects.filter(),
-                    to_attr="descriptor_name",
-                )
-            )
+            object_list = IdentifierDesc.objects.all().values('id','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+        # The choice of language is mandatory to load the result and to use the filters of the next fields
+        if self.actions['descriptor_name'] and self.actions['filter_language']:
+            object_list = IdentifierDesc.objects.filter(
+                descriptors__descriptor_name__icontains=self.actions['descriptor_name'],
+                descriptors__language_code=self.actions['filter_language'],
+                ).values('id','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+        if not self.actions['descriptor_name'] and self.actions['filter_language']:
+            object_list = IdentifierDesc.objects.filter(
+                descriptors__language_code=self.actions['filter_language'],
+                ).values('id','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+        if self.actions['descriptor_ui']:
+            object_list = object_list.filter(descriptor_ui=self.actions['descriptor_ui'])
+
+        if self.actions['decs_code']:
+            object_list = object_list.filter(decs_code=self.actions['decs_code'])
+
+        if self.actions['tree_number']:
+            object_list = object_list.filter(dtreenumbers__tree_number=self.actions['tree_number'])
+
+        if self.actions['filter_language']:
+            object_list = object_list.filter(descriptors__language_code=self.actions['filter_language'])
+
+        if self.actions['order'] == "-":
+            object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+
+        if self.actions['visited'] != 'ok':
+            object_list = object_list.none()
+
 
         return object_list
+
+
+    def get_context_data(self, **kwargs):
+        context = super(DescListView, self).get_context_data(**kwargs)
+
+        context['actions'] = self.actions
+
+        return context
+
 
 
 # class DescConceptRelationView(LoginRequiredView, FormView):
@@ -255,14 +312,14 @@ class QualifUpdate(LoginRequiredView):
     def get_context_data(self, **kwargs):
         context = super(QualifUpdate, self).get_context_data(**kwargs)
 
+        context['qualifier_info'] = get_language()
+
         if self.request.method == 'GET':
 
             context['formset_descriptor'] = DescriptionQualifFormSet(instance=self.object)
             context['formset_category'] = TreeNumbersListQualifFormSet(instance=self.object)
             context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
             context['formset_term'] = TermListQualifFormSet(instance=self.object)
-
-            context['qualifier_info'] = get_language()
 
         return context
 
@@ -293,33 +350,72 @@ class QualifDeleteView(QualifUpdate, DeleteView):
 
 class QualifListView(LoginRequiredView, ListView):
     """
-    List qualifier records (used by relationship popup selection window)
+    Handle list view for qualifier records
     """
+
     template_name = "thesaurus/qualifier_list.html"
     context_object_name = "registers"
-    paginate_by = settings.ITEMS_PER_PAGE
+    # paginate_by = settings.ITEMS_PER_PAGE
+    paginate_by = ITEMS_PER_PAGE
+
+    def dispatch(self, *args, **kwargs):
+        return super(QualifListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
         lang_code = get_language()
-        param_descriptor_name = self.request.GET.get('descriptor_name')
-        param_descriptor_ui = self.request.GET.get('descriptor_ui')
-        param_decs_code = self.request.GET.get('decs_code')
-        object_list = []
 
-        if param_descriptor_name:
-            object_list = IdentifierQualif.objects.filter(
-                qualifiers__qualifier_name__icontains=param_descriptor_name,
-                qualifiers__language_code=lang_code
-            ).values('id','qualifier_ui','decs_code','qualifiers__qualifier_name')
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
+
+        # AND performance
+        if self.actions['qualifier_name']:
+            object_list = IdentifierQualif.objects.filter(qualifiers__qualifier_name__icontains=self.actions['qualifier_name']).values('id','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
         else:
-            object_list = IdentifierQualif.objects.prefetch_related(
-                Prefetch(
-                    "qualifiers",
-                    # queryset=DescriptionQualif.objects.filter(language_code=lang_code),
-                    queryset=DescriptionQualif.objects.filter(),
-                    to_attr="qualifier_name",
-                )
-            )
+            object_list = IdentifierQualif.objects.all().values('id','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+        # The choice of language is mandatory to load the result and to use the filters of the next fields
+        if self.actions['qualifier_name'] and self.actions['filter_language']:
+            object_list = IdentifierQualif.objects.filter(
+                qualifiers__qualifier_name__icontains=self.actions['qualifier_name'],
+                qualifiers__language_code=self.actions['filter_language'],
+                ).values('id','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+        if not self.actions['qualifier_name'] and self.actions['filter_language']:
+            object_list = IdentifierQualif.objects.filter(
+                qualifiers__language_code=self.actions['filter_language'],
+                ).values('id','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+        if self.actions['abbreviation']:
+            object_list = object_list.filter(abbreviation=self.actions['abbreviation'])
+
+        if self.actions['qualifier_ui']:
+            object_list = object_list.filter(qualifier_ui=self.actions['qualifier_ui'])
+
+        if self.actions['decs_code']:
+            object_list = object_list.filter(decs_code=self.actions['decs_code'])
+
+        if self.actions['tree_number']:
+            object_list = object_list.filter(qtreenumbers__tree_number=self.actions['tree_number'])
+
+        if self.actions['filter_language']:
+            object_list = object_list.filter(qualifiers__language_code=self.actions['filter_language'])
+
+        if self.actions['order'] == "-":
+            object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+
+        if self.actions['visited'] != 'ok':
+            object_list = object_list.none()
 
         return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super(QualifListView, self).get_context_data(**kwargs)
+
+        context['actions'] = self.actions
+
+        return context
+
+

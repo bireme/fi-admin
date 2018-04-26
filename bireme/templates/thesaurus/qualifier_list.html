@@ -13,7 +13,17 @@
     <input type="hidden" name="orderby" value="{{ actions.orderby }}">
     <input type="hidden" name="order" value="{{ actions.order }}">
     <input type="hidden" name="page" value="{{ actions.page }}">
-    <input type='hidden' name="s"  value="{{ actions.s }}">
+
+    <input type="hidden" name="qualifier_name" value="{{ actions.qualifier_name }}">
+    <input type="hidden" name="filter_language" value="{{ actions.filter_language }}">
+    <input type="hidden" name="abbreviation" value="{{ actions.abbreviation }}">
+    <input type="hidden" name="qualifier_ui" value="{{ actions.qualifier_ui }}">
+    <input type="hidden" name="decs_code" value="{{ actions.decs_code }}">
+    <input type="hidden" name="tree_number" value="{{ actions.tree_number }}">
+
+
+    <input type="hidden" name="visited" value="{{ actions.visited }}">
+
 </form>
 
 
@@ -21,7 +31,9 @@
 <div class='header'>
     <h2>
         <i class='icon-file'></i> {% trans "Qualifiers" %}
+        {% if paginator.count %}
         <span class="badge badge-info" style="vertical-align: middle;">{{ paginator.count }}</span>
+        {% endif %}
     </h2>
     <div class='pull-right'>
         <a href="{% url 'create_qualifier' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Qualifier" %}</a>
@@ -30,69 +42,72 @@
 
 <div class='body'>    
     <ul class="nav nav-tabs" id='tab'>
-            <li class="">
-                <a href="{% url 'list_descriptor' %}"><strong>{% trans "Descriptors" %}</strong></a>
-            </li>
-            <li class="active">
-                <a href="{% url 'list_qualifier' %}"><strong>{% trans "Qualifiers" %}</strong></a>
-            </li>
+        <li class="">
+            <a href="{% url 'list_descriptor' %}"><strong>{% trans "Descriptors" %}</strong></a>
+        </li>
+        <li class="active">
+            <a href="{% url 'list_qualifier' %}"><strong>{% trans "Qualifiers" %}</strong></a>
+        </li>
     </ul>
 
 
-<div class="row">
-    <div class="span12">
-        <form name="search">
-            <input type="hidden" name="page" value="{{ actions.page }}">
-            {% trans "Qualifier" %}:
-            <input type="text" name="qualifier_name" class="input-medium" value="{{ param_qualifier_name }}">&nbsp;
-            {% trans "Abbreviation" %}:
-            <input type="text" name="abbreviation" class="input-small" value="{{ param_abbreviation }}">&nbsp;
-            {% trans "MESH Qualifier UI" %}:
-            <input type="text" name="qualifier_ui" class="input-small" value="{{ param_qualifier_ui }}">&nbsp;
-            {% trans "DeCS Qualifier UI" %}:
-            <input type="text" name="decs_code" class="input-small" value="{{ param_decs_code }}">
-            <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
-        </form>
+    <div class="row">
+        <div class="span12">
+            <form name="search">
+                <input type="hidden" name="page" value="">
+                <input type="hidden" name="visited" value="ok">
+
+                {% trans "Qualifier" %}:
+                <input type="text" name="qualifier_name" class="input-big" value="{{ actions.qualifier_name }}"  placeholder="{% trans "Search" %}">&nbsp;
+
+                {% trans "Language" %}:
+                <select name="filter_language">
+                    <option value="">{% trans "All" %}</option>
+                    <option value="en" {% if actions.filter_language == 'en' %}selected="true"{% endif %}>{% trans "English" %}</option>
+                    <option value="es" {% if actions.filter_language == 'es' %}selected="true"{% endif %}>{% trans "Spanish Latin America" %}</option>
+                    <option value="pt-br" {% if actions.filter_language == 'pt-br' %}selected="true"{% endif %}>{% trans "Portuguese" %}</option>
+                    <option value="es-es" {% if actions.filter_language == 'es-es' %}selected="true"{% endif %}>{% trans "Spanish Spain" %}</option>
+                    <option value="fr" {% if actions.filter_language == 'fr' %}selected="true"{% endif %}>{% trans "French" %}</option>
+                </select>
+
+                <br>
+
+                {% trans "Abbreviation" %}:
+                <input type="text" name="abbreviation" class="input-small" value="{{ actions.abbreviation }}">&nbsp;
+
+
+                {% trans "MESH Qualifier UI" %}:
+                <input type="text" name="qualifier_ui" class="input-small" value="{{ actions.qualifier_ui }}">&nbsp;
+
+                {% trans "DeCS Qualifier UI" %}:
+                <input type="text" name="decs_code" class="input-small" value="{{ actions.decs_code }}">
+
+                {% trans "Tree Number" %}:
+                <input type="text" name="tree_number" class="input-medium" value="{{ actions.tree_number }}">
+
+
+                <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
+            </form>
+        </div>
     </div>
-</div>
 
 
-          <div class="tab-pane active" id="tab-qualifier">
+    <div class="tab-pane active" id="tab-qualifier">
 
+        <div>
             <table class='table'>
                 <thead>
-                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
-                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Qualifier Name" %}</a></th>
-                    <th><a href="javascript:orderby('link');" id="id_link">{% trans "Abbreviation" %}</a></th>
-                    <th><a href="javascript:orderby('link');" id="id_link">{% trans "MESH Qualifier UI" %}</a></th>
-                    <th><a href="javascript:orderby('date');" id="id_date">{% trans "DeCS Qualifer UI" %}</a></th>
+                    <th><a href="javascript:orderby('qualifiers__qualifier_name');" id="id_qualifier_name">{% trans "Qualifier Name" %}</a></th>
+                    <th><a href="javascript:orderby('abbreviation');" id="id_abbreviation">{% trans "Abbreviation" %}</a></th>
+                    <th><a href="javascript:orderby('qualifier_ui');" id="id_qualifier_ui">{% trans "MESH Qualifier UI" %}</a></th>
+                    <th><a href="javascript:orderby('decs_code');" id="id_decs_code">{% trans "DeCS Qualifer UI" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
                 <tbody>
                     {% for obj in registers %}
+
                         <tr>
-                            <td><a href="{% url 'edit_qualifier' obj.id %}">{{ obj.id }}</a></td>
-                            <td>
-                              <!-- vem resultado da busca -->
-                              {% if obj.qualifiers__qualifier_name %}
-
-                                {{ obj.qualifiers__qualifier_name }}
-
-                              {% else %}
-                                <!-- vem no todo -->
-                                {% if obj.qualifier_name %}
-
-                                  {% for qualif in obj.qualifier_name %}
-
-                                      {{ qualif }} <br>
-
-                                  {% endfor %}
-
-                                {% endif %}
-
-                              {% endif  %}
-
-                            </td>
+                            <td>{{ obj.qualifiers__qualifier_name }} ({{ obj.qualifiers__language_code }})</td>
                             <td>{{ obj.abbreviation }}</td>
                             <td>{{ obj.qualifier_ui }}</td>
                             <td>{{ obj.decs_code }}</td>
@@ -102,13 +117,19 @@
 
                             </td>
                         </tr>
+                    {% empty %}
+                        {% if actions.visited %}
+                        <tr>
+                            <td colspan="5">{% trans "No results found" %}</td>
+                        </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
 
             {% include "pagination_generic.html" %}
 
-          </div>
+        </div>
 
     </div>
 

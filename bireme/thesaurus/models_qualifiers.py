@@ -5,26 +5,11 @@ from django.utils import timezone
 from utils.models import Generic, Country
 from django.contrib.contenttypes.generic import GenericRelation
 from main.models import SourceLanguage
-# from choices import *
+from choices import *
 
 from multiselectfield import MultiSelectField
 
 from .models_thesaurus import Thesaurus
-
-
-LANGUAGE_CODE_MESH=(
-            ('en', _("English")),
-            ('es', _("Spanish Latin America")),
-            ('pt-br', _("Portuguese")),
-            ('es-es', _("Spanish Spain")),
-            ('fr', _("French")),
-)
-
-
-YN_OPTION=(
-    ('Y','Yes'),('N','No')
-)
-
 
 
 class IdentifierQualif(models.Model):
@@ -60,9 +45,6 @@ class IdentifierQualif(models.Model):
     # DateEstablished
     date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
 
-    # def __unicode__(self):
-    #     return self.abbreviation
-
     def __unicode__(self):
         lang_code = get_language()
         translation = DescriptionQualif.objects.filter(identifier_id=self.id, language_code=lang_code)
@@ -81,7 +63,7 @@ class DescriptionQualif(models.Model):
     class Meta:
         verbose_name = _("Description of Qualifier")
         verbose_name_plural = _("Descriptions of Qualifier")
-        unique_together = ('language_code','qualifier_name')
+        unique_together = ('identifier','language_code','qualifier_name')
 
 
     identifier = models.ForeignKey(IdentifierQualif, related_name="qualifiers")
@@ -101,8 +83,9 @@ class DescriptionQualif(models.Model):
     online_note = models.TextField(_("Online note"), max_length=1500, blank=True)
 
     def __unicode__(self):
+        return self.id
         # return self.qualifier_name
-        return '%s%s%s%s' % (self.qualifier_name,' (',self.language_code,')')
+        # return '%s%s%s%s' % (self.qualifier_name,' (',self.language_code,')')
 
 
 
@@ -115,7 +98,7 @@ class TreeNumbersListQualif(models.Model):
         ordering = ('tree_number',)
         unique_together = ('identifier','tree_number')
 
-    identifier = models.ForeignKey(IdentifierQualif, blank=False)
+    identifier = models.ForeignKey(IdentifierQualif, related_name="qtreenumbers")
 
     # Tree Number
     tree_number = models.CharField(_("Tree number"), max_length=250, blank=False)
@@ -165,18 +148,6 @@ class TermListQualif(models.Model):
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
         unique_together = ('identifier','term_string','language_code')
-
-    LEXICALTAG_OPTION=(
-        ('ABB','ABB - Abbreviation'),
-        ('ABX','ABX - Embedded abbreviation'),
-        ('ACR','ACR - Acronym'),
-        ('ACX','ACX - Embedded acronym'),
-        ('EPO','EPO - Eponym'),
-        ('LAB','LAB - Lab number'),
-        ('NAM','NAM - Proper name'),
-        ('NON','NON - None'),
-        ('TRD','TRD - Trade name'),
-    )
 
     identifier = models.ForeignKey(IdentifierQualif, blank=False)
 
