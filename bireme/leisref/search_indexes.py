@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=False)
+    text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
     status = indexes.IntegerField(model_attr='status')
     scope_region = indexes.CharField()
