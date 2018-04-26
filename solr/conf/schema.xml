@@ -217,6 +217,7 @@
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
+   <field name="text" type="text" indexed="true" stored="false" multiValued="false"/>
    <field name="tw" type="text_with_decs" indexed="true" stored="false" multiValued="true"/>
  </fields>
 
@@ -229,8 +230,8 @@
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
  <solrQueryParser defaultOperator="AND"/>
 
+ <copyField source="text" dest="tw"/>
  <copyField source="title" dest="tw"/>
-
  <copyField source="originator" dest="tw"/>
  <copyField source="author" dest="tw"/>
  <copyField source="abstract" dest="tw"/>
