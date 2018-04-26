@@ -24,6 +24,10 @@ from django.utils.translation import ugettext_lazy as _, get_language
 from django.core.paginator import Paginator
 
 
+from django.contrib import messages
+
+
+
 ITEMS_PER_PAGE = 10
 
 
@@ -146,19 +150,24 @@ class DescUpdate(LoginRequiredView):
         return context
 
 
-
-class DescUpdateView(DescUpdate, UpdateView):
-    """
-    Used as class view to update Descriptors
-    Extend DescUpdate that do all the workTemefos
-    """
-
-
 class DescCreateView(DescUpdate, CreateView):
     """
     Used as class view to create Descriptors
     Extend DescUpdate that do all the work
     """
+    def get_success_url(self):
+        messages.success(self.request, 'foo')
+        return '/thesaurus/descriptors/edit/%s' % self.object.id
+
+
+class DescUpdateView(DescUpdate, UpdateView):
+    """
+    Used as class view to update Descriptors
+    Extend DescUpdate that do all the work
+    """
+    def get_success_url(self):
+        messages.success(self.request, 'foo')
+        return '/thesaurus/descriptors/edit/%s' % self.object.id
 
 
 class DescDeleteView(DescUpdate, DeleteView):
@@ -329,6 +338,9 @@ class QualifCreateView(QualifUpdate, CreateView):
     Used as class view to create Qualifiers
     Extend QualifUpdate that do all the work
     """
+    def get_success_url(self):
+        messages.success(self.request, 'foo')
+        return '/thesaurus/qualifiers/edit/%s' % self.object.id
 
 
 class QualifUpdateView(QualifUpdate, UpdateView):
@@ -336,6 +348,9 @@ class QualifUpdateView(QualifUpdate, UpdateView):
     Used as class view to update Qualifiers
     Extend QualifUpdate that do all the work
     """
+    def get_success_url(self):
+        messages.success(self.request, 'foo')
+        return '/thesaurus/qualifiers/edit/%s' % self.object.id
 
 
 class QualifDeleteView(QualifUpdate, DeleteView):

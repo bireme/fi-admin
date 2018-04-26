@@ -436,8 +436,17 @@
         </div>
 
         <div class="control-panel form-submit">
-            <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+            <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <font color="#333" size="4">
+                        <b>{% trans "Registry successfully saved" %}</b>
+                    </font>
+                {% endfor %}
+            {% endif %}
+
         </div>
 
     </form>
