@@ -156,7 +156,7 @@ class DescCreateView(DescUpdate, CreateView):
     Extend DescUpdate that do all the work
     """
     def get_success_url(self):
-        messages.success(self.request, 'foo')
+        messages.success(self.request, 'is created')
         return '/thesaurus/descriptors/edit/%s' % self.object.id
 
 
@@ -166,7 +166,7 @@ class DescUpdateView(DescUpdate, UpdateView):
     Extend DescUpdate that do all the work
     """
     def get_success_url(self):
-        messages.success(self.request, 'foo')
+        messages.success(self.request, 'is updated')
         return '/thesaurus/descriptors/edit/%s' % self.object.id
 
 
@@ -339,7 +339,7 @@ class QualifCreateView(QualifUpdate, CreateView):
     Extend QualifUpdate that do all the work
     """
     def get_success_url(self):
-        messages.success(self.request, 'foo')
+        messages.success(self.request, 'is created')
         return '/thesaurus/qualifiers/edit/%s' % self.object.id
 
 
@@ -349,7 +349,7 @@ class QualifUpdateView(QualifUpdate, UpdateView):
     Extend QualifUpdate that do all the work
     """
     def get_success_url(self):
-        messages.success(self.request, 'foo')
+        messages.success(self.request, 'is updated')
         return '/thesaurus/qualifiers/edit/%s' % self.object.id
 
 

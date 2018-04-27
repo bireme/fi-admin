@@ -21,7 +21,15 @@
 <div class='body'>
     <form method="POST" class="serial-form">
         <blockquote>
-            <h3>{{ object.qualifier_ui }}</h3>
+            <h4>
+                {% if object.qualifier_ui %}
+                    {% trans "MESH Qualifier UI" %}: {{ object.qualifier_ui }}<br>
+                {% endif %}
+
+                {% if object.decs_code %}
+                    {% trans "DeCS Descriptor UI" %}: {{ object.decs_code }}
+                {% endif %}
+            </h4>
         </blockquote>
 
         {% csrf_token %}

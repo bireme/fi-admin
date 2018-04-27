@@ -25,7 +25,7 @@ class IdentifierQualif(models.Model):
     thesaurus = models.ForeignKey(Thesaurus, null=True, blank=True, default=None)
 
     # MESH Qualifier Unique Identifier
-    qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True, unique=True)
+    qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True)
 
     # BIREME Qualifier Unique Identifier
     decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=False, unique=True)

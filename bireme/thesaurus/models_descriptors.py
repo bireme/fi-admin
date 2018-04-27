@@ -29,7 +29,7 @@ class IdentifierDesc(models.Model):
     descriptor_class = models.CharField(_("Descriptor class"), choices=DESCRIPTOR_CLASS_CODE, max_length=2, blank=True)
 
     # MESH Descriptor Unique Identifier
-    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True, unique=True)
+    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
 
     # BIREME Descriptor Unique Identifier
     decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=False, unique=True)
