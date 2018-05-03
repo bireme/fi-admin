@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% load app_filters %}
+
 {% load i18n %}
 
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
@@ -10,9 +13,6 @@
 
 {% block content %}
 <form name="actions">
-    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
-    <input type="hidden" name="order" value="{{ actions.order }}">
-    <input type="hidden" name="page" value="{{ actions.page }}">
 
     <input type="hidden" name="qualifier_name" value="{{ actions.qualifier_name }}">
     <input type="hidden" name="filter_language" value="{{ actions.filter_language }}">
@@ -23,6 +23,19 @@
 
 
     <input type="hidden" name="visited" value="{{ actions.visited }}">
+
+
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type="hidden" name="filter_language" value="{{ actions.filter_language }}">
+    <input type="hidden" name="filter_fields" value="{{ actions.filter_fields }}">
+    <input type="hidden" name="filter_status" value="{{ actions.filter_status }}">
+    <input type="hidden" name="visited" value="{{ actions.visited }}">
+    <input type='hidden' name="s" value="{{ actions.s }}">
+
+
+
 
 </form>
 
@@ -57,8 +70,28 @@
                 <input type="hidden" name="page" value="">
                 <input type="hidden" name="visited" value="ok">
 
-                {% trans "Qualifier" %}:
-                <input type="text" name="qualifier_name" class="input-big" value="{{ actions.qualifier_name }}"  placeholder="{% trans "Search" %}">&nbsp;
+                <input type='text' name="s" value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
+
+
+                {% trans "Status" %}:
+                <select name="filter_status">
+                    <option value="">{% trans "All" %}</option>
+                    <option value="-1" {% if actions.filter_status == '-1' %}selected="true"{% endif %}>{% trans "Draft" %}</option>
+                    <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Published" %}</option>
+                    <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
+                </select>
+
+
+                {% trans "Fields" %}:
+                <select name="filter_fields">
+                    <option value="">---</option>
+                    <option value="qualifier_name" {% if actions.filter_fields == 'qualifier_name' %}selected="true"{% endif %}>{% trans "Qualifier" %}</option>
+                    <option value="abbreviation" {% if actions.filter_fields == 'abbreviation' %}selected="true"{% endif %}>{% trans "Abbreviation" %}</option>
+                    <option value="term_string" {% if actions.filter_fields == 'term_string' %}selected="true"{% endif %}>{% trans "Synonymous" %}</option>
+                    <option value="qualifier_ui" {% if actions.filter_fields == 'qualifier_ui' %}selected="true"{% endif %}> {% trans "MESH Qualifier UI" %}</option>
+                    <option value="decs_code" {% if actions.filter_fields == 'decs_code' %}selected="true"{% endif %}>{% trans "DeCS Qualifier UI" %}</option>
+                    <option value="tree_number" {% if actions.filter_fields == 'tree_number' %}selected="true"{% endif %}>{% trans "Tree Number" %}</option>
+                </select>
 
                 {% trans "Language" %}:
                 <select name="filter_language">
@@ -69,21 +102,6 @@
                     <option value="es-es" {% if actions.filter_language == 'es-es' %}selected="true"{% endif %}>{% trans "Spanish Spain" %}</option>
                     <option value="fr" {% if actions.filter_language == 'fr' %}selected="true"{% endif %}>{% trans "French" %}</option>
                 </select>
-
-                <br>
-
-                {% trans "Abbreviation" %}:
-                <input type="text" name="abbreviation" class="input-small" value="{{ actions.abbreviation }}">&nbsp;
-
-
-                {% trans "MESH Qualifier UI" %}:
-                <input type="text" name="qualifier_ui" class="input-small" value="{{ actions.qualifier_ui }}">&nbsp;
-
-                {% trans "DeCS Qualifier UI" %}:
-                <input type="text" name="decs_code" class="input-small" value="{{ actions.decs_code }}">
-
-                {% trans "Tree Number" %}:
-                <input type="text" name="tree_number" class="input-medium" value="{{ actions.tree_number }}">
 
 
                 <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
@@ -101,26 +119,46 @@
                     <th><a href="javascript:orderby('abbreviation');" id="id_abbreviation">{% trans "Abbreviation" %}</a></th>
                     <th><a href="javascript:orderby('qualifier_ui');" id="id_qualifier_ui">{% trans "MESH Qualifier UI" %}</a></th>
                     <th><a href="javascript:orderby('decs_code');" id="id_decs_code">{% trans "DeCS Qualifer UI" %}</a></th>
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
                 <tbody>
                     {% for obj in registers %}
 
                         <tr>
-                            <td>{{ obj.qualifiers__qualifier_name }} ({{ obj.qualifiers__language_code }})</td>
+                            <td>
+                                {% if obj.qualifiers__qualifier_name %}
+                                    {{ obj.qualifiers__qualifier_name }} ({{ obj.qualifiers__language_code }})
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                             <td>{{ obj.abbreviation }}</td>
-                            <td>{{ obj.qualifier_ui }}</td>
+                            <td>
+                                {% if obj.qualifier_ui %}
+                                    {{ obj.qualifier_ui }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                             <td>{{ obj.decs_code }}</td>
+
+                            <td>
+                                {{ obj.status|display_status_label }}
+                            </td>
+
                             <td>
                                 <a href="{% url 'edit_qualifier' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                <a href="{% url 'delete_qualifier' obj.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
 
+
+<!--                                 <a href="{% url 'delete_qualifier' obj.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+ -->
                             </td>
                         </tr>
                     {% empty %}
                         {% if actions.visited %}
                         <tr>
-                            <td colspan="5">{% trans "No results found" %}</td>
+                            <td colspan="6">{% trans "No results found" %}</td>
                         </tr>
                         {% endif %}
                     {% endfor %}

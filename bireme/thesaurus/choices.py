@@ -46,3 +46,10 @@ LEXICALTAG_OPTION=(
     ('NON','NON - None'),
     ('TRD','TRD - Trade name'),
 )
+
+
+STATUS_CHOICES = (
+    (-1, _('Draft')),
+    (1, _('Published')),
+    (3, _('Deleted')),
+)

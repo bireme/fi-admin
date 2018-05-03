@@ -20,7 +20,7 @@ class IdentifierQualif(models.Model):
         ordering = ('abbreviation',)
         unique_together = ('thesaurus','abbreviation')
 
-    active = models.BooleanField(_("Enabled"), default=False, help_text=_("Check to set it to active"))
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
 
     thesaurus = models.ForeignKey(Thesaurus, null=True, blank=True, default=None)
 
@@ -149,7 +149,7 @@ class TermListQualif(models.Model):
         verbose_name_plural = _("Terms")
         unique_together = ('identifier','term_string','language_code')
 
-    identifier = models.ForeignKey(IdentifierQualif, blank=False)
+    identifier = models.ForeignKey(IdentifierQualif, related_name="termqualif")
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 

@@ -87,16 +87,16 @@
 
                     <table class="identifierdesc">
                         <thead>
-                            <th>{{ form.thesaurus.label }}</th>
-                            <th>{{ form.active.label }}</th>
+                            <th>{{ form.thesaurus.label }}<span class="mark">*</span></th>
+                            <th>{{ form.status.label }}<span class="mark">*</span></th>
                         </thead>
                         <tr>
                             <td>{{ form.thesaurus }}</td>
-                            <td><center>{{ form.active }}</center></td>
+                            <td><center>{{ form.status }}</center></td>
                         </tr>
                         <thead>
                             <th>{{ form.descriptor_ui.label }}</th>
-                            <th>{{ form.decs_code.label }}</th>
+                            <th>{{ form.decs_code.label }}<span class="mark">*</span></th>
                             <th>{{ form.external_code.label }}</th>
                             <th>{{ form.nlm_class_number.label }}</th>
                         </thead>
@@ -189,7 +189,7 @@
 
 
                             <tr>
-                                <td class="td-r" >{{ form.descriptor_name.label_tag }}</td>
+                                <td class="td-r">{{ form.descriptor_name.label_tag }}</td>
                                 <td class="td-l">{{ form.descriptor_name }}</td>
                                 <td class="td-r">{{ form.language_code.label_tag }}</td>
                                 <td class="td-l">{{ form.language_code }}</td>

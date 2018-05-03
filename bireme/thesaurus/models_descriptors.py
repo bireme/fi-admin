@@ -21,7 +21,9 @@ class IdentifierDesc(models.Model):
         verbose_name_plural = _("Descriptors")
         ordering = ('decs_code',)
 
-    active = models.BooleanField(_("Enabled"), default=False, help_text=_("Check to set it to active"))
+    # active = models.BooleanField(_("Enabled"), default=False, help_text=_("Check to set it to active"))
+
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
 
     thesaurus = models.ForeignKey(Thesaurus, null=True, blank=False, default=None)
 
@@ -200,7 +202,7 @@ class TermListDesc(models.Model):
         ordering = ('language_code','term_string',)
         unique_together = ('identifier','term_string','language_code')
 
-    identifier = models.ForeignKey(IdentifierDesc, blank=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="termdesc")
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
