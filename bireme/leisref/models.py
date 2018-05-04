@@ -230,11 +230,11 @@ class ActRelationType(Generic):
     scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
 
     def get_label_translations(self, field):
-        translation_list = ["%s^%s" % (self.language, getattr(self, field))]
+        translation_list = ["%s~%s" % (self.language, getattr(self, field))]
 
         translation = ActRelationTypeLocal.objects.filter(relation_type=self.id)
         if translation:
-            other_languages = ["%s^%s" % (trans.language, getattr(trans, field)) for trans in translation]
+            other_languages = ["%s~%s" % (trans.language, getattr(trans, field)) for trans in translation]
             translation_list.extend(other_languages)
 
         return translation_list
