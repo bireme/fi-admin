@@ -1,0 +1,42 @@
+{% load i18n %}
+{% load app_filters %}
+
+<div id='tab-adm' class="tab-pane">
+
+    <fieldset id="adm">
+        {{ formset_adm.management_form }}
+
+        {# only one set of fields are present for each center #}
+        {% for field in formset_adm.0 %}
+            {% if field.field|fieldtype == 'JSONFormField' or not field.is_hidden %}
+                <label for="{{ field.auto_id }}">
+                    {% if field.name in help_fields %}
+                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/biblioref/{{field.name}}/" class="field_with_help">{{ field.label }}</a>
+                    {% else %}
+                        {{ field.label }}
+                    {% endif %}
+                    {% if field.field.required %}
+                        <span class="mark">*</span>
+                    {% endif %}
+                </label>
+            {% endif %}
+
+            {{ field.errors }}
+
+            {% if field.field|fieldtype == 'JSONFormField' %}
+                <div class="row">
+                    <a onclick="javascript:field_assist('{{field.name}}', '{{field.html_name}}')" href="javascript:void(0);">
+                        <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                    </a>
+                </div>
+            {% endif %}
+
+            {{ field }}
+
+            {% if field.help_text != 'Enter valid JSON' %}
+                <p class="muted">{{ field.help_text }}</p>
+            {% endif %}
+
+        {% endfor %}
+    </fieldset>
+</div>

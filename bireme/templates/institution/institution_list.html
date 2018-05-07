@@ -78,7 +78,8 @@
             <table class='table'>
                 <thead>
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
-                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Institution" %}</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_cc">{% trans "CC" %}</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Name" %}</a></th>
                     <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
@@ -86,7 +87,14 @@
                     {% for institution in object_list %}
                         <tr>
                             <td><a href="{% url 'edit_institution' institution.id %}">{{ institution.id }}</a></td>
-                            <td><span title="{{ institution }}">{{ institution|slice:"50" }}{% if institution.name|length > 50 %}...{% endif %}</span></td>
+                            <td>{{ institution.cc_code }}</a></td>
+                            <td>
+                                <span title="{{ institution }}">
+                                    {{ institution|slice:"90" }}
+                                    {% if institution.has_unit %}
+                                        - {{ institution.units|join:" - " }}
+                                    {% endif %}
+                                    {% if institution|length > 90 %}...{% endif %}</span></td>
                             <td>{{ institution.status_label }}</a></td>
                             <td>
                                 <a href="{% url 'edit_institution' institution.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>

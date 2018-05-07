@@ -19,6 +19,11 @@ class InstitutionForm(forms.ModelForm):
 
         super(InstitutionForm, self).__init__(*args, **kwargs)
 
+        user_cc = self.user_data.get('user_cc', '')
+        # only enable edition of cc_code field for BIREME staff
+        if user_cc != 'BR1.1':
+            self.fields['cc_code'].widget = widgets.HiddenInput()
+
 class URLForm(forms.ModelForm):
     # add class to field
     url = forms.URLField(widget=widgets.URLInput(attrs={'class': 'input-xlarge'}))
@@ -37,21 +42,27 @@ class PhoneForm(forms.ModelForm):
     country_code = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-mini'}))
     phone_number = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-medium'}))
 
+class AdmForm(forms.ModelForm):
+    notes = forms.CharField(widget=widgets.Textarea(attrs={'class': 'input-xxlarge'}), required=False)
 
-class InstRelatedForm(forms.ModelForm):
     class Meta:
-        model = Institution
-        fields = ('status', 'type', 'name', 'acronym', 'country')
+        model = Adm
+        fields = '__all__'
+
+class UnitForm(forms.ModelForm):
+    class Meta:
+        model = Unit
+        fields = ('name', 'acronym', 'country')
 
     name = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-xxlarge'}))
 
     def clean_name(self):
         data = self.cleaned_data.get('name')
 
-        has_inst = Institution.objects.filter(name__iexact=data).exists()
+        has_inst = Unit.objects.filter(name__iexact=data).exists()
         if has_inst:
-            message = _("This institution already exist")
-            self.add_error('name', message)        
+            message = _("This unit already exist")
+            self.add_error('name', message)
 
         return data
 
@@ -69,6 +80,8 @@ PhoneFormSet = inlineformset_factory(Institution, ContactPhone, form=PhoneForm,
 EmailFormSet = inlineformset_factory(Institution, ContactEmail, form=EmailForm,
                                      fields='__all__', can_delete=True, extra=1)
 
-RelationFormSet = inlineformset_factory(Institution, Relationship,
-                                        fields='__all__', fk_name='institution',
-                                        can_delete=True, extra=1)
+UnitLevelFormSet = inlineformset_factory(Institution, UnitLevel,
+                                         fields='__all__', can_delete=True, extra=1)
+
+AdmFormSet = inlineformset_factory(Institution, Adm, form=AdmForm, extra=1,
+                                   max_num=1, can_delete=False)

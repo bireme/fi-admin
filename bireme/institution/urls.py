@@ -9,6 +9,6 @@ urlpatterns = [
     url(r'^edit/(?P<pk>\d+)/?$', InstUpdateView.as_view(), name='edit_institution'),
     url(r'^delete/(?P<pk>\d+)/?$', InstDeleteView.as_view(), name='delete_institution'),
 
-    url(r'^related/?$', RelatedListView.as_view(), name='institution_related'),
-    url(r'^add-related/', add_related_inst, name='add_related_inst'),
+    url(r'^unit/?$', UnitListView.as_view(), name='list_unit'),
+    url(r'^add-unit/', add_unit, name='add_unit'),
 ]

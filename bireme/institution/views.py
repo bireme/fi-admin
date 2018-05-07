@@ -36,16 +36,12 @@ class InstGenericListView(LoginRequiredView, ListView):
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
-        search_field = self.search_field + '__icontains'
 
-        # search by field
+        # search filter
         search = self.actions['s']
-        if ':' in search:
-            search_parts = search.split(':')
-            search_field = search_parts[0] + '__icontains'
-            search = search_parts[1]
+        search_filter = Q(name__icontains=search) | Q(cc_code__icontains=search) | Q(acronym__icontains=search)
 
-        object_list = self.model.objects.filter(**{search_field: search})
+        object_list = self.model.objects.filter(search_filter)
 
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
@@ -55,7 +51,7 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         # filter by institution of user
         if self.actions['filter_owner'] != "*":
-            object_list = object_list.filter(cooperative_center_code=user_data['user_cc'])
+            object_list = object_list.filter(cc_code=user_data['user_cc'])
 
         return object_list
 
@@ -78,12 +74,9 @@ class InstListView(InstGenericListView, ListView):
     """
     model = Institution
 
-class RelatedListView(ListView):
-    """
-    List legislation records (used by relationship popup selection window)
-    """
-    model = Institution
-    template_name = "institution/institution_related.html"
+class UnitListView(ListView):
+    model = Unit
+    template_name = "institution/institution_unit.html"
     paginate_by = 10
 
     def get_queryset(self):
@@ -93,21 +86,27 @@ class RelatedListView(ListView):
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
-        search = self.actions['s']
         param_country = self.request.GET.get('country')
+
+        search = self.actions['s']
+        search_filter = Q(name__icontains=search) | Q(acronym__icontains=search)
+
         object_list = []
 
         if search:
-            object_list = self.model.objects.filter(name__icontains=search, country=param_country)
+            object_list = self.model.objects.filter(search_filter)
         else:
-            object_list = self.model.objects.filter(country=param_country)
+            object_list = self.model.objects.all()
+
+        if param_country:
+            object_list = object_list.filter(country=param_country)
 
         return object_list
 
     def get_context_data(self, **kwargs):
-        context = super(RelatedListView, self).get_context_data(**kwargs)
+        context = super(UnitListView, self).get_context_data(**kwargs)
 
-        context['form'] = InstRelatedForm()
+        context['form'] = UnitForm()
         context['param_country'] = self.request.GET.get('country')
         context['actions'] = self.actions
 
@@ -126,7 +125,8 @@ class InstUpdate(LoginRequiredView):
         formset_phone = PhoneFormSet(self.request.POST, instance=self.object)
         formset_email = EmailFormSet(self.request.POST, instance=self.object)
         formset_url = URLFormSet(self.request.POST, instance=self.object)
-        formset_relation = RelationFormSet(self.request.POST, instance=self.object)
+        formset_unitlevel = UnitLevelFormSet(self.request.POST, instance=self.object)
+        formset_adm = AdmFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
@@ -135,12 +135,14 @@ class InstUpdate(LoginRequiredView):
         formset_phone_valid = formset_phone.is_valid()
         formset_email_valid = formset_email.is_valid()
         formset_url_valid = formset_url.is_valid()
-        formset_relation_valid = formset_relation.is_valid()
+        formset_unitlevel_valid = formset_unitlevel.is_valid()
+        formset_adm_valid = formset_adm.is_valid()
 
         user_data = additional_user_info(self.request)
 
         if (form_valid and formset_person_valid and formset_phone_valid and
-            formset_email_valid and formset_url_valid and formset_relation_valid):
+            formset_email_valid and formset_url_valid and formset_unitlevel_valid and
+            formset_adm_valid):
 
                 self.object = form.save()
 
@@ -156,8 +158,11 @@ class InstUpdate(LoginRequiredView):
                 formset_url.instance = self.object
                 formset_url.save()
 
-                formset_relation.instance = self.object
-                formset_relation.save()
+                formset_unitlevel.instance = self.object
+                formset_unitlevel.save()
+
+                formset_adm.instance = self.object
+                formset_adm.save()
 
                 # save metadata
                 form.save(commit=False)
@@ -171,13 +176,26 @@ class InstUpdate(LoginRequiredView):
                                                  formset_phone=formset_phone,
                                                  formset_email=formset_email,
                                                  formset_url=formset_url,
-                                                 formset_relation=formset_relation))
+                                                 formset_adm=formset_adm,
+                                                 formset_unitlevel=formset_unitlevel))
 
 
     def form_invalid(self, form):
             # force use of form_valid method to run all validations
             return self.form_valid(form)
 
+
+    def get_form_kwargs(self):
+        kwargs = super(InstUpdate, self).get_form_kwargs()
+
+        user_data = additional_user_info(self.request)
+
+        additional_form_parameters = {}
+        additional_form_parameters['user_data'] = user_data
+
+        kwargs.update(additional_form_parameters)
+
+        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(InstUpdate, self).get_context_data(**kwargs)
@@ -210,7 +228,8 @@ class InstUpdate(LoginRequiredView):
             context['formset_phone'] = PhoneFormSet(instance=self.object)
             context['formset_email'] = EmailFormSet(instance=self.object)
             context['formset_url'] = URLFormSet(instance=self.object)
-            context['formset_relation'] = RelationFormSet(instance=self.object)
+            context['formset_adm'] = AdmFormSet(instance=self.object)
+            context['formset_unitlevel'] = UnitLevelFormSet(instance=self.object)
 
         return context
 
@@ -252,27 +271,26 @@ class InstDeleteView(LoginRequiredView, DeleteView):
         ContactPhone.objects.filter(institution_id=obj.id).delete()
         ContactEmail.objects.filter(institution_id=obj.id).delete()
         URL.objects.filter(institution_id=obj.id).delete()
-        Relationship.objects.filter(institution_id=obj.id).delete()
 
         return super(InstDeleteView, self).delete(request, *args, **kwargs)
 
 
 @login_required
-def add_related_inst(request):
+def add_unit(request):
     """
-    Add institution with minimum fields for relationship
+    Add Unit
     """
     success_url = ''
     if request.method == 'POST':
-        form = InstRelatedForm(request.POST)
+        form = UnitForm(request.POST)
         print form.errors
         if form.is_valid():
-            new_inst = form.save()
-            success_url = "{0}/?s={1}&country={2}".format(reverse_lazy('institution_related'),
-                                                            new_inst, new_inst.country.id)
+            new_unit = form.save()
+            success_url = "{0}/?s={1}&country={2}".format(reverse_lazy('list_unit'),
+                                                          new_unit.name, new_unit.country.id)
         else:
             param_country = request.POST.get('country')
-            return render(request, 'institution/institution_related.html',
+            return render(request, 'institution/institution_unit.html',
                           {'form': form, 'param_country': param_country})
 
     return HttpResponseRedirect(success_url)

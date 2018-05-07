@@ -7,7 +7,6 @@ from utils.models import Generic, Country
 from log.models import AuditLog
 
 STATUS_CHOICES = (
-    (-2, _('Institution related')),
     (-1, _('Draft')),
     (1, _('Published')),
     (2, _('Refused')),
@@ -61,11 +60,10 @@ class Institution(Generic, AuditLog):
         verbose_name_plural = _("Institutions")
 
     status = models.SmallIntegerField(_("Status"), choices=STATUS_CHOICES, null=True, default=-1)
-    type = models.ForeignKey(Type, verbose_name=_("Type"))
-    name = models.CharField(_("Name"), max_length=254, blank=True, unique=True)
+    cc_code = models.CharField(_('Center code'), max_length=55, blank=False, unique=True)
+    name = models.CharField(_("Name"), max_length=254, blank=True)
     acronym = models.CharField(_("Acronym"), max_length=55, blank=True)
-    cc_code = models.CharField(_('Center code'), max_length=55, blank=True)
-    country = models.ForeignKey(Country, verbose_name=_("Country"))
+    country = models.ForeignKey(Country, verbose_name=_("Country"), blank=True, null=True)
     address = models.CharField(_("Address"), max_length=255, blank=True)
     city = models.CharField(_("City"), max_length=155, blank=True)
     state = models.CharField(_("State"), max_length=155, blank=True)
@@ -75,11 +73,42 @@ class Institution(Generic, AuditLog):
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
     def __unicode__(self):
-        return self.name
+        return u"{acronym}{name}".format(acronym=self.acronym + ' - ' if self.acronym else '',
+                                         name=self.name)
+
+    def has_unit(self):
+        has_unit = UnitLevel.objects.filter(institution=self.pk).exists()
+        return has_unit
+
+    def units(self):
+        units = [unit_level.unit.name for unit_level in UnitLevel.objects.filter(institution=self.pk).order_by('level')]
+
+        return units
+
 
     def status_label(self):
         status_dict = dict(STATUS_CHOICES)
         return status_dict.get(self.status)
+
+
+# Administrative Information
+class Adm(models.Model, AuditLog):
+
+    class Meta:
+        verbose_name = _("Administrative information")
+        verbose_name_plural = _("Administrative informations")
+
+    institution = models.ForeignKey(Institution, null=True)
+    category = models.TextField(_('Category'), blank=True)
+    type = models.TextField(_("Institution type"), blank=True)
+    notes = models.TextField(_('Notes'), blank=True)
+
+    def get_parent(self):
+        return self.institution
+
+    def __unicode__(self):
+        return u"{0} | {1}".format(self.institution, self.type)
+
 
 # Contact phone
 class ContactPhone(models.Model, AuditLog):
@@ -174,27 +203,43 @@ class URL(models.Model, AuditLog):
     def __unicode__(self):
         return u"{0} - {1}".format(self.url_type, self.url)
 
-# Relationship
-class Relationship(models.Model, AuditLog):
+
+# Unit
+class Unit(models.Model, AuditLog):
+    class Meta:
+        verbose_name = _("Unit")
+        verbose_name_plural = _("Units")
+
+    name = models.CharField(_("Name"), max_length=254, blank=True)
+    acronym = models.CharField(_("Acronym"), max_length=55, blank=True)
+    country = models.ForeignKey(Country, verbose_name=_("Country"), blank=True, null=True)
+
+    def __unicode__(self):
+        unit_name = self.name
+        if self.acronym:
+            unit_name = u"{0} - {1}".format(self.name, self.acronym)
+
+        return unit_name
+
+# Hierarchical Level
+class UnitLevel(models.Model, AuditLog):
     LEVEL_CHOICES = (
-        ('2', _('Second level')),
-        ('3', _('Third level')),
-        ('4', _('Fourth level')),
+        (1, _('First level')),
+        (2, _('Second level')),
+        (3, _('Third level')),
     )
 
     class Meta:
-        verbose_name = _("Relationship")
-        verbose_name_plural = _("Relationships")
+        verbose_name = _("Hierarchical level")
+        verbose_name_plural = _("Hierarchical levels")
 
-    # field used in django one to one relationship
-    institution = models.ForeignKey(Institution, related_name='related', null=True)
-    # relatonship level
-    relation_level = models.CharField(_("Level"), max_length=45, choices=LEVEL_CHOICES)
-    # field to inform a institution already present in database
-    inst_related = models.ForeignKey(Institution, verbose_name=_("Institution"), related_name="referred", null=True)
+    institution = models.ForeignKey(Institution, null=True)
+    # hierarchical level
+    level = models.PositiveSmallIntegerField(_("Level"), choices=LEVEL_CHOICES)
+    unit = models.ForeignKey(Unit, verbose_name=_("Unit"), null=True)
 
     def get_parent(self):
         return self.institution
 
     def __unicode__(self):
-        return u"{0} - {1}".format(self.relation_level, self.inst_related)
+        return u'{0} - {1}'.format(UnitLevel.LEVEL_CHOICES[self.level-1][1], self.unit)

@@ -1,43 +1,43 @@
 {% load app_filters %}
 {% load i18n %}
 
-<div id='tab-relationship' class="tab-pane">
+<div id='tab-unitlevel' class="tab-pane">
 
-    {% for error in formset_relation.non_form_errors  %}
+    {% for error in formset_unitlevel.non_form_errors  %}
         <p class="errorlist alert alert-error">
             {{ error|escape }}
         </p>
     {% endfor %}
 
-    <fieldset id="relationship">
+    <fieldset id="unitlevel">
         <table class="table table-condensed table-striped span10">
             <thead>
                 <th>{% trans "Level" %}</th>
-                <th>{% trans "Institution" %}</th>
+                <th>{% trans "Unit" %}</th>
                 <th>{% trans "Delete?" %}</th>
             </thead>
 
             <tbody>
             {% if user_can_edit %}
 
-                {{ formset_relation.management_form }}
+                {{ formset_unitlevel.management_form }}
 
-                {% for form in formset_relation %}
+                {% for form in formset_unitlevel %}
                     {% for hidden in form.hidden_fields %}
                         {{ hidden }}
                     {% endfor %}
-                    <tr id="relation-{{ forloop.counter0 }}" class="relation-row{% if form.errors %} error{% endif %} formset-row relation_formset">
+                    <tr id="unit-{{ forloop.counter0 }}" class="unit-row{% if form.errors %} error{% endif %} formset-row unitlevel_formset">
                         {% for field in form.visible_fields %}
-                            {% if field.name == 'inst_related' %}
+                            {% if field.name == 'unit' %}
                                 <td>
                                     {{ field.as_hidden }}
-                                    <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:inst_related(this)">
+                                    <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:inst_unit(this)">
                                         {% spaceless %}
                                         {% if field.value == None or field.value == '' %}
                                             {% trans "Select by search" %}
                                         {% else %}
                                             {% if form.instance.pk %}
-                                                {{ form.instance.inst_related }}
+                                                {{ form.instance.unit }}
                                             {% else %}
                                                 {{ field.value }}
                                             {% endif %}
@@ -57,7 +57,7 @@
                     </tr>
                 {% endfor %}
             {% else %}
-                {% for form in formset_relation %}
+                {% for form in formset_unitlevel %}
                     {% for field in form %}
                         <td>
                             {{ field }}

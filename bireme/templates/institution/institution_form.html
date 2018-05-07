@@ -34,7 +34,10 @@
         <li><a href="#tab-person" data-toggle="tab"><i class="icon-user"></i> {% trans "Persons" %}{% if formset_person.errors and not formset_person.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         <li><a href="#tab-contact" data-toggle="tab"><i class="icon-book"></i>  {% trans "Phones/Emails" %}{% if formset_phone.errors and not formset_phone.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         <li><a href="#tab-url" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Sites" %}{% if formset_url.errors and not formset_url.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
-        <li><a href="#tab-relationship" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Units" %}{% if formset_relation.errors and not formset_relation.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-unitlevel" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Units" %}{% if formset_unitlevel.errors and not formset_unitlevel.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        {% if user_cc = 'BR1.1' %}
+            <li><a href="#tab-adm" data-toggle="tab"><i class="icon-folder-open"></i>  {% trans "Administrative" %}{% if formset_adm.errors and not formset_adm.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        {% endif %}
     </ul>
 
     <div class="dedup-alert well fixed-alert" style="display: none">
@@ -175,8 +178,12 @@
             <!-- URL FORMSET -->
             {% include "institution/fieldset_url.html" %}
 
-            <!-- RELATIONSHIP FORMSET -->
-            {% include "institution/fieldset_relationship.html" %}
+            <!-- UNIT LEVEL FORMSET -->
+            {% include "institution/fieldset_unitlevel.html" %}
+
+            <!-- ADM FORMSET -->
+            {% include "institution/fieldset_adm.html" %}
+
 
             <div id='tab-thematic' class="tab-pane">
                 <fieldset id="thematic">
@@ -303,91 +310,43 @@
                     prefix: '{{ formset_email.prefix }}'
             });
 
-            $('.relation-row').formset({
+            $('.unit-row').formset({
                     addText : '{% trans "Add Unit" %}',
                     deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
-                    formCssClass: 'relationship_formset',
-                    prefix: '{{ formset_relationship.prefix }}'
-            });
-
-            $('.thematic-row').formset({
-                    addText : '{% trans "Add thematic area" %}',
-                    deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'btn',
-                    keepFieldValues: '.keep-field-value',
-                    formCssClass: 'thematic_formset',
-                    prefix: '{{ formset_thematic.prefix }}'
+                    formCssClass: 'unitlevel_formset',
+                    prefix: '{{ formset_unitlevel.prefix }}'
             });
 
             var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
             var eventer = window[eventMethod];
             var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
-
-            // Listen to message from child window
-            eventer(messageEvent,function(e) {
-                var decs_data = e.data;
-                var pipe_pos = decs_data.lastIndexOf('|');
-                var decs_text = decs_data.substring(0, pipe_pos);
-                var decs_code = decs_data.substring(pipe_pos+1);
-
-                var decs_row = decs_field.replace( /[A-Za-z_$-]/g, '');
-                // set code, text and label for the new descriptor
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);
-                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(decs_text);
-                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
-
-            },false);
-
-            $(document).on("click", "a.add_error_report", function(){
-                $("#error_report_modal").modal("show");
-            });
-
             // load multiselect plugin (indexed database field)
             $('#multiselect').multiselect();
 
         })
 
-        function replace_list_options(list_id, option_list){
-            list_selector = '#' + list_id
-            $(list_selector + ' option').remove();
-            $('<option>').val('').text('----------').appendTo(list_selector);
-            for (o = 0; o < option_list.length; o++){
-                option = option_list[o];
-                // console.log(option.value + ": " + option.name);
-                $('<option>').val(option.value).text(option.name).appendTo(list_selector);
-            }
-        }
-
-        function decs_search(obj){
-            var row = $(obj).parent();
-            decs_field = row.find('input').attr('name');
-            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
-        }
-
         function dismissRelatedLookupPopup(chosenId, chosenLabel) {
             // set code, text and label for the new descriptor
-            $('#label_related-' + inst_related_row_id + '-inst_related').html(chosenLabel);
-            $('#label_related-' + inst_related_row_id + '-inst_related').removeClass("placeholder-style");
+            $('#label_unitlevel_set-' + inst_unit_row_id + '-unit').html(chosenLabel);
+            $('#label_unitlevel_set-' + inst_unit_row_id + '-unit').removeClass("placeholder-style");
 
             // set the value of hidden input
-            $('#id_related-' + inst_related_row_id + '-inst_related').val(chosenId);
+            $('#id_unitlevel_set-' + inst_unit_row_id + '-unit').val(chosenId);
 
             inst_win.close();
         }
 
-        function inst_related(obj){
+        function inst_unit(obj){
             var row = $(obj).parent();
             this_name = row.find('input').attr('name');
-            inst_related_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
+            inst_unit_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
 
             country_id = $('#id_country').find("option:selected").val();
-            inst_win = window.open('{% url "institution_related" %}?country=' + country_id, 'inst_related', 'scrollbars=1,width=785,height=590');
+            inst_win = window.open('{% url "list_unit" %}?country=' + country_id, 'inst_related', 'scrollbars=1,width=785,height=590');
         }
 
         $("#save-published").click(function() {
@@ -400,44 +359,5 @@
             $('#save_status').text(new_status_label);
         });
 
-        // watch for change at specific fields for duplicated dectection
-        $("#id_act_number").bind("change", check_duplication);
-
-        function check_duplication() {
-            status = $('#id_status').val();
-            act_number_val = $("#id_act_number").val();
-            act_type_val = $("#id_act_type").val();
-
-            check_url = '{% url "act_check_duplication" "9999" "act_number" %}';
-            check_url = check_url.replace('9999', act_type_val);
-            check_url = check_url.replace('act_number', act_number_val);
-            console.log(check_url);
-
-            if (status < 1 && act_number_val){
-                $.ajax({
-                  method: "get",
-                  url: check_url,
-                  dataType: "json",
-                  success: function(dup_list){
-                      if (dup_list.length > 0) {
-                          $('.dedup-alert').show();
-                          $('.dedup-alert').addClass('animated shake');
-                          $('#dedup_result .modal-body').empty();
-                          for (i = 0; i < dup_list.length; i++){
-                              pos = i+1;
-                              act = dup_list[i];
-                              act_id = act['id'];
-                              detail_url = '{% url "list_institution" %}edit/' + act_id ;
-                              $('#dedup_result .modal-body').append($('<div>', {
-                                    html: pos + '. <a href="' + detail_url + '" target="_dedup">' + act['title'] + '</a></div>'
-                              }));
-                          }
-                      }else{
-                        $('.dedup-alert').hide();
-                      }
-                  }
-               });
-           }
-        };
    </script>
 {% endblock %}

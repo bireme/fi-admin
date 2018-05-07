@@ -21,8 +21,8 @@
 <form name="actions">
     <input type="hidden" name="orderby" value="{{ actions.orderby }}">
     <input type="hidden" name="order" value="{{ actions.order }}">
-    <input type="hidden" name="page" value="{{ actions.page }}">
     <input type='hidden' name="s"  value="{{ actions.s }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
 </form>
 
 <div class="row">
@@ -30,6 +30,7 @@
         <form name="search">
             {% trans "Name" %}:
             <input type="text" name="s" class="input-xlarge" value="{{ actions.s }}">
+            <input type="hidden" name="page" value="{{ actions.page }}">
             <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
         </form>
     </div>
@@ -37,15 +38,15 @@
 
 <div>
     {% if object_list|length > 0 %}
-        <h4>{% trans "Select the institution" %}</h4>
+        <h4>{% trans "Select the unity" %}</h4>
         <table class='table'>
             <thead>
                 <th><a href="javascript:orderby('name');" id="id_title">{% trans "Name" %}</a></th>
             </thead>
             <tbody>
-                {% for institution in object_list %}
+                {% for unit in object_list %}
                     <tr>
-                        <td><a href="#" onclick="opener.dismissRelatedLookupPopup('{{ institution.id }}', '{{ institution }}' ); return false;">{{ institution }}</a></td>
+                        <td><a href="#" onclick="opener.dismissRelatedLookupPopup('{{ unit.id }}', '{{ unit }}' ); return false;">{{ unit }}</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -54,11 +55,11 @@
         {% include "pagination_generic.html" %}
     {% else %}
         <div class="alert alert-info">
-            {% trans "No institution was found" %}
+            {% trans "No unit was found" %}
         </div>
     {% endif %}
 
-    <a href="#" onclick="$('#create_new').toggle()" class="btn btn-success"><i class="icon-plus"></i> {% trans "Create new institution related" %}</a>
+    <a href="#" onclick="$('#create_new').toggle()" class="btn btn-success"><i class="icon-plus"></i> {% trans "Create new unity" %}</a>
 
     <div class="{% if not form.errors %}hide{% endif %}" id="create_new">
         {% if form.non_field_errors %}
@@ -67,18 +68,10 @@
             </div>
         {% endif %}
 
-        <form method="POST" class="new_inst_form" action="{% url 'add_related_inst' %}">
+        <form method="POST" class="new_unit" action="{% url 'add_unit' %}">
             {% csrf_token %}
-            <input type="hidden" name="status" value="-2" />
             <input type="hidden" name="country" value="{{param_country}}" />
 
-            <div class="row-fluid" style="margin-top: 30px">
-                <div class="span5">
-                    {% trans "Type" %}:<br/>
-                    {{ form.type.errors }}
-                    {{ form.type}}
-                </div>
-            </div>
             <div class="row-fluid">
                 <div class="span7">
                     {% trans "Name" %}:<br/>
