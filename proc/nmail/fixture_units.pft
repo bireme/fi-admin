@@ -1,0 +1,29 @@
+proc('d9995a9995|',getenv('PK_INCREASE_NUMBER'),'|')
+
+if mfn=1 then '['/ fi,
+
+ '{',/
+    c4,'"pk": ', mfn(0),','/
+    c4,'"model": ','"institution.unit",'/
+
+    c4,'"fields": {',/
+        c8,'"name": "',v1,'",'/,
+        if p(v3) and val(v3) > 0 then c8,'"country": ',f(val(v3),1,0),','/, fi,
+        c8,'"acronym": "',v2,'"'/,
+    c4,'}',/
+ '},'/
+
+ '{',/
+
+     c4,'"pk": null,'/
+     c4,'"model": ','"institution.unitlevel",'/
+
+     c4,'"fields": {',/
+         c8,'"institution": ',f(val(v5),1,0),','/
+         c8,'"unit": ',mfn(0),','/
+         c8,'"level": ',v4,/
+     c4,'}',/
+ '},'/
+
+
+if mfn=MAXMFN-1 then ']'/ fi,
