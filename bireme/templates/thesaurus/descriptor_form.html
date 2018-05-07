@@ -51,6 +51,15 @@
         <li>
             <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
         </li>
+
+        <li>
+            <a href="#tab-termlistdesc" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
+        </li>
+
+        <li>
+            <a href="#tab-conceptlistdesc" class="{% if formset_concept.errors and not formset_concept.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
+        </li>
+
         <li>
             <a href="#tab-descriptiondesc" class="{% if formset_descriptor.errors and not formset_descriptor.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
         </li>
@@ -59,12 +68,6 @@
         </li>
         <li>
             <a href="#tab-previousindexinglistdesc" class="{% if formset_previous.errors and not formset_previous.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
-        </li>
-        <li>
-            <a href="#tab-conceptlistdesc" class="{% if formset_concept.errors and not formset_concept.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
-        </li>
-        <li>
-            <a href="#tab-termlistdesc" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
         </li>
     </ul>
 
