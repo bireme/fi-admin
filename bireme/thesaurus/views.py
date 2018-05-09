@@ -53,6 +53,7 @@ ACTIONS = {
 
     'visited': '',
     's': '',
+    'exact': '',
 }
 
 # Descriptors ------------------------------------------------------------------------
@@ -201,51 +202,130 @@ class DescListView(LoginRequiredView, ListView):
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
-        # AND performance
-        if self.actions['s']:
-            object_list = IdentifierDesc.objects.filter(descriptors__descriptor_name__icontains=self.actions['s']).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+        # icontains X exact -------------------------------------------------------------------------------------
+        if self.actions['exact']:
+            q_descriptor_name = Q(descriptors__descriptor_name=self.actions['s'])
         else:
-            object_list = IdentifierDesc.objects.all().values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+            q_descriptor_name = Q(descriptors__descriptor_name__icontains=self.actions['s'])
 
-        # The choice of language is mandatory to load the result and to use the filters of the next fields
-        if self.actions['s'] and self.actions['filter_language']:
-            object_list = IdentifierDesc.objects.filter(
-                descriptors__descriptor_name__icontains=self.actions['s'],
-                descriptors__language_code=self.actions['filter_language'],
-                ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+        # term_string
+        if self.actions['filter_fields'] == 'term_string' and self.actions['exact']:
+            q_term_string = Q(termdesc__term_string=self.actions['s'])
+        else:
+            if self.actions['filter_fields'] == 'term_string' and not self.actions['exact']:
+                q_term_string = Q(termdesc__term_string__icontains=self.actions['s'])
 
-        if not self.actions['s'] and self.actions['filter_language']:
-            object_list = IdentifierDesc.objects.filter(
-                descriptors__language_code=self.actions['filter_language'],
-                ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+        # filter_language
+        if self.actions['filter_language'] and not self.actions['filter_fields'] == 'term_string':
+            q_filter_language = Q(descriptors__language_code=self.actions['filter_language'])
+        else:
+            q_filter_language = Q(termdesc__language_code=self.actions['filter_language'])
 
         # status
         if self.actions['filter_status']:
-            object_list = object_list.filter(status=self.actions['filter_status'])
+            q_filter_status = Q(status=self.actions['filter_status'])
 
-        # term_string
-        if self.actions['filter_fields'] == 'term_string' and self.actions['s']:
-            object_list = IdentifierDesc.objects.filter(
-                termdesc__term_string__icontains=self.actions['s'],
-                ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+        # icontains X exact -------------------------------------------------------------------------------------
 
-        # descriptor_ui
-        if self.actions['filter_fields'] == 'descriptor_ui' and self.actions['s']:
-            object_list = IdentifierDesc.objects.filter(
-                descriptor_ui=self.actions['s'],
-                ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+        # AND performance for Descriptor
+        if not self.actions['filter_fields'] == 'term_string':
+            if self.actions['s'] and not self.actions['filter_fields']:
+                object_list = IdentifierDesc.objects.filter( q_descriptor_name ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+            else:
+                object_list = IdentifierDesc.objects.all().values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
 
-        # decs_code
-        if self.actions['filter_fields'] == 'decs_code' and self.actions['s']:
-            object_list = IdentifierDesc.objects.filter(
-                decs_code=self.actions['s'],
-                ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+            # descriptor_name
+            if self.actions['filter_fields'] == 'descriptor_name' and self.actions['s']:
+                object_list = IdentifierDesc.objects.filter( q_descriptor_name ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
 
-        # tree_number
-        if self.actions['filter_fields'] == 'tree_number' and self.actions['s']:
-            object_list = IdentifierDesc.objects.filter(
-                dtreenumbers__tree_number=self.actions['s'],
-                ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+            # The choice of language is mandatory to load the result and to use the filters of the next fields
+            if self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierDesc.objects.filter( Q( q_descriptor_name & q_filter_language )
+                    ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            if not self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierDesc.objects.filter( q_filter_language ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # status
+            if self.actions['filter_status']:
+                object_list = object_list.filter(status=self.actions['filter_status'])
+
+
+            # descriptor_ui
+            if self.actions['filter_fields'] == 'descriptor_ui' and self.actions['s']:
+                object_list = IdentifierDesc.objects.filter(
+                    descriptor_ui=self.actions['s'],
+                    ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # descriptor_ui and filter_language
+            if self.actions['filter_fields'] == 'descriptor_ui' and self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierDesc.objects.filter( Q( descriptor_ui=self.actions['s'] ) & q_filter_language ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # descriptor_ui and filter_status
+            if self.actions['filter_fields'] == 'descriptor_ui' and self.actions['s'] and self.actions['filter_status']:
+                object_list = IdentifierDesc.objects.filter( Q( descriptor_ui=self.actions['s'] ) & q_filter_status ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # descriptor_ui and filter_language and filter_status
+            if self.actions['filter_fields'] == 'descriptor_ui' and self.actions['s'] and self.actions['filter_language'] and self.actions['filter_status']:
+                object_list = IdentifierDesc.objects.filter( Q( descriptor_ui=self.actions['s'] ) & q_filter_language & q_filter_status ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+
+            # decs_code
+            if self.actions['filter_fields'] == 'decs_code' and self.actions['s']:
+                object_list = IdentifierDesc.objects.filter(
+                    decs_code=self.actions['s'],
+                    ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # decs_code and filter_language
+            if self.actions['filter_fields'] == 'decs_code' and self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierDesc.objects.filter( Q( decs_code=self.actions['s'] ) & q_filter_language ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # decs_code and filter_status
+            if self.actions['filter_fields'] == 'decs_code' and self.actions['s'] and self.actions['filter_status']:
+                object_list = IdentifierDesc.objects.filter( Q( decs_code=self.actions['s'] ) & q_filter_status ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # decs_code and filter_language and filter_status
+            if self.actions['filter_fields'] == 'decs_code' and self.actions['s'] and self.actions['filter_language'] and self.actions['filter_status']:
+                object_list = IdentifierDesc.objects.filter( Q( decs_code=self.actions['s'] ) & q_filter_language & q_filter_status ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+
+            # tree_number
+            if self.actions['filter_fields'] == 'tree_number' and self.actions['s']:
+                object_list = IdentifierDesc.objects.filter(
+                    dtreenumbers__tree_number=self.actions['s'],
+                    ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # tree_number and filter_language
+            if self.actions['filter_fields'] == 'tree_number' and self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierDesc.objects.filter( Q( dtreenumbers__tree_number=self.actions['s']) & q_filter_language ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # tree_number and filter_status
+            if self.actions['filter_fields'] == 'tree_number' and self.actions['s'] and self.actions['filter_status']:
+                object_list = IdentifierDesc.objects.filter( Q( dtreenumbers__tree_number=self.actions['s'] ) & q_filter_status ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+            # tree_number and filter_language and filter_status
+            if self.actions['filter_fields'] == 'tree_number' and self.actions['s'] and self.actions['filter_language'] and self.actions['filter_status']:
+                object_list = IdentifierDesc.objects.filter( Q( dtreenumbers__tree_number=self.actions['s'] ) & q_filter_language & q_filter_status ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
+
+
+        # when term_string selected
+        if self.actions['filter_fields'] == 'term_string':
+            if self.actions['s'] and not self.actions['s'] == '*':
+                object_list = IdentifierDesc.objects.filter( q_term_string ).values('id','status','descriptor_ui','decs_code','termdesc__term_string','termdesc__language_code')
+            else:
+                object_list = IdentifierDesc.objects.filter( q_term_string ).values('id','status','descriptor_ui','decs_code','termdesc__term_string','termdesc__language_code')
+
+            # filter_language
+            if self.actions['filter_language']:
+                object_list = IdentifierDesc.objects.filter( Q( q_term_string & q_filter_language )
+                    ).values('id','status','descriptor_ui','decs_code','termdesc__term_string','termdesc__language_code')
+
+            # status
+            if self.actions['filter_status']:
+                object_list = object_list.filter(status=self.actions['filter_status']).values('id','status','descriptor_ui','decs_code','termdesc__term_string','termdesc__language_code')
+
+
+
 
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
@@ -402,63 +482,140 @@ class QualifListView(LoginRequiredView, ListView):
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
-        # AND performance
-        if self.actions['s']:
-            object_list = IdentifierQualif.objects.filter(qualifiers__qualifier_name__icontains=self.actions['s']).values('id','status','qualifier_ui','decs_code','qualifiers__qualifier_name','qualifiers__language_code')
+
+        # icontains X exact -------------------------------------------------------------------------------------
+        if self.actions['exact']:
+            q_qualifier_name = Q(qualifiers__qualifier_name=self.actions['s'])
         else:
-            object_list = IdentifierQualif.objects.all().values('id','status','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+            q_qualifier_name = Q(qualifiers__qualifier_name__icontains=self.actions['s'])
 
-        # The choice of language is mandatory to load the result and to use the filters of the next fields
-        if self.actions['s'] and self.actions['filter_language']:
-            object_list = IdentifierQualif.objects.filter(
-                qualifiers__qualifier_name__icontains=self.actions['s'],
-                qualifiers__language_code=self.actions['filter_language'],
-                ).values('id','status','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+        # term_string
+        if self.actions['filter_fields'] == 'term_string' and self.actions['exact']:
+            q_term_string = Q(termqualif__term_string=self.actions['s'])
+        else:
+            if self.actions['filter_fields'] == 'term_string' and not self.actions['exact']:
+                q_term_string = Q(termqualif__term_string__icontains=self.actions['s'])
 
-        if not self.actions['s'] and self.actions['filter_language']:
-            object_list = IdentifierQualif.objects.filter(
-                qualifiers__language_code=self.actions['filter_language'],
-                ).values('id','status','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+        # filter_language
+        if self.actions['filter_language'] and not self.actions['filter_fields'] == 'term_string':
+            q_filter_language = Q(qualifiers__language_code=self.actions['filter_language'])
+        else:
+            q_filter_language = Q(termqualif__language_code=self.actions['filter_language'])
 
         # status
         if self.actions['filter_status']:
-            object_list = object_list.filter(status=self.actions['filter_status'])
+            q_filter_status = Q(status=self.actions['filter_status'])
 
-        # abbreviation
-        if self.actions['filter_fields'] == 'abbreviation' and self.actions['s']:
-            object_list = IdentifierQualif.objects.filter(
-                abbreviation=self.actions['s'],
-                ).values('id','status','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+        # icontains X exact -------------------------------------------------------------------------------------
 
-        # term_string
-        if self.actions['filter_fields'] == 'term_string' and self.actions['s']:
-            object_list = IdentifierQualif.objects.filter(
-                termqualif__term_string__icontains=self.actions['s'],
-                ).values('id','status','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
 
-        # qualifier_ui
-        if self.actions['filter_fields'] == 'qualifier_ui' and self.actions['s']:
-            object_list = IdentifierQualif.objects.filter(
-                qualifier_ui=self.actions['s'],
-                ).values('id','status','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+        # AND performance
+        if not self.actions['filter_fields'] == 'term_string':
+            if self.actions['s'] and not self.actions['filter_fields']:
+                object_list = IdentifierQualif.objects.filter( q_qualifier_name ).values('id','status','abbreviation','qualifier_ui','decs_code','qualifiers__qualifier_name','qualifiers__language_code')
+            else:
+                object_list = IdentifierQualif.objects.all().values('id','status','abbreviation','qualifier_ui','decs_code','qualifiers__qualifier_name','qualifiers__language_code')
 
-        # decs_code
-        if self.actions['filter_fields'] == 'decs_code' and self.actions['s']:
-            object_list = IdentifierQualif.objects.filter(
-                decs_code=self.actions['s'],
-                ).values('id','status','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+            # qualifier_name
+            if self.actions['filter_fields'] == 'qualifier_name' and self.actions['s']:
+                object_list = IdentifierQualif.objects.filter( q_qualifier_name ).values('id','status','abbreviation','qualifier_ui','decs_code','qualifiers__qualifier_name','qualifiers__language_code')
 
-        # tree_number
-        if self.actions['filter_fields'] == 'tree_number' and self.actions['s']:
-            object_list = IdentifierQualif.objects.filter(
-                qtreenumbers__tree_number=self.actions['s'],
-                ).values('id','status','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+            # The choice of language is mandatory to load the result and to use the filters of the next fields
+            if self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierQualif.objects.filter( Q( q_qualifier_name & q_filter_language )).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+            if not self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierQualif.objects.filter( q_filter_language ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+
+            # status
+            if self.actions['filter_status']:
+                object_list = object_list.filter(status=self.actions['filter_status'])
+
+
+            # abbreviation
+            if self.actions['filter_fields'] == 'abbreviation' and self.actions['s']:
+                object_list = IdentifierQualif.objects.filter(
+                    abbreviation=self.actions['s'],
+                    ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+            # abbreviation and filter_language
+            if self.actions['filter_fields'] == 'abbreviation' and self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierQualif.objects.filter( Q( abbreviation=self.actions['s'] ) & q_filter_language ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+            # abbreviation and filter_language and filter_status
+            if self.actions['filter_fields'] == 'abbreviation' and self.actions['s'] and self.actions['filter_language'] and self.actions['filter_status']:
+                object_list = IdentifierQualif.objects.filter( Q( abbreviation=self.actions['s'] ) & q_filter_language & q_filter_status ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+
+            # qualifier_ui
+            if self.actions['filter_fields'] == 'qualifier_ui' and self.actions['s']:
+                object_list = IdentifierQualif.objects.filter(
+                    qualifier_ui=self.actions['s'],
+                    ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+            # qualifier_ui and filter_language
+            if self.actions['filter_fields'] == 'qualifier_ui' and self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierQualif.objects.filter( Q( qualifier_ui=self.actions['s'] ) & q_filter_language ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+            # qualifier_ui and filter_language and filter_status
+            if self.actions['filter_fields'] == 'qualifier_ui' and self.actions['s'] and self.actions['filter_language'] and self.actions['filter_status']:
+                object_list = IdentifierQualif.objects.filter( Q( qualifier_ui=self.actions['s'] ) & q_filter_language & q_filter_status ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+
+            # decs_code
+            if self.actions['filter_fields'] == 'decs_code' and self.actions['s']:
+                object_list = IdentifierQualif.objects.filter(
+                    decs_code=self.actions['s'],
+                    ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+            # decs_code and filter_language
+            if self.actions['filter_fields'] == 'decs_code' and self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierQualif.objects.filter( Q( decs_code=self.actions['s'] ) & q_filter_language ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+            # decs_code and filter_language and filter_status
+            if self.actions['filter_fields'] == 'decs_code' and self.actions['s'] and self.actions['filter_language'] and self.actions['filter_status']:
+                object_list = IdentifierQualif.objects.filter( Q( decs_code=self.actions['s'] ) & q_filter_language & q_filter_status ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+
+            # tree_number
+            if self.actions['filter_fields'] == 'tree_number' and self.actions['s']:
+                object_list = IdentifierQualif.objects.filter(
+                    qtreenumbers__tree_number=self.actions['s'],
+                    ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+            # tree_number and filter_language
+            if self.actions['filter_fields'] == 'tree_number' and self.actions['s'] and self.actions['filter_language']:
+                object_list = IdentifierQualif.objects.filter( Q( qtreenumbers__tree_number=self.actions['s'] ) & q_filter_language ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+            # tree_number and filter_language and filter_status
+            if self.actions['filter_fields'] == 'tree_number' and self.actions['s'] and self.actions['filter_language'] and self.actions['filter_status']:
+                object_list = IdentifierQualif.objects.filter( Q( qtreenumbers__tree_number=self.actions['s'] ) & q_filter_language & q_filter_status ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
+
+
+        # when term_string selected
+        if self.actions['filter_fields'] == 'term_string':
+            if self.actions['s'] and not self.actions['s'] == '*':
+                object_list = IdentifierQualif.objects.filter( q_term_string ).values('id','status','abbreviation','qualifier_ui','decs_code','termqualif__term_string','termqualif__language_code')
+            else:
+                object_list = IdentifierQualif.objects.filter( q_term_string ).values('id','status','abbreviation','qualifier_ui','decs_code','termqualif__term_string','termqualif__language_code')
+
+            # filter_language
+            if self.actions['filter_language']:
+                object_list = IdentifierQualif.objects.filter( Q( q_term_string & q_filter_language )
+                    ).values('id','status','abbreviation','qualifier_ui','decs_code','termqualif__term_string','termqualif__language_code')
+
+            # status
+            if self.actions['filter_status']:
+                object_list = object_list.filter(status=self.actions['filter_status']).values('id','status','abbreviation','qualifier_ui','decs_code','termqualif__term_string','termqualif__language_code')
+
 
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
         if self.actions['visited'] != 'ok':
             object_list = object_list.none()
+
 
         return object_list
 

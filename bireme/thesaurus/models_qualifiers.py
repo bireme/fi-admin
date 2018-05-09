@@ -17,7 +17,6 @@ class IdentifierQualif(models.Model):
     class Meta:
         verbose_name = _("Qualifier")
         verbose_name_plural = _("Qualifiers")
-        ordering = ('abbreviation',)
         unique_together = ('thesaurus','abbreviation')
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
