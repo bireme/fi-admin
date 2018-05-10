@@ -48,7 +48,7 @@ ACTIONS = {
     'tree_number': '',
 
     'orderby': 'id',
-    'order': '-',
+    'order': '',
     'page': 1,
 
     'visited': '',
@@ -227,7 +227,7 @@ class DescListView(LoginRequiredView, ListView):
 
         # icontains X exact -------------------------------------------------------------------------------------
 
-        # AND performance for Descriptor
+        # AND performance for Descriptor ------------------------------------------------------------------------
         if not self.actions['filter_fields'] == 'term_string':
             if self.actions['s'] and not self.actions['filter_fields']:
                 object_list = IdentifierDesc.objects.filter( q_descriptor_name ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
@@ -308,7 +308,8 @@ class DescListView(LoginRequiredView, ListView):
                 object_list = IdentifierDesc.objects.filter( Q( dtreenumbers__tree_number=self.actions['s'] ) & q_filter_language & q_filter_status ).values('id','status','descriptor_ui','decs_code','descriptors__descriptor_name','descriptors__language_code')
 
 
-        # when term_string selected
+
+        # when term_string selected -----------------------------------------------------------------------------
         if self.actions['filter_fields'] == 'term_string':
             if self.actions['s'] and not self.actions['s'] == '*':
                 object_list = IdentifierDesc.objects.filter( q_term_string ).values('id','status','descriptor_ui','decs_code','termdesc__term_string','termdesc__language_code')
@@ -325,10 +326,14 @@ class DescListView(LoginRequiredView, ListView):
                 object_list = object_list.filter(status=self.actions['filter_status']).values('id','status','descriptor_ui','decs_code','termdesc__term_string','termdesc__language_code')
 
 
-
-
+        # order performance -------------------------------------------------------------------------------------
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+        else:
+            if self.actions['filter_fields'] == 'term_string':
+                object_list = object_list.order_by('termdesc__term_string')
+            else:
+                object_list = object_list.order_by('descriptors__descriptor_name')
 
         if self.actions['visited'] != 'ok':
             object_list = object_list.none()
@@ -508,8 +513,7 @@ class QualifListView(LoginRequiredView, ListView):
 
         # icontains X exact -------------------------------------------------------------------------------------
 
-
-        # AND performance
+        # AND performance for Qualifier -------------------------------------------------------------------------
         if not self.actions['filter_fields'] == 'term_string':
             if self.actions['s'] and not self.actions['filter_fields']:
                 object_list = IdentifierQualif.objects.filter( q_qualifier_name ).values('id','status','abbreviation','qualifier_ui','decs_code','qualifiers__qualifier_name','qualifiers__language_code')
@@ -593,7 +597,7 @@ class QualifListView(LoginRequiredView, ListView):
                 object_list = IdentifierQualif.objects.filter( Q( qtreenumbers__tree_number=self.actions['s'] ) & q_filter_language & q_filter_status ).values('id','status','abbreviation','qualifier_ui','decs_code','abbreviation','qualifiers__qualifier_name','qualifiers__language_code')
 
 
-        # when term_string selected
+        # when term_string selected -----------------------------------------------------------------------------
         if self.actions['filter_fields'] == 'term_string':
             if self.actions['s'] and not self.actions['s'] == '*':
                 object_list = IdentifierQualif.objects.filter( q_term_string ).values('id','status','abbreviation','qualifier_ui','decs_code','termqualif__term_string','termqualif__language_code')
@@ -610,8 +614,15 @@ class QualifListView(LoginRequiredView, ListView):
                 object_list = object_list.filter(status=self.actions['filter_status']).values('id','status','abbreviation','qualifier_ui','decs_code','termqualif__term_string','termqualif__language_code')
 
 
+        # order performance -------------------------------------------------------------------------------------
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+        else:
+            if self.actions['filter_fields'] == 'term_string':
+                object_list = object_list.order_by('termqualif__term_string')
+            else:
+                object_list = object_list.order_by('qualifiers__qualifier_name')
+
 
         if self.actions['visited'] != 'ok':
             object_list = object_list.none()
