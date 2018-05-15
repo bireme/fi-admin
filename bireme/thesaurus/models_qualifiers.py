@@ -19,8 +19,6 @@ class IdentifierQualif(models.Model):
         verbose_name_plural = _("Qualifiers")
         unique_together = ('thesaurus','abbreviation')
 
-    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
-
     thesaurus = models.ForeignKey(Thesaurus, null=True, blank=True, default=None)
 
     # MESH Qualifier Unique Identifier
@@ -44,14 +42,25 @@ class IdentifierQualif(models.Model):
     # DateEstablished
     date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
 
+    # def __unicode__(self):
+    #     lang_code = get_language()
+    #     translation = DescriptionQualif.objects.filter(identifier_id=self.id, language_code=lang_code)
+    #     if translation:
+    #         treatment1 = translation[0].qualifier_name.replace('/','').upper()
+    #         return '%s%s%s' % (self.abbreviation,' - ',treatment1)
+    #     else:
+    #         return '%s%s' % (self.abbreviation,' - without description')
+
     def __unicode__(self):
         lang_code = get_language()
-        translation = DescriptionQualif.objects.filter(identifier_id=self.id, language_code=lang_code)
+        # translation = TermListQualif.objects.filter(identifier_id=self.id, language_code=lang_code, status=1)
+        translation = TermListQualif.objects.filter(identifier_id=self.id, language_code=lang_code)
         if translation:
-            treatment1 = translation[0].qualifier_name.replace('/','').upper()
+            treatment1 = translation[0].term_string.replace('/','').upper()
             return '%s%s%s' % (self.abbreviation,' - ',treatment1)
         else:
             return '%s%s' % (self.abbreviation,' - without description')
+
 
 
 
@@ -62,15 +71,15 @@ class DescriptionQualif(models.Model):
     class Meta:
         verbose_name = _("Description of Qualifier")
         verbose_name_plural = _("Descriptions of Qualifier")
-        unique_together = ('identifier','language_code','qualifier_name')
+        # unique_together = ('identifier')
 
 
     identifier = models.ForeignKey(IdentifierQualif, related_name="qualifiers")
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
-    # QualifierName
-    qualifier_name = models.CharField(_("Qualifier name"), max_length=250, blank=False)
+    # # QualifierName
+    # qualifier_name = models.CharField(_("Qualifier name"), max_length=250, blank=False)
 
     # Annotation
     annotation = models.TextField(_("Annotation"), max_length=1500, blank=True)
@@ -146,11 +155,14 @@ class TermListQualif(models.Model):
     class Meta:
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
-        unique_together = ('identifier','term_string','language_code')
+        # unique_together = ('identifier','term_string','language_code')
+        # unique_together = ('status','language_code','date_altered')
 
     identifier = models.ForeignKey(IdentifierQualif, related_name="termqualif")
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
+
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # ConceptPreferredTermYN
     concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=True)
@@ -168,13 +180,20 @@ class TermListQualif(models.Model):
     term_ui = models.CharField(_("Term unique identifier"), max_length=250, blank=True)
 
     # String
-    term_string = models.CharField(_("String"), max_length=250, blank=False)
+    term_string = models.CharField(_("String"), max_length=250, blank=True)
 
     # EntryVersion
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
 
     # DateCreated
     date_created = models.DateField(_("Date created"), blank=True, null=True)
+
+    # DateAltered
+    date_altered = models.DateField(_("Date altered"), blank=True, null=True)
+
+    # Historical annotation
+    historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
+
 
     def __unicode__(self):
         return self.id

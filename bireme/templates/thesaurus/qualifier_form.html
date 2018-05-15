@@ -29,11 +29,13 @@
     		{% endif %}
         {% else %}
             {% trans "Edit Qualifier" %}
-            {% for qualif in formset_descriptor %}
-                <input type="hidden" name="qualifier_info" value="{{ qualifier_info }}">
-                {% if qualifier_info == qualif.language_code.value %}
-                    : {{ qualif.qualifier_name.value }}
+
+            {% for term in formset_term %}
+                <input type="hidden" name="language_system" value="{{ language_system }}">
+                {% if language_system == term.language_code.value and term.concept_preferred_term.value == 'Y' %}
+                    : {{ term.term_string.value }}
                 {% endif %}
+
             {% endfor %}
         {% endif %}</h2>
 </div>
@@ -150,7 +152,20 @@
                             <font size="2">
                                 {% if form.instance.pk %}
                                     <font color="#333">
-                                    <b>{{ form.qualifier_name.value }} ({{ form.language_code.value }})</b>
+                                    <b>
+<!--                                     {{ form.qualifier_name.value }} ({{ form.language_code.value }}) -->
+
+                                    {% for info in info_term_string %}
+                                        {% if info.termqualif__language_code = form.language_code.value %}
+                                            {{ info.termqualif__term_string }}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    ({{ form.language_code.value }})
+
+
+
+                                    </b>
                                     </font>
                                 {% else %}
                                     {% trans 'New Record' %}
@@ -165,11 +180,11 @@
                             <tr>
 
                             {% if form.instance.pk %}
-                                <td colspan="4" class="td-r-del">
+                                <td colspan="2" class="td-r-del">
                                     {% trans 'Remove' %}? {{ form.DELETE }}
                                 </td>
                             {% else %}
-                                <td colspan="4" class="term-origin">&nbsp;
+                                <td colspan="2" class="term-origin">&nbsp;
                                 </td>
                             {% endif %}
 
@@ -178,36 +193,32 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="td-r">{{ form.qualifier_name.label_tag }}</td>
-                                <td class="td-l">
-                                {{ form.qualifier_name }}
-                                </td>
-                                <td class="td-r">{{ form.language_code.label_tag }}</td>
+                                <td width="20%" class="td-r">{{ form.language_code.label_tag }}</td>
                                 <td class="td-l">
                                 {{ form.language_code }}
                                 </td>
                             </tr>
                             <tr>
-                                <td class="td-r" colspan="1">{{ form.annotation.label_tag }}</td>
-                                <td colspan="3">
+                                <td width="20%" class="td-r">{{ form.annotation.label_tag }}</td>
+                                <td>
                                 {{ form.annotation }}
                                 </td>
                             </tr>
                             <tr>
-                                <td class="td-r" colspan="1">{{ form.history_note.label_tag }}</td>
-                                <td colspan="3">
+                                <td width="20%" class="td-r">{{ form.history_note.label_tag }}</td>
+                                <td>
                                 {{ form.history_note }}
                                 </td>
                             </tr>
                             <tr>
-                                <td class="td-r" colspan="1">{{ form.online_note.label_tag }}</td>
-                                <td colspan="3">
+                                <td width="20%" class="td-r">{{ form.online_note.label_tag }}</td>
+                                <td>
                                 {{ form.online_note }}
                                 </td>
                             </tr>
                             <tr>
-                                <td class="td-r" colspan="1">{{ form.scope_note.label_tag }}</td>
-                                <td colspan="3">
+                                <td width="20%" class="td-r">{{ form.scope_note.label_tag }}</td>
+                                <td>
                                 {{ form.scope_note }}
                                 </td>
                             </tr>
@@ -348,88 +359,56 @@
 
 
             <div id="tab-termlistqualif" class="tab-pane">
+
+
                 <fieldset id="termlistqualif">
 
                     {{ formset_term.management_form }}
+
+                    <!-- New register -->
                     {% for form in formset_term %}
+                        {% if not form.instance.pk %}
+                            {% include "thesaurus/fieldset_termlistqualif.html" %}
+                        {% endif %}
+                    {% endfor %}
+                    <br>
 
-                        {{ form.non_field_errors.as_ul }}
+                    <!-- Published -->
+                    <font class="color_status"><b>{% trans "Published" %}</b></font><br>
+                    {% for form in formset_term %}
+                        <!-- Preferred -->
+                        {% if form.status.value == 1 and form.concept_preferred_term.value = 'Y' and form.instance.pk %}
+                            {% include "thesaurus/fieldset_termlistqualif.html" %}
+                        {% endif %}
+                    {% endfor %}
 
-                        {% for field in form.visible_fields %}
-                            {% if field.errors %}
-                                <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
-                            {% endif %}
-                        {% endfor %}
+                    {% for form in formset_term %}
+                        <!-- Narrower -->
+                        {% if form.status.value == 1 and form.concept_preferred_term.value = 'N' and form.instance.pk %}
+                            {% include "thesaurus/fieldset_termlistqualif.html" %}
+                        {% endif %}
+                    {% endfor %}
+                    <br>
 
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
+                    <!-- Draft -->
+                    <font class="color_status"><b>{% trans "Draft" %}</b></font><br>
+                    {% for form in formset_term %}
+                        {% if form.status.value == -1 and form.instance.pk %}
+                            {% include "thesaurus/fieldset_termlistqualif.html" %}
+                        {% endif %}
+                    {% endfor %}
+                    <br>
 
-                    <table class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-target="#termlistqualif_{{ form.instance.pk }}">
-                            <font size="2">
-                                {% if form.instance.pk %}
-                                    <font color="#333">
-                                    <b>{{ form.term_string.value }} ({{ form.language_code.value }})</b>
-                                    </font>
-                                {% else %}
-                                    {% trans 'New Record' %}
-                                {% endif %}
-                            </font>
-                        </a>
-                    </table>
-
-                    <div id="termlistqualif_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
-
-                        <table class="termlistqualif" border="0">
-                            <tr>
-
-                            {% if form.instance.pk %}
-                                <td colspan="5" class="td-r-del">
-                                    {% trans 'Remove' %}? {{ form.DELETE }}
-                                </td>
-                            {% else %}
-                                <td colspan="5" class="term-origin">&nbsp;
-                                </td>
-                            {% endif %}
-
-                            <input name="{{termlistqualif}}_DELETE" id="id_{{termlistqualif}}_DELETE" type="hidden">
-
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="2" class="term_string" width="40%">{{ form.term_string.label_tag }}</td>
-                                <td>{{ form.language_code.label_tag }}</td>
-                                <td>{{ form.term_ui.label_tag }}</td>
-                                <td>{{ form.date_created.label_tag }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="term_string" width="40%">{{ form.term_string }}</td>
-                                <td>{{ form.language_code }}</td>
-                                <td>{{ form.term_ui }}</td>
-                                <td>{{ form.date_created }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ form.concept_preferred_term.label_tag }}</td>
-                                <td>{{ form.is_permuted_term.label_tag }}</td>
-                                <td>{{ form.lexical_tag.label_tag }}</td>
-                                <td>{{ form.record_preferred_term.label_tag }}</td>
-                                <td>{{ form.entry_version.label_tag }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ form.concept_preferred_term }}</td>
-                                <td>{{ form.is_permuted_term }}</td>
-                                <td>{{ form.lexical_tag }}</td>
-                                <td>{{ form.record_preferred_term }}</td>
-                                <td>{{ form.entry_version }}</td>
-                            </tr>
-                        </table>
-                        <br>
-                    </div>
+                    <!-- Historical -->
+                    <font class="color_status"><b>{% trans "Historical" %}</b></font><br>
+                    {% for form in formset_term %}
+                        {% if form.status.value == 5 and form.instance.pk %}
+                            {% include "thesaurus/fieldset_termlistqualif.html" %}
+                        {% endif %}
                     {% endfor %}
 
                 </fieldset>
+
 
         </div>
 
@@ -531,6 +510,17 @@
             //         return false;
             //     }
             // });
+
+            // Alerta sobre não preenchimento
+            $('[id^="id_termqualif-"]').on('blur', function() {
+                val = $(this).val();
+                if ( val == '' ){
+                    alert('{% trans "Warning: Field is empty!" %}');
+                    return false;
+                }
+            });
+
+
 
 
         })

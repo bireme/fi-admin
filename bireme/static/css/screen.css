@@ -634,7 +634,7 @@ tr.relation-row td input, tr.relation-row td select{
     border: solid 1px #cccccc;
 }
 
-.descriptiondesc textarea, .descriptionqualif textarea{
+.descriptiondesc textarea, .descriptionqualif textarea, .termlistdesc textarea, .termlistqualif textarea{
     width: 98%;
     height: 50px;
 }
@@ -703,3 +703,10 @@ tr.relation-row td input, tr.relation-row td select{
 }
 
 
+/*status*/
+.color_status{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #08c;
+}

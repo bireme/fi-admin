@@ -21,10 +21,6 @@ class IdentifierDesc(models.Model):
         verbose_name_plural = _("Descriptors")
         ordering = ('decs_code',)
 
-    # active = models.BooleanField(_("Enabled"), default=False, help_text=_("Check to set it to active"))
-
-    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
-
     thesaurus = models.ForeignKey(Thesaurus, null=True, blank=False, default=None)
 
     # DescriptorClass
@@ -64,14 +60,11 @@ class DescriptionDesc(models.Model):
     class Meta:
         verbose_name = _("Description")
         verbose_name_plural = _("Descriptions")
-        unique_together = ('language_code','descriptor_name')
+        # unique_together = ('language_code')
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="descriptors", blank=True)
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
-
-    # DescriptorName
-    descriptor_name = models.CharField(_("Term name"), max_length=250, blank=False)
 
     # Annotation
     annotation = models.TextField(_("Annotation"), max_length=1500, blank=True)
@@ -89,8 +82,7 @@ class DescriptionDesc(models.Model):
     consider_also = models.CharField(_("Consider also"), max_length=250, blank=True)
 
     def __unicode__(self):
-        return '%s%s%s%s' % (self.descriptor_name,' (',self.language_code,')')
-
+        return '%s' % (self.id)
 
 
 # Tree numbers for descriptors
@@ -199,10 +191,12 @@ class TermListDesc(models.Model):
     class Meta:
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
-        ordering = ('language_code','term_string',)
-        unique_together = ('identifier','term_string','language_code')
+        ordering = ('language_code','term_string','concept_preferred_term')
+        unique_together = ('identifier','term_string','language_code','status')
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="termdesc")
+
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
@@ -222,13 +216,20 @@ class TermListDesc(models.Model):
     term_ui = models.CharField(_("Term unique identifier"), max_length=250, blank=True)
 
     # String
-    term_string = models.CharField(_("String"), max_length=250, blank=False)
+    term_string = models.CharField(_("String"), max_length=250, blank=True)
 
     # EntryVersion
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
 
     # DateCreated
     date_created = models.DateField(_("Date created"), blank=True, null=True)
+
+    # DateAltered
+    date_altered = models.DateField(_("Date altered"), blank=True, null=True)
+
+    # Historical annotation
+    historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
+
 
     def __unicode__(self):
         return '%s' % (self.id)
