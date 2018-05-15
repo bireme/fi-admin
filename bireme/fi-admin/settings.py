@@ -192,6 +192,7 @@ INSTALLED_APPS = (
     'log',
     'text_block',
     'database',
+    'classification',
 
 )
 
