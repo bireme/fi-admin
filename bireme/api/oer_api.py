@@ -23,15 +23,15 @@ class OERResource(ModelResource):
         serializer = Serializer(formats=['json', 'xml'])
         resource_name = 'oer'
         filtering = {
-            'thematic_area_id': 'exact',
+            'cvsp_node': 'exact',
         }
         include_resource_uri = False
 
     def build_filters(self, filters=None):
         orm_filters = super(OERResource, self).build_filters(filters)
 
-        if 'thematic_area_id' in filters:
-            orm_filters['thematics__thematic_area__exact'] = filters['thematic_area_id']
+        if 'cvsp_node' in filters:
+            orm_filters['cvsp_node__exact'] = filters['cvsp_node']
         return orm_filters
 
     def prepend_urls(self):
@@ -67,7 +67,7 @@ class OERResource(ModelResource):
                     'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
 
         print search_params
-        
+
         r = requests.post(search_url, data=search_params)
 
         self.log_throttled_access(request)
