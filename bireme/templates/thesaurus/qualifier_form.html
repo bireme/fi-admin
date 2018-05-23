@@ -50,9 +50,9 @@
     </ul>
 {% endif %}
 
-    <ul class="nav nav-tabs" id='tab'>
+    <ul class="nav nav-tabs" id='myTab'>
             <li>
-                <a href="#tab-identifierqualif" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
+                <a href="#tab-identifierqualif" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab" class="active"><strong>{% trans "Identifier" %}</strong></a>
             </li>
             <li>
                 <a href="#tab-termlistqualif" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
@@ -74,7 +74,7 @@
 
         <div class="tab-content">
 
-            <div id="tab-identifierqualif" class="tab-pane active">
+            <div id="tab-identifierqualif" class="tab-pane fade in active">
                 <fieldset id="identifierqualif">
 
                     {{ form.non_field_errors.as_ul }}
@@ -127,8 +127,7 @@
                 </fieldset>
             </div>
 
-
-            <div id="tab-descriptionqualif" class="tab-pane">
+            <div id="tab-descriptionqualif" class="tab-pane fade">
                 <fieldset id="descriptionqualif">
 
                     {{ formset_descriptor.management_form }}
@@ -153,7 +152,7 @@
                                 {% if form.instance.pk %}
                                     <font color="#333">
                                     <b>
-<!--                                     {{ form.qualifier_name.value }} ({{ form.language_code.value }}) -->
+                                    <!-- {{ form.qualifier_name.value }} ({{ form.language_code.value }}) -->
 
                                     {% for info in info_term_string %}
                                         {% if info.termqualif__language_code = form.language_code.value %}
@@ -162,8 +161,6 @@
                                     {% endfor %}
 
                                     ({{ form.language_code.value }})
-
-
 
                                     </b>
                                     </font>
@@ -229,10 +226,8 @@
                 </fieldset>
             </div>
 
-
-            <div id="tab-treenumberslistqualif" class="tab-pane">
+            <div id="tab-treenumberslistqualif" class="tab-pane fade">
                 <fieldset id="treenumberslistqualif">
-
                     <table class="treenumberslistqualif">
                         <thead>
                             <th>{% trans "Tree Numbers List" %}</th>
@@ -263,9 +258,7 @@
                 </fieldset>
             </div>
 
-
-            <div id="tab-conceptlistqualif" class="tab-pane">
-
+            <div id="tab-conceptlistqualif" class="tab-pane fade">
                 <fieldset id="conceptlistqualif">
 
                     {{ formset_concept.management_form }}
@@ -354,13 +347,9 @@
                     </div>
                     {% endfor %}
                 </fieldset>
-
             </div>
 
-
-            <div id="tab-termlistqualif" class="tab-pane">
-
-
+            <div id="tab-termlistqualif" class="tab-pane fade">
                 <fieldset id="termlistqualif">
 
                     {{ formset_term.management_form }}
@@ -408,21 +397,20 @@
                     {% endfor %}
 
                 </fieldset>
+            </div>
 
+            <div class="control-panel form-submit">
+                <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
+                <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
 
-        </div>
-
-        <div class="control-panel form-submit">
-            <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
-            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
-
-            {% if messages %}
-                {% for message in messages %}
-                    <font color="#333" size="4">
-                        <b>{% trans "Registry successfully saved" %}</b>
-                    </font>
-                {% endfor %}
-            {% endif %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <font color="#333" size="4">
+                            <b>{% trans "Registry successfully saved" %}</b>
+                        </font>
+                    {% endfor %}
+                {% endif %}
+            </div>
 
         </div>
 
@@ -438,6 +426,37 @@
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
 
     <script type="text/javascript">
+
+        // Faz com que o ultimo form salvo fique ativo apos reload
+        $(document).ready(function(){
+
+            // Armazena em activeTab informação da aba ativa
+            $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+
+                // Armazena URL atual
+                var old_currentLocation = window.location.href;
+                localStorage.setItem('old_currentLocation', old_currentLocation);
+
+            });
+
+            // Traz variavel activeTab armazenada
+            var activeTab = localStorage.getItem('activeTab');
+            // Traz variavel old_currentLocation armazenada
+            var old_currentLocation = localStorage.getItem('old_currentLocation');
+            // Faz colta da URL atual
+            var currentLocation = window.location.href;
+            if(activeTab){
+                // Compara se é a mesma URL, ou seja se ainda está na mesma página
+                if (old_currentLocation != currentLocation){ // Se não estiver remove informações
+                    localStorage.removeItem('activeTab');
+                    localStorage.removeItem('old_currentLocation');
+                } else { // Se estiver na mesma página posiciona na Aba visitada anteriormente.
+                    $('#myTab a[href="' + activeTab + '"]').tab('show');
+                }
+            }
+        });
+
 
         $(function() {
 

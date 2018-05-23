@@ -186,10 +186,10 @@ class TermListQualif(models.Model):
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
 
     # DateCreated
-    date_created = models.DateField(_("Date created"), blank=True, null=True)
+    date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     # DateAltered
-    date_altered = models.DateField(_("Date altered"), blank=True, null=True)
+    date_altered = models.DateField(_("Date altered"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)

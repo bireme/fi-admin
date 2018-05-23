@@ -19,6 +19,7 @@
 
 {% block content %}
 
+
 <!--  header -->
 <div class='header'>
     <h2><i class='icon-book'></i>
@@ -47,9 +48,9 @@
 {% endif %}
 
 
-    <ul class="nav nav-tabs" id='tab'>
+    <ul class="nav nav-tabs" id='myTab'>
         <li>
-            <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
+            <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab" class="active"><strong>{% trans "Identifier" %}</strong></a>
         </li>
 
         <li>
@@ -77,7 +78,10 @@
 
         <div class="tab-content">
 
-            <div id="tab-identifierdesc" class="tab-pane active">
+            <div id="tab-identifierdesc" class="tab-pane fade in active">
+
+                <input type="hidden" name="active_brim" value="tab-identifierdesc">
+
                 <fieldset id="identifierdesc">
 
                     {{ form.non_field_errors.as_ul }}
@@ -133,8 +137,7 @@
                 </fieldset>
             </div>
 
-
-            <div id="tab-descriptiondesc" class="tab-pane">
+            <div id="tab-descriptiondesc" class="tab-pane fade">
                 <fieldset id="descriptiondesc">
 
                 {{ formset_descriptor.management_form }}
@@ -241,9 +244,7 @@
                 </fieldset>
             </div>
 
-
-
-            <div id="tab-treenumberslistdesc" class="tab-pane">
+            <div id="tab-treenumberslistdesc" class="tab-pane fade">
                 <fieldset id="treenumberslistdesc">
 
                     <table class="treenumberslistdesc">
@@ -276,8 +277,7 @@
                 </fieldset>
             </div>
 
-
-            <div id="tab-previousindexinglistdesc" class="tab-pane">
+            <div id="tab-previousindexinglistdesc" class="tab-pane fade">
                 <fieldset id="previousindexinglistdesc">
 
                     <table class="previousindexinglistdesc">
@@ -308,8 +308,7 @@
 
             </div>
 
-            <div id="tab-conceptlistdesc" class="tab-pane">
-
+            <div id="tab-conceptlistdesc" class="tab-pane fade">
                 <fieldset id="conceptlistdesc">
 
                     {{ formset_concept.management_form }}
@@ -392,22 +391,23 @@
                                 <td colspan="4">{{ form.registry_number }}</td>
                             </tr>
 
-
-
                         </table>
                         <br>
                     </div>
                     {% endfor %}
                 </fieldset>
-
             </div>
 
-            <div id="tab-termlistdesc" class="tab-pane">
+
+            <div id="tab-termlistdesc" class="tab-pane fade">
+
+                <input type="hidden" name="active_brim" value="tab-termlistdesc">
 
                 <fieldset id="termlistdesc">
 
-                    <!-- New register -->
                     {{ formset_term.management_form }}
+
+                    <!-- New register -->
                     {% for form in formset_term %}
                         {% if not form.instance.pk %}
                             {% include "thesaurus/fieldset_termlistdesc.html" %}
@@ -416,7 +416,6 @@
                     <br>
 
                     <!-- Published -->
-                    {{ formset_term.management_form }}
                     <font class="color_status"><b>{% trans "Published" %}</font><br>
                     {% for form in formset_term %}
                         <!-- Preferred -->
@@ -434,7 +433,6 @@
                     <br>
 
                     <!-- Draft -->
-                    {{ formset_term.management_form }}
                     <font class="color_status"><b>{% trans "Draft" %}</font><br>
                     {% for form in formset_term %}
                         {% if form.status.value == -1 and form.instance.pk %}
@@ -444,7 +442,6 @@
                     <br>
 
                     <!-- Historical -->
-                    {{ formset_term.management_form }}
                     <font class="color_status"><b>{% trans "Historical" %}</font><br>
                     {% for form in formset_term %}
                         {% if form.status.value == 5 and form.instance.pk %}
@@ -453,9 +450,7 @@
                     {% endfor %}
 
                 </fieldset>
-
             </div>
-
 
         </div>
 
@@ -520,6 +515,37 @@
    {% endif %}
 
    <script type="text/javascript">
+
+
+        // Faz com que o ultimo form salvo fique ativo apos reload
+        $(document).ready(function(){
+
+            // Armazena em activeTab informação da aba ativa
+            $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+
+                // Armazena URL atual
+                var old_currentLocation = window.location.href;
+                localStorage.setItem('old_currentLocation', old_currentLocation);
+
+            });
+
+            // Traz variavel activeTab armazenada
+            var activeTab = localStorage.getItem('activeTab');
+            // Traz variavel old_currentLocation armazenada
+            var old_currentLocation = localStorage.getItem('old_currentLocation');
+            // Faz colta da URL atual
+            var currentLocation = window.location.href;
+            if(activeTab){
+                // Compara se é a mesma URL, ou seja se ainda está na mesma página
+                if (old_currentLocation != currentLocation){ // Se não estiver remove informações
+                    localStorage.removeItem('activeTab');
+                    localStorage.removeItem('old_currentLocation');
+                } else { // Se estiver na mesma página posiciona na Aba visitada anteriormente.
+                    $('#myTab a[href="' + activeTab + '"]').tab('show');
+                }
+            }
+        });
 
 
         $(function() {
@@ -602,19 +628,60 @@
             // });
 
 
-            // Alerta sobre não preenchimento
-            $('[id^="id_termdesc-"]').on('blur', function() {
-                val = $(this).val();
-                if ( val == '' ){
-                    alert('{% trans "Warning: Field is empty!" %}');
-                    return false;
-                }
-            });
+            // // Alerta sobre não preenchimento
+            // $('[id$="-term_string"]').on('blur', function() {
+            //     val = $(this).val();
+            //     if ( val == '' ){
+            //         // alert('{% trans "Warning: Field is empty!" %}');
+            //         alert('{% trans "Warning: Field is empty!" %}: '+$(this).val());
+            //         return false;
+            //     }
+            // });
 
 
-
+            if ($("<input />").prop("required") === undefined) {
+              $(document).on("submit", function(e) {
+                $(this)
+                  .find("input, select, textarea")
+                  .filter("[required]")
+                  .filter(function() { return this.value == ''; })
+                  .each(function() {
+                    e.preventDefault();
+                    $(this).css({ "border": "2px solid red" })
+                    alert($(this).prev('label').html() + " é obrigatório.");
+                  });
+              });
+            }
 
         })
 
+
+
+        function mascara(o,f){
+            v_obj=o
+            v_fun=f
+            setTimeout("execmascara()",1)
+        }
+        function execmascara(){
+            v_obj.value=v_fun(v_obj.value)
+        }
+        function mdata(v){
+            v=v.replace(/\D/g,"");
+            v=v.replace(/(\d{2})(\d)/,"$1/$2");
+            v=v.replace(/(\d{2})(\d)/,"$1/$2");
+
+            v=v.replace(/(\d{2})(\d{2})$/,"$1$2");
+            return v;
+        }
+
+
    </script>
+
+
+    <script type="text/javascript">
+
+    </script>
+
+
+
 {% endblock %}

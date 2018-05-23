@@ -55,7 +55,11 @@ ACTIONS = {
     'visited': '',
     's': '',
     'exact': '',
+
 }
+
+
+
 
 # Descriptors ------------------------------------------------------------------------
 
@@ -138,7 +142,7 @@ class DescUpdate(LoginRequiredView):
         #     context['next_id'] = int(IdentifierDesc.objects.latest('id').id) + 60000
         # else:
         #     context['next_id'] = 1
-        
+
         # set information of term_string inside of description's brim
         if self.object:
             context['info_term_string'] = IdentifierDesc.objects.filter(
@@ -158,7 +162,7 @@ class DescUpdate(LoginRequiredView):
             context['formset_previous'] = PreviousIndexingListDescFormSet(instance=self.object)
             context['formset_term'] = TermListDescFormSet(instance=self.object)
 
-       
+      
         return context
 
 

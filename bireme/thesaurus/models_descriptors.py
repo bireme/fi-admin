@@ -2,6 +2,10 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 from django.utils import timezone
+
+import datetime
+
+
 from utils.models import Generic, Country
 from django.contrib.contenttypes.generic import GenericRelation
 from main.models import SourceLanguage
@@ -145,7 +149,7 @@ class ConceptListDesc(models.Model):
     concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, blank=True)
 
     # ConceptName
-    concept_name = models.CharField(_("Concept name"), max_length=250, blank=False)
+    concept_name = models.CharField(_("Concept name"), max_length=250, blank=True)
 
     # CASN1Name
     casn1_name = models.TextField(_("Chemical abstract"), max_length=1000, blank=True)
@@ -192,13 +196,14 @@ class TermListDesc(models.Model):
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
         ordering = ('language_code','term_string','concept_preferred_term')
-        unique_together = ('identifier','term_string','language_code','status')
+        # unique_together = ('identifier','term_string','language_code','status')
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="termdesc")
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
+    # status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, blank=True)
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # ConceptPreferredTermYN
     concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=True)
@@ -222,10 +227,10 @@ class TermListDesc(models.Model):
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
 
     # DateCreated
-    date_created = models.DateField(_("Date created"), blank=True, null=True)
+    date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     # DateAltered
-    date_altered = models.DateField(_("Date altered"), blank=True, null=True)
+    date_altered = models.DateField(_("Date altered"), help_text='DD/MM/YYYY', blank=True, null=True)
 
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)

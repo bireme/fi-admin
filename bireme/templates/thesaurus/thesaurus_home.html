@@ -122,18 +122,11 @@
 
             {% for obj in registers %}
                 <tr>
-
                     <td>
-                        {% if obj.descriptors__descriptor_name or obj.termdesc__term_string %}
-
-                            {% if obj.descriptors__descriptor_name %}
-                                {{ obj.descriptors__descriptor_name }} ({{ obj.descriptors__language_code }})
-                            {% endif %}
-
+                        {% if obj.termdesc__term_string %}
                             {% if obj.termdesc__term_string %}
                                 {{ obj.termdesc__term_string }} ({{ obj.termdesc__language_code }})
                             {% endif %}
-
                         {% endif %}
                     </td>
                     <td>
@@ -144,35 +137,30 @@
                         {% endif %}
                     </td>
                     <td>{{ obj.decs_code }}</td>
-
                     <td>
                         {{ obj.termdesc__status|display_status_label }}
                     </td>
-
                     <td>
                         <a href="{% url 'edit_descriptor' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-
                         <a href="{% url 'delete_descriptor' obj.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                     </td>
                 </tr>
-            {% empty %}
-                {% if actions.visited %}
-                    <tr>
-                        <td colspan="5">{% trans "No results found" %}</td>
-                    </tr>
-                {% endif %}
+
+                {% empty %}
+                    {% if actions.visited %}
+                        <tr>
+                            <td colspan="5">{% trans "No results found" %}</td>
+                        </tr>
+                    {% endif %}
 
             {% endfor %}
-
             </tbody>
         </table>
 
         {% include "pagination_generic.html" %}
 
         </div>
-
     </div>
-
 </div>
 
 {% endblock %}

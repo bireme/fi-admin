@@ -109,8 +109,10 @@ class ConceptListDescForm(forms.ModelForm):
 #         fields = '__all__'
 
 class TermListDescForm(forms.ModelForm):
-    class Meta:
-        fields = '__all__'
+    model = TermListDesc
+    fields = ('date_altered')
+    # class Meta:
+    #     fields = '__all__'
 
 
 
