@@ -143,6 +143,7 @@
    <field name="title" type="text" indexed="true" stored="true" termVectors="true"/>
    <field name="link" type="string" indexed="false" stored="true" multiValued="true"/>
    <field name="language" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="type" type="string" indexed="true" stored="true" multiValued="true"/>
 
    <field name="thematic_area" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="thematic_area_display" type="string" indexed="true" stored="true" multiValued="true"/>

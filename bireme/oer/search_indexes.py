@@ -15,7 +15,7 @@ class OERIndex(indexes.SearchIndex, indexes.Indexable):
     learning_objectives = indexes.CharField(model_attr='learning_objectives')
     description = indexes.CharField(model_attr='description', null=True)
     author = indexes.MultiValueField()
-    type = indexes.MultiValueField()
+    type = indexes.CharField()
     language = indexes.CharField()
     contributors = indexes.MultiValueField()
     descriptor = indexes.MultiValueField()
@@ -90,7 +90,9 @@ class OERIndex(indexes.SearchIndex, indexes.Indexable):
             return "|".join(translations)
 
     def prepare_descriptor(self, obj):
-        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
+        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id,
+                                                                            content_type=ContentType.objects.get_for_model(obj),
+                                                                            status=1)]
 
     def prepare_keywords(self, obj):
         separator = '\n'
