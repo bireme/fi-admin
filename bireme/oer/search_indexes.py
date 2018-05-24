@@ -29,6 +29,7 @@ class OERIndex(indexes.SearchIndex, indexes.Indexable):
     format = indexes.MultiValueField()
     link = indexes.MultiValueField()
     cvsp_node = indexes.CharField(model_attr='cvsp_node')
+    cooperative_center_code = indexes.CharField(model_attr='cooperative_center_code')
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
