@@ -90,10 +90,17 @@ class OERIndex(indexes.SearchIndex, indexes.Indexable):
             translations = obj.license.get_translations()
             return "|".join(translations)
 
+    def fix_subfield_mark(self, code):
+        fixed_code = code
+        if not code.startswith('^d'):
+            fixed_code = '^d{}'.format(code)
+
+        return fixed_code
+
     def prepare_descriptor(self, obj):
-        return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id,
-                                                                            content_type=ContentType.objects.get_for_model(obj),
-                                                                            status=1)]
+        descriptor_list = Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)
+
+        return [self.fix_subfield_mark(descriptor.code) for descriptor in descriptor_list]
 
     def prepare_keywords(self, obj):
         separator = '\n'
