@@ -57,6 +57,10 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
 
+        # filter by scope region country
+        if self.actions['filter_country'] != '':
+            object_list = object_list.filter(scope_region=self.actions['filter_country'])
+
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
@@ -64,10 +68,6 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         if self.restrict_by_user and self.actions['filter_owner'] != "*":
             object_list = object_list.filter(created_by=self.request.user)
 
-        # filter by cooperative center
-        elif self.actions['filter_owner'] == 'center':
-            user_cc = self.request.user.profile.get_attribute('cc')
-            object_list = object_list.filter(cooperative_center_code=user_cc)
 
         return object_list
 
@@ -75,9 +75,13 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         context = super(LeisRefGenericListView, self).get_context_data(**kwargs)
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('LeisRef')
+        show_advaced_filters = self.request.GET.get('apply_filters', False)
+        scope_region_list = ActCountryRegion.objects.all().order_by('name')
 
         context['actions'] = self.actions
         context['user_role'] = user_role
+        context['scope_region_list'] = scope_region_list
+        context['show_advaced_filters'] = show_advaced_filters
 
         return context
 
