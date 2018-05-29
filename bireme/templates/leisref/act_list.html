@@ -72,10 +72,7 @@
                             </select>
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
 
-                            {% if actions.filter_country != '' %}
-                                <a href="javascript:void()" id="show_advaced_filters">{% trans "Filters" %}</a>
-                            {% endif %}
-                            [{{ actions.filter_country }}]
+                            <a href="javascript:void()" id="show_advaced_filters">{% trans "Filters" %}</a>
                             <div class="advanced_filters {% if not show_advaced_filters %}hide{% endif %}">
                                 {% trans "Act country/region" %}:
                                 <select name="filter_country">
