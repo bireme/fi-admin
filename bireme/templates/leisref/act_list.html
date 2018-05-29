@@ -88,17 +88,13 @@
                         </form>
                     </div>
                 </div>
-                {% if actions.filter_owner == 'network' and user_data.networks %}
-                    <div class="span-4">
-                        {% trans "Networks" %} : {{ user_data.networks|join:", " }}
-                    </div>
-                {% endif %}
             </div>
 
             <table class='table'>
                 <thead>
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
                     <th><a href="javascript:orderby('title');" id="id_title">{% trans "Legislation" %}</a></th>
+                    <th><a href="javascript:orderby('country/region');" id="id_title">{% trans "Country/Region" %}</a></th>
                     <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
@@ -107,6 +103,7 @@
                         <tr>
                             <td><a href="{% url 'edit_legislation' act.id %}">{{ act.id }}</a></td>
                             <td><span title="{{ act }}">{{ act|slice:"50" }}{% if act.title|length > 50 %}...{% endif %}</span></td>
+                            <td>{{ act.scope_region }}</a></td>
                             <td>{{ act.status_label }}</a></td>
                             <td>
                                 <a href="{% url 'edit_legislation' act.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
