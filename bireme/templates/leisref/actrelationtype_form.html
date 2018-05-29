@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Act Relation Type" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'list_act_type' %}">{% trans "Act Relation Type" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'list_act_reltype' %}">{% trans "Act Relation Type" %}</a> <span class="divider">/</span></li>
     {% if not object %}<li>{% trans "New Act Relation Type" %}</li>
     {% else %}<li>{% trans "Edit Act Relation Type" %}</li>{% endif %}
 {% endblock %}
@@ -55,6 +55,9 @@
         </fieldset>
 
         <div class="control-panel form-submit">
+            <a href="{% url 'list_act_reltype' %}" class="btn btn-large">
+                {% trans "Cancel" %}
+            </a>
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
         </div>
 

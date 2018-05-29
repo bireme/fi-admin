@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Act Scope State" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'list_act_scope' %}">{% trans "Act Scope State" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'list_act_state' %}">{% trans "Act Scope State" %}</a> <span class="divider">/</span></li>
     {% if not object %}<li>{% trans "New Act Scope State" %}</li>
     {% else %}<li>{% trans "Edit Act Scope State" %}</li>{% endif %}
 {% endblock %}
@@ -52,6 +52,9 @@
         </fieldset>
 
         <div class="control-panel form-submit">
+            <a href="{% url 'list_act_state' %}" class="btn btn-large">
+                {% trans "Cancel" %}
+            </a>
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
         </div>
 

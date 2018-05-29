@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-07 18:01-0300\n"
-"PO-Revision-Date: 2018-03-07 18:04-0306\n"
+"PO-Revision-Date: 2018-05-29 15:18-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3519,7 +3519,7 @@ msgstr ""
 #: templates/leisref/actcity_form.html:10
 #: templates/leisref/actcity_form.html:16
 msgid "Edit Act Scope City"
-msgstr "Alterar Estado de Alcance de Ato"
+msgstr "Alterar Cidade de Alcance de Ato"
 
 #: templates/leisref/actcity_form.html:8
 #: templates/leisref/actstate_form.html:8
@@ -3530,7 +3530,7 @@ msgstr "Estado de Alcance de Ato"
 #: templates/leisref/actcity_form.html:16
 #: templates/leisref/actcity_list.html:23
 msgid "New Act Scope City"
-msgstr "Novo Estado de Alcance de Ato"
+msgstr "Nova Cidade de Alcance de Ato"
 
 #: templates/leisref/actcity_list.html:4 templates/leisref/actcity_list.html:7
 #: templates/leisref/actcity_list.html:21
