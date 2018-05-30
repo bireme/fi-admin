@@ -52,7 +52,9 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
             search_field = search_parts[0] + '__icontains'
             search = search_parts[1]
 
-        object_list = self.model.objects.filter(**{search_field: search})
+        filter_qs = Q(**{search_field: search}) | Q(title__icontains=search) | Q(denomination__icontains=search)
+
+        object_list = self.model.objects.filter(filter_qs)
 
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
