@@ -52,7 +52,10 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
             search_field = search_parts[0] + '__icontains'
             search = search_parts[1]
 
-        filter_qs = Q(**{search_field: search}) | Q(title__icontains=search) | Q(denomination__icontains=search)
+        filter_qs = Q(**{search_field: search})
+        # if Act model search also by title and denomination fields
+        if self.search_field == 'act_number':
+            filter_qs =  filter_qs | Q(title__icontains=search) | Q(denomination__icontains=search)
 
         object_list = self.model.objects.filter(filter_qs)
 
