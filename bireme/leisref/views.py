@@ -133,17 +133,13 @@ class LeisRefActListView(ListView):
         act_type_list = []
 
         param_region = self.request.GET.get('region')
-        if param_region:
-            act_type_list = ActType.objects.filter(scope_region=param_region)
-        else:
-            act_type_list = ActType.objects.all()
 
         context['param_region'] = param_region
         context['param_type'] = self.request.GET.get('type', '')
         context['param_number'] = self.request.GET.get('number', '')
         context['param_year'] = self.request.GET.get('year', '')
         context['param_added'] = self.request.GET.get('added', '')
-        context['act_type_select'] = act_type_list
+        context['act_type_select'] = ActType.objects.all()
 
         return context
 
