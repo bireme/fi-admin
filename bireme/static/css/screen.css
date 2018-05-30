@@ -671,11 +671,6 @@ tr.relation-row td input, tr.relation-row td select{
     width:450px;
 }
 
-.previousindexinglistdesc th td, .treenumberslistqualif th td{
-    text-align: center;
-    padding: 2px;
-}
-
 .descriptiondesc .term-origin, .conceptlistdesc .term-origin, .termlistdesc .term-origin, .descriptionqualif .term-origin, .conceptlistqualif .term-origin, .termlistqualif .term-origin{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
@@ -690,6 +685,75 @@ tr.relation-row td input, tr.relation-row td select{
     color: #333;
     height: 10px;
 }
+
+
+
+/*Form new*/
+.descriptiondescn, .conceptlistdescn, .termlistdescn, .descriptionqualifn, .conceptlistqualifn, .termlistqualifn {
+    width: 90%;
+}
+
+.descriptiondescn textarea, .descriptionqualifn textarea, .termlistdescn textarea, .termlistqualifn textarea{
+    width: 98%;
+    height: 50px;
+}
+
+.descriptiondescn label, .termlistdescn label, .conceptlistdescn label{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    color: #333;
+    font-weight: bold;
+}
+
+.descriptiondescn td {
+    text-align:left;
+}
+
+.descriptiondescn .td-r, .descriptionqualifn .td-r{
+    text-align: right;
+}
+
+.descriptiondescn .td-r-del, .conceptlistdescn .td-r-del, .termlistdescn .td-r-del, .descriptionqualifn .td-r-del, .conceptlistqualifn .td-r-del, .termlistqualifn .td-r-del{
+    text-align: right;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+    background-color: #eeeeee;
+}
+
+.descriptiondescn .td-l, .descriptionqualifn .td-l, .conceptlistqualifn .td-l{
+    text-align: left;
+}
+
+.descriptiondescn .td-l input[type=text], .conceptlistdescn .concept_name input[type=text], .termlistdescn .term_string input[type=text], .descriptionqualifn .td-l input[type=text], .conceptlistqualifn .concept_name input[type=text], .termlistqualifn .term_string input[type=text]{
+    text-align: left;
+    width:450px;
+}
+
+.descriptiondescn .term-origin, .conceptlistdescn .term-origin, .termlistdescn .term-origin, .descriptionqualifn .term-origin, .conceptlistqualifn .term-origin, .termlistqualifn .term-origin{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    color: #333;
+    background-color: #eeeeee;
+}
+
+.conceptlistdescn label, .conceptlistqualifn label{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    color: #333;
+    height: 10px;
+}
+
+
+
+
+.previousindexinglistdesc th td, .treenumberslistqualif th td{
+    text-align: center;
+    padding: 2px;
+}
+
 
 /*conceptlistdesc*/
 .casn1 textarea {

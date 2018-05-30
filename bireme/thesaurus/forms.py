@@ -21,6 +21,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.exceptions import NON_FIELD_ERRORS
 
+import requests
 
 class ThesaurusForm(forms.ModelForm):
     class Meta:
@@ -98,6 +99,13 @@ class PreviousIndexingListDescForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
 
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                # 'unique_together': "%(model_name)s's %(field_labels)s are not unique.",
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
+
 
 class ConceptListDescForm(forms.ModelForm):
     class Meta:
@@ -109,10 +117,18 @@ class ConceptListDescForm(forms.ModelForm):
 #         fields = '__all__'
 
 class TermListDescForm(forms.ModelForm):
-    model = TermListDesc
-    fields = ('date_altered')
     # class Meta:
-    #     fields = '__all__'
+    #     model = TermListDesc
+    #     fields = ('date_altered')
+    class Meta:
+        model = TermListDesc
+        fields = '__all__'
+
+
+class TermListDescUniqueForm(forms.ModelForm):
+    class Meta:
+        model = TermListDesc
+        exclude = ('identifier',)
 
 
 

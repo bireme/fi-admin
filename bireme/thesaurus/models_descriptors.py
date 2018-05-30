@@ -16,9 +16,12 @@ from multiselectfield import MultiSelectField
 from .models_thesaurus import Thesaurus
 from .models_qualifiers import *
 
+from log.models import AuditLog
+
 
 # thesaurus fields
-class IdentifierDesc(models.Model):
+# class IdentifierDesc(models.Model, AuditLog):
+class IdentifierDesc(Generic, AuditLog):
 
     class Meta:
         verbose_name = _("Descriptor")
@@ -59,14 +62,14 @@ class IdentifierDesc(models.Model):
 
 
 # Description
-class DescriptionDesc(models.Model):
+class DescriptionDesc(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Description")
         verbose_name_plural = _("Descriptions")
-        # unique_together = ('language_code')
+        unique_together = ('identifier','language_code')
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="descriptors", blank=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="descriptors")
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
@@ -84,6 +87,9 @@ class DescriptionDesc(models.Model):
 
     # ConsiderAlso
     consider_also = models.CharField(_("Consider also"), max_length=250, blank=True)
+
+    def get_parent(self):
+        return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -114,6 +120,7 @@ class PreviousIndexingListDesc(models.Model):
     class Meta:
         verbose_name = _("Previous Indexing")
         verbose_name_plural = _("Previous Indexing")
+        unique_together = ('previous_indexing','language_code')
 
     identifier = models.ForeignKey(IdentifierDesc, blank=True)
 
@@ -190,23 +197,22 @@ class ConceptListDesc(models.Model):
 
 
 # TermList
-class TermListDesc(models.Model):
+class TermListDesc(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
         ordering = ('language_code','term_string','concept_preferred_term')
-        # unique_together = ('identifier','term_string','language_code','status')
+        unique_together = ('term_string','language_code','status','date_altered')
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="termdesc")
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
-    # status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, blank=True)
-
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+    
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
 
     # ConceptPreferredTermYN
-    concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=True)
+    concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=False)
 
     # IsPermutedTermYN
     is_permuted_term = models.CharField(_("Is permuted term"), choices=YN_OPTION, max_length=1, blank=True)
@@ -221,7 +227,7 @@ class TermListDesc(models.Model):
     term_ui = models.CharField(_("Term unique identifier"), max_length=250, blank=True)
 
     # String
-    term_string = models.CharField(_("String"), max_length=250, blank=True)
+    term_string = models.CharField(_("String"), max_length=250, blank=False)
 
     # EntryVersion
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
@@ -235,6 +241,9 @@ class TermListDesc(models.Model):
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
+
+    def get_parent(self):
+        return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)

@@ -1,7 +1,7 @@
 #! coding: utf-8
 
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
 from django.views.generic.list import ListView
@@ -26,7 +26,7 @@ from django.core.paginator import Paginator
 
 from django.contrib import messages
 
-
+import datetime
 
 ITEMS_PER_PAGE = 10
 
@@ -87,9 +87,15 @@ class DescUpdate(LoginRequiredView):
         formset_concept_valid = formset_concept.is_valid()
         # formset_concept_relation_valid = formset_concept_relation.is_valid()
         formset_previous_valid = formset_previous.is_valid()
-        formset_term_valid = formset_term.is_valid()
 
-        if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid and formset_term_valid):
+        # formset_term_valid = formset_term.is_valid()
+
+        if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid):
+
+        # Deprecated
+        # if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid and formset_term_valid):
+        
+        # In the future to use with formset_concept_relation_valid
         # if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_concept_relation_valid and formset_previous_valid and formset_term_valid):
 
             self.object = form.save()
@@ -103,14 +109,16 @@ class DescUpdate(LoginRequiredView):
             formset_concept.instance = self.object
             formset_concept.save()
 
+            # In the future to use with formset_concept_relation_valid
             # formset_concept_relation.instance = self.object
             # formset_concept_relation.save()
 
             formset_previous.instance = self.object
             formset_previous.save()
 
-            formset_term.instance = self.object
-            formset_term.save()
+            # Deprecated
+            # formset_term.instance = self.object
+            # formset_term.save()
 
             form.save()
             # form.save_m2m()
@@ -124,7 +132,9 @@ class DescUpdate(LoginRequiredView):
                                             formset_category=formset_category,
                                             formset_concept=formset_concept,
                                             formset_previous=formset_previous,
-                                            formset_term=formset_term
+                                            # Deprecated
+                                            # formset_term=formset_term,
+
                                             )
                                         )
 
@@ -150,6 +160,8 @@ class DescUpdate(LoginRequiredView):
                                             termdesc__concept_preferred_term='Y',
                                             termdesc__status=1,
                                             ).values('termdesc__term_string','termdesc__language_code')
+
+            context['identifier_id'] = self.object.id
 
         if self.request.method == 'GET':
 
@@ -388,10 +400,75 @@ class DescListView(LoginRequiredView, ListView):
 
 
 
+class TermListDescCreateView(CreateView):
+    """
+    Used as class view to create TermListDesc
+    """
+    model = TermListDesc
+    template_name = 'thesaurus/descriptor_termlistdesc_new.html'
+    form_class = TermListDescUniqueForm
+    success_url = reverse_lazy('list_descriptor')
+
+    def get_success_url(self):
+        messages.success(self.request, 'is updated')
+        return '/thesaurus/descriptors/edit/%s' % self.object.identifier_id
+
+    def form_valid(self, form):
+        form_valid = form.is_valid()
+        if (form_valid):
+            self.object = form.save(commit=False)
+            self.object.identifier_id = int(self.request.POST.get("identifier_id"))
+            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+            form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form,))
+
+
+
+class TermListDescEditView(UpdateView):
+    """
+    Used as class view to update TermListDesc
+    """
+    model = TermListDesc
+    template_name = 'thesaurus/descriptor_termlistdesc_edit.html'
+    form_class = TermListDescUniqueForm
+
+    def get_success_url(self):
+        messages.success(self.request, 'is updated')
+        return '/thesaurus/descriptors/edit/%s' % self.object.identifier_id
+
+    def form_valid(self, form):
+        form_valid = form.is_valid()
+        if (form_valid):
+            self.object = form.save(commit=False)
+            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+            form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form,))
+
+
+
+class TermListDescDeleteView(DeleteView):
+    """
+    Used as class view to delete TermListDesc
+    """
+    model = TermListDesc
+    template_name = 'thesaurus/term_confirm_delete.html'
+    # success_url = reverse_lazy('list_descriptor')
+
+    def get_success_url(self):
+        messages.success(self.request, 'is deleted')
+        return '/thesaurus/descriptors/edit/%s' % self.object.identifier_id
+
+
+
+
 # Qualifiers -------------------------------------------------------------------------
 class QualifUpdate(LoginRequiredView):
     """
-    Handle creation and update of Qaulifier objects
+    Handle creation and update of Qualifier objects
     """
     model = IdentifierQualif
     success_url = reverse_lazy('list_qualifier')

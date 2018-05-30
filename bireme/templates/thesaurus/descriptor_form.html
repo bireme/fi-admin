@@ -17,490 +17,927 @@
     {% endif %}
 {% endblock %}
 
+
 {% block content %}
+    {% if object %}
 
+    <!-- update -->
+        <!-- header -->
+        <div class='header'>
+            <h2><i class='icon-book'></i>
+                {% if object %}
+                    {% trans "Edit Descriptor" %}
+                    {% for term in formset_term %}
+                        <input type="hidden" name="language_system" value="{{ language_system }}">
+                        {% if language_system == term.language_code.value and term.concept_preferred_term.value == 'Y' %}
+                            : {{ term.term_string.value }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}</h2>
+        </div>
+        <!-- header -->
 
-<!--  header -->
-<div class='header'>
-    <h2><i class='icon-book'></i>
-        {% if not object %}
-            {% trans "New Descriptor" %}
-            {% if next_id %}
-                 - ID: {{ next_id }}
+        <!-- body update -->
+        <div class='body'>
+
+            {% if form.errors or formset_descriptor.errors or formset_category.errors or formset_previous.errors or formset_concept.errors or formset_term.errors %}
+                <ul class="errorlist alert alert-error">
+                    <li>{% trans "Please check required fields" %}</li>
+                </ul>
             {% endif %}
-        {% else %}
-            {% trans "Edit Descriptor" %}
-            {% for term in formset_term %}
-                <input type="hidden" name="language_system" value="{{ language_system }}">
-                {% if language_system == term.language_code.value and term.concept_preferred_term.value == 'Y' %}
-                    : {{ term.term_string.value }}
-                {% endif %}
-            {% endfor %}
-        {% endif %}</h2>
-</div>
 
-<div class='body'>    
+            <ul class="nav nav-tabs" id='myTab'>
+                <li>
+                    <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab" class="active"><strong>{% trans "Identifier" %}</strong></a>
+                </li>
 
-{% if form.errors or formset_descriptor.errors or formset_category.errors or formset_previous.errors or formset_concept.errors or formset_term.errors %}
-    <ul class="errorlist alert alert-error">
-        <li>{% trans "Please check required fields" %}</li>
-    </ul>
-{% endif %}
+                <li>
+                    <a href="#tab-termlistdesc" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
+                </li>
 
+                <li>
+                    <a href="#tab-conceptlistdesc" class="{% if formset_concept.errors and not formset_concept.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
+                </li>
 
-    <ul class="nav nav-tabs" id='myTab'>
-        <li>
-            <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab" class="active"><strong>{% trans "Identifier" %}</strong></a>
-        </li>
+                <li>
+                    <a href="#tab-descriptiondesc" class="{% if formset_descriptor.errors and not formset_descriptor.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
+                </li>
+                <li>
+                    <a href="#tab-treenumberslistdesc" class="{% if formset_category.errors and not formset_category.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
+                </li>
+                <li>
+                    <a href="#tab-previousindexinglistdesc" class="{% if formset_previous.errors and not formset_previous.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
+                </li>
+            </ul>
 
-        <li>
-            <a href="#tab-termlistdesc" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
-        </li>
+            <form method="POST" class="act-form" encrypt="multipart/form-data">
 
-        <li>
-            <a href="#tab-conceptlistdesc" class="{% if formset_concept.errors and not formset_concept.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
-        </li>
+                {% csrf_token %}
 
-        <li>
-            <a href="#tab-descriptiondesc" class="{% if formset_descriptor.errors and not formset_descriptor.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
-        </li>
-        <li>
-            <a href="#tab-treenumberslistdesc" class="{% if formset_category.errors and not formset_category.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
-        </li>
-        <li>
-            <a href="#tab-previousindexinglistdesc" class="{% if formset_previous.errors and not formset_previous.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
-        </li>
-    </ul>
+                <div class="tab-content">
 
-    <form method="POST" class="act-form" encrypt="multipart/form-data">
+                    <div id="tab-identifierdesc" class="tab-pane fade in active">
 
-    {% csrf_token %}
-
-        <div class="tab-content">
-
-            <div id="tab-identifierdesc" class="tab-pane fade in active">
-
-                <input type="hidden" name="active_brim" value="tab-identifierdesc">
-
-                <fieldset id="identifierdesc">
-
-                    {{ form.non_field_errors.as_ul }}
-
-                    {% for field in form.visible_fields %}
-                        {% if field.errors %}
-                            <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
-                        {% endif %}
-                    {% endfor %}
-
-                    <table class="identifierdesc">
-                        <thead>
-                            <th>{{ form.thesaurus.label }}<span class="mark">*</span></th>
-                        </thead>
-                        <tr>
-                            <td>{{ form.thesaurus }}</td>
-                        </tr>
-                        <thead>
-                            <th>{{ form.descriptor_ui.label }}</th>
-                            <th>{{ form.decs_code.label }}<span class="mark">*</span></th>
-                            <th>{{ form.external_code.label }}</th>
-                            <th>{{ form.nlm_class_number.label }}</th>
-                        </thead>
-                        <tr>
-                            <td>{{ form.descriptor_ui }}</td>
-                            <td>{{ form.decs_code }}</td>
-                            <td>{{ form.external_code }}</td>
-                            <td>{{ form.nlm_class_number }}</td>
-                        </tr>
-                        <thead>
-                            <th>{{ form.descriptor_class.label }}</th>
-                            <th>{{ form.date_created.label }}
-                                <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
-                            </th>
-                            <th>{{ form.date_revised.label }}
-                                <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
-                            </th>
-                            <th>{{ form.date_established.label }}
-                                <font color="#999"><i>{{ form.date_established.help_text }}</i></font>
-                            </th>
-                        </thead>
-                        <tr>
-                            <td>{{ form.descriptor_class }}</td>
-                            <td>{{ form.date_created }}</td>
-                            <td>{{ form.date_revised }}</td>
-                            <td>{{ form.date_established }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan=4>{{ form.abbreviation }}</td>
-                        </tr>
-                    </table>
-
-                </fieldset>
-            </div>
-
-            <div id="tab-descriptiondesc" class="tab-pane fade">
-                <fieldset id="descriptiondesc">
-
-                {{ formset_descriptor.management_form }}
-
-                {% for form in formset_descriptor %}
-
-                    {{ form.non_field_errors.as_ul }}
-
-                    {% for field in form.visible_fields %}
-                        {% if field.errors %}
-                            <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
-                        {% endif %}
-                    {% endfor %}
-
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-
-                    <table class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-target="#descriptiondesc_{{ form.instance.pk }}">
-                            <font size="2">
-                                {% if form.instance.pk %}
-                                    <font color="#333">
-                                    <b>
-                                    {% for info in info_term_string %}
-                                        {% if info.termdesc__language_code = form.language_code.value %}
-                                            {{ info.termdesc__term_string }}
-                                        {% endif %}
-                                    {% endfor %}
-
-                                    ({{ form.language_code.value }})
-
-                                    </b>
-                                    </font>
-                                {% else %}
-                                    {% trans 'New Record' %}
-                                {% endif %}
-
-                            </font>
-                        </a>
-                    </table>
-
-
-                    <div id="descriptiondesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
-
-
-                        <table class="descriptiondesc">
-                            <tr>
-
-                            {% if form.instance.pk %}
-                                <td colspan="2" class="td-r-del">
-                                    {% trans 'Remove' %}? {{ form.DELETE }}
-                                </td>
-                            {% else %}
-                                <td colspan="2" class="term-origin">&nbsp;
-                                </td>
-                            {% endif %}
-
-                        <input name="{{descriptors}}_DELETE" id="id_{{descriptors}}_DELETE" type="hidden">
-
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td width="20%" class="td-r">{{ form.language_code.label_tag }}</td>
-                                <td class="td-l">{{ form.language_code }}</td>
-                            </tr>
-                            <tr>
-                                <td class="td-r">{{ form.annotation.label_tag }}</td>
-                                <td>
-                                {{ form.annotation }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="td-r">{{ form.history_note.label_tag }}</td>
-                                <td>
-                                {{ form.history_note }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="td-r">{{ form.online_note.label_tag }}</td>
-                                <td>
-                                {{ form.online_note }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="td-r">{{ form.public_mesh_note.label_tag }}</td>
-                                <td>
-                                {{ form.public_mesh_note }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="td-r">{{ form.consider_also.label_tag }}</td>
-                                <td>
-                                {{ form.consider_also }}
-                                </td>
-                            </tr>
-                        </table>
-                        <br>
-                    </div>
-
-                {% endfor %}
-
-                </fieldset>
-            </div>
-
-            <div id="tab-treenumberslistdesc" class="tab-pane fade">
-                <fieldset id="treenumberslistdesc">
-
-                    <table class="treenumberslistdesc">
-                        <thead>
-                            <th>{% trans "Tree Numbers List" %}</th>
-                            <th>{% trans "Delete?" %}</th>
-                        </thead>
-                        <tbody>
-                        {{ formset_category.management_form }}
-
-                        {% for form in formset_category %}
+                        <fieldset id="identifierdesc">
 
                             {{ form.non_field_errors.as_ul }}
 
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                            <tr id="category-{{ forloop.counter0 }}" class="category-row{% if form.errors %} error{% endif %} formset-row">
-                                {% for field in form.visible_fields %}
-                               <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                <td>
-                                    {{ field }}
-                                    {{ field.errors }}
-                                </td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </fieldset>
-            </div>
-
-            <div id="tab-previousindexinglistdesc" class="tab-pane fade">
-                <fieldset id="previousindexinglistdesc">
-
-                    <table class="previousindexinglistdesc">
-                        <thead>
-                            <th>{% trans "Previous Index" %}</th>
-                            <th>{% trans "Language" %}</th>
-                            <th>{% trans "Delete?" %}</th>
-                        </thead>
-                        <tbody>
-                        {{ formset_previous.management_form }}
-
-                        {% for form in formset_previous %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                            <tr id="previous-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
-                                {% for field in form.visible_fields %}
-                                <td>
-                                    {{ field }}
-                                    {{ field.errors }}
-                                </td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </fieldset>
-
-            </div>
-
-            <div id="tab-conceptlistdesc" class="tab-pane fade">
-                <fieldset id="conceptlistdesc">
-
-                    {{ formset_concept.management_form }}
-                    {% for form in formset_concept %}
-
-                        {{ form.non_field_errors.as_ul }}
-
-                        {% for field in form.visible_fields %}
-                            {% if field.errors %}
-                                <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
-                            {% endif %}
-                        {% endfor %}
-
-                        {% for hidden in form.hidden_fields %}
-                            {{ hidden }}
-                        {% endfor %}
-
-                    <table class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-target="#conceptlistdesc_{{ form.instance.pk }}">
-                            <font size="2">
-                                {% if form.instance.pk %}
-                                    <font color="#333">
-                                    <b>{{ form.concept_name.value }} ({{ form.language_code.value }})</b>
-                                    </font>
-                                {% else %}
-                                    {% trans 'New Record' %}
+                            {% for field in form.visible_fields %}
+                                {% if field.errors %}
+                                    <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                                 {% endif %}
-                            </font>
-                        </a>
-                    </table>
+                            {% endfor %}
 
-                    <div id="conceptlistdesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+                            <table class="identifierdesc">
+                                <thead>
+                                    <th>{{ form.thesaurus.label }}<span class="mark">*</span></th>
+                                </thead>
+                                <tr>
+                                    <td>{{ form.thesaurus }}</td>
+                                </tr>
+                                <thead>
+                                    <th>{{ form.descriptor_ui.label }}</th>
+                                    <th>{{ form.decs_code.label }}<span class="mark">*</span></th>
+                                    <th>{{ form.external_code.label }}</th>
+                                    <th>{{ form.nlm_class_number.label }}</th>
+                                </thead>
+                                <tr>
+                                    <td>{{ form.descriptor_ui }}</td>
+                                    <td>{{ form.decs_code }}</td>
+                                    <td>{{ form.external_code }}</td>
+                                    <td>{{ form.nlm_class_number }}</td>
+                                </tr>
+                                <thead>
+                                    <th>{{ form.descriptor_class.label }}</th>
+                                    <th>{{ form.date_created.label }}
+                                        <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
+                                    </th>
+                                    <th>{{ form.date_revised.label }}
+                                        <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
+                                    </th>
+                                    <th>{{ form.date_established.label }}
+                                        <font color="#999"><i>{{ form.date_established.help_text }}</i></font>
+                                    </th>
+                                </thead>
+                                <tr>
+                                    <td>{{ form.descriptor_class }}</td>
+                                    <td>{{ form.date_created }}</td>
+                                    <td>{{ form.date_revised }}</td>
+                                    <td>{{ form.date_established }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan=4>{{ form.abbreviation }}</td>
+                                </tr>
+                            </table>
 
-                        <table class="conceptlistdesc" border="0">
-                            <tr>
-
-                            {% if form.instance.pk %}
-                                <td colspan="4" class="td-r-del">
-                                    {% trans 'Remove' %}? {{ form.DELETE }}
-                                </td>
-                            {% else %}
-                                <td colspan="4" class="term-origin">&nbsp;
-                                </td>
-                            {% endif %}
-
-                            <input name="{{conceptlistdesc}}_DELETE" id="id_{{conceptlistdesc}}_DELETE" type="hidden">
-
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>{{ form.concept_name.label_tag }}</td>
-                                <td>{{ form.language_code.label_tag }}</td>
-                                <td>{{ form.concept_ui.label_tag }}</td>
-                                <td>{{ form.preferred_concept.label_tag }}</td>
-                            </tr>
-                            <tr>
-                                <td class="concept_name">{{ form.concept_name }}</td>
-                                <td>{{ form.language_code }}</td>
-                                <td>{{ form.concept_ui }}</td>
-                                <td>{{ form.preferred_concept }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">{{ form.casn1_name.label_tag }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="casn1">{{ form.casn1_name }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">{{ form.scope_note.label_tag }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="casn1">{{ form.scope_note }}</td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="4">{{ form.registry_number.label_tag }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">{{ form.registry_number }}</td>
-                            </tr>
-
-                        </table>
-                        <br>
+                        </fieldset>
                     </div>
-                    {% endfor %}
-                </fieldset>
-            </div>
+
+                    <div id="tab-descriptiondesc" class="tab-pane fade">
+                        <fieldset id="descriptiondesc">
+
+                        {{ formset_descriptor.management_form }}
+
+                        {% for form in formset_descriptor %}
+
+                            {{ form.non_field_errors.as_ul }}
+
+                            {% for field in form.visible_fields %}
+                                {% if field.errors %}
+                                    <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+
+                            <table class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-target="#descriptiondesc_{{ form.instance.pk }}">
+                                    <font size="2">
+                                        {% if form.instance.pk %}
+                                            <font color="#333">
+                                            <b>
+                                            {% for info in info_term_string %}
+                                                {% if info.termdesc__language_code = form.language_code.value %}
+                                                    {{ info.termdesc__term_string }}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            ({{ form.language_code.value }})
+
+                                            </b>
+                                            </font>
+                                        {% else %}
+                                            {% trans 'New Record' %}
+                                        {% endif %}
+
+                                    </font>
+                                </a>
+                            </table>
 
 
-            <div id="tab-termlistdesc" class="tab-pane fade">
+                            <div id="descriptiondesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
 
-                <input type="hidden" name="active_brim" value="tab-termlistdesc">
 
-                <fieldset id="termlistdesc">
+                                <table class="descriptiondesc">
+                                    <tr>
 
-                    {{ formset_term.management_form }}
+                                    {% if form.instance.pk %}
+                                        <td colspan="2" class="td-r-del">
+                                            {% trans 'Remove' %}? {{ form.DELETE }}
+                                        </td>
+                                    {% else %}
+                                        <td colspan="2" class="term-origin">&nbsp;
+                                        </td>
+                                    {% endif %}
 
-                    <!-- New register -->
-                    {% for form in formset_term %}
-                        {% if not form.instance.pk %}
-                            {% include "thesaurus/fieldset_termlistdesc.html" %}
+                                <input name="{{descriptors}}_DELETE" id="id_{{descriptors}}_DELETE" type="hidden">
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="20%" class="td-r">{{ form.language_code.label_tag }}</td>
+                                        <td class="td-l">{{ form.language_code }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-r">{{ form.annotation.label_tag }}</td>
+                                        <td>
+                                        {{ form.annotation }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-r">{{ form.history_note.label_tag }}</td>
+                                        <td>
+                                        {{ form.history_note }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-r">{{ form.online_note.label_tag }}</td>
+                                        <td>
+                                        {{ form.online_note }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-r">{{ form.public_mesh_note.label_tag }}</td>
+                                        <td>
+                                        {{ form.public_mesh_note }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-r">{{ form.consider_also.label_tag }}</td>
+                                        <td>
+                                        {{ form.consider_also }}
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
+                            </div>
+
+                        {% endfor %}
+
+                        </fieldset>
+                    </div>
+
+                    <div id="tab-treenumberslistdesc" class="tab-pane fade">
+                        <fieldset id="treenumberslistdesc">
+
+                            <table class="treenumberslistdesc">
+                                <thead>
+                                    <th>{% trans "Tree Numbers List" %}</th>
+                                    <th>{% trans "Delete?" %}</th>
+                                </thead>
+                                <tbody>
+                                {{ formset_category.management_form }}
+
+                                {% for form in formset_category %}
+
+                                    {{ form.non_field_errors.as_ul }}
+
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <tr id="category-{{ forloop.counter0 }}" class="category-row{% if form.errors %} error{% endif %} formset-row">
+                                        {% for field in form.visible_fields %}
+                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </fieldset>
+                    </div>
+
+                    <div id="tab-previousindexinglistdesc" class="tab-pane fade">
+                        <fieldset id="previousindexinglistdesc">
+
+                            <table class="previousindexinglistdesc">
+                                <thead>
+                                    <th>{% trans "Previous Index" %}</th>
+                                    <th>{% trans "Language" %}</th>
+                                    <th>{% trans "Delete?" %}</th>
+                                </thead>
+                                <tbody>
+                                {{ formset_previous.management_form }}
+
+                                {% for form in formset_previous %}
+
+                                    {{ form.non_field_errors.as_ul }}
+
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <tr id="previous-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
+                                        {% for field in form.visible_fields %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </fieldset>
+
+                    </div>
+
+                    <div id="tab-conceptlistdesc" class="tab-pane fade">
+                        <fieldset id="conceptlistdesc">
+
+                            {{ formset_concept.management_form }}
+                            {% for form in formset_concept %}
+
+                                {{ form.non_field_errors.as_ul }}
+
+                                {% for field in form.visible_fields %}
+                                    {% if field.errors %}
+                                        <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+
+                            <table class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-target="#conceptlistdesc_{{ form.instance.pk }}">
+                                    <font size="2">
+                                        {% if form.instance.pk %}
+                                            <font color="#333">
+                                            <b>{{ form.concept_name.value }} ({{ form.language_code.value }})</b>
+                                            </font>
+                                        {% else %}
+                                            {% trans 'New Record' %}
+                                        {% endif %}
+                                    </font>
+                                </a>
+                            </table>
+
+                            <div id="conceptlistdesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+
+                                <table class="conceptlistdesc" border="0">
+                                    <tr>
+
+                                    {% if form.instance.pk %}
+                                        <td colspan="4" class="td-r-del">
+                                            {% trans 'Remove' %}? {{ form.DELETE }}
+                                        </td>
+                                    {% else %}
+                                        <td colspan="4" class="term-origin">&nbsp;
+                                        </td>
+                                    {% endif %}
+
+                                    <input name="{{conceptlistdesc}}_DELETE" id="id_{{conceptlistdesc}}_DELETE" type="hidden">
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>{{ form.concept_name.label_tag }}</td>
+                                        <td>{{ form.language_code.label_tag }}</td>
+                                        <td>{{ form.concept_ui.label_tag }}</td>
+                                        <td>{{ form.preferred_concept.label_tag }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="concept_name">{{ form.concept_name }}</td>
+                                        <td>{{ form.language_code }}</td>
+                                        <td>{{ form.concept_ui }}</td>
+                                        <td>{{ form.preferred_concept }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">{{ form.casn1_name.label_tag }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="casn1">{{ form.casn1_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">{{ form.scope_note.label_tag }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="casn1">{{ form.scope_note }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4">{{ form.registry_number.label_tag }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">{{ form.registry_number }}</td>
+                                    </tr>
+
+                                </table>
+                                <br>
+                            </div>
+                            {% endfor %}
+                        </fieldset>
+                    </div>
+
+
+                    <div id="tab-termlistdesc" class="tab-pane fade">
+
+                        <fieldset id="termlistdesc">
+
+                            {{ formset_term.management_form }}
+                            <a href="{% url 'create_termlistdesc' %}/?identifier_id={{identifier_id}}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Descriptor" %}</a>
+                            <!-- <a href="{% url 'create_termlistdesc' %}/?identifier_id={{identifier_id}}">
+                                <font color="green">{% trans "New Term" %}</font> -->
+                            </a>
+                            <br><br>
+                            <!-- Published -->
+                            <font class="color_status"><b>{% trans "Published" %}</font><br>
+                            {% for form in formset_term %}
+                                <!-- Preferred -->
+                                {% if form.status.value == 1 and form.concept_preferred_term.value = 'Y' and form.instance.pk %}
+                                    {% include "thesaurus/fieldset_termlistdesc.html" %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% for form in formset_term %}
+                                <!-- Narrower -->
+                                {% if form.status.value == 1 and form.concept_preferred_term.value = 'N' and form.instance.pk %}
+                                    {% include "thesaurus/fieldset_termlistdesc.html" %}
+                                {% endif %}
+                            {% endfor %}
+                            <br>
+
+                            <!-- Draft -->
+                            <font class="color_status"><b>{% trans "Draft" %}</font><br>
+                            {% for form in formset_term %}
+                                {% if form.status.value == -1 and form.instance.pk %}
+                                    {% include "thesaurus/fieldset_termlistdesc.html" %}
+                                {% endif %}
+                            {% endfor %}
+                            <br>
+
+                            <!-- Historical -->
+                            <font class="color_status"><b>{% trans "Historical" %}</font><br>
+                            {% for form in formset_term %}
+                                {% if form.status.value == 5 and form.instance.pk %}
+                                    {% include "thesaurus/fieldset_termlistdesc.html" %}
+                                {% endif %}
+                            {% endfor %}
+
+                        </fieldset>
+                    </div>
+
+                </div>
+
+                <!-- display changes log and duplicates -->
+                {%if object.pk %}
+                    <!-- <div class="alert alert-info">
+                        <p>{% trans "Record created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
+                        <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
+                        {% if object.updated_by %}
+                            <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
                         {% endif %}
-                    {% endfor %}
-                    <br>
-
-                    <!-- Published -->
-                    <font class="color_status"><b>{% trans "Published" %}</font><br>
-                    {% for form in formset_term %}
-                        <!-- Preferred -->
-                        {% if form.status.value == 1 and form.concept_preferred_term.value = 'Y' and form.instance.pk %}
-                            {% include "thesaurus/fieldset_termlistdesc.html" %}
+                    </div> -->
+                    <div class="btn-group pull-right">
+                        <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                        {%if object.has_duplicates %}
+                            <a href="/bibliographic/duplicates/{{object.id}}/" target="_blank" class="btn"><i class="icon icon-retweet"></i> {% trans "Duplicates" %}</a>
                         {% endif %}
-                    {% endfor %}
+                    </div>
+                {% endif %}
 
-                    {% for form in formset_term %}
-                        <!-- Narrower -->
-                        {% if form.status.value == 1 and form.concept_preferred_term.value = 'N' and form.instance.pk %}
-                            {% include "thesaurus/fieldset_termlistdesc.html" %}
-                        {% endif %}
-                    {% endfor %}
-                    <br>
 
-                    <!-- Draft -->
-                    <font class="color_status"><b>{% trans "Draft" %}</font><br>
-                    {% for form in formset_term %}
-                        {% if form.status.value == -1 and form.instance.pk %}
-                            {% include "thesaurus/fieldset_termlistdesc.html" %}
-                        {% endif %}
-                    {% endfor %}
-                    <br>
 
-                    <!-- Historical -->
-                    <font class="color_status"><b>{% trans "Historical" %}</font><br>
-                    {% for form in formset_term %}
-                        {% if form.status.value == 5 and form.instance.pk %}
-                            {% include "thesaurus/fieldset_termlistdesc.html" %}
-                        {% endif %}
-                    {% endfor %}
+                <div class="control-panel form-submit">
+                    <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
+                    <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
 
-                </fieldset>
-            </div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <font color="#333" size="4">
+                                <b>{% trans "Registry successfully saved" %}</b>
+                            </font>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} -->
+
+                </div>
+
+            </form>
+
+            <script src="{% static "site/js/jquery.js" %}"></script>
+            <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
+            <script type="text/javascript" src="/admin/jsi18n/"></script>
+            <script type="text/javascript" src="{% static "admin/js/core.js" %}"></script>
+            <script type="text/javascript" src="{% static "admin/js/SelectBox.js" %}"></script>
+            <script type="text/javascript" src="{% static "admin/js/SelectFilter2.js" %}"></script>
+            <script type="text/javascript">
+                // PARAMETROS DO SELECT FILTER:
+                // ID do seu elemento select
+                // NAME do seu elemento select
+                // 0 - para filter_horizontal / 1 para filter_vertical
+                // Caminho do admin para source de imagens utilizadas
+
+                addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "abbreviation", 1, "/static/admin/"); });
+            </script>
 
         </div>
+        <!-- body update -->
 
+    <!-- update -->
 
-        <div class="control-panel form-submit">
-            <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
-            <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+    {% else %}
 
-            {% if messages %}
-                {% for message in messages %}
-                    <font color="#333" size="4">
-                        <b>{% trans "Registry successfully saved" %}</b>
-                    </font>
-                {% endfor %}
+    <!-- new register -->
+        <!-- header -->
+        <div class='header'>
+            <h2><i class='icon-book'></i>
+                {% if not object %}
+                    {% trans "New Descriptor" %}
+                    {% if next_id %}
+                         - ID: {{ next_id }}
+                    {% endif %}
+                {% endif %}</h2>
+        </div>
+        <!-- header -->
+
+        <!-- body update -->
+        <div class='body'>    
+
+            {% if form.errors or formset_descriptor.errors or formset_category.errors or formset_previous.errors or formset_concept.errors or formset_term.errors %}
+                <ul class="errorlist alert alert-error">
+                    <li>{% trans "Please check required fields" %}</li>
+                </ul>
             {% endif %}
 
-<!-- {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %} -->
 
+            <ul class="nav nav-tabs" id='myTab'>
+                <li>
+                    <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab" class="active"><strong>{% trans "Identifier" %}</strong></a>
+                </li>
+
+                <li>
+                    <a href="#tab-termlistdesc" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
+                </li>
+
+                <li>
+                    <a href="#tab-conceptlistdesc" class="{% if formset_concept.errors and not formset_concept.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
+                </li>
+
+                <li>
+                    <a href="#tab-descriptiondesc" class="{% if formset_descriptor.errors and not formset_descriptor.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Description" %}</strong></a>
+                </li>
+                <li>
+                    <a href="#tab-treenumberslistdesc" class="{% if formset_category.errors and not formset_category.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Category" %}</strong></a>
+                </li>
+                <li>
+                    <a href="#tab-previousindexinglistdesc" class="{% if formset_previous.errors and not formset_previous.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Previous indexing" %}</strong></a>
+                </li>
+            </ul>
+
+            <form method="POST" class="act-form" encrypt="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="tab-content">
+
+                    <div id="tab-identifierdesc" class="tab-pane fade in active">
+
+                        <fieldset id="identifierdesc">
+
+                            {{ form.non_field_errors.as_ul }}
+
+                            {% for field in form.visible_fields %}
+                                {% if field.errors %}
+                                    <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                                {% endif %}
+                            {% endfor %}
+
+                            <table class="identifierdescn">
+                                <thead>
+                                    <th>{{ form.thesaurus.label }}<span class="mark">*</span></th>
+                                </thead>
+                                <tr>
+                                    <td>{{ form.thesaurus }}</td>
+                                </tr>
+                                <thead>
+                                    <th>{{ form.descriptor_ui.label }}</th>
+                                    <th>{{ form.decs_code.label }}<span class="mark">*</span></th>
+                                    <th>{{ form.external_code.label }}</th>
+                                    <th>{{ form.nlm_class_number.label }}</th>
+                                </thead>
+                                <tr>
+                                    <td>{{ form.descriptor_ui }}</td>
+                                    <td>{{ form.decs_code }}</td>
+                                    <td>{{ form.external_code }}</td>
+                                    <td>{{ form.nlm_class_number }}</td>
+                                </tr>
+                                <thead>
+                                    <th>{{ form.descriptor_class.label }}</th>
+                                    <th>{{ form.date_created.label }}
+                                        <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
+                                    </th>
+                                    <th>{{ form.date_revised.label }}
+                                        <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
+                                    </th>
+                                    <th>{{ form.date_established.label }}
+                                        <font color="#999"><i>{{ form.date_established.help_text }}</i></font>
+                                    </th>
+                                </thead>
+                                <tr>
+                                    <td>{{ form.descriptor_class }}</td>
+                                    <td>{{ form.date_created }}</td>
+                                    <td>{{ form.date_revised }}</td>
+                                    <td>{{ form.date_established }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan=4>{{ form.abbreviation }}</td>
+                                </tr>
+                            </table>
+
+                        </fieldset>
+                    </div>
+
+                    <div id="tab-descriptiondesc" class="tab-pane fade">
+                        <fieldset id="descriptiondesc">
+
+                        {{ formset_descriptor.management_form }}
+
+                        {% for form in formset_descriptor %}
+
+
+                            {{ form.non_field_errors.as_ul }}
+
+                            {% for field in form.visible_fields %}
+                                {% if field.errors %}
+                                    <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                                {% endif %}
+                            {% endfor %}
+
+                            <table class="descriptiondescn">
+                                <tr>
+                                    <td width="20%" class="td-r">{{ form.language_code.label_tag }}</td>
+                                    <td class="td-l">{{ form.language_code }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="td-r">{{ form.annotation.label_tag }}</td>
+                                    <td>
+                                    {{ form.annotation }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-r">{{ form.history_note.label_tag }}</td>
+                                    <td>
+                                    {{ form.history_note }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-r">{{ form.online_note.label_tag }}</td>
+                                    <td>
+                                    {{ form.online_note }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-r">{{ form.public_mesh_note.label_tag }}</td>
+                                    <td>
+                                    {{ form.public_mesh_note }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-r">{{ form.consider_also.label_tag }}</td>
+                                    <td>
+                                    {{ form.consider_also }}
+                                    </td>
+                                </tr>
+                            </table>
+
+                        {% endfor %}
+
+                        </fieldset>
+                    </div>
+
+                    <div id="tab-treenumberslistdesc" class="tab-pane fade">
+                        <fieldset id="treenumberslistdesc">
+
+                            <table class="treenumberslistdesc">
+                                <thead>
+                                    <th>{% trans "Tree Numbers List" %}</th>
+                                    <th>{% trans "Delete?" %}</th>
+                                </thead>
+                                <tbody>
+                                {{ formset_category.management_form }}
+
+                                {% for form in formset_category %}
+
+                                    {{ form.non_field_errors.as_ul }}
+
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <tr id="category-{{ forloop.counter0 }}" class="category-row{% if form.errors %} error{% endif %} formset-row">
+                                        {% for field in form.visible_fields %}
+                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </fieldset>
+                    </div>
+
+                    <div id="tab-previousindexinglistdesc" class="tab-pane fade">
+                        <fieldset id="previousindexinglistdesc">
+
+                            <table class="previousindexinglistdesc">
+                                <thead>
+                                    <th>{% trans "Previous Index" %}</th>
+                                    <th>{% trans "Language" %}</th>
+                                    <th>{% trans "Delete?" %}</th>
+                                </thead>
+                                <tbody>
+                                {{ formset_previous.management_form }}
+
+                                {% for form in formset_previous %}
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <tr id="previous-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
+                                        {% for field in form.visible_fields %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </fieldset>
+
+                    </div>
+
+                    <div id="tab-conceptlistdesc" class="tab-pane fade">
+                        <fieldset id="conceptlistdesc">
+
+                            {{ formset_concept.management_form }}
+                            {% for form in formset_concept %}
+
+                                {{ form.non_field_errors.as_ul }}
+
+                                {% for field in form.visible_fields %}
+                                    {% if field.errors %}
+                                        <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+
+                                <table class="conceptlistdescn" border="0">
+
+                                    <tr>
+                                        <td>{{ form.concept_name.label_tag }}</td>
+                                        <td>{{ form.language_code.label_tag }}</td>
+                                        <td>{{ form.concept_ui.label_tag }}</td>
+                                        <td>{{ form.preferred_concept.label_tag }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="concept_name">{{ form.concept_name }}</td>
+                                        <td>{{ form.language_code }}</td>
+                                        <td>{{ form.concept_ui }}</td>
+                                        <td>{{ form.preferred_concept }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">{{ form.casn1_name.label_tag }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="casn1">{{ form.casn1_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">{{ form.scope_note.label_tag }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="casn1">{{ form.scope_note }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4">{{ form.registry_number.label_tag }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">{{ form.registry_number }}</td>
+                                    </tr>
+
+                                </table>
+                            {% endfor %}
+                        </fieldset>
+                    </div>
+
+
+                    <div id="tab-termlistdesc" class="tab-pane fade">
+
+                        <fieldset id="termlistdesc">
+                            {{ formset_term.management_form }}
+
+                            {% for form in formset_term %}
+
+                                {{ form.non_field_errors.as_ul }}
+
+                                {% for field in form.visible_fields %}
+                                    {% if field.errors %}
+                                        <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                                    {% endif %}
+                                {% endfor %}
+
+
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+
+                                    <table class="termlistdescn" border="0">
+
+                                        <td colspan="5">
+                                            {{ form.status.label_tag }}
+                                            {{ form.status }}
+                                        </td>
+
+                                        <tr>
+                                            <td colspan="2" class="term_string" width="40%">
+                                                <label for="term_string">{{ form.term_string.label_tag }}</label>
+                                            </td>
+                                            <td>{{ form.language_code.label_tag }}</td>
+                                            <td>{{ form.term_ui.label_tag }}</td>
+                                            <td>{{ form.date_created.label_tag }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="term_string" width="40%">
+                                                {{ form.term_string }}
+                                            </td>
+                                            <td>
+                                                {{ form.language_code }}
+                                            </td>
+                                            <td>{{ form.term_ui }}</td>
+                                            <td>
+                                                {{ form.date_created }}
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                            <td>{{ form.concept_preferred_term.label_tag }}</td>
+                                            <td>{{ form.is_permuted_term.label_tag }}</td>
+                                            <td>{{ form.lexical_tag.label_tag }}</td>
+                                            <td>{{ form.record_preferred_term.label_tag }}</td>
+                                            <td>{{ form.entry_version.label_tag }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{{ form.concept_preferred_term }}</td>
+                                            <td>{{ form.is_permuted_term }}</td>
+                                            <td>{{ form.lexical_tag }}</td>
+                                            <td>{{ form.record_preferred_term }}</td>
+                                            <td>{{ form.entry_version }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="4" width="100%">{{ form.historical_annotation.label_tag }}</td>
+                                            <td>{{ form.date_altered.label_tag }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" width="100%">{{ form.historical_annotation }}</td>
+                                            <td valign="top">
+                                                {{ form.date_altered }}
+                                            </td>
+                                        </tr>
+
+                                    </table>
+
+                                    <br>
+                                </div>
+                            {% endfor %}
+
+                        </fieldset>
+                    </div>
+
+                </div>
+
+
+                <div class="control-panel form-submit">
+                    <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
+                    <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <font color="#333" size="4">
+                                <b>{% trans "Registry successfully saved" %}</b>
+                            </font>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %} -->
+
+                </div>
+
+            </form>
+
+
+            <script src="{% static "site/js/jquery.js" %}"></script>
+            <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
+            <script type="text/javascript" src="/admin/jsi18n/"></script>
+            <script type="text/javascript" src="{% static "admin/js/core.js" %}"></script>
+            <script type="text/javascript" src="{% static "admin/js/SelectBox.js" %}"></script>
+            <script type="text/javascript" src="{% static "admin/js/SelectFilter2.js" %}"></script>
+            <script type="text/javascript">
+                // PARAMETROS DO SELECT FILTER:
+                // ID do seu elemento select
+                // NAME do seu elemento select
+                // 0 - para filter_horizontal / 1 para filter_vertical
+                // Caminho do admin para source de imagens utilizadas
+
+                addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "abbreviation", 1, "/static/admin/"); });
+            </script>
 
         </div>
-
-    </form>
-
-
- <script src="{% static "site/js/jquery.js" %}"></script>
- <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
-    <script type="text/javascript" src="/admin/jsi18n/"></script>
-    <script type="text/javascript" src="{% static "admin/js/core.js" %}"></script>
-    <script type="text/javascript" src="{% static "admin/js/SelectBox.js" %}"></script>
-    <script type="text/javascript" src="{% static "admin/js/SelectFilter2.js" %}"></script>
-    <script type="text/javascript">
-     // PARAMETROS DO SELECT FILTER:
-     // ID do seu elemento select
-     // NAME do seu elemento select
-     // 0 - para filter_horizontal / 1 para filter_vertical
-     // Caminho do admin para source de imagens utilizadas
-
-        addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "abbreviation", 1, "/static/admin/"); });
-    </script>
-
-
-</div>
+    <!-- new register -->
+    {% endif %}
 
 {% endblock %}
+
+
 
 
 {% block extrajs %}
@@ -676,12 +1113,5 @@
 
 
    </script>
-
-
-    <script type="text/javascript">
-
-    </script>
-
-
 
 {% endblock %}
