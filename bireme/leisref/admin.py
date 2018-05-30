@@ -83,7 +83,7 @@ class ActAdmin(GenericAdmin):
                     'scope', 'scope_state', 'scope_city','source_name',
                     'organ_issuer', 'created_by', 'status')
     search_fields = ['id', '__unicode__']
-    list_filter = ('status','act_type', 'scope', 'act_collection', 'organ_issuer',)
+    list_filter = ('status','act_type', 'scope', 'act_collection', 'source_name',)
     inlines = [ActRelationshipAdmin, ActURLAdmin, AttachmentAdmin, DescriptorAdmin, ThematicAreaAdmin, ]
 
 class ActCollectionLocalAdmin(admin.TabularInline):
@@ -107,6 +107,15 @@ class DatabaseAdmin(GenericAdmin):
     search_fields = list_display = ['acronym', 'name']
 
 
+class ActSourceLocalAdmin(admin.TabularInline):
+    model = ActSourceLocal
+    extra = 1
+
+
+class ActSourceAdmin(GenericAdmin):
+    model = ActSource
+    inlines = [ActSourceLocalAdmin, ]
+
 admin.site.register(Act, ActAdmin)
 admin.site.register(ActType, ActTypeAdmin)
 admin.site.register(ActScope, ActScopeAdmin)
@@ -115,5 +124,5 @@ admin.site.register(ActOrganIssuer, ActOrganIssuerAdmin)
 admin.site.register(ActRelationType, ActRelationTypeAdmin)
 admin.site.register(ActCollection, ActCollectionAdmin)
 admin.site.register(ActRelationship)
-admin.site.register(ActSource)
+admin.site.register(ActSource, ActSourceAdmin)
 admin.site.register(Database, DatabaseAdmin)
