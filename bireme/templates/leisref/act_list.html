@@ -72,6 +72,8 @@
                             </select>
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
 
+                            <a href="#" onclick="$('#help_modal_title').html('{% trans 'Search' %}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/leisref/search/" class="field_with_help"><i class='icon-info-sign'></i></a>
+
                             <a href="javascript:void()" id="show_advaced_filters">{% trans "Filters" %}</a>
                             <div class="advanced_filters {% if not show_advaced_filters %}hide{% endif %}">
                                 {% trans "Act country/region" %}:
@@ -121,5 +123,6 @@
     </div>
 
 </div>
+{% include "modal_help.html" %}
 
 {% endblock %}
