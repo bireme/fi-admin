@@ -48,11 +48,11 @@
 
             <ul class="nav nav-tabs" id='myTab'>
                 <li>
-                    <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab" class="active"><strong>{% trans "Identifier" %}</strong></a>
+                    <a href="#tab-identifierdesc" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
                 </li>
 
                 <li>
-                    <a href="#tab-termlistdesc" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
+                    <a href="#tab-termlistdesc" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab" class="active"><strong>{% trans "Terms" %}</strong></a>
                 </li>
 
                 <li>

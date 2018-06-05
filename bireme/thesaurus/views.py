@@ -455,7 +455,7 @@ class TermListDescDeleteView(DeleteView):
     Used as class view to delete TermListDesc
     """
     model = TermListDesc
-    template_name = 'thesaurus/term_confirm_delete.html'
+    template_name = 'thesaurus/descriptor_term_confirm_delete.html'
     # success_url = reverse_lazy('list_descriptor')
 
     def get_success_url(self):
@@ -489,9 +489,13 @@ class QualifUpdate(LoginRequiredView):
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_category_valid = formset_category.is_valid()
         formset_concept_valid = formset_concept.is_valid()
-        formset_term_valid = formset_term.is_valid()
 
-        if (form_valid and formset_descriptor_valid and formset_concept_valid and formset_category_valid and formset_term_valid):
+        # Deprecated
+        # formset_term_valid = formset_term.is_valid()
+        # if (form_valid and formset_descriptor_valid and formset_concept_valid and formset_category_valid and formset_term_valid):
+
+        if (form_valid and formset_descriptor_valid and formset_concept_valid and formset_category_valid ):
+
             self.object = form.save()
 
             formset_descriptor.instance = self.object
@@ -503,8 +507,8 @@ class QualifUpdate(LoginRequiredView):
             formset_concept.instance = self.object
             formset_concept.save()
 
-            formset_term.instance = self.object
-            formset_term.save()
+            # formset_term.instance = self.object
+            # formset_term.save()
 
             form.save()
             return HttpResponseRedirect(self.get_success_url())
@@ -516,7 +520,7 @@ class QualifUpdate(LoginRequiredView):
                                             formset_descriptor=formset_descriptor,
                                             formset_category=formset_category,
                                             formset_concept=formset_concept,
-                                            formset_term=formset_term
+                                            # formset_term=formset_term
                                             )
                                         )
 
@@ -537,6 +541,8 @@ class QualifUpdate(LoginRequiredView):
                                             termqualif__concept_preferred_term='Y',
                                             termqualif__status=1,
                                             ).values('termqualif__term_string','termqualif__language_code')
+
+            context['identifier_id'] = self.object.id
 
 
         if self.request.method == 'GET':
@@ -787,4 +793,67 @@ class QualifListView(LoginRequiredView, ListView):
 
         return context
 
+
+
+
+class TermListQualifCreateView(CreateView):
+    """
+    Used as class view to create TermListQualif
+    """
+    model = TermListQualif
+    template_name = 'thesaurus/qualifier_termlistqualif_new.html'
+    form_class = TermListQualifUniqueForm
+    success_url = reverse_lazy('list_qualifier')
+
+    def get_success_url(self):
+        messages.success(self.request, 'is updated')
+        return '/thesaurus/qualifiers/edit/%s' % self.object.identifier_id
+
+    def form_valid(self, form):
+        form_valid = form.is_valid()
+        if (form_valid):
+            self.object = form.save(commit=False)
+            self.object.identifier_id = int(self.request.POST.get("identifier_id"))
+            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+            form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form,))
+
+
+
+class TermListQualifEditView(UpdateView):
+    """
+    Used as class view to update TermListQualif
+    """
+    model = TermListQualif
+    template_name = 'thesaurus/qualifier_termlistqualif_edit.html'
+    form_class = TermListQualifUniqueForm
+
+    def get_success_url(self):
+        messages.success(self.request, 'is updated')
+        return '/thesaurus/qualifiers/edit/%s' % self.object.identifier_id
+
+    def form_valid(self, form):
+        form_valid = form.is_valid()
+        if (form_valid):
+            self.object = form.save(commit=False)
+            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+            form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form,))
+
+
+
+class TermListQualifDeleteView(DeleteView):
+    """
+    Used as class view to delete TermListQualif
+    """
+    model = TermListQualif
+    template_name = 'thesaurus/qualifier_term_confirm_delete.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'is deleted')
+        return '/thesaurus/qualifiers/edit/%s' % self.object.identifier_id
 

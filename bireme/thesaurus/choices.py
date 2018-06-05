@@ -16,7 +16,7 @@ LANGUAGE_CODE_MESH=(
 
 
 YN_OPTION=(
-    ('Y','Yes'),('N','No')
+    ('Y',_('Yes')),('N',_('No'))
 )
 
 
@@ -36,15 +36,15 @@ DESCRIPTOR_CLASS_CODE=(
 
 
 LEXICALTAG_OPTION=(
-    ('ABB','ABB - Abbreviation'),
-    ('ABX','ABX - Embedded abbreviation'),
-    ('ACR','ACR - Acronym'),
-    ('ACX','ACX - Embedded acronym'),
-    ('EPO','EPO - Eponym'),
-    ('LAB','LAB - Lab number'),
-    ('NAM','NAM - Proper name'),
-    ('NON','NON - None'),
-    ('TRD','TRD - Trade name'),
+    ('ABB',_('ABB - Abbreviation')),
+    ('ABX',_('ABX - Embedded abbreviation')),
+    ('ACR',_('ACR - Acronym')),
+    ('ACX',_('ACX - Embedded acronym')),
+    ('EPO',_('EPO - Eponym')),
+    ('LAB',_('LAB - Lab number')),
+    ('NAM',_('NAM - Proper name')),
+    ('NON',_('NON - None')),
+    ('TRD',_('TRD - Trade name')),
 )
 
 

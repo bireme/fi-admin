@@ -22,24 +22,19 @@
 
     <!-- header -->
     <div class='header'>
-        <h2><i class='icon-book'></i>{% trans "New Descriptor" %}</h2>
+        <h2><i class='icon-book'></i>
+            {% if object %}
+                {% trans "Edit Descriptor" %}&nbsp;:&nbsp;{{ form.term_string.value }} ({{ form.language_code.value }})
+            {% endif %}</h2>
     </div>
     <!-- header -->
 
     <div class='body'>
 
-<!-- {% if request.GET.identifier_id %}
- Tem : [ {{request.GET.identifier_id }} ]
-{% else %}
- Não tem request.GET.identifier_id
-{% endif %} -->
-
 
         <form method="post">{% csrf_token %}
 
             <input type="hidden" name="language_system" value="{{ language_system }}">
-
-            <input type="hidden" id="id_identifier_id" name="identifier_id" value="{{ request.GET.identifier_id }}">
 
             {{ form.non_field_errors.as_ul }}
 
@@ -59,6 +54,7 @@
                 <td colspan="5">
                     {{ form.status.label_tag }}
                     {{ form.status }}
+                    <a href="{% url 'delete_termlistqualif' form.instance.pk %}/?identifier_id={{form.instance.identifier_id}}&term_string={{form.term_string.value}}&language_code={{form.language_code.value}}" class='btn btn-primary'><i class='icon-file'></i>{% trans "delete" %}</a>
                 </td>
 
                 <tr>
@@ -79,8 +75,7 @@
                     <td>{{ form.term_ui }}</td>
                     <td>
                         <!-- {{ form.date_created }} -->
-                        <input id="id_date_created" name="date_created" value="{% now "d/m/Y" %}" type="text">
-
+                        <input id="id_date_created" name="date_created" value="{{ form.date_created.value|date:"d/m/Y" }}" type="text" readonly>
 <!--     <input id="id_termdesc-{{ forloop.counter0 }}-date_created" name="termdesc-{{ forloop.counter0 }}-date_created" type="text" value="{{ form.date_created.value|date:"d/m/Y"}}" onkeyup="mascara(this, mdata);" maxlength="10">
  -->
                     </td>
@@ -116,9 +111,10 @@
             </table>
 
             <div class="control-panel form-submit">
-                <a href="{% url 'edit_descriptor' request.GET.identifier_id %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
-                <!-- <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Back" %}</a> -->
+               
+                <a href="{% url 'edit_qualifier' form.instance.identifier_id %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+
             </div>
 
         </form>

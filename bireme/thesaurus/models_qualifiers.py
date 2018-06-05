@@ -71,15 +71,11 @@ class DescriptionQualif(models.Model):
     class Meta:
         verbose_name = _("Description of Qualifier")
         verbose_name_plural = _("Descriptions of Qualifier")
-        # unique_together = ('identifier')
-
+        unique_together = ('identifier','language_code')
 
     identifier = models.ForeignKey(IdentifierQualif, related_name="qualifiers")
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
-
-    # # QualifierName
-    # qualifier_name = models.CharField(_("Qualifier name"), max_length=250, blank=False)
 
     # Annotation
     annotation = models.TextField(_("Annotation"), max_length=1500, blank=True)
@@ -155,8 +151,10 @@ class TermListQualif(models.Model):
     class Meta:
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
-        # unique_together = ('identifier','term_string','language_code')
-        # unique_together = ('status','language_code','date_altered')
+        ordering = ('language_code','term_string','concept_preferred_term')
+        # unique_together = ('term_string','language_code','status','date_altered')
+        # unique_together = ('term_string','language_code','status')
+
 
     identifier = models.ForeignKey(IdentifierQualif, related_name="termqualif")
 
@@ -165,7 +163,7 @@ class TermListQualif(models.Model):
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # ConceptPreferredTermYN
-    concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=True)
+    concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=False)
 
     # IsPermutedTermYN
     is_permuted_term = models.CharField(_("Is permuted term"), choices=YN_OPTION, max_length=1, blank=True)

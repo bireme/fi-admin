@@ -52,10 +52,10 @@
 
     <ul class="nav nav-tabs" id='myTab'>
             <li>
-                <a href="#tab-identifierqualif" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab" class="active"><strong>{% trans "Identifier" %}</strong></a>
+                <a href="#tab-identifierqualif" class="{% if form.errors and not form.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Identifier" %}</strong></a>
             </li>
             <li>
-                <a href="#tab-termlistqualif" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Terms" %}</strong></a>
+                <a href="#tab-termlistqualif" class="{% if formset_term.errors and not formset_term.is_valid %}alert-error{% endif %}" data-toggle="tab" class="active"><strong>{% trans "Terms" %}</strong></a>
             </li>
             <li>
                 <a href="#tab-conceptlistqualif" class="{% if formset_concept.errors and not formset_concept.is_valid %}alert-error{% endif %}" data-toggle="tab"><strong>{% trans "Concept List" %}</strong></a>
@@ -353,17 +353,11 @@
                 <fieldset id="termlistqualif">
 
                     {{ formset_term.management_form }}
-
-                    <!-- New register -->
-                    {% for form in formset_term %}
-                        {% if not form.instance.pk %}
-                            {% include "thesaurus/fieldset_termlistqualif.html" %}
-                        {% endif %}
-                    {% endfor %}
-                    <br>
-
+                    <a href="{% url 'create_termlistqualif' %}/?identifier_id={{identifier_id}}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Qualifier" %}</a>
+                    </a>
+                    <br><br>
                     <!-- Published -->
-                    <font class="color_status"><b>{% trans "Published" %}</b></font><br>
+                    <font class="color_status"><b>{% trans "Published" %}</font><br>
                     {% for form in formset_term %}
                         <!-- Preferred -->
                         {% if form.status.value == 1 and form.concept_preferred_term.value = 'Y' and form.instance.pk %}
@@ -380,7 +374,7 @@
                     <br>
 
                     <!-- Draft -->
-                    <font class="color_status"><b>{% trans "Draft" %}</b></font><br>
+                    <font class="color_status"><b>{% trans "Draft" %}</font><br>
                     {% for form in formset_term %}
                         {% if form.status.value == -1 and form.instance.pk %}
                             {% include "thesaurus/fieldset_termlistqualif.html" %}
@@ -389,7 +383,7 @@
                     <br>
 
                     <!-- Historical -->
-                    <font class="color_status"><b>{% trans "Historical" %}</b></font><br>
+                    <font class="color_status"><b>{% trans "Historical" %}</font><br>
                     {% for form in formset_term %}
                         {% if form.status.value == 5 and form.instance.pk %}
                             {% include "thesaurus/fieldset_termlistqualif.html" %}
@@ -531,13 +525,13 @@
             // });
 
             // Alerta sobre não preenchimento
-            $('[id^="id_termqualif-"]').on('blur', function() {
-                val = $(this).val();
-                if ( val == '' ){
-                    alert('{% trans "Warning: Field is empty!" %}');
-                    return false;
-                }
-            });
+            // $('[id^="id_termqualif-"]').on('blur', function() {
+            //     val = $(this).val();
+            //     if ( val == '' ){
+            //         alert('{% trans "Warning: Field is empty!" %}');
+            //         return false;
+            //     }
+            // });
 
 
 

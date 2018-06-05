@@ -7,13 +7,13 @@
 
 {% block breadcrumb %}
     {% if not object %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_qualifier' %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
-        <li>{% trans "New Descriptor" %}</li>
+        <li>{% trans "New Qualifier" %}</li>
     {% else %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_qualifier' %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
-        <li>{% trans "Edit Descriptor" %}</li>
+        <li>{% trans "Edit Qualifier" %}</li>
     {% endif %}
 {% endblock %}
 
@@ -22,7 +22,7 @@
 
     <!-- header -->
     <div class='header'>
-        <h2><i class='icon-book'></i>{% trans "New Descriptor" %}</h2>
+        <h2><i class='icon-book'></i>{% trans "New Qualifier" %}</h2>
     </div>
     <!-- header -->
 
@@ -43,6 +43,7 @@
 
             {{ form.non_field_errors.as_ul }}
 
+    
             {% for field in form.visible_fields %}
                 {% if field.errors %}
                     <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
@@ -54,7 +55,7 @@
                 {{ hidden }}
             {% endfor %}
 
-            <table class="termlistdescn" border="0">
+            <table class="termlistqualifn" border="0">
 
                 <td colspan="5">
                     {{ form.status.label_tag }}
@@ -116,7 +117,7 @@
             </table>
 
             <div class="control-panel form-submit">
-                <a href="{% url 'edit_descriptor' request.GET.identifier_id %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
+                <a href="{% url 'edit_qualifier' request.GET.identifier_id %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
                 <!-- <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Back" %}</a> -->
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             </div>

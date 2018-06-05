@@ -66,6 +66,12 @@ class TermListQualifForm(forms.ModelForm):
         model = TermListQualif
         fields = '__all__'
 
+class TermListQualifUniqueForm(forms.ModelForm):
+    class Meta:
+        model = TermListQualif
+        exclude = ('identifier',)
+
+
 # Descriptor ------------------------------------------------------------------
 class IdentifierDescForm(forms.ModelForm):
     class Meta:

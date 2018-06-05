@@ -14,7 +14,7 @@
     {% endfor %}
 
     <table class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-target="#termlistdesc_{{ form.instance.pk }}">
+        <a class="accordion-toggle" data-toggle="collapse" data-target="#termlistqualif_{{ form.instance.pk }}">
             <font size="2">
 
                 {% if form.instance.pk %}
@@ -35,30 +35,30 @@
         </a>
     </table>
 
-    <div id="termlistdesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
-    <!-- <div id="termlistdesc_{{ form.instance.pk }}" class="panel-collapse collapse"> -->
+    <div id="termlistqualif_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+    <!-- <div id="termlistqualif_{{ form.instance.pk }}" class="panel-collapse collapse"> -->
 
-        <table class="termlistdesc" border="0">
+        <table class="termlistqualif" border="0">
             <tr>
 
                 <td colspan="5" class="td-r-del" readonly>
 
                     {% trans 'Status' %}:&nbsp;
 
-                    <select id="id_termdesc-{{ forloop.counter0 }}-status" name="termdesc-{{ forloop.counter0 }}-status" disabled="disabled">
+                    <select id="id_termqualif-{{ forloop.counter0 }}-status" name="termqualif-{{ forloop.counter0 }}-status" disabled="disabled">
                         {% if form.status.value == -1 %}<option value="-1" selected="selected">Rascunho</option>{% endif %}
                         {% if form.status.value == 1 %}<option value="1" selected="selected">Publicado</option>{% endif %}
                         {% if form.status.value == 5 %}<option value="5" selected="selected">Historical</option>{% endif %}
                     </select>
 
-                    <!-- <a href="{% url 'edit_termlistdesc' form.instance.pk %}">{% trans "Edit" %}</a> -->
-                    <a href="{% url 'edit_termlistdesc' form.instance.pk %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                    <!-- <a href="{% url 'edit_termlistqualif' form.instance.pk %}">{% trans "Edit" %}</a> -->
+                    <a href="{% url 'edit_termlistqualif' form.instance.pk %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
 <!--                     {% if form.instance.pk %}
                             [ PROVISORIO {% trans 'Remove' %}? {{ form.DELETE }} ]
                     {% endif %} -->
                 </td>
  
-<!--                 <input name="{{termlistdesc}}_DELETE" id="id_{{termlistdesc}}_DELETE" type="hidden"> -->
+<!--                 <input name="{{termlistqualif}}_DELETE" id="id_{{termlistqualif}}_DELETE" type="hidden"> -->
 
                 </td>
             </tr>
@@ -75,16 +75,16 @@
                 <td colspan="2" class="term_string" width="40%">
                     <!-- term_string -->                                    
                     {% if form.term_string.value %}
-                        <input type="text" id="id_termdesc-{{ forloop.counter0 }}-term_string" name="termdesc-{{ forloop.counter0 }}-term_string" value="{% if form.term_string %}{{ form.term_string.value|default_if_none:"" }}{% endif %}" maxlength="250" readonly>
+                        <input type="text" id="id_termqualif-{{ forloop.counter0 }}-term_string" name="termqualif-{{ forloop.counter0 }}-term_string" value="{% if form.term_string %}{{ form.term_string.value|default_if_none:"" }}{% endif %}" maxlength="250" readonly>
                     {% else %}
-                        <input type="text" id="id_termdesc-{{ forloop.counter0 }}-term_string" name="termdesc-{{ forloop.counter0 }}-term_string" value="{% if form.term_string %}{{ form.term_string.value|default_if_none:"" }}{% endif %}" maxlength="250" readonly>
+                        <input type="text" id="id_termqualif-{{ forloop.counter0 }}-term_string" name="termqualif-{{ forloop.counter0 }}-term_string" value="{% if form.term_string %}{{ form.term_string.value|default_if_none:"" }}{% endif %}" maxlength="250" readonly>
                     {% endif %}
 
                 </td>
                 <td>
                     <!-- language_code -->
                     {% if form.instance.pk %}
-                    <select id="id_termdesc-{{ forloop.counter0 }}-language_code" name="termdesc-{{ forloop.counter0 }}-language_code" disabled="disabled">
+                    <select id="id_termqualif-{{ forloop.counter0 }}-language_code" name="termqualif-{{ forloop.counter0 }}-language_code" disabled="disabled">
                         <option value="">{% if not form.language_code.value %}---------{% endif %}</option>
                         <option value="en" {% if form.language_code.value == 'en'%}selected{% endif %}>{% trans "English" %}</option>
                         <option value="es" {% if form.language_code.value == 'es'%}selected{% endif %}>{% trans "Spanish Latin America" %}</option>
@@ -95,12 +95,12 @@
                     {% endif %}
                 </td>
                 <td>
-                    <input id="id_termdesc-{{ forloop.counter0 }}-term_ui" maxlength="250" name="termdesc-{{ forloop.counter0 }}-term_ui" type="text" readonly>
+                    <input id="id_termqualif-{{ forloop.counter0 }}-term_ui" maxlength="250" name="termqualif-{{ forloop.counter0 }}-term_ui" type="text" readonly>
                 </td>
                 <td>
                     <!-- date_created -->
                     {% if form.instance.pk %}
-                        <input id="id_termdesc-3-date_created" name="termdesc-3-date_created" value="{{ form.date_created.value|date:"d/m/Y"}}" type="text" readonly>
+                        <input id="id_termqualif-3-date_created" name="termqualif-3-date_created" value="{{ form.date_created.value|date:"d/m/Y"}}" type="text" readonly>
                     {% endif %}
                 </td>
             </tr>
@@ -113,21 +113,21 @@
             </tr>
             <tr>
                 <td>
-                    <select id="id_termdesc-{{ forloop.counter0 }}-concept_preferred_term" name="termdesc-{{ forloop.counter0 }}-concept_preferred_term" disabled="disabled">
+                    <select id="id_termqualif-{{ forloop.counter0 }}-concept_preferred_term" name="termqualif-{{ forloop.counter0 }}-concept_preferred_term" disabled="disabled">
                         <option value="">---------</option>
                         <option value="Y" {% if form.concept_preferred_term.value == 'Y' %}selected{% endif %}>{% trans "Yes" %}</option>
                         <option value="N" {% if form.concept_preferred_term.value == 'N' %}selected{% endif %}>{% trans "No" %}</option>
                     </select>
                 </td>
                 <td>
-                    <select id="id_termdesc-{{ forloop.counter0 }}-is_permuted_term" name="termdesc-{{ forloop.counter0 }}-is_permuted_term" disabled="disabled">
+                    <select id="id_termqualif-{{ forloop.counter0 }}-is_permuted_term" name="termqualif-{{ forloop.counter0 }}-is_permuted_term" disabled="disabled">
                         <option value="">---------</option>
                         <option value="Y" {% if form.is_permuted_term.value == 'Y' %}selected{% endif %}>{% trans "Yes" %}</option>
                         <option value="N" {% if form.is_permuted_term.value == 'N' %}selected{% endif %}>{% trans "No" %}</option>
                     </select>
                 </td>
                 <td>
-                    <select id="id_termdesc-{{ forloop.counter0 }}-lexical_tag" name="termdesc-{{ forloop.counter0 }}-lexical_tag" disabled="disabled">
+                    <select id="id_termqualif-{{ forloop.counter0 }}-lexical_tag" name="termqualif-{{ forloop.counter0 }}-lexical_tag" disabled="disabled">
                         <option value="">---------</option>
                         <option value="ABB" {% if form.lexical_tag.value == 'ABB' %}selected{% endif %}>{% trans "ABB - Abbreviation" %}</option>
                         <option value="ABX" {% if form.lexical_tag.value == 'ABX' %}selected{% endif %}>{% trans "ABX - Embedded abbreviation" %}</option>
@@ -141,14 +141,14 @@
                     </select>
                 </td>
                 <td>
-                    <select id="id_termdesc-{{ forloop.counter0 }}-record_preferred_term" name="termdesc-{{ forloop.counter0 }}-record_preferred_term" disabled="disabled">
+                    <select id="id_termqualif-{{ forloop.counter0 }}-record_preferred_term" name="termqualif-{{ forloop.counter0 }}-record_preferred_term" disabled="disabled">
                         <option value="">---------</option>
                         <option value="Y" {% if form.record_preferred_term.value == 'Y' %}selected{% endif %}>{% trans "Yes" %}</option>
                         <option value="N" {% if form.record_preferred_term.value == 'N' %}selected{% endif %}>{% trans "No" %}</option>
                     </select>
                 </td>
                 <td>
-                    <input id="id_termdesc-{{ forloop.counter0 }}-entry_version" maxlength="250" name="termdesc-{{ forloop.counter0 }}-entry_version" type="text" readonly>
+                    <input id="id_termqualif-{{ forloop.counter0 }}-entry_version" maxlength="250" name="termqualif-{{ forloop.counter0 }}-entry_version" type="text" readonly>
                 </td>
             </tr>
 
@@ -158,10 +158,10 @@
             </tr>
             <tr>
                 <td colspan="4" width="100%">
-                    <textarea cols="40" id="id_termdesc-{{ forloop.counter0 }}-historical_annotation" maxlength="1500" name="termdesc-{{ forloop.counter0 }}-historical_annotation" rows="10" readonly></textarea>
+                    <textarea cols="40" id="id_termqualif-{{ forloop.counter0 }}-historical_annotation" maxlength="1500" name="termqualif-{{ forloop.counter0 }}-historical_annotation" rows="10" readonly></textarea>
                 </td>
                 <td valign="top">
-                    <input id="id_termdesc-{{ forloop.counter0 }}-date_altered" name="termdesc-{{ forloop.counter0 }}-date_altered" value="{{ form.date_altered.value|date:"d/m/Y" }}" type="text" readonly>
+                    <input id="id_termqualif-{{ forloop.counter0 }}-date_altered" name="termqualif-{{ forloop.counter0 }}-date_altered" value="{{ form.date_altered.value|date:"d/m/Y" }}" type="text" readonly>
                 </td>
             </tr>
 

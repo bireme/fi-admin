@@ -20,8 +20,10 @@ from log.models import AuditLog
 
 
 # thesaurus fields
+class IdentifierDesc(models.Model):
 # class IdentifierDesc(models.Model, AuditLog):
-class IdentifierDesc(Generic, AuditLog):
+# class IdentifierDesc(Generic, AuditLog):
+
 
     class Meta:
         verbose_name = _("Descriptor")
@@ -62,7 +64,8 @@ class IdentifierDesc(Generic, AuditLog):
 
 
 # Description
-class DescriptionDesc(models.Model, AuditLog):
+class DescriptionDesc(models.Model):
+# class DescriptionDesc(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Description")
@@ -88,8 +91,8 @@ class DescriptionDesc(models.Model, AuditLog):
     # ConsiderAlso
     consider_also = models.CharField(_("Consider also"), max_length=250, blank=True)
 
-    def get_parent(self):
-        return self.identifier
+    # def get_parent(self):
+    #     return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -197,7 +200,8 @@ class ConceptListDesc(models.Model):
 
 
 # TermList
-class TermListDesc(models.Model, AuditLog):
+class TermListDesc(models.Model):
+# class TermListDesc(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Term")
@@ -242,8 +246,8 @@ class TermListDesc(models.Model, AuditLog):
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
 
-    def get_parent(self):
-        return self.identifier
+    # def get_parent(self):
+    #     return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)
