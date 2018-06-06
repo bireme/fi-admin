@@ -28,12 +28,14 @@ class OERResource(ModelResource):
     license = fields.CharField(attribute='license', null=True)
 
     class Meta:
-        queryset = OER.objects.filter(status=1)
+        queryset = OER.objects.all()
         allowed_methods = ['get']
         serializer = Serializer(formats=['json', 'xml'])
         resource_name = 'oer'
         filtering = {
+            'status': 'exact',
             'cvsp_node': 'exact',
+            'CVSP_resource': 'exact'
         }
         include_resource_uri = False
 
