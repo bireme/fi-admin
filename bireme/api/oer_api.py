@@ -19,14 +19,13 @@ import urllib
 class OERResource(ModelResource):
     resource_type = fields.CharField(attribute='type')
     language = fields.CharField(attribute='language')
-    structure = fields.CharField(attribute='structure')
-    interactivity_type = fields.CharField(attribute='interactivity_type')
-    learning_resource_type = fields.CharField(attribute='learning_resource_type')
-    interactivity_level = fields.CharField(attribute='interactivity_level')
-    learning_context = fields.CharField(attribute='learning_context')
-    difficulty = fields.CharField(attribute='difficulty')
-    license = fields.CharField(attribute='license')
-    license = fields.CharField(attribute='license')
+    structure = fields.CharField(attribute='structure', null=True)
+    interactivity_type = fields.CharField(attribute='interactivity_type', null=True)
+    learning_resource_type = fields.CharField(attribute='learning_resource_type', null=True, blank=True)
+    interactivity_level = fields.CharField(attribute='interactivity_level', null=True)
+    learning_context = fields.CharField(attribute='learning_context', null=True)
+    difficulty = fields.CharField(attribute='difficulty', null=True)
+    license = fields.CharField(attribute='license', null=True)
 
     class Meta:
         queryset = OER.objects.filter(status=1)
@@ -91,7 +90,7 @@ class OERResource(ModelResource):
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
         attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
-        urls = OERURL.objects.filter(oer_id=bundle.obj.id)
+        #urls = OERURL.objects.filter(oer_id=bundle.obj.id)
 
         # add fields to output
         if bundle.obj.contributor:
@@ -108,6 +107,7 @@ class OERResource(ModelResource):
             bundle.data['audience'] = [audience for audience in bundle.obj.audience.all()]
 
         # create a single list of urls and attachments associated with the object
+        '''
         url_list = [u.url for u in urls]
         for attach in attachments:
             view_url = "%sdocument/view/%s" % (settings.SITE_URL, attach.short_url)
@@ -115,6 +115,7 @@ class OERResource(ModelResource):
 
         if url_list:
             bundle.data['url'] = url_list
+        '''
 
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
