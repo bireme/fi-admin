@@ -9,13 +9,24 @@ from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 from tastypie import fields
 
-from oer.models import OER
+from oer.models import *
+from attachments.models import Attachment
 
 from  main.models import Descriptor, ResourceThematic
 import requests
 import urllib
 
 class OERResource(ModelResource):
+    resource_type = fields.CharField(attribute='type')
+    language = fields.CharField(attribute='language')
+    structure = fields.CharField(attribute='structure')
+    interactivity_type = fields.CharField(attribute='interactivity_type')
+    learning_resource_type = fields.CharField(attribute='learning_resource_type')
+    interactivity_level = fields.CharField(attribute='interactivity_level')
+    learning_context = fields.CharField(attribute='learning_context')
+    difficulty = fields.CharField(attribute='difficulty')
+    license = fields.CharField(attribute='license')
+    license = fields.CharField(attribute='license')
 
     class Meta:
         queryset = OER.objects.filter(status=1)
@@ -79,9 +90,34 @@ class OERResource(ModelResource):
 
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+        attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        urls = OERURL.objects.filter(oer_id=bundle.obj.id)
 
         # add fields to output
+        if bundle.obj.contributor:
+            bundle.data['contributor'] = [contributor['text'] for contributor in bundle.obj.contributor]
+        if bundle.obj.creator:
+            bundle.data['creator'] = [creator['text'] for creator in bundle.obj.creator]
+        if bundle.obj.course_type:
+            bundle.data['course_type'] = [ct for ct in bundle.obj.course_type.all()]
+        if bundle.obj.tec_resource_type:
+            bundle.data['tec_resource_type'] = [tec for tec in bundle.obj.tec_resource_type.all()]
+        if bundle.obj.format:
+            bundle.data['format'] = [tec for tec in bundle.obj.format.all()]
+        if bundle.obj.audience:
+            bundle.data['audience'] = [audience for audience in bundle.obj.audience.all()]
+
+        # create a single list of urls and attachments associated with the object
+        url_list = [u.url for u in urls]
+        for attach in attachments:
+            view_url = "%sdocument/view/%s" % (settings.SITE_URL, attach.short_url)
+            url_list.append(view_url)
+
+        if url_list:
+            bundle.data['url'] = url_list
+
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
+
 
         return bundle
