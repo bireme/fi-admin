@@ -79,27 +79,11 @@
                             {% endif %}
 
                             <div class="advanced_filters {% if not show_advaced_filters %}hide{% endif %}">
-                                {% trans "User" %}:
-                                <select name="filter_created_by_user">
+                                {% trans "CVSP node" %}:
+                                <select name="filter_country">
                                     <option value="">{% trans "All" %}</option>
-                                    {% for user in user_filter_list %}
-                                        <option value="{{ user.id }}" {% if actions.filter_created_by_user|add:"0" == user.id %}selected="true"{% endif %}>{{ user }}</option>
-                                    {% endfor %}
-                                </select>
-
-                                {% trans "Cooperative center" %}:
-                                <select name="filter_created_by_cc">
-                                    <option value="">{% trans "All" %}</option>
-                                    {% for center in cc_filter_list %}
-                                        <option value="{{ center }}" {% if actions.filter_created_by_cc == center %}selected="true"{% endif %}>{{ center }}</option>
-                                    {% endfor %}
-                                </select>
-
-                                {% trans "Thematic area" %}:
-                                <select name="filter_thematic">
-                                    <option value="">{% trans "All" %}</option>
-                                    {% for thematic in thematic_list %}
-                                        <option value="{{ thematic.id }}" {% if actions.filter_thematic|add:"0" == thematic.id %}selected="true"{% endif %}>{{ thematic }}</option>
+                                    {% for node in cvsp_node_list %}
+                                        <option value="{{ node }}" {% if actions.filter_country == node %}selected="true"{% endif %}>{{ node }}</option>
                                     {% endfor %}
                                 </select>
 
