@@ -92,7 +92,7 @@ class OERResource(ModelResource):
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
         attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
-        #urls = OERURL.objects.filter(oer_id=bundle.obj.id)
+        urls = OERURL.objects.filter(oer_id=bundle.obj.id)
 
         # add fields to output
         if bundle.obj.contributor:
