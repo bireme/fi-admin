@@ -18,7 +18,6 @@ import urllib
 
 class OERResource(ModelResource):
     resource_type = fields.CharField(attribute='type')
-    language = fields.CharField(attribute='language', null=True)
     structure = fields.CharField(attribute='structure', null=True)
     interactivity_type = fields.CharField(attribute='interactivity_type', null=True)
     learning_resource_type = fields.CharField(attribute='learning_resource_type', null=True, blank=True)
@@ -107,6 +106,8 @@ class OERResource(ModelResource):
             bundle.data['format'] = [tec for tec in bundle.obj.format.all()]
         if bundle.obj.audience:
             bundle.data['audience'] = [audience for audience in bundle.obj.audience.all()]
+        if bundle.obj.language:
+            bundle.data['language'] = bundle.obj.language.acronym.lower()
 
         # create a single list of urls and attachments associated with the object
         url_list = [u.url for u in urls]
@@ -119,6 +120,5 @@ class OERResource(ModelResource):
 
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
-
 
         return bundle
