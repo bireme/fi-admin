@@ -17,7 +17,7 @@ import requests
 import urllib
 
 class OERResource(ModelResource):
-    resource_type = fields.CharField(attribute='type')
+    resource_type = fields.CharField(attribute='type', null=True)
     structure = fields.CharField(attribute='structure', null=True)
     interactivity_type = fields.CharField(attribute='interactivity_type', null=True)
     learning_resource_type = fields.CharField(attribute='learning_resource_type', null=True, blank=True)
