@@ -14,10 +14,11 @@ field_tag_map = {'local_code': '03', 'record_type': '05', 'treatment_level': '06
                  'responsibility_mention': '140', 'shortened_title': '150',
                  'medline_shortened_title': '180', 'parallel_titles': '230',
                  'shortened_parallel_titles': '235', 'other_titles': '240',
-                 'initial_volume': '302', 'initial_number': '303', 'final_date': '304',
-                 'final_volume': '305', 'final_number': '306', 'country': '310', 'state': '320',
-                 'publication_level': '330', 'title_alphabet': '340', 'text_language': '350',
-                 'abstract_language': '360', 'frequency': '380', 'issn': '400', 'coden': '410',
+                 'initial_date': '301', 'initial_volume': '302', 'initial_number': '303',
+                 'final_date': '304', 'final_volume': '305', 'final_number': '306',
+                 'country': '310', 'state': '320', 'publication_level': '330',
+                 'title_alphabet': '340', 'text_language': '350', 'abstract_language': '360',
+                 'frequency': '380', 'issn': '400', 'coden': '410',
                  'medline_code': '420', 'classification': '430', 'thematic_area': '435',
                  'bvs_specialties': '436', 'descriptors': '440', 'users': '445',
                  'index_range': '450', 'acquisition_form': '460', 'acquisition_priority': '470',
@@ -28,7 +29,7 @@ field_tag_map = {'local_code': '03', 'record_type': '05', 'treatment_level': '06
                  'absorbed_in_part': '660', 'subdivision': '670', 'fusion': '680',
                  'continued_by': '710', 'continued_in_part_by': '720', 'absorbed_by': '750',
                  'absorbed_in_part_by': '760', 'subdivided': '770', 'merged': '780',
-                 'to_form': '790', 'online_notes': '880', 'notes': '900', 'bireme_notes': '910',
-                 'indexer_cc_code': '920', 'editor_cc_code': '930', 'creation_date': '940',
-                 'last_change_date': '941', 'online': '999'
+                 'to_form': '790', 'online_notes': '880', 'notes': '900',
+                 'bireme_notes': '910', 'indexer_cc_code': '920', 'editor_cc_code': '930',
+                 'creation_date': '940', 'last_change_date': '941', 'online': '999'
                 }
