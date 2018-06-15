@@ -88,6 +88,8 @@ class OERGenericListView(LoginRequiredView, ListView):
         show_advaced_filters = self.request.GET.get('apply_filters', False)
         user_role = user_data['service_role'].get('OER')
         cvsp_node_list = OER.objects.values_list('cvsp_node', flat=True).distinct()
+        # remove empty values
+        cvsp_node_list = filter(None, cvsp_node_list)
 
         context['actions'] = self.actions
         context['user_role'] = user_role
