@@ -16,7 +16,7 @@
 </div>
 
 <div class='body'>
-    <form method="POST" class="media-form">
+    <form method="POST" class="delete-form">
         <blockquote>
             <h3>{{ object.title }}</h3>
         </blockquote>
@@ -25,7 +25,7 @@
 
         <div class="alert">
             <p><strong>{% trans "Are you sure you want to delete?" %}</strong></p>
-            <a href="{% url 'list_media'%}" class="btn">{% trans 'No' %}</a>
+            <a href="{% url 'list_oer'%}" class="btn">{% trans 'No' %}</a>
             <input type="submit" class="btn btn-danger delete" value="{% trans 'Yes' %}"></input>
         </div>
 

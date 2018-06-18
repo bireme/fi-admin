@@ -284,8 +284,9 @@ class OERDeleteView(LoginRequiredView, DeleteView):
 
     def get_object(self, queryset=None):
         obj = super(OERDeleteView, self).get_object()
-        """ Hook to ensure object is owned by request.user. """
-        if not obj.created_by == self.request.user:
+        # check if cooperative center of the object is the same of the user
+        user_cc = self.request.user.profile.get_attribute('cc')
+        if not obj.cooperative_center_code == user_cc:
             return HttpResponse('Unauthorized', status=401)
 
         return obj
