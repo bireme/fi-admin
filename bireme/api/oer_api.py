@@ -27,7 +27,7 @@ class OERResource(ModelResource):
     license = fields.CharField(attribute='license', null=True)
 
     class Meta:
-        queryset = OER.objects.all()
+        queryset = OER.objects.filter(status=1)
         allowed_methods = ['get']
         serializer = Serializer(formats=['json', 'xml'])
         resource_name = 'oer'
@@ -67,9 +67,9 @@ class OERResource(ModelResource):
 
         # filter result by approved resources (status=1)
         if fq != '':
-            fq = '(django_ct:oer.oer) AND %s' % fq
+            fq = '(status:1 AND django_ct:oer.oer) AND %s' % fq
         else:
-            fq = '(django_ct:oer.oer)'
+            fq = '(status:1 AND django_ct:oer.oer)'
 
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
