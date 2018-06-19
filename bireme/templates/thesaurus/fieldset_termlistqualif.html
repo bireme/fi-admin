@@ -100,7 +100,7 @@
                 <td>
                     <!-- date_created -->
                     {% if form.instance.pk %}
-                        <input id="id_termqualif-3-date_created" name="termqualif-3-date_created" value="{{ form.date_created.value|date:"d/m/Y"}}" type="text" readonly>
+                        <input id="id_termqualif-{{ forloop.counter0 }}-date_created" name="termqualif-{{ forloop.counter0 }}-date_created" value="{{ form.date_created.value|date:"d/m/Y"}}" type="text" readonly>
                     {% endif %}
                 </td>
             </tr>

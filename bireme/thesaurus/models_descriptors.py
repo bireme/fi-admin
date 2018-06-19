@@ -74,7 +74,7 @@ class DescriptionDesc(models.Model):
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="descriptors")
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # Annotation
     annotation = models.TextField(_("Annotation"), max_length=1500, blank=True)
@@ -110,7 +110,7 @@ class TreeNumbersListDesc(models.Model):
     identifier = models.ForeignKey(IdentifierDesc, related_name="dtreenumbers")
 
     # Tree Number
-    tree_number = models.CharField(_("Tree number"), max_length=250, blank=False)
+    tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -123,14 +123,14 @@ class PreviousIndexingListDesc(models.Model):
     class Meta:
         verbose_name = _("Previous Indexing")
         verbose_name_plural = _("Previous Indexing")
-        unique_together = ('previous_indexing','language_code')
+        # unique_together = ('previous_indexing','language_code')
 
     identifier = models.ForeignKey(IdentifierDesc, blank=True)
 
     # PreviousIndexing
-    previous_indexing = models.CharField(_("Previous indexing"), max_length=1000, blank=False)
+    previous_indexing = models.CharField(_("Previous indexing"), max_length=1000, blank=True)
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -150,7 +150,7 @@ class ConceptListDesc(models.Model):
 
     # concept_relation = models.ForeignKey(ConceptRelationDesc, verbose_name=_("ID da relacao"), blank=True, null=True)
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # PreferredConcept
     preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
@@ -207,16 +207,20 @@ class TermListDesc(models.Model):
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
         ordering = ('language_code','term_string','concept_preferred_term')
-        unique_together = ('term_string','language_code','status','date_altered')
+        # unique_together = ('term_string','language_code','status','date_altered')
+        # unique_together = ('identifier','term_string','language_code','status','date_altered')
+        # unique_together = ('identifier','term_string','language_code','status')
+
+
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="termdesc")
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
     
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # ConceptPreferredTermYN
-    concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=False)
+    concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=True)
 
     # IsPermutedTermYN
     is_permuted_term = models.CharField(_("Is permuted term"), choices=YN_OPTION, max_length=1, blank=True)
@@ -231,7 +235,7 @@ class TermListDesc(models.Model):
     term_ui = models.CharField(_("Term unique identifier"), max_length=250, blank=True)
 
     # String
-    term_string = models.CharField(_("String"), max_length=250, blank=False)
+    term_string = models.CharField(_("String"), max_length=250, blank=True)
 
     # EntryVersion
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)

@@ -19,7 +19,7 @@ class IdentifierQualif(models.Model):
         verbose_name_plural = _("Qualifiers")
         unique_together = ('thesaurus','abbreviation')
 
-    thesaurus = models.ForeignKey(Thesaurus, null=True, blank=True, default=None)
+    thesaurus = models.ForeignKey(Thesaurus, null=True, blank=False, default=None)
 
     # MESH Qualifier Unique Identifier
     qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True)
@@ -31,7 +31,7 @@ class IdentifierQualif(models.Model):
     external_code = models.CharField(_("External Qualifier UI"), max_length=250, blank=True)
 
     # Abbreviation
-    abbreviation = models.CharField(_("Abbreviation"), max_length=4, blank=False)
+    abbreviation = models.CharField(_("Abbreviation"), max_length=4, blank=True)
 
     # DateCreated
     date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True, null=True)
@@ -59,9 +59,7 @@ class IdentifierQualif(models.Model):
             treatment1 = translation[0].term_string.replace('/','').upper()
             return '%s%s%s' % (self.abbreviation,' - ',treatment1)
         else:
-            return '%s%s' % (self.abbreviation,' - without description')
-
-
+            return '%s%s' % (self.abbreviation,' - Description without translation')
 
 
 
@@ -75,7 +73,7 @@ class DescriptionQualif(models.Model):
 
     identifier = models.ForeignKey(IdentifierQualif, related_name="qualifiers")
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # Annotation
     annotation = models.TextField(_("Annotation"), max_length=1500, blank=True)
@@ -105,7 +103,7 @@ class TreeNumbersListQualif(models.Model):
     identifier = models.ForeignKey(IdentifierQualif, related_name="qtreenumbers")
 
     # Tree Number
-    tree_number = models.CharField(_("Tree number"), max_length=250, blank=False)
+    tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
 
     def __unicode__(self):
         return self.id
@@ -119,9 +117,9 @@ class ConceptListQualif(models.Model):
         verbose_name_plural = _("Concepts")
         unique_together = ('identifier','language_code','concept_name')
 
-    identifier = models.ForeignKey(IdentifierQualif, blank=False)
+    identifier = models.ForeignKey(IdentifierQualif, blank=True)
 
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=False)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # PreferredConcept
     preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
@@ -130,7 +128,7 @@ class ConceptListQualif(models.Model):
     concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, blank=True)
 
     # ConceptName
-    concept_name = models.CharField(_("Concept name"), max_length=250, blank=False)
+    concept_name = models.CharField(_("Concept name"), max_length=250, blank=True)
 
     # CASN1Name
     casn1_name = models.TextField(_("Chemical abstract"), max_length=1000, blank=True)
@@ -163,7 +161,7 @@ class TermListQualif(models.Model):
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
     # ConceptPreferredTermYN
-    concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=False)
+    concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=True)
 
     # IsPermutedTermYN
     is_permuted_term = models.CharField(_("Is permuted term"), choices=YN_OPTION, max_length=1, blank=True)

@@ -622,16 +622,21 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 
-.identifierdesc th td {
+.identifierdesc, th td {
     text-align: left;
     padding: 2px;
 }
 
 
+.identifierqualif, th td {
+    text-align: left;
+    padding: 2px;
+}
+
 
 .descriptiondesc, .conceptlistdesc, .termlistdesc, .descriptionqualif, .conceptlistqualif, .termlistqualif {
     width: 90%;
-    border: solid 1px #cccccc;
+    /*border: solid 1px #cccccc;*/
 }
 
 .descriptiondesc textarea, .descriptionqualif textarea, .termlistdesc textarea, .termlistqualif textarea{
@@ -639,13 +644,13 @@ tr.relation-row td input, tr.relation-row td select{
     height: 50px;
 }
 
-.descriptiondesc label{
+.descriptiondesc label, .descriptionqualif label{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 13px;
     color: #333;
 }
 
-.descriptiondesc td {
+.descriptiondesc td, .descriptionqualif td {
     text-align:left;
 }
 
@@ -687,68 +692,6 @@ tr.relation-row td input, tr.relation-row td select{
 }
 
 
-
-/*Form new*/
-.descriptiondescn, .conceptlistdescn, .termlistdescn, .descriptionqualifn, .conceptlistqualifn, .termlistqualifn {
-    width: 90%;
-}
-
-.descriptiondescn textarea, .descriptionqualifn textarea, .termlistdescn textarea, .termlistqualifn textarea{
-    width: 98%;
-    height: 50px;
-}
-
-.descriptiondescn label, .termlistdescn label, .conceptlistdescn label{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 13px;
-    color: #333;
-    font-weight: bold;
-}
-
-.descriptiondescn td {
-    text-align:left;
-}
-
-.descriptiondescn .td-r, .descriptionqualifn .td-r{
-    text-align: right;
-}
-
-.descriptiondescn .td-r-del, .conceptlistdescn .td-r-del, .termlistdescn .td-r-del, .descriptionqualifn .td-r-del, .conceptlistqualifn .td-r-del, .termlistqualifn .td-r-del{
-    text-align: right;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight: bold;
-    font-size: 13px;
-    color: #333;
-    background-color: #eeeeee;
-}
-
-.descriptiondescn .td-l, .descriptionqualifn .td-l, .conceptlistqualifn .td-l{
-    text-align: left;
-}
-
-.descriptiondescn .td-l input[type=text], .conceptlistdescn .concept_name input[type=text], .termlistdescn .term_string input[type=text], .descriptionqualifn .td-l input[type=text], .conceptlistqualifn .concept_name input[type=text], .termlistqualifn .term_string input[type=text]{
-    text-align: left;
-    width:450px;
-}
-
-.descriptiondescn .term-origin, .conceptlistdescn .term-origin, .termlistdescn .term-origin, .descriptionqualifn .term-origin, .conceptlistqualifn .term-origin, .termlistqualifn .term-origin{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight: bold;
-    font-size: 15px;
-    color: #333;
-    background-color: #eeeeee;
-}
-
-.conceptlistdescn label, .conceptlistqualifn label{
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 13px;
-    color: #333;
-    height: 10px;
-}
-
-
-
-
 .previousindexinglistdesc th td, .treenumberslistqualif th td{
     text-align: center;
     padding: 2px;
@@ -773,4 +716,61 @@ tr.relation-row td input, tr.relation-row td select{
     font-weight: bold;
     font-size: 13px;
     color: #08c;
+}
+
+
+
+
+
+
+
+/* Style the form */
+#regForm {
+  background-color: #ffffff;
+  /*margin: 10px auto;*/
+  padding: 10px;
+  width: 90%;
+  min-width: 300px;
+}
+
+
+/* Style the input fields */
+/*.identifierdesc input, .termlistdesc input {*/
+  /*padding: 10px;*/
+  /*width: 94%;*/
+  /*font-size: 17px;*/
+  /*font-family: Raleway;*/
+/*  border: 1px solid #aaaaaa;*/
+/*}*/
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+/* Hide all steps by default: */
+.tab {
+  display: none;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none; 
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+/* Mark the active step: */
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #4CAF50;
 }

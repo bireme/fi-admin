@@ -66,6 +66,14 @@ class TermListQualifForm(forms.ModelForm):
         model = TermListQualif
         fields = '__all__'
 
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                # 'unique_together': "%(model_name)s's %(field_labels)s are not unique.",
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
+
+
 class TermListQualifUniqueForm(forms.ModelForm):
     class Meta:
         model = TermListQualif
@@ -85,7 +93,6 @@ class DescriptionDescForm(forms.ModelForm):
 
         error_messages = {
             NON_FIELD_ERRORS: {
-                # 'unique_together': "%(model_name)s's %(field_labels)s are not unique.",
                 'unique_together': "%(field_labels)s already exist.",
             }
         }
@@ -107,7 +114,6 @@ class PreviousIndexingListDescForm(forms.ModelForm):
 
         error_messages = {
             NON_FIELD_ERRORS: {
-                # 'unique_together': "%(model_name)s's %(field_labels)s are not unique.",
                 'unique_together': "%(field_labels)s already exist.",
             }
         }
@@ -123,19 +129,22 @@ class ConceptListDescForm(forms.ModelForm):
 #         fields = '__all__'
 
 class TermListDescForm(forms.ModelForm):
-    # class Meta:
-    #     model = TermListDesc
-    #     fields = ('date_altered')
     class Meta:
         model = TermListDesc
         fields = '__all__'
+
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
+
 
 
 class TermListDescUniqueForm(forms.ModelForm):
     class Meta:
         model = TermListDesc
         exclude = ('identifier',)
-
 
 
 # FormSets

@@ -28,12 +28,11 @@ from django.contrib import messages
 
 import datetime
 
-ITEMS_PER_PAGE = 10
 
+ITEMS_PER_PAGE = 10
 
 # form actions
 ACTIONS = {
-    # 'term_string': '',
     'term_string': '',
     'filter_language': '',
     'descriptor_ui': '',
@@ -73,6 +72,9 @@ class DescUpdate(LoginRequiredView):
     template_name = "thesaurus/descriptor_form.html"
 
     def form_valid(self, form):
+
+        action = self.request.POST['action']
+
         formset_descriptor = DescriptionDescFormSet(self.request.POST, instance=self.object)
         formset_category = TreeNumbersListDescFormSet(self.request.POST, instance=self.object)
         formset_concept = ConceptListDescFormSet(self.request.POST, instance=self.object)
@@ -88,55 +90,110 @@ class DescUpdate(LoginRequiredView):
         # formset_concept_relation_valid = formset_concept_relation.is_valid()
         formset_previous_valid = formset_previous.is_valid()
 
-        # formset_term_valid = formset_term.is_valid()
+        if action in ('form_new'):
+            formset_term_valid = formset_term.is_valid()
 
-        if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid):
+        if action in ('form_new'):
+            if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid and formset_term_valid):
 
-        # Deprecated
-        # if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid and formset_term_valid):
-        
+                term_string = formset_term.cleaned_data[0].get('term_string')
+                language_code = formset_term.cleaned_data[0].get('language_code')
+                status = formset_term.cleaned_data[0].get('status')
+                concept_preferred_term = formset_term.cleaned_data[0].get('concept_preferred_term')
+
+                has_invalid_term = TermListDesc.objects.filter(
+                    term_string__iexact=term_string,
+                    language_code=language_code,
+                    status='1',
+                    concept_preferred_term=concept_preferred_term,
+                    # concept_preferred_term='Y',
+                    ).exists()
+
+                if not has_invalid_term:
+                    self.object = form.save()
+
+                    formset_descriptor.instance = self.object
+                    formset_descriptor.save()
+
+                    formset_category.instance = self.object
+                    formset_category.save()
+
+                    formset_concept.instance = self.object
+                    formset_concept.save()
+
+                    # In the future to use with formset_concept_relation_valid
+                    # formset_concept_relation.instance = self.object
+                    # formset_concept_relation.save()
+
+                    formset_previous.instance = self.object
+                    formset_previous.save()
+
+                    formset_term.instance = self.object
+                    formset_term.save()
+
+                    form.save()
+                    # form.save_m2m()
+                    return HttpResponseRedirect(self.get_success_url())
+
+                else:
+                    # print '%s%s%s%s' % (term_string,language_code,status,concept_preferred_term)
+                    msg_erro =  _("There is already a Term with this status!") + "  " + term_string + " (" + language_code + ")"
+
+                    return self.render_to_response(
+                                self.get_context_data(
+                                                    form=form,
+                                                    formset_descriptor=formset_descriptor,
+                                                    formset_category=formset_category,
+                                                    formset_concept=formset_concept,
+                                                    formset_previous=formset_previous,
+                                                    formset_term=formset_term,
+                                                    msg_erro=msg_erro,
+                                                    )
+                                                )
+
+        if action in ('form_update'):
+            # Nao faz checagem do form formset_term.
+            if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid):
         # In the future to use with formset_concept_relation_valid
         # if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_concept_relation_valid and formset_previous_valid and formset_term_valid):
 
-            self.object = form.save()
+                self.object = form.save()
 
-            formset_descriptor.instance = self.object
-            formset_descriptor.save()
+                formset_descriptor.instance = self.object
+                formset_descriptor.save()
 
-            formset_category.instance = self.object
-            formset_category.save()
+                formset_category.instance = self.object
+                formset_category.save()
 
-            formset_concept.instance = self.object
-            formset_concept.save()
+                formset_concept.instance = self.object
+                formset_concept.save()
 
-            # In the future to use with formset_concept_relation_valid
-            # formset_concept_relation.instance = self.object
-            # formset_concept_relation.save()
+                # In the future to use with formset_concept_relation_valid
+                # formset_concept_relation.instance = self.object
+                # formset_concept_relation.save()
 
-            formset_previous.instance = self.object
-            formset_previous.save()
+                formset_previous.instance = self.object
+                formset_previous.save()
 
-            # Deprecated
-            # formset_term.instance = self.object
-            # formset_term.save()
+                # don't make check to formset_term in this moment
+                # formset_term.instance = self.object
+                # formset_term.save()
 
-            form.save()
-            # form.save_m2m()
-            return HttpResponseRedirect(self.get_success_url())
+                form.save()
+                # form.save_m2m()
+                return HttpResponseRedirect(self.get_success_url())
 
-        else:
-            return self.render_to_response(
-                        self.get_context_data(
-                                            form=form,
-                                            formset_descriptor=formset_descriptor,
-                                            formset_category=formset_category,
-                                            formset_concept=formset_concept,
-                                            formset_previous=formset_previous,
-                                            # Deprecated
-                                            # formset_term=formset_term,
-
+            else:
+                return self.render_to_response(
+                            self.get_context_data(
+                                                form=form,
+                                                formset_descriptor=formset_descriptor,
+                                                formset_category=formset_category,
+                                                formset_concept=formset_concept,
+                                                formset_previous=formset_previous,
+                                                formset_term=formset_term,
+                                                )
                                             )
-                                        )
 
     def form_invalid(self, form):
         # force use of form_valid method to run all validations
@@ -173,7 +230,6 @@ class DescUpdate(LoginRequiredView):
 
             context['formset_previous'] = PreviousIndexingListDescFormSet(instance=self.object)
             context['formset_term'] = TermListDescFormSet(instance=self.object)
-
       
         return context
 
@@ -214,7 +270,6 @@ class DescListView(LoginRequiredView, ListView):
     """
     template_name = "thesaurus/thesaurus_home.html"
     context_object_name = "registers"
-    # paginate_by = settings.ITEMS_PER_PAGE
     paginate_by = ITEMS_PER_PAGE
 
     def get_queryset(self):
@@ -285,7 +340,6 @@ class DescListView(LoginRequiredView, ListView):
         # If not 's' and filter_language and filter_status
         if not self.actions['s'] and self.actions['filter_language'] and self.actions['filter_status']:
             object_list = IdentifierDesc.objects.filter( Q(q_filter_language & q_filter_status ) ).values('id','termdesc__status','descriptor_ui','decs_code','termdesc__term_string','termdesc__language_code')
-
 
 
         # descriptor_ui
@@ -399,7 +453,6 @@ class DescListView(LoginRequiredView, ListView):
 
 
 
-
 class TermListDescCreateView(CreateView):
     """
     Used as class view to create TermListDesc
@@ -410,19 +463,38 @@ class TermListDescCreateView(CreateView):
     success_url = reverse_lazy('list_descriptor')
 
     def get_success_url(self):
-        messages.success(self.request, 'is updated')
+        messages.success(self.request, 'is created')
         return '/thesaurus/descriptors/edit/%s' % self.object.identifier_id
 
     def form_valid(self, form):
-        form_valid = form.is_valid()
-        if (form_valid):
-            self.object = form.save(commit=False)
-            self.object.identifier_id = int(self.request.POST.get("identifier_id"))
-            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
-            form.save()
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form,))
+        
+        if form.is_valid():
+            identifier_id = int(self.request.POST.get("identifier_id"))
+            term_string = self.request.POST.get("term_string")
+            language_code = self.request.POST.get("language_code")
+            status = str(self.request.POST.get("status"))
+
+            has_term = TermListDesc.objects.filter(
+                identifier_id=identifier_id,
+                term_string__iexact=term_string,
+                language_code=language_code,
+                status=status,
+                ).exists()
+
+            if not has_term:
+                self.object = form.save(commit=False)
+                self.object.identifier_id = int(self.request.POST.get("identifier_id"))
+                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                form.save()
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                msg_erro =  _("This Term already exist!")
+                return self.render_to_response(self.get_context_data(form=form,msg_erro=msg_erro))
+
+    def get_context_data(self, **kwargs):
+        context = super(TermListDescCreateView, self).get_context_data(**kwargs)
+        return context
+
 
 
 
@@ -441,12 +513,31 @@ class TermListDescEditView(UpdateView):
     def form_valid(self, form):
         form_valid = form.is_valid()
         if (form_valid):
-            self.object = form.save(commit=False)
-            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
-            form.save()
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form,))
+            term_string = form.cleaned_data.get('term_string')
+            language_code = form.cleaned_data.get('language_code')
+            status = form.cleaned_data.get('status')
+            concept_preferred_term = form.cleaned_data.get('concept_preferred_term')
+
+            has_invalid_term = TermListDesc.objects.filter(
+                term_string__iexact=term_string,
+                language_code=language_code,
+                status=status,
+                concept_preferred_term=concept_preferred_term,
+                ).exists()
+
+            if not has_invalid_term:
+
+                self.object = form.save(commit=False)
+                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                form.save()
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                # print '%s%s%s%s' % (term_string,language_code,status,concept_preferred_term)
+                msg_erro =  _("There is already a Term with this status!") + "  " + term_string + " (" + language_code + ")"
+                return self.render_to_response(self.get_context_data(
+                                                                form=form,
+                                                                msg_erro=msg_erro,
+                                                                ))
 
 
 
@@ -475,10 +566,10 @@ class QualifUpdate(LoginRequiredView):
     form_class = IdentifierQualifForm
     template_name = "thesaurus/qualifier_form.html"
 
-    def dispatch(self, *args, **kwargs):
-        return super(QualifUpdate, self).dispatch(*args, **kwargs)
-
     def form_valid(self, form):
+
+        action = self.request.POST['action']
+
         formset_descriptor = DescriptionQualifFormSet(self.request.POST, instance=self.object)
         formset_category = TreeNumbersListQualifFormSet(self.request.POST, instance=self.object)
         formset_concept = ConceptListQualifFormSet(self.request.POST, instance=self.object)
@@ -490,39 +581,89 @@ class QualifUpdate(LoginRequiredView):
         formset_category_valid = formset_category.is_valid()
         formset_concept_valid = formset_concept.is_valid()
 
-        # Deprecated
-        # formset_term_valid = formset_term.is_valid()
-        # if (form_valid and formset_descriptor_valid and formset_concept_valid and formset_category_valid and formset_term_valid):
+        # Do check
+        if action in ('form_new'):
+            formset_term_valid = formset_term.is_valid()
 
-        if (form_valid and formset_descriptor_valid and formset_concept_valid and formset_category_valid ):
+        if action in ('form_new'):
+            if (form_valid and formset_descriptor_valid and formset_concept_valid and formset_category_valid and formset_term_valid):
 
-            self.object = form.save()
+                term_string = formset_term.cleaned_data[0].get('term_string')
+                language_code = formset_term.cleaned_data[0].get('language_code')
+                status = formset_term.cleaned_data[0].get('status')
+                concept_preferred_term = formset_term.cleaned_data[0].get('concept_preferred_term')
 
-            formset_descriptor.instance = self.object
-            formset_descriptor.save()
+                has_invalid_term = TermListQualif.objects.filter(
+                    term_string__iexact=term_string,
+                    language_code=language_code,
+                    status='1',
+                    concept_preferred_term=concept_preferred_term,
+                    ).exists()
 
-            formset_category.instance = self.object
-            formset_category.save()
+                if not has_invalid_term:
+                    self.object = form.save()
 
-            formset_concept.instance = self.object
-            formset_concept.save()
+                    formset_descriptor.instance = self.object
+                    formset_descriptor.save()
 
-            # formset_term.instance = self.object
-            # formset_term.save()
+                    formset_category.instance = self.object
+                    formset_category.save()
 
-            form.save()
-            return HttpResponseRedirect(self.get_success_url())
+                    formset_concept.instance = self.object
+                    formset_concept.save()
 
-        else:
-            return self.render_to_response(
-                        self.get_context_data(
-                                            form=form,
-                                            formset_descriptor=formset_descriptor,
-                                            formset_category=formset_category,
-                                            formset_concept=formset_concept,
-                                            # formset_term=formset_term
+                    formset_term.instance = self.object
+                    formset_term.save()
+
+                    form.save()
+                    return HttpResponseRedirect(self.get_success_url())
+
+                else:
+                    # print '%s%s%s%s' % (term_string,language_code,status,concept_preferred_term)
+                    msg_erro =  _("There is already a Term with this status!") + "  " + term_string + " (" + language_code + ")"
+
+                    return self.render_to_response(
+                                self.get_context_data(
+                                                    form=form,
+                                                    formset_descriptor=formset_descriptor,
+                                                    formset_category=formset_category,
+                                                    formset_concept=formset_concept,
+                                                    formset_term=formset_term,
+                                                    msg_erro=msg_erro,
+                                                    )
+                                                )
+
+        if action in ('form_update'):
+            # Nao faz checagem do form formset_term.
+            if (form_valid and formset_descriptor_valid and formset_concept_valid and formset_category_valid):
+                self.object = form.save()
+
+                formset_descriptor.instance = self.object
+                formset_descriptor.save()
+
+                formset_category.instance = self.object
+                formset_category.save()
+
+                formset_concept.instance = self.object
+                formset_concept.save()
+
+                # Don't make a ckeck for formset_term in this moment
+                # formset_term.instance = self.object
+                # formset_term.save()
+
+                form.save()
+                return HttpResponseRedirect(self.get_success_url())
+
+            else:
+                return self.render_to_response(
+                            self.get_context_data(
+                                                form=form,
+                                                formset_descriptor=formset_descriptor,
+                                                formset_category=formset_category,
+                                                formset_concept=formset_concept,
+                                                formset_term=formset_term,
+                                                )
                                             )
-                                        )
 
     def form_invalid(self, form):
         # force use of form_valid method to run all validations
@@ -592,7 +733,6 @@ class QualifListView(LoginRequiredView, ListView):
 
     template_name = "thesaurus/qualifier_list.html"
     context_object_name = "registers"
-    # paginate_by = settings.ITEMS_PER_PAGE
     paginate_by = ITEMS_PER_PAGE
 
     def dispatch(self, *args, **kwargs):
@@ -810,15 +950,32 @@ class TermListQualifCreateView(CreateView):
         return '/thesaurus/qualifiers/edit/%s' % self.object.identifier_id
 
     def form_valid(self, form):
-        form_valid = form.is_valid()
-        if (form_valid):
-            self.object = form.save(commit=False)
-            self.object.identifier_id = int(self.request.POST.get("identifier_id"))
-            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
-            form.save()
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form,))
+        if form.is_valid():
+            identifier_id = int(self.request.POST.get("identifier_id"))
+            term_string = self.request.POST.get("term_string")
+            language_code = self.request.POST.get("language_code")
+            status = str(self.request.POST.get("status"))
+
+            has_qualif = TermListQualif.objects.filter(
+                identifier_id=identifier_id,
+                term_string__iexact=term_string,
+                language_code=language_code,
+                status=status,
+                ).exists()
+
+            if not has_qualif:
+                self.object = form.save(commit=False)
+                self.object.identifier_id = int(self.request.POST.get("identifier_id"))
+                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                form.save()
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                msg_erro =  _("This Qualifier already exist!")
+                return self.render_to_response(self.get_context_data(form=form,msg_erro=msg_erro))
+
+    def get_context_data(self, **kwargs):
+        context = super(TermListQualifCreateView, self).get_context_data(**kwargs)
+        return context
 
 
 
@@ -837,13 +994,30 @@ class TermListQualifEditView(UpdateView):
     def form_valid(self, form):
         form_valid = form.is_valid()
         if (form_valid):
-            self.object = form.save(commit=False)
-            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
-            form.save()
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(form=form,))
+            term_string = form.cleaned_data.get('term_string')
+            language_code = form.cleaned_data.get('language_code')
+            status = form.cleaned_data.get('status')
+            concept_preferred_term = form.cleaned_data.get('concept_preferred_term')
 
+            has_invalid_term = TermListQualif.objects.filter(
+                term_string__iexact=term_string,
+                language_code=language_code,
+                status=status,
+                concept_preferred_term=concept_preferred_term,
+                ).exists()
+
+            if not has_invalid_term:
+                self.object = form.save(commit=False)
+                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                form.save()
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                # print '%s%s%s%s' % (term_string,language_code,status,concept_preferred_term)
+                msg_erro =  _("There is already a Qualifier with this status!") + "  " + term_string + " (" + language_code + ")"
+                return self.render_to_response(self.get_context_data(
+                                                                form=form,
+                                                                msg_erro=msg_erro,
+                                                                ))
 
 
 class TermListQualifDeleteView(DeleteView):

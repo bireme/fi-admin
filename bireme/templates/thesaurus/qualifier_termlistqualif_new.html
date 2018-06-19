@@ -9,6 +9,8 @@
     {% if not object %}
         <li><a href="{% url 'list_qualifier' %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
+        <li><a href="{% url 'edit_qualifier' request.GET.identifier_id %}">{% trans "Qualifiers" %}</a>
+        <span class="divider">/</span></li>
         <li>{% trans "New Qualifier" %}</li>
     {% else %}
         <li><a href="{% url 'list_qualifier' %}">{% trans "Thesaurus" %}</a>
@@ -28,12 +30,9 @@
 
     <div class='body'>
 
-<!-- {% if request.GET.identifier_id %}
- Tem : [ {{request.GET.identifier_id }} ]
-{% else %}
- Não tem request.GET.identifier_id
-{% endif %} -->
-
+        {% if msg_erro %}
+            <ul class="errorlist alert alert-error"><li>{{ msg_erro }}</li></ul>
+        {% endif  %}
 
         <form method="post">{% csrf_token %}
 
@@ -42,7 +41,6 @@
             <input type="hidden" id="id_identifier_id" name="identifier_id" value="{{ request.GET.identifier_id }}">
 
             {{ form.non_field_errors.as_ul }}
-
     
             {% for field in form.visible_fields %}
                 {% if field.errors %}
@@ -55,7 +53,7 @@
                 {{ hidden }}
             {% endfor %}
 
-            <table class="termlistqualifn" border="0">
+            <table class="termlistqualif">
 
                 <td colspan="5">
                     {{ form.status.label_tag }}
@@ -81,9 +79,7 @@
                     <td>
                         <!-- {{ form.date_created }} -->
                         <input id="id_date_created" name="date_created" value="{% now "d/m/Y" %}" type="text">
-
-<!--     <input id="id_termdesc-{{ forloop.counter0 }}-date_created" name="termdesc-{{ forloop.counter0 }}-date_created" type="text" value="{{ form.date_created.value|date:"d/m/Y"}}" onkeyup="mascara(this, mdata);" maxlength="10">
- -->
+                        <!-- <input id="id_termdesc-{{ forloop.counter0 }}-date_created" name="termdesc-{{ forloop.counter0 }}-date_created" type="text" value="{{ form.date_created.value|date:"d/m/Y"}}" onkeyup="mascara(this, mdata);" maxlength="10"> -->
                     </td>
 
 
@@ -110,7 +106,8 @@
                 <tr>
                     <td colspan="4" width="100%">{{ form.historical_annotation }}</td>
                     <td valign="top">
-                        {{ form.date_altered }}
+                        <!-- {{ form.date_altered }} -->
+                        <input id="id_date_altered" name="date_altered" value="{% now "d/m/Y" %}" type="text">
                     </td>
                 </tr>
 
@@ -118,7 +115,6 @@
 
             <div class="control-panel form-submit">
                 <a href="{% url 'edit_qualifier' request.GET.identifier_id %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
-                <!-- <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Back" %}</a> -->
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             </div>
 
