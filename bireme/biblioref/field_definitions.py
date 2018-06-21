@@ -512,8 +512,8 @@ def get_aux_country_list():
     country_list_other.sort(key=lambda c: c[1])
 
     separator = " ----------- "
-    label_latin_caribbean = separator + __('Latin America & Caribbean') + separator
-    label_other = separator + __('Others') + separator
+    label_latin_caribbean = _('{} Latin America & Caribbean {}').format(separator, separator)
+    label_other = _('{} Others {}').format(separator, separator)
 
     country_list.extend([(' ', label_latin_caribbean)])
     country_list.extend(country_list_latin_caribbean)

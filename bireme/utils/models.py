@@ -88,7 +88,7 @@ class Country(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = CountryLocal.objects.filter(country=self.id, language=lang_code)
+        translation = CountryLocal.objects.filter(country=self.id, language=lang_code.lower())
         if translation:
             return translation[0].name
         else:
