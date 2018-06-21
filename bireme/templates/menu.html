@@ -95,9 +95,11 @@
                                             <li><a href="{% url 'list_act_state' %}" title=""><i class="icon-globe"></i> {% trans "Act scope state" %}</a></li>
                                             <li><a href="{% url 'list_act_city' %}" title=""><i class="icon-globe"></i> {% trans "Act scope city" %}</a></li>
                                         {% endif %}
-
                                     </ul>
                                 </li>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                                <li><a href="{% url 'admin:index' %}" title=""><i class="icon-lock"></i> {% trans "Admin" %}</a></li>
                             {% endif %}
                         </ul>
 
