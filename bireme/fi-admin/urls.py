@@ -9,6 +9,8 @@ from api.multimedia_api import MediaResource
 from api.title_api import TitleResource
 from api.bibliographic import ReferenceResource
 from api.legislation import LeisrefResource
+from api.oer_api import OERResource
+from api.classification_api import ClassificationResource
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -20,6 +22,8 @@ media_resource = MediaResource()
 title_resource = TitleResource()
 reference_resource = ReferenceResource()
 leisref_resource = LeisrefResource()
+oer_resource = OERResource()
+classification_resource = ClassificationResource()
 
 urlpatterns = patterns('',
     # Examples:
@@ -107,6 +111,9 @@ urlpatterns = patterns('',
     # Legislation
     (r'^legislation/', include('leisref.urls')),
 
+    # Institution
+    (r'^institution/', include('institution.urls')),
+
     # Open Educational Resource
     (r'^oer/', include('oer.urls')),
 
@@ -122,6 +129,9 @@ urlpatterns = patterns('',
     # logs
     (r'^log/', include('log.urls')),
 
+    # classification
+    (r'^classification/', include('classification.urls')),
+
     # utils
     (r'^utils/', include('utils.urls')),
 
@@ -136,6 +146,8 @@ urlpatterns = patterns('',
     (r'^api/', include(title_resource.urls)),
     (r'^api/', include(reference_resource.urls)),
     (r'^api/', include(leisref_resource.urls)),
+    (r'^api/', include(oer_resource.urls)),
+    (r'^api/', include(classification_resource.urls)),
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
     (r'^api/users/get_user_id/(?P<username>[a-zA-z0-9\.\-]{0,30})/$', 'api.users.get_user_id'),
     (r'^api/thematic/get_thematic_id/(?P<thematic_acronym>[a-zA-z0-9\.\-]{0,40})/$', 'api.thematic.get_thematic_id'),

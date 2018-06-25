@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Act Relation Type" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'list_act_type' %}">{% trans "Act Relation Type" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'list_act_reltype' %}">{% trans "Act Relation Type" %}</a> <span class="divider">/</span></li>
     {% if not object %}<li>{% trans "New Act Relation Type" %}</li>
     {% else %}<li>{% trans "Edit Act Relation Type" %}</li>{% endif %}
 {% endblock %}
@@ -55,6 +55,9 @@
         </fieldset>
 
         <div class="control-panel form-submit">
+            <a href="{% url 'list_act_reltype' %}" class="btn btn-large">
+                {% trans "Cancel" %}
+            </a>
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
         </div>
 
@@ -68,8 +71,6 @@
    <script src="{% static 'js/jquery.formset.js' %}"></script>
 
    <script type="text/javascript">
-        var prevent_data_lost = false;
-
         $(function() {
             $('.translation-row').formset({
                     addText : '{% trans "Add translation" %}',
@@ -79,20 +80,5 @@
                     prefix: '{{ formset.prefix }}'
             });
         })
-
-        $('input:text,input:checkbox,input:radio,textarea,select').one('change', function() {
-            prevent_data_lost = true;
-        })
-        $( "form" ).submit(function(){
-           prevent_data_lost = false;
-        })
-
-        // Prevent losing data by navigating away from the page
-        $(window).bind('beforeunload', function() {
-            if (prevent_data_lost) {
-                return 'Are you sure?';
-            }
-        });
-
    </script>
 {% endblock %}

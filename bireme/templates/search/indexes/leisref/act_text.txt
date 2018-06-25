@@ -1,1 +1,8 @@
-{{ object.title }}
+{% if object.title %} {{ object.title }} {% endif %}
+{% if object.act_number %} {{ object.act_number }} {% endif %}
+{% if object.official_ementa %} {{ object.official_ementa }} {% endif %}
+{% if object.unofficial_ementa %} {{ object.unofficial_ementa }} {% endif %}
+{% if object.organ_issuer %} {{ object.organ_issuer }} {% endif %}
+{% if object.issue_date %} {{ object.issue_date|date:"Y" }} {% endif %}
+{% if object.source_name %} {{ object.source_name }} {% endif %}
+{% if object.notes %} {{ object.notes }} {% endif %}

@@ -27,6 +27,16 @@ class Type(Generic):
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
+    def get_translations(self):
+        translation_list = ["%s~%s" % (self.language, self.name.strip())]
+        translation = TypeLocal.objects.filter(oer_type=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
+
     def __unicode__(self):
         lang_code = get_language()
         translation = TypeLocal.objects.filter(oer_type=self.id, language=lang_code)
@@ -56,6 +66,15 @@ class License(Generic):
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
+    def get_translations(self):
+        translation_list = ["%s~%s" % (self.language, self.name.strip())]
+        translation = LicenseLocal.objects.filter(license=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
     def __unicode__(self):
         lang_code = get_language()
         translation = LicenseLocal.objects.filter(license=self.id, language=lang_code)
@@ -84,6 +103,15 @@ class CourseType(Generic):
 
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+
+    def get_translations(self):
+        translation_list = ["%s~%s" % (self.language, self.name.strip())]
+        translation = CourseTypeLocal.objects.filter(coursetype=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
 
     def __unicode__(self):
         lang_code = get_language()
@@ -115,6 +143,15 @@ class TecResourceType(Generic):
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
+    def get_translations(self):
+        translation_list = ["%s~%s" % (self.language, self.name.strip())]
+        translation = TecResourceTypeLocal.objects.filter(tecresourcetype=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
     def __unicode__(self):
         lang_code = get_language()
         translation = TecResourceTypeLocal.objects.filter(tecresourcetype=self.id, language=lang_code)
@@ -144,6 +181,15 @@ class Format(Generic):
 
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+
+    def get_translations(self):
+        translation_list = ["%s~%s" % (self.language, self.name.strip())]
+        translation = FormatLocal.objects.filter(format=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
 
     def __unicode__(self):
         lang_code = get_language()
@@ -263,6 +309,15 @@ class Audience(Generic):
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
+    def get_translations(self):
+        translation_list = ["%s~%s" % (self.language, self.name.strip())]
+        translation = AudienceLocal.objects.filter(audience=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
     def __unicode__(self):
         lang_code = get_language()
         translation = AudienceLocal.objects.filter(audience=self.id, language=lang_code)
@@ -323,6 +378,15 @@ class LearningContext(Generic):
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
+    def get_translations(self):
+        translation_list = ["%s~%s" % (self.language, self.name.strip())]
+        translation = LearningContextLocal.objects.filter(learningcontext=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
     def __unicode__(self):
         lang_code = get_language()
         translation = LearningContextLocal.objects.filter(learningcontext=self.id, language=lang_code)
@@ -352,6 +416,15 @@ class Structure(Generic):
 
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+
+    def get_translations(self):
+        translation_list = ["%s~%s" % (self.language, self.name.strip())]
+        translation = StructureLocal.objects.filter(structure=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
 
     def __unicode__(self):
         lang_code = get_language()

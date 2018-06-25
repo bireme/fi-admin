@@ -35,6 +35,7 @@
     <div class='pull-right'>
         <div class="input-append">
             <form name="search" onSubmit="return search();">
+                <input type="hidden" name="page" value="1">
                 <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">
                 <button class="btn" type="submit"><i class='icon-search'></i></button>
             </form>

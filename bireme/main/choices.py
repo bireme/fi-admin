@@ -14,6 +14,7 @@ SOURCE_CHOICES = [
     ('events', _('Events')),
     ('multimedia', _('Multimedia')),
     ('biblioref', _('Bibliographic Reference')),
+    ('leisref', _('Act reference')),
 ]
 
 USER_PROFILES = [

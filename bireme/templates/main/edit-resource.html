@@ -119,6 +119,12 @@
                                 <p>{% trans "Last edit in" %} <strong>{{ resource.updated_time }}</strong> {% trans "by user" %}  <strong>{{ resource.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
+                        <div class="btn-group pull-right">
+                            <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{content_type}}/{{resource.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                            {% if user_cc = 'BR1.1' %}
+                                <a href="#" onclick="javascript:open_classification('{{content_type}}', '{{resource.id}}')" class="btn"><i class="icon icon-tags"></i> {% trans "Collection" %}</a>
+                            {% endif %}
+                        </div>
 
                         {% if resource.error_reports.all %}
                             <strong>{% trans "Error reports" %}</strong>
@@ -385,6 +391,11 @@
             </form>
         </div>
     </div>
+
+    {% if resource.id %}
+        {% include "modal_log.html" %}
+    {% endif %}
+
 {% endif %}
 
 {% if help_fields %}
@@ -395,6 +406,7 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/classification.js' %}"></script>
 
    <script type="text/javascript">
         var decs_field;

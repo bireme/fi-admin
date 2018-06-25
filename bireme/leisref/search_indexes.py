@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=False)
+    text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
     status = indexes.IntegerField(model_attr='status')
     scope_region = indexes.CharField()
@@ -19,6 +19,8 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     scope_state = indexes.CharField()
     scope_city = indexes.CharField()
     source_name = indexes.CharField()
+    indexed_database = indexes.MultiValueField()
+    collection = indexes.MultiValueField()
     denomination = indexes.CharField(model_attr='denomination')
     issue_date = indexes.CharField(model_attr='issue_date', default='')
     publication_date = indexes.CharField(model_attr='publication_date', default='')
@@ -26,6 +28,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     organ_issuer = indexes.CharField()
     language = indexes.CharField()
     official_ementa = indexes.CharField(model_attr='official_ementa')
+    unofficial_ementa = indexes.CharField(model_attr='unofficial_ementa')
     relationship_active = indexes.CharField()
     relationship_passive = indexes.CharField()
     thematic_area = indexes.MultiValueField()
@@ -40,7 +43,8 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_scope_region(self, obj):
         if obj.scope_region:
-            return obj.scope_region.get_translations()
+            translations = obj.scope_region.get_translations()
+            return "|".join(translations)
 
     def prepare_act_type(self, obj):
         if obj.act_type:
@@ -77,6 +81,14 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
             translations = obj.language.get_translations()
             return "|".join(translations)
 
+    def prepare_collection(self, obj):
+        if obj.act_collection:
+            translations = ["|".join(col.get_translations()) for col in obj.act_collection.all()]
+            return translations
+
+    def prepare_indexed_database(self, obj):
+        return [occ.acronym for occ in obj.indexed_database.all()]
+
     def prepare_publication_year(self, obj):
         if obj.issue_date:
             return obj.issue_date.strftime("%Y")
@@ -89,7 +101,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
             ref_type = "|".join(act.act_referred.act_type.get_translations())
             ref_number = act.act_referred.act_number
             ref_date = act.act_referred.issue_date
-            ref_lnk = "leisref.act.{0}".format(act.act_referred.id) if act.act_referred.status == 1 else ''
+            ref_lnk = "leisref.act.{0}".format(act.act_referred.id) if act.act_referred.status in [-2, 1] else ''
             active_relation = u"{0}@{1}@{2}@{3}@{4}@{5}".format(label_present, ref_type, ref_number,
                                                                ref_date, act.act_apparatus, ref_lnk)
             active_relationships.append(active_relation)
@@ -102,7 +114,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
         for act in act_list:
             label_past = "|".join(act.relation_type.get_label_past_translations())
             act_type = "|".join(obj.act_type.get_translations())
-            ref_lnk = "leisref.act.{0}".format(act.act_related.id) if act.act_related.status == 1 else ''
+            ref_lnk = "leisref.act.{0}".format(act.act_related.id) if act.act_related.status in [-2, 1] else ''
             passive_relation = u"{0}@{1}@{2}@{3}@{4}".format(label_past, act_type, act.act_related.act_number,
                                                             act.act_related.issue_date, ref_lnk)
             passive_relationships.append(passive_relation)

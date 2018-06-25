@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load app_filters %}
+
+{% block extrahead %}
+<link href="{% static "css/bootstrap-datepicker.min.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}{% trans "Edit Institution" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'list_institution' %}">{% trans "Institution" %}</a> <span class="divider">/</span></li>
+    {% if not object %}<li>{% trans "New Institution" %}</li>
+    {% else %}<li>{% trans "Edit Institution" %}</li>{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-file'></i>{% if not object %}{% trans "New Institution" %}{% else %}{% trans "Edit Institution" %}{% endif %}</h2>
+</div>
+
+<div class='body'>
+
+    {% if form.errors %}
+        <ul class="errorlist alert alert-error">
+            <li>{% trans "Please check required fields" %}</li>
+        </ul>
+    {% endif %}
+
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
+        <li><a href="#tab-person" data-toggle="tab"><i class="icon-user"></i> {% trans "Persons" %}{% if formset_person.errors and not formset_person.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-contact" data-toggle="tab"><i class="icon-book"></i>  {% trans "Phones/Emails" %}{% if formset_phone.errors and not formset_phone.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-url" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Sites" %}{% if formset_url.errors and not formset_url.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-unitlevel" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Units" %}{% if formset_unitlevel.errors and not formset_unitlevel.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        {% if user_cc = 'BR1.1' %}
+            <li><a href="#tab-adm" data-toggle="tab"><i class="icon-folder-open"></i>  {% trans "Administrative" %}{% if formset_adm.errors and not formset_adm.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        {% endif %}
+    </ul>
+
+    <div class="dedup-alert well fixed-alert" style="display: none">
+        <button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;&nbsp;&times;</button>
+        <strong><i class="icon icon-warning-sign"></i> {% trans "Possible duplication" %} <a href="#" data-toggle="modal" data-target="#dedup_result">({% trans "check" %})</a></strong>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="inst-form">
+        {% csrf_token %}
+
+        <div class="tab-content">
+            <div id="tab-data" class="tab-pane active">
+                    {% if role == 'doc' and not user_data.is_owner and institution %}
+                        <div class="well">
+                            <blockquote>
+                                <p><strong>{% trans 'Identifier' %}</strong><p>
+                                <p>{{ act.id }}</p>
+                            </blockquote>
+
+                            {% for field in form %}
+                                {{ field.as_hidden }}
+                                {{ field.errors }}
+                                <blockquote>
+                                    <p><strong>{{ field.label }}</strong><p>
+                                    {% if field.name = 'status' %}
+                                        <p>{{ act.get_status_display }}</p>
+                                    {% else %}
+                                        <p>{{ field.value|linebreaks }}<p>
+                                    {% endif %}
+                                </blockquote>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+
+                        <fieldset class="metadata">
+                            <ul>
+                              {% for hidden in form.hidden_fields %}
+                                  {{ hidden }}
+                              {% endfor %}
+                              {{ form.non_field_errors }}
+                              {% for field in form.visible_fields %}
+                                  {% if field.name == 'indexed_database' %}
+                                      <fieldset id="indexed_database" style="width: 53%">
+                                          <div class="row">
+                                              <div class="span3">
+                                                  {% trans "Indexed in" %}
+                                              </div>
+                                              <div class="multiselect_buttons">&nbsp;</div>
+                                              <div class="span3">
+                                                  <span class="multiselect_label">{% trans "Selected" %}</span>
+                                              </div>
+                                          </div>
+
+                                          <div class="row">
+                                              <div class="span3">
+                                                  <select multiple="multiple" name="indexed_databases_available" id="multiselect">
+                                                      {% for value,label in form.indexed_database.field.choices %}
+                                                          {% if form.indexed_database.value %}
+                                                              {% if not value|inintvalues:form.indexed_database.value %}
+                                                                  <option value="{{ value }}">{{ label }}</option>
+                                                              {% endif %}
+                                                          {% else %}
+                                                              <option value="{{ value }}">{{ label }}</option>
+                                                          {% endif %}
+                                                      {% endfor %}
+                                                  </select>
+                                              </div>
+                                              <div class="multiselect_buttons">
+                                                  <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="icon-chevron-right"></i></button>
+                                                  <br/><br/>
+                                                  <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="icon-chevron-left"></i></button>
+                                              </div>
+                                              <div class="span3">
+                                                 <select name="{{ field.name }}"  id="multiselect_to" class="form-control" multiple="multiple">
+                                                     {% for value,label in form.indexed_database.field.choices %}
+                                                          {% if form.indexed_database.value %}
+                                                              {% if value|inintvalues:form.indexed_database.value  %}
+                                                                  <option value="{{ value }}">{{ label }}</option>
+                                                              {% endif %}
+                                                          {% else %}
+                                                              {% if value in field.value %}
+                                                                  <option value="{{ value }}">{{ label }}</option>
+                                                              {% endif %}
+                                                          {% endif %}
+                                                     {% endfor %}
+                                                 </select>
+                                              </div>
+                                          </div>
+                                      </fieldset>
+                                  {% else %}
+                                      <li id="field_{{ field.name }}">
+                                          {% if field.field|fieldtype == 'BooleanField' %}
+                                                <span>{{ field.label }}</span>
+                                          {% else %}
+                                                <label for="{{ field.auto_id }}">
+                                                    {% if field.field.required %}
+                                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                                    {% else %}
+                                                        {{ field.label }}
+                                                    {% endif %}
+                                                </label>
+                                          {% endif %}
+                                          {% if field.help_text %}
+                                              <p class="muted">{{ field.help_text }}</p>
+                                          {% endif %}
+                                          {{ field.errors }}
+                                          {{ field }}
+                                      </li>
+                                  {% endif %}
+                              {% endfor %}
+                            </ul>
+                        </fieldset>
+                    {% endif %}
+
+                    {% comment %}Display administrative information{% endcomment %}
+
+                    {% if object.id %}
+                        <div class="alert alert-info">
+                            <p>{% trans "Created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
+                            <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
+                            {% if act.updated_by %}
+                                <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
+                            {% endif %}
+                        </div>
+                        <div class="btn-group pull-right">
+                            <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                        </div>
+                    {% endif %}
+            </div>
+
+            <!-- PERSON FORMSET -->
+            {% include "institution/fieldset_person.html" %}
+
+            <!-- PHONE/EMAIL FORMSET -->
+            {% include "institution/fieldset_contact.html" %}
+
+            <!-- URL FORMSET -->
+            {% include "institution/fieldset_url.html" %}
+
+            <!-- UNIT LEVEL FORMSET -->
+            {% include "institution/fieldset_unitlevel.html" %}
+
+            <!-- ADM FORMSET -->
+            {% include "institution/fieldset_adm.html" %}
+
+
+            <div id='tab-thematic' class="tab-pane">
+                <fieldset id="thematic">
+                    <table class="table table-condensed table-striped span8">
+                        <thead>
+                            <th>{% trans "Thematic area" %}</th>
+                            <th>{% trans "Delete?" %}</th>
+                        </thead>
+                        <tbody>
+                        {% if thematic_list %}
+                            {% for thematic in thematic_list %}
+                                <tr>
+                                    <td colspan="3">{{ thematic }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ formset_thematic.management_form }}
+
+                        {% for form in formset_thematic %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for field in form.visible_fields %}
+                                    {% if role == 'doc' and field.name == 'status' %}
+                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
+                                    {% elif field.name != 'DELETE' %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="control-panel form-submit">
+            {% if user_can_edit %}
+                {% if not object or object.status == -1 %}
+                    <button class="btn btn-large btn-info">{% trans "Save Draft" %}</button>
+                {% else %}
+                    <button class="btn btn-info btn-large">{% trans "Save as" %} <span id="save_status">{{object.get_status_display}}</span></button>
+                {% endif %}
+
+                {% if object.status == -1 or object.status == -2 %}
+                    <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'list_institution' %}" class="btn btn-large">
+                    {% trans "Back" %}
+                </a>
+            {% endif %}
+        </div>
+
+    </form>
+</div>
+
+{% if object.id %}
+    {% include "modal_log.html" %}
+{% endif %}
+
+{% include "modal_dedup.html" %}
+
+{% endblock %}
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/multiselect.min.js' %}"></script>
+   {% if LANGUAGE_CODE != 'en' %}
+       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
+   {% endif %}
+
+   <script type="text/javascript">
+        var decs_field;
+
+        $(function() {
+            $('.person-row').formset({
+                    addText : '{% trans "Add Person" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'person_formset',
+                    prefix: '{{ formset_person.prefix }}'
+            });
+
+            $('.url-row').formset({
+                    addText : '{% trans "Add Site" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'url_formset',
+                    prefix: '{{ formset_url.prefix }}'
+            });
+
+            $('.phone-row').formset({
+                    addText : '{% trans "Add Phone" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'phone_formset',
+                    prefix: '{{ formset_phone.prefix }}'
+            });
+
+            $('.email-row').formset({
+                    addText : '{% trans "Add Email" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'email_formset',
+                    prefix: '{{ formset_email.prefix }}'
+            });
+
+            $('.unit-row').formset({
+                    addText : '{% trans "Add Unit" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'unitlevel_formset',
+                    prefix: '{{ formset_unitlevel.prefix }}'
+            });
+
+            var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+            var eventer = window[eventMethod];
+            var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+            // load multiselect plugin (indexed database field)
+            $('#multiselect').multiselect();
+
+        })
+
+        function dismissRelatedLookupPopup(chosenId, chosenLabel) {
+            // set code, text and label for the new descriptor
+            $('#label_unitlevel_set-' + inst_unit_row_id + '-unit').html(chosenLabel);
+            $('#label_unitlevel_set-' + inst_unit_row_id + '-unit').removeClass("placeholder-style");
+
+            // set the value of hidden input
+            $('#id_unitlevel_set-' + inst_unit_row_id + '-unit').val(chosenId);
+
+            inst_win.close();
+        }
+
+        function inst_unit(obj){
+            var row = $(obj).parent();
+            this_name = row.find('input').attr('name');
+            inst_unit_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
+
+            country_id = $('#id_country').find("option:selected").val();
+            inst_win = window.open('{% url "list_unit" %}?country=' + country_id, 'inst_related', 'scrollbars=1,width=785,height=590');
+        }
+
+        $("#save-published").click(function() {
+            // set status to Published (1)
+            $('#id_status').val('1');
+        });
+
+        $("#id_status").change(function(){
+            new_status_label = $(this).find("option:selected").text();
+            $('#save_status').text(new_status_label);
+        });
+
+   </script>
+{% endblock %}

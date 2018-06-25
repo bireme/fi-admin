@@ -2,7 +2,6 @@
 
 {% block menu %}
     {% if user.is_authenticated %}
-
         <div class="navbar navbar-fixed-top" id="menu">
             <div class="navbar-inner">
                 <div class="container-fluid">
@@ -54,6 +53,10 @@
                                 <li><a href="{% url 'list_legislation' %}" title=""><i class="icon-book"></i> {% trans "Legislation" %}</a></li>
                             {% endif %}
 
+                            {% if service_role.DirIns %}
+                                <li><a href="{% url 'list_institution' %}" title=""><i class="icon-home"></i> {% trans "Institutions" %}</a></li>
+                            {% endif %}
+
                             {% if service_role.OER %}
                                 <li><a href="{% url 'list_oer' %}" title=""><i class="icon-share"></i> {% trans "Educational resources" %}</a></li>
                             {% endif %}
@@ -98,9 +101,11 @@
                                             <li><a href="{% url 'list_act_state' %}" title=""><i class="icon-globe"></i> {% trans "Act scope state" %}</a></li>
                                             <li><a href="{% url 'list_act_city' %}" title=""><i class="icon-globe"></i> {% trans "Act scope city" %}</a></li>
                                         {% endif %}
-
                                     </ul>
                                 </li>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                                <li><a href="{% url 'admin:index' %}" title=""><i class="icon-lock"></i> {% trans "Admin" %}</a></li>
                             {% endif %}
                         </ul>
 
@@ -135,7 +140,7 @@
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     {% endif %}
 {% endblock %}

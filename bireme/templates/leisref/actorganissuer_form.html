@@ -17,16 +17,30 @@
 </div>
 
 <div class='body'>
-    <form method="POST" class="form-inline">
+    <form method="POST" class="form-inline" id="auxform">
         {% csrf_token %}
 
         <fieldset>
-            <div class="well">
+            <div class="well row" style="margin-left: 5px">
             {{ form.non_field_errors }}
             {% for field in form %}
+                <div class="span3">
                 {{ field.label_tag }}
+                {% if field.name == 'scope_region' %}
+                    <select id="{{ field.auto_id }}" name="{{ field.name }}" size="5" multiple="true">
+                        <option value="">--------------------------------------------</option>
+                        {% for value, label in form.fields.scope_region.choices %}
+                            <option value="{{ value }}"{% if value|add:'0' in field.value %} selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <div>
+                        <strong>* {% trans "DO NOT SELECT if you are not sure whether the value can occur in more than one country/region." %}</strong>
+                    </div>
+                {% else %}
+                    {{ field }}
+                {% endif %}
                 {{ field.errors }}
-                {{ field }}
+                </div>
             {% endfor %}
             </div>
         </fieldset>
@@ -52,6 +66,9 @@
         </fieldset>
 
         <div class="control-panel form-submit">
+            <a href="{% url 'list_act_organ' %}" class="btn btn-large">
+                {% trans "Cancel" %}
+            </a>
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
         </div>
 
@@ -65,8 +82,6 @@
    <script src="{% static 'js/jquery.formset.js' %}"></script>
 
    <script type="text/javascript">
-        var prevent_data_lost = false;
-
         $(function() {
             $('.translation-row').formset({
                     addText : '{% trans "Add translation" %}',
@@ -76,20 +91,12 @@
                     prefix: '{{ formset.prefix }}'
             });
         })
-
-        $('input:text,input:checkbox,input:radio,textarea,select').one('change', function() {
-            prevent_data_lost = true;
-        })
-        $( "form" ).submit(function(){
-           prevent_data_lost = false;
-        })
-
-        // Prevent losing data by navigating away from the page
-        $(window).bind('beforeunload', function() {
-            if (prevent_data_lost) {
-                return 'Are you sure?';
+        // Avoid send empty value for scope_region field
+        $("#auxform").submit(function(e) {
+            var scope_region_id = $('#id_scope_region').val();
+            if (scope_region_id == ''){
+                $('#id_scope_region option').prop("selected", false);
             }
         });
-
    </script>
 {% endblock %}

@@ -181,7 +181,7 @@ class Descriptor(Generic, AuditLog):
 
 
 # Keywords table
-class Keyword(Generic):
+class Keyword(Generic, AuditLog):
     STATUS_CHOICES = (
         (0, _('Pending')),
         (1, _('Admitted')),
@@ -201,7 +201,7 @@ class Keyword(Generic):
 
 
 # Main table
-class Resource(Generic):
+class Resource(Generic, AuditLog):
 
     class Meta:
         verbose_name = _("Resource")

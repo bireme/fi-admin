@@ -22,17 +22,11 @@
     <h2><i class='icon-file'></i>{% if not object %}{% trans "New Legislation" %}{% else %}{% trans "Edit Legislation" %}{% endif %}</h2>
 </div>
 
-
 <div class='body'>
 
     {% if form.errors %}
         <ul class="errorlist alert alert-error">
             <li>{% trans "Please check required fields" %}</li>
-        </ul>
-    {% endif %}
-    {% if valid_for_publication != None and not valid_for_publication %}
-        <ul class="errorlist alert alert-error">
-            <li>{% trans "For status admitted you must have at least one descriptor and one thematic area admitted" %}</li>
         </ul>
     {% endif %}
     {{ formset_descriptor.non_form_errors }}
@@ -86,26 +80,76 @@
                               {% endfor %}
                               {{ form.non_field_errors }}
                               {% for field in form.visible_fields %}
-                                  <li id="field_{{ field.name }}">
-                                  {% if field.name not in indexing_fields %}
-                                      {% if field.field|fieldtype == 'BooleanField' %}
-                                            <span>{{ field.label }}</span>
-                                      {% else %}
-                                            <label for="{{ field.auto_id }}">
-                                                {% if field.field.required %}
-                                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                                {% else %}
-                                                    {{ field.label }}
-                                                {% endif %}
-                                            </label>
+                                  {% if field.name == 'indexed_database' %}
+                                      <fieldset id="indexed_database" style="width: 53%">
+                                          <div class="row">
+                                              <div class="span3">
+                                                  {% trans "Indexed in" %}
+                                              </div>
+                                              <div class="multiselect_buttons">&nbsp;</div>
+                                              <div class="span3">
+                                                  <span class="multiselect_label">{% trans "Selected" %}</span>
+                                              </div>
+                                          </div>
+
+                                          <div class="row">
+                                              <div class="span3">
+                                                  <select multiple="multiple" name="indexed_databases_available" id="multiselect">
+                                                      {% for value,label in form.indexed_database.field.choices %}
+                                                          {% if form.indexed_database.value %}
+                                                              {% if not value|inintvalues:form.indexed_database.value %}
+                                                                  <option value="{{ value }}">{{ label }}</option>
+                                                              {% endif %}
+                                                          {% else %}
+                                                              <option value="{{ value }}">{{ label }}</option>
+                                                          {% endif %}
+                                                      {% endfor %}
+                                                  </select>
+                                              </div>
+                                              <div class="multiselect_buttons">
+                                                  <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="icon-chevron-right"></i></button>
+                                                  <br/><br/>
+                                                  <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="icon-chevron-left"></i></button>
+                                              </div>
+                                              <div class="span3">
+                                                 <select name="{{ field.name }}"  id="multiselect_to" class="form-control" multiple="multiple">
+                                                     {% for value,label in form.indexed_database.field.choices %}
+                                                          {% if form.indexed_database.value %}
+                                                              {% if value|inintvalues:form.indexed_database.value  %}
+                                                                  <option value="{{ value }}">{{ label }}</option>
+                                                              {% endif %}
+                                                          {% else %}
+                                                              {% if value in field.value %}
+                                                                  <option value="{{ value }}">{{ label }}</option>
+                                                              {% endif %}
+                                                          {% endif %}
+                                                     {% endfor %}
+                                                 </select>
+                                              </div>
+                                          </div>
+                                      </fieldset>
+                                  {% else %}
+                                      <li id="field_{{ field.name }}">
+                                      {% if field.name not in indexing_fields %}
+                                          {% if field.field|fieldtype == 'BooleanField' %}
+                                                <span>{{ field.label }}</span>
+                                          {% else %}
+                                                <label for="{{ field.auto_id }}">
+                                                    {% if field.field.required %}
+                                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                                    {% else %}
+                                                        {{ field.label }}
+                                                    {% endif %}
+                                                </label>
+                                          {% endif %}
+                                          {% if field.help_text %}
+                                              <p class="muted">{{ field.help_text }}</p>
+                                          {% endif %}
+                                          {{ field.errors }}
+                                          {{ field }}
                                       {% endif %}
-                                      {% if field.help_text %}
-                                          <p class="muted">{{ field.help_text }}</p>
-                                      {% endif %}
-                                      {{ field.errors }}
-                                      {{ field }}
+                                      </li>
                                   {% endif %}
-                                  </li>
                               {% endfor %}
                             </ul>
                         </fieldset>
@@ -282,6 +326,7 @@
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/multiselect.min.js' %}"></script>
    {% if LANGUAGE_CODE != 'en' %}
        <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
    {% endif %}
@@ -365,14 +410,6 @@
                 $("#error_report_modal").modal("show");
             });
 
-            // Prevent losing data by navigating away from the page
-            $(window).bind('beforeunload', function() {
-                var checkboxcount = $("input:checkbox:checked").length;
-                if(checkboxcount > 0) {
-                    return 'Are you sure?';
-                }
-            });
-
             $("#id_scope_region").change(function(){
                 region_id = $(this).find("option:selected").val();
 
@@ -391,6 +428,10 @@
                   }
                });
             });
+
+            // load multiselect plugin (indexed database field)
+            $('#multiselect').multiselect();
+
         })
 
         function replace_list_options(list_id, option_list){

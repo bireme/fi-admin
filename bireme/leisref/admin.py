@@ -79,10 +79,42 @@ class ActOrganIssuerAdmin(GenericAdmin):
 
 class ActAdmin(GenericAdmin):
     model = Act
-    date_hierarchy = 'created_time'
-    list_display = ('id', '__unicode__', 'created_by', 'status')
+    list_display = ('id', '__unicode__', 'scope_region', 'act_type', 'act_number',
+                    'scope', 'scope_state', 'scope_city','source_name',
+                    'organ_issuer', 'created_by', 'status')
     search_fields = ['id', '__unicode__']
+    list_filter = ('status','act_type', 'scope', 'act_collection', 'source_name',)
     inlines = [ActRelationshipAdmin, ActURLAdmin, AttachmentAdmin, DescriptorAdmin, ThematicAreaAdmin, ]
+
+class ActCollectionLocalAdmin(admin.TabularInline):
+    model = ActCollectionLocal
+    extra = 1
+
+
+class ActCollectionAdmin(GenericAdmin):
+    model = ActCollection
+    inlines = [ActCollectionLocalAdmin, ]
+
+
+class DatabaseLocalAdmin(admin.TabularInline):
+    model = DatabaseLocal
+    extra = 0
+
+
+class DatabaseAdmin(GenericAdmin):
+    model = Database
+    inlines = [DatabaseLocalAdmin, ]
+    search_fields = list_display = ['acronym', 'name']
+
+
+class ActSourceLocalAdmin(admin.TabularInline):
+    model = ActSourceLocal
+    extra = 1
+
+
+class ActSourceAdmin(GenericAdmin):
+    model = ActSource
+    inlines = [ActSourceLocalAdmin, ]
 
 admin.site.register(Act, ActAdmin)
 admin.site.register(ActType, ActTypeAdmin)
@@ -90,5 +122,7 @@ admin.site.register(ActScope, ActScopeAdmin)
 admin.site.register(ActCountryRegion)
 admin.site.register(ActOrganIssuer, ActOrganIssuerAdmin)
 admin.site.register(ActRelationType, ActRelationTypeAdmin)
+admin.site.register(ActCollection, ActCollectionAdmin)
 admin.site.register(ActRelationship)
-admin.site.register(ActSource)
+admin.site.register(ActSource, ActSourceAdmin)
+admin.site.register(Database, DatabaseAdmin)

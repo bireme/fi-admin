@@ -100,7 +100,8 @@ class WhodidMiddleware(object):
             has_changes = getattr(instance, 'changed_fields', False)
             was_deleted = getattr(instance, 'was_deleted', False)
             inline_model = getattr(instance, 'content_object', False)
-
+            related_model = getattr(instance, 'get_parent', False)
+    
             # log if new, changed or deleted
             if new_object or has_changes or was_deleted:
                 fields_change = self.get_changes_in_json(instance, new_object, was_deleted)
@@ -109,6 +110,10 @@ class WhodidMiddleware(object):
                     log_object_ct_id = instance.content_type.pk
                     log_object_id = instance.content_object.pk
                     log_repr = str(instance.content_object)
+                elif related_model:
+                    log_object_ct_id = ContentType.objects.get_for_model(instance.get_parent()).pk
+                    log_object_id = instance.get_parent().pk
+                    log_repr = str(instance.get_parent())
                 else:
                     log_object_ct_id = ContentType.objects.get_for_model(instance).pk
                     log_object_id = instance.pk
@@ -137,10 +142,10 @@ class WhodidMiddleware(object):
         Update log record after save instance to add missing object_id
         '''
         user = self.get_current_user()
-        if isinstance(instance, AuditLog) and created and instance.created_by:
+        if isinstance(instance, AuditLog) and created:
             # filter by log without object_id from the current user and action_flag = ADDITION
             log = LogEntry.objects.filter(object_id='None', object_repr=str(instance), action_flag=1,
-                                          user_id=instance.created_by.id)
+                                          user_id=user.id)
             if log:
                 # get last log
                 log = log[0]
@@ -165,14 +170,23 @@ class WhodidMiddleware(object):
         else:
             # get previous attributes values of object
             obj = obj_model.objects.get(pk=instance.id)
+
             for field_name in instance.changed_fields:
+                field_type = obj_model._meta.get_field(field_name).get_internal_type()
+
                 if instance.id:
-                    previous_value = obj.__dict__.get(field_name)
+                    if field_type == 'ForeignKey':
+                        previous_value = unicode(getattr(obj, field_name))
+                    else:
+                        previous_value = obj.__dict__.get(field_name)
                 else:
                     previous_value = ''
 
-                new_value = instance.__dict__.get(field_name)
-                field_type = obj_model._meta.get_field(field_name).get_internal_type()
+
+                if field_type == 'ForeignKey':
+                    new_value = unicode(getattr(instance, field_name))
+                else:
+                    new_value = instance.__dict__.get(field_name)
 
                 # convert JSON to compare properly
                 if isinstance(previous_value, basestring) and previous_value[0:2] == '[{':

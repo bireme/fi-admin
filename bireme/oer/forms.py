@@ -7,6 +7,7 @@ from django.conf import settings
 from django import forms
 
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import filesizeformat
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 
@@ -72,8 +73,6 @@ class OERForm(forms.ModelForm):
 
 class DescriptorForm(forms.ModelForm):
 
-    status = forms.IntegerField(widget=forms.HiddenInput(), initial=1)
-
     def save(self, *args, **kwargs):
         obj = super(DescriptorForm, self).save(commit=False)
         # for legislation default value for descriptor is admited
@@ -82,8 +81,6 @@ class DescriptorForm(forms.ModelForm):
 
 
 class ThematicForm(forms.ModelForm):
-
-    status = forms.IntegerField(widget=forms.HiddenInput(), initial=1)
 
     def save(self, *args, **kwargs):
         obj = super(ThematicForm, self).save(commit=False)
@@ -96,6 +93,16 @@ class AttachmentForm(forms.ModelForm):
     # change widget from attachment_file field for simple select
     attachment_file = forms.FileField(widget=widgets.FileInput)
 
+    def clean_attachment_file(self):
+        data = self.cleaned_data['attachment_file']
+        if data.size > int(settings.MAX_UPLOAD_SIZE):
+            raise forms.ValidationError(_('Maximum allowed size %(max)s. Current filesize %(size)s') % ({
+                                           'max': filesizeformat(settings.MAX_UPLOAD_SIZE),
+                                           'size': filesizeformat(data.size)
+                                           }))
+
+        return data
+
 
 class URLForm(forms.ModelForm):
     url = forms.URLField(widget=widgets.URLInput(attrs={'class': 'input-xxlarge'}))
@@ -103,7 +110,7 @@ class URLForm(forms.ModelForm):
 
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,
-                                                  can_delete=True, extra=1)
+                                                  exclude=('status',), can_delete=True, extra=1)
 
 AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
                                                   exclude=('short_url',), can_delete=True, extra=1)
@@ -114,4 +121,4 @@ RelationFormSet = inlineformset_factory(OER, Relationship, fields='__all__', fk_
                                         can_delete=True, extra=1)
 
 ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
-                                                        can_delete=True, extra=1)
+                                                        exclude=('status',), can_delete=True, extra=1)

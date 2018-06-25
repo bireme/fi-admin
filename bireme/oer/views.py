@@ -65,6 +65,10 @@ class OERGenericListView(LoginRequiredView, ListView):
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
 
+        # filter by scope region country
+        if self.actions['filter_country'] != '':
+            object_list = object_list.filter(cvsp_node=self.actions['filter_country'])
+
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
@@ -81,10 +85,16 @@ class OERGenericListView(LoginRequiredView, ListView):
     def get_context_data(self, **kwargs):
         context = super(OERGenericListView, self).get_context_data(**kwargs)
         user_data = additional_user_info(self.request)
+        show_advaced_filters = self.request.GET.get('apply_filters', False)
         user_role = user_data['service_role'].get('OER')
+        cvsp_node_list = OER.objects.values_list('cvsp_node', flat=True).distinct()
+        # remove empty values
+        cvsp_node_list = filter(None, cvsp_node_list)
 
         context['actions'] = self.actions
         context['user_role'] = user_role
+        context['cvsp_node_list'] = cvsp_node_list
+        context['show_advaced_filters'] = show_advaced_filters
 
         return context
 
@@ -274,8 +284,9 @@ class OERDeleteView(LoginRequiredView, DeleteView):
 
     def get_object(self, queryset=None):
         obj = super(OERDeleteView, self).get_object()
-        """ Hook to ensure object is owned by request.user. """
-        if not obj.created_by == self.request.user:
+        # check if cooperative center of the object is the same of the user
+        user_cc = self.request.user.profile.get_attribute('cc')
+        if not obj.cooperative_center_code == user_cc:
             return HttpResponse('Unauthorized', status=401)
 
         return obj

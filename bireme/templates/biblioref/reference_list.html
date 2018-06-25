@@ -117,6 +117,21 @@
                                     <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
                                 </select>
                                 <button class="btn" type="submit"><i class='icon-search'></i></button>
+
+                                <a href="javascript:void()" id="show_advaced_filters">+ {% trans "Filters" %}</a>
+
+                                <div class="advanced_filters {% if not  actions.filter_indexed_database %}hide{% endif %}">
+                                    {% trans "Indexed in" %}:
+                                    <select name="filter_indexed_database">
+                                        <option value="">{% trans "All" %}</option>
+                                        {% for idb in indexed_database_list %}
+                                            <option value="{{ idb.id }}" {% if actions.filter_indexed_database|add:"0" == idb.id %}selected="true"{% endif %}>{{ idb }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <button class="btn" type="submit" name="apply_filters" value="true">{% trans "Apply" %}</button>
+                                </div>
+
                             </form>
                         </div>
                     </div>

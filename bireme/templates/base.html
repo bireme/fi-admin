@@ -52,6 +52,10 @@
         {% block footer %}
             <div  id="footer">
                 <img src="{% static 'image/' %}logo-bireme-{{ LANGUAGE_CODE|slice:":2" }}.png" title="BIREME/OPAS/OMS" /><br/>
+                <div class="terms_politic">
+                    <a href="http://politicas.bireme.org/terminos/{{ LANGUAGE_CODE|slice:":2" }}/" target="_blank">{% trans "Terms and conditions of use" %}</a> |
+                    <a href="http://politicas.bireme.org/privacidad/{{ LANGUAGE_CODE|slice:":2" }}/" target="_blank">{% trans "Privacy Policy" %}</a>
+                </div>
             </div>
             <!--div class="system-notice">
               Atenção: O sistema FI-ADMIN estará em manutenção hoje (02/08/2016) no período das 15:00hs às 17:00hs.

@@ -143,6 +143,7 @@
    <field name="title" type="text" indexed="true" stored="true" termVectors="true"/>
    <field name="link" type="string" indexed="false" stored="true" multiValued="true"/>
    <field name="language" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="type" type="string" indexed="true" stored="true" multiValued="true"/>
 
    <field name="thematic_area" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="thematic_area_display" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -190,7 +191,6 @@
    <field name="reference_title" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
    <field name="reference_abstract" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
    <field name="reference_source" type="string" indexed="false" stored="true" multiValued="false"/>
-   <field name="indexed_database" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="database" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="journal" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="publication_year" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -201,6 +201,10 @@
    <!-- legislation -->
    <field name="scope_region" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="act_type" type="string" indexed="true" stored="true" multiValued="false"/>
+
+   <!-- multiple sources -->
+   <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="indexed_database" type="string" indexed="true" stored="true" multiValued="true"/>
 
    <!-- Compatibility with portal-org indexes -->
    <field name="ti" type="text" indexed="true" stored="false" multiValued="true" />
@@ -214,6 +218,7 @@
 
    <!-- catchall field, containing all other searchable text fields (implemented
         via copyField further on in this schema  -->
+   <field name="text" type="text" indexed="true" stored="false" multiValued="false"/>
    <field name="tw" type="text_with_decs" indexed="true" stored="false" multiValued="true"/>
  </fields>
 
@@ -226,8 +231,8 @@
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
  <solrQueryParser defaultOperator="AND"/>
 
+ <copyField source="text" dest="tw"/>
  <copyField source="title" dest="tw"/>
-
  <copyField source="originator" dest="tw"/>
  <copyField source="author" dest="tw"/>
  <copyField source="abstract" dest="tw"/>

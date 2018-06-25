@@ -125,6 +125,12 @@
                                 <p>{% trans "Last edit in" %} <strong>{{ title.updated_time }}</strong> {% trans "by user" %}  <strong>{{ title.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
+                        <div class="btn-group pull-right">
+                            <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                            {%if object.has_duplicates %}
+                                <a href="/title/duplicates/{{object.id}}/" target="_blank" class="btn"><i class="icon icon-retweet"></i> {% trans "Duplicates" %}</a>
+                            {% endif %}
+                        </div>
                     {% endif %}
             </div>
 
@@ -444,38 +450,40 @@
                             <table class="table table-condensed table-striped span8">
                                 <tr>
                                     <td>
-                                        {% for field in form.visible_fields %}
-                                            {% if field.name != 'DELETE' %}
-                                                {% if field.name in 'tco|ndb|pca' %}
-                                                    <div class="check">
-                                                        {{ field.errors }}
-                                                        {{ field }}
-                                                        <label for="{{ field.auto_id }}">
-                                                            {{ field.label }}
-                                                        </label>
-                                                    </div>
-                                                {% elif field.name == 'initial_period' %}
-                                                    <div class="form-inline period">
-                                                        {{ field.errors }}
-                                                        <span>{% trans "Period" %}:</span>
-                                                        <label for="{{ field.auto_id }}">{% trans "From" %}</label>
-                                                        {{ field }}
-                                                {% elif field.name == 'final_period' %}
-                                                        {{ field.errors }}
-                                                        <label for="{{ field.auto_id }}">{% trans "Until" %}</label>
-                                                        {{ field }}
-                                                    </div>
-                                                {% else %}
-                                                    <label for="{{ field.auto_id }}">
-                                                        {{ field.label }}
-                                                    </label>
-                                                    <p class="muted">{{ field.help_text }}</p>
-                                                    {{ field.errors }}
-                                                    {{ field }}
-                                                {% endif %}
-                                            {% endif %}
-                                            {% if forloop.counter0 == 5 %}</td><td>{% endif %}
-                                        {% endfor %}
+                                        <label for="{{ form.url.auto_id }}">
+                                            {{ form.url.label }}
+                                        </label>
+                                        <p class="muted">{{ form.url.help_text }}</p>
+                                        {{ form.url }}
+                                        <label for="{{ form.owner.auto_id }}">
+                                            {{ form.owner.label }}
+                                        </label>
+                                        <p class="muted">{{ form.owner.help_text }}</p>
+                                        {{ form.owner }}
+                                        <label for="{{ form.issn_online.auto_id }}">
+                                            {{ form.issn_online.label }}
+                                        </label>
+                                        <p class="muted">{{ form.issn_online.help_text }}</p>
+                                        {{ form.issn_online }}
+                                        <label for="{{ form.access_type.auto_id }}">
+                                            {{ form.access_type.label }}
+                                        </label>
+                                        <p class="muted">{{ form.access_type.help_text }}</p>
+                                        {{ form.access_type }}
+                                        <div class="form-inline period">
+                                            <span>{% trans "Period" %}:</span>
+                                            <label for="{{ form.initial_period.auto_id }}">{% trans "From" %}</label>
+                                            {{ form.initial_period }}
+                                            <label for="{{ form.final_period.auto_id }}">{% trans "Until" %}</label>
+                                            {{ form.final_period }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <label for="{{ form.notes.auto_id }}">
+                                            {{ form.notes.label }}
+                                        </label>
+                                        <p class="muted">{{ form.notes.help_text }}</p>
+                                        {{ form.notes }}
                                         <div>{% if form.instance.pk %}{{ form.DELETE }}{% endif %}</div>
                                     </td>
                                 </tr>
@@ -492,6 +500,10 @@
 
     </form>
 </div>
+
+{% if object.id %}
+    {% include "modal_log.html" %}
+{% endif %}
 
 {% endblock %}
 

@@ -1,0 +1,62 @@
+{% load i18n %}
+
+<div id='tab-url' class="tab-pane">
+
+    {% for error in formset_url.non_form_errors  %}
+        <p class="errorlist alert alert-error">
+            {{ error|escape }}
+        </p>
+    {% endfor %}
+
+    <fieldset id="url">
+        <table class="table table-condensed table-striped span8">
+            <thead>
+                <th>{% trans "Type" %}</th>
+                <th>{% trans "URL" %}</th>
+                {% if user_can_edit %}
+                    <th>{% trans "Delete?" %}</th>
+                {% endif %}
+            </thead>
+            <tbody>
+            {% if user_can_edit %}
+
+                {{ formset_url.management_form }}
+
+                {% for form in formset_url %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    <tr id="url-{{ forloop.counter0 }}" class="url-row{% if form.errors %} error{% endif %} formset-row">
+                        {% for field in form.visible_fields %}
+                            {% if field.name != 'DELETE' %}
+                                <td>
+                                    {{ field }}
+                                    {{ field.errors }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                        <td>
+                            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                {% for form in formset_url %}
+                    {% for field in form %}
+                        {% if field.name == 'url' %}
+                            <td>
+                                <strong><a href="{{form.instance.url}}" target="_blank">{{ form.instance.url }}</a></strong>
+                            </td>
+                        {% else %}
+                            <td>
+                                {{ field.value }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </fieldset>
+
+</div>

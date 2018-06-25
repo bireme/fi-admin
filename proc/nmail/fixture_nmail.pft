@@ -1,0 +1,118 @@
+proc('d9995a9995|',getenv('PK_INCREASE_NUMBER'),'|')
+
+if mfn=1 then '['/ fi,
+
+if v6 = 'I' AND left(v607,3) <> 'BRI' AND left(v607,3) <> 'BRE' then,
+
+    /* modelo principal */
+   '{',/
+       c4,'"pk": ', f(mfn+val(v9995),1,0),','/
+       c4,'"model": ','"institution.institution",',/
+
+       c4,'"fields": {',/
+            c8,'"status": 1,',/
+            if p(v607) then c8,'"cc_code": "',v607,'",'/, fi,
+
+            if p(v611) then,
+                c8,'"name": ','"',v611^a,'",'/
+                if p(v611^b) then c8,'"acronym": "',v611^b,'",'/, fi,
+            else,
+                c8,'"name": ','"',v612^a,'",'/
+                if p(v612^b) then c8,'"acronym": "',v612^b,'",'/, fi,
+            fi,
+
+            if p(v615) then c8,'"address": "',v615,'",'/, fi,
+            if p(v616^a) then c8,'"mailbox": "',v616^a,'",'/, fi,
+            if p(v616^b) then c8,'"zipcode": "',v616^b,'",'/, fi,
+            if p(v617^a) then c8,'"city": "',v617^a,'",'/, fi,
+            if p(v618^a) then c8,'"state": "',v618^a,'",'/, fi,
+            if p(v620^a) and val(v620^a) > 0 then c8,'"country": ',f(val(v620^a),1,0),','/, fi,
+
+            c8,'"created_time": ','"2018-04-03T09:00:00-03:00",'/,
+            c8,'"cooperative_center_code": ','"BR1.1",'/
+            c8,'"created_by": ',getenv('FI_USER_ID'),/
+
+       c4,'}',/
+    '},'/
+
+    /* responsável */
+    if p(v610) then,
+        '{',/
+
+            c4,'"pk": null,'/
+            c4,'"model": ','"institution.contactperson",'/
+
+            c4,'"fields": {',/
+                c8,'"institution": ',f(mfn+val(v9995),1,0),','/
+                c8,'"name": "',v610^a,'",'/,
+                c8,'"prefix": "',v610^b,'",'/,
+                c8,'"job_title": "',v610^c,'"'/,
+            c4,'}',/
+         '},'/
+    fi,
+
+
+    /* telefones */
+    if p(v621^*) then,
+        '{',/
+
+            c4,'"pk": null,'/
+            c4,'"model": ','"institution.contactphone",'/
+
+            c4,'"fields": {',/
+                c8,'"institution": ',f(mfn+val(v9995),1,0),','/
+                c8,'"phone_number": "',v621^*,'",'/,
+                c8,'"phone_type": "main",'/,
+                c8,'"phone_name": "Geral"'/,
+            c4,'}',/
+         '},'/
+    fi,
+
+    /* emails */
+    if p(v624) then,
+        (
+          '{',/
+            c4,'"pk": null,'/
+            c4,'"model": ','"institution.contactemail",'/
+
+            c4,'"fields": {',/
+                c8,'"institution": ',f(mfn+val(v9995),1,0),','/
+                c8,'"email": "',v624,'"'/,
+            c4,'}',/
+         '},'/
+        ),
+    fi,
+
+    /* site */
+    if p(v694) then,
+        (
+          '{',/
+            c4,'"pk": null,'/
+            c4,'"model": ','"institution.url",'/
+
+            c4,'"fields": {',/
+                c8,'"institution": ',f(mfn+val(v9995),1,0),','/
+                c8,'"url_type": "main",'/,
+                c8,'"url": "',v694,'"'/,
+            c4,'}',/
+         '},'/
+        ),
+    fi,
+
+    /* ADM */
+    '{',/
+        c4,'"pk": null,'/
+        c4,'"model": ','"institution.adm",'/
+
+        c4,'"fields": {',/
+            c8,'"institution": ',f(mfn+val(v9995),1,0),','/
+            c8,'"category": "',(v603+|\r\n|), '",'/,
+            c8,'"type": "',(v604+|\r\n|),'",'/,
+            c8,'"notes": "',(replace(v699,'^a', '\r\n\r\n^a'),'\r\n'),'"'/,
+        c4,'}',/
+    '},'/
+
+fi,
+
+
+if mfn=MAXMFN-1 then ']'/ fi,

@@ -107,6 +107,8 @@ class Reference(Generic, AuditLog):
     # control fields
     LILACS_original_id = models.CharField(_('LILACS id'), max_length=8, blank=True, editable=False)
     interoperability_source = models.CharField(_('Interoperability source'), max_length=100, blank=True, editable=False)
+    # code of first CC that indexed the record
+    indexer_cc_code = models.CharField(_('Indexed by'), max_length=55, blank=True)
 
     # relations
     logs = GenericRelation(LogEntry)
@@ -123,16 +125,20 @@ class Reference(Generic, AuditLog):
 
     def __unicode__(self):
         if 'a' in self.treatment_level:
-            ref_child = ReferenceAnalytic.objects.get(id=self.pk)
-            if self.literature_type[0] == 'S':
-                ref_title = u"{0}; {1} ({2}), {3} | {4}".format(ref_child.source.title_serial,
-                                                                ref_child.source.volume_serial,
-                                                                ref_child.source.issue_number,
-                                                                ref_child.source.publication_date_normalized[:4],
-                                                                ref_child.title[0]['text'])
-            else:
-                ref_title = u"{0} | {1}".format(ref_child.source.title_monographic[0]['text'],
-                                                ref_child.title[0]['text'])
+            try:
+                ref_child = ReferenceAnalytic.objects.get(id=self.pk)
+                if self.literature_type[0] == 'S':
+                    ref_title = u"{0}; {1} ({2}), {3} | {4}".format(ref_child.source.title_serial,
+                                                                    ref_child.source.volume_serial,
+                                                                    ref_child.source.issue_number,
+                                                                    ref_child.source.publication_date_normalized[:4],
+                                                                    ref_child.title[0]['text'])
+                else:
+                    ref_title = u"{0} | {1}".format(ref_child.source.title_monographic[0]['text'],
+                                                    ref_child.title[0]['text'])
+            except:
+                # if errors in format dynamic title use raw reference_title field
+                ref_title = self.reference_title
         else:
             ref_child = ReferenceSource.objects.get(id=self.pk)
             ref_title = ref_child.__unicode__()
@@ -242,6 +248,10 @@ class ReferenceSource(Reference):
 
         return exist_analytic
 
+    def count_analytic(self):
+        count_analytic = ReferenceAnalytic.objects.filter(source=self.pk).count()
+
+        return count_analytic
 
 # Bibliographic Records Analytic
 class ReferenceAnalytic(Reference):

@@ -11,7 +11,6 @@ from django.contrib.admin.models import LogEntry
 
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
-from recaptcha.client import captcha
 
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
@@ -28,6 +27,7 @@ from forms import *
 
 import os
 import json
+import urllib2, urllib
 
 @csrf_exempt
 def suggest_resource(request, **kwargs):
@@ -44,16 +44,15 @@ def suggest_resource(request, **kwargs):
 
     if settings.RECAPTCHA_PRIVATE_KEY:
         # Check the captcha with reCAPTCHA (google service)
-        captcha_response = captcha.submit(
-            request.POST.get('recaptcha_challenge_field'),
-            request.POST.get('recaptcha_response_field'),
+        captcha_response = validate_recaptcha(
             settings.RECAPTCHA_PRIVATE_KEY,
+            request.POST.get('g-recaptcha-response'),
             request.META['REMOTE_ADDR'],)
 
-        if not captcha_response.is_valid:
+        if not captcha_response['is_valid']:
             # captcha is wrong show a error message in the template.
             captcha_is_valid = False
-            captcha_error = captcha_response.error_code
+            captcha_error = captcha_response['error_code']
 
     if form.is_valid() and captcha_is_valid:
         template = 'suggest/thanks.html'
@@ -244,16 +243,15 @@ def suggest_event(request, **kwargs):
 
     if settings.RECAPTCHA_PRIVATE_KEY:
         # Check the captcha with reCAPTCHA (google service)
-        captcha_response = captcha.submit(
-            request.POST.get('recaptcha_challenge_field'),
-            request.POST.get('recaptcha_response_field'),
+        captcha_response = validate_recaptcha(
             settings.RECAPTCHA_PRIVATE_KEY,
+            request.POST.get('g-recaptcha-response'),
             request.META['REMOTE_ADDR'],)
 
-        if not captcha_response.is_valid:
+        if not captcha_response['is_valid']:
             # captcha is wrong show a error message in the template.
             captcha_is_valid = False
-            captcha_error = captcha_response.error_code
+            captcha_error = captcha_response['error_code']
 
     lang_code = request.POST.get('language', 'pt-BR')
     if hasattr(request, 'session'):
@@ -303,3 +301,56 @@ def edit_suggested_event(request, **kwargs):
     output['settings'] = settings
 
     return render_to_response('suggest/edit-suggested-event.html', output, context_instance=RequestContext(request))
+
+
+def validate_recaptcha (private_key, recaptcha_response, remoteip):
+    """
+    Submits a reCAPTCHA request for verification. Returns RecaptchaResponse
+    for the request
+
+    private_key -- your reCAPTCHA private key
+    recaptcha_response -- The value of recaptcha_response from the form
+    remoteip -- the user's ip address
+    """
+    return_values = {}
+
+    if not (recaptcha_response):
+        return {'is_valid': False, 'error_code': 'incorrect-captcha-sol'}
+
+    def encode_if_necessary(s):
+        if isinstance(s, unicode):
+            return s.encode('utf-8')
+        return s
+
+    params = urllib.urlencode ({
+                'secret': encode_if_necessary(private_key),
+                'remoteip': encode_if_necessary(remoteip),
+                'response' : encode_if_necessary(recaptcha_response)
+            })
+
+    request = urllib2.Request (
+        url = "https://www.google.com/recaptcha/api/siteverify",
+        data = params,
+        headers = {
+            'Content-type': 'application/x-www-form-urlencoded',
+            'User-agent': 'noReCAPTCHA Python'
+          }
+        )
+
+    httpresp = urllib2.urlopen(request)
+    try:
+        res = httpresp.read()
+        return_values = json.loads(res)
+
+    except (ValueError, TypeError):
+        return {'is_valid': False, 'error_code': 'json-read-issue'}
+    except:
+        return {'is_valid': False, 'error_code': 'unknown-network-issue'}
+    finally:
+        httpresp.close()
+
+    is_valid = return_values.get('success', False)
+    error_code = return_values.get('error_code', '')
+    return_values = {'is_valid': is_valid, 'error_code': error_code}
+
+    return return_values

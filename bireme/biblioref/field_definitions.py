@@ -504,20 +504,12 @@ FIELDS_BY_DOCUMENT_TYPE['MSams'] = [('general', {'fields': ['source', 'status', 
 
 def get_aux_country_list():
     country_list = [('', '')]
-    country_list_latin_caribbean = [(c.code, unicode(c)) for c in Country.objects.filter(LA_Caribbean=True)]
-    country_list_other = [(c.code, unicode(c)) for c in Country.objects.filter(LA_Caribbean=False)]
+    country_list_latin_caribbean = [(c.code, c) for c in Country.objects.filter(LA_Caribbean=True)]
+    country_list_other = [(c.code, c) for c in Country.objects.filter(LA_Caribbean=False)]
 
-    # sort list by translation name
-    country_list_latin_caribbean.sort(key=lambda c: c[1])
-    country_list_other.sort(key=lambda c: c[1])
-
-    separator = " ----------- "
-    label_latin_caribbean = separator + __('Latin America & Caribbean') + separator
-    label_other = separator + __('Others') + separator
-
-    country_list.extend([(' ', label_latin_caribbean)])
+    country_list.extend([(' ', _('-- Latin America & Caribbean --'))])
     country_list.extend(country_list_latin_caribbean)
-    country_list.extend([(' ', label_other)])
+    country_list.extend([(' ', _('-- Others --'))])
     country_list.extend(country_list_other)
 
     return country_list
@@ -597,6 +589,7 @@ class IndividualAuthorAttributes(colander.MappingSchema):
             elif not ', ' in value:
                 exc = colander.Invalid(form, _("Insert space after comma"))
                 raise exc
+
 
     degree_choices = [('', '')]
     degree_choices.extend([(aux.code, aux) for aux in

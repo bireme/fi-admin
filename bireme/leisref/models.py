@@ -65,7 +65,7 @@ class ActType(Generic):
 
     name = models.CharField(_("Name"), max_length=255)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
-    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
+    scope_region = models.ManyToManyField(ActCountryRegion, verbose_name=_("Country/Region"), blank=True)
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
@@ -105,7 +105,7 @@ class ActScope(Generic):
 
     name = models.CharField(_("Name"), max_length=255)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
-    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
+    scope_region = models.ManyToManyField(ActCountryRegion, verbose_name=_("Country/Region"), blank=True)
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
@@ -145,7 +145,7 @@ class ActOrganIssuer(Generic):
 
     name = models.CharField(_("Name"), max_length=255)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
-    scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
+    scope_region = models.ManyToManyField(ActCountryRegion, verbose_name=_("Country/Region"), blank=True)
 
     def get_translations(self):
         translation_list = ["%s^%s" % (self.language, self.name.strip())]
@@ -230,11 +230,11 @@ class ActRelationType(Generic):
     scope_region = models.ForeignKey(ActCountryRegion, verbose_name=_("Country/Region"), blank=True, null=True)
 
     def get_label_translations(self, field):
-        translation_list = ["%s^%s" % (self.language, getattr(self, field))]
+        translation_list = ["%s~%s" % (self.language, getattr(self, field))]
 
         translation = ActRelationTypeLocal.objects.filter(relation_type=self.id)
         if translation:
-            other_languages = ["%s^%s" % (trans.language, getattr(trans, field)) for trans in translation]
+            other_languages = ["%s~%s" % (trans.language, getattr(trans, field)) for trans in translation]
             translation_list.extend(other_languages)
 
         return translation_list
@@ -393,6 +393,36 @@ class ActCollectionLocal(models.Model):
     name = models.CharField(_("name"), max_length=255)
 
 
+# Indexed Database
+class Database(Generic):
+
+    class Meta:
+        verbose_name = "Database"
+        verbose_name_plural = "Databases"
+
+    acronym = models.CharField(_('Acronym'), max_length=55)
+    name = models.CharField(_('Name'), max_length=255)
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = DatabaseLocal.objects.filter(database=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class DatabaseLocal(models.Model):
+
+    class Meta:
+        verbose_name = "Translation"
+        verbose_name_plural = "Translations"
+
+    database = models.ForeignKey(Database, verbose_name=_("Database"))
+    language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
+    name = models.CharField(_("name"), max_length=255)
+
+
 # ActReference
 class Act(Generic, AuditLog):
     class Meta:
@@ -412,8 +442,10 @@ class Act(Generic, AuditLog):
     title = models.CharField(_("Title"), max_length=255, blank=True)
     # denominação do ato
     denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
+    # base de dados
+    indexed_database = models.ManyToManyField(Database, verbose_name=_("Indexed in"), blank=True)
     # collection
-    act_collection = models.ForeignKey(ActCollection, verbose_name=_("Collection"), blank=True, null=True)
+    act_collection = models.ManyToManyField(ActCollection, verbose_name=_("Collection"), blank=True)
     # alcance do ato
     scope = models.ForeignKey(ActScope, verbose_name=_("Act scope"), blank=True, null=True)
     # estado do alcance do ato

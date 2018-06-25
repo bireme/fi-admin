@@ -5,6 +5,7 @@ from django.utils import timezone
 from utils.models import Generic, Country
 from django.contrib.contenttypes.generic import GenericRelation
 from main.models import SourceLanguage
+from log.models import AuditLog
 from choices import *
 
 
@@ -21,7 +22,7 @@ class Users(Generic):
         return self.name
 
 # Title model
-class Title(Generic):
+class Title(Generic, AuditLog):
 
     class Meta:
         verbose_name = _("Title")
@@ -144,7 +145,7 @@ class OwnerList(Generic):
     def __unicode__(self):
         return self.owner
 
-class OnlineResources(models.Model):
+class OnlineResources(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Online resource")
@@ -164,10 +165,13 @@ class OnlineResources(models.Model):
     creation_date = models.CharField(_('Creation date'), help_text='Format: YYYYMMDD', max_length=55, blank=True)
     notes = models.TextField(_("Observations"), blank=True, help_text=_("Enter one per line"))
 
+    def get_parent(self):
+        return self.title
+
     def __unicode__(self):
         return self.title.title
 
-class TitleVariance(models.Model):
+class TitleVariance(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Title variance")
@@ -181,10 +185,13 @@ class TitleVariance(models.Model):
     initial_volume = models.CharField(_('Initial volume'), max_length=55, blank=True)
     initial_number = models.CharField(_('Initial number'), max_length=55, blank=True)
 
+    def get_parent(self):
+        return self.title
+
     def __unicode__(self):
         return self.label
 
-class BVSSpecialty(models.Model):
+class BVSSpecialty(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("BVS Specialty")
@@ -193,6 +200,9 @@ class BVSSpecialty(models.Model):
     title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True)
     bvs = models.CharField(_('BVS'), max_length=455, blank=True)
     thematic_area = models.CharField(_('Thematic area'), max_length=55, blank=True)
+
+    def get_parent(self):
+        return self.title
 
     def __unicode__(self):
         return self.title.title
@@ -209,7 +219,7 @@ class IndexCode(Generic):
     def __unicode__(self):
         return self.name
 
-class IndexRange(models.Model):
+class IndexRange(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Index range")
@@ -233,10 +243,13 @@ class IndexRange(models.Model):
     distribute = models.BooleanField(_('To distribute'), default=False)
     selective = models.BooleanField(_('Selective'), default=False)
 
+    def get_parent(self):
+        return self.title
+
     def __unicode__(self):
         return self.index_code.name
 
-class Audit(models.Model):
+class Audit(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Audit")
@@ -246,6 +259,9 @@ class Audit(models.Model):
     type = models.CharField(_('Type'), max_length=55, choices=AUDIT_CHOICES, blank=True)
     label = models.CharField(_('Title'), max_length=455, blank=True)
     issn = models.CharField(_('ISSN'), max_length=55, blank=True)
+
+    def get_parent(self):
+        return self.title
 
     def __unicode__(self):
         return self.label

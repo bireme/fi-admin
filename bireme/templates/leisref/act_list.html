@@ -64,39 +64,23 @@
                             {% trans "Status" %}:
                             <select name="filter_status">
                                 <option value="">{% trans "All" %}</option>
-                                <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "Pending" %}</option>
-                                <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Admitted" %}</option>
+                                <option value="-2" {% if actions.filter_status == '-2' %}selected="true"{% endif %}>{% trans "Related" %}</option>
+                                <option value="-1" {% if actions.filter_status == '-1' %}selected="true"{% endif %}>{% trans "Draft" %}</option>
+                                <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Published" %}</option>
                                 <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
                                 <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
                             </select>
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
 
-                            {% if actions.filter_owner == '*' %}
-                                <a href="javascript:void()" id="show_advaced_filters">{% trans "Filters" %}</a>
-                            {% endif %}
+                            <a href="#" onclick="$('#help_modal_title').html('{% trans 'Search' %}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/leisref/search/" class="field_with_help"><i class='icon-info-sign'></i></a>
 
+                            <a href="javascript:void()" id="show_advaced_filters">{% trans "Filters" %}</a>
                             <div class="advanced_filters {% if not show_advaced_filters %}hide{% endif %}">
-                                {% trans "User" %}:
-                                <select name="filter_created_by_user">
+                                {% trans "Act country/region" %}:
+                                <select name="filter_country">
                                     <option value="">{% trans "All" %}</option>
-                                    {% for user in user_filter_list %}
-                                        <option value="{{ user.id }}" {% if actions.filter_created_by_user|add:"0" == user.id %}selected="true"{% endif %}>{{ user }}</option>
-                                    {% endfor %}
-                                </select>
-
-                                {% trans "Cooperative center" %}:
-                                <select name="filter_created_by_cc">
-                                    <option value="">{% trans "All" %}</option>
-                                    {% for center in cc_filter_list %}
-                                        <option value="{{ center }}" {% if actions.filter_created_by_cc == center %}selected="true"{% endif %}>{{ center }}</option>
-                                    {% endfor %}
-                                </select>
-
-                                {% trans "Thematic area" %}:
-                                <select name="filter_thematic">
-                                    <option value="">{% trans "All" %}</option>
-                                    {% for thematic in thematic_list %}
-                                        <option value="{{ thematic.id }}" {% if actions.filter_thematic|add:"0" == thematic.id %}selected="true"{% endif %}>{{ thematic }}</option>
+                                    {% for country in scope_region_list %}
+                                        <option value="{{ country.id }}" {% if actions.filter_country|add:"0" == country.id %}selected="true"{% endif %}>{{ country }}</option>
                                     {% endfor %}
                                 </select>
 
@@ -106,17 +90,13 @@
                         </form>
                     </div>
                 </div>
-                {% if actions.filter_owner == 'network' and user_data.networks %}
-                    <div class="span-4">
-                        {% trans "Networks" %} : {{ user_data.networks|join:", " }}
-                    </div>
-                {% endif %}
             </div>
 
             <table class='table'>
                 <thead>
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
                     <th><a href="javascript:orderby('title');" id="id_title">{% trans "Legislation" %}</a></th>
+                    <th><a href="javascript:orderby('country/region');" id="id_title">{% trans "Country/Region" %}</a></th>
                     <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
@@ -125,6 +105,7 @@
                         <tr>
                             <td><a href="{% url 'edit_legislation' act.id %}">{{ act.id }}</a></td>
                             <td><span title="{{ act }}">{{ act|slice:"50" }}{% if act.title|length > 50 %}...{% endif %}</span></td>
+                            <td>{{ act.scope_region }}</a></td>
                             <td>{{ act.status_label }}</a></td>
                             <td>
                                 <a href="{% url 'edit_legislation' act.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
@@ -142,5 +123,6 @@
     </div>
 
 </div>
+{% include "modal_help.html" %}
 
 {% endblock %}

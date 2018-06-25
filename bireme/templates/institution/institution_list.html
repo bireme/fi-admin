@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% load i18n %}
+
+{% block title %}{% trans "Institution" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "Institution" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+<!--  header -->
+<div class='header'>
+    <h2><i class='icon-file'></i> {% trans "Institution" %}</h2>
+        <div class='pull-right'>
+            <a href="{% url 'create_institution' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Institution" %}</a>
+        </div>
+</div>
+
+<div class='body'>
+    <ul class="nav nav-tabs" id='tab'>
+        <li class="{% if actions.filter_owner == 'user' or not actions.filter_owner %}active{% endif %}">
+            <a href="#tab-my" onclick="filter_owner('user')" data-toggle="tab">
+            <strong>{% trans "My institution" %}</strong>
+            {% if actions.filter_owner == 'user' or not actions.filter_owner %}
+                <span class="badge badge-info">{{ paginator.count }}</span>
+            {% endif %}
+            </a>
+        </li>
+        <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
+            <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
+                <strong>{% trans "All instutions" %}</strong>
+               {% if  actions.filter_owner == '*' %}
+                   <span class="badge badge-info">{{ paginator.count }}</span>
+               {% endif %}
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active">
+            <div class="row">
+                <div class="span-4">
+                    <div class="input-append" style="margin-left: 10px">
+                        <form name="search">
+                            <input type="hidden" name="page" value="">
+
+                            {% if actions.filter_owner == '*' %}
+                                <input type="hidden" name="filter_owner" value="*"/>
+                            {% elif actions.filter_owner == 'network' %}
+                                <input type="hidden" name="filter_owner" value="network"/>
+                            {% endif %}
+                            <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
+
+                            {% trans "Status" %}:
+                            <select name="filter_status">
+                                <option value="">{% trans "All" %}</option>
+                                <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "Pending" %}</option>
+                                <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Admitted" %}</option>
+                                <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
+                                <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
+                            </select>
+                            <button class="btn" type="submit"><i class='icon-search'></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <table class='table'>
+                <thead>
+                    <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_cc">{% trans "CC" %}</a></th>
+                    <th><a href="javascript:orderby('title');" id="id_title">{% trans "Name" %}</a></th>
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+                    {% for institution in object_list %}
+                        <tr>
+                            <td><a href="{% url 'edit_institution' institution.id %}">{{ institution.id }}</a></td>
+                            <td>{{ institution.cc_code }}</a></td>
+                            <td>
+                                <span title="{{ institution }}">
+                                    {{ institution|slice:"90" }}
+                                    {% if institution.has_unit %}
+                                        - {{ institution.units|join:" - " }}
+                                    {% endif %}
+                                    {% if institution|length > 90 %}...{% endif %}</span></td>
+                            <td>{{ institution.status_label }}</a></td>
+                            <td>
+                                <a href="{% url 'edit_institution' institution.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                {% if institution.created_by_id = user.id %}
+                                    <a href="{% url 'delete_institution' institution.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination_generic.html" %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
