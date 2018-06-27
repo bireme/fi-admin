@@ -101,7 +101,7 @@ class WhodidMiddleware(object):
             was_deleted = getattr(instance, 'was_deleted', False)
             inline_model = getattr(instance, 'content_object', False)
             related_model = getattr(instance, 'get_parent', False)
-    
+
             # log if new, changed or deleted
             if new_object or has_changes or was_deleted:
                 fields_change = self.get_changes_in_json(instance, new_object, was_deleted)
@@ -177,6 +177,9 @@ class WhodidMiddleware(object):
                 if instance.id:
                     if field_type == 'ForeignKey':
                         previous_value = unicode(getattr(obj, field_name))
+                    elif field_type == 'FileField':
+                        # filename
+                        previous_value = obj.__dict__.get(field_name).name
                     else:
                         previous_value = obj.__dict__.get(field_name)
                 else:
@@ -185,6 +188,9 @@ class WhodidMiddleware(object):
 
                 if field_type == 'ForeignKey':
                     new_value = unicode(getattr(instance, field_name))
+                elif field_type == 'FileField':
+                    # filename
+                    new_value = obj.__dict__.get(field_name).name
                 else:
                     new_value = instance.__dict__.get(field_name)
 

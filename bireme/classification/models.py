@@ -8,65 +8,66 @@ from django.db import models
 from log.models import AuditLog
 
 from main.choices import LANGUAGES_CHOICES
+import os
 
-# Classification types
-class Type(models.Model):
 
+def attachment_upload(instance, filename):
+
+    fname, dot, extension = filename.rpartition('.')
+    slug_filename = "%s.%s" % (slugify(fname), extension)
+
+    upload_path = 'collection/image/%s' % (slug_filename)
+
+    return upload_path
+
+# Collection
+class Collection(models.Model, AuditLog):
     class Meta:
-        verbose_name = _("Classification type")
-        verbose_name_plural = _("Classification types")
+        verbose_name = _("Collection")
+        verbose_name_plural = _("Collections")
 
-    name = models.CharField(_("Name"), max_length=74)
-
-    def __unicode__(self):
-        return self.name
-
-
-# Term
-class Term(models.Model, AuditLog):
-    class Meta:
-        verbose_name = _("Term")
-        verbose_name_plural = _("Terms")
-
-    type = models.ForeignKey(Type, verbose_name=_("Type"))
+    parent = models.ForeignKey('self', verbose_name=_("Parent"), null=True, blank=True)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=155, blank=True)
     slug = models.SlugField(_("Slug"), max_length=155, blank=True)
-    parent = models.ForeignKey('self', verbose_name=_("Parent"), null=True, blank=True)
+    description = models.TextField(_("Description"), blank=True)
+    image = models.FileField(_("Image"), upload_to=attachment_upload, blank=True)
 
     def get_children(self, *args, **kwargs):
-        children = Term.objects.filter(parent=self.id)
+        children = Collection.objects.filter(parent=self.id)
 
         return children
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Term, self).save(*args, **kwargs)
+        super(Collection, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.name
 
-class TermLocal(models.Model):
+class CollectionLocal(models.Model):
 
     class Meta:
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    term = models.ForeignKey(Term, verbose_name=_("Term"))
+    collection = models.ForeignKey(Collection, verbose_name=_("Collection"))
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=155)
+    description = models.TextField(_("Description"), blank=True)
+    image = models.FileField(_("Image"), upload_to=attachment_upload, blank=True)
 
 
-# Relationship Object x Term
+# Relationship Object x Collection
 class Relationship(models.Model):
 
     class Meta:
-        unique_together = (('object_id', 'content_type', 'term'),)
+        unique_together = (('object_id', 'content_type', 'collection'),)
 
     object_id = models.PositiveIntegerField()
     content_type = models.ForeignKey(ContentType, related_name='relationship')
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-
-    term = models.ForeignKey(Term, verbose_name=_("Term"))
+    collection = models.ForeignKey(Collection, verbose_name=_("Collection"))
 
     def __unicode__(self):
-        return unicode(self.term)
+        return unicode(self.collection)

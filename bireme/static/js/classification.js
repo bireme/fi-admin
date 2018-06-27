@@ -20,7 +20,7 @@ function open_popup_win(url, target) {
 }
 
 function open_classification(c_type, object){
-    classification_url = '/classification/show/' + c_type + '/' + object + '/';
+    classification_url = '/classification/classify/' + c_type + '/' + object + '/';
 
     open_popup_win(classification_url, 'classification');
     return false;

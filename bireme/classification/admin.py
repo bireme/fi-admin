@@ -3,15 +3,14 @@ from django.contrib import admin
 from models import *
 
 
-class TermLocalAdmin(admin.TabularInline):
-    model = TermLocal
+class CollectionLocalAdmin(admin.TabularInline):
+    model = CollectionLocal
     extra = 1
 
 
-class TermAdmin(admin.ModelAdmin):
-    model = Term
-    inlines = [TermLocalAdmin, ]
+class CollectionAdmin(admin.ModelAdmin):
+    model = Collection
+    inlines = [CollectionLocalAdmin, ]
 
 
-admin.site.register(Type)
-admin.site.register(Term, TermAdmin)
+admin.site.register(Collection, CollectionAdmin)

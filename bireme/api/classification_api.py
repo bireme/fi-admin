@@ -4,74 +4,67 @@ from django.conf.urls import patterns, url, include
 
 from django.contrib.contenttypes.models import ContentType
 
-from tastypie.resources import ModelResource
+from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 from tastypie import fields
 
-from classification.models import Relationship
+from classification.models import *
 
 import requests
 import urllib
 
-class ClassificationResource(ModelResource):
-
+class CommunityResource(ModelResource):
     class Meta:
-        queryset = Relationship.objects.all()
+        queryset = Collection.objects.filter(parent__isnull=True)
+        allowed_methods = ['get']
+        serializer = Serializer(formats=['json', 'xml'])
+        resource_name = 'community'
+        include_resource_uri = False
+
+
+class CollectionResource(ModelResource):
+    parent = fields.CharField(attribute='parent', null=True)
+    class Meta:
+        queryset = Collection.objects.filter(parent__isnull=False)
+        allowed_methods = ['get']
+        serializer = Serializer(formats=['json', 'xml'])
+        resource_name = 'collection'
+        filtering = {
+            'community': 'exact',
+        }
+        include_resource_uri = False
+
+    def build_filters(self, filters=None):
+        orm_filters = super(CollectionResource, self).build_filters(filters)
+
+        if 'community' in filters:
+            orm_filters['parent__exact'] = filters['community']
+
+        return orm_filters
+
+    def dehydrate(self, bundle):
+        lang_param = bundle.request.GET.get('lang', 'en')        
+
+        if bundle.obj.language != lang_param:
+            try:
+                translation = CollectionLocal.objects.get(collection=bundle.obj.id, language=lang_param)
+                bundle.data['name'] = translation.name
+                bundle.data['language'] = translation.language
+                bundle.data['description'] = translation.description
+                bundle.data['image'] = translation.image
+            except CollectionLocal.DoesNotExist:
+                # return original object in bundle
+                pass
+
+        return bundle
+
+
+class ClassificationResource(ModelResource):
+    collection = fields.CharField(attribute='collection', null=True)
+    class Meta:
+        queryset = Relationship.objects.all().order_by('object_id')
         allowed_methods = ['get']
         serializer = Serializer(formats=['json', 'xml'])
         resource_name = 'classification'
         include_resource_uri = False
-
-    def prepend_urls(self):
-        return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
-        ]
-
-
-    def get_search(self, request, **kwargs):
-        self.method_check(request, allowed=['get'])
-        self.is_authenticated(request)
-        self.throttle_check(request)
-
-        q = request.GET.get('q', '')
-        fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
-        lang = request.GET.get('lang', 'pt')
-        op = request.GET.get('op', 'search')
-        id = request.GET.get('id', '')
-        sort = request.GET.get('sort', 'created_date desc')
-
-        # filter result by approved resources (status=1)
-        if fq != '':
-            fq = '(django_ct:classification.relationship) AND %s' % fq
-        else:
-            fq = '(django_ct:classification.relationship)'
-
-        # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
-
-        search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': lang,
-                    'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
-
-        print search_params
-
-        r = requests.post(search_url, data=search_params)
-
-        self.log_throttled_access(request)
-        return self.create_response(request, r.json())
-
-'''
-    def dehydrate(self, bundle):
-        c_type = ContentType.objects.get_for_model(bundle.obj)
-
-        descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
-        thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
-
-        # add fields to output
-        bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
-        bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
-
-        return bundle
-'''

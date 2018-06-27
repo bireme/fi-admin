@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-21 15:24-0300\n"
-"PO-Revision-Date: 2018-06-21 15:27-0306\n"
+"POT-Creation-Date: 2018-06-27 10:09-0300\n"
+"PO-Revision-Date: 2018-06-27 10:11-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,20 +23,20 @@ msgstr ""
 msgid "Select a file"
 msgstr "Seleccione el archivo"
 
-#: attachments/models.py:46 biblioref/field_definitions.py:549
-#: biblioref/field_definitions.py:572 biblioref/field_definitions.py:687
-#: biblioref/field_definitions.py:698 classification/models.py:55
-#: events/models.py:21 help/models.py:26 help/models.py:53
-#: institution/models.py:24 institution/models.py:51 leisref/models.py:28
-#: leisref/models.py:67 leisref/models.py:107 leisref/models.py:285
-#: leisref/models.py:324 leisref/models.py:364 leisref/models.py:472
-#: leisref/models.py:532 main/models.py:29 main/models.py:69 main/models.py:97
-#: main/models.py:108 main/models.py:135 multimedia/models.py:22
-#: multimedia/models.py:61 oer/models.py:28 oer/models.py:67 oer/models.py:105
-#: oer/models.py:144 oer/models.py:183 oer/models.py:221 oer/models.py:250
-#: oer/models.py:281 oer/models.py:310 oer/models.py:349 oer/models.py:379
-#: oer/models.py:418 oer/models.py:471 oer/models.py:526
-#: templates/biblioref/fieldset_fulltext.html:21
+#: attachments/models.py:46 biblioref/field_definitions.py:545
+#: biblioref/field_definitions.py:568 biblioref/field_definitions.py:683
+#: biblioref/field_definitions.py:694 classification/models.py:30
+#: classification/models.py:55 events/models.py:21 help/models.py:26
+#: help/models.py:53 institution/models.py:24 institution/models.py:51
+#: leisref/models.py:28 leisref/models.py:67 leisref/models.py:107
+#: leisref/models.py:285 leisref/models.py:324 leisref/models.py:364
+#: leisref/models.py:472 leisref/models.py:532 main/models.py:29
+#: main/models.py:69 main/models.py:97 main/models.py:108 main/models.py:135
+#: multimedia/models.py:22 multimedia/models.py:61 oer/models.py:28
+#: oer/models.py:67 oer/models.py:105 oer/models.py:144 oer/models.py:183
+#: oer/models.py:221 oer/models.py:250 oer/models.py:281 oer/models.py:310
+#: oer/models.py:349 oer/models.py:379 oer/models.py:418 oer/models.py:471
+#: oer/models.py:526 templates/biblioref/fieldset_fulltext.html:21
 #: templates/leisref/fieldset_fulltext.html:15
 #: templates/leisref/fieldset_fulltext.html:75
 #: templates/main/edit-language.html:8 templates/oer/fieldset_fulltext.html:15
@@ -67,8 +67,8 @@ msgstr "Bases de datos"
 msgid "Other notes"
 msgstr "Otras notas"
 
-#: biblioref/field_definitions.py:50 biblioref/field_definitions.py:684
-#: biblioref/field_definitions.py:691 biblioref/models.py:74
+#: biblioref/field_definitions.py:50 biblioref/field_definitions.py:680
+#: biblioref/field_definitions.py:687 biblioref/models.py:74
 #: main/models.py:234
 msgid "Abstract"
 msgstr "Resumen"
@@ -89,7 +89,7 @@ msgstr "Campos de indexación adicionales"
 msgid "Imprint"
 msgstr "Imprenta"
 
-#: biblioref/field_definitions.py:74 biblioref/field_definitions.py:546
+#: biblioref/field_definitions.py:74 biblioref/field_definitions.py:542
 #: templates/biblioref/referenceanalytic_form.html:50
 #: templates/biblioref/referenceanalytic_form.html:56
 #: templates/biblioref/referencesource_form.html:55
@@ -139,76 +139,74 @@ msgstr "Nivel Analítico"
 msgid "Content data"
 msgstr "Datos de contenido"
 
-#: biblioref/field_definitions.py:514
-#| msgid "{} Latin America & Caribbean {}"
+#: biblioref/field_definitions.py:510
 msgid "-- Latin America & Caribbean --"
 msgstr "-- América Latina y el Caribe --"
 
-#: biblioref/field_definitions.py:516
-#| msgid "{} Others {}"
+#: biblioref/field_definitions.py:512
 msgid "-- Others --"
 msgstr "-- Otros --"
 
-#: biblioref/field_definitions.py:523 institution/models.py:63
+#: biblioref/field_definitions.py:519 institution/models.py:63
 msgid "Center code"
 msgstr "Código del centro cooperante"
 
-#: biblioref/field_definitions.py:524
+#: biblioref/field_definitions.py:520
 msgid "Classification number"
 msgstr "Número de clasificación"
 
-#: biblioref/field_definitions.py:525
+#: biblioref/field_definitions.py:521
 msgid "Author number"
 msgstr "Número de autor"
 
-#: biblioref/field_definitions.py:526
+#: biblioref/field_definitions.py:522
 msgid "Volumen, inventory number, part"
 msgstr "Volume, tomo, parte"
 
-#: biblioref/field_definitions.py:527
+#: biblioref/field_definitions.py:523
 msgid "Lending system"
 msgstr "Sistema de préstamo"
 
-#: biblioref/field_definitions.py:531 biblioref/models.py:336
+#: biblioref/field_definitions.py:527 biblioref/models.py:336
 msgid "Call number"
 msgstr "Número de llamada"
 
-#: biblioref/field_definitions.py:543 biblioref/field_definitions.py:565
+#: biblioref/field_definitions.py:539 biblioref/field_definitions.py:561
 #: biblioref/models.py:45
 msgid "Electronic address"
 msgstr "Dirección electrónica"
 
-#: biblioref/field_definitions.py:552
+#: biblioref/field_definitions.py:548
 msgid "File type"
 msgstr "Tipo de archivo"
 
-#: biblioref/field_definitions.py:555
+#: biblioref/field_definitions.py:551
 msgid "File extension"
 msgstr "Extensión del archivo"
 
-#: biblioref/field_definitions.py:557 templates/authentication/login.html:41
+#: biblioref/field_definitions.py:553 templates/authentication/login.html:41
 #: title/choices.py:134
 msgid "Password"
 msgstr "Contraseña"
 
-#: biblioref/field_definitions.py:558
+#: biblioref/field_definitions.py:554
 msgid "Logon"
 msgstr "Logon"
 
-#: biblioref/field_definitions.py:559
+#: biblioref/field_definitions.py:555
 msgid "File length"
 msgstr "Tamaño del archivo"
 
-#: biblioref/field_definitions.py:560
+#: biblioref/field_definitions.py:556
 msgid "No public note"
 msgstr "Nota no pública"
 
-#: biblioref/field_definitions.py:561
+#: biblioref/field_definitions.py:557
 msgid "Public note"
 msgstr "Nota pública"
 
-#: biblioref/field_definitions.py:569 biblioref/field_definitions.py:576
-#: biblioref/field_definitions.py:580 biblioref/field_definitions.py:584
+#: biblioref/field_definitions.py:565 biblioref/field_definitions.py:572
+#: biblioref/field_definitions.py:576 biblioref/field_definitions.py:580
 #: biblioref/models.py:35 biblioref/models.py:187 biblioref/models.py:199
 #: biblioref/models.py:205 biblioref/models.py:269 events/models.py:70
 #: leisref/models.py:442 main/models.py:220 oer/models.py:459
@@ -231,141 +229,141 @@ msgstr "Nota pública"
 msgid "Title"
 msgstr "Título"
 
-#: biblioref/field_definitions.py:591 biblioref/forms.py:315
+#: biblioref/field_definitions.py:587 biblioref/forms.py:315
 #: oer/field_definitions.py:37
 msgid "Comma abscent"
 msgstr "Ausencia de coma"
 
-#: biblioref/field_definitions.py:594 biblioref/forms.py:319
+#: biblioref/field_definitions.py:590 biblioref/forms.py:319
 #: biblioref/forms.py:340 oer/field_definitions.py:40
 msgid "Insert space after comma"
 msgstr "Poner espacio después de la coma"
 
-#: biblioref/field_definitions.py:604
+#: biblioref/field_definitions.py:600
 msgid "Personal author"
 msgstr "Autor personal"
 
-#: biblioref/field_definitions.py:605 oer/field_definitions.py:50
+#: biblioref/field_definitions.py:601 oer/field_definitions.py:50
 msgid "Format: Lastname, Name"
 msgstr "Formato: Apellido, Nombre"
 
-#: biblioref/field_definitions.py:606 biblioref/field_definitions.py:668
+#: biblioref/field_definitions.py:602 biblioref/field_definitions.py:664
 #: oer/field_definitions.py:51
 msgid "Affiliation institution level 1"
 msgstr "Institución de afiliación - nivel 1"
 
-#: biblioref/field_definitions.py:607 biblioref/field_definitions.py:669
+#: biblioref/field_definitions.py:603 biblioref/field_definitions.py:665
 #: oer/field_definitions.py:52
 msgid "Affiliation institution level 2"
 msgstr "Institución de afiliación - nivel 2"
 
-#: biblioref/field_definitions.py:608 biblioref/field_definitions.py:670
+#: biblioref/field_definitions.py:604 biblioref/field_definitions.py:666
 #: oer/field_definitions.py:53
 msgid "Affiliation institution level 3"
 msgstr "Institución de afiliación - nivel 3"
 
-#: biblioref/field_definitions.py:609 biblioref/field_definitions.py:671
+#: biblioref/field_definitions.py:605 biblioref/field_definitions.py:667
 #: oer/field_definitions.py:54
 msgid "Affiliation city"
 msgstr "Afiliación - Ciudad"
 
-#: biblioref/field_definitions.py:610 biblioref/field_definitions.py:672
+#: biblioref/field_definitions.py:606 biblioref/field_definitions.py:668
 #: oer/field_definitions.py:55
 msgid "Affiliation country"
 msgstr "Afiliación - País"
 
-#: biblioref/field_definitions.py:612 oer/field_definitions.py:57
+#: biblioref/field_definitions.py:608 oer/field_definitions.py:57
 msgid "Affiliation degree of responsibility"
 msgstr "Afiliación - Grado de responsabilidad"
 
-#: biblioref/field_definitions.py:618 biblioref/field_definitions.py:622
-#: biblioref/field_definitions.py:626 biblioref/models.py:183
+#: biblioref/field_definitions.py:614 biblioref/field_definitions.py:618
+#: biblioref/field_definitions.py:622 biblioref/models.py:183
 #: biblioref/models.py:195 biblioref/models.py:265
 #: templates/biblioref/referenceanalytic_form.html:111
 #: templates/biblioref/referenceanalytic_form.html:145
 msgid "Individual author"
 msgstr "Autor personal"
 
-#: biblioref/field_definitions.py:634 biblioref/field_definitions.py:642
-#: biblioref/field_definitions.py:646 biblioref/field_definitions.py:650
+#: biblioref/field_definitions.py:630 biblioref/field_definitions.py:638
+#: biblioref/field_definitions.py:642 biblioref/field_definitions.py:646
 #: biblioref/models.py:185 biblioref/models.py:197 biblioref/models.py:267
 #: templates/biblioref/referenceanalytic_form.html:116
 #: templates/biblioref/referenceanalytic_form.html:150
 msgid "Corporate author"
 msgstr "Autor institucional"
 
-#: biblioref/field_definitions.py:636
+#: biblioref/field_definitions.py:632
 msgid "Degree of responsibility"
 msgstr "Grado de responsabilidad"
 
-#: biblioref/field_definitions.py:654 multimedia/models.py:111
+#: biblioref/field_definitions.py:650 multimedia/models.py:111
 msgid "Other physical details"
 msgstr "Otros detalles físicos"
 
-#: biblioref/field_definitions.py:655 multimedia/models.py:110
+#: biblioref/field_definitions.py:651 multimedia/models.py:110
 msgid "Item extension"
 msgstr "Extensión del ítem"
 
-#: biblioref/field_definitions.py:656 multimedia/models.py:112
+#: biblioref/field_definitions.py:652 multimedia/models.py:112
 msgid "Dimension"
 msgstr "Dimensión"
 
-#: biblioref/field_definitions.py:657
+#: biblioref/field_definitions.py:653
 msgid "Accompanying material"
 msgstr "Material complementario"
 
-#: biblioref/field_definitions.py:661 biblioref/models.py:50
+#: biblioref/field_definitions.py:657 biblioref/models.py:50
 msgid "Descriptive information"
 msgstr "Información descriptiva"
 
-#: biblioref/field_definitions.py:667 biblioref/field_definitions.py:677
-#: biblioref/field_definitions.py:680 biblioref/models.py:213
+#: biblioref/field_definitions.py:663 biblioref/field_definitions.py:673
+#: biblioref/field_definitions.py:676 biblioref/models.py:213
 #: biblioref/models.py:275
 msgid "Leader"
 msgstr "Orientador"
 
-#: biblioref/field_definitions.py:695 templates/suggest/list.html:120
+#: biblioref/field_definitions.py:691 templates/suggest/list.html:120
 msgid "Keyword"
 msgstr "Palabra clave"
 
-#: biblioref/field_definitions.py:696
+#: biblioref/field_definitions.py:692
 msgid "Qualifier"
 msgstr "Calificador"
 
-#: biblioref/field_definitions.py:702 biblioref/models.py:78
+#: biblioref/field_definitions.py:698 biblioref/models.py:78
 msgid "Author keyword"
 msgstr "Palabras-llave del autor"
 
-#: biblioref/field_definitions.py:706 biblioref/field_definitions.py:713
+#: biblioref/field_definitions.py:702 biblioref/field_definitions.py:709
 #: biblioref/models.py:191 biblioref/models.py:273 leisref/models.py:464
 msgid "Pages"
 msgstr "Páginas"
 
-#: biblioref/field_definitions.py:707 templates/title/form_preview.html:190
+#: biblioref/field_definitions.py:703 templates/title/form_preview.html:190
 #: templates/title/form_preview.html:305 templates/title/title_form.html:282
 #: templates/title/title_form.html:367 title/models.py:78 title/models.py:186
 #: title/models.py:237
 msgid "Initial number"
 msgstr "Número inicial"
 
-#: biblioref/field_definitions.py:708
+#: biblioref/field_definitions.py:704
 msgid "End number"
 msgstr "Número final"
 
-#: biblioref/field_definitions.py:709
+#: biblioref/field_definitions.py:705
 msgid "Electronic location identifier"
 msgstr "Identificador de localización electrónico"
 
-#: biblioref/field_definitions.py:720 biblioref/models.py:338
+#: biblioref/field_definitions.py:716 biblioref/models.py:338
 #: database/models.py:41 leisref/models.py:421
 msgid "Database"
 msgstr "Base de datos"
 
-#: biblioref/field_definitions.py:722
+#: biblioref/field_definitions.py:718
 msgid "Record number"
 msgstr "Número del registro"
 
-#: biblioref/field_definitions.py:723 institution/models.py:193
+#: biblioref/field_definitions.py:719 institution/models.py:193
 #: institution/models.py:198 leisref/models.py:531 oer/models.py:521
 #: oer/models.py:525 templates/institution/fieldset_url.html:15
 #: templates/leisref/fieldset_fulltext.html:14
@@ -374,7 +372,7 @@ msgstr "Número del registro"
 msgid "URL"
 msgstr "Enlace"
 
-#: biblioref/field_definitions.py:726
+#: biblioref/field_definitions.py:722
 msgid "Clinical Trial"
 msgstr "Ensayo clínico"
 
@@ -1240,32 +1238,37 @@ msgstr "Avanzado"
 msgid "data"
 msgstr "datos"
 
-#: classification/models.py:16
-#, fuzzy
-#| msgid "Classification number"
-msgid "Classification type"
-msgstr "Número de clasificación"
+#: classification/models.py:26 classification/models.py:54
+#: classification/models.py:70 leisref/models.py:448 multimedia/models.py:67
+#: multimedia/models.py:80 multimedia/models.py:102
+#: templates/biblioref/referenceanalytic_form.html:223
+#: templates/classification/classify.html:26
+#: templates/classification/show.html:64 templates/main/edit-resource.html:126
+msgid "Collection"
+msgstr "Colección"
 
-#: classification/models.py:17
-#, fuzzy
-#| msgid "Classification number"
-msgid "Classification types"
-msgstr "Número de clasificación"
+#: classification/models.py:27 multimedia/models.py:68
+#: templates/classification/classify.html:50
+msgid "Collections"
+msgstr "Colecciones"
 
-#: classification/models.py:19 classification/models.py:32
-#: classification/models.py:56 database/models.py:21 events/models.py:22
-#: institution/models.py:23 institution/models.py:52 institution/models.py:64
-#: institution/models.py:127 institution/models.py:151
-#: institution/models.py:175 institution/models.py:213 leisref/models.py:27
-#: leisref/models.py:66 leisref/models.py:106 leisref/models.py:146
-#: leisref/models.py:186 leisref/models.py:284 leisref/models.py:323
-#: leisref/models.py:363 leisref/models.py:404 main/models.py:30
-#: main/models.py:70 main/models.py:98 main/models.py:109 main/models.py:136
-#: multimedia/models.py:23 oer/field_definitions.py:49 oer/models.py:27
-#: oer/models.py:66 oer/models.py:104 oer/models.py:143 oer/models.py:182
-#: oer/models.py:220 oer/models.py:249 oer/models.py:280 oer/models.py:309
-#: oer/models.py:348 oer/models.py:378 oer/models.py:417
-#: templates/events/types.html:47
+#: classification/models.py:29
+msgid "Parent"
+msgstr ""
+
+#: classification/models.py:31 classification/models.py:56
+#: database/models.py:21 events/models.py:22 institution/models.py:23
+#: institution/models.py:52 institution/models.py:64 institution/models.py:127
+#: institution/models.py:151 institution/models.py:175
+#: institution/models.py:213 leisref/models.py:27 leisref/models.py:66
+#: leisref/models.py:106 leisref/models.py:146 leisref/models.py:186
+#: leisref/models.py:284 leisref/models.py:323 leisref/models.py:363
+#: leisref/models.py:404 main/models.py:30 main/models.py:70 main/models.py:98
+#: main/models.py:109 main/models.py:136 multimedia/models.py:23
+#: oer/field_definitions.py:49 oer/models.py:27 oer/models.py:66
+#: oer/models.py:104 oer/models.py:143 oer/models.py:182 oer/models.py:220
+#: oer/models.py:249 oer/models.py:280 oer/models.py:309 oer/models.py:348
+#: oer/models.py:378 oer/models.py:417 templates/events/types.html:47
 #: templates/institution/fieldset_contact.html:15
 #: templates/institution/fieldset_contact.html:68
 #: templates/institution/fieldset_person.html:15
@@ -1290,33 +1293,19 @@ msgstr "Número de clasificación"
 msgid "Name"
 msgstr "Nombre"
 
-#: classification/models.py:28 classification/models.py:54
-#: classification/models.py:69
-msgid "Term"
-msgstr ""
-
-#: classification/models.py:29
-msgid "Terms"
-msgstr ""
-
-#: classification/models.py:31 institution/models.py:50
-#: institution/models.py:126 institution/models.py:150
-#: institution/models.py:197 oer/models.py:24 oer/models.py:55
-#: oer/models.py:469 templates/institution/fieldset_contact.html:14
-#: templates/institution/fieldset_contact.html:67
-#: templates/institution/fieldset_url.html:14
-#: templates/title/form_preview.html:300 templates/title/form_preview.html:350
-#: templates/title/title_form.html:362 templates/title/title_form.html:407
-#: title/models.py:181 title/models.py:259
-msgid "Type"
-msgstr "Tipo"
-
-#: classification/models.py:33
+#: classification/models.py:32
 msgid "Slug"
 msgstr ""
 
-#: classification/models.py:34
-msgid "Parent"
+#: classification/models.py:33 classification/models.py:57
+#: error_reporting/models.py:37 multimedia/models.py:57
+#: multimedia/models.py:83 multimedia/models.py:106 oer/models.py:463
+#: templates/error_report/list.html:73 templates/error_report/list.html:134
+msgid "Description"
+msgstr "Descripción"
+
+#: classification/models.py:34 classification/models.py:58
+msgid "Image"
 msgstr ""
 
 #: classification/models.py:51 events/models.py:45 help/models.py:49
@@ -1481,12 +1470,6 @@ msgstr "Otros"
 #: error_reporting/models.py:36
 msgid "Error type"
 msgstr "Tipo de error"
-
-#: error_reporting/models.py:37 multimedia/models.py:57
-#: multimedia/models.py:83 multimedia/models.py:106 oer/models.py:463
-#: templates/error_report/list.html:73 templates/error_report/list.html:134
-msgid "Description"
-msgstr "Descripción"
 
 #: error_reporting/models.py:38
 msgid "New link"
@@ -1672,6 +1655,18 @@ msgstr "Tipo de institucion"
 #: institution/models.py:21
 msgid "Institution types"
 msgstr "Tipos de institucion"
+
+#: institution/models.py:50 institution/models.py:126
+#: institution/models.py:150 institution/models.py:197 oer/models.py:24
+#: oer/models.py:55 oer/models.py:469
+#: templates/institution/fieldset_contact.html:14
+#: templates/institution/fieldset_contact.html:67
+#: templates/institution/fieldset_url.html:14
+#: templates/title/form_preview.html:300 templates/title/form_preview.html:350
+#: templates/title/title_form.html:362 templates/title/title_form.html:407
+#: title/models.py:181 title/models.py:259
+msgid "Type"
+msgstr "Tipo"
 
 #: institution/models.py:59
 #: templates/institution/institution_confirm_delete.html:8
@@ -1941,13 +1936,6 @@ msgstr "Número del acto"
 #: leisref/models.py:444 templates/leisref/act_related.html:104
 msgid "Denomination"
 msgstr "Denominación"
-
-#: leisref/models.py:448 multimedia/models.py:67 multimedia/models.py:80
-#: multimedia/models.py:102
-#: templates/biblioref/referenceanalytic_form.html:223
-#: templates/classification/show.html:64 templates/main/edit-resource.html:126
-msgid "Collection"
-msgstr "Colección"
 
 #: leisref/models.py:452 templates/leisref/actstate_list.html:4
 #: templates/leisref/actstate_list.html:7
@@ -2265,10 +2253,6 @@ msgstr "Tipo de medias"
 msgid "Date"
 msgstr "Fecha"
 
-#: multimedia/models.py:68
-msgid "Collections"
-msgstr "Colecciones"
-
 #: multimedia/models.py:90
 msgid "Media"
 msgstr "Media"
@@ -2499,6 +2483,7 @@ msgstr "Recurso relacionado"
 
 #: oer/views.py:337 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:158
+#: templates/classification/classify.html:106
 #: templates/classification/show.html:125 templates/error_report/edit.html:60
 #: templates/events/edit-event.html:346 templates/events/edit-event.html:389
 #: templates/events/edit-type.html:56 templates/leisref/actcity_form.html:58
@@ -3346,12 +3331,16 @@ msgstr "Año de publicación"
 msgid "Select"
 msgstr "Seleccione"
 
-#: templates/classification/show.html:29
-#: templates/multimedia/mediacollection_confirm_delete.html:12
-#: templates/multimedia/mediacollection_list.html:6
-msgid "Media collection"
-msgstr "Colección"
+#: templates/classification/classify.html:36
+msgid "Community"
+msgstr "Comunidad"
 
+#: templates/classification/classify.html:40
+#| msgid "Select the institution"
+msgid "Select the community"
+msgstr "Seleccione la comunidad"
+
+#: templates/classification/classify.html:101
 #: templates/classification/show.html:120 templates/events/edit-event.html:388
 #: templates/leisref/actcity_form.html:56
 #: templates/leisref/actcollection_form.html:56
@@ -3365,6 +3354,12 @@ msgstr "Colección"
 #: templates/main/edit-resource.html:390
 msgid "Cancel"
 msgstr "Cancelar"
+
+#: templates/classification/show.html:29
+#: templates/multimedia/mediacollection_confirm_delete.html:12
+#: templates/multimedia/mediacollection_list.html:6
+msgid "Media collection"
+msgstr "Colección"
 
 #: templates/dashboard/index.html:12
 msgid "Success!"
@@ -5046,6 +5041,12 @@ msgstr "borrado"
 #: utils/templatetags/app_filters.py:199
 msgid "Record created"
 msgstr "Registro creado"
+
+#~ msgid "Classification type"
+#~ msgstr "Número de clasificación"
+
+#~ msgid "Classification types"
+#~ msgstr "Número de clasificación"
 
 #~ msgid "Institution related"
 #~ msgstr "Institución relacionada"
