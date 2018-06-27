@@ -100,27 +100,37 @@
                                 {% endif %}
                             {% endfor %}
 
+
                             <table class="identifierqualif">
                                 <thead>
-                                    <th>{{ form.thesaurus.label }}<span class="mark">*</span></th>
+                                    <th>{{ form.thesaurus.label }}</th>
+                                    <th>{{ form.abbreviation.label }}</th>
+                                    <th>{{ form.status.label }}</th>
                                 </thead>
                                 <tr>
                                     <td>{{ form.thesaurus }}</td>
+                                    <td><center>{{ form.abbreviation }}</center></td>
+                                    <td><center>{{ form.status }}</center></td>
                                 </tr>
+                                
                                 <thead>
-                                    <th>{{ form.descriptor_ui.label }}</th>
+                                    <th>{{ form.qualifier_ui.label }}</th>
                                     <th>{{ form.decs_code.label }}<span class="mark">*</span></th>
                                     <th>{{ form.external_code.label }}</th>
-                                    <th>{{ form.nlm_class_number.label }}</th>
                                 </thead>
                                 <tr>
-                                    <td>{{ form.descriptor_ui }}</td>
-                                    <td>{{ form.decs_code }}</td>
+                                    <td>
+                                        {{ form.qualifier_ui }}
+                                        <!-- <input id="id_qualifier_ui" maxlength="250" name="qualifier_ui" value="{% if form.qualifier_ui.value %}{{form.qualifier_ui.value}}{% endif %}" type="text" required="true"> -->
+                                    </td>
+                                    <td>
+                                        <!-- {{ form.decs_code }} -->
+                                        <input id="id_decs_code" maxlength="250" name="decs_code" value="{% if form.decs_code.value %}{{form.decs_code.value}}{% endif %}" type="text" required="true">
+                                    </td>
+
                                     <td>{{ form.external_code }}</td>
-                                    <td>{{ form.nlm_class_number }}</td>
                                 </tr>
                                 <thead>
-                                    <th>{{ form.descriptor_class.label }}</th>
                                     <th>{{ form.date_created.label }}
                                         <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
                                     </th>
@@ -132,13 +142,9 @@
                                     </th>
                                 </thead>
                                 <tr>
-                                    <td>{{ form.descriptor_class }}</td>
                                     <td>{{ form.date_created }}</td>
                                     <td>{{ form.date_revised }}</td>
                                     <td>{{ form.date_established }}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan=4>{{ form.abbreviation }}</td>
                                 </tr>
                             </table>
 
@@ -423,27 +429,9 @@
 
                 </div>
 
-                <!-- display changes log and duplicates -->
-                {%if object.pk %}
-                    <!-- <div class="alert alert-info">
-                        <p>{% trans "Record created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
-                        <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
-                        {% if object.updated_by %}
-                            <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
-                        {% endif %}
-                    </div> -->
-                    <div class="btn-group pull-right">
-                        <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
-                        {%if object.has_duplicates %}
-                            <a href="/bibliographic/duplicates/{{object.id}}/" target="_blank" class="btn"><i class="icon icon-retweet"></i> {% trans "Duplicates" %}</a>
-                        {% endif %}
-                    </div>
-                {% endif %}
-
-
 
                 <div class="control-panel form-submit">
-                    <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger" onClick="setNoneTab()">{% trans "Back" %}</a>
+                    <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger" onClick="setNoneTab()">{% trans "Cancel" %}</a>
                     <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
 
                     {% if messages %}
@@ -454,17 +442,30 @@
                         {% endfor %}
                     {% endif %}
 
-                    <!-- {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %} -->
-
                 </div>
 
             </form>
+
+            </br>
+
+            {% if object.id %}
+                <!-- <div class="alert alert-info">
+                    <p>{% trans "Created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
+                    <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
+                    {% if act.updated_by %}
+                        <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
+                    {% endif %}
+                </div> -->
+                <div class="btn-group pull-right">
+                    <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                </div>
+            {% endif %}
+
+            {% if object.id %}
+                {% include "modal_log.html" %}
+            {% endif %}
+
+
 
         </div>
         <!-- body update -->

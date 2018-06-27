@@ -1,29 +1,21 @@
 # -*- coding: utf-8 -*-
+
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
-from django.utils import timezone
-
-import datetime
-
-
-from utils.models import Generic, Country
-from django.contrib.contenttypes.generic import GenericRelation
-from main.models import SourceLanguage
-from choices import *
-
-from multiselectfield import MultiSelectField
 
 from .models_thesaurus import Thesaurus
 from .models_qualifiers import *
 
+from utils.models import Generic
 from log.models import AuditLog
+
+from choices import *
+
+from multiselectfield import MultiSelectField
 
 
 # thesaurus fields
-class IdentifierDesc(models.Model):
-# class IdentifierDesc(models.Model, AuditLog):
-# class IdentifierDesc(Generic, AuditLog):
-
+class IdentifierDesc(Generic, AuditLog):
 
     class Meta:
         verbose_name = _("Descriptor")
@@ -64,15 +56,14 @@ class IdentifierDesc(models.Model):
 
 
 # Description
-class DescriptionDesc(models.Model):
-# class DescriptionDesc(models.Model, AuditLog):
+class DescriptionDesc(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Description")
         verbose_name_plural = _("Descriptions")
         unique_together = ('identifier','language_code')
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="descriptors")
+    identifier = models.ForeignKey(IdentifierDesc, related_name="descriptors", null=True)
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
@@ -91,15 +82,16 @@ class DescriptionDesc(models.Model):
     # ConsiderAlso
     consider_also = models.CharField(_("Consider also"), max_length=250, blank=True)
 
-    # def get_parent(self):
-    #     return self.identifier
+    def get_parent(self):
+        return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)
 
 
+
 # Tree numbers for descriptors
-class TreeNumbersListDesc(models.Model):
+class TreeNumbersListDesc(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Tree number for descriptor")
@@ -112,13 +104,16 @@ class TreeNumbersListDesc(models.Model):
     # Tree Number
     tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
 
+    def get_parent(self):
+        return self.identifier
+
     def __unicode__(self):
         return '%s' % (self.id)
 
 
 
 # Previous Indexing List
-class PreviousIndexingListDesc(models.Model):
+class PreviousIndexingListDesc(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Previous Indexing")
@@ -132,13 +127,16 @@ class PreviousIndexingListDesc(models.Model):
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
+    def get_parent(self):
+        return self.identifier
+
     def __unicode__(self):
         return '%s' % (self.id)
 
 
 
 # ConceptList
-class ConceptListDesc(models.Model):
+class ConceptListDesc(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Concept")
@@ -170,13 +168,15 @@ class ConceptListDesc(models.Model):
     # ScopeNote
     scope_note = models.TextField(_("Scope note"), max_length=1500, blank=True)
 
+    def get_parent(self):
+        return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)
 
 
 
-# class ConceptRelationDesc(models.Model):
+# class ConceptRelationDesc(models.Model, AuditLog):
 
 #     class Meta:
 #         verbose_name = _("Concept")
@@ -194,14 +194,16 @@ class ConceptListDesc(models.Model):
 #     # Concept2UI
 #     concept2_ui = models.CharField(_("Second concept in then Concept relation"), max_length=250, blank=True)
 
+#     def get_parent(self):
+#         return self.identifier
+
 #     def __unicode__(self):
 #         return '%s' % (self.id)
 
 
 
 # TermList
-class TermListDesc(models.Model):
-# class TermListDesc(models.Model, AuditLog):
+class TermListDesc(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Term")
@@ -210,7 +212,6 @@ class TermListDesc(models.Model):
         # unique_together = ('term_string','language_code','status','date_altered')
         # unique_together = ('identifier','term_string','language_code','status','date_altered')
         # unique_together = ('identifier','term_string','language_code','status')
-
 
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="termdesc")
@@ -242,16 +243,17 @@ class TermListDesc(models.Model):
 
     # DateCreated
     date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True, null=True)
+    # date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', auto_now_add=True, editable=False)
 
     # DateAltered
     date_altered = models.DateField(_("Date altered"), help_text='DD/MM/YYYY', blank=True, null=True)
+    # date_altered = models.DateTimeField(_("Date altered"), help_text='DD/MM/YYYY', auto_now=True, editable=False)
 
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
-
-    # def get_parent(self):
-    #     return self.identifier
+    def get_parent(self):
+        return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)

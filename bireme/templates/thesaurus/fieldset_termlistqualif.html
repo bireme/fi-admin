@@ -95,7 +95,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <input id="id_termqualif-{{ forloop.counter0 }}-term_ui" maxlength="250" name="termqualif-{{ forloop.counter0 }}-term_ui" type="text" readonly>
+                    <input id="id_termqualif-{{ forloop.counter0 }}-term_ui" maxlength="250" name="termqualif-{{ forloop.counter0 }}-term_ui" type="text"  value="{% if form.term_ui %}{{ form.term_ui.value|default_if_none:"" }}{% endif %}" readonly>
                 </td>
                 <td>
                     <!-- date_created -->
@@ -148,7 +148,7 @@
                     </select>
                 </td>
                 <td>
-                    <input id="id_termqualif-{{ forloop.counter0 }}-entry_version" maxlength="250" name="termqualif-{{ forloop.counter0 }}-entry_version" type="text" readonly>
+                    <input id="id_termqualif-{{ forloop.counter0 }}-entry_version" maxlength="250" name="termqualif-{{ forloop.counter0 }}-entry_version" type="text" value="{% if form.entry_version %}{{ form.entry_version.value|default_if_none:"" }}{% endif %}" readonly>
                 </td>
             </tr>
 
@@ -158,7 +158,7 @@
             </tr>
             <tr>
                 <td colspan="4" width="100%">
-                    <textarea cols="40" id="id_termqualif-{{ forloop.counter0 }}-historical_annotation" maxlength="1500" name="termqualif-{{ forloop.counter0 }}-historical_annotation" rows="10" readonly></textarea>
+                    <textarea cols="40" id="id_termqualif-{{ forloop.counter0 }}-historical_annotation" maxlength="1500" name="termqualif-{{ forloop.counter0 }}-historical_annotation" rows="10" readonly>{{ form.historical_annotation.value }}</textarea>
                 </td>
                 <td valign="top">
                     <input id="id_termqualif-{{ forloop.counter0 }}-date_altered" name="termqualif-{{ forloop.counter0 }}-date_altered" value="{{ form.date_altered.value|date:"d/m/Y" }}" type="text" readonly>

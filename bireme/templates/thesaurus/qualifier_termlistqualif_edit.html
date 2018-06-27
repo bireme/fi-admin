@@ -77,10 +77,8 @@
                     </td>
                     <td>{{ form.term_ui }}</td>
                     <td>
-                        {{ form.date_created }}
-                        <!-- <input id="id_date_created" name="date_created" value="{{ form.date_created.value|date:"d/m/Y" }}" type="text" readonly> -->
-                        <!-- <input id="id_termdesc-{{ forloop.counter0 }}-date_created" name="termdesc-{{ forloop.counter0 }}-date_created" type="text" value="{{ form.date_created.value|date:"d/m/Y"}}" onkeyup="mascara(this, mdata);" maxlength="10"> -->
-
+                        <!-- {{ form.date_created }} -->
+                        <input id="id_date_created" name="date_created" value="{{ form.date_created.value|date:"d/m/Y" }}" type="text" readonly>
                     </td>
 
                 </tr>
@@ -106,7 +104,8 @@
                 <tr>
                     <td colspan="4" width="100%">{{ form.historical_annotation }}</td>
                     <td valign="top">
-                        {{ form.date_altered }}
+                        <!-- coloca data de hoje -->
+                        <input id="id_date_altered" name="date_altered" value="{% now "d/m/Y" %}" type="text">
                     </td>
                 </tr>
 
@@ -114,7 +113,7 @@
 
             <div class="control-panel form-submit">
                
-                <a href="{% url 'edit_qualifier' form.instance.identifier_id %}" class="btn btn-large btn-danger">{% trans "Back" %}</a>
+                <a href="{% url 'edit_qualifier' form.instance.identifier_id %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
 
             </div>

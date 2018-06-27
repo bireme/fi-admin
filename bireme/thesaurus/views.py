@@ -5,12 +5,16 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
 from django.views.generic.list import ListView
+
+from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.contenttypes.models import ContentType
 
 # from utils.views import ACTIONS
 from django.views import generic
-from utils.views import LoginRequiredView, SuperUserRequiredView, GenericUpdateWithOneFormset
+
+
+from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 
 from django.conf import settings
 
@@ -95,21 +99,20 @@ class DescUpdate(LoginRequiredView):
 
         if action in ('form_new'):
             if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid and formset_term_valid):
-
                 term_string = formset_term.cleaned_data[0].get('term_string')
                 language_code = formset_term.cleaned_data[0].get('language_code')
                 status = formset_term.cleaned_data[0].get('status')
-                concept_preferred_term = formset_term.cleaned_data[0].get('concept_preferred_term')
+                # concept_preferred_term = formset_term.cleaned_data[0].get('concept_preferred_term')
 
                 has_invalid_term = TermListDesc.objects.filter(
                     term_string__iexact=term_string,
                     language_code=language_code,
                     status='1',
-                    concept_preferred_term=concept_preferred_term,
-                    # concept_preferred_term='Y',
+                    # concept_preferred_term=concept_preferred_term,
                     ).exists()
 
                 if not has_invalid_term:
+
                     self.object = form.save()
 
                     formset_descriptor.instance = self.object
@@ -133,6 +136,7 @@ class DescUpdate(LoginRequiredView):
 
                     form.save()
                     # form.save_m2m()
+
                     return HttpResponseRedirect(self.get_success_url())
 
                 else:
@@ -154,8 +158,8 @@ class DescUpdate(LoginRequiredView):
         if action in ('form_update'):
             # Nao faz checagem do form formset_term.
             if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_previous_valid):
-        # In the future to use with formset_concept_relation_valid
-        # if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_concept_relation_valid and formset_previous_valid and formset_term_valid):
+            # In the future to use with formset_concept_relation_valid
+            # if (form_valid and formset_descriptor_valid and formset_category_valid and formset_concept_valid and formset_concept_relation_valid and formset_previous_valid and formset_term_valid):
 
                 self.object = form.save()
 
@@ -181,6 +185,7 @@ class DescUpdate(LoginRequiredView):
 
                 form.save()
                 # form.save_m2m()
+
                 return HttpResponseRedirect(self.get_success_url())
 
             else:
@@ -219,6 +224,10 @@ class DescUpdate(LoginRequiredView):
                                             ).values('termdesc__term_string','termdesc__language_code')
 
             context['identifier_id'] = self.object.id
+
+            c_type = ContentType.objects.get_for_model(self.get_object())
+            context['c_type'] = c_type
+
 
         if self.request.method == 'GET':
 
@@ -513,26 +522,37 @@ class TermListDescEditView(UpdateView):
     def form_valid(self, form):
         form_valid = form.is_valid()
         if (form_valid):
+            # id_form = form.cleaned_data.get('id')
             term_string = form.cleaned_data.get('term_string')
             language_code = form.cleaned_data.get('language_code')
             status = form.cleaned_data.get('status')
-            concept_preferred_term = form.cleaned_data.get('concept_preferred_term')
+            # concept_preferred_term = form.cleaned_data.get('concept_preferred_term')
 
-            has_invalid_term = TermListDesc.objects.filter(
+            # print '----------------'
+            # print '%s' % (self.object.id)
+            # print '%s' % (self.object.identifier_id)
+            # print '----------------'
+
+            has_invalid_term = TermListDesc.objects.filter( 
+                # if not is the same id
+                ~Q(id=str(self.object.id)),
                 term_string__iexact=term_string,
                 language_code=language_code,
                 status=status,
-                concept_preferred_term=concept_preferred_term,
+                # concept_preferred_term=concept_preferred_term,
                 ).exists()
 
             if not has_invalid_term:
 
-                self.object = form.save(commit=False)
-                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                # self.object = form.save(commit=False)
+                # self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
                 form.save()
                 return HttpResponseRedirect(self.get_success_url())
+
             else:
                 # print '%s%s%s%s' % (term_string,language_code,status,concept_preferred_term)
+                # print '%s%s%s' % (term_string,language_code,status)
+
                 msg_erro =  _("There is already a Term with this status!") + "  " + term_string + " (" + language_code + ")"
                 return self.render_to_response(self.get_context_data(
                                                                 form=form,
@@ -684,6 +704,10 @@ class QualifUpdate(LoginRequiredView):
                                             ).values('termqualif__term_string','termqualif__language_code')
 
             context['identifier_id'] = self.object.id
+
+            c_type = ContentType.objects.get_for_model(self.get_object())
+            context['c_type'] = c_type
+
 
 
         if self.request.method == 'GET':
@@ -1000,15 +1024,17 @@ class TermListQualifEditView(UpdateView):
             concept_preferred_term = form.cleaned_data.get('concept_preferred_term')
 
             has_invalid_term = TermListQualif.objects.filter(
+                # if not is the same id
+                ~Q(id=str(self.object.id)),
                 term_string__iexact=term_string,
                 language_code=language_code,
                 status=status,
-                concept_preferred_term=concept_preferred_term,
+                # concept_preferred_term=concept_preferred_term,
                 ).exists()
 
             if not has_invalid_term:
-                self.object = form.save(commit=False)
-                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                # self.object = form.save(commit=False)
+                # self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
                 form.save()
                 return HttpResponseRedirect(self.get_success_url())
             else:

@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.forms import widgets
 from django import forms
-from form_utils.forms import BetterModelForm, FieldsetCollection
+
 from django.conf import settings
 
 
@@ -33,6 +33,7 @@ class IdentifierQualifForm(forms.ModelForm):
     class Meta:
         model = IdentifierQualif
         fields = '__all__'
+
 
 class DescriptionQualifForm(forms.ModelForm):
     class Meta:

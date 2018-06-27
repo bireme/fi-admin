@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% load app_filters %}
 {% load i18n %}
 {% load static %}
+{% load app_filters %}
+
 
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
@@ -459,27 +460,11 @@
 
                 </div>
 
-                <!-- display changes log and duplicates -->
-                {%if object.pk %}
-                    <!-- <div class="alert alert-info">
-                        <p>{% trans "Record created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
-                        <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
-                        {% if object.updated_by %}
-                            <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
-                        {% endif %}
-                    </div> -->
-                    <div class="btn-group pull-right">
-                        <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
-                        {%if object.has_duplicates %}
-                            <a href="/bibliographic/duplicates/{{object.id}}/" target="_blank" class="btn"><i class="icon icon-retweet"></i> {% trans "Duplicates" %}</a>
-                        {% endif %}
-                    </div>
-                {% endif %}
 
 
 
                 <div class="control-panel form-submit">
-                    <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger" onClick="setNoneTab()">{% trans "Back" %}</a>
+                    <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger" onClick="setNoneTab()">{% trans "Cancel" %}</a>
                     <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
 
                     {% if messages %}
@@ -490,17 +475,28 @@
                         {% endfor %}
                     {% endif %}
 
-                    <!-- {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %} -->
-
                 </div>
 
             </form>
+
+                </br>
+
+                {% if object.id %}
+                    <!-- <div class="alert alert-info">
+                        <p>{% trans "Created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
+                        <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
+                        {% if act.updated_by %}
+                            <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
+                        {% endif %}
+                    </div> -->
+                    <div class="btn-group pull-right">
+                        <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                    </div>
+                {% endif %}
+
+                {% if object.id %}
+                    {% include "modal_log.html" %}
+                {% endif %}
 
         </div>
         <!-- body update -->
@@ -948,6 +944,9 @@
 
             <form>
         </div>
+
+
+
 
 
         <script type="text/javascript">

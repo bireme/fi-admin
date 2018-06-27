@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
-from django.utils import timezone
-from utils.models import Generic, Country
-from django.contrib.contenttypes.generic import GenericRelation
-from main.models import SourceLanguage
+
+from .models_thesaurus import Thesaurus
+
+from utils.models import Generic
+from log.models import AuditLog
+
 from choices import *
 
 from multiselectfield import MultiSelectField
 
-from .models_thesaurus import Thesaurus
 
 
-class IdentifierQualif(models.Model):
+class IdentifierQualif(Generic, AuditLog):
 
     class Meta:
         verbose_name = _("Qualifier")
@@ -42,15 +43,6 @@ class IdentifierQualif(models.Model):
     # DateEstablished
     date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
 
-    # def __unicode__(self):
-    #     lang_code = get_language()
-    #     translation = DescriptionQualif.objects.filter(identifier_id=self.id, language_code=lang_code)
-    #     if translation:
-    #         treatment1 = translation[0].qualifier_name.replace('/','').upper()
-    #         return '%s%s%s' % (self.abbreviation,' - ',treatment1)
-    #     else:
-    #         return '%s%s' % (self.abbreviation,' - without description')
-
     def __unicode__(self):
         lang_code = get_language()
         # translation = TermListQualif.objects.filter(identifier_id=self.id, language_code=lang_code, status=1)
@@ -64,7 +56,7 @@ class IdentifierQualif(models.Model):
 
 
 # QualifierRecord
-class DescriptionQualif(models.Model):
+class DescriptionQualif(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Description of Qualifier")
@@ -84,15 +76,18 @@ class DescriptionQualif(models.Model):
     # OnlineNote
     online_note = models.TextField(_("Online note"), max_length=1500, blank=True)
 
+    def get_parent(self):
+        return self.identifier
+
     def __unicode__(self):
-        return self.id
+        return '%s' % (self.id)
         # return self.qualifier_name
         # return '%s%s%s%s' % (self.qualifier_name,' (',self.language_code,')')
 
 
 
 # Tree numbers for qualifiers
-class TreeNumbersListQualif(models.Model):
+class TreeNumbersListQualif(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Tree number for qualifier")
@@ -105,12 +100,16 @@ class TreeNumbersListQualif(models.Model):
     # Tree Number
     tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
 
+    def get_parent(self):
+        return self.identifier
+
     def __unicode__(self):
-        return self.id
+        return '%s' % (self.id)
+
 
 
 # ConceptList
-class ConceptListQualif(models.Model):
+class ConceptListQualif(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Concept")
@@ -139,12 +138,16 @@ class ConceptListQualif(models.Model):
     # ScopeNote
     scope_note = models.TextField(_("Scope note"), max_length=1500, blank=True)
 
+    def get_parent(self):
+        return self.identifier
+
     def __unicode__(self):
         return '%s' % (self.id)
 
 
+
 # TermListQualif
-class TermListQualif(models.Model):
+class TermListQualif(models.Model, AuditLog):
 
     class Meta:
         verbose_name = _("Term")
@@ -152,7 +155,6 @@ class TermListQualif(models.Model):
         ordering = ('language_code','term_string','concept_preferred_term')
         # unique_together = ('term_string','language_code','status','date_altered')
         # unique_together = ('term_string','language_code','status')
-
 
     identifier = models.ForeignKey(IdentifierQualif, related_name="termqualif")
 
@@ -190,6 +192,8 @@ class TermListQualif(models.Model):
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
+    def get_parent(self):
+        return self.identifier
 
     def __unicode__(self):
-        return self.id
+        return '%s' % (self.id)
