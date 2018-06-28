@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block top %}{% endblock %}
+
+{% block extrahead %}
+    <style>
+        .cancel_btn {
+            width: 45%; margin-left: 5px; float: left; background: rgba(169, 68, 66, 0.78) !important; color: #fff; padding: 10px; text-align: center; margin-right: 5px
+        }
+        .save_btn{
+            width: 45%; float: left; background: rgba(0, 163, 54, 0.64) !important; color: #fff; padding: 10px; text-align: center;
+        }
+        ul{
+            list-style: none;
+        }
+        label{
+            display: initial;
+        }
+        .box{
+            margin: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}{% trans "Collection" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block content %}
+<div class="body box">
+
+    <form id="setUnsetForm" action="{% url 'classify' ctype_id=c_type obj_id=object_id %}" method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <strong>{% trans "Community" %}</strong>
+        </div>
+        <div class="row">
+            <select name="collection" onchange="this.form.submit()">
+                <option value="">{% trans 'Select the community' %}</option>
+                {% for col in collection_list %}
+                    <option value="{{col.id}}" {% if col.id = collection_param|add:0 %}selected=1{% endif %}>{{col.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        {% for col in collection_list %}
+            {%if col.id = collection_param|add:0 %}
+                <div class="row">
+                    <strong>{% trans "Collections" %}</strong>
+                </div>
+                <ul>
+                    {% for subcol in col.get_children %}
+                        <li>
+                            <input type="checkbox" id="{{ subcol.id }}" class="set_unset" {% if subcol.id in relation_list %}checked="true"{% endif %} value="{{subcol.id}}">
+                            <label for="{{ subcol.id }}">{{subcol.name}}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </form>
+</div>
+
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".set_unset").change(function() {
+            op = 'set';  // default operation set
+            checked = $(this).is(':checked');
+            col_id = $(this).val();
+            if (!checked) {
+                op = 'unset';
+            }
+            $('<input>').attr({type: 'hidden', name: op, value: col_id}).appendTo('#setUnsetForm');
+        });
+
+
+        $('#setUnsetForm').submit(function() { // catch the form's submit event
+            $.ajax({ // create an AJAX call...
+                data: $(this).serialize(), // get the form data
+                type: $(this).attr('method'), // GET or POST
+                url: $(this).attr('action'), // the file to call
+                success: function(response) { // on success..
+                    $('#created').html(response); // update the DIV
+                }
+            });
+            return false; // cancel original event to prevent form submitting
+        });
+
+     });
+</script>
+{% endblock %}
+
+{% block footer %}
+<div class="row">
+    <a href="javascript:window.close()">
+        <div class="cancel_btn">
+            {% trans 'Cancel' as cancel %}{{ cancel|lower }}
+        </div>
+    </a>
+    <a href="javascript:$('#setUnsetForm').submit(); window.close()">
+        <div class="save_btn">
+            {% trans 'Save' as save %}{{ save|lower }}
+        </div>
+    </a>
+</div>
+{% endblock %}
