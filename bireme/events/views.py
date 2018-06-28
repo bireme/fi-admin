@@ -167,6 +167,7 @@ def create_edit_event(request, **kwargs):
 
             # update solr index
             form.save()
+            # update solr index
             form.save_m2m()
 
             output['alert'] = _("Event successfully edited.")

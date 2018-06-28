@@ -144,6 +144,7 @@ class MediaUpdate(LoginRequiredView):
 
                 # update solr index
                 form.save()
+                # save many-to-many relation fields
                 form.save_m2m()
                 return HttpResponseRedirect(self.get_success_url())
         else:

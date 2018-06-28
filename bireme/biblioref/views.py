@@ -238,7 +238,8 @@ class BiblioRefUpdate(LoginRequiredView):
                 formset_complement.save()
 
                 # update solr index
-                # form.save()
+                form.save()
+                # save many-to-many relation fields
                 form.save_m2m()
                 return HttpResponseRedirect(self.get_success_url())
         else:

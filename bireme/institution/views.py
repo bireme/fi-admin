@@ -164,8 +164,9 @@ class InstUpdate(LoginRequiredView):
                 formset_adm.instance = self.object
                 formset_adm.save()
 
-                # save metadata
-                form.save(commit=False)
+                # update solr index
+                form.save()
+                # save many-to-many relation fields
                 form.save_m2m()
 
                 return HttpResponseRedirect(self.get_success_url())
