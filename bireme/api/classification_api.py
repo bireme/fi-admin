@@ -44,7 +44,7 @@ class CollectionResource(ModelResource):
         return orm_filters
 
     def dehydrate(self, bundle):
-        lang_param = bundle.request.GET.get('lang', 'en')        
+        lang_param = bundle.request.GET.get('lang', 'en')
 
         if bundle.obj.language != lang_param:
             try:
@@ -52,9 +52,10 @@ class CollectionResource(ModelResource):
                 bundle.data['name'] = translation.name
                 bundle.data['language'] = translation.language
                 bundle.data['description'] = translation.description
-                bundle.data['image'] = translation.image
+                bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, translation.image)
             except CollectionLocal.DoesNotExist:
-                # return original object in bundle
+                # adjust image url in original bundle
+                bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
                 pass
 
         return bundle
