@@ -22,6 +22,13 @@ class CommunityResource(ModelResource):
         resource_name = 'community'
         include_resource_uri = False
 
+    def dehydrate(self, bundle):
+        # adjust image url in bundle object
+        if bundle.obj.image:
+            bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
+
+        return bundle
+
 
 class CollectionResource(ModelResource):
     parent = fields.CharField(attribute='parent', null=True)
@@ -52,10 +59,12 @@ class CollectionResource(ModelResource):
                 bundle.data['name'] = translation.name
                 bundle.data['language'] = translation.language
                 bundle.data['description'] = translation.description
-                bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, translation.image)
+                if translation.image:
+                    bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, translation.image)
             except CollectionLocal.DoesNotExist:
                 # adjust image url in original bundle
-                bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
+                if bundle.obj.image:
+                    bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
                 pass
 
         return bundle
