@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-27 10:09-0300\n"
-"PO-Revision-Date: 2018-06-27 10:11-0306\n"
+"POT-Creation-Date: 2018-07-05 18:21-0300\n"
+"PO-Revision-Date: 2018-07-05 18:23-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1242,8 +1242,9 @@ msgstr "datos"
 #: classification/models.py:70 leisref/models.py:448 multimedia/models.py:67
 #: multimedia/models.py:80 multimedia/models.py:102
 #: templates/biblioref/referenceanalytic_form.html:223
+#: templates/biblioref/referencesource_form.html:130
 #: templates/classification/classify.html:26
-#: templates/classification/show.html:64 templates/main/edit-resource.html:126
+#: templates/main/edit-resource.html:126
 msgid "Collection"
 msgstr "Colección"
 
@@ -1613,19 +1614,19 @@ msgstr ""
 msgid "Target groups"
 msgstr "Audiencia"
 
-#: events/views.py:172 suggest/views.py:291
+#: events/views.py:173 suggest/views.py:291
 msgid "Event successfully edited."
 msgstr "Evento editado con éxito."
 
-#: events/views.py:240
+#: events/views.py:241
 msgid "Event deleted."
 msgstr "Evento borrado."
 
-#: events/views.py:313 main/views.py:403
+#: events/views.py:314 main/views.py:403
 msgid "Type successfully edited."
 msgstr "Tipo editado con éxito."
 
-#: events/views.py:337 main/views.py:427
+#: events/views.py:338 main/views.py:427
 msgid "Type deleted."
 msgstr "Tipo borrado."
 
@@ -2481,12 +2482,12 @@ msgstr "Relaciones"
 msgid "OER related"
 msgstr "Recurso relacionado"
 
-#: oer/views.py:337 templates/biblioref/reference_form.html:323
-#: templates/biblioref/referencesource_form.html:158
-#: templates/classification/classify.html:106
-#: templates/classification/show.html:125 templates/error_report/edit.html:60
-#: templates/events/edit-event.html:346 templates/events/edit-event.html:389
-#: templates/events/edit-type.html:56 templates/leisref/actcity_form.html:58
+#: oer/views.py:338 templates/biblioref/reference_form.html:323
+#: templates/biblioref/referencesource_form.html:161
+#: templates/classification/classify.html:98
+#: templates/error_report/edit.html:60 templates/events/edit-event.html:346
+#: templates/events/edit-event.html:389 templates/events/edit-type.html:56
+#: templates/leisref/actcity_form.html:58
 #: templates/leisref/actcollection_form.html:58
 #: templates/leisref/actcountryregion_form.html:58
 #: templates/leisref/actorganissuer_form.html:72
@@ -2750,7 +2751,7 @@ msgstr "Seleccione por búsqueda"
 #: templates/biblioref/reference_confirm_delete.html:29
 #: templates/biblioref/referenceanalytic_form.html:434
 #: templates/biblioref/referenceanalytic_form.html:481
-#: templates/biblioref/referencesource_form.html:351
+#: templates/biblioref/referencesource_form.html:355
 #: templates/delete_confirm.html:17
 #: templates/institution/institution_confirm_delete.html:29
 #: templates/leisref/act_confirm_delete.html:29
@@ -2788,7 +2789,7 @@ msgstr "¿Está seguro que desea borrar?"
 #: templates/biblioref/reference_confirm_delete.html:28
 #: templates/biblioref/referenceanalytic_form.html:435
 #: templates/biblioref/referenceanalytic_form.html:482
-#: templates/biblioref/referencesource_form.html:352
+#: templates/biblioref/referencesource_form.html:356
 #: templates/delete_confirm.html:16
 #: templates/institution/institution_confirm_delete.html:28
 #: templates/leisref/act_confirm_delete.html:28
@@ -2917,7 +2918,7 @@ msgstr "Sugerido"
 
 #: templates/biblioref/reference_form.html:396
 #: templates/biblioref/referenceanalytic_form.html:379
-#: templates/biblioref/referencesource_form.html:264
+#: templates/biblioref/referencesource_form.html:268
 #: templates/events/edit-event.html:415 templates/leisref/act_form.html:340
 #: templates/main/edit-resource.html:417
 #: templates/multimedia/media_form.html:367 templates/oer/oer_form.html:368
@@ -2930,9 +2931,9 @@ msgstr "Añadir descriptor"
 #: templates/biblioref/reference_form.html:417
 #: templates/biblioref/referenceanalytic_form.html:380
 #: templates/biblioref/referenceanalytic_form.html:390
-#: templates/biblioref/referencesource_form.html:265
-#: templates/biblioref/referencesource_form.html:275
-#: templates/biblioref/referencesource_form.html:285
+#: templates/biblioref/referencesource_form.html:269
+#: templates/biblioref/referencesource_form.html:279
+#: templates/biblioref/referencesource_form.html:289
 #: templates/events/edit-event.html:416 templates/events/edit-event.html:426
 #: templates/events/edit-event.html:436 templates/events/edit-type.html:72
 #: templates/institution/institution_form.html:276
@@ -2968,7 +2969,7 @@ msgid "delete"
 msgstr "borrar"
 
 #: templates/biblioref/reference_form.html:406
-#: templates/biblioref/referencesource_form.html:284
+#: templates/biblioref/referencesource_form.html:288
 #: templates/events/edit-event.html:425 templates/main/edit-resource.html:427
 #: templates/multimedia/media_form.html:377
 #: templates/title/title_form.html:528
@@ -3007,10 +3008,10 @@ msgid "Colaboration review"
 msgstr "Revisión de colaboración"
 
 #: templates/biblioref/reference_list.html:94
-#: templates/classification/show.html:47 templates/error_report/list.html:54
-#: templates/error_report/list.html:64 templates/error_report/list.html:115
-#: templates/error_report/list.html:125 templates/events/events.html:69
-#: templates/events/types.html:30 templates/events/types.html.py:38
+#: templates/error_report/list.html:54 templates/error_report/list.html:64
+#: templates/error_report/list.html:115 templates/error_report/list.html:125
+#: templates/events/events.html:69 templates/events/types.html:30
+#: templates/events/types.html.py:38
 #: templates/institution/institution_list.html:62
 #: templates/leisref/act_list.html:62 templates/leisref/act_list.html.py:75
 #: templates/leisref/actcity_list.html:30
@@ -3223,20 +3224,20 @@ msgid "Changes history"
 msgstr "Historia de cambios"
 
 #: templates/biblioref/referenceanalytic_form.html:226
-#: templates/biblioref/referencesource_form.html:130
+#: templates/biblioref/referencesource_form.html:133
 #: templates/title/title_form.html:132
 msgid "Duplicates"
 msgstr "Duplicados"
 
 #: templates/biblioref/referenceanalytic_form.html:250
-#: templates/biblioref/referencesource_form.html:160
+#: templates/biblioref/referencesource_form.html:163
 #: templates/institution/institution_form.html:236
 #: templates/leisref/act_form.html:305 templates/oer/oer_form.html:277
 msgid "Save Draft"
 msgstr "Guardar Borrador"
 
 #: templates/biblioref/referenceanalytic_form.html:252
-#: templates/biblioref/referencesource_form.html:162
+#: templates/biblioref/referencesource_form.html:165
 #: templates/institution/institution_form.html:238
 #: templates/leisref/act_form.html:307 templates/oer/oer_form.html:279
 msgid "Save as"
@@ -3252,15 +3253,15 @@ msgstr "Publicar como LILACS-Express"
 
 #: templates/biblioref/referenceanalytic_form.html:263
 #: templates/biblioref/referenceanalytic_form.html:267
-#: templates/biblioref/referencesource_form.html:166
-#: templates/biblioref/referencesource_form.html:170
+#: templates/biblioref/referencesource_form.html:169
+#: templates/biblioref/referencesource_form.html:173
 #: templates/institution/institution_form.html:242
 #: templates/leisref/act_form.html:311 templates/oer/oer_form.html:283
 msgid "Publish"
 msgstr "Publicar"
 
 #: templates/biblioref/referenceanalytic_form.html:272
-#: templates/biblioref/referencesource_form.html:174
+#: templates/biblioref/referencesource_form.html:177
 #: templates/institution/institution_form.html:246
 #: templates/leisref/act_form.html:315 templates/oer/oer_form.html:287
 #: templates/suggest/invalid-link.html:47 templates/suggest/thanks.html:29
@@ -3268,12 +3269,12 @@ msgid "Back"
 msgstr "Volver"
 
 #: templates/biblioref/referenceanalytic_form.html:389
-#: templates/biblioref/referencesource_form.html:274
+#: templates/biblioref/referencesource_form.html:278
 msgid "Add file"
 msgstr "Añadir archivo"
 
 #: templates/biblioref/referenceanalytic_form.html:472
-#: templates/biblioref/referencesource_form.html:342
+#: templates/biblioref/referencesource_form.html:346
 msgid ""
 "After publication the record can only be modified by a user with editor "
 "profile. Continue?"
@@ -3336,13 +3337,16 @@ msgid "Community"
 msgstr "Comunidad"
 
 #: templates/classification/classify.html:40
-#| msgid "Select the institution"
 msgid "Select the community"
 msgstr "Seleccione la comunidad"
 
-#: templates/classification/classify.html:101
-#: templates/classification/show.html:120 templates/events/edit-event.html:388
-#: templates/leisref/actcity_form.html:56
+#: templates/classification/classify.html:83
+#| msgid "Classification type"
+msgid "Classification updated"
+msgstr "Clasificación actualizada"
+
+#: templates/classification/classify.html:93
+#: templates/events/edit-event.html:388 templates/leisref/actcity_form.html:56
 #: templates/leisref/actcollection_form.html:56
 #: templates/leisref/actcountryregion_form.html:56
 #: templates/leisref/actorganissuer_form.html:70
@@ -3354,12 +3358,6 @@ msgstr "Seleccione la comunidad"
 #: templates/main/edit-resource.html:390
 msgid "Cancel"
 msgstr "Cancelar"
-
-#: templates/classification/show.html:29
-#: templates/multimedia/mediacollection_confirm_delete.html:12
-#: templates/multimedia/mediacollection_list.html:6
-msgid "Media collection"
-msgstr "Colección"
 
 #: templates/dashboard/index.html:12
 msgid "Success!"
@@ -4035,6 +4033,11 @@ msgstr "Todos los medios"
 #: templates/multimedia/mediacollection_confirm_delete.html:19
 msgid "Delete media collection"
 msgstr "Borrar colección"
+
+#: templates/multimedia/mediacollection_confirm_delete.html:12
+#: templates/multimedia/mediacollection_list.html:6
+msgid "Media collection"
+msgstr "Colección"
 
 #: templates/multimedia/mediacollection_confirm_delete.html:13
 #: templates/multimedia/mediatype_confirm_delete.html:9
@@ -5041,9 +5044,6 @@ msgstr "borrado"
 #: utils/templatetags/app_filters.py:199
 msgid "Record created"
 msgstr "Registro creado"
-
-#~ msgid "Classification type"
-#~ msgstr "Número de clasificación"
 
 #~ msgid "Classification types"
 #~ msgstr "Número de clasificación"
