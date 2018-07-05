@@ -350,7 +350,7 @@ class LearningResourceType(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = CourseTypeLocal.objects.filter(coursetype=self.id, language=lang_code)
+        translation = LearningResourceTypeLocal.objects.filter(coursetype=self.id, language=lang_code)
         if translation:
             return translation[0].name
         else:
