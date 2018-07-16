@@ -15,7 +15,7 @@ $ sudo apt-get install python-mysqldb
 $ sudo apt-get install python-pip
 $ sudo apt-get install apache2 libapache2-mod-wsgi
 
-2. Creación del ambiente de ejecución del sistema (usuario normal del sistema)
+2 - Creación del ambiente de ejecución del sistema (usuario normal del sistema)
 ------------------------------------------------------------------------------
 
 a. Crear estructura de directorio para el sistema (ej. **?/home/fi-admin/**)
@@ -47,7 +47,7 @@ e. Creación de enlaces simbólicos
 **user@server:/home/fi-admin/git/bireme/static$** ?ln -s /home/fi-admin/env/lib/python2.7/site-packages/tinymce/static/django_tinymce/ django_tinymce
 **user@server:/home/fi-admin/git/bireme/static$** ?ln -s /home/fi-admin/env/lib/python2.7/site-packages/django/contrib/admin/static/admin/ admin
 
-3. Archivo de configuración WSGI
+3 - Archivo de configuración WSGI
 --------------------------------
 
 a. Crear arquivo ?application.wsgi ?bajo el directorio inicial (ej. /home/fi-admin/) con la configuración abajo:
@@ -68,12 +68,12 @@ os.environ['DJANGO_SETTINGS_MODULE'] = PROJECT_NAME+'.settings'
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
-4. Configuración del VirtualHost APACHE2
+4 - Configuración del VirtualHost APACHE2
 ----------------------------------------
 
 [VirtualHost APACHE2](docs/fi-admin.sld.cu.conf)
 
-5. Configuración del FI-ADMIN
+5 - Configuración del FI-ADMIN
 -----------------------------
 
 La configuración del FI-ADMIN (base de datos, etc) están ubicados en el archivo **?settings_local.py**:
