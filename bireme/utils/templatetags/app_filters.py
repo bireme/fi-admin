@@ -106,7 +106,7 @@ def display_field(context, field):
     # check if field has multiples values (ex. ManyToManyField)
     if hasattr(field_value, 'all'):
         # create list of values for presentation
-        field_value = [str(value) for value in field_value.all()]
+        field_value = [value for value in field_value.all()]
 
     out = format_field(field_value)
     out = linebreaks(out)
