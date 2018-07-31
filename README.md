@@ -110,3 +110,8 @@ Actualizando fi-admin
 cd /home/fi-admin/git
 
 git pull
+
+Corrigiendo errores:
+--------------------
+
+- Si elimina la carpeta /home/fi-admin/git hay que volver a ejecutar todos los pasos del punto 2 inciso e.
