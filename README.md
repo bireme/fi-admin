@@ -103,3 +103,10 @@ a. Crear archivo de configuración del sistema
 **user@server:/home/fi-admin/git/bireme/fi-admin$** cp settings_local.py-SAMPLE settings_local.py
 
 b. Configurar datos de acceso para la base de datos y otros ajustes necesarios.
+
+Actualizando fi-admin
+---------------------
+
+cd /home/fi-admin/git
+
+git pull
