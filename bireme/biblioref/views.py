@@ -351,8 +351,9 @@ class BiblioRefUpdate(LoginRequiredView):
         context['help_fields'] = get_help_fields('biblioref')
 
         if self.object:
-            c_type = ContentType.objects.get_for_model(self.get_object())
-            context['c_type'] = c_type
+            # pass contenttype of object (analytic or source) and parent (reference)
+            context['c_type'] = ContentType.objects.get_for_model(self.get_object())
+            context['c_type_parent'] = ContentType.objects.get_for_model(Reference)
 
         if self.request.method == 'GET':
             context['formset_descriptor'] = DescriptorFormSet(instance=self.object)

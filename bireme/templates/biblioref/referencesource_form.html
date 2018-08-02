@@ -127,7 +127,7 @@
                         <div class="btn-group pull-right">
                             <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
                             {% if service_role.TAG %}
-                                <a href="#" onclick="javascript:open_classification('{{c_type.id}}', '{{object.id}}')" class="btn"><i class="icon icon-tags"></i> {% trans "Collection" %}</a>
+                                <a href="#" onclick="javascript:open_classification('{{c_type_parent.id}}', '{{object.id}}')" class="btn"><i class="icon icon-tags"></i> {% trans "Collection" %}</a>
                             {% endif %}
                             {%if object.has_duplicates %}
                                 <a href="/bibliographic/duplicates/{{object.id}}/" target="_blank" class="btn"><i class="icon icon-retweet"></i> {% trans "Duplicates" %}</a>

@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
 from utils.fields import JSONField, AuxiliaryChoiceField, MultipleAuxiliaryChoiceField
 from utils.models import Generic, Country
+from classification.models import Relationship
 from log.models import AuditLog
 
 from database.models import Database
@@ -112,6 +113,7 @@ class Reference(Generic, AuditLog):
 
     # relations
     logs = GenericRelation(LogEntry)
+    collection = GenericRelation(Relationship)
 
     def __init__(self, *args, **kwargs):
         super(Reference, self).__init__(*args, **kwargs)

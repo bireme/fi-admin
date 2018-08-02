@@ -38,6 +38,7 @@ class ReferenceResource(CustomResource):
             'status': 'exact',
             'LILACS_original_id': ALL,
             'indexed_database': ALL,
+            'collection': ALL,
             'id': ALL
         }
         include_resource_uri = True
@@ -50,6 +51,10 @@ class ReferenceResource(CustomResource):
             filter_db = filters['indexed_database']
             filter_db_id = Database.objects.get(acronym=filter_db)
             orm_filters['indexed_database__exact'] = filter_db_id
+
+        if 'collection' in filters:
+            filter_col_id = filters['collection']
+            orm_filters['collection__collection_id'] = filter_col_id
 
         return orm_filters
 
