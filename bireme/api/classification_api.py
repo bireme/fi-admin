@@ -39,6 +39,7 @@ class CollectionResource(ModelResource):
         resource_name = 'collection'
         filtering = {
             'community': 'exact',
+            'collection': 'exact',
         }
         include_resource_uri = False
 
@@ -47,6 +48,9 @@ class CollectionResource(ModelResource):
 
         if 'community' in filters:
             orm_filters['parent__exact'] = filters['community']
+
+        if 'collection' in filters:
+            orm_filters['id__exact'] = filters['collection']
 
         return orm_filters
 
