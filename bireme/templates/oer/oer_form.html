@@ -475,5 +475,10 @@
             $('#save_status').text(new_status_label);
         });
 
+        // fix problem with jquery modal help
+        $('#help_modal').on('hidden', function () {
+          $(this).removeData('modal');
+        });
+
    </script>
 {% endblock %}
