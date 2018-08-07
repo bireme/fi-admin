@@ -31,23 +31,14 @@ def get_aux_country_list():
     return country_list
 
 class AuthorAttributes(colander.MappingSchema):
-    def validate_author(form, value):
-        if value != 'Anon':
-            if not ',' in value:
-                exc = colander.Invalid(form, _("Comma abscent"))
-                raise exc
-            elif not ', ' in value:
-                exc = colander.Invalid(form, _("Insert space after comma"))
-                raise exc
-
     degree_choices = [('', '')]
     degree_choices.extend([(aux.code, aux) for aux in
                           AuxCode.objects.filter(field='degree_of_responsibility')])
 
     countries_choices = get_aux_country_list()
 
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Name'), validator=validate_author,
-                               description=_('Format: Lastname, Name'))
+    text = colander.SchemaNode(colander.String('utf-8'), title=_('Name'),
+                               description=_('Inform individual or institutional name'))
     _1 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 1'), missing=unicode(''),)
     _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=unicode(''),)
     _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=unicode(''),)
