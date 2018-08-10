@@ -20,7 +20,18 @@ class CommunityResource(ModelResource):
         allowed_methods = ['get']
         serializer = Serializer(formats=['json', 'xml'])
         resource_name = 'community'
+        filtering = {
+            'community': 'exact',
+        }
         include_resource_uri = False
+
+    def build_filters(self, filters=None):
+        orm_filters = super(CommunityResource, self).build_filters(filters)
+
+        if 'community' in filters:
+            orm_filters['id__exact'] = filters['community']
+
+        return orm_filters
 
     def dehydrate(self, bundle):
         # adjust image url in bundle object
