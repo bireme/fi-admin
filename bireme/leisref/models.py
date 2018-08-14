@@ -7,6 +7,7 @@ from main.choices import LANGUAGES_CHOICES
 from main.models import SourceLanguage
 from log.models import AuditLog
 from django.template.defaultfilters import date as _date
+from utils.validators import valid_min_year
 
 STATUS_CHOICES = (
     (-2, _('Related')),
@@ -463,9 +464,11 @@ class Act(Generic, AuditLog):
     # paginação
     pages = models.CharField(_("Pages"), max_length=125, blank=True)
     # data de emissão
-    issue_date = models.DateField(_("Issue date"), help_text='DD/MM/YYYY', blank=True, null=True)
+    issue_date = models.DateField(_("Issue date"), help_text='DD/MM/YYYY',
+                                  validators=[valid_min_year], blank=True, null=True)
     # data de publicação
-    publication_date = models.DateField(_("Publication date"), help_text='DD/MM/YYYY', blank=True, null=True)
+    publication_date = models.DateField(_("Publication date"), help_text='DD/MM/YYYY',
+                                        validators=[valid_min_year], blank=True, null=True)
     # orgão emissor do ato
     organ_issuer = models.ForeignKey(ActOrganIssuer, verbose_name=_("Organ issuer"), blank=True, null=True)
     # idioma do ato
