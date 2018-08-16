@@ -35,7 +35,7 @@
         {% endif %}
     </h2>
     <div class='pull-right'>
-        <a href="{% url 'create_qualifier' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Qualifier" %}</a>
+        <a href="{% url 'create_qualifier' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "Add new record for Qualifier" %}</a>
     </div>
 </div>
 
@@ -61,8 +61,8 @@
                 {% trans "Fields" %}:
                 <select name="filter_fields">
                     <option value="">---</option>
-                    <option value="qualifier_name" {% if actions.filter_fields == 'qualifier_name' %}selected="true"{% endif %}>{% trans "Qualifier" %}</option>
                     <option value="term_string" {% if actions.filter_fields == 'term_string' %}selected="true"{% endif %}>{% trans "Terms" %}</option>
+                    <option value="concept" {% if actions.filter_fields == 'concept' %}selected="true"{% endif %}>{% trans "Concept" %}</option>
                     <option value="abbreviation" {% if actions.filter_fields == 'abbreviation' %}selected="true"{% endif %}>{% trans "Abbreviation" %}</option>
                     <option value="qualifier_ui" {% if actions.filter_fields == 'qualifier_ui' %}selected="true"{% endif %}> {% trans "MESH Qualifier UI" %}</option>
                     <option value="decs_code" {% if actions.filter_fields == 'decs_code' %}selected="true"{% endif %}>{% trans "DeCS Qualifier UI" %}</option>
@@ -106,7 +106,7 @@
                 <thead>
 
                     <th>
-                        <a href="javascript:orderby('termqualif__term_string');" id="id_term_string">
+                        <a href="javascript:orderby('term_string');" id="id_term_string">
                         {% if not actions.filter_fields == 'term_string' %}
                             {% trans "Qualifier Name" %}
                         {% else %}
@@ -115,52 +115,38 @@
                         </a>
                     </th>
 
-                    <th><a href="javascript:orderby('abbreviation');" id="id_abbreviation">{% trans "Abbreviation" %}</a></th>
-                    <th><a href="javascript:orderby('qualifier_ui');" id="id_qualifier_ui">{% trans "MESH Qualifier UI" %}</a></th>
-                    <th><a href="javascript:orderby('decs_code');" id="id_decs_code">{% trans "DeCS Qualifer UI" %}</a></th>
-                    <th><a href="javascript:orderby('termqualif__status');" id="id_status">{% trans "Status" %}</a></th>
+                    <!-- <th><a href="javascript:orderby('abbreviation');" id="id_abbreviation">{% trans "Abbreviation" %}</a></th> -->
+                    <!-- <th><a href="javascript:orderby('qualifier_ui');" id="id_qualifier_ui">{% trans "MESH Qualifier UI" %}</a></th> -->
+                    <!-- <th><a href="javascript:orderby('decs_code');" id="id_decs_code">{% trans "DeCS Qualifer UI" %}</a></th> -->
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
                 <tbody>
-                    {% for obj in registers %}
-
-                        <tr>
-                            <td>
-                                {% if obj.termqualif__term_string %}
-                                    {{ obj.termqualif__term_string }} ({{ obj.termqualif__language_code }})
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ obj.abbreviation }}
-                            </td>
-                            <td>
-                                {% if obj.qualifier_ui %}
-                                    {{ obj.qualifier_ui }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td>{{ obj.decs_code }}</td>
-
-                            <td>
-                                {{ obj.termqualif__status|display_status_label }}
-                            </td>
-
-                            <td>
-                                <a href="{% url 'edit_qualifier' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-
-
-                                <a href="{% url 'delete_qualifier' obj.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
-
-                            </td>
-                        </tr>
-                    {% empty %}
-                        {% if actions.visited %}
-                        <tr>
-                            <td colspan="6">{% trans "No results found" %}</td>
-                        </tr>
+            {% for obj in registers %}
+                <tr>
+                    <td>
+                        {% if obj.term_string %}
+                            {% if obj.term_string %}
+                                {{ obj.term_string }} ({{ obj.language_code }})
+                            {% endif %}
                         {% endif %}
-                    {% endfor %}
+                    </td>
+                    <td>
+                        {{ obj.status|display_status_label }}
+                    </td>
+                    <td>
+                        <a href="{% url 'detail_qualifier' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                    {% if actions.visited %}
+                        <tr>
+                            <td colspan="5">{% trans "No results found" %}</td>
+                        </tr>
+                    {% endif %}
+
+            {% endfor %}
                 </tbody>
             </table>
 

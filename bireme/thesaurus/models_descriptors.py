@@ -14,8 +14,8 @@ from choices import *
 from multiselectfield import MultiSelectField
 
 
-# thesaurus fields
-class IdentifierDesc(Generic, AuditLog):
+
+class IdentifierDesc(Generic):
 
     class Meta:
         verbose_name = _("Descriptor")
@@ -50,20 +50,25 @@ class IdentifierDesc(Generic, AuditLog):
 
     abbreviation = models.ManyToManyField(IdentifierQualif, verbose_name='Abbreviation', blank=True)
 
+    # def __unicode__(self):
+    #     return self.descriptor_ui
+
     def __unicode__(self):
-        return self.descriptor_ui
+        return '%s' % (self.id)
+
 
 
 
 # Description
 class DescriptionDesc(models.Model, AuditLog):
+# class DescriptionDesc(models.Model):
 
     class Meta:
         verbose_name = _("Description")
         verbose_name_plural = _("Descriptions")
         unique_together = ('identifier','language_code')
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="descriptors", null=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="descriptiondesc", null=True)
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
@@ -90,8 +95,10 @@ class DescriptionDesc(models.Model, AuditLog):
 
 
 
+
 # Tree numbers for descriptors
 class TreeNumbersListDesc(models.Model, AuditLog):
+# class TreeNumbersListDesc(models.Model):
 
     class Meta:
         verbose_name = _("Tree number for descriptor")
@@ -99,7 +106,7 @@ class TreeNumbersListDesc(models.Model, AuditLog):
         ordering = ('tree_number',)
         unique_together = ('identifier','tree_number')
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="dtreenumbers")
+    identifier = models.ForeignKey(IdentifierDesc, related_name="dtreenumbers", null=True)
 
     # Tree Number
     tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
@@ -112,15 +119,67 @@ class TreeNumbersListDesc(models.Model, AuditLog):
 
 
 
-# Previous Indexing List
-class PreviousIndexingListDesc(models.Model, AuditLog):
+# PharmacologicalActionList
+class PharmacologicalActionList(models.Model, AuditLog):
+
+    class Meta:
+        verbose_name = _("Pharmacological Action List")
+        verbose_name_plural = _("Pharmacologicals Action List")
+
+    identifier = models.ForeignKey(IdentifierDesc, related_name="pharmacodesc", blank=True, null=True)
+
+    # String
+    term_string = models.CharField(_("String"), max_length=250, blank=True)
+
+    # MESH Descriptor Unique Identifier
+    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
+
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+
+    def get_parent(self):
+        return self.identifier
+
+    def __unicode__(self):
+        return '%s' % (self.id)
+
+
+
+
+# SeeRelatedList for descriptors
+class SeeRelatedListDesc(models.Model, AuditLog):
+# class SeeRelatedListDesc(models.Model):
 
     class Meta:
         verbose_name = _("Previous Indexing")
         verbose_name_plural = _("Previous Indexing")
-        # unique_together = ('previous_indexing','language_code')
 
-    identifier = models.ForeignKey(IdentifierDesc, blank=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="relateddesc", blank=True, null=True)
+
+    # String
+    term_string = models.CharField(_("String"), max_length=250, blank=True)
+
+    # MESH Descriptor Unique Identifier
+    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
+
+    def get_parent(self):
+        return self.identifier
+
+    def __unicode__(self):
+        return '%s' % (self.id)
+
+
+
+
+
+# Previous Indexing List
+class PreviousIndexingListDesc(models.Model, AuditLog):
+# class PreviousIndexingListDesc(models.Model):
+
+    class Meta:
+        verbose_name = _("Previous Indexing")
+        verbose_name_plural = _("Previous Indexing")
+
+    identifier = models.ForeignKey(IdentifierDesc, related_name="previousdesc", blank=True, null=True)
 
     # PreviousIndexing
     previous_indexing = models.CharField(_("Previous indexing"), max_length=1000, blank=True)
@@ -135,29 +194,46 @@ class PreviousIndexingListDesc(models.Model, AuditLog):
 
 
 
-# ConceptList
-class ConceptListDesc(models.Model, AuditLog):
+
+# PharmacologicalActionList
+# class PharmacologicalActionList(models.Model):
+
+#     class Meta:
+#         verbose_name = _("Pharmacological Action")
+#         verbose_name_plural = _("Pharmacological Actions")
+
+#     identifier = models.ForeignKey(IdentifierDesc, blank=True)
+
+#     # DescriptorUI
+#     descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
+
+#     # DescriptorName
+#     term_string = models.CharField(_("String"), max_length=250, blank=True)
+
+#     def __unicode__(self):
+#         return '%s' % (self.id)
+
+
+
+
+# Identifier ConceptList
+# class IdentifierConceptListDesc(models.Model, AuditLog):
+class IdentifierConceptListDesc(models.Model):
 
     class Meta:
-        verbose_name = _("Concept")
-        verbose_name_plural = _("Concepts")
-        unique_together = ('identifier','language_code','concept_name')
+        verbose_name = _("Concept record")
+        verbose_name_plural = _("Concept records")
 
-
-    identifier = models.ForeignKey(IdentifierDesc, blank=True)
-
-    # concept_relation = models.ForeignKey(ConceptRelationDesc, verbose_name=_("ID da relacao"), blank=True, null=True)
-
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
-
-    # PreferredConcept
-    preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
+    identifier = models.ForeignKey(IdentifierDesc, blank=True, null=True)
 
     # ConceptUI
     concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, blank=True)
 
-    # ConceptName
-    concept_name = models.CharField(_("Concept name"), max_length=250, blank=True)
+    # ConceptRelationRelationName (NRW | BRD | REL) #IMPLIED >
+    concept_relation_name = models.CharField(_("Relationship"), choices=RELATION_NAME_OPTION, max_length=3, blank=True)
+
+    # PreferredConcept
+    preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
 
     # CASN1Name
     casn1_name = models.TextField(_("Chemical abstract"), max_length=1000, blank=True)
@@ -165,60 +241,61 @@ class ConceptListDesc(models.Model, AuditLog):
     # RegistryNumber
     registry_number = models.CharField(_("Registry number from CAS"), max_length=250, blank=True)
 
-    # ScopeNote
-    scope_note = models.TextField(_("Scope note"), max_length=1500, blank=True)
-
-    def get_parent(self):
-        return self.identifier
+    # def get_parent(self):
+    #     return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)
 
 
 
-# class ConceptRelationDesc(models.Model, AuditLog):
 
-#     class Meta:
-#         verbose_name = _("Concept")
-#         verbose_name_plural = _("Concepts")
+# ConceptList
+# class ConceptListDesc(models.Model, AuditLog):
+class ConceptListDesc(models.Model):
 
-#     # relation = models.ForeignKey(ConceptListDesc, blank=True)
-#     concept_relation = models.ForeignKey(ConceptListDesc, verbose_name=_("ID da relacao"), blank=True, null=True)
+    class Meta:
+        verbose_name = _("Concept")
+        verbose_name_plural = _("Concepts")
 
-#     # ConceptRelation RelationName
-#     relation_name = models.CharField(_("Concept relation"), choices=RELATION_NAME_OPTION, max_length=3, blank=True)
+    identifier_concept = models.ForeignKey(IdentifierConceptListDesc, related_name="conceptdesc", blank=True, null=True)
 
-#     # Concept1UI
-#     concept1_ui = models.CharField(_("First concept in then Concept relation"), max_length=250, blank=True)
 
-#     # Concept2UI
-#     concept2_ui = models.CharField(_("Second concept in then Concept relation"), max_length=250, blank=True)
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
-#     def get_parent(self):
-#         return self.identifier
+    # ScopeNote
+    scope_note = models.TextField(_("Scope note"), max_length=1500, blank=True)
 
-#     def __unicode__(self):
-#         return '%s' % (self.id)
+    # def get_parent(self):
+    #     return self.identifier
+
+    def __unicode__(self):
+        return '%s' % (self.id)
+
 
 
 
 # TermList
-class TermListDesc(models.Model, AuditLog):
+# class TermListDesc(models.Model, AuditLog):
+class TermListDesc(models.Model):
 
     class Meta:
         verbose_name = _("Term")
         verbose_name_plural = _("Terms")
-        ordering = ('language_code','term_string','concept_preferred_term')
-        # unique_together = ('term_string','language_code','status','date_altered')
-        # unique_together = ('identifier','term_string','language_code','status','date_altered')
-        # unique_together = ('identifier','term_string','language_code','status')
+        # ordering = ('language_code','term_string','concept_preferred_term')
 
+    identifier_concept = models.ForeignKey(IdentifierConceptListDesc, related_name="termdesc", blank=True, null=True)
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="termdesc")
-
+    # Adminstration field
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
-    
+
+    # TermUI
+    term_ui = models.CharField(_("Term unique identifier"), max_length=250, blank=True)
+
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+
+    # String
+    term_string = models.CharField(_("String"), max_length=250, blank=False)
 
     # ConceptPreferredTermYN
     concept_preferred_term = models.CharField(_("Concept preferred term"), choices=YN_OPTION, max_length=1, blank=True)
@@ -231,12 +308,6 @@ class TermListDesc(models.Model, AuditLog):
 
     # RecordPreferredTerm
     record_preferred_term = models.CharField(_("Record preferred term"), choices=YN_OPTION, max_length=1, blank=True)
-
-    # TermUI
-    term_ui = models.CharField(_("Term unique identifier"), max_length=250, blank=True)
-
-    # String
-    term_string = models.CharField(_("String"), max_length=250, blank=True)
 
     # EntryVersion
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
@@ -252,8 +323,8 @@ class TermListDesc(models.Model, AuditLog):
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
-    def get_parent(self):
-        return self.identifier
+    # def get_parent(self):
+    #     return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)

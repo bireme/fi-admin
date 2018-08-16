@@ -35,11 +35,13 @@
         {% endif %}
     </h2>
     <div class='pull-right'>
-        <a href="{% url 'create_descriptor' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Descriptor" %}</a>
+        <a href="{% url 'create_descriptor' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "Add new record for Descriptor" %}</a>
     </div>
+
 </div>
 
 <div class='body'>    
+
     <ul class="nav nav-tabs" id='tab'>
             <li class="active">
                 <a href="{% url 'list_descriptor' %}"><strong>{% trans "Descriptors" %}</strong></a>
@@ -48,7 +50,6 @@
                 <a href="{% url 'list_qualifier' %}"><strong>{% trans "Qualifiers" %}</strong></a>
             </li>
     </ul>
-
 
     <div class="row">
         <div class="span12">
@@ -61,8 +62,8 @@
                 {% trans "Fields" %}:
                 <select name="filter_fields">
                     <option value="">---</option>
-                    <option value="descriptor_name" {% if actions.filter_fields == 'descriptor_name' %}selected="true"{% endif %}>{% trans "Descriptor" %}</option>
                     <option value="term_string" {% if actions.filter_fields == 'term_string' %}selected="true"{% endif %}>{% trans "Terms" %}</option>
+                    <option value="concept" {% if actions.filter_fields == 'concept' %}selected="true"{% endif %}>{% trans "Concept" %}</option>
                     <option value="descriptor_ui" {% if actions.filter_fields == 'descriptor_ui' %}selected="true"{% endif %}> {% trans "MESH Descriptor UI" %}</option>
                     <option value="decs_code" {% if actions.filter_fields == 'decs_code' %}selected="true"{% endif %}>{% trans "DeCS Descriptor UI" %}</option>
                     <option value="tree_number" {% if actions.filter_fields == 'tree_number' %}selected="true"{% endif %}>{% trans "Tree Number" %}</option>
@@ -104,18 +105,16 @@
             <thead>
 
                 <th>
-                    <a href="javascript:orderby('termdesc__term_string');" id="id_term_string">
-                {% if not actions.filter_fields == 'descriptor_name' %}
-                    {% trans "Term Name" %}
-                {% else %}
-                    {% trans "Description Name" %}
-                {% endif %}
+                    <a href="javascript:orderby('term_string');" id="id_term_string">
+                        {% if actions.filter_fields == 'term_string' or actions.filter_fields == '' %}
+                            {% trans "Term name" %}
+                        {% else %}
+                            {% trans "Concept name" %}
+                        {% endif %}
                     </a>
                 </th>
 
-                <th><a href="javascript:orderby('descriptor_ui');" id="id_descriptor_ui">{% trans "MESH Descriptor UI" %}</a></th>
-                <th><a href="javascript:orderby('decs_code');" id="id_decs_code">{% trans "DeCS Descriptor UI" %}</a></th>
-                <th><a href="javascript:orderby('termdesc__status');" id="id_status">{% trans "Status" %}</a></th>
+                <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                 <th>{% trans "Actions" %}</th>
             </thead>
             <tbody>
@@ -123,26 +122,17 @@
             {% for obj in registers %}
                 <tr>
                     <td>
-                        {% if obj.termdesc__term_string %}
-                            {% if obj.termdesc__term_string %}
-                                {{ obj.termdesc__term_string }} ({{ obj.termdesc__language_code }})
+                        {% if obj.term_string %}
+                            {% if obj.term_string %}
+                                {{ obj.term_string }} ({{ obj.language_code }})
                             {% endif %}
                         {% endif %}
                     </td>
                     <td>
-                        {% if obj.descriptor_ui %}
-                            {{ obj.descriptor_ui }}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td>{{ obj.decs_code }}</td>
-                    <td>
-                        {{ obj.termdesc__status|display_status_label }}
+                        {{ obj.status|display_status_label }}
                     </td>
                     <td>
-                        <a href="{% url 'edit_descriptor' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                        <a href="{% url 'delete_descriptor' obj.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                        <a href="{% url 'detail_descriptor' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                     </td>
                 </tr>
 

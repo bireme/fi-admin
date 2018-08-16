@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 
@@ -13,7 +14,7 @@ from multiselectfield import MultiSelectField
 
 
 
-class IdentifierQualif(Generic, AuditLog):
+class IdentifierQualif(Generic):
 
     class Meta:
         verbose_name = _("Qualifier")
@@ -32,7 +33,7 @@ class IdentifierQualif(Generic, AuditLog):
     external_code = models.CharField(_("External Qualifier UI"), max_length=250, blank=True)
 
     # Abbreviation
-    abbreviation = models.CharField(_("Abbreviation"), max_length=4, blank=True)
+    abbreviation = models.CharField(_("Abbreviation"), max_length=4, blank=False)
 
     # DateCreated
     date_created = models.DateField(_("Date created"), help_text='DD/MM/YYYY', blank=True, null=True)
@@ -45,25 +46,32 @@ class IdentifierQualif(Generic, AuditLog):
 
     def __unicode__(self):
         lang_code = get_language()
-        # translation = TermListQualif.objects.filter(identifier_id=self.id, language_code=lang_code, status=1)
-        translation = TermListQualif.objects.filter(identifier_id=self.id, language_code=lang_code)
+
+        concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=self.id).values('id')
+        id_concept = concepts_of_register[0].get('id')
+        translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code)
+
         if translation:
-            treatment1 = translation[0].term_string.replace('/','').upper()
-            return '%s%s%s' % (self.abbreviation,' - ',treatment1)
+            # treatment1 = translation[0].term_string.replace('/','').upper()
+            treatment1 = translation[0].term_string.replace('/','')
+            # return '%s%s%s' % (self.abbreviation,' - ',treatment1)
+            return '%s%s%s%s' % (treatment1,' (',self.abbreviation,')')
         else:
-            return '%s%s' % (self.abbreviation,' - Description without translation')
+            return '%s%s%s' % ('Description without translation (',self.abbreviation,')')
 
 
 
-# QualifierRecord
+
+# Qualifier
 class DescriptionQualif(models.Model, AuditLog):
+# class DescriptionQualif(models.Model):
 
     class Meta:
         verbose_name = _("Description of Qualifier")
         verbose_name_plural = _("Descriptions of Qualifier")
         unique_together = ('identifier','language_code')
 
-    identifier = models.ForeignKey(IdentifierQualif, related_name="qualifiers")
+    identifier = models.ForeignKey(IdentifierQualif, related_name="descriptionqualif", null=True)
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
@@ -88,6 +96,7 @@ class DescriptionQualif(models.Model, AuditLog):
 
 # Tree numbers for qualifiers
 class TreeNumbersListQualif(models.Model, AuditLog):
+# class TreeNumbersListQualif(models.Model):
 
     class Meta:
         verbose_name = _("Tree number for qualifier")
@@ -95,7 +104,7 @@ class TreeNumbersListQualif(models.Model, AuditLog):
         ordering = ('tree_number',)
         unique_together = ('identifier','tree_number')
 
-    identifier = models.ForeignKey(IdentifierQualif, related_name="qtreenumbers")
+    identifier = models.ForeignKey(IdentifierQualif, related_name="qtreenumbers", null=True)
 
     # Tree Number
     tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
@@ -108,26 +117,25 @@ class TreeNumbersListQualif(models.Model, AuditLog):
 
 
 
-# ConceptList
-class ConceptListQualif(models.Model, AuditLog):
+
+# Identifier ConceptList
+# class IdentifierConceptListQualif(models.Model, AuditLog):
+class IdentifierConceptListQualif(models.Model):
 
     class Meta:
-        verbose_name = _("Concept")
-        verbose_name_plural = _("Concepts")
-        unique_together = ('identifier','language_code','concept_name')
+        verbose_name = _("Concept record")
+        verbose_name_plural = _("Concept records")
 
-    identifier = models.ForeignKey(IdentifierQualif, blank=True)
-
-    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
-
-    # PreferredConcept
-    preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
+    identifier = models.ForeignKey(IdentifierQualif, blank=True, null=True)
 
     # ConceptUI
     concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, blank=True)
 
-    # ConceptName
-    concept_name = models.CharField(_("Concept name"), max_length=250, blank=True)
+    # ConceptRelationRelationName (NRW | BRD | REL) #IMPLIED >
+    concept_relation_name = models.CharField(_("Relationship"), choices=RELATION_NAME_OPTION, max_length=3, blank=True)
+
+    # PreferredConcept
+    preferred_concept = models.CharField(_("Preferred concept"), choices=YN_OPTION, max_length=1, blank=True)
 
     # CASN1Name
     casn1_name = models.TextField(_("Chemical abstract"), max_length=1000, blank=True)
@@ -135,11 +143,29 @@ class ConceptListQualif(models.Model, AuditLog):
     # RegistryNumber
     registry_number = models.CharField(_("Registry number from CAS"), max_length=250, blank=True)
 
+
+    def __unicode__(self):
+        return '%s' % (self.id)
+
+
+
+# ConceptList
+# class ConceptListQualif(models.Model, AuditLog):
+class ConceptListQualif(models.Model):
+
+    class Meta:
+        verbose_name = _("Concept")
+        verbose_name_plural = _("Concepts")
+
+    identifier_concept = models.ForeignKey(IdentifierConceptListQualif, related_name="conceptqualif", blank=True, null=True)
+
+    language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+
     # ScopeNote
     scope_note = models.TextField(_("Scope note"), max_length=1500, blank=True)
 
-    def get_parent(self):
-        return self.identifier
+    # def get_parent(self):
+    #     return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -147,7 +173,8 @@ class ConceptListQualif(models.Model, AuditLog):
 
 
 # TermListQualif
-class TermListQualif(models.Model, AuditLog):
+# class TermListQualif(models.Model, AuditLog):
+class TermListQualif(models.Model):
 
     class Meta:
         verbose_name = _("Term")
@@ -156,7 +183,7 @@ class TermListQualif(models.Model, AuditLog):
         # unique_together = ('term_string','language_code','status','date_altered')
         # unique_together = ('term_string','language_code','status')
 
-    identifier = models.ForeignKey(IdentifierQualif, related_name="termqualif")
+    identifier_concept = models.ForeignKey(IdentifierConceptListQualif, related_name="termqualif", blank=True, null=True)
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
 
@@ -192,8 +219,8 @@ class TermListQualif(models.Model, AuditLog):
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
-    def get_parent(self):
-        return self.identifier
+    # def get_parent(self):
+    #     return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)

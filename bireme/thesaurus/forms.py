@@ -29,11 +29,18 @@ class ThesaurusForm(forms.ModelForm):
         exclude = ()
 
 # Qualifier -------------------------------------------------------------------
+# Register - Form1
 class IdentifierQualifForm(forms.ModelForm):
+    date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+    date_revised = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+    date_established = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+
     class Meta:
         model = IdentifierQualif
         fields = '__all__'
-
 
 class DescriptionQualifForm(forms.ModelForm):
     class Meta:
@@ -57,24 +64,28 @@ class TreeNumbersListQualifForm(forms.ModelForm):
             }
         }
 
+# Concept + Term - Form2
+class IdentifierConceptListQualifForm(forms.ModelForm):
+    class Meta:
+        model = IdentifierConceptListQualif
+        fields = '__all__'
+
 class ConceptListQualifForm(forms.ModelForm):
     class Meta:
         model = ConceptListQualif
         fields = '__all__'
 
 class TermListQualifForm(forms.ModelForm):
+    date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+    date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+
     class Meta:
         model = TermListQualif
         fields = '__all__'
 
-        error_messages = {
-            NON_FIELD_ERRORS: {
-                # 'unique_together': "%(model_name)s's %(field_labels)s are not unique.",
-                'unique_together': "%(field_labels)s already exist.",
-            }
-        }
-
-
+# processo a parte
 class TermListQualifUniqueForm(forms.ModelForm):
     class Meta:
         model = TermListQualif
@@ -82,11 +93,19 @@ class TermListQualifUniqueForm(forms.ModelForm):
 
 
 # Descriptor ------------------------------------------------------------------
+
+# Register - Form1
 class IdentifierDescForm(forms.ModelForm):
+    date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+    date_revised = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+    date_established = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+
     class Meta:
         model = IdentifierDesc
         fields = '__all__'
-
 
 class DescriptionDescForm(forms.ModelForm):
     class Meta:
@@ -98,8 +117,29 @@ class DescriptionDescForm(forms.ModelForm):
             }
         }
 
-
 class TreeNumbersListDescForm(forms.ModelForm):
+    class Meta:
+        fields = '__all__'
+
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
+
+
+class PharmacologicalActionListDescForm(forms.ModelForm):
+    class Meta:
+        fields = '__all__'
+
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
+
+
+class SeeRelatedListDescForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
 
@@ -119,37 +159,44 @@ class PreviousIndexingListDescForm(forms.ModelForm):
             }
         }
 
+# Concept + Term - Form2
+class IdentifierConceptListDescForm(forms.ModelForm):
+    class Meta:
+        model = IdentifierConceptListDesc
+        fields = '__all__'
 
 class ConceptListDescForm(forms.ModelForm):
     class Meta:
+        Model = ConceptListDesc
         fields = '__all__'
-
-# class ConceptRelationDescForm(forms.ModelForm):
-#     class Meta:
-#         model = ConceptRelationDesc
-#         fields = '__all__'
 
 class TermListDescForm(forms.ModelForm):
+    date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+    date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+
     class Meta:
-        model = TermListDesc
+        Model = TermListDesc
         fields = '__all__'
 
-        error_messages = {
-            NON_FIELD_ERRORS: {
-                'unique_together': "%(field_labels)s already exist.",
-            }
-        }
-
-
-
+# processo a parte
 class TermListDescUniqueForm(forms.ModelForm):
     class Meta:
         model = TermListDesc
         exclude = ('identifier',)
 
+    date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+    date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+
+
+
 
 # FormSets
 # Descriptor ------------------------------------------------------------------
+# Register - Form1
 DescriptionDescFormSet = inlineformset_factory(
     IdentifierDesc,
     DescriptionDesc,
@@ -167,6 +214,22 @@ TreeNumbersListDescFormSet = inlineformset_factory(
     extra=1
     )
 
+PharmacologicalActionListDescFormSet = inlineformset_factory(
+    IdentifierDesc,
+    PharmacologicalActionList,
+    form=PharmacologicalActionListDescForm,
+    fields='__all__',
+    extra=1
+    )
+
+SeeRelatedListDescFormSet = inlineformset_factory(
+    IdentifierDesc,
+    SeeRelatedListDesc,
+    form=SeeRelatedListDescForm,
+    fields='__all__',
+    extra=1
+    )
+
 PreviousIndexingListDescFormSet = inlineformset_factory(
     IdentifierDesc,
     PreviousIndexingListDesc,
@@ -176,8 +239,10 @@ PreviousIndexingListDescFormSet = inlineformset_factory(
     extra=1
     )
 
+
+# Concept + Term - Form2
 ConceptListDescFormSet = inlineformset_factory(
-    IdentifierDesc,
+    IdentifierConceptListDesc,
     ConceptListDesc,
     form=ConceptListDescForm,
     fields='__all__',
@@ -185,17 +250,8 @@ ConceptListDescFormSet = inlineformset_factory(
     extra=1
     )
 
-# ConceptRelationDescFormSet = inlineformset_factory(
-#     IdentifierDesc,
-#     ConceptRelationDesc,
-#     form=ConceptRelationDescForm,
-#     fields='__all__',
-#     can_delete=True,
-#     extra=1
-#     )
-
 TermListDescFormSet = inlineformset_factory(
-    IdentifierDesc,
+    IdentifierConceptListDesc,
     TermListDesc,
     form=TermListDescForm,
     fields='__all__',
@@ -204,11 +260,13 @@ TermListDescFormSet = inlineformset_factory(
     )
 
 # Qualifiers ------------------------------------------------------------------
+# Register - Form1
 DescriptionQualifFormSet = inlineformset_factory(
     IdentifierQualif,
     DescriptionQualif,
     form=DescriptionQualifForm,
     fields='__all__',
+    can_delete=True,
     extra=1
     )
 
@@ -217,24 +275,26 @@ TreeNumbersListQualifFormSet = inlineformset_factory(
     TreeNumbersListQualif,
     form=TreeNumbersListQualifForm,
     fields='__all__',
+    can_delete=True,
     extra=1
     )
 
-
+# Concept + Term - Form2
 ConceptListQualifFormSet = inlineformset_factory(
-    IdentifierQualif,
+    IdentifierConceptListQualif,
     ConceptListQualif,
     form=ConceptListQualifForm,
     fields='__all__',
+    can_delete=True,
     extra=1
     )
 
-
 TermListQualifFormSet = inlineformset_factory(
-    IdentifierQualif,
+    IdentifierConceptListQualif,
     TermListQualif,
     form=TermListQualifForm,
     fields='__all__',
+    can_delete=True,
     extra=1
     )
 

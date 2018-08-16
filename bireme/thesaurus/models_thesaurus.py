@@ -22,3 +22,16 @@ class Thesaurus(models.Model):
 
     def __unicode__(self):
         return self.thesaurus_name
+
+
+# DeCS Code sequencial controler table
+class code_controler(models.Model):
+
+	class Meta:
+		verbose_name = _("Sequencial control")
+		verbose_name_plural = _("Sequencial controls")
+
+	sequencial = models.CharField(_("Sequencial control number for DeCS Code"), max_length=250, blank=False)
+
+	def __unicode__(self):
+		return self.id

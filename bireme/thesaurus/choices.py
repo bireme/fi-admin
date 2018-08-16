@@ -28,11 +28,11 @@ DESCRIPTOR_CLASS_CODE=(
 )
 
 
-# RELATION_NAME_OPTION=(
-#     ('BRD','BRD - Broader'),
-#     ('NRW','NRW - Narrower'),
-#     ('REL','REL - Related but not broader or narrower'),
-# )
+RELATION_NAME_OPTION=(
+    ('NRW','NRW - Narrower'),
+    ('BRD','BRD - Broader'),
+    ('REL','REL - Related but not broader or narrower'),
+)
 
 
 LEXICALTAG_OPTION=(
@@ -48,9 +48,10 @@ LEXICALTAG_OPTION=(
 )
 
 
-STATUS_CHOICES = (
+STATUS_CHOICES=(
     (-1, _('Draft')),
     (1, _('Published')),
     # (3, _('Deleted')),
     (5, _('Historical')),
 )
+

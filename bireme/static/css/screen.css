@@ -607,7 +607,7 @@ tr.relation-row td input, tr.relation-row td select{
 .selector-filter IMG {
     position:relative;
     top: 40px;
-    left: 55px;
+    left: 70px;
 }
 
 /* middle column - UL*/
@@ -645,11 +645,11 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 .descriptiondesc, .conceptlistdesc, .termlistdesc, .descriptionqualif, .conceptlistqualif, .termlistqualif {
-    width: 90%;
+    width: 98%;
     /*border: solid 1px #cccccc;*/
 }
 
-.descriptiondesc textarea, .descriptionqualif textarea, .termlistdesc textarea, .termlistqualif textarea{
+.descriptiondesc textarea, .conceptlistdesc textarea, .descriptionqualif textarea, .conceptlistqualif textarea, .termlistdesc textarea, .termlistqualif textarea{
     width: 98%;
     height: 50px;
 }
@@ -684,6 +684,12 @@ tr.relation-row td input, tr.relation-row td select{
 .descriptiondesc .td-l input[type=text], .conceptlistdesc .concept_name input[type=text], .termlistdesc .term_string input[type=text], .descriptionqualif .td-l input[type=text], .conceptlistqualif .concept_name input[type=text], .termlistqualif .term_string input[type=text]{
     text-align: left;
     width:450px;
+}
+
+
+.term_stringn input[type=text]{
+    text-align: left;
+    width:670px;
 }
 
 .descriptiondesc .term-origin, .conceptlistdesc .term-origin, .termlistdesc .term-origin, .descriptionqualif .term-origin, .conceptlistqualif .term-origin, .termlistqualif .term-origin{
@@ -732,55 +738,3 @@ tr.relation-row td input, tr.relation-row td select{
 
 
 
-
-
-/* Style the form */
-#regForm {
-  background-color: #ffffff;
-  /*margin: 10px auto;*/
-  padding: 10px;
-  width: 90%;
-  min-width: 300px;
-}
-
-
-/* Style the input fields */
-/*.identifierdesc input, .termlistdesc input {*/
-  /*padding: 10px;*/
-  /*width: 94%;*/
-  /*font-size: 17px;*/
-  /*font-family: Raleway;*/
-/*  border: 1px solid #aaaaaa;*/
-/*}*/
-
-/* Mark input boxes that gets an error on validation: */
-input.invalid {
-  background-color: #ffdddd;
-}
-
-/* Hide all steps by default: */
-.tab {
-  display: none;
-}
-
-/* Make circles that indicate the steps of the form: */
-.step {
-  height: 15px;
-  width: 15px;
-  margin: 0 2px;
-  background-color: #bbbbbb;
-  border: none; 
-  border-radius: 50%;
-  display: inline-block;
-  opacity: 0.5;
-}
-
-/* Mark the active step: */
-.step.active {
-  opacity: 1;
-}
-
-/* Mark the steps that are finished and valid: */
-.step.finish {
-  background-color: #4CAF50;
-}
