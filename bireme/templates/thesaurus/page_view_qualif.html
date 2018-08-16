@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load app_filters %}
+
+
+{% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    {% if object %}
+        <li><a href="{% url 'list_qualifier' %}">{% trans "Thesaurus" %}</a>
+        <span class="divider">/</span></li>
+        <li>{% trans "Edit Qualifier" %}</li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <div class='header'>
+        <h3>
+            {% if not object %}
+                {% trans "Error" %}
+            {% else %}
+                <ul>
+
+                {% for identifier_concept in identifierconceptlist_objects %}
+                    {% if identifier_concept.termqualif__term_string and identifier_concept.termqualif__concept_preferred_term == 'Y' and identifier_concept.termqualif__record_preferred_term == 'Y' %}
+                        {{ identifier_concept.termqualif__term_string }} ({{identifier_concept.termqualif__language_code}})<br>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </h3>
+    </div>
+
+    <div class='body'>
+
+        <ul class="nav nav-tabs" id='myTab'>
+            <li class="active">
+                <a href="#tab-details" data-toggle="tab"><strong>{% trans "Details" %}</strong></a>
+            </li>
+
+            <li>
+                <a href="#tab-concepts" data-toggle="tab"><strong>{% trans "Concepts" %}</strong></a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="tab-details" class="tab-pane active">
+                <table width="90%">
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Qualifier record" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in identifierconceptlist_objects %}
+                            {% if obj.termqualif__term_string and obj.termqualif__concept_preferred_term == 'Y' and obj.termqualif__record_preferred_term == 'Y' %}
+                                {{ obj.termqualif__term_string }} ({{obj.termqualif__language_code}})
+                                <a href="{% url 'edit_register_qualif' obj.identifier_id %}/?string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}"><i class="icon-pencil"></i></a>
+                                <br>
+
+                            {% endif %}
+                        {% endfor %}
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Tree Number(s)" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in tree_numbers_objects %}
+                            {% if obj.qtreenumbers__tree_number %}
+                                {{ obj.qtreenumbers__tree_number }}<br>
+                            {% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Unique ID" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {{ obj.qualifier_ui }}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Annotation" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {% if obj.descriptionqualif__annotation %}
+                                    {{ obj.descriptionqualif__annotation }} ({{ obj.descriptionqualif__language_code }})<br>
+                                {% endif %}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Scope Note" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in identifierconceptlist_objects %}
+                            {% if obj.conceptqualif__scope_note %}
+                                {% ifchanged %}
+                                    {{ obj.conceptqualif__scope_note }} ({{ obj.conceptqualif__language_code }})<br>
+                                {% endifchanged %}
+                            {% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Abbreviation" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% if obj.abbreviation %}
+                                {% ifchanged %}
+                                    {{ obj.abbreviation }}<br>
+                                {% endifchanged %}
+                            {% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Entry Term(s)" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in identifierconceptlist_objects %}
+                            {% if obj.termqualif__concept_preferred_term == 'Y' %}
+                                {{ obj.termqualif__term_string }}
+                                {% if obj.termqualif__language_code %}({{ obj.termqualif__language_code }}){% endif %}
+                                <br>
+                            {% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Pharm Action" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                            &nbsp;
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Registry Number" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in identifierconceptlist_objects %}
+                            {% if obj.registry_number %}
+                                {% ifchanged %}
+                                    {{ obj.registry_number }}<br>
+                                {% endifchanged %}
+                            {% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <!-- Related Numbers -->
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "CAS Type 1 Name" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in identifierconceptlist_objects %}
+                            {% if obj.casn1_name %}
+                                {% ifchanged %}
+                                    {{ obj.casn1_name }}<br>
+                                {% endifchanged %}
+                            {% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Online Note" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {% if obj.descriptionqualif__online_note %}
+                                    {{ obj.descriptionqualif__online_note }} ({{ obj.descriptionqualif__language_code }})<br>
+                                {% endif %}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "History Note" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {% if obj.descriptionqualif__history_note %}
+                                    {{ obj.descriptionqualif__history_note }} ({{ obj.descriptionqualif__language_code }})<br>
+                                {% endif %}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Date Established" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {{ obj.date_established }}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Date of Entry" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {{ obj.date_created }}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Revision Date" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {{ obj.date_revised }}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div id="tab-concepts" class="tab-pane">
+
+                <ul>
+                    <a href="{% url 'create_concept_qualif' %}/?identifier_id={{ id_concept_new.identifier_id }}"><i class='icon-file'></i>&nbsp;{% trans "Add concept" %}</a>
+                </ul>
+
+                {% for obj in identifierconceptlist_objects %}
+
+                    <ul>
+
+                    {% if obj.termqualif__concept_preferred_term == 'Y' %}
+                        {% ifchanged obj.termqualif__identifier_concept_id %}
+                            <b>{% trans "Concept" %}</b>:
+                            <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termqualif__id }}"> -->
+                            {{ obj.termqualif__term_string }}
+                            {{ obj.concept_ui }}
+                            <!-- </a> -->
+                        {% endifchanged %}
+                    {% endif %}
+
+                    {% if obj.termqualif__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' %}
+                        <font color="gray"><i>&nbsp;{% trans "Narrower" %}</i></font>
+                        <!-- <a href="#"><i class="icon-pencil"></i></a> -->
+                        <a href="{% url 'edit_concept_qualif' obj.id %}/?string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&id={{ obj.termqualif__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
+                    {% else %}
+                        {% if obj.termqualif__concept_preferred_term == 'Y' and obj.preferred_concept == 'Y' and obj.termqualif__language_code = 'en' %}
+                            {% ifchanged %}
+                                <font color="blue"><i>&nbsp;{% trans "Preferred Concept" %}</i></font>
+                                <!-- <a href="#"><i class="icon-pencil"></i></a> -->
+                                <a href="{% url 'edit_concept_qualif' obj.id %}/?string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&id={{ obj.termqualif__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
+                            {% endifchanged %}
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- <div id="concept_{{ obj.id }}" class="collapse"> -->
+                        <ul>
+                            {% ifchanged %}
+                                <a href="{% url 'create_term_qualif' %}/?identifier_concept_id={{ obj.termqualif__identifier_concept_id }}"><i class='icon-file'></i>&nbsp;{% trans "Add term" %}</a>
+                             
+                                <br>
+                                <b>{% trans "Term" %}</b>:
+                            {% endifchanged %}
+                            
+                            <ul>
+                                <a class="accordion-toggle" data-toggle="collapse" data-target="#term_{{ obj.termqualif__id }}">
+                                    {{ obj.termqualif__term_string }}
+                                </a>
+                                {% if obj.termqualif__language_code %}({{ obj.termqualif__language_code }}){% endif %}
+                                {% if obj.termqualif__concept_preferred_term == 'Y' %}
+                                    <font color="blue"><i>&nbsp;{% trans "Preferred Term" %}</i></font>
+                                {% endif %}
+                                <a href="{% url 'edit_term_qualif' obj.termqualif__id %}/?string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}"><i class="icon-pencil"></i></a>
+                                {{ obj.termqualif__status|display_status_label }}
+
+                                <ul id="term_{{ obj.termqualif__id }}" class="collapse">
+                                    {% if obj.termqualif__term_ui %}{% trans "Term UI" %}: {{ obj.termqualif__term_ui }}<br>{% endif %}
+                                    {% if obj.termqualif__concept_preferred_term %}{% trans "ConceptPreferredTerm" %}: {{ obj.termqualif__concept_preferred_term }}<br>{% endif %}
+                                    {% if obj.termqualif__is_permuted_term %}{% trans "Is permuted" %}: {{ obj.termqualif__is_permuted_term }}<br>{% endif %}
+                                    {% if obj.termqualif__lexical_tag %}{% trans "LexicalTag" %}: {{ obj.termqualif__lexical_tag }}<br>{% endif %}
+                                    {% if obj.termqualif__record_preferred_term %}{% trans "RecordPreferredTerm" %}: {{ obj.termqualif__record_preferred_term }}<br>{% endif %}
+                                    {% if obj.termqualif__entry_version %}{% trans "Entry Version" %}: {{ obj.termqualif__entry_version }}<br>{% endif %}
+                                    {% if obj.termqualif__date_created %}{% trans "DateCreated" %}: {{ obj.termqualif__date_created }}<br>{% endif %}
+                                    {% if obj.termqualif__date_altered %}{% trans "DateAltered" %}: {{ obj.termqualif__date_altered }}<br>{% endif %}
+                                    {% if obj.termqualif__historical_annotation %}{% trans "History annotation" %}: {{ obj.termqualif__historical_annotation }}<br>{% endif %}
+                                </ul>
+
+                            </ul>
+
+                        </ul>
+
+                    <!-- </div> -->
+
+                    </ul>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+
+
+
+        <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+
+    </div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+
+   {% if LANGUAGE_CODE != 'en' %}
+       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
+   {% endif %}
+
+{% endblock %}

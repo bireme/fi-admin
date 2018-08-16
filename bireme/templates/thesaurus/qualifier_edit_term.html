@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    {% if not object %}
+        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <span class="divider">/</span></li>
+        <li>{% trans "New Term" %}</li>
+    {% else %}
+        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <span class="divider">/</span></li>
+        <li>{% trans "Edit Descriptor" %}</li>
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- header -->
+    <div class='header'>
+        {% if object %}
+            <h2>
+                <i class='icon-book'></i>{% trans "Edit term information" %}:
+                {{ request.GET.string }} ({{ request.GET.lang }})
+            </h2>
+        {% endif %}
+    </div>
+    <!-- header -->
+
+    <div class='body'>
+
+        {% if msg_erro %}
+            <ul class="errorlist alert alert-error"><li>{{ msg_erro }}</li></ul>
+        {% endif  %}
+
+        <form method="post">{% csrf_token %}
+
+            <input type="hidden" id="id_identifier_concept_id" name="identifier_concept_id" value="{{ request.GET.identifier_concept_id }}">
+
+
+            {{ form.non_field_errors.as_ul }}
+
+            {% for field in form.visible_fields %}
+                {% if field.errors %}
+                    <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                {% endif %}
+            {% endfor %}
+
+
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            <table class="termlistqualif">
+
+                <td colspan="5">
+                    {{ form.status.label_tag }}
+                    {{ form.status }}
+                </td>
+
+                <tr>
+                    <td colspan="2" class="term_string" width="40%">
+                        <label for="term_string">{{ form.term_string.label_tag }}</label>
+                    </td>
+                    <td>{{ form.language_code.label_tag }}</td>
+                    <td>{{ form.term_ui.label_tag }}</td>
+                    <td>{{ form.date_created.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="term_string" width="40%">
+                        {{ form.term_string }}
+                    </td>
+                    <td>
+                        {{ form.language_code }}
+                    </td>
+                    <td>{{ form.term_ui }}</td>
+                    <td>{{ form.date_created }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.concept_preferred_term.label_tag }}</td>
+                    <td>{{ form.is_permuted_term.label_tag }}</td>
+                    <td>{{ form.lexical_tag.label_tag }}</td>
+                    <td>{{ form.record_preferred_term.label_tag }}</td>
+                    <td>{{ form.entry_version.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.concept_preferred_term }}</td>
+                    <td>{{ form.is_permuted_term }}</td>
+                    <td>{{ form.lexical_tag }}</td>
+                    <td>{{ form.record_preferred_term }}</td>
+                    <td>{{ form.entry_version }}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="4" width="98%">{{ form.historical_annotation.label_tag }}</td>
+                    <td>{{ form.date_altered.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" width="98%">{{ form.historical_annotation }}</td>
+                    <td valign="top">
+                        <!-- {{ form.date_altered }} -->
+                        <input id="id_termqualif-{{ forloop.counter0 }}-date_altered" name="termqualif-{{ forloop.counter0 }}-date_altered" value="{% now "d/m/Y" %}" type="text">
+                    </td>
+                </tr>
+
+            </table>
+
+            <div class="control-panel form-submit">
+                <button class="btn btn-large btn-danger" onclick="window.history.go(-1); return false;">{% trans "Cancel" %}</button>
+                <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+
+   {% if LANGUAGE_CODE != 'en' %}
+       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
+   {% endif %}
+
+{% endblock %}
