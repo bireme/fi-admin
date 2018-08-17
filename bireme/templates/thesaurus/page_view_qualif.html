@@ -17,20 +17,22 @@
 {% block content %}
 
     <div class='header'>
-        <h3>
-            {% if not object %}
-                {% trans "Error" %}
-            {% else %}
-                <ul>
-
-                {% for identifier_concept in identifierconceptlist_objects %}
-                    {% if identifier_concept.termqualif__term_string and identifier_concept.termqualif__concept_preferred_term == 'Y' and identifier_concept.termqualif__record_preferred_term == 'Y' %}
-                        {{ identifier_concept.termqualif__term_string }} ({{identifier_concept.termqualif__language_code}})<br>
-                    {% endif %}
-                {% endfor %}
-                </ul>
-            {% endif %}
-        </h3>
+        <table>
+            <tr>
+                <td valign="top">
+                    <h2><i class='icon-file'></i> {% trans "Qualifiers" %}</h2>
+                </td>
+                <td valign="top">
+                    <ul>
+                    {% for identifier_concept in identifierconceptlist_objects %}
+                        {% if identifier_concept.termqualif__term_string and identifier_concept.termqualif__concept_preferred_term == 'Y' and identifier_concept.termqualif__record_preferred_term == 'Y' %}
+                            {{ identifier_concept.termqualif__term_string }} ({{identifier_concept.termqualif__language_code}})<br>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </table>
     </div>
 
     <div class='body'>
@@ -76,7 +78,6 @@
                         </td>
                     </tr>
 
-
                     <tr>
                         <td valign="top" align="right" width="15%"><b>{% trans "Unique ID" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
@@ -84,6 +85,18 @@
                         {% for obj in id_register_objects %}
                             {% ifchanged %}
                                 {{ obj.qualifier_ui }}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "DeCS ID" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {{ obj.decs_code }}
                             {% endifchanged %}
                         {% endfor %}
                         </td>

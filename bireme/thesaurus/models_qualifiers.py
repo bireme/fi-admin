@@ -27,7 +27,7 @@ class IdentifierQualif(Generic):
     qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True)
 
     # BIREME Qualifier Unique Identifier
-    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=False, unique=True)
+    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True, unique=True)
 
     # External Qualifier Unique Identifier
     external_code = models.CharField(_("External Qualifier UI"), max_length=250, blank=True)
@@ -63,8 +63,8 @@ class IdentifierQualif(Generic):
 
 
 # Qualifier
-class DescriptionQualif(models.Model, AuditLog):
-# class DescriptionQualif(models.Model):
+# class DescriptionQualif(models.Model, AuditLog):
+class DescriptionQualif(models.Model):
 
     class Meta:
         verbose_name = _("Description of Qualifier")
@@ -84,8 +84,8 @@ class DescriptionQualif(models.Model, AuditLog):
     # OnlineNote
     online_note = models.TextField(_("Online note"), max_length=1500, blank=True)
 
-    def get_parent(self):
-        return self.identifier
+    # def get_parent(self):
+    #     return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -95,8 +95,8 @@ class DescriptionQualif(models.Model, AuditLog):
 
 
 # Tree numbers for qualifiers
-class TreeNumbersListQualif(models.Model, AuditLog):
-# class TreeNumbersListQualif(models.Model):
+# class TreeNumbersListQualif(models.Model, AuditLog):
+class TreeNumbersListQualif(models.Model):
 
     class Meta:
         verbose_name = _("Tree number for qualifier")
@@ -109,8 +109,8 @@ class TreeNumbersListQualif(models.Model, AuditLog):
     # Tree Number
     tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
 
-    def get_parent(self):
-        return self.identifier
+    # def get_parent(self):
+    #     return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)

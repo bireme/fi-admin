@@ -67,6 +67,7 @@
                             {% endif %}
                         {% endfor %}
 
+
                         <table class="identifierqualif">
 
                                 <tr>
@@ -93,13 +94,15 @@
                                 </tr>
                                 <tr>
                                     <td>{{ form.qualifier_ui.label }}:</td>
-                                    <td>{{ form.decs_code.label }}:<span class="mark">*</span></td>
                                     <td>{{ form.external_code.label }}:</td>
+                                    <td><!-- {{ form.decs_code.label }}:<span class="mark">*</span> -->&nbsp;</td>
                                 </tr>
                                 <tr>
                                     <td>{{ form.qualifier_ui }}</td>
-                                    <td>{{ form.decs_code }}</td>
                                     <td>{{ form.external_code }}</td>
+                                    <td><!-- {{ form.decs_code }} -->&nbsp;
+                                        <input id="id_decs_code" name="decs_code" value="" type="hidden">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>{{ form.date_created.label }}:

@@ -105,7 +105,17 @@ class DescUpdate(LoginRequiredView):
             # Bring the choiced language_code from the first form
             registry_language = formset_descriptor.cleaned_data[0].get('language_code')
 
-            self.object = form.save()
+            # self.object = form.save()
+            self.object = form.save(commit=False)
+            
+            # Pega info de sequencial para salvar em decs_code
+            seq = code_controller.objects.get(pk=1)
+            nseq = str(int(seq.sequential_number) + 1)
+            seq.sequential_number = nseq
+            seq.save()
+
+            self.object.decs_code = nseq
+            self.object = form.save(commit=True)
 
             formset_descriptor.instance = self.object
             formset_descriptor.save()
@@ -983,7 +993,17 @@ class QualifUpdate(LoginRequiredView):
             # Bring the choiced language_code from the first form
             registry_language = formset_descriptor.cleaned_data[0].get('language_code')
 
-            self.object = form.save()
+            # self.object = form.save()
+            self.object = form.save(commit=False)
+            
+            # Pega info de sequencial para salvar em decs_code
+            seq = code_controller.objects.get(pk=1)
+            nseq = str(int(seq.sequential_number) + 1)
+            seq.sequential_number = nseq
+            seq.save()
+
+            self.object.decs_code = nseq
+            self.object = form.save(commit=True)
 
             formset_descriptor.instance = self.object
             formset_descriptor.save()

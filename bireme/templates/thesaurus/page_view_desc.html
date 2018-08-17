@@ -7,12 +7,7 @@
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    {% if not object %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
-        <span class="divider">/</span></li>
-        <!-- <li>{% trans "New Descriptor" %}</li> -->
-        <li>{% trans "New Record, Concept and Term" %}</li>
-    {% else %}
+    {% if object %}
         <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <li>{% trans "Edit Descriptor" %}</li>
@@ -22,20 +17,22 @@
 {% block content %}
 
     <div class='header'>
-        <h3>
-            {% if not object %}
-                {% trans "Error" %}
-            {% else %}
-                <ul>
-
-                {% for identifier_concept in identifierconceptlist_objects %}
-                    {% if identifier_concept.termdesc__term_string and identifier_concept.termdesc__concept_preferred_term == 'Y' and identifier_concept.termdesc__record_preferred_term == 'Y' %}
-                        {{ identifier_concept.termdesc__term_string }} ({{identifier_concept.termdesc__language_code}})<br>
-                    {% endif %}
-                {% endfor %}
-                </ul>
-            {% endif %}
-        </h3>
+        <table>
+            <tr>
+                <td valign="top">
+                    <h2><i class='icon-file'></i> {% trans "Descriptors" %}</h2>
+                </td>
+                <td valign="top">
+                    <ul>
+                    {% for identifier_concept in identifierconceptlist_objects %}
+                        {% if identifier_concept.termdesc__term_string and identifier_concept.termdesc__concept_preferred_term == 'Y' and identifier_concept.termdesc__record_preferred_term == 'Y' %}
+                            {{ identifier_concept.termdesc__term_string }} ({{identifier_concept.termdesc__language_code}})<br>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </table>
     </div>
 
     <div class='body'>
@@ -92,6 +89,18 @@
                         {% for obj in id_register_objects %}
                             {% ifchanged %}
                                 {{ obj.descriptor_ui }}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "DeCS ID" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {{ obj.decs_code }}
                             {% endifchanged %}
                         {% endfor %}
                         </td>

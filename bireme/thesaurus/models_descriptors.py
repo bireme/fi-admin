@@ -31,7 +31,8 @@ class IdentifierDesc(Generic):
     descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
 
     # BIREME Descriptor Unique Identifier
-    decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=False, unique=True)
+    # decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=False, unique=True)
+    decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=True, unique=True)
 
     # External Descriptor Unique Identifier
     external_code = models.CharField(_("External Descriptor UI"), max_length=250, blank=True)

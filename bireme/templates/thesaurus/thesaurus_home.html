@@ -62,8 +62,8 @@
                 {% trans "Fields" %}:
                 <select name="filter_fields">
                     <option value="">---</option>
-                    <option value="term_string" {% if actions.filter_fields == 'term_string' %}selected="true"{% endif %}>{% trans "Terms" %}</option>
-                    <option value="concept" {% if actions.filter_fields == 'concept' %}selected="true"{% endif %}>{% trans "Concept" %}</option>
+                    <option value="term_string" {% if actions.filter_fields == 'term_string' %}selected="true"{% endif %}>{% trans "All descriptor concepts" %}</option>
+                    <option value="concept" {% if actions.filter_fields == 'concept' %}selected="true"{% endif %}>{% trans "Preferred concepts only" %}</option>
                     <option value="descriptor_ui" {% if actions.filter_fields == 'descriptor_ui' %}selected="true"{% endif %}> {% trans "MESH Descriptor UI" %}</option>
                     <option value="decs_code" {% if actions.filter_fields == 'decs_code' %}selected="true"{% endif %}>{% trans "DeCS Descriptor UI" %}</option>
                     <option value="tree_number" {% if actions.filter_fields == 'tree_number' %}selected="true"{% endif %}>{% trans "Tree Number" %}</option>
