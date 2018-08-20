@@ -34,7 +34,7 @@
             <ul class="errorlist alert alert-error"><li>{{ msg_erro }}</li></ul>
         {% endif  %}
 
-        {% if form.errors or formset_descriptor.errors or formset_treenumber.errors or formset_previous.errors %}
+        {% if form.errors or formset_descriptor.errors or formset_treenumber.errors or formset_related.non_form_errors or formset_previous.errors %}
             <ul class="errorlist alert alert-error">
                 <li>{% trans "Please check required fields" %}</li>
             </ul>
@@ -204,8 +204,8 @@
 
                                 <table>
                                     <tr>
-                                        <td>{% trans "Descriptor UI" %}:</td>
                                         <td>{% trans "String" %}:</td>
+                                        <td>{% trans "Descriptor UI" %}:</td>
                                     </tr>
                                     <tr>
                                     {{ formset_related.management_form }}
@@ -246,9 +246,13 @@
 
                                 {% for form in formset_descriptor %}
 
+                                    {{ form.non_field_errors.as_ul }}
+
                                     {% for hidden in form.hidden_fields %}
                                         {{ hidden }}
                                     {% endfor %}
+
+                                    {{ formset_descriptor.non_field_errors }}
 
                                     {% for field in form.visible_fields %}
                                         {% if field.errors %}
@@ -326,7 +330,8 @@
                     </div>
 
                     <div class="control-panel form-submit">
-                        <button class="btn btn-large btn-danger" onclick="window.history.go(-1); return false;">{% trans "Cancel" %}</button>
+                        <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+                        <!-- <button class="btn btn-large btn-danger" onclick="window.history.go(-1); return false;">{% trans "Cancel" %}</button> -->
                         <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
                     </div>
 

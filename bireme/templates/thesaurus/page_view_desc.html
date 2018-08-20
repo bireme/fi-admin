@@ -252,7 +252,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "See Also" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in id_register_objects %}
+                        {% for obj in related_objects %}
                             {% ifchanged %}
                                 {% if obj.relateddesc__term_string %}
                                     {{ obj.relateddesc__term_string }}<br>
@@ -316,7 +316,7 @@
 
 
                 <div class="btn-group pull-right">
-                    <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{obj.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                    <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{id_ctype_identifierdesc}}/{{id_identifierdesc}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
                 </div>
                 {% if object.id %}
                     {% include "modal_log.html" %}

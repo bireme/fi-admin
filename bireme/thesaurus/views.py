@@ -914,6 +914,15 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'dtreenumbers__tree_number',
                                             ).distinct().order_by('dtreenumbers__tree_number')
 
+            # Usado para criar lista de See Also - related
+            context['related_objects'] = IdentifierDesc.objects.filter(
+                                            id=id_concept,
+                                            ).values(
+                                                # TreeNumbersListDesc
+                                                'relateddesc__term_string',
+                                                'relateddesc__descriptor_ui',
+                                            ).distinct().order_by('relateddesc__term_string')
+
             # Usado para mostrar informações de conceitos e termos
             context['identifierconceptlist_objects'] = IdentifierConceptListDesc.objects.filter(
                                             identifier=id_concept,
@@ -956,6 +965,25 @@ class PageViewDesc(LoginRequiredView, DetailView):
             id_abbrev = IdentifierDesc.objects.filter(id=id_concept).values('abbreviation')
             translation = IdentifierQualif.objects.filter(id__in=id_abbrev) # Usado __in pois pode haver mais que um resultado
             context['allowable_qualifiers_objects'] = translation
+
+
+            # Informacoes para log
+            # Registro
+            # ID do model
+            id_ctype_identifierdesc = ContentType.objects.filter(model='identifierdesc').values('id')
+            context['id_ctype_identifierdesc'] = id_ctype_identifierdesc[0].get('id')
+            # ID do registro
+            id_identifierdesc = IdentifierDesc.objects.filter(id=id_concept).values('id')
+            context['id_identifierdesc'] = id_identifierdesc[0].get('id')
+
+
+            # # Concept e Term
+            # id_ctype_identifierdesc = ContentType.objects.filter(model='identifierdesc').values('id')
+            # context['id_ctype_identifierdesc'] = id_ctype_identifierdesc[0].get('id')
+            # # ID do registro
+            # id_identifierdesc = IdentifierDesc.objects.filter(id=id_concept).values('id')
+            # context['id_identifierdesc'] = id_identifierdesc[0].get('id')
+
 
 
             return context
@@ -1700,5 +1728,16 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                     'termqualif__date_altered',
                                                     'termqualif__historical_annotation',
                                             )
+
+            # Informacoes para log
+            # Registro
+            # ID do model
+            id_ctype_identifierqualif = ContentType.objects.filter(model='identifierqualif').values('id')
+            context['id_ctype_identifierqualif'] = id_ctype_identifierqualif[0].get('id')
+            # ID do registro
+            id_identifierqualif = IdentifierQualif.objects.filter(id=id_concept).values('id')
+            context['id_identifierqualif'] = id_identifierqualif[0].get('id')
+
             return context
+
 

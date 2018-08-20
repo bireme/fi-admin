@@ -151,8 +151,8 @@ class SeeRelatedListDesc(models.Model, AuditLog):
 # class SeeRelatedListDesc(models.Model):
 
     class Meta:
-        verbose_name = _("Previous Indexing")
-        verbose_name_plural = _("Previous Indexing")
+        verbose_name = _("See Related List")
+        verbose_name_plural = _("See Related List")
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="relateddesc", blank=True, null=True)
 
@@ -167,7 +167,6 @@ class SeeRelatedListDesc(models.Model, AuditLog):
 
     def __unicode__(self):
         return '%s' % (self.id)
-
 
 
 
@@ -196,29 +195,8 @@ class PreviousIndexingListDesc(models.Model, AuditLog):
 
 
 
-# PharmacologicalActionList
-# class PharmacologicalActionList(models.Model):
-
-#     class Meta:
-#         verbose_name = _("Pharmacological Action")
-#         verbose_name_plural = _("Pharmacological Actions")
-
-#     identifier = models.ForeignKey(IdentifierDesc, blank=True)
-
-#     # DescriptorUI
-#     descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
-
-#     # DescriptorName
-#     term_string = models.CharField(_("String"), max_length=250, blank=True)
-
-#     def __unicode__(self):
-#         return '%s' % (self.id)
-
-
-
-
 # Identifier ConceptList
-# class IdentifierConceptListDesc(models.Model, AuditLog):
+# class IdentifierConceptListDesc(Generic, AuditLog):
 class IdentifierConceptListDesc(models.Model):
 
     class Meta:
@@ -242,8 +220,6 @@ class IdentifierConceptListDesc(models.Model):
     # RegistryNumber
     registry_number = models.CharField(_("Registry number from CAS"), max_length=250, blank=True)
 
-    # def get_parent(self):
-    #     return self.identifier
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -268,7 +244,7 @@ class ConceptListDesc(models.Model):
     scope_note = models.TextField(_("Scope note"), max_length=1500, blank=True)
 
     # def get_parent(self):
-    #     return self.identifier
+    #     return self.identifier_concept
 
     def __unicode__(self):
         return '%s' % (self.id)
@@ -325,7 +301,7 @@ class TermListDesc(models.Model):
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
     # def get_parent(self):
-    #     return self.identifier
+    #     return self.identifier_concept
 
     def __unicode__(self):
         return '%s' % (self.id)
