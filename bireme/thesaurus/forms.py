@@ -91,6 +91,12 @@ class TermListQualifUniqueForm(forms.ModelForm):
         model = TermListQualif
         exclude = ('identifier',)
 
+    date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+    date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+
+
 
 # Descriptor ------------------------------------------------------------------
 

@@ -20,10 +20,10 @@
     <!-- header -->
     <div class='header'>
         {% if object %}
-            <h2>
+            <h3>
                 <i class='icon-book'></i>{% trans "Edit registry information" %}:
                 {{ request.GET.string }} ({{ request.GET.lang }})
-            </h2>
+            </h3>
         {% endif %}
     </div>
     <!-- header -->
@@ -66,58 +66,55 @@
                         {% endfor %}
 
                         <table class="identifierqualif">
-
-                                <tr>
-                                    <td colspan="1">{{ form.thesaurus.label }}:</td>
-                                    <td colspan="2">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1">
-                                        {{ form.thesaurus }}
-                                    </td>
-                                    <td colspan="2">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form.qualifier_ui.label }}:</td>
-                                    <td>{{ form.decs_code.label }}:<span class="mark">*</span></td>
-                                    <td>{{ form.external_code.label }}:</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form.qualifier_ui }}</td>
-                                    <td>{{ form.decs_code }}</td>
-                                    <td>{{ form.external_code }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form.date_created.label }}:
-                                        <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
-                                    </td>
-                                    <td>{{ form.date_revised.label }}:
-                                        <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
-                                    </td>
-                                    <td>{{ form.date_established.label }}:
-                                        <font color="#999"><i>{{ form.date_established.help_text }}</i></font>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form.date_created }}</td>
-                                    <td>{{ form.date_revised }}</td>
-                                    <td>{{ form.date_established }}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan=3>
-                                        {{ form.abbreviation.label }}:
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan=3>
-                                        {{ form.abbreviation }}
-                                    </td>
-                                </tr>
-
-
-
+                            <tr>
+                                <td colspan="1">{{ form.thesaurus.label }}:</td>
+                                <td colspan="2">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1">
+                                    {{ form.thesaurus }}
+                                </td>
+                                <td colspan="2">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.qualifier_ui.label }}:</td>
+                                <td>{{ form.decs_code.label }}</td>
+                                <td>{{ form.external_code.label }}:</td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.qualifier_ui }}</td>
+                                <td>
+                                    <input type="text" id="id_decs_code" name="decs_code" value="{% if form.decs_code.value %}{{ form.decs_code.value }}{% endif %}" readonly="True">
+                                </td>
+                                <td>{{ form.external_code }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.date_created.label }}:
+                                    <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
+                                </td>
+                                <td>{{ form.date_revised.label }}:
+                                    <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
+                                </td>
+                                <td>{{ form.date_established.label }}:
+                                    <font color="#999"><i>{{ form.date_established.help_text }}</i></font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.date_created }}</td>
+                                <td>{{ form.date_revised }}</td>
+                                <td>{{ form.date_established }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan=3>
+                                    {{ form.abbreviation.label }}:
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=3>
+                                    {{ form.abbreviation }}
+                                </td>
+                            </tr>
                         </table>
-
                     </fieldset>
                     </ul>
                 </div>

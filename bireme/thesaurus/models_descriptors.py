@@ -15,7 +15,7 @@ from multiselectfield import MultiSelectField
 
 
 
-class IdentifierDesc(Generic):
+class IdentifierDesc(Generic, AuditLog):
 
     class Meta:
         verbose_name = _("Descriptor")

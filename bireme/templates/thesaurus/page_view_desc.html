@@ -313,6 +313,16 @@
                     </tr>
 
                 </table>
+
+
+                <div class="btn-group pull-right">
+                    <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{obj.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                </div>
+                {% if object.id %}
+                    {% include "modal_log.html" %}
+                {% endif %}
+
+
             </div>
 
             <div id="tab-qualifiers" class="tab-pane">

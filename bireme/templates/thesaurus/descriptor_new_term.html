@@ -10,10 +10,6 @@
         <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <li>{% trans "New Term" %}</li>
-    {% else %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
-        <span class="divider">/</span></li>
-        <li>{% trans "Edit Descriptor" %}</li>
     {% endif %}
 {% endblock %}
 
@@ -22,11 +18,11 @@
 
     <!-- header -->
     <div class='header'>
-        {% if object %}
-            <h2><i class='icon-book'></i>{% trans "Edit Term" %}</h2>
-        {% else %}
-            <h2><i class='icon-book'></i>{% trans "New Term" %}</h2>
-        {% endif %}
+        <h3><i class='icon-book'></i>
+            {% if not object %}
+                {% trans "Creates information for the new Term" %}
+            {% endif %}
+        </h3>
     </div>
     <!-- header -->
 

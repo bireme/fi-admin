@@ -20,10 +20,10 @@
     <!-- header -->
     <div class='header'>
         {% if object %}
-            <h2>
+            <h3>
                 <i class='icon-book'></i>{% trans "Edit registry information" %}:
                 {{ request.GET.string }} ({{ request.GET.lang }})
-            </h2>
+            </h3>
         {% endif %}
     </div>
     <!-- header -->
@@ -64,7 +64,7 @@
                                         <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                                     {% endif %}
                                 {% endfor %}
-                                <!-- {{ form.as_table }} -->
+
                                 <table>
                                     <tr>
                                         <td colspan="1">{{ form.thesaurus.label }}:</td>
@@ -78,13 +78,15 @@
                                     </tr>
                                     <tr>
                                         <td>{{ form.descriptor_ui.label }}:</td>
-                                        <td>{{ form.decs_code.label }}:<span class="mark">*</span></td>
+                                        <td>{{ form.decs_code.label }}</span></td>
                                         <td>{{ form.external_code.label }}:</td>
                                         <td>{{ form.nlm_class_number.label }}:</td>
                                     </tr>
                                     <tr>
                                         <td>{{ form.descriptor_ui }}</td>
-                                        <td>{{ form.decs_code }}</td>
+                                        <td>
+                                            <input type="text" id="id_decs_code" name="decs_code" value="{% if form.decs_code.value %}{{ form.decs_code.value }}{% endif %}" readonly="True">
+                                        </td>
                                         <td>{{ form.external_code }}</td>
                                         <td>{{ form.nlm_class_number }}</td>
                                     </tr>

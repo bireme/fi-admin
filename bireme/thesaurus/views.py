@@ -201,7 +201,7 @@ class DescDeleteView(DescUpdate, DeleteView):
 
 
 
-class DescRegisterUpdateView(UpdateView):
+class DescRegisterUpdateView(LoginRequiredView, UpdateView):
     """
     Used as class view to create TermListDesc
     """
@@ -606,7 +606,7 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
 
 
-class ConceptListDescCreateView(CreateView):
+class ConceptListDescCreateView(LoginRequiredView, CreateView):
     """
     Used as class view to create TermListDesc
     """
@@ -672,7 +672,7 @@ class ConceptListDescCreateView(CreateView):
 
 
 
-class ConceptListDescUpdateView(UpdateView):
+class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
     """
     Used as class view to create TermListDesc
     """
@@ -728,7 +728,7 @@ class ConceptListDescUpdateView(UpdateView):
 
 
 
-class TermListDescCreateView(CreateView):
+class TermListDescCreateView(LoginRequiredView, CreateView):
     """
     Used as class view to create TermListDesc
     """
@@ -772,7 +772,7 @@ class TermListDescCreateView(CreateView):
 
 
 
-class TermListDescUpdateView(UpdateView):
+class TermListDescUpdateView(LoginRequiredView, UpdateView):
     """
     Used as class view to create TermListDesc
     """
@@ -957,6 +957,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
             translation = IdentifierQualif.objects.filter(id__in=id_abbrev) # Usado __in pois pode haver mais que um resultado
             context['allowable_qualifiers_objects'] = translation
 
+
             return context
 
 
@@ -1074,7 +1075,7 @@ class QualifDeleteView(QualifUpdate, DeleteView):
 
 
 
-class QualifRegisterUpdateView(UpdateView):
+class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
     """
     Used as class view to create TermListDesc
     """
@@ -1409,7 +1410,7 @@ class QualifCreateView2(QualifConceptTermUpdate, CreateView):
 
 
 
-class ConceptListQualifCreateView(CreateView):
+class ConceptListQualifCreateView(LoginRequiredView, CreateView):
     """
     Used as class view to create TermListDesc
     """
@@ -1473,12 +1474,12 @@ class ConceptListQualifCreateView(CreateView):
 
 
 
-class ConceptListQualifUpdateView(UpdateView):
+class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
     """
     Used as class view to create TermListDesc
     """
     model = IdentifierConceptListQualif
-    template_name = 'thesaurus/qualifer_edit_concept.html'
+    template_name = 'thesaurus/qualifier_edit_concept.html'
     form_class = IdentifierConceptListQualifForm
 
     def get_success_url(self):
@@ -1522,7 +1523,7 @@ class ConceptListQualifUpdateView(UpdateView):
 
 
 
-class TermListQualifCreateView(CreateView):
+class TermListQualifCreateView(LoginRequiredView, CreateView):
     """
     Used as class view to create TermListDesc
     """
@@ -1565,7 +1566,7 @@ class TermListQualifCreateView(CreateView):
 
 
 
-class TermListQualifUpdateView(UpdateView):
+class TermListQualifUpdateView(LoginRequiredView, UpdateView):
     """
     Used as class view to create TermListDesc
     """
