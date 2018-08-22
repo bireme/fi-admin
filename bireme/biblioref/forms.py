@@ -234,31 +234,34 @@ class BiblioRefForm(BetterModelForm):
 
     def clean(self):
         data = self.cleaned_data
+        status = self.cleaned_data.get('status')
         error_messages = []
 
-        for field_name, field_value in self.fields.iteritems():
-            field_check = data.get(field_name)
+        # only apply checks when status is published
+        if status == 1:
+            for field_name, field_value in self.fields.iteritems():
+                field_check = data.get(field_name)
 
-            if isinstance(self.fields[field_name].widget, forms.widgets.Textarea):
-                if '%' in field_check:
-                    self.add_error(field_name, _("The % simbol don't separete occurences"))
+                if isinstance(self.fields[field_name].widget, forms.widgets.Textarea):
+                    if '%' in field_check:
+                        self.add_error(field_name, _("The % simbol don't separete occurences"))
 
-            if isinstance(field_check, basestring):
-                if field_check.strip().endswith('.'):
-                    self.add_error(field_name, _("Point at end of field is not allowed"))
+                if isinstance(field_check, basestring):
+                    if field_check.strip().endswith('.'):
+                        self.add_error(field_name, _("Point at end of field is not allowed"))
 
-        if self.is_visiblefield('individual_author') and self.is_visiblefield('corporate_author'):
-            self.check_author_presence(data, 'individual_author', 'corporate_author')
+            if self.is_visiblefield('individual_author') and self.is_visiblefield('corporate_author'):
+                self.check_author_presence(data, 'individual_author', 'corporate_author')
 
-        if self.is_visiblefield('individual_author_monographic') and self.is_visiblefield('corporate_author_monographic'):
-            self.check_author_presence(data, 'individual_author_monographic', 'corporate_author_monographic')
+            if self.is_visiblefield('individual_author_monographic') and self.is_visiblefield('corporate_author_monographic'):
+                self.check_author_presence(data, 'individual_author_monographic', 'corporate_author_monographic')
 
-        if self.is_visiblefield('individual_author_collection') and self.is_visiblefield('corporate_author_collection'):
-            self.check_author_presence(data, 'individual_author_collection', 'corporate_author_collection')
+            if self.is_visiblefield('individual_author_collection') and self.is_visiblefield('corporate_author_collection'):
+                self.check_author_presence(data, 'individual_author_collection', 'corporate_author_collection')
 
-        if self.is_visiblefield('issue_number') and self.document_type[0] == 'S':
-            if not data.get('volume_serial') and not data.get('issue_number'):
-                self.add_error('volume_serial', _("Volume or issue number mandatory"))
+            if self.is_visiblefield('issue_number') and self.document_type[0] == 'S':
+                if not data.get('volume_serial') and not data.get('issue_number'):
+                    self.add_error('volume_serial', _("Volume or issue number mandatory"))
 
         # Always return the full collection of cleaned data.
         return data
@@ -277,7 +280,7 @@ class BiblioRefForm(BetterModelForm):
         resp_list = ['edt', 'com', 'coord', 'org']
         literature_type = self.document_type[0]
 
-        if data and status != -1 and self.is_LILACS:
+        if data and self.is_LILACS and status == 1:
             occ = 0
             for author in data:
                 occ = occ + 1
@@ -399,7 +402,7 @@ class BiblioRefForm(BetterModelForm):
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
         url_list = []
 
-        if data and status != -1:
+        if data and status == 1:
             occ = 0
             for electronic_address in data:
                 occ = occ + 1
@@ -433,36 +436,38 @@ class BiblioRefForm(BetterModelForm):
     def clean_record_type(self):
         field = 'record_type'
         data = self.cleaned_data[field]
+        status = self.cleaned_data.get('status')
         message = ''
 
-        if self.is_visiblefield(field) and not data:
-            self.add_error(field, _("Mandatory"))
-        elif self.is_LILACS and self.cleaned_data['status'] != -1:
-            if data == 'c':
-                message = _("Printed music in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 'd':
-                message = _("Manuscript music in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 'e':
-                message = _("Printed cartographic material in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 'f':
-                message = _("Manuscript cartographic material in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 'j':
-                message = _("Musical sound recording in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 'k':
-                message = _("Two-dimensional nonprojectable graphic in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 'm':
-                message = _("Computer file in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 'o':
-                message = _("Kit in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 'p':
-                message = _("Mixed material in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 'r':
-                message = _("Three-dimensional artifact or naturally occurring object in the Record Type is incompatible with the LILACS Methodology")
-            elif data == 't':
-                message = _("Manuscript language material in the Record Type is incompatible with the LILACS Methodology")
+        if status == 1:
+            if self.is_visiblefield(field) and not data:
+                self.add_error(field, _("Mandatory"))
+            elif self.is_LILACS:
+                if data == 'c':
+                    message = _("Printed music in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 'd':
+                    message = _("Manuscript music in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 'e':
+                    message = _("Printed cartographic material in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 'f':
+                    message = _("Manuscript cartographic material in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 'j':
+                    message = _("Musical sound recording in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 'k':
+                    message = _("Two-dimensional nonprojectable graphic in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 'm':
+                    message = _("Computer file in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 'o':
+                    message = _("Kit in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 'p':
+                    message = _("Mixed material in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 'r':
+                    message = _("Three-dimensional artifact or naturally occurring object in the Record Type is incompatible with the LILACS Methodology")
+                elif data == 't':
+                    message = _("Manuscript language material in the Record Type is incompatible with the LILACS Methodology")
 
-            if message:
-                self.add_error(field, message)
+                if message:
+                    self.add_error(field, message)
 
         return data
 
@@ -492,7 +497,7 @@ class BiblioRefForm(BetterModelForm):
         record_type = self.cleaned_data.get('record_type')
         status = self.cleaned_data.get('status')
 
-        if self.is_LILACS and record_type == 'a' and status != -1:
+        if self.is_LILACS and record_type == 'a' and status == 1:
             if self.document_type[0] == 'S' and (data != 'p' and data != 'u'):
                 self.add_error(field, _('For articles indexed in LILACS, type of journal must be Journal or Separatum'))
 
@@ -578,7 +583,7 @@ class BiblioRefForm(BetterModelForm):
         data = self.cleaned_data.get(field)
         status = self.cleaned_data.get('status')
 
-        if self.is_visiblefield(field) and status != -1:
+        if self.is_visiblefield(field) and status == 1:
             self.check_all_pontuation(data, field)
 
             title = self.cleaned_data.get('title_monographic')
@@ -600,13 +605,13 @@ class BiblioRefForm(BetterModelForm):
         status = self.cleaned_data.get('status')
         title_languages = []
 
-        if self.is_visiblefield(field) and status != -1:
+        if self.is_visiblefield(field) and status == 1:
             title = self.cleaned_data.get('title')
             if title:
                 title_languages = [t.get('_i') for t in title]
 
             if not(data):
-                if self.is_LILACS and title and not 'en' in title_languages and status != 0:
+                if self.is_LILACS and title and not 'en' in title_languages and status == 1:
                     self.add_error(field, _("Mandatory"))
             else:
                 if self.is_LILACS and 'en' in title_languages:
@@ -645,7 +650,7 @@ class BiblioRefForm(BetterModelForm):
         data = self.cleaned_data[field]
         status = self.cleaned_data.get('status')
 
-        if self.is_visiblefield(field) and (status != -1 or self.document_type == 'S'):
+        if self.is_visiblefield(field) and (status == 1 or self.document_type == 'S'):
             search_year = re.search('[0-9]{4}', data)
             if search_year == None and data != 's.d' and data != 's.f':
                 self.add_error(field, _("Date without year"))
@@ -662,7 +667,7 @@ class BiblioRefForm(BetterModelForm):
         raw_date = self.cleaned_data.get('publication_date')
         status = self.cleaned_data.get('status')
 
-        if self.is_visiblefield(normalized_field) and (status != -1 or self.document_type == 'S'):
+        if self.is_visiblefield(normalized_field) and (status == 1 or self.document_type == 'S'):
             if raw_date != 's.d' and raw_date != 's.f':
                 if not normalized_date:
                     self.add_error(normalized_field, _("Entering information in this field is conditional to filling out publication date field"))
@@ -697,8 +702,9 @@ class BiblioRefForm(BetterModelForm):
     def clean_pages(self):
         field = 'pages'
         data = self.cleaned_data[field]
+        status = self.cleaned_data.get('status')
 
-        if data and self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+        if data and self.is_visiblefield(field) and status == 1:
             if len(data) > 4:
                 self.add_error(field, _('Do not have more than 4 occurrences, use passim'))
             else:
@@ -742,8 +748,9 @@ class BiblioRefForm(BetterModelForm):
     def clean_thesis_dissertation_institution(self):
         field = 'thesis_dissertation_institution'
         data = self.cleaned_data[field]
+        status = self.cleaned_data.get('status')
 
-        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1 and not data:
+        if self.is_visiblefield(field) and status == 1 and not data:
             self.add_error(field, _('Mandatory'))
 
         return data
@@ -753,7 +760,7 @@ class BiblioRefForm(BetterModelForm):
         data = self.cleaned_data[field]
         status = self.cleaned_data.get('status')
 
-        if self.is_visiblefield(field) and status != -1:
+        if self.is_visiblefield(field) and status == 1:
             if not data:
                 self.add_error(field, _('Mandatory'))
             else:
@@ -771,7 +778,7 @@ class BiblioRefForm(BetterModelForm):
         field = 'publication_city'
         data = self.cleaned_data[field]
 
-        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(field) and self.cleaned_data['status'] == 1:
             if not(data):
                 self.add_error(field, _('Mandatory'))
 
@@ -781,7 +788,7 @@ class BiblioRefForm(BetterModelForm):
         field = 'publication_country'
         data = self.cleaned_data[field]
 
-        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(field) and self.cleaned_data['status'] == 1:
             if not(data):
                 if self.cleaned_data['publication_city'] != 's.l':
                     self.add_error(field, _('Entering information in this field is conditional to filling out publication city field'))
@@ -809,7 +816,7 @@ class BiblioRefForm(BetterModelForm):
         status = self.cleaned_data.get('status')
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
 
-        if self.is_visiblefield(field) and status != -1:
+        if self.is_visiblefield(field) and status == 1:
             if not data:
                 self.add_error(field, _('Mandatory'))
             else:
@@ -824,7 +831,7 @@ class BiblioRefForm(BetterModelForm):
         field = 'publisher'
         data = self.cleaned_data[field]
 
-        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(field) and self.cleaned_data['status'] == 1:
             if not data:
                 self.add_error(field, _('Mandatory'))
 
@@ -834,7 +841,7 @@ class BiblioRefForm(BetterModelForm):
         field = 'indexed_database'
         data = self.cleaned_data[field]
 
-        if self.is_visiblefield(field) and self.cleaned_data['status'] != -1:
+        if self.is_visiblefield(field) and self.cleaned_data['status'] == 1:
             if not data:
                 self.add_error(field, _('Mandatory'))
 
