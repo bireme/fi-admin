@@ -489,6 +489,8 @@ class Act(Generic, AuditLog):
     local_descriptors = models.TextField(_("Local descriptors"), blank=True)
     # descritores não autorizados
     local_geo_descriptors = models.TextField(_("Local geographic descriptors"), blank=True)
+    # responsible cooperative center
+    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
     def status_label(self):
         status_dict = dict(STATUS_CHOICES)
