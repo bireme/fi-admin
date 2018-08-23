@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-23 10:15-0300\n"
-"PO-Revision-Date: 2018-08-23 10:17-0306\n"
+"PO-Revision-Date: 2018-08-23 15:28-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2311,7 +2311,7 @@ msgstr "Informe el nombre individual o institucional"
 
 #: oer/field_definitions.py:54 oer/models.py:465
 msgid "Creator"
-msgstr "Criador"
+msgstr "Creador"
 
 #: oer/field_definitions.py:58 oer/models.py:467
 msgid "Contributor"
@@ -2444,7 +2444,7 @@ msgstr "Licencia de derechos"
 
 #: oer/models.py:499
 msgid "Free keywords"
-msgstr "Palabras-llave libres"
+msgstr "Palabras claves libres"
 
 #: oer/models.py:501
 msgid "Duration"
