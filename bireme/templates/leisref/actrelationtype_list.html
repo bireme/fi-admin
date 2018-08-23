@@ -46,17 +46,23 @@
         <thead>
             <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
             <th><a href="javascript:orderby('name');" id="id_title">{% trans "Name" %}</a></th>
-            <th>{% trans "Actions" %}</th>
+            <th><a href="javascript:orderby('region');" id="id_title">{% trans "Country/Region" %}</a></th>
+            {% if user.is_superuser %}
+                <th>{% trans "Actions" %}</th>
+            {% endif %}
         </thead>
         <tbody>
             {% for aux in aux_list %}
                 <tr>
-                    <td><a href="{% url 'edit_act_reltype' aux.id %}">{{ aux.id }}</a></td>
+                    <td>{{ aux.id }}</td>
                     <td>{{ aux.name }}</td>
-                    <td>
-                        <a href="{% url 'edit_act_reltype' aux.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                        <a href="{% url 'delete_act_reltype' aux.id %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
-                    </td>
+                    <td>{% if aux.scope_region != None %}{{ aux.scope_region }}{% endif %}</td>
+                    {% if user.is_superuser %}
+                        <td>
+                            <a href="{% url 'edit_act_reltype' aux.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                            <a href="{% url 'delete_act_reltype' aux.id %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>

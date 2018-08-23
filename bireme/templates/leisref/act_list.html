@@ -70,6 +70,15 @@
                                 <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
                                 <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
                             </select>
+
+                            {% trans "Results per page" %}:
+                            <select name="results_per_page" class="input-small">
+                                <option {% if actions.results_per_page == '20' %}selected="true"{% endif %} value="20">20</option>
+                                <option {% if actions.results_per_page == '60' %}selected="true"{% endif %} value="60">60</option>
+                                <option {% if actions.results_per_page == '100' %}selected="true"{% endif %} value="100">100</option>
+                                <option {% if actions.results_per_page == '200' %}selected="true"{% endif %} value="200">200</option>
+                            </select>
+
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
 
                             <a href="#" onclick="$('#help_modal_title').html('{% trans 'Search' %}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/leisref/search/" class="field_with_help"><i class='icon-info-sign'></i></a>
@@ -83,7 +92,6 @@
                                         <option value="{{ country.id }}" {% if actions.filter_country|add:"0" == country.id %}selected="true"{% endif %}>{{ country }}</option>
                                     {% endfor %}
                                 </select>
-
                                 <button class="btn" type="submit" name="apply_filters" value="true"><i class='icon-refresh'> {% trans "Apply" %}</i></button>
                             </div>
 

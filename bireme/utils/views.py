@@ -35,6 +35,7 @@ ACTIONS = {
     'filter_country': "",
     'document_type': "",
     'review_type': "",
+    'results_per_page': "",
 }
 
 def cookie_lang(request):

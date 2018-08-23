@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
@@ -73,6 +73,8 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         if self.restrict_by_user and self.actions['filter_owner'] != "*":
             object_list = object_list.filter(created_by=self.request.user)
 
+        if self.actions['results_per_page'] != '':
+            self.paginate_by = self.actions['results_per_page']
 
         return object_list
 
@@ -509,6 +511,7 @@ class ActTypeListView(LeisRefListView, ListView):
     context_object_name = "aux_list"
     search_field = "name"
     restrict_by_user = False
+    paginate_by = 999
 
 
 class ActTypeUpdate(GenericUpdateWithOneFormset):
@@ -561,6 +564,7 @@ class ActOrganListView(LeisRefListView, ListView):
     context_object_name = "aux_list"
     search_field = "name"
     restrict_by_user = False
+    paginate_by = 999
 
 
 class ActOrganUpdate(GenericUpdateWithOneFormset):
@@ -613,6 +617,7 @@ class ActSourceListView(LeisRefListView, ListView):
     context_object_name = "aux_list"
     search_field = "name"
     restrict_by_user = False
+    paginate_by = 999
 
 
 class ActSourceUpdate(GenericUpdateWithOneFormset):
@@ -665,6 +670,7 @@ class ActRelTypeListView(LeisRefListView, ListView):
     context_object_name = "aux_list"
     search_field = "name"
     restrict_by_user = False
+    paginate_by = 999
 
 
 class ActRelTypeUpdate(GenericUpdateWithOneFormset):
@@ -716,6 +722,7 @@ class ActStateListView(LeisRefListView, ListView):
     context_object_name = "aux_list"
     search_field = "name"
     restrict_by_user = False
+    paginate_by = 999
 
 
 class ActStateUpdate(GenericUpdateWithOneFormset):
@@ -767,6 +774,7 @@ class ActCityListView(LeisRefListView, ListView):
     context_object_name = "aux_list"
     search_field = "name"
     restrict_by_user = False
+    paginate_by = 999
 
 
 class ActCityUpdate(GenericUpdateWithOneFormset):
@@ -818,6 +826,7 @@ class ActCollectionListView(LeisRefListView, ListView):
     context_object_name = "aux_list"
     search_field = "name"
     restrict_by_user = False
+    paginate_by = 999
 
 
 class ActCollectionUpdate(GenericUpdateWithOneFormset):
