@@ -116,10 +116,21 @@ class ActSourceAdmin(GenericAdmin):
     model = ActSource
     inlines = [ActSourceLocalAdmin, ]
 
+
+class ActCountryRegionLocalAdmin(admin.TabularInline):
+    model = ActCountryRegionLocal
+    extra = 1
+
+
+class ActCountryRegionAdmin(GenericAdmin):
+    model = ActCountryRegion
+    inlines = [ActCountryRegionLocalAdmin, ]
+
+
 admin.site.register(Act, ActAdmin)
 admin.site.register(ActType, ActTypeAdmin)
 admin.site.register(ActScope, ActScopeAdmin)
-admin.site.register(ActCountryRegion)
+admin.site.register(ActCountryRegion, ActCountryRegionAdmin)
 admin.site.register(ActOrganIssuer, ActOrganIssuerAdmin)
 admin.site.register(ActRelationType, ActRelationTypeAdmin)
 admin.site.register(ActCollection, ActCollectionAdmin)
