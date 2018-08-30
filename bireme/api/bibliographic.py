@@ -224,20 +224,31 @@ class ReferenceResource(CustomResource):
                         bundle.data[field.name] = copy(field_value)
 
         if library_records:
-            # add fields of library records to bundle
-            local_databases = []
             for library in library_records:
                 for field in library._meta.get_fields():
-                    field_value = getattr(library, field.name, {})
-                    if field.name == 'database':
-                        local_db_list = [line.strip() for line in field_value.split('\n') if line.strip()]
-                        local_databases.extend(local_db_list)
-                    elif field.name != 'source' and field.name != 'id' and field.name != 'cooperative_center_code':
-                        bundle.data[field.name] = copy(field_value)
+                    # ignore control fields
+                    if field.name != 'source' and field.name != 'id' and field.name != 'cooperative_center_code':
+                        field_value = getattr(library, field.name, {})
+                        if field_value:
+                            # convert lines of database field in list
+                            if field.name == 'database':
+                                field_value = [line.strip() for line in field_value.split('\n') if line.strip()]
 
-            if local_databases:
-                # add local databases to database field (v04)
-                bundle.data['database'] = local_databases
+                            # check if field already in bundle
+                            if field.name in bundle.data:
+                                # if field in bundle check is a list, otherwise convert to list
+                                if type(bundle.data[field.name]) is not list:
+                                    previous_value = bundle.data[field.name]
+                                    bundle.data[field.name] = list(previous_value)
+                            else:
+                                bundle.data[field.name] = list()
+
+                            # append field_value to bundle
+                            if type(field_value) is list:
+                                bundle.data[field.name].extend(field_value)
+                            else:
+                                bundle.data[field.name].append(field_value)
+
 
         return bundle
 
