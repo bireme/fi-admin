@@ -4,6 +4,7 @@ from haystack.exceptions import SkipDocument
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceLocal
 from attachments.models import Attachment
+from title.models import Title
 from django.contrib.contenttypes.models import ContentType
 from utils.models import AuxCode
 
@@ -23,6 +24,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     database = indexes.MultiValueField()
     publication_language = indexes.MultiValueField()
     publication_year = indexes.CharField()
+    publication_country = indexes.CharField()
     journal = indexes.CharField()
 
     mj = indexes.MultiValueField()
@@ -103,6 +105,17 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_publication_year(self, obj):
         return obj.source.publication_date_normalized[:4]
+
+    def prepare_publication_country(self, obj):
+        if obj.source:
+            title = Title.objects.filter(shortened_title=obj.source.title_serial).first()
+            if title:
+                country_list = []
+                for country in title.country.all():
+                    country_translations = "|".join(country.get_translations())
+                    country_list.append(country_translations)
+
+                return country_list
 
     def prepare_thematic_area(self, obj):
         return [rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
