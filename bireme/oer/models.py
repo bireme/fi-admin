@@ -538,6 +538,22 @@ class RelationType(Generic):
     label_active = models.CharField(_("Active form"), max_length=155)
     label_passive = models.CharField(_("Passive form"), max_length=155)
 
+    def get_label_translations(self, field):
+        translation_list = ["%s~%s" % (self.language, getattr(self, field))]
+
+        translation = RelationTypeLocal.objects.filter(relation_type=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, getattr(trans, field)) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
+    def get_label_active_translations(self):
+        return self.get_label_translations('label_active')
+
+    def get_label_passive_translations(self):
+        return self.get_label_translations('label_passive')
+
     def get_label(self, field):
         lang_code = get_language()
         translation = RelationTypeLocal.objects.filter(relation_type=self.id, language=lang_code)

@@ -30,6 +30,8 @@ class OERIndex(indexes.SearchIndex, indexes.Indexable):
     link = indexes.MultiValueField()
     cvsp_node = indexes.CharField(model_attr='cvsp_node')
     cooperative_center_code = indexes.CharField(model_attr='cooperative_center_code')
+    relationship_active = indexes.CharField()
+    relationship_passive = indexes.CharField()
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
@@ -125,6 +127,31 @@ class OERIndex(indexes.SearchIndex, indexes.Indexable):
 
         if electronic_address:
             return electronic_address
+
+
+    def prepare_relationship_active(self, obj):
+        active_relationships = []
+        oer_list = Relationship.objects.filter(oer_related=obj.pk)
+        for oer in oer_list:
+            label_active = "|".join(oer.relation_type.get_label_active_translations())
+            ref_lnk = "oer.oer.{0}".format(oer.oer_referred.id) if oer.oer_referred.status in [-2, 1] else ''
+            if ref_lnk:
+                active_relation = u"{0}@{1}@{2}".format(label_active, oer.oer_referred, ref_lnk)
+                active_relationships.append(active_relation)
+
+        return active_relationships
+
+    def prepare_relationship_passive(self, obj):
+        passive_relationships = []
+        oer_list = Relationship.objects.filter(oer_referred=obj.pk)
+        for oer in oer_list:
+            label_passive = "|".join(oer.relation_type.get_label_passive_translations())
+            ref_lnk = "oer.oer.{0}".format(oer.oer_related.id) if oer.oer_related.status in [-2, 1] else ''
+            if ref_lnk:
+                passive_relation = u"{0}@{1}@{2}".format(label_passive, oer.oer_related,  ref_lnk)
+                passive_relationships.append(passive_relation)
+
+        return passive_relationships
 
     def prepare_created_date(self, obj):
         if obj.created_time:
