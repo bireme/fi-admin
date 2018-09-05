@@ -170,6 +170,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     reference_title = indexes.MultiValueField(null=True)
     author = indexes.MultiValueField(null=True)
     reference_abstract = indexes.MultiValueField()
+    abstract_language = indexes.MultiValueField()
     link = indexes.MultiValueField()
     publication_type = indexes.CharField()
     indexed_database = indexes.MultiValueField()
@@ -230,6 +231,19 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_reference_abstract(self, obj):
         if obj.abstract:
             return self.get_field_values(obj.abstract)
+
+    def prepare_abstract_language(self, obj):
+        # export a field with language identification (pt, es, en) and abstract text separate by pipe |
+        if obj.abstract:
+            ab_list = obj.abstract
+            ab_lang = list()
+            if type(ab_list) != list:
+                ab_list = json.loads(obj.abstract)
+
+            for ab in ab_list:
+                 ab_lang.append(u"{}|{}".format(ab.get('_i'), ab.get('text')))
+
+            return ab_lang
 
     def prepare_publication_language(self, obj):
         lang_list = []
