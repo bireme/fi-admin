@@ -121,7 +121,7 @@
        <str name="mlt.mindf">2</str>
        <str name="mlt.minwl">3</str>
        <str name="mlt.maxqt">100</str>
-       <str name="mlt.fl">title,abstract,link,descriptor</str>
+       <str name="mlt.fl">django_ct,title,abstract,link,descriptor</str>
      </lst>
 
      <lst name="invariants">
