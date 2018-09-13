@@ -169,7 +169,7 @@ class OnlineResources(models.Model, AuditLog):
         return self.title
 
     def __unicode__(self):
-        return self.title.title
+        return self._meta.verbose_name.title()
 
 class TitleVariance(models.Model, AuditLog):
 
@@ -247,7 +247,7 @@ class IndexRange(models.Model, AuditLog):
         return self.title
 
     def __unicode__(self):
-        return self.index_code.name
+        return self._meta.verbose_name.title()
 
 class Audit(models.Model, AuditLog):
 
