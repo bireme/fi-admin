@@ -24,11 +24,9 @@
                 </td>
                 <td valign="top">
                     <ul>
-                    {% for identifier_concept in identifierconceptlist_objects %}
-                        {% if identifier_concept.termqualif__term_string and identifier_concept.termqualif__concept_preferred_term == 'Y' and identifier_concept.termqualif__record_preferred_term == 'Y' %}
-                            {{ identifier_concept.termqualif__term_string }} ({{identifier_concept.termqualif__language_code}})<br>
-                        {% endif %}
-                    {% endfor %}
+                        {% for obj in term_string_info_preferred_objects %}
+                            {{ obj.termqualif__term_string }} ({{ obj.termqualif__language_code }})<br>
+                        {% endfor %}
                     </ul>
                 </td>
             </tr>
@@ -54,15 +52,11 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Qualifier record" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
-                            {% if obj.termqualif__term_string and obj.termqualif__concept_preferred_term == 'Y' and obj.termqualif__record_preferred_term == 'Y' %}
-                                {{ obj.termqualif__term_string }} ({{obj.termqualif__language_code}})
-                                <a href="{% url 'edit_register_qualif' obj.identifier_id %}/?string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}"><i class="icon-pencil"></i></a>
-                                <br>
-
-                            {% endif %}
+                        {% for obj in term_string_info_preferred_objects %}
+                            {{ obj.termqualif__term_string }} ({{ obj.termqualif__language_code }})
+                            <a href="{% url 'edit_register_qualif' obj.identifier_id %}/?string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}"><i class="icon-pencil"></i></a>
+                            <br>
                         {% endfor %}
-
                         </td>
                     </tr>
 
@@ -91,7 +85,7 @@
                     </tr>
 
                     <tr>
-                        <td valign="top" align="right" width="15%"><b>{% trans "DeCS ID" %}</b></td>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Thesaurus ID" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
                         {% for obj in id_register_objects %}
@@ -106,7 +100,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Annotation" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in id_register_objects %}
+                        {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptionqualif__annotation %}
                                     {{ obj.descriptionqualif__annotation }} ({{ obj.descriptionqualif__language_code }})<br>
@@ -120,7 +114,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Scope Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
+                        {% for obj in scope_note_objects %}
                             {% if obj.conceptqualif__scope_note %}
                                 {% ifchanged %}
                                     {{ obj.conceptqualif__scope_note }} ({{ obj.conceptqualif__language_code }})<br>
@@ -148,12 +142,10 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Entry Term(s)" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
-                            {% if obj.termqualif__concept_preferred_term == 'Y' %}
-                                {{ obj.termqualif__term_string }}
-                                {% if obj.termqualif__language_code %}({{ obj.termqualif__language_code }}){% endif %}
-                                <br>
-                            {% endif %}
+                        {% for obj in entry_terms_objects %}
+                            {{ obj.termqualif__term_string }}
+                            {% if obj.termqualif__language_code %}({{ obj.termqualif__language_code }}){% endif %}
+                            <br>
                         {% endfor %}
                         </td>
                     </tr>
@@ -200,7 +192,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Online Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in id_register_objects %}
+                        {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptionqualif__online_note %}
                                     {{ obj.descriptionqualif__online_note }} ({{ obj.descriptionqualif__language_code }})<br>
@@ -214,7 +206,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "History Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in id_register_objects %}
+                        {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptionqualif__history_note %}
                                     {{ obj.descriptionqualif__history_note }} ({{ obj.descriptionqualif__language_code }})<br>
@@ -230,7 +222,7 @@
                         <td valign="top">
                         {% for obj in id_register_objects %}
                             {% ifchanged %}
-                                {{ obj.date_established }}
+                                {{ obj.date_established|default_if_none:"" }}
                             {% endifchanged %}
                         {% endfor %}
                         </td>
@@ -242,7 +234,7 @@
                         <td valign="top">
                         {% for obj in id_register_objects %}
                             {% ifchanged %}
-                                {{ obj.date_created }}
+                                {{ obj.date_created|default_if_none:"" }}
                             {% endifchanged %}
                         {% endfor %}
                         </td>
@@ -254,7 +246,7 @@
                         <td valign="top">
                         {% for obj in id_register_objects %}
                             {% ifchanged %}
-                                {{ obj.date_revised }}
+                                {{ obj.date_revised|default_if_none:"" }}
                             {% endifchanged %}
                         {% endfor %}
                         </td>
@@ -274,7 +266,8 @@
             <div id="tab-concepts" class="tab-pane">
 
                 <ul>
-                    <a href="{% url 'create_concept_qualif' %}/?identifier_id={{ id_concept_new.identifier_id }}"><i class='icon-file'></i>&nbsp;{% trans "Add concept" %}</a>
+                    <a href="{% url 'create_concept_qualif' %}/?identifier_id={{ id_concept_new.identifier_id }}">
+                    <i class='icon-file'></i>&nbsp;{% trans "Add concept" %}</a>
                 </ul>
 
                 {% for obj in identifierconceptlist_objects %}
@@ -291,7 +284,7 @@
                         {% endifchanged %}
                     {% endif %}
 
-                    {% if obj.termqualif__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' %}
+                    {% if obj.termqualif__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' and obj.termqualif__language_code = 'en' %}
                         <font color="gray"><i>&nbsp;{% trans "Narrower" %}</i></font>
                         <!-- <a href="#"><i class="icon-pencil"></i></a> -->
                         <a href="{% url 'edit_concept_qualif' obj.id %}/?string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&id={{ obj.termqualif__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
@@ -314,6 +307,7 @@
                                 <b>{% trans "Term" %}</b>:
                             {% endifchanged %}
                             
+                            {% ifchanged obj.termqualif__id %}
                             <ul>
                                 <a class="accordion-toggle" data-toggle="collapse" data-target="#term_{{ obj.termqualif__id }}">
                                     {{ obj.termqualif__term_string }}
@@ -338,7 +332,7 @@
                                 </ul>
 
                             </ul>
-
+                            {% endifchanged %}
                         </ul>
 
                     <!-- </div> -->

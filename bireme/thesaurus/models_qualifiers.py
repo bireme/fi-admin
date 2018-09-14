@@ -27,7 +27,8 @@ class IdentifierQualif(Generic, AuditLog):
     qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True)
 
     # BIREME Qualifier Unique Identifier
-    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True, unique=True)
+    # decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True, unique=True)
+    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True)
 
     # External Qualifier Unique Identifier
     external_code = models.CharField(_("External Qualifier UI"), max_length=250, blank=True)
@@ -49,7 +50,8 @@ class IdentifierQualif(Generic, AuditLog):
 
         concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=self.id).values('id')
         id_concept = concepts_of_register[0].get('id')
-        translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code)
+        # translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code)
+        translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y')
 
         if translation:
             # treatment1 = translation[0].term_string.replace('/','').upper()

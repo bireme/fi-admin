@@ -852,12 +852,11 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'date_revised',
                                                 'date_established',
                                                 'abbreviation',
+                                            )
 
-                                                # SeeRelatedListDesc
-                                                'relateddesc__identifier_id',
-                                                'relateddesc__term_string',
-                                                'relateddesc__descriptor_ui',
-
+            context['description_objects'] = IdentifierDesc.objects.filter(
+                                            id=id_concept,
+                                            ).values(
                                                 # DescriptionDesc
                                                 'descriptiondesc__identifier_id',
                                                 'descriptiondesc__language_code',
@@ -866,22 +865,6 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'descriptiondesc__online_note',
                                                 'descriptiondesc__public_mesh_note',
                                                 'descriptiondesc__consider_also',
-
-                                                # TreeNumbersListDesc
-                                                # 'dtreenumbers__identifier_id',
-                                                # 'dtreenumbers__tree_number',
-
-                                                # PharmacologicalActionList
-                                                # 'pharmacodesc__identifier_id',
-                                                # 'pharmacodesc__term_string',
-                                                # 'pharmacodesc__descriptor_ui',
-                                                # 'pharmacodesc__language_code',
-
-                                                # # PreviousIndexingListDesc
-                                                # 'previousdesc__identifier_id',
-                                                # 'previousdesc__previous_indexing',
-                                                # 'previousdesc__language_code',
-
                                             )
 
             # Usado para criar lista de Indexacao Previa
@@ -923,6 +906,41 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'relateddesc__descriptor_ui',
                                             ).distinct().order_by('relateddesc__term_string')
 
+            context['term_string_info_preferred_objects'] = IdentifierConceptListDesc.objects.filter(
+                                            identifier=id_concept,termdesc__concept_preferred_term='Y',termdesc__record_preferred_term='Y',
+                                            ).order_by('identifier_id',
+                                                        'termdesc__identifier_concept_id',
+                                                        '-preferred_concept',
+                                                        '-termdesc__concept_preferred_term',
+                                                        'termdesc__language_code',
+                                                        'termdesc__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'termdesc__term_string',
+                                                    'termdesc__language_code',
+                                                    'identifier_id',
+                                            )
+
+            context['entry_terms_objects'] = IdentifierConceptListDesc.objects.filter(
+                                            identifier=id_concept,termdesc__record_preferred_term='N',
+                                            ).order_by('identifier_id',
+                                                        'termdesc__language_code',
+                                                        'termdesc__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'termdesc__id',
+                                                    'termdesc__term_string',
+                                                    'termdesc__language_code',
+                                            )
+
+            context['scope_note_objects'] = IdentifierConceptListDesc.objects.filter(
+                                            identifier=id_concept,preferred_concept='Y',
+                                            ).order_by('identifier_id',
+                                            ).values(
+                                                    'conceptdesc__language_code',
+                                                    'conceptdesc__scope_note',
+                                            ).distinct()
+
             # Usado para mostrar informações de conceitos e termos
             context['identifierconceptlist_objects'] = IdentifierConceptListDesc.objects.filter(
                                             identifier=id_concept,
@@ -959,13 +977,13 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                     'termdesc__date_created',
                                                     'termdesc__date_altered',
                                                     'termdesc__historical_annotation',
-                                            )
+                                            ).distinct()
 
             # Traz abbreviation e term_string do idioma da interface no momento
             id_abbrev = IdentifierDesc.objects.filter(id=id_concept).values('abbreviation')
-            translation = IdentifierQualif.objects.filter(id__in=id_abbrev) # Usado __in pois pode haver mais que um resultado
+            translation = IdentifierQualif.objects.filter(id__in=id_abbrev).order_by('abbreviation') # Usado __in pois pode haver mais que um resultado
+            
             context['allowable_qualifiers_objects'] = translation
-
 
             # Informacoes para log
             # Registro
@@ -976,15 +994,12 @@ class PageViewDesc(LoginRequiredView, DetailView):
             id_identifierdesc = IdentifierDesc.objects.filter(id=id_concept).values('id')
             context['id_identifierdesc'] = id_identifierdesc[0].get('id')
 
-
             # # Concept e Term
             # id_ctype_identifierdesc = ContentType.objects.filter(model='identifierdesc').values('id')
             # context['id_ctype_identifierdesc'] = id_ctype_identifierdesc[0].get('id')
             # # ID do registro
             # id_identifierdesc = IdentifierDesc.objects.filter(id=id_concept).values('id')
             # context['id_identifierdesc'] = id_identifierdesc[0].get('id')
-
-
 
             return context
 
@@ -1668,18 +1683,19 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                 'date_revised',
                                                 'date_established',
 
+
+                                            )
+
+            context['description_objects'] = IdentifierQualif.objects.filter(
+                                            id=id_concept,
+                                            ).values(
                                                 # DescriptionQualif
                                                 'descriptionqualif__identifier_id',
                                                 'descriptionqualif__language_code',
                                                 'descriptionqualif__annotation',
                                                 'descriptionqualif__history_note',
                                                 'descriptionqualif__online_note',
-
-                                                # TreeNumbersListQualif
-                                                # 'qtreenumbers__identifier_id',
-                                                # 'qtreenumbers__tree_number',
                                             )
-
 
             # Usado para criar lista de tree number
             context['tree_numbers_objects'] = IdentifierQualif.objects.filter(
@@ -1690,6 +1706,40 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                 'qtreenumbers__tree_number',
                                             ).distinct().order_by('qtreenumbers__tree_number')
 
+            context['term_string_info_preferred_objects'] = IdentifierConceptListQualif.objects.filter(
+                                            identifier=id_concept,termqualif__concept_preferred_term='Y',termqualif__record_preferred_term='Y',
+                                            ).order_by('identifier_id',
+                                                        'termqualif__identifier_concept_id',
+                                                        '-preferred_concept',
+                                                        '-termqualif__concept_preferred_term',
+                                                        'termqualif__language_code',
+                                                        'termqualif__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'termqualif__term_string',
+                                                    'termqualif__language_code',
+                                                    'identifier_id',
+                                            )
+
+            context['entry_terms_objects'] = IdentifierConceptListQualif.objects.filter(
+                                            identifier=id_concept,termqualif__record_preferred_term='N',
+                                            ).order_by('identifier_id',
+                                                        'termqualif__language_code',
+                                                        'termqualif__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'termqualif__id',
+                                                    'termqualif__term_string',
+                                                    'termqualif__language_code',
+                                            )
+
+            context['scope_note_objects'] = IdentifierConceptListQualif.objects.filter(
+                                            identifier=id_concept,preferred_concept='Y',
+                                            ).order_by('identifier_id',
+                                            ).values(
+                                                    'conceptqualif__language_code',
+                                                    'conceptqualif__scope_note',
+                                            ).distinct()
 
             # Usado para mostrar informações de conceitos e termos
             context['identifierconceptlist_objects'] = IdentifierConceptListQualif.objects.filter(
@@ -1727,7 +1777,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                     'termqualif__date_created',
                                                     'termqualif__date_altered',
                                                     'termqualif__historical_annotation',
-                                            )
+                                            ).distinct()
 
             # Informacoes para log
             # Registro

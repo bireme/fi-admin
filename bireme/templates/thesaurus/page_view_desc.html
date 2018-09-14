@@ -24,11 +24,9 @@
                 </td>
                 <td valign="top">
                     <ul>
-                    {% for identifier_concept in identifierconceptlist_objects %}
-                        {% if identifier_concept.termdesc__term_string and identifier_concept.termdesc__concept_preferred_term == 'Y' and identifier_concept.termdesc__record_preferred_term == 'Y' %}
-                            {{ identifier_concept.termdesc__term_string }} ({{identifier_concept.termdesc__language_code}})<br>
-                        {% endif %}
-                    {% endfor %}
+                        {% for obj in term_string_info_preferred_objects %}
+                            {{ obj.termdesc__term_string }} ({{ obj.termdesc__language_code }})<br>
+                        {% endfor %}
                     </ul>
                 </td>
             </tr>
@@ -59,14 +57,11 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Descriptor record" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
-                            {% if obj.termdesc__term_string and obj.termdesc__concept_preferred_term == 'Y' and obj.termdesc__record_preferred_term == 'Y' %}
-                                {{ obj.termdesc__term_string }} ({{obj.termdesc__language_code}})
-                                <a href="{% url 'edit_register_desc' obj.identifier_id %}/?string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}"><i class="icon-pencil"></i></a>
-                                <br>
-                            {% endif %}
+                        {% for obj in term_string_info_preferred_objects %}
+                            {{ obj.termdesc__term_string }} ({{ obj.termdesc__language_code }})
+                            <a href="{% url 'edit_register_desc' obj.identifier_id %}/?string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}"><i class="icon-pencil"></i></a>
+                            <br>
                         {% endfor %}
-
                         </td>
                     </tr>
 
@@ -95,7 +90,7 @@
                     </tr>
 
                     <tr>
-                        <td valign="top" align="right" width="15%"><b>{% trans "DeCS ID" %}</b></td>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Thesaurus ID" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
                         {% for obj in id_register_objects %}
@@ -110,7 +105,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Annotation" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in id_register_objects %}
+                        {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptiondesc__annotation %}
                                     {{ obj.descriptiondesc__annotation }} ({{ obj.descriptiondesc__language_code }})<br>
@@ -124,7 +119,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Scope Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
+                        {% for obj in scope_note_objects %}
                             {% if obj.conceptdesc__scope_note %}
                                 {% ifchanged %}
                                     {{ obj.conceptdesc__scope_note }} ({{ obj.conceptdesc__language_code }})<br>
@@ -138,12 +133,10 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Entry Term(s)" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
-                            {% if obj.termdesc__record_preferred_term != 'Y' %}
-                                {{ obj.termdesc__term_string }}
-                                {% if obj.termdesc__language_code %}({{ obj.termdesc__language_code }}){% endif %}
-                                <br>
-                            {% endif %}
+                        {% for obj in entry_terms_objects %}
+                            {{ obj.termdesc__term_string }}
+                            {% if obj.termdesc__language_code %}({{ obj.termdesc__language_code }}){% endif %}
+                            <br>
                         {% endfor %}
                         </td>
                     </tr>
@@ -210,7 +203,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Public MeSH Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in id_register_objects %}
+                        {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptiondesc__public_mesh_note %}
                                     {{ obj.descriptiondesc__public_mesh_note }} ({{ obj.descriptiondesc__language_code }})<br>
@@ -224,7 +217,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Online Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in id_register_objects %}
+                        {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptiondesc__online_note %}
                                     {{ obj.descriptiondesc__online_note }} ({{ obj.descriptiondesc__language_code }})<br>
@@ -238,7 +231,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "History Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in id_register_objects %}
+                        {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptiondesc__history_note %}
                                     {{ obj.descriptiondesc__history_note }} ({{ obj.descriptiondesc__language_code }})<br>
@@ -266,7 +259,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Consider Also" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in id_register_objects %}
+                        {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptiondesc__consider_also %}
                                     {{ obj.descriptiondesc__consider_also }} ({{ obj.descriptiondesc__language_code }})<br>
@@ -282,7 +275,7 @@
                         <td valign="top">
                         {% for obj in id_register_objects %}
                             {% ifchanged %}
-                                {{ obj.date_established }}
+                                {{ obj.date_established|default_if_none:"" }}
                             {% endifchanged %}
                         {% endfor %}
                         </td>
@@ -294,7 +287,7 @@
                         <td valign="top">
                         {% for obj in id_register_objects %}
                             {% ifchanged %}
-                                {{ obj.date_created }}
+                                {{ obj.date_created|default_if_none:"" }}
                             {% endifchanged %}
                         {% endfor %}
                         </td>
@@ -306,7 +299,7 @@
                         <td valign="top">
                         {% for obj in id_register_objects %}
                             {% ifchanged %}
-                                {{ obj.date_revised }}
+                                {{ obj.date_revised|default_if_none:"" }}
                             {% endifchanged %}
                         {% endfor %}
                         </td>
@@ -360,7 +353,7 @@
                         {% endifchanged %}
                     {% endif %}
 
-                    {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' %}
+                    {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' and obj.termdesc__language_code = 'en' %}
                         <font color="gray"><i>&nbsp;{% trans "Narrower" %}</i></font>
                         <!-- <a href="#"><i class="icon-pencil"></i></a> -->
                         <a href="{% url 'edit_concept_desc' obj.id %}/?string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
@@ -383,6 +376,7 @@
                                 <b>{% trans "Term" %}</b>:
                             {% endifchanged %}
                             
+                            {% ifchanged obj.termdesc__id %}
                             <ul>
                                 <a class="accordion-toggle" data-toggle="collapse" data-target="#term_{{ obj.termdesc__id }}">
                                     {{ obj.termdesc__term_string }}
@@ -407,7 +401,7 @@
                                 </ul>
 
                             </ul>
-
+                            {% endifchanged %}
                         </ul>
 
                     <!-- </div> -->
