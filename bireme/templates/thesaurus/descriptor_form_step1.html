@@ -181,6 +181,12 @@
                             <fieldset id="pharmaco">
 
                                 <table>
+                                    <tr>
+                                        <td>{% trans "String" %}:</td>
+                                        <td>{% trans "Descriptor UI" %}:</td>
+                                    </tr>
+
+
                                     {{ formset_pharmaco.management_form }}
 
                                     {% for form in formset_pharmaco %}

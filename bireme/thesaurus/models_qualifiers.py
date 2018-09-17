@@ -49,15 +49,16 @@ class IdentifierQualif(Generic, AuditLog):
         lang_code = get_language()
 
         concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=self.id).values('id')
-        id_concept = concepts_of_register[0].get('id')
-        # translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code)
-        translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y')
+        if concepts_of_register:
+            id_concept = concepts_of_register[0].get('id')
+            # translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code)
+            translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y')
 
-        if translation:
-            # treatment1 = translation[0].term_string.replace('/','').upper()
-            treatment1 = translation[0].term_string.replace('/','')
-            # return '%s%s%s' % (self.abbreviation,' - ',treatment1)
-            return '%s%s%s%s' % (treatment1,' (',self.abbreviation,')')
+            if translation:
+                # treatment1 = translation[0].term_string.replace('/','').upper()
+                treatment1 = translation[0].term_string.replace('/','')
+                # return '%s%s%s' % (self.abbreviation,' - ',treatment1)
+                return '%s%s%s%s' % (treatment1,' (',self.abbreviation,')')
         else:
             return '%s%s%s' % ('Description without translation (',self.abbreviation,')')
 
