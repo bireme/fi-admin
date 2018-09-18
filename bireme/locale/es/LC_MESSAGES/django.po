@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-23 10:15-0300\n"
-"PO-Revision-Date: 2018-08-23 15:28-0306\n"
+"PO-Revision-Date: 2018-09-14 17:59-0306\n"
 "Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3225,10 +3225,9 @@ msgid "Record created in"
 msgstr "Registro creado en"
 
 #: templates/biblioref/referenceanalytic_form.html:214
-#, fuzzy
 #| msgid "Cooperative center code"
 msgid "Indexer cooperative center code"
-msgstr "Código del centro cooperante"
+msgstr "Código del centro indizador"
 
 #: templates/biblioref/referenceanalytic_form.html:221
 #: templates/biblioref/referencesource_form.html:128
@@ -4348,7 +4347,7 @@ msgstr "Número final"
 #, fuzzy
 #| msgid "Cooperative center code"
 msgid "Indexer center code"
-msgstr "Código del centro cooperante"
+msgstr "Código del centro indizador"
 
 #: templates/title/form_preview.html:195 templates/title/title_form.html:287
 #: title/models.py:242

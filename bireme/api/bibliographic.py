@@ -193,6 +193,10 @@ class ReferenceResource(CustomResource):
         bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
         bundle.data['indexed_database'] = [database.acronym for database in bundle.obj.indexed_database.all()]
 
+        # change code of cooperative_center_code to indexer_cc_code at API record export #553
+        if bundle.obj.indexer_cc_code:
+            bundle.data['cooperative_center_code'] = bundle.obj.indexer_cc_code
+
         electronic_address = []
         for attach in attachments:
             file_name = attach.attachment_file.name
