@@ -6,6 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 
 from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
+from tastypie.authentication import ApiKeyAuthentication
+from tastypie.authorization import Authorization
 from tastypie.utils import trailing_slash
 from tastypie import fields
 
@@ -28,8 +30,10 @@ class OERResource(ModelResource):
 
     class Meta:
         queryset = OER.objects.filter(status=1)
-        allowed_methods = ['get']
+        allowed_methods = ['get', 'post']
         serializer = Serializer(formats=['json', 'xml'])
+        authentication = ApiKeyAuthentication()
+        authorization = Authorization()
         resource_name = 'oer'
         filtering = {
             'status': 'exact',
@@ -49,6 +53,15 @@ class OERResource(ModelResource):
         return [
             url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
         ]
+
+
+    def is_authenticated(self, request, **kwargs):
+        """ If POST check auth, otherwise fall back to parent """
+
+        if request.method == "GET":
+            return True
+        else:
+            return super(OERResource, self).is_authenticated(request, **kwargs)
 
 
     def get_search(self, request, **kwargs):
