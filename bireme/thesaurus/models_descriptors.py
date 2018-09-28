@@ -203,7 +203,7 @@ class IdentifierConceptListDesc(models.Model):
         verbose_name = _("Concept record")
         verbose_name_plural = _("Concept records")
 
-    identifier = models.ForeignKey(IdentifierDesc, blank=True, null=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="identifierconceptdesc", blank=True, null=True)
 
     # ConceptUI
     concept_ui = models.CharField(_("Concept unique Identifier"), max_length=50, blank=True)
@@ -299,6 +299,8 @@ class TermListDesc(models.Model):
 
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
+
+    thesaurus = models.CharField(_("Thesaurus"), max_length=50, blank=True)
 
     # def get_parent(self):
     #     return self.identifier_concept

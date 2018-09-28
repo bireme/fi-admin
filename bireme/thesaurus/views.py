@@ -61,6 +61,8 @@ ACTIONS = {
 
     'form_language': '',
 
+    'choiced_thesaurus': '',
+
 }
 
 
@@ -319,11 +321,16 @@ class DescListView(LoginRequiredView, ListView):
     def get_queryset(self):
         lang_code = get_language()
         object_list = []
+        registers_indexed = []
+        concepts_indexed = []
 
         # getting action parameter
         self.actions = {}
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        # if self.actions['choiced_thesaurus']:
+        #     print 'TESAURO----------------------------------------------------: ',self.actions['choiced_thesaurus']
 
         # icontains X exact -------------------------------------------------------------------------------------
         if self.actions['exact']:
@@ -353,14 +360,29 @@ class DescListView(LoginRequiredView, ListView):
         # AND performance for Term ------------------------------------------------------------------------
         # Do the initial search in term_string field
         if self.actions['s'] and not self.actions['filter_fields']:
-            object_list = TermListDesc.objects.filter( q_term_string ).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_term_string ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
         else:
             # bring all registers
-            object_list = TermListDesc.objects.all().order_by('term_string')
+            object_list = TermListDesc.objects.all().filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+
+            '''
+            REALIZAR O TESTE DE QUERY AQUI
+            '''
+            # if self.actions['visited']:
+            #     # registers_indexed = [r.id for r in IdentifierDesc.objects.filter(thesaurus_id=self.actions['choiced_thesaurus'])]
+            #     # concepts_indexed = [c.id for c in IdentifierConceptListDesc.objects.filter(identifier_id__in=registers_indexed)]
+            #     concepts_indexed = [c.id for c in IdentifierConceptListDesc.objects.filter(identifier_id__in=[r.id for r in IdentifierDesc.objects.filter(thesaurus_id=self.actions['choiced_thesaurus'])])]
+            #     for reg in concepts_indexed:
+            #         terms_info = TermListDesc.objects.filter(identifier_concept_id=reg).order_by('term_string')
+            #         # print terms_info
+            #         object_list += terms_info
+            #     # print object_list
+
+
 
         # term_string
         if self.actions['filter_fields'] == 'term_string' and self.actions['s']:
-            object_list = TermListDesc.objects.filter( q_term_string ).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_term_string ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -375,7 +397,8 @@ class DescListView(LoginRequiredView, ListView):
         # AND performance for Concept ------------------------------------------------------------------------
         # when concept_preferred_term='Y' & record_preferred_term='Y'
         if self.actions['filter_fields'] == 'concept':
-            object_list = TermListDesc.objects.filter( q_term_string & q_concept_preferred_term & q_record_preferred_term ).order_by('term_string')
+            print self.actions['choiced_thesaurus']
+            object_list = TermListDesc.objects.filter( q_term_string & q_concept_preferred_term & q_record_preferred_term ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -392,7 +415,7 @@ class DescListView(LoginRequiredView, ListView):
             id_register = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s']).values('id')
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -410,7 +433,7 @@ class DescListView(LoginRequiredView, ListView):
             id_register = IdentifierDesc.objects.filter(decs_code=self.actions['s']).values('id')
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -427,7 +450,7 @@ class DescListView(LoginRequiredView, ListView):
             id_tree_number = TreeNumbersListDesc.objects.filter(tree_number=self.actions['s']).values('identifier_id')
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -444,15 +467,15 @@ class DescListView(LoginRequiredView, ListView):
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
-        if self.actions['visited'] != 'ok':
-            object_list = object_list.none()
+        # if self.actions['visited'] != 'ok':
+        # if not self.actions['visited']:
+        #     object_list = object_list.none()
 
         return object_list
 
 
     def get_context_data(self, **kwargs):
         context = super(DescListView, self).get_context_data(**kwargs)
-
         context['actions'] = self.actions
 
         return context

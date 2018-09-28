@@ -43,10 +43,23 @@
                                 <li><a href="{% url 'list_title' %}" title=""><i class="icon-book"></i> {% trans "Journals" %}</a></li>
                             {% endif %}
 
-			<!-- Thesaurus -->
-                            {% if user_cc = 'BR1.1' %}
+			<!-- Thesaurus -------------------------------------------------------------------------------------------------------------------------------- -->
+<!--                             {% if user_cc = 'BR1.1' %}
                                 <li><a href="{% url 'list_descriptor' %}" title=""><i class="icon-book"></i> {% trans "Thesaurus" %}</a></li>
                             {% endif %}
+ -->
+
+
+                            {% if user_cc = 'BR1.1' %}
+                                <li><a href="{% url 'list_descriptor' %}?thesaurus_id=1" title=""><i class="icon-book"></i> {% trans "Thesaurus - DeCS" %}</a></li>
+                            {% endif %}
+
+                            {% if user_cc = 'BR1.1' %}
+                                <li><a href="{% url 'list_descriptor' %}?thesaurus_id=2" title=""><i class="icon-book"></i> {% trans "Thesaurus - 2" %}</a></li>
+                            {% endif %}
+
+
+            <!-- Thesaurus -------------------------------------------------------------------------------------------------------------------------------- -->
 
 
                             {% if service_role.LeisRef %}
