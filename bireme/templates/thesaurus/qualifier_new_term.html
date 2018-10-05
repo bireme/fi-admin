@@ -7,12 +7,11 @@
 
 {% block breadcrumb %}
     {% if not object %}
-        <li><a href="{% url 'list_qualifier' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <li>{% trans "New Term" %}</li>
     {% endif %}
 {% endblock %}
-
 
 {% block content %}
 
@@ -36,6 +35,8 @@
 
             <input type="hidden" id="id_identifier_concept_id" name="identifier_concept_id" value="{{ request.GET.identifier_concept_id }}">
 
+            <!-- term_thesaurus -->
+            <input type="hidden" id="id_term_thesaurus" name="term_thesaurus" value="{{ request.GET.ths }}">
 
             {{ form.non_field_errors.as_ul }}
 
@@ -44,7 +45,6 @@
                     <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                 {% endif %}
             {% endfor %}
-
 
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
@@ -74,11 +74,7 @@
                     </td>
                     <td>{{ form.term_ui }}</td>
                     <td>
-
-                        <!-- date_created -->
-                        <!-- {{ form.date_created }} -->
-                        <input id="id_termqualif-{{ forloop.counter0 }}-date_created" name="termqualif-{{ forloop.counter0 }}-date_created" type="text" value="{% now "d/m/Y" %}" maxlength="10">
-
+                        <input id="id_termqualif-0-date_created" name="termqualif-0-date_created" type="text" value="{% now "d/m/Y" %}" maxlength="10">
                     </td>
                 </tr>
                 <tr>
@@ -103,13 +99,8 @@
                 <tr>
                     <td colspan="4" width="100%">{{ form.historical_annotation }}</td>
                     <td valign="top">
-                        <!-- {{ form.date_altered }} -->
-                        <input id="id_termqualif-{{ forloop.counter0 }}-date_altered" name="termqualif-{{ forloop.counter0 }}-date_altered" value="{% now "d/m/Y" %}" type="text">
+                        {{ form.date_altered }}
                     </td>
-
-
-
-
                 </tr>
 
             </table>

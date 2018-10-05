@@ -3,13 +3,12 @@
 {% load static %}
 {% load app_filters %}
 
-
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
-        <span class="divider">/</span></li>
-        <li>{% trans "Edit Concept" %}</li>
+    <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
+    <span class="divider">/</span></li>
+    <li>{% trans "Edit Concept" %}</li>
 {% endblock %}
 
 {% block content %}
@@ -24,7 +23,6 @@
         {% endif %}
     </div>
     <!-- header -->
-
 
     <div class='body'>
 
@@ -42,24 +40,7 @@
         {{ formset_concept.non_form_errors }}
         {{ formset_term.non_form_errors }}
 
-        <!-- {% if next_id %}
-        identifier_id - [{{ next_id }}]
-        {% else %}
-        Sem variavel
-        {% endif %} -->
-
-        <!-- {% if request.GET.identifier_id %}
-         Tem registrado: [{{ request.GET.identifier_id }}]
-        {% else %}
-         Não tem
-        {% endif %} -->
-
         <form method="POST" class="act-form" encrypt="multipart/form-data">{% csrf_token %}
-
-        <!-- [
-        {{ request.GET.id }} | 
-        {{ request.GET.identifier_id }} | 
-        ] -->
 
             <input type="hidden" id="id_identifier_id" name="identifier_id" value="{{ request.GET.identifier_id }}">
             <input type="hidden" id="id_termdesc_id" name="termdesc__id" value="{{ request.GET.id }}">
@@ -82,19 +63,6 @@
                             <table class="descriptiondesc">
                                 <tr>
                                     <td colspan="2">{{ form.concept_ui.label }}:<br>{{ form.concept_ui }}</td>
-
-                                    <!-- <td colspan="2">{% trans "Language used for description" %}:<span class="mark">*</span>
-                                        <br>
-                                        <select id="id_registry-0" class="registry_language" name="registry_language" required="true">
-                                            <option value="">---------</option>
-                                            <option value="en">English</option>
-                                            <option value="es">Spanish Latin America</option>
-                                            <option value="pt-br">Portuguese</option>
-                                            <option value="es-es">Spanish Spain</option>
-                                            <option value="fr">French</option>
-                                        </select>
-                                    </td> -->
-
                                 </tr>
                                 <tr>
                                     <td width="20%">{{ form.concept_relation_name.label }}:<br>{{ form.concept_relation_name }}</td>
@@ -120,6 +88,7 @@
 
                     <ul>
                         <fieldset id="conceptlistdesc">
+
                             {{ formset_concept.management_form }}
 
                                 {% for form in formset_concept %}
@@ -163,8 +132,8 @@
                                         </table>
                                     </div>
 
-
                                 {% endfor %}
+
                         </fieldset>
                     </ul>
                 </div>

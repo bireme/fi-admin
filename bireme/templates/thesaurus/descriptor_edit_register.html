@@ -3,19 +3,17 @@
 {% load static %}
 {% load app_filters %}
 
-
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
     {% if object %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <li>{% trans "Edit Register" %}</li>
     {% endif %}
 {% endblock %}
 
 {% block content %}
-
 
     <!-- header -->
     <div class='header'>
@@ -47,7 +45,11 @@
         {{ formset_previous.non_form_errors }}
 
         <form method="POST" class="reference-form" encrypt="multipart/form-data">{% csrf_token %}
-        
+
+            <input type='hidden' name="choiced_thesaurus" value="{% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+
+            <input type="hidden" id="id_thesaurus" name="thesaurus" value="{{ request.GET.ths }}">
+
             <div class="tab-data1">
 
                     <!-- identifierdesc -->
@@ -66,16 +68,6 @@
                                 {% endfor %}
 
                                 <table>
-                                    <tr>
-                                        <td colspan="1">{{ form.thesaurus.label }}:</td>
-                                        <td colspan="3">&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="1">
-                                            {{ form.thesaurus }}
-                                        </td>
-                                        <td colspan="3">&nbsp;</td>
-                                    </tr>
                                     <tr>
                                         <td>{{ form.descriptor_ui.label }}:</td>
                                         <td>{{ form.decs_code.label }}</span></td>
@@ -275,7 +267,46 @@
                                     </table>
 
                                     <div id="descriptiondesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
-                                        {% include "thesaurus/fieldset_descriptiondesc.html" %}
+<!--                                         {% include "thesaurus/fieldset_descriptiondesc.html" %} -->
+                                        <table class="descriptiondesc">
+                                            <tr>
+                                                <td>
+                                                    {{ form.language_code.label_tag }}
+                                                    {{ form.language_code }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {{ form.annotation.label_tag }}
+                                                    {{ form.annotation }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {{ form.history_note.label_tag }}
+                                                    {{ form.history_note }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {{ form.online_note.label_tag }}
+                                                    {{ form.online_note }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {{ form.public_mesh_note.label_tag }}
+                                                    {{ form.public_mesh_note }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {{ form.consider_also.label_tag }}
+                                                    {{ form.consider_also }}
+                                                </td>
+                                            </tr>
+                                        </table>
+
                                     </div>
 
                                 {% endfor %}
@@ -330,8 +361,7 @@
                     </div>
 
                     <div class="control-panel form-submit">
-                        <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
-                        <!-- <button class="btn btn-large btn-danger" onclick="window.history.go(-1); return false;">{% trans "Cancel" %}</button> -->
+                        <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
                         <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
                     </div>
 

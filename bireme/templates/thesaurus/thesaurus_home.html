@@ -1,15 +1,13 @@
 {% extends "base.html" %}
-
 {% load app_filters %}
-
 {% load i18n %}
+{% load static %}
 
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
     <li>{% trans "Thesaurus" %}</li>
 {% endblock %}
-
 
 {% block content %}
 <form name="actions">
@@ -26,9 +24,6 @@
 
     <input type='hidden' name="choiced_thesaurus" value="{{ actions.choiced_thesaurus }}">
 
-valor de actions[ {{ actions.choiced_thesaurus }} ]<br>
-valor passado pelo link [ {{ request.GET.thesaurus_id }} ]
-
 </form>
 
 <!--  header -->
@@ -40,29 +35,27 @@ valor passado pelo link [ {{ request.GET.thesaurus_id }} ]
         {% endif %}
     </h2>
     <div class='pull-right'>
-        <a href="{% url 'create_descriptor' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "Add new record for Descriptor" %}</a>
+        <a href="{% url 'create_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "Add new record for Descriptor" %}</a>
     </div>
 
 </div>
 
 <div class='body'>    
 
-
-
     <ul class="nav nav-tabs" id='tab'>
-            <li class="active">
-                <a href="{% url 'list_descriptor' %}"><strong>{% trans "Descriptors" %}</strong></a>
-            </li>
-            <li class="">
-                <a href="{% url 'list_qualifier' %}"><strong>{% trans "Qualifiers" %}</strong></a>
-            </li>
+        <li class="active">
+            <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}"><strong>{% trans "Descriptors" %}</strong></a>
+        </li>
+        <li class="">
+            <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}"><strong>{% trans "Qualifiers" %}</strong></a>
+        </li>
     </ul>
 
     <div class="row">
         <div class="span12">
             <form name="search" method="GET">
 
-                <input type='hidden' name="choiced_thesaurus" value="{% if request.GET.thesaurus_id %}{{ request.GET.thesaurus_id }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+                <input type='hidden' name="choiced_thesaurus" value="{% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
 
                 <input type="hidden" name="page" value="">
                 <input type="hidden" name="visited" value="ok">
@@ -84,7 +77,7 @@ valor passado pelo link [ {{ request.GET.thesaurus_id }} ]
                     <option value="">{% trans "All" %}</option>
                     <option value="-1" {% if actions.filter_status == '-1' %}selected="true"{% endif %}>{% trans "Draft" %}</option>
                     <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Published" %}</option>
-<!--                     <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option> -->
+                    <!-- <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option> -->
                     <option value="5" {% if actions.filter_status == '5' %}selected="true"{% endif %}>{% trans "Historical" %}</option>
                 </select>
 
@@ -107,55 +100,54 @@ valor passado pelo link [ {{ request.GET.thesaurus_id }} ]
         </div>
     </div>
 
-    
     <div class="tab-content">
         <div class="tab-pane active" id="tab-descriptor">
 
-        <table class='table'>
-            <thead>
+            <table class='table'>
+                <thead>
 
-                <th>
-                    <a href="javascript:orderby('term_string');" id="id_term_string">
-                        {% if actions.filter_fields == 'term_string' or actions.filter_fields == '' %}
-                            {% trans "Term name" %}
-                        {% else %}
-                            {% trans "Concept name" %}
-                        {% endif %}
-                    </a>
-                </th>
-
-                <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
-                <th>{% trans "Actions" %}</th>
-            </thead>
-            <tbody>
-
-            {% for obj in registers %}
-                <tr>
-                    <td>
-                        {% if obj.term_string %}
-                            {% if obj.term_string %}
-                                {{ obj.term_string }} ({{ obj.language_code }})
+                    <th>
+                        <a href="javascript:orderby('term_string');" id="id_term_string">
+                            {% if actions.filter_fields == 'term_string' or actions.filter_fields == '' %}
+                                {% trans "Term name" %}
+                            {% else %}
+                                {% trans "Concept name" %}
                             {% endif %}
+                        </a>
+                    </th>
+
+                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                    <th>{% trans "Actions" %}</th>
+                </thead>
+                <tbody>
+
+                {% for obj in registers %}
+                    <tr>
+                        <td>
+                            {% if obj.term_string %}
+                                {% if obj.term_string %}
+                                    {{ obj.term_string }} ({{ obj.language_code }})
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ obj.status|display_status_label }}
+                        </td>
+                        <td>
+                            <a href="{% url 'detail_descriptor' obj.id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                        {% if actions.visited %}
+                            <tr>
+                                <td colspan="5">{% trans "No results found" %}</td>
+                            </tr>
                         {% endif %}
-                    </td>
-                    <td>
-                        {{ obj.status|display_status_label }}
-                    </td>
-                    <td>
-                        <a href="{% url 'detail_descriptor' obj.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                    </td>
-                </tr>
 
-                {% empty %}
-                    {% if actions.visited %}
-                        <tr>
-                            <td colspan="5">{% trans "No results found" %}</td>
-                        </tr>
-                    {% endif %}
-
-            {% endfor %}
-            </tbody>
-        </table>
+                {% endfor %}
+                </tbody>
+            </table>
 
         {% include "pagination_generic.html" %}
 

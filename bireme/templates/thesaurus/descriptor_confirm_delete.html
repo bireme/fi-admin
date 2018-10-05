@@ -6,7 +6,7 @@
 
 {% block breadcrumb %}
     <li>
-        <a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span>
     </li>
     <li>{% trans "Delete Descriptor" %}</li>
@@ -20,6 +20,8 @@
 
 <div class='body'>
     <form method="POST" class="serial-form">
+        {% csrf_token %}
+
         <blockquote>
             <h4>
                 {% if object.descriptor_ui %}
@@ -32,11 +34,9 @@
             </h4>
         </blockquote>
 
-        {% csrf_token %}
-
         <div class="alert">
             <p><strong>{% trans "Are you sure you want to delete?" %}</strong></p>
-            <a href="{% url 'list_descriptor'%}" onclick="window.history.go(-1); return false;" class="btn">{% trans 'No' %}</a>
+            <a href="" onclick="window.history.go(-1); return false;" class="btn">{% trans 'No' %}</a>
             <input type="submit" class="btn btn-danger delete" value="{% trans 'Yes' %}"></input>
         </div>
 

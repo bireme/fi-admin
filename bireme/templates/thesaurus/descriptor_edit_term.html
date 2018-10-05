@@ -7,16 +7,15 @@
 
 {% block breadcrumb %}
     {% if not object %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <li>{% trans "New Term" %}</li>
     {% else %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <li>{% trans "Edit Descriptor" %}</li>
     {% endif %}
 {% endblock %}
-
 
 {% block content %}
 
@@ -41,6 +40,7 @@
 
             <input type="hidden" id="id_identifier_concept_id" name="identifier_concept_id" value="{{ request.GET.identifier_concept_id }}">
 
+            <input type="hidden" id="id_term_thesaurus" name="term_thesaurus" value="{{ request.GET.ths }}" >
 
             {{ form.non_field_errors.as_ul }}
 
@@ -49,7 +49,6 @@
                     <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                 {% endif %}
             {% endfor %}
-
 
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
@@ -102,8 +101,7 @@
                 <tr>
                     <td colspan="4" width="98%">{{ form.historical_annotation }}</td>
                     <td valign="top">
-                        <!-- {{ form.date_altered }} -->
-                        <input id="id_termdesc-{{ forloop.counter0 }}-date_altered" name="termdesc-{{ forloop.counter0 }}-date_altered" value="{% now "d/m/Y" %}" type="text">
+                        {{ form.date_altered }}
                     </td>
                 </tr>
 

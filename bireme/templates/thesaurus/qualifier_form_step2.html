@@ -3,18 +3,16 @@
 {% load static %}
 {% load app_filters %}
 
-
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
     {% if not object %}
-        <li><a href="{% url 'list_qualifier' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <!-- <li>{% trans "New Descriptor" %}</li> -->
         <li>{% trans "New Record, Concept and Term for Qualifiers" %}</li>
     {% endif %}
 {% endblock %}
-
 
 {% block content %}
 
@@ -42,10 +40,10 @@
         {{ formset_concept.non_form_errors }}
         {{ formset_term.non_form_errors }}
 
-    <ul class="nav nav-tabs" id='tab'>
-        <li><a href="#">{% trans "Step 1" %}</a></li>
-        <li class="active"><a href="#tab-data2" data-toggle="tab">{% trans "Step 2" %}</a></li>
-    </ul>
+        <ul class="nav nav-tabs" id='tab'>
+            <li><a href="#">{% trans "Step 1" %}</a></li>
+            <li class="active"><a href="#tab-data2" data-toggle="tab">{% trans "Step 2" %}</a></li>
+        </ul>
 
         <form method="POST" class="act-form" encrypt="multipart/form-data">{% csrf_token %}
 
@@ -98,8 +96,6 @@
                         <fieldset id="conceptlistqualif">
                             {{ formset_concept.management_form }}
 
-                            <!-- {{ formset_concept.as_table }} -->
-
                                 {% for form in formset_concept %}
 
                                     {{ form.non_field_errors.as_ul }}
@@ -137,7 +133,6 @@
                             <h2>{% trans "Term description" %}</h2>
 
                             {{ formset_term.management_form }}
-                            <!-- {{ formset_term.as_table }} -->
 
                                 {% for form in formset_term %}
 
@@ -153,6 +148,9 @@
 
                                     <!-- language_code -->
                                     <input type="hidden" class="id_termqualif_language_selected" name="termqualif-0-language_code">
+
+                                    <!-- term_thesaurus -->
+                                    <input type="hidden" id="id_termqualif-0-term_thesaurus" name="termqualif-0-term_thesaurus" value="{{ request.GET.ths }}">
 
                                     <table class="termlistqualif" border="0">
                                         <tr>
@@ -174,11 +172,10 @@
                                                 <input id="id_termqualif-0-term_string" name="termqualif-0-term_string" value="" maxlength="250" required="" type="text">
                                             </td>
                                             <td>{{ form.term_ui }}</td>
-                                            <td>
-                                                <!-- {{ form.date_created }} -->
-                                                <input id="id_termqualif-{{ forloop.counter0 }}-date_created" name="termqualif-{{ forloop.counter0 }}-date_created" type="text" value="{% now "d/m/Y" %}" maxlength="10">
-                                            </td>
 
+                                            <td>
+                                                <input id="id_termqualif-0-date_created" name="termqualif-0-date_created" type="text" value="{% now "d/m/Y" %}" maxlength="10">
+                                            </td>
 
                                         </tr>
                                         <tr>
@@ -215,7 +212,7 @@
 
             <div>
                 <br>
-                <a href="{% url 'delete_qualifier' next_id %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+                <a href="{% url 'delete_qualifier' next_id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             </div>
 
@@ -232,7 +229,6 @@
 
 {% endblock %}
 
-
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
@@ -243,7 +239,6 @@
    {% endif %}
 
    <script type="text/javascript">
-
 
         // Faz com que o ultimo form salvo fique ativo apos reload
         $(document).ready(function(){

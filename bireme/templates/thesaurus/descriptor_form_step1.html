@@ -3,17 +3,16 @@
 {% load static %}
 {% load app_filters %}
 
-
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
     {% if not object %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <!-- <li>{% trans "New Descriptor" %}</li> -->
         <li>{% trans "New Record, Concept and Term for Descriptors" %}</li>
     {% else %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <li>{% trans "Edit Descriptor" %}</li>
     {% endif %}
@@ -54,6 +53,8 @@
 
         <form method="POST" class="reference-form" encrypt="multipart/form-data">{% csrf_token %}
         
+            <input type="hidden" id="id_thesaurus" name="thesaurus" value="{{ request.GET.ths }}">
+
             <div class="tab-data1">
 
                     <!-- identifierdesc -->
@@ -70,18 +71,13 @@
                                         <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
                                     {% endif %}
                                 {% endfor %}
-                                <!-- {{ form.as_table }} -->
+
                                 <table>
                                     <tr>
-                                        <td colspan="1">{{ form.thesaurus.label }}:</td>
                                         <td colspan="1">{% trans "Language used for description" %}:<span class="mark">*</span></td>
-<!--                                         <span class="mark">*{{ form.thesaurus }}</span></td> -->
                                         <td colspan="2">&nbsp;</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="1">
-                                            {{ form.thesaurus }}
-                                        </td>
                                         <td colspan="1">
                                             <select id="id_registry-0" class="registry_language" name="registry_language" required="true">
                                                 <option value="">---------</option>
@@ -98,13 +94,13 @@
                                         <td>{{ form.descriptor_ui.label }}:</td>
                                         <td>{{ form.external_code.label }}:</td>
                                         <td>{{ form.nlm_class_number.label }}:</td>
-                                        <td><!-- {{ form.decs_code.label }}:<span class="mark">*</span> -->&nbsp;</td>
+                                        <td>&nbsp;</td>
                                     </tr>
                                     <tr>
                                         <td>{{ form.descriptor_ui }}</td>
                                         <td>{{ form.external_code }}</td>
                                         <td>{{ form.nlm_class_number }}</td>
-                                        <td><!-- {{ form.decs_code }} -->&nbsp;</td>
+                                        <td>&nbsp;</td>
                                     </tr>
                                     <tr>
                                         <td>{{ form.descriptor_class.label }}:</td>
@@ -186,7 +182,6 @@
                                         <td>{% trans "Descriptor UI" %}:</td>
                                     </tr>
 
-
                                     {{ formset_pharmaco.management_form }}
 
                                     {% for form in formset_pharmaco %}
@@ -210,9 +205,6 @@
                                                 {% if field.name == 'language_code' %}
                                                     <input type="hidden" class="id_pharmacologicalactionlist_language_selected" name="pharmacodesc-0-language_code">
                                                 {% endif %}
-
-                                                <!-- {{ field }}
-                                                {{ field.errors }} -->
                                             </td>
                                             {% endfor %}
                                         </tr>
@@ -294,8 +286,6 @@
                                             <td>
                                                 {{ form.annotation.label_tag }}
                                                 {{ form.annotation }}
-                                                <!-- <label for="descriptiondesc-0-annotation">Annotation:<span class="mark">*</span></label>
-                                                <textarea cols="40" id="id_descriptiondesc-0-annotation" maxlength="1500" name="descriptiondesc-0-annotation" rows="10" required="true"></textarea> -->
                                             </td>
                                         </tr>
                                         <tr>
@@ -340,8 +330,6 @@
                                 <table>
                                     <tr>
                                         <td>{% trans "Previous Index" %}:</td>
-                                        <!-- <td>{% trans "Language" %}:</td> -->
-                                        <!-- <td>&nbsp;</td> -->
                                     </tr>
                                     <tr>
                                     {{ formset_previous.management_form }}
@@ -364,10 +352,6 @@
                                             {% if field.name == 'language_code' %}
                                                 <input type="hidden" class="id_previousindexinglistdesc_language_selected" name="previousdesc-0-language_code">
                                             {% endif %}
-
-                                            <!-- {{ field }}
-                                            {{ field.errors }} -->
-
                                             </td>
                                             {% endfor %}
                                         </tr>
@@ -381,7 +365,7 @@
                     <div>
                         <br>
 
-                        <a href="{% url 'list_descriptor' %}" class="btn btn-large btn-danger"">{% trans "Cancel" %}</a>
+                        <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger"">{% trans "Cancel" %}</a>
                         <button class="btn btn-primary btn-large">{% trans "Next" %}</button>
 
                     </div>

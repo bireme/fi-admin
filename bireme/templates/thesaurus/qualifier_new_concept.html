@@ -3,14 +3,12 @@
 {% load static %}
 {% load app_filters %}
 
-
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
-        <span class="divider">/</span></li>
-        <!-- <li>{% trans "New Descriptor" %}</li> -->
-        <li>{% trans "New Concept and Term" %}</li>
+    <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
+    <span class="divider">/</span></li>
+    <li>{% trans "New Concept and Term" %}</li>
 {% endblock %}
 
 {% block content %}
@@ -38,18 +36,6 @@
         {{ form.non_form_errors }}
         {{ formset_concept.non_form_errors }}
         {{ formset_term.non_form_errors }}
-
-        <!-- {% if next_id %}
-        identifier_id - [{{ next_id }}]
-        {% else %}
-        Sem variavel
-        {% endif %} -->
-
-        <!-- {% if request.GET.identifier_id %}
-         Tem registrado: [{{ request.GET.identifier_id }}]
-        {% else %}
-         Não tem
-        {% endif %} -->
 
         <form method="POST" class="act-form" encrypt="multipart/form-data">{% csrf_token %}
 
@@ -133,7 +119,6 @@
                                         </tr>
                                     </table>
 
-
                                 {% endfor %}
                         </fieldset>
                     </ul>
@@ -150,7 +135,6 @@
                             <h2>{% trans "Term description" %}</h2>
 
                             {{ formset_term.management_form }}
-                            <!-- {{ formset_term.as_table }} -->
 
                                 {% for form in formset_term %}
 
@@ -164,6 +148,8 @@
                                         {% endif %}
                                     {% endfor %}
 
+                                    <!-- term_thesaurus -->
+                                    <input type="hidden" id="id_termqualif-0-term_thesaurus" name="termqualif-0-term_thesaurus" value="{{ request.GET.ths }}">
 
                                     <table class="termlistqualif" border="0">
                                         <tr>
@@ -183,7 +169,6 @@
                                                 <td colspan="5" class="term-origin">&nbsp;
                                                 </td>
                                             {% endif %} -->
-
 
                                         <input name="{{termlistqualif}}_DELETE" id="id_{{termlistqualif}}_DELETE" type="hidden">
 
@@ -206,13 +191,7 @@
                                             <!-- language_code -->
                                             <input type="hidden" class="id_termqualif_language_selected" name="termqualif-0-language_code">
                                             <td>{{ form.term_ui }}</td>
-                                            <td>
-                                                <!-- date_created -->
-                                                <input id="id_date_created" name="date_created" value="{% now "d/m/Y" %}" type="text">        
-                                                <!-- <input id="id_termdesc-{{ forloop.counter0 }}-date_created" name="termdesc-{{ forloop.counter0 }}-date_created" type="text" value="{% now "d/m/Y" %}" onkeyup="mascara(this, mdata);" maxlength="10"> -->
-                                            </td>
-
-
+                                            <td>{{ form.date_created }}</td>
                                         </tr>
                                         <tr>
                                             <td>{{ form.concept_preferred_term.label_tag }}</td>
@@ -264,7 +243,6 @@
     <script type="text/javascript" src="{% static "admin/js/SelectFilter2.js" %}"></script>
 
 {% endblock %}
-
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>

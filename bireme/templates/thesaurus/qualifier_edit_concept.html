@@ -3,11 +3,10 @@
 {% load static %}
 {% load app_filters %}
 
-
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-        <li><a href="{% url 'list_descriptor' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <li>{% trans "Edit Concept" %}</li>
 {% endblock %}
@@ -132,8 +131,8 @@
                                         </table>
                                     </div>
 
-
                                 {% endfor %}
+
                         </fieldset>
                     </ul>
                 </div>
@@ -324,8 +323,6 @@
             }
 
         })
-
-
 
         function mascara(o,f){
             v_obj=o

@@ -3,12 +3,11 @@
 {% load static %}
 {% load app_filters %}
 
-
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
     {% if not object %}
-        <li><a href="{% url 'list_qualifier' %}">{% trans "Thesaurus" %}</a>
+        <li><a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
         <span class="divider">/</span></li>
         <!-- <li>{% trans "New Descriptor" %}</li> -->
         <li>{% trans "New Record, Concept and Term for Qualifiers" %}</li>
@@ -48,6 +47,8 @@
 
         <form method="POST" class="reference-form" encrypt="multipart/form-data">{% csrf_token %}
         
+            <input type="hidden" id="id_thesaurus" name="thesaurus" value="{{ request.GET.ths }}">
+
             <div class="tab-data1">
 
                 <!-- identifierqualif -->
@@ -67,19 +68,13 @@
                             {% endif %}
                         {% endfor %}
 
-
                         <table class="identifierqualif">
 
                                 <tr>
-                                    <td colspan="1">{{ form.thesaurus.label }}:</td>
                                     <td colspan="1">{% trans "Language used for description" %}:<span class="mark">*</span></td>
-                                    <!-- <span class="mark">*{{ form.thesaurus }}</span></td> -->
                                     <td colspan="1">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="1">
-                                        {{ form.thesaurus }}
-                                    </td>
                                     <td colspan="1">
                                         <select id="id_registry-0" class="registry_language" name="registry_language" required="true">
                                             <option value="">---------</option>
@@ -101,7 +96,6 @@
                                     <td>{{ form.qualifier_ui }}</td>
                                     <td>{{ form.external_code }}</td>
                                     <td><!-- {{ form.decs_code }} -->&nbsp;
-                                        <input id="id_decs_code" name="decs_code" value="" type="hidden">
                                     </td>
                                 </tr>
                                 <tr>
@@ -133,8 +127,6 @@
                                         {{ form.abbreviation }}
                                     </td>
                                 </tr>
-
-
 
                         </table>
 
@@ -226,11 +218,10 @@
                     </ul>
                 </div>
 
-
                 <div>
                     <br>
 
-                    <a href="{% url 'list_qualifier' %}" class="btn btn-large btn-danger"">{% trans "Cancel" %}</a>
+                    <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger"">{% trans "Cancel" %}</a>
                     <button class="btn btn-primary btn-large">{% trans "Next" %}</button>
 
                 </div>
@@ -249,15 +240,10 @@
 
 {% endblock %}
 
-
-
-
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
-
-
 
    {% if LANGUAGE_CODE != 'en' %}
        <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>

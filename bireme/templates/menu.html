@@ -51,11 +51,11 @@
 
 
                             {% if user_cc = 'BR1.1' %}
-                                <li><a href="{% url 'list_descriptor' %}?thesaurus_id=1" title=""><i class="icon-book"></i> {% trans "Thesaurus - DeCS" %}</a></li>
+                                <li><a href="{% url 'list_descriptor' %}?ths=1" title=""><i class="icon-book"></i> {% trans "Thesaurus - DeCS" %}</a></li>
                             {% endif %}
 
                             {% if user_cc = 'BR1.1' %}
-                                <li><a href="{% url 'list_descriptor' %}?thesaurus_id=2" title=""><i class="icon-book"></i> {% trans "Thesaurus - 2" %}</a></li>
+                                <li><a href="{% url 'list_descriptor' %}?ths=2" title=""><i class="icon-book"></i> {% trans "Thesaurus - 2" %}</a></li>
                             {% endif %}
 
 
