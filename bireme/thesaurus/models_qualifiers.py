@@ -59,9 +59,10 @@ class IdentifierQualif(Generic, AuditLog):
                 treatment1 = translation[0].term_string.replace('/','')
                 # return '%s%s%s' % (self.abbreviation,' - ',treatment1)
                 return '%s%s%s%s' % (treatment1,' (',self.abbreviation,')')
+            else:
+                return '%s%s%s' % ('Description without translation (',self.abbreviation,')')
         else:
-            return '%s%s%s' % ('Description without translation (',self.abbreviation,')')
-
+            return '%s' % (self.id)
 
 
 
@@ -221,6 +222,8 @@ class TermListQualif(models.Model):
 
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
+
+    term_thesaurus = models.CharField(_("Thesaurus"), max_length=50, blank=True)
 
     # def get_parent(self):
     #     return self.identifier

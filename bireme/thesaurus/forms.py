@@ -4,11 +4,9 @@ from django.shortcuts import get_object_or_404
 from django.forms.models import inlineformset_factory
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
 
-
 from thesaurus.models_thesaurus import Thesaurus
 from thesaurus.models_qualifiers import *
 from thesaurus.models_descriptors import *
-
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -16,7 +14,6 @@ from django.forms import widgets
 from django import forms
 
 from django.conf import settings
-
 
 from django.core.exceptions import ValidationError
 from django.core.exceptions import NON_FIELD_ERRORS
@@ -102,6 +99,11 @@ class TermListQualifUniqueForm(forms.ModelForm):
 
 # Register - Form1
 class IdentifierDescForm(forms.ModelForm):
+
+    class Meta:
+        model = IdentifierDesc
+        fields = '__all__'
+
     date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
     date_revised = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
@@ -109,9 +111,13 @@ class IdentifierDescForm(forms.ModelForm):
     date_established = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
 
-    class Meta:
-        model = IdentifierDesc
-        fields = '__all__'
+    # Utilizado para pre filtrar abbreviation com registros especificos do tesauro escolhido
+    def __init__(self, *args, **kwargs):
+        self.ths = kwargs.pop('ths', None)
+        # print self.ths
+        super(IdentifierDescForm, self).__init__(*args, **kwargs)
+        self.fields['abbreviation'].queryset = IdentifierQualif.objects.filter(thesaurus=self.ths)
+
 
 class DescriptionDescForm(forms.ModelForm):
     class Meta:
@@ -122,6 +128,7 @@ class DescriptionDescForm(forms.ModelForm):
                 'unique_together': "%(field_labels)s already exist.",
             }
         }
+
 
 class TreeNumbersListDescForm(forms.ModelForm):
     class Meta:

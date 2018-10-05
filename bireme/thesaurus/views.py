@@ -11,9 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.contenttypes.models import ContentType
 
-# from utils.views import ACTIONS
 from django.views import generic
-
 
 from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 
@@ -71,6 +69,7 @@ ACTIONS = {
 class DescUpdate(LoginRequiredView):
     """
     Handle creation and update of Descriptors objects
+    Create the first form
     """
     model = IdentifierDesc
     # success_url = reverse_lazy('list_descriptor')
@@ -136,7 +135,8 @@ class DescUpdate(LoginRequiredView):
 
             form.save()
             # form.save_m2m()
-            return redirect(reverse('create_concept_termdesc') + '?registry_language=' + registry_language)
+            
+            return redirect(reverse('create_concept_termdesc') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language)
 
         else:
             return self.render_to_response(
@@ -149,6 +149,13 @@ class DescUpdate(LoginRequiredView):
                                             formset_previous=formset_previous,
                                             )
                                         )
+
+    # Faz com que o forms.py tenha um pre filtro para abbreviation
+    def get_form_kwargs(self):
+        ths = self.request.GET.get("ths")
+        kwargs = super(DescUpdate, self).get_form_kwargs()
+        kwargs.update({'ths': ths})
+        return kwargs
 
     def form_invalid(self, form):
         # force use of form_valid method to run all validations
@@ -199,19 +206,25 @@ class DescDeleteView(DescUpdate, DeleteView):
     """
     model = IdentifierDesc
     template_name = 'thesaurus/descriptor_confirm_delete.html'
-    success_url = reverse_lazy('list_descriptor')
+    # success_url = reverse_lazy('list_descriptor')
+
+    def get_success_url(self):
+        messages.success(self.request, 'is deleted')
+
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/%s' % ths 
+
 
 
 
 class DescRegisterUpdateView(LoginRequiredView, UpdateView):
     """
-    Used as class view to create TermListDesc
+    Used as class view to update descriptor information
     """
     model = IdentifierDesc
     template_name = 'thesaurus/descriptor_edit_register.html'
     form_class = IdentifierDescForm
     # success_url = reverse_lazy('list_descriptor')
-
 
     def get_success_url(self):
         messages.success(self.request, 'is updated')
@@ -224,11 +237,10 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
         terms_of_concept = TermListDesc.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
-        return '/thesaurus/descriptors/view/%s' % id_term
-
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
 
     def form_valid(self, form):
-
         formset_descriptor = DescriptionDescFormSet(self.request.POST, instance=self.object)
         formset_treenumber = TreeNumbersListDescFormSet(self.request.POST, instance=self.object)
         formset_pharmaco = PharmacologicalActionListDescFormSet(self.request.POST, instance=self.object)
@@ -242,7 +254,6 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
         formset_pharmaco_valid = formset_pharmaco.is_valid()
         formset_related_valid = formset_related.is_valid()
         formset_previous_valid = formset_previous.is_valid()
-
 
         if (form_valid and 
             formset_descriptor_valid and 
@@ -288,12 +299,21 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
                                             )
                                         )
 
+
+    # Faz com que o forms.py tenha um pre filtro para abbreviation
+    def get_form_kwargs(self):
+        ths = self.request.GET.get("ths")
+        kwargs = super(DescRegisterUpdateView, self).get_form_kwargs()
+        kwargs.update({'ths': ths})
+        return kwargs
+
+
     def form_invalid(self, form):
         # force use of form_valid method to run all validations
         return self.form_valid(form)
 
-
     def get_context_data(self, **kwargs):
+
         context = super(DescRegisterUpdateView, self).get_context_data(**kwargs)
 
         context['language_system'] = get_language()
@@ -305,14 +325,14 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
             context['formset_pharmaco'] = PharmacologicalActionListDescFormSet(instance=self.object)
             context['formset_related'] = SeeRelatedListDescFormSet(instance=self.object)
             context['formset_previous'] = PreviousIndexingListDescFormSet(instance=self.object)
-      
+
         return context
 
 
 
 class DescListView(LoginRequiredView, ListView):
     """
-    List descriptor records (used by relationship popup selection window)
+    List descriptor records
     """
     template_name = "thesaurus/thesaurus_home.html"
     context_object_name = "registers"
@@ -328,9 +348,6 @@ class DescListView(LoginRequiredView, ListView):
         self.actions = {}
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
-
-        # if self.actions['choiced_thesaurus']:
-        #     print 'TESAURO----------------------------------------------------: ',self.actions['choiced_thesaurus']
 
         # icontains X exact -------------------------------------------------------------------------------------
         if self.actions['exact']:
@@ -360,29 +377,14 @@ class DescListView(LoginRequiredView, ListView):
         # AND performance for Term ------------------------------------------------------------------------
         # Do the initial search in term_string field
         if self.actions['s'] and not self.actions['filter_fields']:
-            object_list = TermListDesc.objects.filter( q_term_string ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
         else:
             # bring all registers
-            object_list = TermListDesc.objects.all().filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
-
-            '''
-            REALIZAR O TESTE DE QUERY AQUI
-            '''
-            # if self.actions['visited']:
-            #     # registers_indexed = [r.id for r in IdentifierDesc.objects.filter(thesaurus_id=self.actions['choiced_thesaurus'])]
-            #     # concepts_indexed = [c.id for c in IdentifierConceptListDesc.objects.filter(identifier_id__in=registers_indexed)]
-            #     concepts_indexed = [c.id for c in IdentifierConceptListDesc.objects.filter(identifier_id__in=[r.id for r in IdentifierDesc.objects.filter(thesaurus_id=self.actions['choiced_thesaurus'])])]
-            #     for reg in concepts_indexed:
-            #         terms_info = TermListDesc.objects.filter(identifier_concept_id=reg).order_by('term_string')
-            #         # print terms_info
-            #         object_list += terms_info
-            #     # print object_list
-
-
+            object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # term_string
         if self.actions['filter_fields'] == 'term_string' and self.actions['s']:
-            object_list = TermListDesc.objects.filter( q_term_string ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -397,8 +399,7 @@ class DescListView(LoginRequiredView, ListView):
         # AND performance for Concept ------------------------------------------------------------------------
         # when concept_preferred_term='Y' & record_preferred_term='Y'
         if self.actions['filter_fields'] == 'concept':
-            print self.actions['choiced_thesaurus']
-            object_list = TermListDesc.objects.filter( q_term_string & q_concept_preferred_term & q_record_preferred_term ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_term_string & q_concept_preferred_term & q_record_preferred_term ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -415,7 +416,7 @@ class DescListView(LoginRequiredView, ListView):
             id_register = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s']).values('id')
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -433,7 +434,7 @@ class DescListView(LoginRequiredView, ListView):
             id_register = IdentifierDesc.objects.filter(decs_code=self.actions['s']).values('id')
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -450,7 +451,7 @@ class DescListView(LoginRequiredView, ListView):
             id_tree_number = TreeNumbersListDesc.objects.filter(tree_number=self.actions['s']).values('identifier_id')
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -459,8 +460,6 @@ class DescListView(LoginRequiredView, ListView):
         # language
         if self.actions['filter_language']:
             object_list = object_list.filter(language_code=self.actions['filter_language'])
-
-
 
 
         # order performance -------------------------------------------------------------------------------------
@@ -492,6 +491,8 @@ class ConceptTermUpdate(LoginRequiredView):
 
     """
     Used as class view to create ConceptTermUpdate
+    Extend ConceptTermUpdate that do all the work
+    Create the second form
     """
     model = IdentifierConceptListDesc
     # success_url = reverse_lazy('list_descriptor')
@@ -554,7 +555,6 @@ class ConceptTermUpdate(LoginRequiredView):
 class DescCreateView2(ConceptTermUpdate, CreateView):
     """
     Used as class view to create Descriptors
-    Extend DescUpdate that do all the work
     """
     def get_success_url(self):
         messages.success(self.request, 'is created')
@@ -564,8 +564,8 @@ class DescCreateView2(ConceptTermUpdate, CreateView):
         terms_of_concept = TermListDesc.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
-        return '/thesaurus/descriptors/view/%s' % id_term
-
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
 
 
 # Pesquisa conceito para poder trazer ID do registro para novo conceito
@@ -586,27 +586,10 @@ class ConceptListDescView(LoginRequiredView, ListView):
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
-        # select 
-        # C.id as identifierdesc_do_registro
-        # from
-        # thesaurus_termlistdesc as A,
-        # thesaurus_identifierconceptlistdesc as B,
-        # thesaurus_identifierdesc as C
-        # where
-        # A.term_string='teste 4444'
-        # and
-        # A.identifier_concept_id = B.id
-        # and
-        # B.identifier_id = C.id
-
         # q_term_string = Q(term_string__icontains=self.actions['s'])
         q_term_string = Q(termdesc__term_string__icontains=self.actions['s'])
         q_preferred_concept = Q(preferred_concept='Y')
 
-        # ok
-        # object_list = TermListDesc.objects.filter( q_term_string ).values('id','term_string','language_code')
-
-        # ok
         object_list = IdentifierConceptListDesc.objects.filter( q_preferred_concept & q_term_string ).values('identifier_id','termdesc__term_string','termdesc__language_code')
 
         # order performance -------------------------------------------------------------------------------------
@@ -617,7 +600,6 @@ class ConceptListDescView(LoginRequiredView, ListView):
             object_list = object_list.none()
 
         return object_list
-
 
     def get_context_data(self, **kwargs):
         context = super(ConceptListDescView, self).get_context_data(**kwargs)
@@ -631,7 +613,7 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
 class ConceptListDescCreateView(LoginRequiredView, CreateView):
     """
-    Used as class view to create TermListDesc
+    Used as class view to create Concept and Term
     """
     model = IdentifierConceptListDesc
     template_name = 'thesaurus/descriptor_new_concept.html'
@@ -647,7 +629,8 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
         terms_of_concept = TermListDesc.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
-        return '/thesaurus/descriptors/view/%s' % id_term
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
 
     def form_valid(self, form):
 
@@ -697,7 +680,7 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
 
 class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
     """
-    Used as class view to create TermListDesc
+    Used as class view to update concept
     """
     model = IdentifierConceptListDesc
     template_name = 'thesaurus/descriptor_edit_concept.html'
@@ -706,8 +689,8 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         messages.success(self.request, 'is updated')
-        return '/thesaurus/descriptors/view/%s' % int(self.request.POST.get("termdesc__id"))
-        # int(self.request.POST.get("identifier_id"))
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( int(self.request.POST.get("termdesc__id")), ths )
 
     def form_valid(self, form):
 
@@ -718,11 +701,6 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
 
         if (form_valid and formset_concept_valid):
 
-            # self.object = form.save()
-            # formset_concept.instance = self.object
-            # formset_concept.save()
-            # form.save()
-
             self.object = form.save(commit=False)
             self.object.identifier_id = int(self.request.POST.get("identifier_id"))
 
@@ -730,7 +708,6 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
             formset_concept.save()
 
             form.save()
-
 
             return HttpResponseRedirect(self.get_success_url())
 
@@ -762,7 +739,8 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, 'is created')
-        return '/thesaurus/descriptors/view/%s' % self.object.id
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
 
     def form_valid(self, form):
         
@@ -781,8 +759,13 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
 
             if not has_term:
                 self.object = form.save(commit=False)
+
+                # prove a data atual se nao é informado no form
+                if not self.object.date_created:
+                    self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+
                 self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
-                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+
                 form.save()
                 return HttpResponseRedirect(self.get_success_url())
             else:
@@ -797,7 +780,7 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
 
 class TermListDescUpdateView(LoginRequiredView, UpdateView):
     """
-    Used as class view to create TermListDesc
+    Used as class view to update Term
     """
     model = TermListDesc
     template_name = 'thesaurus/descriptor_edit_term.html'
@@ -806,12 +789,18 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         messages.success(self.request, 'is created')
-        return '/thesaurus/descriptors/view/%s' % self.object.id
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
 
     def form_valid(self, form):
 
         if form.is_valid():
             self.object = form.save(commit=False)
+
+            # prove a data atual se nao é informado no form
+            if not self.object.date_created:
+                self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+
             self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
             self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
             form.save()
@@ -827,6 +816,9 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
 
 class PageViewDesc(LoginRequiredView, DetailView):
+    """
+    Used as class view to list the result
+    """
     model = TermListDesc
     template_name = 'thesaurus/page_view_desc.html'
 
@@ -1032,7 +1024,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
 # Qualifiers -------------------------------------------------------------------------
 class QualifUpdate(LoginRequiredView):
     """
-    Handle creation and update of Descriptors objects
+    Handle creation and update of Qualifiers objects
     """
     model = IdentifierQualif
     # success_url = reverse_lazy('list_descriptor')
@@ -1069,6 +1061,7 @@ class QualifUpdate(LoginRequiredView):
             seq.sequential_number = nseq
             seq.save()
 
+
             self.object.decs_code = nseq
             self.object = form.save(commit=True)
 
@@ -1080,7 +1073,8 @@ class QualifUpdate(LoginRequiredView):
 
             form.save()
             # form.save_m2m()
-            return redirect(reverse('create_concept_termqualif') + '?registry_language=' + registry_language)
+
+            return redirect(reverse('create_concept_termqualif') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language)
 
         else:
             return self.render_to_response(
@@ -1111,39 +1105,30 @@ class QualifUpdate(LoginRequiredView):
 
 class QualifCreateView(QualifUpdate, CreateView):
     """
-    Used as class view to create Descriptors
-    Extend DescUpdate that do all the work
+    Used as class view to create Qualifiers
     """
-    # def get_success_url(self):
-    #     messages.success(self.request, 'is created')
-    #     return '/thesaurus/descriptors/edit/%s' % self.object.id
-
-
-# No use
-# class DescUpdateView(DescUpdate, UpdateView):
-#     """
-#     Used as class view to update Descriptors
-#     Extend DescUpdate that do all the work
-#     """
-#     # def get_success_url(self):
-#     #     messages.success(self.request, 'is updated')
-#     #     return '/thesaurus/descriptors/edit/%s' % self.object.id
 
 
 class QualifDeleteView(QualifUpdate, DeleteView):
     """
-    Used as class view to delete Descriptors
+    Used as class view to delete Qualifier
     Extend DescUpdate that do all the work
     """
     model = IdentifierQualif
     template_name = 'thesaurus/qualifier_confirm_delete.html'
-    success_url = reverse_lazy('list_qualifier')
+    # success_url = reverse_lazy('list_qualifier')
+
+    def get_success_url(self):
+        messages.success(self.request, 'is deleted')
+
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/qualifiers/%s' % ths 
 
 
 
 class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
     """
-    Used as class view to create TermListDesc
+    Used as class view to update a register of qualifier
     """
     model = IdentifierQualif
     template_name = 'thesaurus/qualifier_edit_register.html'
@@ -1160,7 +1145,8 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
         terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
-        return '/thesaurus/qualifiers/view/%s' % id_term
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/qualifiers/view/%s%s' % ( id_term, ths )
 
 
     def form_valid(self, form):
@@ -1223,7 +1209,7 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
 
 class QualifListView(LoginRequiredView, ListView):
     """
-    List descriptor records (used by relationship popup selection window)
+    List qualifier records
     """
     template_name = "thesaurus/qualifier_list.html"
     context_object_name = "registers"
@@ -1232,6 +1218,8 @@ class QualifListView(LoginRequiredView, ListView):
     def get_queryset(self):
         lang_code = get_language()
         object_list = []
+        registers_indexed = []
+        concepts_indexed = []
 
         # getting action parameter
         self.actions = {}
@@ -1266,14 +1254,14 @@ class QualifListView(LoginRequiredView, ListView):
         # AND performance for Term ------------------------------------------------------------------------
         # Do the initial search in term_string field
         if self.actions['s'] and not self.actions['filter_fields']:
-            object_list = TermListQualif.objects.filter( q_term_string ).order_by('term_string')
+            object_list = TermListQualif.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
         else:
             # bring all registers
-            object_list = TermListQualif.objects.all().order_by('term_string')
+            object_list = TermListQualif.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # term_string
         if self.actions['filter_fields'] == 'term_string' and self.actions['s']:
-            object_list = TermListQualif.objects.filter( q_term_string ).order_by('term_string')
+            object_list = TermListQualif.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -1288,7 +1276,7 @@ class QualifListView(LoginRequiredView, ListView):
         # AND performance for Concept ------------------------------------------------------------------------
         # when concept_preferred_term='Y' & record_preferred_term='Y'
         if self.actions['filter_fields'] == 'concept':
-            object_list = TermListQualif.objects.filter( q_term_string & q_concept_preferred_term & q_record_preferred_term ).order_by('term_string')
+            object_list = TermListQualif.objects.filter( q_term_string & q_concept_preferred_term & q_record_preferred_term ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -1305,7 +1293,7 @@ class QualifListView(LoginRequiredView, ListView):
             id_register = IdentifierQualif.objects.filter(abbreviation=self.actions['s']).values('id')
             id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).order_by('term_string')
+            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -1323,7 +1311,7 @@ class QualifListView(LoginRequiredView, ListView):
             id_register = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s']).values('id')
             id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).order_by('term_string')
+            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -1341,7 +1329,7 @@ class QualifListView(LoginRequiredView, ListView):
             id_register = IdentifierQualif.objects.filter(decs_code=self.actions['s']).values('id')
             id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).order_by('term_string')
+            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -1358,7 +1346,7 @@ class QualifListView(LoginRequiredView, ListView):
             id_tree_number = TreeNumbersListQualif.objects.filter(tree_number=self.actions['s']).values('identifier_id')
             id_concept = IdentifierConceptListQualif.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).order_by('term_string')
+            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -1373,8 +1361,8 @@ class QualifListView(LoginRequiredView, ListView):
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
-        if self.actions['visited'] != 'ok':
-            object_list = object_list.none()
+        # if self.actions['visited'] != 'ok':
+        #     object_list = object_list.none()
 
         return object_list
 
@@ -1396,7 +1384,6 @@ class QualifListView(LoginRequiredView, ListView):
 # FORM 2
 # Cria conceito e termo
 class QualifConceptTermUpdate(LoginRequiredView):
-
     """
     Used as class view to create ConceptTermUpdate
     """
@@ -1460,8 +1447,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
 
 class QualifCreateView2(QualifConceptTermUpdate, CreateView):
     """
-    Used as class view to create Descriptors
-    Extend DescUpdate that do all the work
+    Used as class view to create qualifier
     """
     def get_success_url(self):
         messages.success(self.request, 'is created')
@@ -1471,14 +1457,15 @@ class QualifCreateView2(QualifConceptTermUpdate, CreateView):
         terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
-        return '/thesaurus/qualifiers/view/%s' % id_term
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/qualifiers/view/%s%s' % ( id_term, ths )
 
 
 
 
 class ConceptListQualifCreateView(LoginRequiredView, CreateView):
     """
-    Used as class view to create TermListDesc
+    Used as class view to create concept and term of qualifier
     """
     model = IdentifierConceptListQualif
     template_name = 'thesaurus/qualifier_new_concept.html'
@@ -1492,7 +1479,8 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
         terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
-        return '/thesaurus/qualifiers/view/%s' % id_term
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/qualifiers/view/%s%s' % ( id_term, ths )
 
     def form_valid(self, form):
 
@@ -1542,7 +1530,7 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
 
 class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
     """
-    Used as class view to create TermListDesc
+    Used as class view to update a concept of qualifier
     """
     model = IdentifierConceptListQualif
     template_name = 'thesaurus/qualifier_edit_concept.html'
@@ -1550,8 +1538,9 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         messages.success(self.request, 'is updated')
-        return '/thesaurus/qualifiers/view/%s' % int(self.request.POST.get("termqualif__id"))
-        # int(self.request.POST.get("identifier_id"))
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/qualifiers/view/%s%s' % ( int(self.request.POST.get("termqualif__id")), ths )
+
 
     def form_valid(self, form):
 
@@ -1591,7 +1580,7 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
 
 class TermListQualifCreateView(LoginRequiredView, CreateView):
     """
-    Used as class view to create TermListDesc
+    Used as class view to create a term
     """
     model = TermListQualif
     template_name = 'thesaurus/qualifier_new_term.html'
@@ -1599,7 +1588,8 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, 'is created')
-        return '/thesaurus/qualifiers/view/%s' % self.object.id
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/qualifiers/view/%s%s' % ( self.object.id, ths )
 
     def form_valid(self, form):
         
@@ -1618,8 +1608,13 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
 
             if not has_term:
                 self.object = form.save(commit=False)
+
+                # prove a data atual se nao é informado no form
+                if not self.object.date_created:
+                    self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+
                 self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
-                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+
                 form.save()
                 return HttpResponseRedirect(self.get_success_url())
             else:
@@ -1634,7 +1629,7 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
 
 class TermListQualifUpdateView(LoginRequiredView, UpdateView):
     """
-    Used as class view to create TermListDesc
+    Used as class view to update a term
     """
     model = TermListQualif
     template_name = 'thesaurus/qualifier_edit_term.html'
@@ -1642,7 +1637,8 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         messages.success(self.request, 'is created')
-        return '/thesaurus/qualifiers/view/%s' % self.object.id
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/qualifiers/view/%s%s' % ( self.object.id, ths )
 
     def form_valid(self, form):
 
@@ -1663,6 +1659,9 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
 
 class PageViewQualif(LoginRequiredView, DetailView):
+    """
+    Used as class view to list the result
+    """
     model = TermListQualif
     template_name = 'thesaurus/page_view_qualif.html'
 
@@ -1705,8 +1704,6 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                 'date_created',
                                                 'date_revised',
                                                 'date_established',
-
-
                                             )
 
             context['description_objects'] = IdentifierQualif.objects.filter(
