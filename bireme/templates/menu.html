@@ -44,18 +44,13 @@
                             {% endif %}
 
 			<!-- Thesaurus -------------------------------------------------------------------------------------------------------------------------------- -->
-<!--                             {% if user_cc = 'BR1.1' %}
-                                <li><a href="{% url 'list_descriptor' %}" title=""><i class="icon-book"></i> {% trans "Thesaurus" %}</a></li>
-                            {% endif %}
- -->
 
-
-                            {% if user_cc = 'BR1.1' %}
-                                <li><a href="{% url 'list_descriptor' %}?ths=1" title=""><i class="icon-book"></i> {% trans "Thesaurus - DeCS" %}</a></li>
+                            {% if service_role.TesauroDeCS and user_cc = 'BR1.1' %}
+                                <li><a href="{% url 'list_descriptor' %}?ths=1" title=""><i class="icon-book"></i> {% trans "Thesaurus DeCS" %}</a></li>
                             {% endif %}
 
-                            {% if user_cc = 'BR1.1' %}
-                                <li><a href="{% url 'list_descriptor' %}?ths=2" title=""><i class="icon-book"></i> {% trans "Thesaurus - 2" %}</a></li>
+                            {% if service_role.TesauroFUNASA and user_cc = 'BR1.1' %}
+                                <li><a href="{% url 'list_descriptor' %}?ths=2" title=""><i class="icon-book"></i> {% trans "Thesaurus FUNASA" %}</a></li>
                             {% endif %}
 
 
