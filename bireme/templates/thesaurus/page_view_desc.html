@@ -46,6 +46,14 @@
             <li>
                 <a href="#tab-concepts" data-toggle="tab"><strong>{% trans "Concepts" %}</strong></a>
             </li>
+
+            <!-- Legacy information -->
+            {% if request.GET.ths = '1' %}
+            <li>
+                <a href="#tab-legacy" data-toggle="tab"><strong>{% trans "Set exclusive to BIREME" %}</strong></a>
+            </li>
+            {% endif %}
+
         </ul>
 
         <div class="tab-content">
@@ -409,6 +417,161 @@
                 {% endfor %}
 
             </div>
+
+            <div id="tab-legacy" class="tab-pane">
+
+
+                {% if legacy_objects %}
+                    {% for obj in legacy_objects %}
+
+                    <ul>
+                        <a href="{% url 'edit_legacy_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i>&nbsp;{% trans "Edit this configurations"  %}</a>
+
+                        <table width="90%">
+                            <tr>
+                                <td>MeSH:<br>
+                                {% if obj.mesh %}
+                                <input type="checkbox" name="mesh" value="" checked="true" disabled>
+                                {% else %}
+                                <input type="checkbox" name="mesh" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                                <td>Saude Publica:<br>
+                                {% if obj.saude_publica %}
+                                    <input type="checkbox" name="saude_publica" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="saude_publica" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                                <td>Homeopatia:<br>
+                                {% if obj.homeopatia %}
+                                    <input type="checkbox" name="homeopatia" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="homeopatia" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                                <td>Reforma Saude:<br>
+                                {% if obj.reforma_saude %}
+                                    <input type="checkbox" name="reforma_saude" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="reforma_saude" value="" disabled>
+                                {% endif %}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Repidisca:<br>
+                                {% if obj.repidisca %}
+                                    <input type="checkbox" name="repidisca" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="repidisca" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                                <td>Não indexavel:<br>
+                                {% if obj.nao_indexavel %}
+                                    <input type="checkbox" name="nao_indexavel" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="nao_indexavel" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                                <td>Pré-codificado:<br>
+                                {% if obj.pre_codificado %}
+                                    <input type="checkbox" name="pre_codificado" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="pre_codificado" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                                <td>Exploded:<br>
+                                {% if obj.exploded %}
+                                    <input type="checkbox" name="exploded" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="exploded" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td>Geográfico:<br>
+                                {% if obj.geografico %}
+                                    <input type="checkbox" name="geografico" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="geografico" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                                <td>Geog DeCS:<br>
+                                {% if obj.geog_decs %}
+                                    <input type="checkbox" name="geog_decs" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="geog_decs" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                                <td>PT LILACS:<br>
+                                {% if obj.pt_lilacs %}
+                                    <input type="checkbox" name="pt_lilacs" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="pt_lilacs" value="" disabled=>
+                                {% endif %}
+                                </td>
+
+                                <td>Desastre:<br>
+                                {% if obj.desastre %}
+                                    <input type="checkbox" name="desastre" value="" checked="true" disabled>
+                                {% else %}
+                                    <input type="checkbox" name="desastre" value="" disabled>
+                                {% endif %}
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                        <ul>
+
+                    {% endfor %}
+                {% else %}
+                    <ul>
+
+                        <a href="{% url 'create_legacy_desc' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_id={{ id_concept_new.identifier_id }}">
+                        <i class='icon-file'></i>&nbsp;{% trans "Create this configurations"  %}</a>
+
+                        <table width="90%">
+                            <tr>
+                                <td>MeSH:<br><input type="checkbox" name="mesh" value="" disabled=></td>
+                                <td>Saude Publica:<br><input type="checkbox" name="saude_publica" value="" disabled=""></td>
+                                <td>Homeopatia:<br><input type="checkbox" name="homeopatia" value="" disabled=""></td>
+                                <td>Reforma Saude:<br><input type="checkbox" name="reforma_saude" value="" disabled=""></td>
+                            </tr>
+
+                            <tr>
+                                <td>Repidisca:<br><input type="checkbox" name="repidisca" value="" disabled=""></td>
+                                <td>Não indexavel:<br><input type="checkbox" name="nao_indexavel" value="" disabled=""></td>
+                                <td>Pré-codificado:<br><input type="checkbox" name="pre_codificado" value="" disabled=""></td>
+                                <td>Exploded:<br><input type="checkbox" name="exploded" value="" disabled=""></td>
+                            </tr>
+
+                            <tr>
+                                <td>Geográfico:<br><input type="checkbox" name="geografico" value="" disabled=""></td>
+                                <td>Geog DeCS:<br><input type="checkbox" name="geog_decs" value="" disabled=""></td>
+                                <td>PT LILACS:<br><input type="checkbox" name="pt_lilacs" value="" disabled=""></td>
+                                <td>Desastre:<br><input type="checkbox" name="desastre" value="" disabled=""></td>
+                            </tr>
+
+                        </table>
+                    </ul>
+                {% endif %}
+
+
+            </div>
+
         </div>
 
         <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>

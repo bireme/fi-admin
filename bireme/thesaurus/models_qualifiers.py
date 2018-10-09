@@ -121,6 +121,55 @@ class TreeNumbersListQualif(models.Model, AuditLog):
 
 
 
+# Administrative information from old system
+class legacyInformationQualif(models.Model):
+
+    class Meta:
+        verbose_name = _("Legacy information")
+        verbose_name_plural = _("Legacy information")
+
+    identifier = models.ForeignKey(IdentifierQualif, related_name="legacyinformationqualif", blank=True, null=True)
+
+    # c
+    pre_codificado = models.CharField(_("Pre-codificado"), max_length=1, blank=True)
+
+    # d
+    desastre = models.CharField(_("Desastre"), max_length=1, blank=True)
+
+    # f
+    reforma_saude = models.CharField(_("Reforma Saude"), max_length=1, blank=True)
+
+    # g
+    geografico = models.CharField(_("Geografico"), max_length=1, blank=True)
+
+    # h
+    mesh = models.CharField(_("MeSH"), max_length=1, blank=True)
+
+    # l
+    pt_lilacs = models.CharField(_("PT LILACS"), max_length=1, blank=True)
+
+    # n
+    nao_indexavel = models.CharField(_("Nao indexavel"), max_length=1, blank=True)
+
+    # p
+    homeopatia = models.CharField(_("Homeopatia"), max_length=1, blank=True)
+
+    # r
+    repidisca = models.CharField(_("Repidisca"), max_length=1, blank=True)
+
+    # s
+    saude_publica = models.CharField(_("Saude Publica"), max_length=1, blank=True)
+
+    # x
+    exploded = models.CharField(_("Exploded"), max_length=1, blank=True)
+
+    # z
+    geog_decs = models.CharField(_("Geog DeCS"), max_length=1, blank=True)
+
+    def __unicode__(self):
+        return '%s' % (self.id)
+
+
 
 # Identifier ConceptList
 # class IdentifierConceptListQualif(models.Model, AuditLog):

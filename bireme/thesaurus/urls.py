@@ -31,6 +31,11 @@ urlpatterns = [
     url(r'^descriptors/term/new/?$', TermListDescCreateView.as_view(), name='create_term_desc'),
     url(r'^descriptors/term/edit/(?P<pk>\d+)/?$', TermListDescUpdateView.as_view(), name='edit_term_desc'),
 
+    # Cria Edita Legado
+    url(r'^descriptors/legacy/new/?$', legacyInformationDescCreateView.as_view(), name='create_legacy_desc'),
+    url(r'^descriptors/legacy/edit/(?P<pk>\d+)/?$', legacyInformationDescUpdateView.as_view(), name='edit_legacy_desc'),
+
+
 
     # Nao esta sendo utilizado por enquanto
     # Lista conceitos
@@ -63,6 +68,11 @@ urlpatterns = [
     # Cria Termo
     url(r'^qualifiers/term/new/?$', TermListQualifCreateView.as_view(), name='create_term_qualif'),
     url(r'^qualifiers/term/edit/(?P<pk>\d+)/?$', TermListQualifUpdateView.as_view(), name='edit_term_qualif'),
+
+    # Cria Edita Legado
+    url(r'^qualifiers/legacy/new/?$', legacyInformationQualifCreateView.as_view(), name='create_legacy_qualif'),
+    url(r'^qualifiers/legacy/edit/(?P<pk>\d+)/?$', legacyInformationQualifUpdateView.as_view(), name='edit_legacy_qualif'),
+
 
 ]
 

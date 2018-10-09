@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
+    <span class="divider">/</span></li>
+    <li>{% trans "Create legacy information" %}</li>
+{% endblock %}
+
+{% block content %}
+
+    <!-- header -->
+    <div class='header'>
+        <h3>
+            <i class='icon-book'></i>{% trans "Create legacy information" %}:
+        </h3>
+    </div>
+    <!-- header -->
+
+    <div class='body'>
+
+        {% if msg_erro %}
+            <ul class="errorlist alert alert-error"><li>{{ msg_erro }}</li></ul>
+        {% endif  %}
+
+        <form method="post">{% csrf_token %}
+
+            <input type="hidden" id="id_identifier_id" name="identifier_id" value="{{ request.GET.identifier_id }}">
+
+            <input type="hidden" id="id_term_thesaurus" name="term_thesaurus" value="{{ request.GET.ths }}" >
+
+            {{ form.non_field_errors.as_ul }}
+
+            {% for field in form.visible_fields %}
+                {% if field.errors %}
+                    <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                {% endif %}
+            {% endfor %}
+
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            <table width="90%">
+
+                <tr>
+                    <td>{{ form.mesh.label_tag }}<input type="checkbox" name="mesh" value="{% if form.mesh.value %}{{ form.mesh.value }}{% else %}h{% endif %}" {% if form.mesh.value %} checked="true"{% endif %}></td>
+
+                    <td>{{ form.saude_publica.label_tag }}<input type="checkbox" name="saude_publica" value="{% if form.saude_publica.value %}{{ form.saude_publica.value }}{% else %}s{% endif %}" {% if form.saude_publica.value %} checked="true"{% endif %}></td>
+
+                    <td>{{ form.homeopatia.label_tag }}<input type="checkbox" name="homeopatia" value="{% if form.homeopatia.value %}{{ form.homeopatia.value }}{% else %}p{% endif %}" {% if form.homeopatia.value %} checked="true"{% endif %}></td></td>
+
+                    <td>{{ form.reforma_saude.label_tag }}<input type="checkbox" name="reforma_saude" value="{% if form.reforma_saude.value %}{{ form.reforma_saude.value }}{% else %}f{% endif %}" {% if form.reforma_saude.value %} checked="true"{% endif %}></td></td>
+                </tr>
+
+                <tr>
+                    <td>{{ form.repidisca.label_tag }}<input type="checkbox" name="repidisca" value="{% if form.repidisca.value %}{{ form.repidisca.value }}{% else %}r{% endif %}" {% if form.repidisca.value %} checked="true"{% endif %}></td>
+
+                    <td>{{ form.nao_indexavel.label_tag }}<input type="checkbox" name="nao_indexavel" value="{% if form.nao_indexavel.value %}{{ form.nao_indexavel.value }}{% else %}n{% endif %}" {% if form.nao_indexavel.value %} checked="true"{% endif %}></td>
+
+                    <td>{{ form.pre_codificado.label_tag }}<input type="checkbox" name="pre_codificado" value="{% if form.pre_codificado.value %}{{ form.pre_codificado.value }}{% else %}c{% endif %}" {% if form.pre_codificado.value %} checked="true"{% endif %}></td>
+                    
+                    <td>{{ form.exploded.label_tag }}<input type="checkbox" name="exploded" value="{% if form.exploded.value %}{{ form.exploded.value }}{% else %}x{% endif %}" {% if form.exploded.value %} checked="true"{% endif %}></td>
+                </tr>
+
+                <tr>
+                    <td>{{ form.geografico.label_tag }}<input type="checkbox" name="geografico" value="{% if form.geografico.value %}{{ form.geografico.value }}{% else %}g{% endif %}" {% if form.geografico.value %} checked="true"{% endif %}></td>
+
+                    <td>{{ form.geog_decs.label_tag }}<input type="checkbox" name="geog_decs" value="{% if form.geog_decs.value %}{{ form.geog_decs.value }}{% else %}z{% endif %}" {% if form.geog_decs.value %} checked="true"{% endif %}></td>
+
+                    <td>{{ form.pt_lilacs.label_tag }}<input type="checkbox" name="pt_lilacs" value="{% if form.pt_lilacs.value %}{{ form.pt_lilacs.value }}{% else %}l{% endif %}" {% if form.pt_lilacs.value %} checked="true"{% endif %}></td>
+
+                    <td>{{ form.desastre.label_tag }}<input type="checkbox" name="desastre" value="{% if form.desastre.value %}{{ form.desastre.value }}{% else %}d{% endif %}" {% if form.desastre.value %} checked="true"{% endif %}></td>
+                </tr>
+
+            </table>
+
+            <div class="control-panel form-submit">
+                <button class="btn btn-large btn-danger" onclick="window.history.go(-1); return false;">{% trans "Cancel" %}</button>
+                <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}

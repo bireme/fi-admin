@@ -82,7 +82,7 @@ class TermListQualifForm(forms.ModelForm):
         model = TermListQualif
         fields = '__all__'
 
-# processo a parte
+# Processos a parte
 class TermListQualifUniqueForm(forms.ModelForm):
     class Meta:
         model = TermListQualif
@@ -92,6 +92,12 @@ class TermListQualifUniqueForm(forms.ModelForm):
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
     date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+
+
+class legacyInformationQualifForm(forms.ModelForm):
+    class Meta:
+        model = legacyInformationQualif
+        exclude = ('identifier',)
 
 
 
@@ -172,6 +178,18 @@ class PreviousIndexingListDescForm(forms.ModelForm):
             }
         }
 
+class legacyInformationDescForm(forms.ModelForm):
+    class Meta:
+        fields = '__all__'
+
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
+
+
+
 # Concept + Term - Form2
 class IdentifierConceptListDescForm(forms.ModelForm):
     class Meta:
@@ -193,7 +211,8 @@ class TermListDescForm(forms.ModelForm):
         Model = TermListDesc
         fields = '__all__'
 
-# processo a parte
+
+# Processos a parte
 class TermListDescUniqueForm(forms.ModelForm):
     class Meta:
         model = TermListDesc
@@ -203,6 +222,12 @@ class TermListDescUniqueForm(forms.ModelForm):
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
     date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+
+
+class legacyInformationDescForm(forms.ModelForm):
+    class Meta:
+        model = legacyInformationDesc
+        exclude = ('identifier',)
 
 
 
@@ -252,6 +277,16 @@ PreviousIndexingListDescFormSet = inlineformset_factory(
     extra=1
     )
 
+legacyInformationDescFormSet = inlineformset_factory(
+    IdentifierDesc,
+    legacyInformationDesc,
+    form=legacyInformationDescForm,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+    )
+
+
 
 # Concept + Term - Form2
 ConceptListDescFormSet = inlineformset_factory(
@@ -291,6 +326,16 @@ TreeNumbersListQualifFormSet = inlineformset_factory(
     can_delete=True,
     extra=1
     )
+
+legacyInformationQualifFormSet = inlineformset_factory(
+    IdentifierQualif,
+    legacyInformationQualif,
+    form=legacyInformationQualifForm,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+    )
+
 
 # Concept + Term - Form2
 ConceptListQualifFormSet = inlineformset_factory(

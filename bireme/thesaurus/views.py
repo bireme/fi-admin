@@ -72,9 +72,7 @@ class DescUpdate(LoginRequiredView):
     Create the first form
     """
     model = IdentifierDesc
-    # success_url = reverse_lazy('list_descriptor')
     success_url = reverse_lazy('create_concept_termdesc')
-
     
     form_class = IdentifierDescForm
     template_name = "thesaurus/descriptor_form_step1.html"
@@ -109,7 +107,7 @@ class DescUpdate(LoginRequiredView):
             # self.object = form.save()
             self.object = form.save(commit=False)
             
-            # Pega info de sequencial para salvar em decs_code
+            # Get sequential number to write to decs_code
             seq = code_controller.objects.get(pk=1)
             nseq = str(int(seq.sequential_number) + 1)
             seq.sequential_number = nseq
@@ -134,7 +132,6 @@ class DescUpdate(LoginRequiredView):
             formset_previous.save()
 
             form.save()
-            # form.save_m2m()
             
             return redirect(reverse('create_concept_termdesc') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language)
 
@@ -161,7 +158,6 @@ class DescUpdate(LoginRequiredView):
         # force use of form_valid method to run all validations
         return self.form_valid(form)
 
-
     def get_context_data(self, **kwargs):
         context = super(DescUpdate, self).get_context_data(**kwargs)
 
@@ -181,7 +177,7 @@ class DescUpdate(LoginRequiredView):
 class DescCreateView(DescUpdate, CreateView):
     """
     Used as class view to create Descriptors
-    Extend DescUpdate that do all the work
+
     """
     # def get_success_url(self):
     #     messages.success(self.request, 'is created')
@@ -202,19 +198,15 @@ class DescCreateView(DescUpdate, CreateView):
 class DescDeleteView(DescUpdate, DeleteView):
     """
     Used as class view to delete Descriptors
-    Extend DescUpdate that do all the work
     """
     model = IdentifierDesc
     template_name = 'thesaurus/descriptor_confirm_delete.html'
-    # success_url = reverse_lazy('list_descriptor')
 
     def get_success_url(self):
-        messages.success(self.request, 'is deleted')
+        # messages.success(self.request, 'is deleted')
 
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/descriptors/%s' % ths 
-
-
 
 
 class DescRegisterUpdateView(LoginRequiredView, UpdateView):
@@ -224,16 +216,14 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
     model = IdentifierDesc
     template_name = 'thesaurus/descriptor_edit_register.html'
     form_class = IdentifierDescForm
-    # success_url = reverse_lazy('list_descriptor')
 
     def get_success_url(self):
-        messages.success(self.request, 'is updated')
 
         id_register = self.object.id
-        # Pesquisa ID do primeiro conceito do registro para depois pesquisar primeito termo do conceito
+        # Search ID of the first concept of the record to then search first term of the concept
         concepts_of_register = IdentifierConceptListDesc.objects.filter(identifier_id=id_register).values('id')
         id_concept = concepts_of_register[0].get('id')
-        # Pesquisa ID do primeiro termo deste conceito para redirecionar
+        # Search ID of the first term of this concept to redirect
         terms_of_concept = TermListDesc.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
@@ -284,7 +274,6 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
             formset_previous.save()
 
             form.save()
-            # form.save_m2m()
 
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -299,14 +288,12 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
                                             )
                                         )
 
-
-    # Faz com que o forms.py tenha um pre filtro para abbreviation
+    # Makes forms.py have a pre-filter for abbreviation
     def get_form_kwargs(self):
         ths = self.request.GET.get("ths")
         kwargs = super(DescRegisterUpdateView, self).get_form_kwargs()
         kwargs.update({'ths': ths})
         return kwargs
-
 
     def form_invalid(self, form):
         # force use of form_valid method to run all validations
@@ -486,7 +473,7 @@ class DescListView(LoginRequiredView, ListView):
 
 
 # FORM 2
-# Cria conceito e termo
+# Creates concept and term
 class ConceptTermUpdate(LoginRequiredView):
 
     """
@@ -495,7 +482,6 @@ class ConceptTermUpdate(LoginRequiredView):
     Create the second form
     """
     model = IdentifierConceptListDesc
-    # success_url = reverse_lazy('list_descriptor')
     form_class = IdentifierConceptListDescForm
     template_name = 'thesaurus/descriptor_form_step2.html'
 
@@ -521,16 +507,13 @@ class ConceptTermUpdate(LoginRequiredView):
             form.save()
 
             return HttpResponseRedirect(self.get_success_url())
-
         else:
-
             return self.render_to_response(self.get_context_data(
                                             form=form,
                                             formset_concept=formset_concept,
                                             formset_term=formset_term,
                                             )
                         )
-
 
     def get_context_data(self, **kwargs):
         context = super(ConceptTermUpdate, self).get_context_data(**kwargs)
@@ -557,7 +540,7 @@ class DescCreateView2(ConceptTermUpdate, CreateView):
     Used as class view to create Descriptors
     """
     def get_success_url(self):
-        messages.success(self.request, 'is created')
+        # messages.success(self.request, 'is created')
 
         id_concept = self.object.id
         # Pesquisa ID do primeiro termo deste conceito para redirecionar
@@ -569,6 +552,7 @@ class DescCreateView2(ConceptTermUpdate, CreateView):
 
 
 # Pesquisa conceito para poder trazer ID do registro para novo conceito
+# Não está sendo utilizado por enquanto
 class ConceptListDescView(LoginRequiredView, ListView):
     """
     List descriptor records (used by relationship popup selection window)
@@ -618,14 +602,12 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
     model = IdentifierConceptListDesc
     template_name = 'thesaurus/descriptor_new_concept.html'
     form_class = IdentifierConceptListDescForm
-    # success_url = reverse_lazy('list_descriptor')
-
 
     def get_success_url(self):
-        messages.success(self.request, 'is created')
 
         id_concept = self.object.id
-        # Pesquisa ID do primeiro termo deste conceito para redirecionar
+
+        # Search ID of the first term of this concept to redirect
         terms_of_concept = TermListDesc.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
@@ -656,7 +638,6 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
             form.save()
 
             return HttpResponseRedirect(self.get_success_url())
-
         else:
             return self.render_to_response(self.get_context_data(
                                             form=form,
@@ -667,7 +648,6 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ConceptListDescCreateView, self).get_context_data(**kwargs)
-
 
         if self.request.method == 'GET':
 
@@ -685,10 +665,8 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
     model = IdentifierConceptListDesc
     template_name = 'thesaurus/descriptor_edit_concept.html'
     form_class = IdentifierConceptListDescForm
-    # success_url = reverse_lazy('list_descriptor')
 
     def get_success_url(self):
-        messages.success(self.request, 'is updated')
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/descriptors/view/%s%s' % ( int(self.request.POST.get("termdesc__id")), ths )
 
@@ -710,7 +688,6 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
             form.save()
 
             return HttpResponseRedirect(self.get_success_url())
-
         else:
             return self.render_to_response(self.get_context_data(
                                             form=form,
@@ -735,10 +712,8 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
     model = TermListDesc
     template_name = 'thesaurus/descriptor_new_term.html'
     form_class = TermListDescUniqueForm
-    # success_url = reverse_lazy('list_descriptor')
 
     def get_success_url(self):
-        messages.success(self.request, 'is created')
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
 
@@ -760,7 +735,7 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
             if not has_term:
                 self.object = form.save(commit=False)
 
-                # prove a data atual se nao é informado no form
+                # prove the current date if you are not informed on the form
                 if not self.object.date_created:
                     self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
 
@@ -785,10 +760,8 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
     model = TermListDesc
     template_name = 'thesaurus/descriptor_edit_term.html'
     form_class = TermListDescUniqueForm
-    # success_url = reverse_lazy('list_descriptor')
 
     def get_success_url(self):
-        messages.success(self.request, 'is created')
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
 
@@ -797,7 +770,7 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
         if form.is_valid():
             self.object = form.save(commit=False)
 
-            # prove a data atual se nao é informado no form
+            # prove the current date if you are not informed on the form
             if not self.object.date_created:
                 self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
 
@@ -814,10 +787,93 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
 
 
+class legacyInformationDescCreateView(LoginRequiredView, CreateView):
+    """
+    Used as class view to create legacy information
+    """
+    model = legacyInformationDesc
+    template_name = 'thesaurus/descriptor_new_legacy.html'
+    form_class = legacyInformationDescForm
+
+    def get_success_url(self):
+
+        id_identifier = self.request.GET.get("identifier_id")
+
+        # Search ID of the first concept of this record
+        concepts_of_registry = IdentifierConceptListDesc.objects.filter(identifier_id=id_identifier).values('id')
+        id_concept = concepts_of_registry[0].get('id')
+
+        # Search ID of the first term of this concept to redirect
+        terms_of_concept = TermListDesc.objects.filter(identifier_concept_id=id_concept).values('id')
+        id_term = terms_of_concept[0].get('id')
+
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
+
+    def form_valid(self, form):
+
+        if form.is_valid():
+
+            self.object = form.save(commit=False)
+            self.object.identifier_id = self.request.POST.get("identifier_id")
+            self.object = form.save()
+            form.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super(legacyInformationDescCreateView, self).get_context_data(**kwargs)
+        return context
+
+
+
+class legacyInformationDescUpdateView(LoginRequiredView, UpdateView):
+    """
+    Used as class view to update a legacy information
+    """
+    model = legacyInformationDesc
+    template_name = 'thesaurus/descriptor_edit_legacy.html'
+    form_class = legacyInformationDescForm
+
+
+    def get_success_url(self):
+
+        id_identifier = self.request.GET.get("identifier_id")
+
+        # Search ID of the first concept of this record
+        concepts_of_registry = IdentifierConceptListDesc.objects.filter(identifier_id=id_identifier).values('id')
+        id_concept = concepts_of_registry[0].get('id')
+
+        # Search ID of the first term of this concept to redirect
+        terms_of_concept = TermListDesc.objects.filter(identifier_concept_id=id_concept).values('id')
+        id_term = terms_of_concept[0].get('id')
+
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
+
+    def form_valid(self, form):
+
+        if form.is_valid():
+
+            self.object = form.save()
+            form.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super(legacyInformationDescUpdateView, self).get_context_data(**kwargs)
+        return context
+
+
+
 
 class PageViewDesc(LoginRequiredView, DetailView):
     """
-    Used as class view to list the result
+    Used as class DetailView to list the result
     """
     model = TermListDesc
     template_name = 'thesaurus/page_view_desc.html'
@@ -829,7 +885,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
 
         if self.object:
 
-            # IdentifierConceptListDesc - recupera pk do conceito
+            # IdentifierConceptListDesc - recover pk from concept
             id_concept = IdentifierConceptListDesc.objects.filter(
                                             id=self.object.identifier_concept_id,
                                             ).values('identifier_id').distinct()
@@ -839,18 +895,18 @@ class PageViewDesc(LoginRequiredView, DetailView):
                 context['id_concept_new'] = concept
 
 
-            # IdentifierConceptListDesc - recupera pk's que tem mesmo identifier_id - pode trazer mais que 1
+            # IdentifierConceptListDesc - retrieves pk's that has even identifier_id - can bring more than 1
             ids = IdentifierConceptListDesc.objects.filter(
                                             identifier_id=id_concept,
                                             ).values('id')
 
             # IdentifierDesc
-            # Traz informação para Active Descriptor Record
+            # Brings information to Active Descriptor Record
             context['identifierdesc_objects'] = IdentifierDesc.objects.filter(
                                             id=id_concept,
                                             )
 
-            # Models do registro
+            # IdentifierDesc
             context['id_register_objects'] = IdentifierDesc.objects.filter(
                                             id=id_concept,
                                             ).values(
@@ -955,6 +1011,25 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                     'conceptdesc__language_code',
                                                     'conceptdesc__scope_note',
                                             ).distinct()
+
+            context['legacy_objects'] = legacyInformationDesc.objects.filter(
+                                            identifier=id_concept,
+                                            ).values(
+                                                'id',
+                                                'pre_codificado',
+                                                'desastre',
+                                                'reforma_saude',
+                                                'geografico',
+                                                'mesh',
+                                                'pt_lilacs',
+                                                'nao_indexavel',
+                                                'homeopatia',
+                                                'repidisca',
+                                                'saude_publica',
+                                                'exploded',
+                                                'geog_decs',
+                                                'identifier_id',
+                                            )
 
             # Usado para mostrar informações de conceitos e termos
             context['identifierconceptlist_objects'] = IdentifierConceptListDesc.objects.filter(
@@ -1112,15 +1187,11 @@ class QualifCreateView(QualifUpdate, CreateView):
 class QualifDeleteView(QualifUpdate, DeleteView):
     """
     Used as class view to delete Qualifier
-    Extend DescUpdate that do all the work
     """
     model = IdentifierQualif
     template_name = 'thesaurus/qualifier_confirm_delete.html'
-    # success_url = reverse_lazy('list_qualifier')
 
     def get_success_url(self):
-        messages.success(self.request, 'is deleted')
-
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/qualifiers/%s' % ths 
 
@@ -1135,13 +1206,14 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
     form_class = IdentifierQualifForm
 
     def get_success_url(self):
-        messages.success(self.request, 'is updated')
 
         id_register = self.object.id
-        # Pesquisa ID do primeiro conceito do registro para depois pesquisar primeito termo do conceito
+
+        # Search ID of the first concept of the record to later search the first term of the concept
         concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=id_register).values('id')
         id_concept = concepts_of_register[0].get('id')
-        # Pesquisa ID do primeiro termo deste conceito para redirecionar
+
+        # Search ID of the first term of this concept to redirect
         terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
@@ -1176,7 +1248,6 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
             formset_treenumber.save()
 
             form.save()
-            # form.save_m2m()
 
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -1388,7 +1459,6 @@ class QualifConceptTermUpdate(LoginRequiredView):
     Used as class view to create ConceptTermUpdate
     """
     model = IdentifierConceptListQualif
-    # success_url = reverse_lazy('list_descriptor')
     form_class = IdentifierConceptListQualifForm
     template_name = 'thesaurus/qualifier_form_step2.html'
 
@@ -1414,9 +1484,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
             form.save()
 
             return HttpResponseRedirect(self.get_success_url())
-
         else:
-
             return self.render_to_response(self.get_context_data(
                                             form=form,
                                             formset_concept=formset_concept,
@@ -1450,10 +1518,10 @@ class QualifCreateView2(QualifConceptTermUpdate, CreateView):
     Used as class view to create qualifier
     """
     def get_success_url(self):
-        messages.success(self.request, 'is created')
 
         id_concept = self.object.id
-        # Pesquisa ID do primeiro termo deste conceito para redirecionar
+
+        # Search ID of the first term of this concept to redirect
         terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
@@ -1472,10 +1540,10 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
     form_class = IdentifierConceptListQualifForm
 
     def get_success_url(self):
-        messages.success(self.request, 'is created')
 
         id_concept = self.object.id
-        # Pesquisa ID do primeiro termo deste conceito para redirecionar
+
+        # Search ID of the first term of this concept to redirect
         terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept).values('id')
         id_term = terms_of_concept[0].get('id')
 
@@ -1506,7 +1574,6 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
             form.save()
 
             return HttpResponseRedirect(self.get_success_url())
-
         else:
             return self.render_to_response(self.get_context_data(
                                             form=form,
@@ -1517,7 +1584,6 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ConceptListQualifCreateView, self).get_context_data(**kwargs)
-
 
         if self.request.method == 'GET':
 
@@ -1537,7 +1603,6 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
     form_class = IdentifierConceptListQualifForm
 
     def get_success_url(self):
-        messages.success(self.request, 'is updated')
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/qualifiers/view/%s%s' % ( int(self.request.POST.get("termqualif__id")), ths )
 
@@ -1560,7 +1625,6 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
             form.save()
 
             return HttpResponseRedirect(self.get_success_url())
-
         else:
             return self.render_to_response(self.get_context_data(
                                             form=form,
@@ -1587,7 +1651,6 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
     form_class = TermListQualifUniqueForm
 
     def get_success_url(self):
-        messages.success(self.request, 'is created')
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/qualifiers/view/%s%s' % ( self.object.id, ths )
 
@@ -1609,7 +1672,7 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
             if not has_term:
                 self.object = form.save(commit=False)
 
-                # prove a data atual se nao é informado no form
+                # prove the current date if you are not informed on the form
                 if not self.object.date_created:
                     self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
 
@@ -1636,7 +1699,6 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
     form_class = TermListQualifUniqueForm
 
     def get_success_url(self):
-        messages.success(self.request, 'is created')
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/qualifiers/view/%s%s' % ( self.object.id, ths )
 
@@ -1657,6 +1719,88 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
 
 
+class legacyInformationQualifCreateView(LoginRequiredView, CreateView):
+    """
+    Used as class view to create legacy information
+    """
+    model = legacyInformationQualif
+    template_name = 'thesaurus/qualifier_new_legacy.html'
+    form_class = legacyInformationQualifForm
+
+    def get_success_url(self):
+
+        id_identifier = self.request.GET.get("identifier_id")
+
+        # Search ID of the first concept of this record
+        concepts_of_registry = IdentifierConceptListQualif.objects.filter(identifier_id=id_identifier).values('id')
+        id_concept = concepts_of_registry[0].get('id')
+
+        # Search ID of the first term of this concept to redirect
+        terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept).values('id')
+        id_term = terms_of_concept[0].get('id')
+
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/qualifiers/view/%s%s' % ( id_term, ths )
+
+    def form_valid(self, form):
+
+        if form.is_valid():
+
+            self.object = form.save(commit=False)
+            self.object.identifier_id = self.request.POST.get("identifier_id")
+            self.object = form.save()
+            form.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super(legacyInformationQualifCreateView, self).get_context_data(**kwargs)
+        return context
+
+
+
+class legacyInformationQualifUpdateView(LoginRequiredView, UpdateView):
+    """
+    Used as class view to update a legacy information
+    """
+    model = legacyInformationQualif
+    template_name = 'thesaurus/qualifier_edit_legacy.html'
+    form_class = legacyInformationQualifForm
+
+
+    def get_success_url(self):
+
+        id_identifier = self.request.GET.get("identifier_id")
+
+        # Search ID of the first concept of this record
+        concepts_of_registry = IdentifierConceptListQualif.objects.filter(identifier_id=id_identifier).values('id')
+        id_concept = concepts_of_registry[0].get('id')
+
+        # Search ID of the first term of this concept to redirect
+        terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept).values('id')
+        id_term = terms_of_concept[0].get('id')
+
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/qualifiers/view/%s%s' % ( id_term, ths )
+
+    def form_valid(self, form):
+
+        if form.is_valid():
+
+            self.object = form.save()
+            form.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_context_data(self, **kwargs):
+        context = super(legacyInformationQualifUpdateView, self).get_context_data(**kwargs)
+        return context
+
+
 
 class PageViewQualif(LoginRequiredView, DetailView):
     """
@@ -1675,21 +1819,21 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                             id=self.object.identifier_concept_id,
                                             ).values('identifier_id').distinct()
 
-            # Usado para criar novo conceito
+            # Used to create new concept
             for concept in id_concept:
                 context['id_concept_new'] = concept
 
-            # IdentifierConceptListQualif - recupera pk's que tem mesmo identifier_id - pode trazer mais que 1
+            # IdentifierConceptListQualif - retrieves pk's that has even identifier_id - can bring more than 1
             ids = IdentifierConceptListQualif.objects.filter(
                                             identifier_id=id_concept,
                                             ).values('id')
 
             # IdentifierQualif
-            # Traz informação para Active Descriptor Record
+            # Brings information to Active Descriptor Record
             context['identifierqualif_objects'] = IdentifierQualif.objects.filter(
                                             id=id_concept,
                                             )
-            # Usado para criar novo conceito
+
             context['id_register_objects'] = IdentifierQualif.objects.filter(
                                             id=id_concept,
                                             ).values(
@@ -1717,7 +1861,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                 'descriptionqualif__online_note',
                                             )
 
-            # Usado para criar lista de tree number
+            # Used to create tree number list
             context['tree_numbers_objects'] = IdentifierQualif.objects.filter(
                                             id=id_concept,
                                             ).values(
@@ -1761,7 +1905,26 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                     'conceptqualif__scope_note',
                                             ).distinct()
 
-            # Usado para mostrar informações de conceitos e termos
+            context['legacy_objects'] = legacyInformationQualif.objects.filter(
+                                            identifier=id_concept,
+                                            ).values(
+                                                'id',
+                                                'pre_codificado',
+                                                'desastre',
+                                                'reforma_saude',
+                                                'geografico',
+                                                'mesh',
+                                                'pt_lilacs',
+                                                'nao_indexavel',
+                                                'homeopatia',
+                                                'repidisca',
+                                                'saude_publica',
+                                                'exploded',
+                                                'geog_decs',
+                                                'identifier_id',
+                                            )
+
+            # Used to show concept and term information
             context['identifierconceptlist_objects'] = IdentifierConceptListQualif.objects.filter(
                                             identifier=id_concept,
                                             ).order_by('identifier_id',
