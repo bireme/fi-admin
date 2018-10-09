@@ -6,6 +6,7 @@ from django.template.defaultfilters import slugify
 
 from django.db import models
 from log.models import AuditLog
+from utils.models import Country
 
 from main.choices import LANGUAGES_CHOICES
 import os
@@ -28,6 +29,7 @@ class Collection(models.Model, AuditLog):
 
     parent = models.ForeignKey('self', verbose_name=_("Parent"), null=True, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
     name = models.CharField(_("Name"), max_length=155, blank=True)
     slug = models.SlugField(_("Slug"), max_length=155, blank=True)
     description = models.TextField(_("Description"), blank=True)
