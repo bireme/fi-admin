@@ -22,6 +22,7 @@ class CommunityResource(ModelResource):
         resource_name = 'community'
         filtering = {
             'community': 'exact',
+            'country': 'exact',
         }
         include_resource_uri = False
 
@@ -31,7 +32,16 @@ class CommunityResource(ModelResource):
         if 'community' in filters:
             orm_filters['id__exact'] = filters['community']
 
+        if 'country' in filters:
+            orm_filters['country__exact'] = filters['country']
+
         return orm_filters
+
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/get_country_list%s$" % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_country_list'), name="api_get_country_list"),
+        ]
 
     def dehydrate(self, bundle):
         # adjust image url in bundle object
@@ -39,6 +49,16 @@ class CommunityResource(ModelResource):
             bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
 
         return bundle
+
+
+    def get_country_list(self, request, **kwargs):
+        self.method_check(request, allowed=['get'])
+        community_list = Collection.objects.filter(parent__isnull=True)
+        country_list = [community.country for community in community_list]
+        country_list_unique = set(country_list)
+        country_list_detail = [{'name': c.get_translations(), 'id': c.id} for c in country_list_unique]
+
+        return self.create_response(request, country_list_detail)
 
 
 class CollectionResource(ModelResource):
