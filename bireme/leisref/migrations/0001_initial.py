@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('main', '0005_auto_20171121_1441'),
+        ('main', '0003_auto_20160203_1435'),
     ]
 
     operations = [
@@ -21,10 +21,11 @@ class Migration(migrations.Migration):
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('status', models.SmallIntegerField(default=-1, null=True, verbose_name='Status', choices=[(-2, 'Related'), (-1, 'Draft'), (1, 'Published'), (2, 'Refused'), (3, 'Deleted')])),
-                ('reviewed', models.BooleanField(default=False, verbose_name='Reviewed?')),
                 ('act_number', models.CharField(max_length=125, verbose_name='Act number', blank=True)),
                 ('title', models.CharField(max_length=255, verbose_name='Title', blank=True)),
                 ('denomination', models.CharField(max_length=255, verbose_name='Denomination', blank=True)),
+                ('scope_state', models.CharField(max_length=125, verbose_name='Act scope state', blank=True)),
+                ('scope_city', models.CharField(max_length=125, verbose_name='Act scope city', blank=True)),
                 ('scope_geo_group', models.CharField(max_length=125, verbose_name='Act scope geographic group', blank=True)),
                 ('volumen', models.CharField(max_length=125, verbose_name='Volumen', blank=True)),
                 ('fascicle_number', models.CharField(max_length=125, verbose_name='Fascicle', blank=True)),
@@ -47,69 +48,13 @@ class Migration(migrations.Migration):
             bases=(models.Model, log.models.AuditLog),
         ),
         migrations.CreateModel(
-            name='ActCity',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
-                ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
-                ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-            ],
-            options={
-                'verbose_name': 'Act city',
-                'verbose_name_plural': 'Act cities',
-            },
-        ),
-        migrations.CreateModel(
-            name='ActCityLocal',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
-                ('name', models.CharField(max_length=255, verbose_name='name')),
-                ('act_city', models.ForeignKey(to='leisref.ActCity')),
-            ],
-            options={
-                'verbose_name': 'Translation',
-                'verbose_name_plural': 'Translations',
-            },
-        ),
-        migrations.CreateModel(
-            name='ActCollection',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
-                ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
-                ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-            ],
-            options={
-                'verbose_name': 'Act collection',
-                'verbose_name_plural': 'Act collections',
-            },
-        ),
-        migrations.CreateModel(
-            name='ActCollectionLocal',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
-                ('name', models.CharField(max_length=255, verbose_name='name')),
-                ('act_collection', models.ForeignKey(to='leisref.ActCollection')),
-            ],
-            options={
-                'verbose_name': 'Translation',
-                'verbose_name_plural': 'Translations',
-            },
-        ),
-        migrations.CreateModel(
             name='ActCountryRegion',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
                 ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
             ],
@@ -122,7 +67,7 @@ class Migration(migrations.Migration):
             name='ActCountryRegionLocal',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
                 ('act_region', models.ForeignKey(to='leisref.ActCountryRegion')),
             ],
@@ -138,9 +83,9 @@ class Migration(migrations.Migration):
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('scope_region', models.ManyToManyField(to='leisref.ActCountryRegion', verbose_name='Country/Region', blank=True)),
+                ('scope_region', models.ForeignKey(verbose_name='Country/Region', blank=True, to='leisref.ActCountryRegion', null=True)),
                 ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
@@ -152,7 +97,7 @@ class Migration(migrations.Migration):
             name='ActOrganIssuerLocal',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
                 ('organ_issuer', models.ForeignKey(verbose_name='Organ issuer', to='leisref.ActOrganIssuer')),
             ],
@@ -184,7 +129,7 @@ class Migration(migrations.Migration):
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('name', models.CharField(max_length=155, verbose_name='name')),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('label_present', models.CharField(max_length=155, verbose_name='Present tense form')),
                 ('label_past', models.CharField(max_length=155, verbose_name='Past form')),
                 ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
@@ -200,9 +145,8 @@ class Migration(migrations.Migration):
             name='ActRelationTypeLocal',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
-                ('label_present', models.CharField(max_length=155, verbose_name='Present tense form')),
-                ('label_past', models.CharField(max_length=155, verbose_name='Past form')),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
+                ('name', models.CharField(max_length=255, verbose_name='name')),
                 ('relation_type', models.ForeignKey(verbose_name='Act relation type', to='leisref.ActRelationType')),
             ],
             options={
@@ -217,9 +161,9 @@ class Migration(migrations.Migration):
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('scope_region', models.ManyToManyField(to='leisref.ActCountryRegion', verbose_name='Country/Region', blank=True)),
+                ('scope_region', models.ForeignKey(verbose_name='Country/Region', blank=True, to='leisref.ActCountryRegion', null=True)),
                 ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
@@ -231,7 +175,7 @@ class Migration(migrations.Migration):
             name='ActScopeLocal',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
                 ('act_scope', models.ForeignKey(to='leisref.ActScope')),
             ],
@@ -247,7 +191,7 @@ class Migration(migrations.Migration):
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
                 ('scope_region', models.ForeignKey(verbose_name='Country/Region', blank=True, to='leisref.ActCountryRegion', null=True)),
                 ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
@@ -261,39 +205,9 @@ class Migration(migrations.Migration):
             name='ActSourceLocal',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
                 ('act_source', models.ForeignKey(to='leisref.ActSource')),
-            ],
-            options={
-                'verbose_name': 'Translation',
-                'verbose_name_plural': 'Translations',
-            },
-        ),
-        migrations.CreateModel(
-            name='ActState',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
-                ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
-                ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('scope_region', models.ForeignKey(verbose_name='Country/Region', blank=True, to='leisref.ActCountryRegion', null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-            ],
-            options={
-                'verbose_name': 'Act state',
-                'verbose_name_plural': 'Act states',
-            },
-        ),
-        migrations.CreateModel(
-            name='ActStateLocal',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
-                ('name', models.CharField(max_length=255, verbose_name='name')),
-                ('act_state', models.ForeignKey(to='leisref.ActState')),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -307,9 +221,9 @@ class Migration(migrations.Migration):
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('scope_region', models.ManyToManyField(to='leisref.ActCountryRegion', verbose_name='Country/Region', blank=True)),
+                ('scope_region', models.ForeignKey(verbose_name='Country/Region', blank=True, to='leisref.ActCountryRegion', null=True)),
                 ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
@@ -321,7 +235,7 @@ class Migration(migrations.Migration):
             name='ActTypeLocal',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
                 ('act_type', models.ForeignKey(verbose_name='Act type', to='leisref.ActType')),
             ],
@@ -336,8 +250,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
-                ('url', models.URLField(max_length=300, verbose_name='URL')),
-                ('language', models.CharField(blank=True, max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
+                ('url', models.URLField(verbose_name='URL')),
+                ('language', models.CharField(blank=True, max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('act', models.ForeignKey(to='leisref.Act', null=True)),
                 ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
                 ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
@@ -345,35 +259,6 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Act URL',
                 'verbose_name_plural': 'Act URLs',
-            },
-        ),
-        migrations.CreateModel(
-            name='Database',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
-                ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
-                ('acronym', models.CharField(max_length=55, verbose_name='Acronym')),
-                ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-            ],
-            options={
-                'verbose_name': 'Database',
-                'verbose_name_plural': 'Databases',
-            },
-        ),
-        migrations.CreateModel(
-            name='DatabaseLocal',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
-                ('name', models.CharField(max_length=255, verbose_name='name')),
-                ('database', models.ForeignKey(verbose_name='Database', to='leisref.Database')),
-            ],
-            options={
-                'verbose_name': 'Translation',
-                'verbose_name_plural': 'Translations',
             },
         ),
         migrations.AddField(
@@ -387,31 +272,6 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
         ),
         migrations.AddField(
-            model_name='actcollection',
-            name='scope_region',
-            field=models.ForeignKey(verbose_name='Country/Region', blank=True, to='leisref.ActCountryRegion', null=True),
-        ),
-        migrations.AddField(
-            model_name='actcollection',
-            name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
-        ),
-        migrations.AddField(
-            model_name='actcity',
-            name='scope_region',
-            field=models.ForeignKey(verbose_name='Country/Region', blank=True, to='leisref.ActCountryRegion', null=True),
-        ),
-        migrations.AddField(
-            model_name='actcity',
-            name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
-        ),
-        migrations.AddField(
-            model_name='act',
-            name='act_collection',
-            field=models.ManyToManyField(to='leisref.ActCollection', verbose_name='Collection', blank=True),
-        ),
-        migrations.AddField(
             model_name='act',
             name='act_type',
             field=models.ForeignKey(verbose_name='Act type', to='leisref.ActType'),
@@ -420,11 +280,6 @@ class Migration(migrations.Migration):
             model_name='act',
             name='created_by',
             field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
-        ),
-        migrations.AddField(
-            model_name='act',
-            name='indexed_database',
-            field=models.ManyToManyField(to='leisref.Database', verbose_name='Indexed in', blank=True),
         ),
         migrations.AddField(
             model_name='act',
@@ -443,18 +298,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='act',
-            name='scope_city',
-            field=models.ForeignKey(verbose_name='Act scope city', blank=True, to='leisref.ActCity', null=True),
-        ),
-        migrations.AddField(
-            model_name='act',
             name='scope_region',
             field=models.ForeignKey(verbose_name='Act country/region', to='leisref.ActCountryRegion'),
-        ),
-        migrations.AddField(
-            model_name='act',
-            name='scope_state',
-            field=models.ForeignKey(verbose_name='Act scope state', blank=True, to='leisref.ActState', null=True),
         ),
         migrations.AddField(
             model_name='act',
