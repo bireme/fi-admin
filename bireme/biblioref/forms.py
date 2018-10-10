@@ -294,12 +294,16 @@ class BiblioRefForm(BetterModelForm):
         return data
 
     def validate_author_field(self, field):
-        data = self.cleaned_data[field]
+        data = self.cleaned_data.get(field)
         abbreviation_list = [' JR.', ' JR ', 'Fº', ' jr.', ' jr ', 'fº', ' Jr.', ' Jr ', ' jR.', ' jR ']
         resp_list = ['edt', 'com', 'coord', 'org']
         literature_type = self.document_type[0]
         type_of_journal = self.cleaned_data.get('type_of_journal', 'p')
         status = self.cleaned_data.get('status')
+
+        # skip validation when record is deleted or refused
+        if status == 2 or status == 3:
+            return data
 
         if self.document_type[0] == 'T' and not 'a' in self.document_type:
             if not data:
@@ -531,11 +535,12 @@ class BiblioRefForm(BetterModelForm):
 
     def clean_title(self):
         field = 'title'
-        data = self.cleaned_data[field]
+        data = self.cleaned_data.get(field)
+        status = self.cleaned_data.get('status')
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
         url_list = []
 
-        if self.is_visiblefield('title'):
+        if self.is_visiblefield('title') and status == 1:
             if not data:
                 self.add_error(field, _("Mandatory"))
             else:
@@ -557,9 +562,10 @@ class BiblioRefForm(BetterModelForm):
     def clean_title_monographic(self):
         field = 'title_monographic'
         data = self.cleaned_data.get(field)
+        status = self.cleaned_data.get('status')
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
 
-        if self.is_visiblefield('title_monographic'):
+        if self.is_visiblefield('title_monographic') and status == 1:
             if data:
                 occ = 0
                 for title in data:
