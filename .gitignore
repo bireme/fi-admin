@@ -12,6 +12,6 @@ bireme/templates/version.txt
 fixtures/samples/
 uploads/
 
-bireme/*/migrations/*
-bireme/thesaurus/migrations/*
-bireme/thesaurus/migrations/0001_initial.py
+# bireme/*/migrations/*
+# bireme/thesaurus/migrations/*
+# bireme/thesaurus/migrations/0001_initial.py

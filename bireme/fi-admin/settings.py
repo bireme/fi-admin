@@ -117,10 +117,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.tz',
-
-    # thesaurus
     'django.core.context_processors.request',
-
     'django.contrib.messages.context_processors.messages',
 
     'utils.context_processors.additional_user_info',
@@ -197,7 +194,6 @@ INSTALLED_APPS = (
     'text_block',
     'database',
     'classification',
-
     'thesaurus',
 
 )
