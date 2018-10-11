@@ -39,7 +39,7 @@
             <select name="collection" onchange="this.form.submit()">
                 <option value="">{% trans 'Select the community' %}</option>
                 {% for col in collection_list %}
-                    <option value="{{col.id}}" {% if col.id = collection_param|add:0 %}selected=1{% endif %}>{{col.name}}</option>
+                    <option value="{{col.id}}" {% if col.id = collection_param|add:0 %}selected=1{% endif %}>{{col.name}} - {{col.country}}</option>
                 {% endfor %}
             </select>
         </div>
