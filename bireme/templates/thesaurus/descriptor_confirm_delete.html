@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Delete Descriptor" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li>{% trans "Delete Descriptor" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-book'></i>{% trans "Delete Descriptor" %}</h2>
+</div>
+
+<div class='body'>
+    <form method="POST" class="serial-form">
+        {% csrf_token %}
+
+        <blockquote>
+            <h4>
+                {% if object.descriptor_ui %}
+                    {% trans "MESH Descriptor UI" %}: {{ object.descriptor_ui }}<br>
+                {% endif %}
+
+                {% if object.decs_code %}
+                    {% trans "DeCS Descriptor UI" %}: {{ object.decs_code }}
+                {% endif %}
+            </h4>
+        </blockquote>
+
+        <div class="alert">
+            <p><strong>{% trans "Are you sure you want to delete?" %}</strong></p>
+            <a href="" onclick="window.history.go(-1); return false;" class="btn">{% trans 'No' %}</a>
+            <input type="submit" class="btn btn-danger delete" value="{% trans 'Yes' %}"></input>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

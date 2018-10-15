@@ -101,6 +101,9 @@ urlpatterns = patterns('',
     # Title
     (r'^title/', include('title.urls')),
 
+    # Thesaurus
+    (r'^thesaurus/', include('thesaurus.urls')),
+
     # Issues
     # (r'^issues/', include('issues.urls')),
 

@@ -1,0 +1,387 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load app_filters %}
+
+{% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    {% if object %}
+        <li><a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
+        <span class="divider">/</span></li>
+        <li>{% trans "Edit Register" %}</li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <!-- header -->
+    <div class='header'>
+        {% if object %}
+            <h3>
+                <i class='icon-book'></i>{% trans "Edit registry information" %}:
+                {{ request.GET.string }} ({{ request.GET.lang }})
+            </h3>
+        {% endif %}
+    </div>
+    <!-- header -->
+
+    <div class='body'>
+
+        {% if msg_erro %}
+            <ul class="errorlist alert alert-error"><li>{{ msg_erro }}</li></ul>
+        {% endif  %}
+
+        {% if form.errors or formset_descriptor.errors or formset_treenumber.errors or formset_previous.errors %}
+            <ul class="errorlist alert alert-error">
+                <li>{% trans "Please check required fields" %}</li>
+            </ul>
+        {% endif %}
+
+        {{ form.non_form_errors }}
+        {{ formset_descriptor.non_form_errors }}
+        {{ formset_treenumber.non_form_errors }}
+
+        <form method="POST" class="reference-form" encrypt="multipart/form-data">{% csrf_token %}
+        
+            <input type='hidden' name="choiced_thesaurus" value="{% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+
+            <input type="hidden" id="id_thesaurus" name="thesaurus" value="{{ request.GET.ths }}">
+
+            <div class="tab-data1">
+
+                <!-- identifierqualif -->
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#identifierqualif">{% trans "Identifier of Record" %}</a>
+                    </div>
+
+                    <ul>
+                    <fieldset id="identifierqualif">
+
+                        {{ form.non_field_errors.as_ul }}
+
+                        {% for field in form.visible_fields %}
+                            {% if field.errors %}
+                                <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                            {% endif %}
+                        {% endfor %}
+
+                        <table class="identifierqualif">
+                            <tr>
+                                <td>{{ form.qualifier_ui.label }}:</td>
+                                <td>{{ form.decs_code.label }}</td>
+                                <td>{{ form.external_code.label }}:</td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.qualifier_ui }}</td>
+                                <td>
+                                    <input type="text" id="id_decs_code" name="decs_code" value="{% if form.decs_code.value %}{{ form.decs_code.value }}{% endif %}" readonly="True">
+                                </td>
+                                <td>{{ form.external_code }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.date_created.label }}:
+                                    <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
+                                </td>
+                                <td>{{ form.date_revised.label }}:
+                                    <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
+                                </td>
+                                <td>{{ form.date_established.label }}:
+                                    <font color="#999"><i>{{ form.date_established.help_text }}</i></font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ form.date_created }}</td>
+                                <td>{{ form.date_revised }}</td>
+                                <td>{{ form.date_established }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan=3>
+                                    {{ form.abbreviation.label }}:
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=3>
+                                    {{ form.abbreviation }}
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                    </ul>
+                </div>
+
+                <!-- treenumberslistdesc -->
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#treenumberslistdesc">{% trans "Tree Numbers List" %}</a>
+                    </div>
+
+                    <ul>
+                        <fieldset id="treenumberslistdesc">
+
+                            <table>
+                                <tr>
+                                {{ formset_treenumber.management_form }}
+
+                                {% for form in formset_treenumber %}
+
+                                    {{ form.non_field_errors.as_ul }}
+
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                    <tr id="treenumber-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
+                                        {% for field in form.visible_fields %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </ul>
+                </div>
+
+                <!-- descriptionqualif -->
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#descriptionqualif">{% trans "Description of Record" %}</a>
+                    </div>
+
+                    <ul>
+                        <fieldset id="descriptionqualif">
+
+                            {{ formset_descriptor.management_form }}
+
+                            {% for form in formset_descriptor %}
+
+                                {{ form.non_field_errors.as_ul }}
+
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+
+                                {% for field in form.visible_fields %}
+                                    {% if field.errors %}
+                                        <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                                    {% endif %}
+                                {% endfor %}
+
+                                <table class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-target="#descriptionqualif_{{ form.instance.pk }}">
+                                        <font size="2">
+                                            {% if form.instance.pk %}
+                                                <font color="#333">
+                                                <b>Description in: {{ form.language_code.value }}</b>
+                                                </font>
+                                            {% else %}
+                                                <br><i class='icon-file'></i>&nbsp;{% trans 'Add new description' %}
+                                            {% endif %}
+                                        </font>
+                                    </a>
+                                </table>
+
+                                <div id="descriptionqualif_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+                                    <table class="descriptionqualif">
+                                        <tr>
+                                            <td>
+                                                {{ form.language_code.label_tag }}
+                                                {{ form.language_code }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ form.annotation.label_tag }}
+                                                {{ form.annotation }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ form.history_note.label_tag }}
+                                                {{ form.history_note }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ form.online_note.label_tag }}
+                                                {{ form.online_note }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            {% endfor %}
+                        </fieldset>
+                    </ul>
+                </div>
+
+                <div class="control-panel form-submit">
+                    <button class="btn btn-large btn-danger" onclick="window.history.go(-1); return false;">{% trans "Cancel" %}</button>
+                    <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
+                </div>
+
+            </div>
+
+        <form>
+
+    </div>
+
+    <script src="{% static "site/js/jquery.js" %}"></script>
+    <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
+    <script type="text/javascript" src="/admin/jsi18n/"></script>
+    <script type="text/javascript" src="{% static "admin/js/core.js" %}"></script>
+    <script type="text/javascript" src="{% static "admin/js/SelectBox.js" %}"></script>
+    <script type="text/javascript" src="{% static "admin/js/SelectFilter2.js" %}"></script>
+
+{% endblock %}
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+
+   {% if LANGUAGE_CODE != 'en' %}
+       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
+   {% endif %}
+
+   <script type="text/javascript">
+
+        // Faz com que o ultimo form salvo fique ativo apos reload
+        $(document).ready(function(){
+
+            // Armazena em activeTab informação da aba ativa
+            $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+
+                // Armazena URL atual
+                var old_currentLocation = window.location.href;
+                localStorage.setItem('old_currentLocation', old_currentLocation);
+
+            });
+
+            // Traz variavel activeTab armazenada
+            var activeTab = localStorage.getItem('activeTab');
+            // Traz variavel old_currentLocation armazenada
+            var old_currentLocation = localStorage.getItem('old_currentLocation');
+            // Faz colta da URL atual
+            var currentLocation = window.location.href;
+            if(activeTab){
+                // Compara se é a mesma URL, ou seja se ainda está na mesma página
+                if (old_currentLocation != currentLocation){ // Se não estiver remove informações
+                    localStorage.removeItem('activeTab');
+                    localStorage.removeItem('old_currentLocation');
+                } else { // Se estiver na mesma página posiciona na Aba visitada anteriormente.
+                    $('#myTab a[href="' + activeTab + '"]').tab('show');
+                }
+            }
+        });
+
+
+        // Apaga localStorage quando eh novo registro
+        $('[id="myTabNew"]').on('submit', function() {
+            localStorage.removeItem('activeTab');
+            localStorage.removeItem('old_currentLocation');
+        });
+
+
+        // Apaga localStorage quando volta a pagina inicial
+        function setNoneTab(){
+            localStorage.removeItem('activeTab');
+            localStorage.removeItem('old_currentLocation');
+        }
+
+
+        $(function() {
+            $('[id^="treenumber-"]').formset({
+                    addText : '{% trans "Add Tree Number" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'treenumber_formset',
+                    prefix: '{{ formset_treenumber.prefix }}'
+            });
+
+
+            $('[id^="id_treenumberslistdesc_set-"]').on('blur', function() {
+                val = $(this).val();
+                $(this).val(val.replace(/\s/g, ''));
+
+                tam = val.length;
+                // alert(tam);
+                if( tam % 2 !== 0 ){
+                    // É impar
+                    // alert("Impar "+tam);
+                    // Verifica quantidade de pontos
+                    qtd_pontos = ((tam + 1) / 4) - 1;
+                    // alert('Numero de pontos:'+qtd_pontos);
+                    if ( !( (parseFloat(qtd_pontos) == parseInt(qtd_pontos)) && !isNaN(qtd_pontos) ) ) {
+                        // alert("Não é inteiro"+qtd_pontos)
+                        alert('{% trans "Warning" %}: '+$(this).val());
+                        return false
+                    } else {
+                        $(this).val;
+                    }
+
+                } else {
+                    // se eh par está errado
+                    if ( tam != 0 ){
+                        alert('{% trans "Warning" %}: '+$(this).val());
+                        return false
+                    }
+                }
+            });
+
+            $('[id$="-DELETE"]').on('click', function() {
+                val = $(this).val();
+                if (confirm('{% trans "Delete" %}?')) {
+                    return true;
+                } else {
+                    return false;
+
+                }
+            });
+
+            // Alerta sobre não preenchimento
+            // $('[id^="id_descriptors-"]').on('blur', function() {
+            //     val = $(this).val();
+            //     if ( val == '' ){
+            //         alert('{% trans "Warning" %}');
+            //         return false;
+            //     }
+            // });
+
+
+            // // Alerta sobre não preenchimento
+            // $('[id$="-term_string"]').on('blur', function() {
+            //     val = $(this).val();
+            //     if ( val == '' ){
+            //         // alert('{% trans "Warning: Field is empty!" %}');
+            //         alert('{% trans "Warning: Field is empty!" %}: '+$(this).val());
+            //         return false;
+            //     }
+            // });
+
+
+            if ($("<input />").prop("required") === undefined) {
+              $(document).on("submit", function(e) {
+                $(this)
+                  .find("input, select, textarea")
+                  .filter("[required]")
+                  .filter(function() { return this.value == ''; })
+                  .each(function() {
+                    e.preventDefault();
+                    $(this).css({ "border": "2px solid red" })
+                    alert($(this).prev('label').html() + " é obrigatório.");
+                  });
+              });
+            }
+
+        })
+
+   </script>
+
+{% endblock %}

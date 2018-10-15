@@ -20,6 +20,9 @@ def get_status_info(code):
         {'code': 1, 'label': _('Published'), 'icons': 'icon-ok-sign status-ok', 'label_color': 'success'},
         {'code': 2, 'label': _('Refused'), 'icons': 'icon-ban-circle status-del', 'label_color': 'warning'},
         {'code': 3, 'label': _('Deleted'), 'icons': 'icon-minus-sign status-del', 'label_color': 'important'},
+        # Thesaurus
+        {'code': 5, 'label': _('Historical'), 'icons': 'icon-upload status-migration', 'label_color': 'important'},
+
     )
     status_info = [status for status in STATUS if status['code'] == int(code)]
 

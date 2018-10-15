@@ -1,4 +1,4 @@
 FI-ADMIN
 =========
 
-Administration interface and API for Information Sources
+Administration interface and API for Information Sources.

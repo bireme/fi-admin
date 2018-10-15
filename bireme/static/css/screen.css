@@ -579,3 +579,162 @@ div.onlineresource div.check {
 tr.relation-row td input, tr.relation-row td select{
     width: 160px;
 }
+
+
+
+
+/* Horizontal filter */
+.stacked{
+  display: flex;
+  width: 100%; 
+/*  border: solid 1px red*/
+}
+
+.stacked H2{
+    float: left;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+}
+
+/* left column - DIV*/
+.selector-available { 
+    width: 245px;
+}
+
+/* lupa */
+.selector-filter IMG {
+    position:relative;
+    top: 40px;
+    left: 70px;
+}
+
+/* middle column - UL*/
+.selector-chooser {
+    flex: selector-available;
+    width: 65px;
+    height: 40px;
+    margin-left: 1px;
+    margin-top: 60px;
+}
+
+/* right column - DIV*/
+.selector-chosen {
+    flex: selector-chosen;
+    width: 260px;
+    min-width: 100px;
+}
+
+.selector-chosen .filtered{
+    height: 125px;
+}
+
+
+
+.identifierdesc, th td {
+    text-align: left;
+    padding: 2px;
+}
+
+
+.identifierqualif, th td {
+    text-align: left;
+    padding: 2px;
+}
+
+
+.descriptiondesc, .conceptlistdesc, .termlistdesc, .descriptionqualif, .conceptlistqualif, .termlistqualif {
+    width: 98%;
+    /*border: solid 1px #cccccc;*/
+}
+
+.descriptiondesc textarea, .conceptlistdesc textarea, .descriptionqualif textarea, .conceptlistqualif textarea, .termlistdesc textarea, .termlistqualif textarea{
+    width: 98%;
+    height: 50px;
+}
+
+.descriptiondesc label, .descriptionqualif label{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    color: #333;
+}
+
+.descriptiondesc td, .descriptionqualif td {
+    text-align:left;
+}
+
+.descriptiondesc .td-r, .descriptionqualif .td-r{
+    text-align: right;
+}
+
+.descriptiondesc .td-r-del, .conceptlistdesc .td-r-del, .termlistdesc .td-r-del, .descriptionqualif .td-r-del, .conceptlistqualif .td-r-del, .termlistqualif .td-r-del{
+    text-align: right;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+    background-color: #eeeeee;
+}
+
+.descriptiondesc .td-l, .descriptionqualif .td-l, .conceptlistqualif .td-l{
+    text-align: left;
+}
+
+.descriptiondesc .td-l input[type=text], .conceptlistdesc .concept_name input[type=text], .termlistdesc .term_string input[type=text], .descriptionqualif .td-l input[type=text], .conceptlistqualif .concept_name input[type=text], .termlistqualif .term_string input[type=text]{
+    text-align: left;
+    width:450px;
+}
+
+
+.term_stringn input[type=text]{
+    text-align: left;
+    width:670px;
+}
+
+.descriptiondesc .term-origin, .conceptlistdesc .term-origin, .termlistdesc .term-origin, .descriptionqualif .term-origin, .conceptlistqualif .term-origin, .termlistqualif .term-origin{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    color: #333;
+    background-color: #eeeeee;
+}
+
+.conceptlistdesc label, .conceptlistqualif label{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    color: #333;
+    height: 10px;
+}
+
+
+.previousindexinglistdesc th td, .treenumberslistqualif th td{
+    text-align: center;
+    padding: 2px;
+}
+
+
+/*conceptlistdesc*/
+.casn1 textarea {
+    width: 98%;
+    height: 35px;
+}
+
+.category-row .btn, .previous-row .btn{
+    margin-top: -10px;
+    margin-left: 5px;
+}
+
+
+/*status*/
+.color_status{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #08c;
+}
+
+
+
+
+
