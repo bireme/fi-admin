@@ -35,6 +35,16 @@ class Collection(models.Model, AuditLog):
     description = models.TextField(_("Description"), blank=True)
     image = models.FileField(_("Image"), upload_to=attachment_upload, blank=True)
 
+    def get_translations(self):
+            translation_list = ["%s^%s" % (self.language, self.name.strip())]
+            translation = CollectionLocal.objects.filter(collection=self.id)
+            if translation:
+                other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+                translation_list.extend(other_languages)
+
+            return translation_list
+
+
     def get_children(self, *args, **kwargs):
         children = Collection.objects.filter(parent=self.id)
 
