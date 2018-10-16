@@ -193,6 +193,23 @@ class ReferenceResource(CustomResource):
         bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
         bundle.data['indexed_database'] = [database.acronym for database in bundle.obj.indexed_database.all()]
 
+        # check if object has classification (relationship model)
+        if bundle.obj.collection.count():
+            community_list = []
+            collection_list = []
+
+            for rel in bundle.obj.collection.all():
+                collection_labels = "|".join(rel.collection.get_translations())
+                collection_item = u"{}|{}".format(rel.collection.id, collection_labels)
+                collection_list.append(collection_item)
+                if rel.collection.parent:
+                    community_labels = "|".join(rel.collection.parent.get_translations())
+                    community_item = u"{}|{}".format(rel.collection.parent.id, community_labels)
+                    community_list.append(community_item)
+
+            bundle.data['community'] = community_list
+            bundle.data['collection'] = collection_list
+
         # change code of cooperative_center_code to indexer_cc_code at API record export #553
         if bundle.obj.indexer_cc_code:
             bundle.data['cooperative_center_code'] = bundle.obj.indexer_cc_code
