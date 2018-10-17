@@ -37,7 +37,7 @@
         <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
         <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Learning object" %}{% if formset_attachment.is_valid or formset_url.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         <li><a href="#tab-relationship" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Relationship" %}{% if formset_relation.errors and not formset_relation.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
-        <!--li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li-->
+        <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
     </ul>
 
     <form method="POST" enctype="multipart/form-data" class="media-form">
