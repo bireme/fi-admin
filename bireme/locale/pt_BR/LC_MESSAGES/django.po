@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-16 15:55-0300\n"
-"PO-Revision-Date: 2018-10-22 09:18-0306\n"
+"PO-Revision-Date: 2018-10-22 13:29-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -4992,7 +4992,7 @@ msgstr "Editar informações do registro"
 #: templates/thesaurus/temp/qualifier_form_step1.html:56
 #| msgid "Identifier"
 msgid "Identifier of Record"
-msgstr "ID MESH"
+msgstr "Identificação do registro"
 
 #: templates/thesaurus/descriptor_edit_register.html:115
 #: templates/thesaurus/descriptor_form_step1.html:138
