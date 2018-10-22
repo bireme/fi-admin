@@ -29,9 +29,9 @@ DESCRIPTOR_CLASS_CODE=(
 
 
 RELATION_NAME_OPTION=(
-    ('NRW','NRW - Narrower'),
-    ('BRD','BRD - Broader'),
-    ('REL','REL - Related but not broader or narrower'),
+    ('NRW',_("NRW - Narrower")),
+    ('BRD',_("BRD - Broader")),
+    ('REL',_("REL - Related but not broader or narrower")),
 )
 
 
