@@ -110,6 +110,7 @@
          <str name="facet.field">tec_resource_type</str>
          <str name="facet.field">learning_resource_type</str>
          <str name="facet.field">learning_context</str>
+         <str name="facet.field">aggregation_level</str>
          <str name="facet.field">audience</str>
          <str name="facet.field">license</str>
          <str name="facet.field">language</str>

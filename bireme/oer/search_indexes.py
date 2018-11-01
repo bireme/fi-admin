@@ -30,6 +30,7 @@ class OERIndex(indexes.SearchIndex, indexes.Indexable):
     format = indexes.MultiValueField()
     link = indexes.MultiValueField()
     cvsp_node = indexes.CharField(model_attr='cvsp_node')
+    aggregation_level = indexes.CharField(model_attr='aggregation_level')
     cooperative_center_code = indexes.CharField(model_attr='cooperative_center_code')
     relationship_active = indexes.CharField()
     relationship_passive = indexes.CharField()

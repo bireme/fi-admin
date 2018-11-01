@@ -210,6 +210,7 @@
    <field name="learning_context" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="audience" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="license" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="aggregation_level" type="string" indexed="true" stored="true" multiValued="false"/>
 
    <!-- multiple sources -->
    <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
