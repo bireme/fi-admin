@@ -348,6 +348,15 @@ class LearningResourceType(Generic):
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
+    def get_translations(self):
+        translation_list = ["%s~%s" % (self.language, self.name.strip())]
+        translation = LearningResourceTypeLocal.objects.filter(coursetype=self.id)
+        if translation:
+            other_languages = ["%s~%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
     def __unicode__(self):
         lang_code = get_language()
         translation = LearningResourceTypeLocal.objects.filter(coursetype=self.id, language=lang_code)

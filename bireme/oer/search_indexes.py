@@ -22,6 +22,7 @@ class OERIndex(indexes.SearchIndex, indexes.Indexable):
     keywords = indexes.MultiValueField()
     course_type = indexes.MultiValueField()
     structure = indexes.CharField()
+    learning_resource_type = indexes.CharField()
     tec_resource_type = indexes.MultiValueField()
     learning_context = indexes.CharField()
     audience = indexes.MultiValueField()
@@ -90,6 +91,11 @@ class OERIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_license(self, obj):
         if obj.license:
             translations = obj.license.get_translations()
+            return "|".join(translations)
+
+    def prepare_learning_resource_type(self, obj):
+        if obj.learning_resource_type:
+            translations = obj.learning_resource_type.get_translations()
             return "|".join(translations)
 
     def fix_subfield_mark(self, code):
