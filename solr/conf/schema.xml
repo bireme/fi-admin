@@ -144,6 +144,7 @@
    <field name="link" type="string" indexed="false" stored="true" multiValued="true"/>
    <field name="language" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="type" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
 
    <field name="thematic_area" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="thematic_area_display" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -201,6 +202,15 @@
    <!-- legislation -->
    <field name="scope_region" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="act_type" type="string" indexed="true" stored="true" multiValued="false"/>
+
+   <!-- open educacional resource -->
+   <field name="course_type" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="tec_resource_type" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="learning_resource_type" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="learning_context" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="audience" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="license" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="aggregation_level" type="string" indexed="true" stored="true" multiValued="false"/>
 
    <!-- multiple sources -->
    <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
