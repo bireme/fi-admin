@@ -244,6 +244,28 @@ class legacyInformationDesc(models.Model):
 
 
 
+class EntryCombinationListDesc(models.Model, AuditLog):
+
+    class Meta:
+        verbose_name = _("Entry combination List")
+        verbose_name_plural = _("Entry combinations List")
+
+    identifier = models.ForeignKey(IdentifierDesc, related_name="entrycombinationlistdesc", blank=True, null=True)
+
+    ecin_qualif = models.CharField(_("Qualifier string"), max_length=250, blank=True)
+    ecin_id = models.CharField(_("Identifier"), max_length=250, blank=True)
+
+    ecout_desc = models.CharField(_("Descriptor string"), max_length=250, blank=True)
+    ecout_id = models.CharField(_("Identifier"), max_length=250, blank=True)
+
+    def get_parent(self):
+        return self.identifier
+
+    def __unicode__(self):
+        return '%s' % (self.id)
+
+
+
 # Identifier ConceptList
 # class IdentifierConceptListDesc(Generic, AuditLog):
 class IdentifierConceptListDesc(models.Model):
@@ -357,3 +379,20 @@ class TermListDesc(models.Model):
 
     def __unicode__(self):
         return '%s' % (self.id)
+
+
+# ThesaurusIDlist
+class TheraurusOccurrenceListDesc(models.Model):
+
+    class Meta:
+        verbose_name = _("Thesaurus occurrence")
+        verbose_name_plural = _("Thesaurus occurrence")
+
+    identifier_term = models.ForeignKey(TermListDesc, related_name="tocurrencedesc", blank=True, null=True)
+
+    # ThesaurusID
+    thesaurus_occurrence = models.CharField(_("Name of a thesaurus where terms occur"), max_length=250, blank=True)
+
+    def __unicode__(self):
+        return '%s' % (self.id)
+

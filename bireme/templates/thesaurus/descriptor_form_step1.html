@@ -362,6 +362,52 @@
                         </ul>
                     </div>
 
+                    <!-- entrycombinationlistdesc -->
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-target="#entrycombination">{% trans "Entry Combination" %}</a>
+                        </div>
+
+                        <ul>
+                            <fieldset id="entrycombination">
+
+                                <table>
+                                    <tr>
+                                        <td colspan="2"><b>Qualifier combination prohibited</b></td>
+                                        <td colspan="2"><b>Entry combination</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Qualifier" %}:</td>
+                                        <td>{% trans "Qualifier UI" %}:</td>
+                                        <td>{% trans "Descriptor" %}:</td>
+                                        <td>{% trans "Descriptor UI" %}:</td>
+                                    </tr>
+                                    <tr>
+                                    {{ formset_entrycombination.management_form }}
+
+                                    {% for form in formset_entrycombination %}
+
+                                        {{ form.non_field_errors.as_ul }}
+
+                                        {% for hidden in form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor %}
+                                        <tr id="entrycombination-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
+                                            {% for field in form.visible_fields %}
+                                            <td>
+                                                {{ field }}
+                                                {{ field.errors }}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tr>
+                                </table>
+
+                            </fieldset>
+                        </ul>
+                    </div>
+
                     <div>
                         <br>
 
@@ -496,6 +542,15 @@
                     prefix: '{{ formset_previous.prefix }}'
             });
 
+            $('[id^="entrycombination-"]').formset({
+                    addText : '{% trans "Add Entry Combination" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'entrycombination_formset',
+                    prefix: '{{ formset_entrycombination.prefix }}'
+            });
 
             $('[id^="id_treenumberslistdesc_set-"]').on('blur', function() {
                 val = $(this).val();

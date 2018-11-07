@@ -51,7 +51,7 @@ LEXICALTAG_OPTION=(
 STATUS_CHOICES=(
     (-1, _('Draft')),
     (1, _('Published')),
-    # (3, _('Deleted')),
+    (3, _('Deleted')),
     (5, _('Historical')),
 )
 
