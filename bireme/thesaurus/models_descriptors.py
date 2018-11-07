@@ -256,7 +256,10 @@ class EntryCombinationListDesc(models.Model, AuditLog):
     ecin_id = models.CharField(_("Identifier"), max_length=250, blank=True)
 
     ecout_desc = models.CharField(_("Descriptor string"), max_length=250, blank=True)
-    ecout_id = models.CharField(_("Identifier"), max_length=250, blank=True)
+    ecout_desc_id = models.CharField(_("Identifier"), max_length=250, blank=True)
+
+    ecout_qualif = models.CharField(_("Qualifier string"), max_length=250, blank=True)
+    ecout_qualif_id = models.CharField(_("Identifier"), max_length=250, blank=True)
 
     def get_parent(self):
         return self.identifier

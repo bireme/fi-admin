@@ -1101,7 +1101,9 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'ecin_qualif',
                                                 'ecin_id',
                                                 'ecout_desc',
-                                                'ecout_id',
+                                                'ecout_desc_id',
+                                                'ecout_qualif',
+                                                'ecout_qualif_id',
                                                 'identifier_id',
                                             )
 

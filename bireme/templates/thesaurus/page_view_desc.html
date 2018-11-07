@@ -142,7 +142,11 @@
                         {% for obj in entrycombination_objects %}
                             {% if obj.ecin_qualif %}
                                 {% ifchanged %}
-                                    {{ obj.ecin_qualif }} : {{ obj.ecout_desc }}<br>
+                                    {{ obj.ecin_qualif }}:{{ obj.ecout_desc }}
+                                    {% if obj.ecout_qualif %}
+                                        /{{ obj.ecout_qualif }}
+                                    {% endif %}
+                                    <br>
                                 {% endifchanged %}
                             {% endif %}
                         {% endfor %}
@@ -349,7 +353,11 @@
                         {% for obj in entrycombination_objects %}
                             {% if obj.ecin_qualif %}
                                 {% ifchanged %}
-                                    {{ obj.ecin_qualif }} : {{ obj.ecout_desc }}<br>
+                                    {{ obj.ecin_qualif }}:{{ obj.ecout_desc }}
+                                    {% if obj.ecout_qualif %}
+                                        /{{ obj.ecout_qualif }}
+                                    {% endif %}
+                                    <br>
                                 {% endifchanged %}
                             {% endif %}
                         {% endfor %}
@@ -358,6 +366,7 @@
                     </tr>
                     {% endif %}
 
+                    {% if allowable_qualifiers_objects %}
                     <tr>
                         <td valign="top" align="right" width="15%"><b>{% trans "Allowable Qualifiers" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
@@ -367,6 +376,8 @@
                         {% endfor %}
                         </td>
                     </tr>
+                    {% endif %}
+
                 </table>                
             </div>
 
