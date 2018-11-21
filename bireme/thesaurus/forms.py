@@ -188,6 +188,17 @@ class legacyInformationDescForm(forms.ModelForm):
             }
         }
 
+class EntryCombinationListDescForm(forms.ModelForm):
+    class Meta:
+        fields = '__all__'
+
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(field_labels)s already exist.",
+            }
+        }
+
+
 
 
 # Concept + Term - Form2
@@ -212,6 +223,8 @@ class TermListDescForm(forms.ModelForm):
         fields = '__all__'
 
 
+
+
 # Processos a parte
 class TermListDescUniqueForm(forms.ModelForm):
     class Meta:
@@ -222,6 +235,14 @@ class TermListDescUniqueForm(forms.ModelForm):
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
     date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+
+class TheraurusOccurrenceListDescForm(forms.ModelForm):
+    class Meta:
+        model = TheraurusOccurrenceListDesc
+        fields = '__all__'
+
+
+
 
 
 class legacyInformationDescForm(forms.ModelForm):
@@ -286,6 +307,15 @@ legacyInformationDescFormSet = inlineformset_factory(
     extra=1
     )
 
+EntryCombinationListDescFormSet = inlineformset_factory(
+    IdentifierDesc,
+    EntryCombinationListDesc,
+    form=EntryCombinationListDescForm,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+    )
+
 
 
 # Concept + Term - Form2
@@ -306,6 +336,20 @@ TermListDescFormSet = inlineformset_factory(
     can_delete=True,
     extra=1
     )
+
+
+# This form works with the form TermListDescForm
+TheraurusOccurrenceListDescFormSet = inlineformset_factory(
+    TermListDesc,
+    TheraurusOccurrenceListDesc,
+    form=TheraurusOccurrenceListDescForm,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+    )
+
+
+
 
 # Qualifiers ------------------------------------------------------------------
 # Register - Form1

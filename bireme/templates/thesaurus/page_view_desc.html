@@ -136,6 +136,24 @@
                     </tr>
 
                     <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Entry Combination" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in entrycombination_objects %}
+                            {% if obj.ecin_qualif %}
+                                {% ifchanged %}
+                                    {{ obj.ecin_qualif }}:{{ obj.ecout_desc }}
+                                    {% if obj.ecout_qualif %}
+                                        /{{ obj.ecout_qualif }}
+                                    {% endif %}
+                                    <br>
+                                {% endifchanged %}
+                            {% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
                         <td valign="top" align="right" width="15%"><b>{% trans "Entry Term(s)" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
@@ -326,6 +344,29 @@
 
             <div id="tab-qualifiers" class="tab-pane">
                 <table width="90%">
+
+                    {% if entrycombination_objects %}
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Entry Combination" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in entrycombination_objects %}
+                            {% if obj.ecin_qualif %}
+                                {% ifchanged %}
+                                    {{ obj.ecin_qualif }}:{{ obj.ecout_desc }}
+                                    {% if obj.ecout_qualif %}
+                                        /{{ obj.ecout_qualif }}
+                                    {% endif %}
+                                    <br>
+                                {% endifchanged %}
+                            {% endif %}
+                        {% endfor %}
+                        <br>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if allowable_qualifiers_objects %}
                     <tr>
                         <td valign="top" align="right" width="15%"><b>{% trans "Allowable Qualifiers" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
@@ -335,6 +376,8 @@
                         {% endfor %}
                         </td>
                     </tr>
+                    {% endif %}
+
                 </table>                
             </div>
 
@@ -360,7 +403,11 @@
                     {% endif %}
 
                     {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' and obj.termdesc__language_code = 'en' %}
-                        <font color="gray"><i>&nbsp;{% trans "Narrower" %}</i></font>
+                        <font color="gray"><i>&nbsp;{% trans "Narrower" %}
+                            {% if obj.termdesc__status == '3' %}
+                                {{ obj.termdesc__status|display_status_label }}
+                            {% endif %}
+                        </i></font>
                         <!-- <a href="#"><i class="icon-pencil"></i></a> -->
                         <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
                     {% else %}

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-16 15:55-0300\n"
-"PO-Revision-Date: 2018-10-22 09:18-0306\n"
+"POT-Creation-Date: 2018-11-21 09:13-0200\n"
+"PO-Revision-Date: 2018-11-21 11:58-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,20 +35,15 @@ msgstr "Selecione o arquivo"
 #: multimedia/models.py:22 multimedia/models.py:61 oer/models.py:28
 #: oer/models.py:67 oer/models.py:105 oer/models.py:144 oer/models.py:183
 #: oer/models.py:221 oer/models.py:250 oer/models.py:281 oer/models.py:310
-#: oer/models.py:349 oer/models.py:379 oer/models.py:418 oer/models.py:471
-#: oer/models.py:526 templates/biblioref/fieldset_fulltext.html:21
+#: oer/models.py:349 oer/models.py:388 oer/models.py:427 oer/models.py:480
+#: oer/models.py:535 templates/biblioref/fieldset_fulltext.html:21
 #: templates/leisref/fieldset_fulltext.html:15
 #: templates/leisref/fieldset_fulltext.html:75
 #: templates/main/edit-language.html:8 templates/oer/fieldset_fulltext.html:15
 #: templates/oer/fieldset_fulltext.html:75
-#: templates/thesaurus/descriptor_edit_register.html:160
-#: templates/thesaurus/descriptor_edit_register.html:329
+#: templates/thesaurus/descriptor_edit_register.html:161
+#: templates/thesaurus/descriptor_edit_register.html:330
 #: templates/thesaurus/qualifier_list.html:79
-#: templates/thesaurus/temp/descriptor_edit_register.html:252
-#: templates/thesaurus/temp/descriptor_form.html:247
-#: templates/thesaurus/temp/descriptor_form_step1.html:287
-#: templates/thesaurus/temp/qualifier_list.html:81
-#: templates/thesaurus/temp/thesaurus_home.html:81
 #: templates/thesaurus/thesaurus_home.html:84 text_block/models.py:16
 #: text_block/models.py:52 utils/models.py:116 utils/models.py:150
 msgid "Language"
@@ -218,7 +213,7 @@ msgstr "Nota pública"
 #: biblioref/field_definitions.py:576 biblioref/field_definitions.py:580
 #: biblioref/models.py:36 biblioref/models.py:189 biblioref/models.py:201
 #: biblioref/models.py:207 biblioref/models.py:271 events/models.py:70
-#: leisref/models.py:443 main/models.py:220 oer/models.py:459
+#: leisref/models.py:443 main/models.py:220 oer/models.py:468
 #: suggest/models.py:25 suggest/models.py:56
 #: templates/biblioref/reference_list.html:168
 #: templates/biblioref/referenceanalytic_form.html:120
@@ -334,9 +329,7 @@ msgstr "Orientador"
 msgid "Keyword"
 msgstr "Palavra-chave"
 
-#: biblioref/field_definitions.py:692
-#: templates/thesaurus/temp/qualifier_list.html:64
-#: thesaurus/models_qualifiers.py:20
+#: biblioref/field_definitions.py:692 thesaurus/models_qualifiers.py:20
 msgid "Qualifier"
 msgstr "Qualificador"
 
@@ -374,8 +367,8 @@ msgid "Record number"
 msgstr "Número do registro"
 
 #: biblioref/field_definitions.py:719 institution/models.py:193
-#: institution/models.py:198 leisref/models.py:536 oer/models.py:521
-#: oer/models.py:525 templates/institution/fieldset_url.html:15
+#: institution/models.py:198 leisref/models.py:536 oer/models.py:530
+#: oer/models.py:534 templates/institution/fieldset_url.html:15
 #: templates/leisref/fieldset_fulltext.html:14
 #: templates/main/resources.html:102 templates/oer/fieldset_fulltext.html:14
 #: templates/suggest/list.html:77 title/models.py:155
@@ -763,9 +756,6 @@ msgstr "Submissão"
 #: oer/models.py:12 templates/biblioref/reference_list.html:113
 #: templates/leisref/act_list.html:68 templates/oer/oer_list.html:70
 #: templates/reports/index.html:64 templates/thesaurus/qualifier_list.html:73
-#: templates/thesaurus/temp/qualifier_form.html:411
-#: templates/thesaurus/temp/qualifier_list.html:75
-#: templates/thesaurus/temp/thesaurus_home.html:75
 #: templates/thesaurus/thesaurus_home.html:78 thesaurus/choices.py:52
 #: utils/templatetags/app_filters.py:18
 msgid "Draft"
@@ -779,9 +769,6 @@ msgstr "LILACS-Express"
 #: oer/models.py:13 templates/biblioref/reference_list.html:115
 #: templates/leisref/act_list.html:69 templates/oer/oer_list.html:71
 #: templates/thesaurus/qualifier_list.html:74
-#: templates/thesaurus/temp/qualifier_form.html:394
-#: templates/thesaurus/temp/qualifier_list.html:76
-#: templates/thesaurus/temp/thesaurus_home.html:76
 #: templates/thesaurus/thesaurus_home.html:79 thesaurus/choices.py:53
 #: utils/templatetags/app_filters.py:20
 msgid "Published"
@@ -832,11 +819,9 @@ msgstr "Recusado"
 #: templates/suggest/list.html:55 templates/suggest/list.html.py:99
 #: templates/suggest/list.html:143 templates/suggest/list.html.py:186
 #: templates/thesaurus/qualifier_list.html:75
-#: templates/thesaurus/temp/qualifier_list.html:77
-#: templates/thesaurus/temp/thesaurus_home.html:77
 #: templates/thesaurus/thesaurus_home.html:80
 #: templates/title/title_form.html:160 templates/title/title_form.html:232
-#: utils/templatetags/app_filters.py:22
+#: thesaurus/choices.py:54 utils/templatetags/app_filters.py:22
 msgid "Deleted"
 msgstr "Apagado"
 
@@ -860,7 +845,7 @@ msgstr "Registros bibliográficos"
 #: biblioref/models.py:31 error_reporting/models.py:35 events/models.py:67
 #: institution/models.py:62 leisref/models.py:433 log/models.py:58
 #: main/models.py:156 main/models.py:176 main/models.py:196 main/models.py:218
-#: multimedia/models.py:100 oer/models.py:455 suggest/models.py:23
+#: multimedia/models.py:100 oer/models.py:464 suggest/models.py:23
 #: suggest/models.py:54 templates/biblioref/reference_form.html:136
 #: templates/biblioref/reference_form.html:209
 #: templates/biblioref/reference_form.html:281
@@ -889,18 +874,9 @@ msgstr "Registros bibliográficos"
 #: templates/thesaurus/qualifier_list.html:70
 #: templates/thesaurus/qualifier_list.html:119
 #: templates/thesaurus/qualifier_new_concept.html:158
-#: templates/thesaurus/temp/descriptor_new_concept.html:172
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:46
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:45
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:46
-#: templates/thesaurus/temp/qualifier_list.html:72
-#: templates/thesaurus/temp/qualifier_list.html:121
-#: templates/thesaurus/temp/qualifier_new_concept.html:172
-#: templates/thesaurus/temp/thesaurus_home.html:72
-#: templates/thesaurus/temp/thesaurus_home.html:117
 #: templates/thesaurus/thesaurus_home.html:75
 #: templates/thesaurus/thesaurus_home.html:119
-#: thesaurus/models_descriptors.py:317 thesaurus/models_qualifiers.py:241
+#: thesaurus/models_descriptors.py:342 thesaurus/models_qualifiers.py:242
 msgid "Status"
 msgstr "Status"
 
@@ -915,7 +891,7 @@ msgstr "Revisado pela BIREME"
 #: biblioref/models.py:38 biblioref/models.py:348 biblioref/models.py:377
 #: events/models.py:89 institution/models.py:73 leisref/models.py:493
 #: main/models.py:240 multimedia/models.py:64 multimedia/models.py:120
-#: oer/models.py:509 templates/multimedia/media_list.html:86
+#: oer/models.py:518 templates/multimedia/media_list.html:86
 #: templates/reports/index.html:72 templates/title/title_list.html:105
 #: title/models.py:50
 msgid "Cooperative center"
@@ -1104,7 +1080,7 @@ msgstr "Instituição a qual se apresenta"
 msgid "Academic title"
 msgstr "Título acadêmico"
 
-#: biblioref/models.py:221 multimedia/models.py:116 oer/models.py:497
+#: biblioref/models.py:221 multimedia/models.py:116 oer/models.py:506
 msgid "Publisher"
 msgstr "Editora"
 
@@ -1291,7 +1267,7 @@ msgstr "País"
 #: oer/field_definitions.py:40 oer/models.py:27 oer/models.py:66
 #: oer/models.py:104 oer/models.py:143 oer/models.py:182 oer/models.py:220
 #: oer/models.py:249 oer/models.py:280 oer/models.py:309 oer/models.py:348
-#: oer/models.py:378 oer/models.py:417 templates/events/types.html:47
+#: oer/models.py:387 oer/models.py:426 templates/events/types.html:47
 #: templates/institution/fieldset_contact.html:15
 #: templates/institution/fieldset_contact.html:68
 #: templates/institution/fieldset_person.html:15
@@ -1322,11 +1298,8 @@ msgstr ""
 
 #: classification/models.py:35 classification/models.py:69
 #: error_reporting/models.py:37 multimedia/models.py:57
-#: multimedia/models.py:83 multimedia/models.py:106 oer/models.py:463
+#: multimedia/models.py:83 multimedia/models.py:106 oer/models.py:472
 #: templates/error_report/list.html:73 templates/error_report/list.html:134
-#: templates/thesaurus/temp/qualifier_form.html:77
-#: templates/thesaurus/temp/qualifier_form.html:515
-#: templates/thesaurus/temp/qualifier_form.html:686
 #: thesaurus/models_descriptors.py:68
 msgid "Description"
 msgstr "Descrição"
@@ -1343,8 +1316,8 @@ msgstr ""
 #: main/models.py:131 multimedia/models.py:46 multimedia/models.py:77
 #: oer/models.py:52 oer/models.py:89 oer/models.py:128 oer/models.py:167
 #: oer/models.py:206 oer/models.py:235 oer/models.py:264 oer/models.py:295
-#: oer/models.py:333 oer/models.py:363 oer/models.py:402 oer/models.py:441
-#: oer/models.py:577 text_block/models.py:48 utils/models.py:146
+#: oer/models.py:333 oer/models.py:372 oer/models.py:411 oer/models.py:450
+#: oer/models.py:586 text_block/models.py:48 utils/models.py:146
 msgid "Translation"
 msgstr "Tradução"
 
@@ -1356,8 +1329,8 @@ msgstr "Tradução"
 #: main/models.py:132 multimedia/models.py:47 multimedia/models.py:78
 #: oer/models.py:53 oer/models.py:90 oer/models.py:129 oer/models.py:168
 #: oer/models.py:207 oer/models.py:236 oer/models.py:265 oer/models.py:296
-#: oer/models.py:334 oer/models.py:364 oer/models.py:403 oer/models.py:442
-#: oer/models.py:578 templates/admin/base_site.html:13
+#: oer/models.py:334 oer/models.py:373 oer/models.py:412 oer/models.py:451
+#: oer/models.py:587 templates/admin/base_site.html:13
 #: templates/events/edit-type.html:36 templates/leisref/actcity_form.html:35
 #: templates/leisref/actcollection_form.html:35
 #: templates/leisref/actcountryregion_form.html:35
@@ -1375,29 +1348,21 @@ msgid "Translations"
 msgstr "Traduções"
 
 #: database/models.py:8 main/choices.py:6 templates/menu.html:116
+#: templates/thesaurus/descriptor_form_step1.html:84
+#: templates/thesaurus/descriptor_new_concept.html:67
+#: templates/thesaurus/qualifier_form_step1.html:81
 #: templates/thesaurus/qualifier_list.html:82
-#: templates/thesaurus/temp/descriptor_form.html:189
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:89
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:89
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:89
-#: templates/thesaurus/temp/qualifier_form.html:631
-#: templates/thesaurus/temp/qualifier_form.html:711
-#: templates/thesaurus/temp/qualifier_list.html:84
-#: templates/thesaurus/temp/thesaurus_home.html:84
+#: templates/thesaurus/qualifier_new_concept.html:66
 #: templates/thesaurus/thesaurus_home.html:87 thesaurus/choices.py:10
 msgid "English"
 msgstr "Inglês"
 
 #: database/models.py:9 main/choices.py:7 templates/menu.html:117
+#: templates/thesaurus/descriptor_form_step1.html:86
+#: templates/thesaurus/descriptor_new_concept.html:69
+#: templates/thesaurus/qualifier_form_step1.html:83
 #: templates/thesaurus/qualifier_list.html:84
-#: templates/thesaurus/temp/descriptor_form.html:191
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:91
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:91
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:91
-#: templates/thesaurus/temp/qualifier_form.html:633
-#: templates/thesaurus/temp/qualifier_form.html:713
-#: templates/thesaurus/temp/qualifier_list.html:86
-#: templates/thesaurus/temp/thesaurus_home.html:86
+#: templates/thesaurus/qualifier_new_concept.html:68
 #: templates/thesaurus/thesaurus_home.html:89 thesaurus/choices.py:12
 msgid "Portuguese"
 msgstr "Português"
@@ -1433,8 +1398,8 @@ msgstr "Índice do Centro Cooperante"
 #: main/models.py:57 multimedia/models.py:50 multimedia/models.py:81
 #: multimedia/models.py:109 oer/models.py:56 oer/models.py:93
 #: oer/models.py:132 oer/models.py:171 oer/models.py:210 oer/models.py:239
-#: oer/models.py:268 oer/models.py:299 oer/models.py:337 oer/models.py:367
-#: oer/models.py:406 oer/models.py:445 oer/models.py:537 oer/models.py:581
+#: oer/models.py:268 oer/models.py:299 oer/models.py:337 oer/models.py:376
+#: oer/models.py:415 oer/models.py:454 oer/models.py:546 oer/models.py:590
 #: utils/models.py:104
 msgid "language"
 msgstr "idioma"
@@ -1446,8 +1411,8 @@ msgstr "idioma"
 #: main/models.py:58 multimedia/models.py:51 multimedia/models.py:82
 #: oer/models.py:57 oer/models.py:94 oer/models.py:133 oer/models.py:172
 #: oer/models.py:211 oer/models.py:240 oer/models.py:269 oer/models.py:300
-#: oer/models.py:338 oer/models.py:368 oer/models.py:407 oer/models.py:446
-#: oer/models.py:536 utils/models.py:75 utils/models.py:105
+#: oer/models.py:338 oer/models.py:377 oer/models.py:416 oer/models.py:455
+#: oer/models.py:545 utils/models.py:75 utils/models.py:105
 msgid "name"
 msgstr "nome"
 
@@ -1700,7 +1665,7 @@ msgstr "Tipo de instituições"
 
 #: institution/models.py:50 institution/models.py:126
 #: institution/models.py:150 institution/models.py:197 oer/models.py:24
-#: oer/models.py:55 oer/models.py:469
+#: oer/models.py:55 oer/models.py:478
 #: templates/institution/fieldset_contact.html:14
 #: templates/institution/fieldset_contact.html:67
 #: templates/institution/fieldset_url.html:14
@@ -1748,9 +1713,7 @@ msgstr "Informação descritiva"
 msgid "Administrative informations"
 msgstr "Comentários administrativos"
 
-#: institution/models.py:102 templates/thesaurus/temp/qualifier_form.html:80
-#: templates/thesaurus/temp/qualifier_form.html:518
-#: templates/thesaurus/temp/qualifier_form.html:761
+#: institution/models.py:102
 msgid "Category"
 msgstr ""
 
@@ -1824,7 +1787,7 @@ msgstr "Tratamento"
 msgid "Job title"
 msgstr "Cargo"
 
-#: institution/models.py:194 oer/models.py:522
+#: institution/models.py:194 oer/models.py:531
 msgid "URLs"
 msgstr "Endereços eletrônicos"
 
@@ -2067,15 +2030,11 @@ msgstr "Não aprovado"
 msgid "Approved"
 msgstr "Aprovado"
 
-#: main/choices.py:9 templates/thesaurus/qualifier_list.html:86
-#: templates/thesaurus/temp/descriptor_form.html:193
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:93
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:93
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:93
-#: templates/thesaurus/temp/qualifier_form.html:635
-#: templates/thesaurus/temp/qualifier_form.html:715
-#: templates/thesaurus/temp/qualifier_list.html:88
-#: templates/thesaurus/temp/thesaurus_home.html:88
+#: main/choices.py:9 templates/thesaurus/descriptor_form_step1.html:88
+#: templates/thesaurus/descriptor_new_concept.html:71
+#: templates/thesaurus/qualifier_form_step1.html:85
+#: templates/thesaurus/qualifier_list.html:86
+#: templates/thesaurus/qualifier_new_concept.html:70
 #: templates/thesaurus/thesaurus_home.html:91 thesaurus/choices.py:14
 msgid "French"
 msgstr "Francês"
@@ -2361,11 +2320,11 @@ msgstr "Links relacionados"
 msgid "Inform individual or institutional name"
 msgstr "Informe nome individual ou institucional"
 
-#: oer/field_definitions.py:54 oer/models.py:465
+#: oer/field_definitions.py:54 oer/models.py:474
 msgid "Creator"
 msgstr "Criador"
 
-#: oer/field_definitions.py:58 oer/models.py:467
+#: oer/field_definitions.py:58 oer/models.py:476
 msgid "Contributor"
 msgstr "Contribuidor"
 
@@ -2390,7 +2349,7 @@ msgstr "Licença"
 msgid "Licenses"
 msgstr "Licenças"
 
-#: oer/models.py:101 oer/models.py:131 oer/models.py:473
+#: oer/models.py:101 oer/models.py:131 oer/models.py:482
 msgid "Course type"
 msgstr "Tipo do curso"
 
@@ -2406,15 +2365,15 @@ msgstr "Tipo de Recurso Técnico"
 msgid "Technical Resource Types"
 msgstr "Tipos de Recurso Técnico"
 
-#: oer/models.py:170 oer/models.py:477
+#: oer/models.py:170 oer/models.py:486
 msgid "Technical resource type"
 msgstr "Tipo de recurso técnico"
 
-#: oer/models.py:179 oer/models.py:180 oer/models.py:209 oer/models.py:479
+#: oer/models.py:179 oer/models.py:180 oer/models.py:209 oer/models.py:488
 msgid "Format"
 msgstr "Formato"
 
-#: oer/models.py:217 oer/models.py:238 oer/models.py:481
+#: oer/models.py:217 oer/models.py:238 oer/models.py:490
 msgid "Interactivity type"
 msgstr "Tipo de interatividade"
 
@@ -2422,7 +2381,7 @@ msgstr "Tipo de interatividade"
 msgid "Interactivity types"
 msgstr "Tipos de interatividade"
 
-#: oer/models.py:246 oer/models.py:267 oer/models.py:485
+#: oer/models.py:246 oer/models.py:267 oer/models.py:494
 msgid "Interactivity level"
 msgstr "Nível de interatividade"
 
@@ -2430,7 +2389,7 @@ msgstr "Nível de interatividade"
 msgid "Interactivity levels"
 msgstr "Níveis de interatividade"
 
-#: oer/models.py:277 oer/models.py:298 oer/models.py:489
+#: oer/models.py:277 oer/models.py:298 oer/models.py:498
 msgid "Difficulty"
 msgstr "Dificuldade"
 
@@ -2438,7 +2397,7 @@ msgstr "Dificuldade"
 msgid "Difficulties"
 msgstr "Dificuldades"
 
-#: oer/models.py:306 oer/models.py:336 oer/models.py:493
+#: oer/models.py:306 oer/models.py:336 oer/models.py:502
 msgid "Audience"
 msgstr "Público"
 
@@ -2446,7 +2405,7 @@ msgstr "Público"
 msgid "Audiences"
 msgstr "Públicos"
 
-#: oer/models.py:345 oer/models.py:366 oer/models.py:483
+#: oer/models.py:345 oer/models.py:375 oer/models.py:492
 msgid "Learning resource type"
 msgstr "Tipo de recurso de aprendizagem"
 
@@ -2454,100 +2413,100 @@ msgstr "Tipo de recurso de aprendizagem"
 msgid "Learning resource types"
 msgstr "Tipos de recursos de aprendizagem"
 
-#: oer/models.py:375 oer/models.py:405 oer/models.py:487
+#: oer/models.py:384 oer/models.py:414 oer/models.py:496
 msgid "Learning context"
 msgstr "Contexto de aprendizagem"
 
-#: oer/models.py:376
+#: oer/models.py:385
 msgid "Learning contexts"
 msgstr "Contextos de aprendizagem"
 
-#: oer/models.py:414 oer/models.py:444 oer/models.py:475
+#: oer/models.py:423 oer/models.py:453 oer/models.py:484
 msgid "Structure"
 msgstr "Estrutura"
 
-#: oer/models.py:415
+#: oer/models.py:424
 msgid "Structures"
 msgstr "Estruturas"
 
-#: oer/models.py:452
+#: oer/models.py:461
 msgid "Open Educational Resource"
 msgstr "Recurso educacional aberto"
 
-#: oer/models.py:453
+#: oer/models.py:462
 msgid "Open Educational Resources"
 msgstr "Recursos educacionais abertos"
 
-#: oer/models.py:457
+#: oer/models.py:466
 msgid "CVSP resource"
 msgstr "Recurso CVSP"
 
-#: oer/models.py:461
+#: oer/models.py:470
 msgid "Learning objectives"
 msgstr "Objetivos de aprendizado"
 
-#: oer/models.py:491
+#: oer/models.py:500
 msgid "Aggregation Level"
 msgstr "Nível de Agregação"
 
-#: oer/models.py:495
+#: oer/models.py:504
 msgid "Rights license"
 msgstr "Licença de direitos"
 
-#: oer/models.py:499
+#: oer/models.py:508
 msgid "Free keywords"
 msgstr "Palavras-chave livres"
 
-#: oer/models.py:501
+#: oer/models.py:510
 msgid "Duration"
 msgstr "Duração"
 
-#: oer/models.py:503
+#: oer/models.py:512
 msgid "Size"
 msgstr "Tamanho"
 
-#: oer/models.py:505
+#: oer/models.py:514
 msgid "Technical requirements"
 msgstr "Requerimentos técnicos"
 
-#: oer/models.py:507
+#: oer/models.py:516
 msgid "Typical learning time"
 msgstr "Tempo de aprendizagem típico"
 
-#: oer/models.py:511 templates/oer/oer_form.html:120
+#: oer/models.py:520 templates/oer/oer_form.html:120
 #: templates/oer/oer_list.html:82
 msgid "CVSP node"
 msgstr "Nó CVSP"
 
-#: oer/models.py:533 oer/models.py:580
+#: oer/models.py:542 oer/models.py:589
 #: templates/leisref/fieldset_relationship.html:15
 #: templates/oer/fieldset_relationship.html:15
 msgid "Relation type"
 msgstr "Tipo de relacionamento"
 
-#: oer/models.py:534
+#: oer/models.py:543
 msgid "Relation types"
 msgstr "Tipos de relacionamento"
 
-#: oer/models.py:538 oer/models.py:582
+#: oer/models.py:547 oer/models.py:591
 msgid "Active form"
 msgstr "Forma no ativo"
 
-#: oer/models.py:539 oer/models.py:583
+#: oer/models.py:548 oer/models.py:592
 msgid "Passive form"
 msgstr "Forma no passivo"
 
-#: oer/models.py:590 templates/leisref/act_form.html:39
-#: templates/oer/oer_form.html:39 thesaurus/models_descriptors.py:262
-#: thesaurus/models_qualifiers.py:188
+#: oer/models.py:599 templates/leisref/act_form.html:39
+#: templates/oer/oer_form.html:39 thesaurus/models_descriptors.py:287
+#: thesaurus/models_qualifiers.py:189
 msgid "Relationship"
 msgstr "Relacionamentos"
 
-#: oer/models.py:591
+#: oer/models.py:600
 msgid "Relationships"
 msgstr "Relacionamentos"
 
-#: oer/models.py:598
+#: oer/models.py:607
 msgid "OER related"
 msgstr "Objeto relacionado"
 
@@ -2574,12 +2533,12 @@ msgstr "Objeto relacionado"
 #: templates/suggest/edit-suggested-resource.html:59
 #: templates/thesaurus/descriptor_edit_concept.html:146
 #: templates/thesaurus/descriptor_edit_legacy.html:86
-#: templates/thesaurus/descriptor_edit_register.html:364
-#: templates/thesaurus/descriptor_edit_term.html:112
+#: templates/thesaurus/descriptor_edit_register.html:462
+#: templates/thesaurus/descriptor_edit_term.html:178
 #: templates/thesaurus/descriptor_form_step2.html:221
 #: templates/thesaurus/descriptor_new_concept.html:236
 #: templates/thesaurus/descriptor_new_legacy.html:84
-#: templates/thesaurus/descriptor_new_term.html:111
+#: templates/thesaurus/descriptor_new_term.html:171
 #: templates/thesaurus/qualifier_edit_concept.html:145
 #: templates/thesaurus/qualifier_edit_legacy.html:86
 #: templates/thesaurus/qualifier_edit_register.html:223
@@ -2588,24 +2547,6 @@ msgstr "Objeto relacionado"
 #: templates/thesaurus/qualifier_new_concept.html:231
 #: templates/thesaurus/qualifier_new_legacy.html:84
 #: templates/thesaurus/qualifier_new_term.html:110
-#: templates/thesaurus/temp/descriptor_edit_concept.html:177
-#: templates/thesaurus/temp/descriptor_edit_register.html:287
-#: templates/thesaurus/temp/descriptor_edit_term.html:114
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:173
-#: templates/thesaurus/temp/descriptor_form_step2.html:234
-#: templates/thesaurus/temp/descriptor_new_concept.html:252
-#: templates/thesaurus/temp/descriptor_new_term.html:118
-#: templates/thesaurus/temp/edit_concept_relation_descriptor_form.html:43
-#: templates/thesaurus/temp/qualifer_edit_concept.html:164
-#: templates/thesaurus/temp/qualifier_edit_register.html:232
-#: templates/thesaurus/temp/qualifier_edit_term.html:114
-#: templates/thesaurus/temp/qualifier_form.html:435
-#: templates/thesaurus/temp/qualifier_form.html:1100
-#: templates/thesaurus/temp/qualifier_form_step2.html:231
-#: templates/thesaurus/temp/qualifier_new_concept.html:252
-#: templates/thesaurus/temp/qualifier_new_term.html:123
-#: templates/thesaurus/temp/qualifier_termlistqualif_edit.html:117
-#: templates/thesaurus/temp/qualifier_termlistqualif_new.html:118
 #: templates/title/form_preview.html:435 utils/views.py:183
 msgid "Save"
 msgstr "Gravar"
@@ -2800,8 +2741,6 @@ msgstr "Arquivo"
 #: templates/oer/fieldset_fulltext.html:17
 #: templates/oer/fieldset_fulltext.html:77
 #: templates/oer/fieldset_relationship.html:18 templates/oer/oer_form.html:228
-#: templates/thesaurus/temp/qualifier_form.html:266
-#: templates/thesaurus/temp/qualifier_form.html:765
 #: templates/title/title_form.html:144 templates/title/title_form.html:216
 #: templates/title/title_form.html:290 templates/title/title_form.html:329
 #: templates/title/title_form.html:368 templates/title/title_form.html:410
@@ -2835,9 +2774,6 @@ msgstr "Consultar definição no DeCS"
 #: templates/multimedia/media_form.html:156 templates/oer/oer_form.html:135
 #: templates/thesaurus/page_view_desc.html:22
 #: templates/thesaurus/qualifier_list.html:42
-#: templates/thesaurus/temp/qualifier_list.html:45
-#: templates/thesaurus/temp/thesaurus_home.html:32
-#: templates/thesaurus/temp/thesaurus_home.html:47
 #: templates/thesaurus/thesaurus_home.html:32
 #: templates/thesaurus/thesaurus_home.html:47
 #: templates/title/form_preview.html:112 templates/title/title_form.html:43
@@ -2872,17 +2808,6 @@ msgstr "Selecione pela pesquisa"
 #: templates/oer/oer_confirm_delete.html:29
 #: templates/thesaurus/descriptor_confirm_delete.html:40
 #: templates/thesaurus/qualifier_confirm_delete.html:40
-#: templates/thesaurus/temp/descriptor_confirm_delete.html:40
-#: templates/thesaurus/temp/descriptor_term_confirm_delete.html:33
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:119
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:126
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:147
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:118
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:125
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:146
-#: templates/thesaurus/temp/qualifier_confirm_delete.html:40
-#: templates/thesaurus/temp/qualifier_form.html:656
-#: templates/thesaurus/temp/qualifier_term_confirm_delete.html:33
 #: templates/title/title_confirm_delete.html:29 thesaurus/choices.py:19
 msgid "Yes"
 msgstr "Sim"
@@ -2908,10 +2833,6 @@ msgstr "Registro"
 #: templates/oer/oer_confirm_delete.html:27
 #: templates/thesaurus/descriptor_confirm_delete.html:38
 #: templates/thesaurus/qualifier_confirm_delete.html:38
-#: templates/thesaurus/temp/descriptor_confirm_delete.html:38
-#: templates/thesaurus/temp/descriptor_term_confirm_delete.html:31
-#: templates/thesaurus/temp/qualifier_confirm_delete.html:38
-#: templates/thesaurus/temp/qualifier_term_confirm_delete.html:31
 #: templates/title/title_confirm_delete.html:27
 msgid "Are you sure you want to delete?"
 msgstr "Você tem certeza que deseja apagar?"
@@ -2929,17 +2850,6 @@ msgstr "Você tem certeza que deseja apagar?"
 #: templates/oer/oer_confirm_delete.html:28
 #: templates/thesaurus/descriptor_confirm_delete.html:39
 #: templates/thesaurus/qualifier_confirm_delete.html:39
-#: templates/thesaurus/temp/descriptor_confirm_delete.html:39
-#: templates/thesaurus/temp/descriptor_term_confirm_delete.html:32
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:120
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:127
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:148
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:119
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:126
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:147
-#: templates/thesaurus/temp/qualifier_confirm_delete.html:39
-#: templates/thesaurus/temp/qualifier_form.html:657
-#: templates/thesaurus/temp/qualifier_term_confirm_delete.html:32
 #: templates/title/title_confirm_delete.html:28 thesaurus/choices.py:19
 msgid "No"
 msgstr "Não"
@@ -2955,8 +2865,6 @@ msgstr "Editar mídia"
 #: templates/biblioref/reference_form.html:18
 #: templates/biblioref/select_document_type.html:10
 #: templates/biblioref/select_document_type.html:16
-#: templates/thesaurus/temp/qualifier_form.html:190
-#: templates/thesaurus/temp/qualifier_form.html:320
 msgid "New Record"
 msgstr "Novo Registro"
 
@@ -2976,28 +2884,16 @@ msgstr "Editar Registro Bibliográfico"
 #: templates/multimedia/media_form.html:32 templates/oer/oer_form.html:26
 #: templates/thesaurus/descriptor_edit_concept.html:35
 #: templates/thesaurus/descriptor_edit_register.html:37
+#: templates/thesaurus/descriptor_edit_term.html:41
 #: templates/thesaurus/descriptor_form_step1.html:39
 #: templates/thesaurus/descriptor_form_step2.html:39
 #: templates/thesaurus/descriptor_new_concept.html:33
+#: templates/thesaurus/descriptor_new_term.html:36
 #: templates/thesaurus/qualifier_edit_concept.html:35
 #: templates/thesaurus/qualifier_edit_register.html:37
 #: templates/thesaurus/qualifier_form_step1.html:35
 #: templates/thesaurus/qualifier_form_step2.html:35
 #: templates/thesaurus/qualifier_new_concept.html:32
-#: templates/thesaurus/temp/descriptor_edit_concept.html:37
-#: templates/thesaurus/temp/descriptor_edit_register.html:39
-#: templates/thesaurus/temp/descriptor_form.html:40
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:40
-#: templates/thesaurus/temp/descriptor_form_step1.html:40
-#: templates/thesaurus/temp/descriptor_form_step2.html:40
-#: templates/thesaurus/temp/descriptor_new_concept.html:34
-#: templates/thesaurus/temp/qualifer_edit_concept.html:37
-#: templates/thesaurus/temp/qualifier_edit_register.html:39
-#: templates/thesaurus/temp/qualifier_form.html:51
-#: templates/thesaurus/temp/qualifier_form.html:497
-#: templates/thesaurus/temp/qualifier_form_step1.html:36
-#: templates/thesaurus/temp/qualifier_form_step2.html:37
-#: templates/thesaurus/temp/qualifier_new_concept.html:34
 #: templates/title/form_preview.html:28 templates/title/title_form.html:24
 msgid "Please check required fields"
 msgstr "Por favor verifique os campos obrigatórios"
@@ -3020,10 +2916,9 @@ msgstr ""
 #: templates/institution/institution_form.html:56
 #: templates/leisref/act_form.html:56 templates/main/edit-resource.html:49
 #: templates/multimedia/media_form.html:58
-#: templates/thesaurus/temp/qualifier_form.html:65
-#: templates/thesaurus/temp/qualifier_form.html:503
-#: templates/thesaurus/temp/qualifier_form.html:532
 #: templates/title/form_preview.html:55 templates/title/title_form.html:61
+#: thesaurus/models_descriptors.py:256 thesaurus/models_descriptors.py:259
+#: thesaurus/models_descriptors.py:262
 msgid "Identifier"
 msgstr "Identificador"
 
@@ -3045,10 +2940,8 @@ msgstr "Mídia criada em"
 #: templates/main/edit-resource.html:117 templates/main/edit-resource.html:120
 #: templates/multimedia/media_form.html:140
 #: templates/multimedia/media_form.html:143 templates/oer/oer_form.html:117
-#: templates/oer/oer_form.html.py:123
-#: templates/thesaurus/temp/qualifier_form.html:453
-#: templates/thesaurus/temp/qualifier_form.html:456
-#: templates/title/title_form.html:123 templates/title/title_form.html:126
+#: templates/oer/oer_form.html.py:123 templates/title/title_form.html:123
+#: templates/title/title_form.html:126
 msgid "by user"
 msgstr "pelo usuário"
 
@@ -3059,7 +2952,6 @@ msgstr "pelo usuário"
 #: templates/institution/institution_form.html:162
 #: templates/leisref/act_form.html:164 templates/main/edit-resource.html:118
 #: templates/multimedia/media_form.html:141 templates/oer/oer_form.html:119
-#: templates/thesaurus/temp/qualifier_form.html:454
 #: templates/title/title_form.html:124
 msgid "Cooperative center code"
 msgstr "Código Centro Cooperante"
@@ -3071,7 +2963,6 @@ msgstr "Código Centro Cooperante"
 #: templates/institution/institution_form.html:164
 #: templates/leisref/act_form.html:166 templates/main/edit-resource.html:120
 #: templates/multimedia/media_form.html:143 templates/oer/oer_form.html:123
-#: templates/thesaurus/temp/qualifier_form.html:456
 #: templates/title/title_form.html:126
 msgid "Last edit in"
 msgstr "Última edição realizada em"
@@ -3139,50 +3030,28 @@ msgstr "Adicionar descritor"
 #: templates/oer/oer_form.html.py:403 templates/oer/oer_form.html:413
 #: templates/thesaurus/descriptor_edit_concept.html:232
 #: templates/thesaurus/descriptor_edit_concept.html:242
-#: templates/thesaurus/descriptor_edit_register.html:456
-#: templates/thesaurus/descriptor_edit_register.html:466
-#: templates/thesaurus/descriptor_edit_register.html:476
-#: templates/thesaurus/descriptor_edit_register.html:486
-#: templates/thesaurus/descriptor_form_step1.html:461
-#: templates/thesaurus/descriptor_form_step1.html:471
-#: templates/thesaurus/descriptor_form_step1.html:481
-#: templates/thesaurus/descriptor_form_step1.html:491
+#: templates/thesaurus/descriptor_edit_register.html:554
+#: templates/thesaurus/descriptor_edit_register.html:564
+#: templates/thesaurus/descriptor_edit_register.html:574
+#: templates/thesaurus/descriptor_edit_register.html:584
+#: templates/thesaurus/descriptor_edit_register.html:594
+#: templates/thesaurus/descriptor_edit_term.html:200
+#: templates/thesaurus/descriptor_form_step1.html:558
+#: templates/thesaurus/descriptor_form_step1.html:568
+#: templates/thesaurus/descriptor_form_step1.html:578
+#: templates/thesaurus/descriptor_form_step1.html:588
+#: templates/thesaurus/descriptor_form_step1.html:598
 #: templates/thesaurus/descriptor_form_step2.html:307
 #: templates/thesaurus/descriptor_form_step2.html:317
 #: templates/thesaurus/descriptor_new_concept.html:322
 #: templates/thesaurus/descriptor_new_concept.html:332
+#: templates/thesaurus/descriptor_new_term.html:193
 #: templates/thesaurus/qualifier_edit_concept.html:222
 #: templates/thesaurus/qualifier_edit_concept.html:232
 #: templates/thesaurus/qualifier_edit_register.html:300
 #: templates/thesaurus/qualifier_form_step1.html:303
 #: templates/thesaurus/qualifier_new_concept.html:307
 #: templates/thesaurus/qualifier_new_concept.html:317
-#: templates/thesaurus/temp/descriptor_edit_concept.html:263
-#: templates/thesaurus/temp/descriptor_edit_concept.html:273
-#: templates/thesaurus/temp/descriptor_edit_register.html:379
-#: templates/thesaurus/temp/descriptor_edit_register.html:389
-#: templates/thesaurus/temp/descriptor_edit_register.html:399
-#: templates/thesaurus/temp/descriptor_form.html:368
-#: templates/thesaurus/temp/descriptor_form.html:378
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:260
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:270
-#: templates/thesaurus/temp/descriptor_form_step1.html:421
-#: templates/thesaurus/temp/descriptor_form_step1.html:431
-#: templates/thesaurus/temp/descriptor_form_step1.html:441
-#: templates/thesaurus/temp/descriptor_form_step2.html:320
-#: templates/thesaurus/temp/descriptor_form_step2.html:330
-#: templates/thesaurus/temp/descriptor_new_concept.html:338
-#: templates/thesaurus/temp/descriptor_new_concept.html:348
-#: templates/thesaurus/temp/qualifer_edit_concept.html:241
-#: templates/thesaurus/temp/qualifer_edit_concept.html:251
-#: templates/thesaurus/temp/qualifier_edit_register.html:315
-#: templates/thesaurus/temp/qualifier_edit_register.html:325
-#: templates/thesaurus/temp/qualifier_edit_register.html:335
-#: templates/thesaurus/temp/qualifier_form.html:1062
-#: templates/thesaurus/temp/qualifier_form_step1.html:311
-#: templates/thesaurus/temp/qualifier_new_concept.html:329
-#: templates/thesaurus/temp/qualifier_new_concept.html:339
-#: templates/thesaurus/temp/qualifier_termlistqualif_edit.html:60
 #: templates/title/title_form.html:520 templates/title/title_form.html:529
 #: templates/title/title_form.html:538 templates/title/title_form.html:547
 #: templates/title/title_form.html:556 templates/title/title_form.html:565
@@ -3264,9 +3133,6 @@ msgstr "Revisão de colaboração"
 #: templates/oer/fieldset_relationship.html:63 templates/oer/oer_list.html:65
 #: templates/oer/oer_related.html:17 templates/suggest/list.html:47
 #: templates/thesaurus/qualifier_list.html:57
-#: templates/thesaurus/temp/qualifier_list.html:59
-#: templates/thesaurus/temp/search_concept_desc.html:48
-#: templates/thesaurus/temp/thesaurus_home.html:60
 #: templates/thesaurus/thesaurus_home.html:63
 msgid "Search"
 msgstr "Pesquisa"
@@ -3286,10 +3152,6 @@ msgstr "Pesquisa"
 #: templates/reports/index.html.py:74 templates/reports/index.html:82
 #: templates/suggest/list.html:51 templates/thesaurus/qualifier_list.html:72
 #: templates/thesaurus/qualifier_list.html:81
-#: templates/thesaurus/temp/qualifier_list.html:74
-#: templates/thesaurus/temp/qualifier_list.html:83
-#: templates/thesaurus/temp/thesaurus_home.html:74
-#: templates/thesaurus/temp/thesaurus_home.html:83
 #: templates/thesaurus/thesaurus_home.html:77
 #: templates/thesaurus/thesaurus_home.html:86
 msgid "All"
@@ -3364,8 +3226,6 @@ msgstr "Modificado por outros usuários"
 #: templates/multimedia/mediatype_list.html:48 templates/oer/oer_list.html:108
 #: templates/suggest/list.html:80 templates/suggest/list.html.py:124
 #: templates/suggest/list.html:168 templates/thesaurus/qualifier_list.html:120
-#: templates/thesaurus/temp/qualifier_list.html:122
-#: templates/thesaurus/temp/thesaurus_home.html:118
 #: templates/thesaurus/thesaurus_home.html:120
 #: templates/title/title_list.html:106
 msgid "Actions"
@@ -3395,16 +3255,6 @@ msgstr "Ações"
 #: templates/thesaurus/descriptor_new_concept.html:168
 #: templates/thesaurus/qualifier_new_concept.html:160
 #: templates/thesaurus/qualifier_new_concept.html:166
-#: templates/thesaurus/temp/descriptor_new_concept.html:174
-#: templates/thesaurus/temp/descriptor_new_concept.html:180
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:57
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:47
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:53
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:57
-#: templates/thesaurus/temp/qualifier_form.html:205
-#: templates/thesaurus/temp/qualifier_form.html:333
-#: templates/thesaurus/temp/qualifier_new_concept.html:174
-#: templates/thesaurus/temp/qualifier_new_concept.html:180
 #: templates/title/title_list.html:121
 msgid "Remove"
 msgstr "Apagar"
@@ -3468,9 +3318,8 @@ msgstr "Código do centro indexador"
 #: templates/institution/institution_form.html:168
 #: templates/main/edit-resource.html:124 templates/modal_log.html:6
 #: templates/multimedia/media_form.html:147
-#: templates/thesaurus/page_view_desc.html:318
+#: templates/thesaurus/page_view_desc.html:336
 #: templates/thesaurus/page_view_qualif.html:265
-#: templates/thesaurus/temp/qualifier_form.html:460
 #: templates/title/title_form.html:130
 msgid "Changes history"
 msgstr "Histórico de mudanças"
@@ -3609,14 +3458,14 @@ msgstr "Classificação atualizada"
 #: templates/main/edit-resource.html:390
 #: templates/thesaurus/descriptor_edit_concept.html:145
 #: templates/thesaurus/descriptor_edit_legacy.html:85
-#: templates/thesaurus/descriptor_edit_register.html:363
-#: templates/thesaurus/descriptor_edit_term.html:111
-#: templates/thesaurus/descriptor_form_step1.html:368
+#: templates/thesaurus/descriptor_edit_register.html:461
+#: templates/thesaurus/descriptor_edit_term.html:177
+#: templates/thesaurus/descriptor_form_step1.html:465
 #: templates/thesaurus/descriptor_form_step2.html:220
 #: templates/thesaurus/descriptor_new_concept.html:235
 #: templates/thesaurus/descriptor_new_legacy.html:83
-#: templates/thesaurus/descriptor_new_term.html:110
-#: templates/thesaurus/page_view_desc.html:577
+#: templates/thesaurus/descriptor_new_term.html:170
+#: templates/thesaurus/page_view_desc.html:624
 #: templates/thesaurus/page_view_qualif.html:508
 #: templates/thesaurus/qualifier_edit_concept.html:144
 #: templates/thesaurus/qualifier_edit_legacy.html:85
@@ -3627,27 +3476,6 @@ msgstr "Classificação atualizada"
 #: templates/thesaurus/qualifier_new_concept.html:230
 #: templates/thesaurus/qualifier_new_legacy.html:83
 #: templates/thesaurus/qualifier_new_term.html:109
-#: templates/thesaurus/temp/descriptor_edit_concept.html:176
-#: templates/thesaurus/temp/descriptor_edit_register.html:286
-#: templates/thesaurus/temp/descriptor_edit_term.html:113
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:174
-#: templates/thesaurus/temp/descriptor_form_step1.html:328
-#: templates/thesaurus/temp/descriptor_form_step2.html:233
-#: templates/thesaurus/temp/descriptor_new_concept.html:251
-#: templates/thesaurus/temp/descriptor_new_term.html:117
-#: templates/thesaurus/temp/page_view_desc.html:398
-#: templates/thesaurus/temp/page_view_qualif.html:318
-#: templates/thesaurus/temp/qualifer_edit_concept.html:163
-#: templates/thesaurus/temp/qualifier_edit_register.html:231
-#: templates/thesaurus/temp/qualifier_edit_term.html:113
-#: templates/thesaurus/temp/qualifier_form.html:434
-#: templates/thesaurus/temp/qualifier_form.html:872
-#: templates/thesaurus/temp/qualifier_form_step1.html:227
-#: templates/thesaurus/temp/qualifier_form_step2.html:230
-#: templates/thesaurus/temp/qualifier_new_concept.html:251
-#: templates/thesaurus/temp/qualifier_new_term.html:122
-#: templates/thesaurus/temp/qualifier_termlistqualif_edit.html:116
-#: templates/thesaurus/temp/qualifier_termlistqualif_new.html:117
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -3678,8 +3506,8 @@ msgstr "Nenhum registro foi encontrado"
 
 #: templates/delete_confirm.html:5
 #: templates/thesaurus/descriptor_edit_concept.html:282
-#: templates/thesaurus/descriptor_edit_register.html:525
-#: templates/thesaurus/descriptor_form_step1.html:531
+#: templates/thesaurus/descriptor_edit_register.html:633
+#: templates/thesaurus/descriptor_form_step1.html:637
 #: templates/thesaurus/descriptor_form_step2.html:357
 #: templates/thesaurus/descriptor_new_concept.html:372
 #: templates/thesaurus/qualifier_edit_concept.html:272
@@ -3687,19 +3515,6 @@ msgstr "Nenhum registro foi encontrado"
 #: templates/thesaurus/qualifier_form_step1.html:343
 #: templates/thesaurus/qualifier_form_step2.html:290
 #: templates/thesaurus/qualifier_new_concept.html:357
-#: templates/thesaurus/temp/descriptor_edit_concept.html:313
-#: templates/thesaurus/temp/descriptor_edit_register.html:438
-#: templates/thesaurus/temp/descriptor_form.html:418
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:310
-#: templates/thesaurus/temp/descriptor_form_step1.html:481
-#: templates/thesaurus/temp/descriptor_form_step2.html:370
-#: templates/thesaurus/temp/descriptor_new_concept.html:388
-#: templates/thesaurus/temp/qualifer_edit_concept.html:291
-#: templates/thesaurus/temp/qualifier_edit_register.html:374
-#: templates/thesaurus/temp/qualifier_form.html:1109
-#: templates/thesaurus/temp/qualifier_form_step1.html:351
-#: templates/thesaurus/temp/qualifier_form_step2.html:316
-#: templates/thesaurus/temp/qualifier_new_concept.html:379
 msgid "Delete"
 msgstr "Apagar"
 
@@ -3835,7 +3650,6 @@ msgstr "FI Administração"
 
 #: templates/institution/institution_form.html:161
 #: templates/oer/oer_form.html:117
-#: templates/thesaurus/temp/qualifier_form.html:453
 msgid "Created in"
 msgstr "Criado em"
 
@@ -4583,16 +4397,6 @@ msgstr ""
 #: templates/thesaurus/descriptor_confirm_delete.html:5
 #: templates/thesaurus/descriptor_confirm_delete.html:12
 #: templates/thesaurus/descriptor_confirm_delete.html:18
-#: templates/thesaurus/temp/descriptor_confirm_delete.html:5
-#: templates/thesaurus/temp/descriptor_confirm_delete.html:12
-#: templates/thesaurus/temp/descriptor_confirm_delete.html:18
-#: templates/thesaurus/temp/descriptor_term_confirm_delete.html:5
-#: templates/thesaurus/temp/descriptor_term_confirm_delete.html:12
-#: templates/thesaurus/temp/descriptor_term_confirm_delete.html:18
-#: templates/thesaurus/temp/qualifier_term_confirm_delete.html:5
-#: templates/thesaurus/temp/qualifier_term_confirm_delete.html:12
-#: templates/thesaurus/temp/qualifier_term_confirm_delete.html:18
-#| msgid "Descriptor"
 msgid "Delete Descriptor"
 msgstr "Excluir descritor"
 
@@ -4644,112 +4448,33 @@ msgstr "Excluir descritor"
 #: templates/thesaurus/qualifier_new_legacy.html:9
 #: templates/thesaurus/qualifier_new_term.html:6
 #: templates/thesaurus/qualifier_new_term.html:10
-#: templates/thesaurus/temp/descriptor_confirm_delete.html:9
-#: templates/thesaurus/temp/descriptor_edit_concept.html:7
-#: templates/thesaurus/temp/descriptor_edit_concept.html:10
-#: templates/thesaurus/temp/descriptor_edit_register.html:7
-#: templates/thesaurus/temp/descriptor_edit_register.html:11
-#: templates/thesaurus/temp/descriptor_edit_term.html:6
-#: templates/thesaurus/temp/descriptor_edit_term.html:10
-#: templates/thesaurus/temp/descriptor_edit_term.html:14
-#: templates/thesaurus/temp/descriptor_form.html:7
-#: templates/thesaurus/temp/descriptor_form.html:11
-#: templates/thesaurus/temp/descriptor_form.html:16
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:7
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:11
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:16
-#: templates/thesaurus/temp/descriptor_form_step1.html:7
-#: templates/thesaurus/temp/descriptor_form_step1.html:11
-#: templates/thesaurus/temp/descriptor_form_step1.html:16
-#: templates/thesaurus/temp/descriptor_form_step2.html:7
-#: templates/thesaurus/temp/descriptor_form_step2.html:11
-#: templates/thesaurus/temp/descriptor_form_step2.html:16
-#: templates/thesaurus/temp/descriptor_new_concept.html:7
-#: templates/thesaurus/temp/descriptor_new_concept.html:10
-#: templates/thesaurus/temp/descriptor_new_term.html:6
-#: templates/thesaurus/temp/descriptor_new_term.html:10
-#: templates/thesaurus/temp/descriptor_new_term.html:14
-#: templates/thesaurus/temp/descriptor_term_confirm_delete.html:9
-#: templates/thesaurus/temp/edit_concept_relation_descriptor_form.html:6
-#: templates/thesaurus/temp/edit_concept_relation_descriptor_form.html:11
-#: templates/thesaurus/temp/edit_concept_relation_descriptor_form.html:15
-#: templates/thesaurus/temp/page_view_desc.html:7
-#: templates/thesaurus/temp/page_view_desc.html:11
-#: templates/thesaurus/temp/page_view_desc.html:16
-#: templates/thesaurus/temp/page_view_qualif.html:7
-#: templates/thesaurus/temp/page_view_qualif.html:11
-#: templates/thesaurus/temp/qualifer_edit_concept.html:7
-#: templates/thesaurus/temp/qualifer_edit_concept.html:10
-#: templates/thesaurus/temp/qualifier_confirm_delete.html:9
-#: templates/thesaurus/temp/qualifier_edit_register.html:7
-#: templates/thesaurus/temp/qualifier_edit_register.html:11
-#: templates/thesaurus/temp/qualifier_edit_term.html:6
-#: templates/thesaurus/temp/qualifier_edit_term.html:10
-#: templates/thesaurus/temp/qualifier_edit_term.html:14
-#: templates/thesaurus/temp/qualifier_form.html:6
-#: templates/thesaurus/temp/qualifier_form.html:10
-#: templates/thesaurus/temp/qualifier_form.html:16
-#: templates/thesaurus/temp/qualifier_form_step1.html:7
-#: templates/thesaurus/temp/qualifier_form_step1.html:11
-#: templates/thesaurus/temp/qualifier_form_step2.html:7
-#: templates/thesaurus/temp/qualifier_form_step2.html:11
-#: templates/thesaurus/temp/qualifier_list.html:7
-#: templates/thesaurus/temp/qualifier_list.html:10
-#: templates/thesaurus/temp/qualifier_new_concept.html:7
-#: templates/thesaurus/temp/qualifier_new_concept.html:10
-#: templates/thesaurus/temp/qualifier_new_term.html:6
-#: templates/thesaurus/temp/qualifier_new_term.html:10
-#: templates/thesaurus/temp/qualifier_new_term.html:14
-#: templates/thesaurus/temp/qualifier_term_confirm_delete.html:9
-#: templates/thesaurus/temp/qualifier_termlistqualif_edit.html:6
-#: templates/thesaurus/temp/qualifier_termlistqualif_edit.html:10
-#: templates/thesaurus/temp/qualifier_termlistqualif_new.html:6
-#: templates/thesaurus/temp/qualifier_termlistqualif_new.html:10
-#: templates/thesaurus/temp/qualifier_termlistqualif_new.html:16
-#: templates/thesaurus/temp/search_concept_desc.html:7
-#: templates/thesaurus/temp/search_concept_desc.html:10
-#: templates/thesaurus/temp/thesaurus_home.html:7
-#: templates/thesaurus/temp/thesaurus_home.html:10
 #: templates/thesaurus/thesaurus_home.html:6
 #: templates/thesaurus/thesaurus_home.html:9
-#: thesaurus/models_descriptors.py:353 thesaurus/models_qualifiers.py:275
+#: thesaurus/models_descriptors.py:378 thesaurus/models_qualifiers.py:276
 #: thesaurus/models_thesaurus.py:13 thesaurus/models_thesaurus.py:14
 msgid "Thesaurus"
 msgstr "Tesauro"
 
 #: templates/thesaurus/descriptor_confirm_delete.html:28
-#: templates/thesaurus/temp/descriptor_confirm_delete.html:26
-#: templates/thesaurus/temp/thesaurus_home.html:67
 #: templates/thesaurus/thesaurus_home.html:70
 #: thesaurus/models_descriptors.py:31 thesaurus/models_descriptors.py:136
 #: thesaurus/models_descriptors.py:163
-#| msgid "Descriptor"
 msgid "MESH Descriptor UI"
 msgstr "ID do MESH"
 
 #: templates/thesaurus/descriptor_confirm_delete.html:32
-#: templates/thesaurus/temp/descriptor_confirm_delete.html:30
-#: templates/thesaurus/temp/qualifier_confirm_delete.html:30
-#: templates/thesaurus/temp/thesaurus_home.html:68
 #: templates/thesaurus/thesaurus_home.html:71
 #: thesaurus/models_descriptors.py:35
-#| msgid "Descriptor"
 msgid "DeCS Descriptor UI"
 msgstr "ID do tesauro"
 
 #: templates/thesaurus/descriptor_edit_concept.html:11
 #: templates/thesaurus/qualifier_edit_concept.html:11
-#: templates/thesaurus/temp/descriptor_edit_concept.html:12
-#: templates/thesaurus/temp/qualifer_edit_concept.html:12
-#| msgid "Edit Source"
 msgid "Edit Concept"
 msgstr "Editar conceito"
 
 #: templates/thesaurus/descriptor_edit_concept.html:20
 #: templates/thesaurus/qualifier_edit_concept.html:20
-#: templates/thesaurus/temp/descriptor_edit_concept.html:21
-#: templates/thesaurus/temp/qualifer_edit_concept.html:21
-#| msgid "General information"
 msgid "Edit concept information"
 msgstr "Editar informações do conceito"
 
@@ -4759,14 +4484,6 @@ msgstr "Editar informações do conceito"
 #: templates/thesaurus/qualifier_edit_concept.html:53
 #: templates/thesaurus/qualifier_form_step2.html:57
 #: templates/thesaurus/qualifier_new_concept.html:49
-#: templates/thesaurus/temp/descriptor_edit_concept.html:72
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:69
-#: templates/thesaurus/temp/descriptor_form_step2.html:74
-#: templates/thesaurus/temp/descriptor_new_concept.html:63
-#: templates/thesaurus/temp/qualifer_edit_concept.html:72
-#: templates/thesaurus/temp/qualifier_form_step2.html:71
-#: templates/thesaurus/temp/qualifier_new_concept.html:63
-#| msgid "Identifier"
 msgid "Identifier of Concept"
 msgstr "ID do conceito"
 
@@ -4776,82 +4493,55 @@ msgstr "ID do conceito"
 #: templates/thesaurus/qualifier_edit_concept.html:86
 #: templates/thesaurus/qualifier_form_step2.html:92
 #: templates/thesaurus/qualifier_new_concept.html:94
-#: templates/thesaurus/temp/descriptor_edit_concept.html:118
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:93
-#: templates/thesaurus/temp/descriptor_form_step2.html:109
-#: templates/thesaurus/temp/descriptor_new_concept.html:108
-#: templates/thesaurus/temp/qualifer_edit_concept.html:105
-#: templates/thesaurus/temp/qualifier_form_step2.html:106
-#: templates/thesaurus/temp/qualifier_new_concept.html:108
-#| msgid "Description"
 msgid "Description of Concept"
 msgstr "Descrição do conceito"
 
+#: templates/thesaurus/descriptor_edit_concept.html:113
+#: templates/thesaurus/descriptor_edit_register.html:261
+#: templates/thesaurus/qualifier_edit_concept.html:112
+#: templates/thesaurus/qualifier_edit_register.html:179
+#| msgid "Description"
+msgid "Description in"
+msgstr "Descrição em"
+
 #: templates/thesaurus/descriptor_edit_concept.html:116
-#: templates/thesaurus/descriptor_edit_register.html:263
+#: templates/thesaurus/descriptor_edit_register.html:264
 #: templates/thesaurus/qualifier_edit_concept.html:115
 #: templates/thesaurus/qualifier_edit_register.html:182
-#: templates/thesaurus/temp/descriptor_edit_concept.html:147
-#: templates/thesaurus/temp/descriptor_edit_register.html:224
-#: templates/thesaurus/temp/qualifer_edit_concept.html:134
-#: templates/thesaurus/temp/qualifier_edit_register.html:191
-#| msgid "Add descriptor"
 msgid "Add new description"
 msgstr "Adicionar nova descrição"
 
 #: templates/thesaurus/descriptor_edit_concept.html:231
-#: templates/thesaurus/descriptor_edit_register.html:455
-#: templates/thesaurus/descriptor_form_step1.html:460
+#: templates/thesaurus/descriptor_edit_register.html:553
+#: templates/thesaurus/descriptor_form_step1.html:557
 #: templates/thesaurus/descriptor_form_step2.html:306
 #: templates/thesaurus/descriptor_new_concept.html:321
 #: templates/thesaurus/qualifier_edit_concept.html:221
 #: templates/thesaurus/qualifier_edit_register.html:299
 #: templates/thesaurus/qualifier_form_step1.html:302
 #: templates/thesaurus/qualifier_new_concept.html:306
-#: templates/thesaurus/temp/descriptor_edit_concept.html:262
-#: templates/thesaurus/temp/descriptor_edit_register.html:378
-#: templates/thesaurus/temp/descriptor_form.html:367
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:259
-#: templates/thesaurus/temp/descriptor_form_step1.html:420
-#: templates/thesaurus/temp/descriptor_form_step2.html:319
-#: templates/thesaurus/temp/descriptor_new_concept.html:337
-#: templates/thesaurus/temp/qualifer_edit_concept.html:240
-#: templates/thesaurus/temp/qualifier_edit_register.html:314
-#: templates/thesaurus/temp/qualifier_form.html:1061
-#: templates/thesaurus/temp/qualifier_form_step1.html:310
-#: templates/thesaurus/temp/qualifier_new_concept.html:328
 msgid "Add Tree Number"
-msgstr "Adiciona categoria"
+msgstr "Adicionar categoria"
 
 #: templates/thesaurus/descriptor_edit_concept.html:241
-#: templates/thesaurus/descriptor_edit_register.html:485
-#: templates/thesaurus/descriptor_form_step1.html:490
+#: templates/thesaurus/descriptor_edit_register.html:583
+#: templates/thesaurus/descriptor_form_step1.html:587
 #: templates/thesaurus/descriptor_form_step2.html:316
 #: templates/thesaurus/descriptor_new_concept.html:331
 #: templates/thesaurus/qualifier_edit_concept.html:231
 #: templates/thesaurus/qualifier_new_concept.html:316
-#: templates/thesaurus/temp/descriptor_edit_concept.html:272
-#: templates/thesaurus/temp/descriptor_edit_register.html:398
-#: templates/thesaurus/temp/descriptor_form.html:377
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:269
-#: templates/thesaurus/temp/descriptor_form_step1.html:440
-#: templates/thesaurus/temp/descriptor_form_step2.html:329
-#: templates/thesaurus/temp/descriptor_new_concept.html:347
-#: templates/thesaurus/temp/qualifer_edit_concept.html:250
-#: templates/thesaurus/temp/qualifier_edit_register.html:334
-#: templates/thesaurus/temp/qualifier_new_concept.html:338
 msgid "Add Previous Index"
-msgstr "Adiciona indexação prévia"
+msgstr "Adicionar indexação prévia"
 
 #: templates/thesaurus/descriptor_edit_concept.html:265
 #: templates/thesaurus/descriptor_edit_concept.html:274
 #: templates/thesaurus/descriptor_edit_concept.html:304
-#: templates/thesaurus/descriptor_edit_register.html:508
-#: templates/thesaurus/descriptor_edit_register.html:517
-#: templates/thesaurus/descriptor_edit_register.html:537
-#: templates/thesaurus/descriptor_form_step1.html:514
-#: templates/thesaurus/descriptor_form_step1.html:523
-#: templates/thesaurus/descriptor_form_step1.html:553
+#: templates/thesaurus/descriptor_edit_register.html:616
+#: templates/thesaurus/descriptor_edit_register.html:625
+#: templates/thesaurus/descriptor_edit_register.html:645
+#: templates/thesaurus/descriptor_form_step1.html:620
+#: templates/thesaurus/descriptor_form_step1.html:629
+#: templates/thesaurus/descriptor_form_step1.html:659
 #: templates/thesaurus/descriptor_form_step2.html:340
 #: templates/thesaurus/descriptor_form_step2.html:349
 #: templates/thesaurus/descriptor_form_step2.html:379
@@ -4870,52 +4560,15 @@ msgstr "Adiciona indexação prévia"
 #: templates/thesaurus/qualifier_new_concept.html:340
 #: templates/thesaurus/qualifier_new_concept.html:349
 #: templates/thesaurus/qualifier_new_concept.html:379
-#: templates/thesaurus/temp/descriptor_edit_concept.html:296
-#: templates/thesaurus/temp/descriptor_edit_concept.html:305
-#: templates/thesaurus/temp/descriptor_edit_concept.html:335
-#: templates/thesaurus/temp/descriptor_edit_register.html:421
-#: templates/thesaurus/temp/descriptor_edit_register.html:430
-#: templates/thesaurus/temp/descriptor_edit_register.html:450
-#: templates/thesaurus/temp/descriptor_form.html:401
-#: templates/thesaurus/temp/descriptor_form.html:410
-#: templates/thesaurus/temp/descriptor_form.html:434
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:293
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:302
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:326
-#: templates/thesaurus/temp/descriptor_form_step1.html:464
-#: templates/thesaurus/temp/descriptor_form_step1.html:473
-#: templates/thesaurus/temp/descriptor_form_step1.html:502
-#: templates/thesaurus/temp/descriptor_form_step2.html:353
-#: templates/thesaurus/temp/descriptor_form_step2.html:362
-#: templates/thesaurus/temp/descriptor_form_step2.html:392
-#: templates/thesaurus/temp/descriptor_new_concept.html:371
-#: templates/thesaurus/temp/descriptor_new_concept.html:380
-#: templates/thesaurus/temp/descriptor_new_concept.html:410
-#: templates/thesaurus/temp/qualifer_edit_concept.html:274
-#: templates/thesaurus/temp/qualifer_edit_concept.html:283
-#: templates/thesaurus/temp/qualifer_edit_concept.html:313
-#: templates/thesaurus/temp/qualifier_edit_register.html:357
-#: templates/thesaurus/temp/qualifier_edit_register.html:366
-#: templates/thesaurus/temp/qualifier_edit_register.html:386
-#: templates/thesaurus/temp/qualifier_form.html:1084
-#: templates/thesaurus/temp/qualifier_form.html:1093
-#: templates/thesaurus/temp/qualifier_form.html:1125
-#: templates/thesaurus/temp/qualifier_form_step1.html:334
-#: templates/thesaurus/temp/qualifier_form_step1.html:343
-#: templates/thesaurus/temp/qualifier_form_step1.html:371
-#: templates/thesaurus/temp/qualifier_form_step2.html:338
-#: templates/thesaurus/temp/qualifier_new_concept.html:362
-#: templates/thesaurus/temp/qualifier_new_concept.html:371
-#: templates/thesaurus/temp/qualifier_new_concept.html:401
 msgid "Warning"
 msgstr "Atenção"
 
 #: templates/thesaurus/descriptor_edit_concept.html:314
 #: templates/thesaurus/descriptor_edit_concept.html:315
-#: templates/thesaurus/descriptor_edit_register.html:547
-#: templates/thesaurus/descriptor_edit_register.html:548
-#: templates/thesaurus/descriptor_form_step1.html:563
-#: templates/thesaurus/descriptor_form_step1.html:564
+#: templates/thesaurus/descriptor_edit_register.html:655
+#: templates/thesaurus/descriptor_edit_register.html:656
+#: templates/thesaurus/descriptor_form_step1.html:669
+#: templates/thesaurus/descriptor_form_step1.html:670
 #: templates/thesaurus/descriptor_form_step2.html:389
 #: templates/thesaurus/descriptor_form_step2.html:390
 #: templates/thesaurus/descriptor_new_concept.html:404
@@ -4928,32 +4581,6 @@ msgstr "Atenção"
 #: templates/thesaurus/qualifier_form_step1.html:374
 #: templates/thesaurus/qualifier_new_concept.html:389
 #: templates/thesaurus/qualifier_new_concept.html:390
-#: templates/thesaurus/temp/descriptor_edit_concept.html:345
-#: templates/thesaurus/temp/descriptor_edit_concept.html:346
-#: templates/thesaurus/temp/descriptor_edit_register.html:460
-#: templates/thesaurus/temp/descriptor_edit_register.html:461
-#: templates/thesaurus/temp/descriptor_form.html:444
-#: templates/thesaurus/temp/descriptor_form.html:445
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:336
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:337
-#: templates/thesaurus/temp/descriptor_form_step1.html:512
-#: templates/thesaurus/temp/descriptor_form_step1.html:513
-#: templates/thesaurus/temp/descriptor_form_step2.html:402
-#: templates/thesaurus/temp/descriptor_form_step2.html:403
-#: templates/thesaurus/temp/descriptor_new_concept.html:420
-#: templates/thesaurus/temp/descriptor_new_concept.html:421
-#: templates/thesaurus/temp/qualifer_edit_concept.html:323
-#: templates/thesaurus/temp/qualifer_edit_concept.html:324
-#: templates/thesaurus/temp/qualifier_edit_register.html:396
-#: templates/thesaurus/temp/qualifier_edit_register.html:397
-#: templates/thesaurus/temp/qualifier_form.html:1135
-#: templates/thesaurus/temp/qualifier_form.html:1136
-#: templates/thesaurus/temp/qualifier_form_step1.html:381
-#: templates/thesaurus/temp/qualifier_form_step1.html:382
-#: templates/thesaurus/temp/qualifier_form_step2.html:348
-#: templates/thesaurus/temp/qualifier_form_step2.html:349
-#: templates/thesaurus/temp/qualifier_new_concept.html:411
-#: templates/thesaurus/temp/qualifier_new_concept.html:412
 msgid "Warning: Field is empty!"
 msgstr "Atenção: Campo está vazio!"
 
@@ -4961,145 +4588,122 @@ msgstr "Atenção: Campo está vazio!"
 #: templates/thesaurus/descriptor_edit_legacy.html:20
 #: templates/thesaurus/qualifier_edit_legacy.html:11
 #: templates/thesaurus/qualifier_edit_legacy.html:20
-#| msgid "General information"
 msgid "Edit legacy information"
 msgstr "Editar informações do legado"
 
 #: templates/thesaurus/descriptor_edit_register.html:12
 #: templates/thesaurus/qualifier_edit_register.html:12
-#: templates/thesaurus/temp/descriptor_edit_register.html:13
-#: templates/thesaurus/temp/qualifier_edit_register.html:13
-#| msgid "Edit Title"
 msgid "Edit Register"
 msgstr "Editar registro"
 
 #: templates/thesaurus/descriptor_edit_register.html:22
 #: templates/thesaurus/qualifier_edit_register.html:22
-#: templates/thesaurus/temp/descriptor_edit_register.html:24
-#: templates/thesaurus/temp/qualifier_edit_register.html:24
-#| msgid "Descriptive information"
 msgid "Edit registry information"
 msgstr "Editar informações do registro"
 
-#: templates/thesaurus/descriptor_edit_register.html:58
+#: templates/thesaurus/descriptor_edit_register.html:59
 #: templates/thesaurus/descriptor_form_step1.html:63
 #: templates/thesaurus/qualifier_edit_register.html:56
 #: templates/thesaurus/qualifier_form_step1.html:57
-#: templates/thesaurus/temp/descriptor_edit_register.html:56
-#: templates/thesaurus/temp/descriptor_form.html:63
-#: templates/thesaurus/temp/descriptor_form_step1.html:62
-#: templates/thesaurus/temp/qualifier_edit_register.html:54
-#: templates/thesaurus/temp/qualifier_form_step1.html:56
-#| msgid "Identifier"
 msgid "Identifier of Record"
-msgstr "ID MESH"
+msgstr "Identificação do registro"
 
-#: templates/thesaurus/descriptor_edit_register.html:115
+#: templates/thesaurus/descriptor_edit_register.html:116
 #: templates/thesaurus/descriptor_form_step1.html:138
 #: templates/thesaurus/qualifier_edit_register.html:117
 #: templates/thesaurus/qualifier_form_step1.html:140
-#: templates/thesaurus/temp/descriptor_edit_register.html:121
-#: templates/thesaurus/temp/descriptor_form.html:129
-#: templates/thesaurus/temp/descriptor_form_step1.html:139
-#: templates/thesaurus/temp/qualifier_edit_register.html:128
-#: templates/thesaurus/temp/qualifier_form.html:265
-#: templates/thesaurus/temp/qualifier_form.html:764
-#: templates/thesaurus/temp/qualifier_form_step1.html:142
 msgid "Tree Numbers List"
 msgstr "Lista de categoria hierárquica"
 
-#: templates/thesaurus/descriptor_edit_register.html:150
+#: templates/thesaurus/descriptor_edit_register.html:151
 #: templates/thesaurus/descriptor_form_step1.html:173
 #: thesaurus/models_descriptors.py:127
 msgid "Pharmacological Action List"
 msgstr "Lista de ação farmacológica"
 
-#: templates/thesaurus/descriptor_edit_register.html:158
-#: templates/thesaurus/descriptor_edit_register.html:199
+#: templates/thesaurus/descriptor_edit_register.html:159
+#: templates/thesaurus/descriptor_edit_register.html:200
 #: templates/thesaurus/descriptor_form_step1.html:181
 #: templates/thesaurus/descriptor_form_step1.html:230
-#: templates/thesaurus/temp/descriptor_edit_register.html:165
-#: templates/thesaurus/temp/descriptor_form_step1.html:183
-#: templates/thesaurus/temp/descriptor_term_confirm_delete.html:26
-#: templates/thesaurus/temp/qualifier_term_confirm_delete.html:26
 #: thesaurus/models_descriptors.py:133 thesaurus/models_descriptors.py:160
-#: thesaurus/models_descriptors.py:325 thesaurus/models_qualifiers.py:261
+#: thesaurus/models_descriptors.py:350 thesaurus/models_qualifiers.py:262
 msgid "String"
 msgstr "Termo"
 
-#: templates/thesaurus/descriptor_edit_register.html:159
-#: templates/thesaurus/descriptor_edit_register.html:200
+#: templates/thesaurus/descriptor_edit_register.html:160
+#: templates/thesaurus/descriptor_edit_register.html:201
 #: templates/thesaurus/descriptor_form_step1.html:182
 #: templates/thesaurus/descriptor_form_step1.html:231
-#: templates/thesaurus/temp/descriptor_edit_register.html:164
-#: templates/thesaurus/temp/descriptor_form_step1.html:182
-#| msgid "Descriptor"
 msgid "Descriptor UI"
 msgstr "ID do descritor"
 
-#: templates/thesaurus/descriptor_edit_register.html:191
+#: templates/thesaurus/descriptor_edit_register.html:192
 #: templates/thesaurus/descriptor_form_step1.html:222
-#: templates/thesaurus/temp/descriptor_edit_register.html:156
-#: templates/thesaurus/temp/descriptor_form_step1.html:174
-#| msgid "Related links"
 msgid "Related List"
 msgstr "Lista de relacionados"
 
-#: templates/thesaurus/descriptor_edit_register.html:231
+#: templates/thesaurus/descriptor_edit_register.html:232
 #: templates/thesaurus/descriptor_form_step1.html:263
 #: templates/thesaurus/qualifier_edit_register.html:152
 #: templates/thesaurus/qualifier_form_step1.html:175
-#: templates/thesaurus/temp/descriptor_edit_register.html:196
-#: templates/thesaurus/temp/descriptor_form.html:160
-#: templates/thesaurus/temp/descriptor_form_step1.html:215
-#: templates/thesaurus/temp/qualifier_edit_register.html:163
-#: templates/thesaurus/temp/qualifier_form_step1.html:177
-#| msgid "Description"
 msgid "Description of Record"
 msgstr "Descrição do registro"
 
-#: templates/thesaurus/descriptor_edit_register.html:320
+#: templates/thesaurus/descriptor_edit_register.html:321
 #: templates/thesaurus/descriptor_form_step1.html:324
-#: templates/thesaurus/temp/descriptor_edit_register.html:243
-#: templates/thesaurus/temp/descriptor_form.html:238
-#: templates/thesaurus/temp/descriptor_form_step1.html:278
 msgid "Previous Indexing List"
 msgstr "Lista de indexação prévia"
 
-#: templates/thesaurus/descriptor_edit_register.html:328
+#: templates/thesaurus/descriptor_edit_register.html:329
 #: templates/thesaurus/descriptor_form_step1.html:332
-#: templates/thesaurus/temp/descriptor_edit_register.html:251
-#: templates/thesaurus/temp/descriptor_form.html:246
-#: templates/thesaurus/temp/descriptor_form_step1.html:286
 msgid "Previous Index"
 msgstr "Indexação prévia"
 
-#: templates/thesaurus/descriptor_edit_register.html:465
-#: templates/thesaurus/descriptor_form_step1.html:470
-msgid "Add Pharmacological Action"
-msgstr "Adiciona ação farmacológica"
+#: templates/thesaurus/descriptor_edit_register.html:366
+#: templates/thesaurus/descriptor_form_step1.html:369
+#: templates/thesaurus/page_view_desc.html:139
+#: templates/thesaurus/page_view_desc.html:350
+#| msgid "Denomination"
+msgid "Entry Combination"
+msgstr "Precoord"
 
-#: templates/thesaurus/descriptor_edit_register.html:475
-#: templates/thesaurus/descriptor_form_step1.html:480
-#: templates/thesaurus/temp/descriptor_edit_register.html:388
-#: templates/thesaurus/temp/descriptor_form_step1.html:430
-#: templates/thesaurus/temp/qualifier_edit_register.html:324
-#| msgid "Related"
+#: templates/thesaurus/descriptor_edit_register.html:405
+#: templates/thesaurus/descriptor_form_step1.html:408
+#| msgid "Add new description"
+msgid "Add new entry combination"
+msgstr "Adicionar novo Precoord"
+
+#: templates/thesaurus/descriptor_edit_register.html:416
+#: templates/thesaurus/descriptor_form_step1.html:419
+msgid "Qualifier combination prohibited"
+msgstr "Combinação de Precoord proibida"
+
+#: templates/thesaurus/descriptor_edit_register.html:430
+#: templates/thesaurus/descriptor_form_step1.html:433
+#| msgid "Denomination"
+msgid "Entry combination"
+msgstr "Precoord"
+
+#: templates/thesaurus/descriptor_edit_register.html:563
+#: templates/thesaurus/descriptor_form_step1.html:567
+msgid "Add Pharmacological Action"
+msgstr "Adicionar ação farmacológica"
+
+#: templates/thesaurus/descriptor_edit_register.html:573
+#: templates/thesaurus/descriptor_form_step1.html:577
 msgid "Add Related"
 msgstr "Adicionar relacionado"
+
+#: templates/thesaurus/descriptor_edit_register.html:593
+#: templates/thesaurus/descriptor_form_step1.html:597
+#| msgid "Add translation"
+msgid "Add Entry Combination"
+msgstr "Adicionar novo Precoord"
 
 #: templates/thesaurus/descriptor_edit_term.html:12
 #: templates/thesaurus/descriptor_new_term.html:12
 #: templates/thesaurus/qualifier_edit_term.html:12
 #: templates/thesaurus/qualifier_new_term.html:12
-#: templates/thesaurus/temp/descriptor_edit_term.html:12
-#: templates/thesaurus/temp/descriptor_new_term.html:12
-#: templates/thesaurus/temp/descriptor_new_term.html:28
-#: templates/thesaurus/temp/qualifier_edit_term.html:12
-#: templates/thesaurus/temp/qualifier_form.html:390
-#: templates/thesaurus/temp/qualifier_new_term.html:12
-#: templates/thesaurus/temp/qualifier_new_term.html:28
-#| msgid "New Title"
 msgid "New Term"
 msgstr "Novo termo"
 
@@ -5107,43 +4711,42 @@ msgstr "Novo termo"
 #: templates/thesaurus/descriptor_form_step1.html:17
 #: templates/thesaurus/descriptor_form_step2.html:17
 #: templates/thesaurus/page_view_desc.html:12
-#: templates/thesaurus/temp/descriptor_edit_term.html:16
-#: templates/thesaurus/temp/descriptor_form.html:18
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:18
-#: templates/thesaurus/temp/descriptor_form_step1.html:18
-#: templates/thesaurus/temp/descriptor_form_step2.html:18
-#: templates/thesaurus/temp/descriptor_new_term.html:16
-#: templates/thesaurus/temp/edit_concept_relation_descriptor_form.html:17
-#: templates/thesaurus/temp/page_view_desc.html:18
-#: templates/thesaurus/temp/qualifier_edit_term.html:16
-#| msgid "Descriptor"
 msgid "Edit Descriptor"
 msgstr "Editar descritor"
 
 #: templates/thesaurus/descriptor_edit_term.html:26
 #: templates/thesaurus/qualifier_edit_term.html:26
-#: templates/thesaurus/temp/descriptor_edit_term.html:27
-#: templates/thesaurus/temp/qualifier_edit_term.html:27
-#| msgid "Descriptive information"
 msgid "Edit term information"
 msgstr "Editar informações do termo"
+
+#: templates/thesaurus/descriptor_edit_term.html:68
+#: templates/thesaurus/descriptor_new_term.html:63
+#| msgid "Edit term information"
+msgid "Term information"
+msgstr "Informações do termo"
+
+#: templates/thesaurus/descriptor_edit_term.html:139
+#: templates/thesaurus/descriptor_new_term.html:133
+msgid "Thesaurus where terms occur"
+msgstr "Tesauro onde os termos ocorrem"
+
+#: templates/thesaurus/descriptor_edit_term.html:147
+#: templates/thesaurus/descriptor_new_term.html:141
+#: thesaurus/models_thesaurus.py:16
+msgid "Thesaurus name"
+msgstr "Nome do tesauro"
+
+#: templates/thesaurus/descriptor_edit_term.html:199
+#: templates/thesaurus/descriptor_new_term.html:192
+#| msgid "Thesaurus name"
+msgid "Add thesaurus name"
+msgstr "Adicionar nome do tesauro"
 
 #: templates/thesaurus/descriptor_form_step1.html:12
 #: templates/thesaurus/descriptor_form_step2.html:12
 #: templates/thesaurus/descriptor_new_concept.html:11
 #: templates/thesaurus/qualifier_form_step1.html:12
 #: templates/thesaurus/qualifier_form_step2.html:12
-#: templates/thesaurus/temp/descriptor_form.html:13
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:13
-#: templates/thesaurus/temp/descriptor_form_step1.html:13
-#: templates/thesaurus/temp/descriptor_form_step2.html:13
-#: templates/thesaurus/temp/descriptor_new_concept.html:12
-#: templates/thesaurus/temp/edit_concept_relation_descriptor_form.html:13
-#: templates/thesaurus/temp/page_view_desc.html:13
-#: templates/thesaurus/temp/qualifier_form_step1.html:13
-#: templates/thesaurus/temp/qualifier_form_step2.html:13
-#: templates/thesaurus/temp/qualifier_new_concept.html:12
-#| msgid "Descriptor"
 msgid "New Descriptor"
 msgstr "No descritor"
 
@@ -5162,12 +4765,6 @@ msgstr "Cria informação para novo registro, conceito e termo para descritor"
 #: templates/thesaurus/descriptor_form_step2.html:48
 #: templates/thesaurus/qualifier_form_step1.html:44
 #: templates/thesaurus/qualifier_form_step2.html:44
-#: templates/thesaurus/temp/descriptor_form.html:50
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:56
-#: templates/thesaurus/temp/descriptor_form_step1.html:51
-#: templates/thesaurus/temp/descriptor_form_step2.html:61
-#: templates/thesaurus/temp/qualifier_form_step1.html:45
-#: templates/thesaurus/temp/qualifier_form_step2.html:58
 msgid "Step 1"
 msgstr "Passo 1"
 
@@ -5175,12 +4772,6 @@ msgstr "Passo 1"
 #: templates/thesaurus/descriptor_form_step2.html:49
 #: templates/thesaurus/qualifier_form_step1.html:45
 #: templates/thesaurus/qualifier_form_step2.html:45
-#: templates/thesaurus/temp/descriptor_form.html:51
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:57
-#: templates/thesaurus/temp/descriptor_form_step1.html:52
-#: templates/thesaurus/temp/descriptor_form_step2.html:62
-#: templates/thesaurus/temp/qualifier_form_step1.html:46
-#: templates/thesaurus/temp/qualifier_form_step2.html:59
 msgid "Step 2"
 msgstr "Passo 2"
 
@@ -5188,23 +4779,33 @@ msgstr "Passo 2"
 #: templates/thesaurus/descriptor_new_concept.html:63
 #: templates/thesaurus/qualifier_form_step1.html:74
 #: templates/thesaurus/qualifier_new_concept.html:62
-#: templates/thesaurus/temp/descriptor_edit_concept.html:86
-#: templates/thesaurus/temp/descriptor_form_step1.html:77
-#: templates/thesaurus/temp/descriptor_new_concept.html:76
-#: templates/thesaurus/temp/qualifier_form_step1.html:74
-#: templates/thesaurus/temp/qualifier_new_concept.html:76
 #: thesaurus/models_descriptors.py:74 thesaurus/models_descriptors.py:138
-#: thesaurus/models_descriptors.py:187 thesaurus/models_descriptors.py:291
-#: thesaurus/models_descriptors.py:322 thesaurus/models_qualifiers.py:80
-#: thesaurus/models_qualifiers.py:215 thesaurus/models_qualifiers.py:243
+#: thesaurus/models_descriptors.py:187 thesaurus/models_descriptors.py:316
+#: thesaurus/models_descriptors.py:347 thesaurus/models_qualifiers.py:81
+#: thesaurus/models_qualifiers.py:216 thesaurus/models_qualifiers.py:244
 msgid "Language used for description"
 msgstr "Linguagem utilizada para descrição"
 
-#: templates/thesaurus/descriptor_form_step1.html:369
+#: templates/thesaurus/descriptor_form_step1.html:85
+#: templates/thesaurus/descriptor_new_concept.html:68
+#: templates/thesaurus/qualifier_form_step1.html:82
+#: templates/thesaurus/qualifier_list.html:83
+#: templates/thesaurus/qualifier_new_concept.html:67
+#: templates/thesaurus/thesaurus_home.html:88 thesaurus/choices.py:11
+msgid "Spanish Latin America"
+msgstr "Espanhol América Latina"
+
+#: templates/thesaurus/descriptor_form_step1.html:87
+#: templates/thesaurus/descriptor_new_concept.html:70
+#: templates/thesaurus/qualifier_form_step1.html:84
+#: templates/thesaurus/qualifier_list.html:85
+#: templates/thesaurus/qualifier_new_concept.html:69
+#: templates/thesaurus/thesaurus_home.html:90 thesaurus/choices.py:13
+msgid "Spanish Spain"
+msgstr "Espanhol da  Espanha"
+
+#: templates/thesaurus/descriptor_form_step1.html:466
 #: templates/thesaurus/qualifier_form_step1.html:225
-#: templates/thesaurus/temp/descriptor_form.html:277
-#: templates/thesaurus/temp/descriptor_form_step1.html:329
-#: templates/thesaurus/temp/qualifier_form_step1.html:228
 msgid "Next"
 msgstr "Próximo"
 
@@ -5216,32 +4817,16 @@ msgstr "Próximo"
 #: templates/thesaurus/qualifier_form_step2.html:133
 #: templates/thesaurus/qualifier_new_concept.html:130
 #: templates/thesaurus/qualifier_new_concept.html:135
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:126
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:131
-#: templates/thesaurus/temp/descriptor_form_step2.html:147
-#: templates/thesaurus/temp/descriptor_form_step2.html:152
-#: templates/thesaurus/temp/descriptor_new_concept.html:145
-#: templates/thesaurus/temp/descriptor_new_concept.html:150
-#: templates/thesaurus/temp/qualifier_form_step2.html:144
-#: templates/thesaurus/temp/qualifier_form_step2.html:149
-#: templates/thesaurus/temp/qualifier_new_concept.html:145
-#: templates/thesaurus/temp/qualifier_new_concept.html:150
-#| msgid "Description"
 msgid "Term description"
 msgstr "Descrição do termo"
 
 #: templates/thesaurus/descriptor_new_concept.html:12
 #: templates/thesaurus/qualifier_new_concept.html:11
-#: templates/thesaurus/temp/descriptor_new_concept.html:13
-#: templates/thesaurus/temp/qualifier_new_concept.html:13
-#| msgid "New Act Organ Issuer"
 msgid "New Concept and Term"
 msgstr "Novo conceito e termo"
 
 #: templates/thesaurus/descriptor_new_concept.html:20
 #: templates/thesaurus/qualifier_new_concept.html:19
-#: templates/thesaurus/temp/descriptor_new_concept.html:21
-#: templates/thesaurus/temp/qualifier_new_concept.html:21
 msgid "Creates information for the new Concept and Term"
 msgstr "Cria informação para novo conceito e termo"
 
@@ -5249,7 +4834,6 @@ msgstr "Cria informação para novo conceito e termo"
 #: templates/thesaurus/descriptor_new_legacy.html:19
 #: templates/thesaurus/qualifier_new_legacy.html:11
 #: templates/thesaurus/qualifier_new_legacy.html:19
-#| msgid "General information"
 msgid "Create legacy information"
 msgstr "Cria informação para legado"
 
@@ -5260,8 +4844,6 @@ msgstr "Cria informação para novo termo"
 
 #: templates/thesaurus/page_view_desc.html:39
 #: templates/thesaurus/page_view_qualif.html:39
-#: templates/thesaurus/temp/page_view_desc.html:45
-#: templates/thesaurus/temp/page_view_qualif.html:40
 msgid "Details"
 msgstr "Detalhes"
 
@@ -5269,24 +4851,14 @@ msgstr "Detalhes"
 #: templates/thesaurus/page_view_qualif.html:22
 #: templates/thesaurus/qualifier_list.html:29
 #: templates/thesaurus/qualifier_list.html:45
-#: templates/thesaurus/temp/page_view_desc.html:49
-#: templates/thesaurus/temp/qualifier_form.html:12
-#: templates/thesaurus/temp/qualifier_list.html:32
-#: templates/thesaurus/temp/qualifier_list.html:48
-#: templates/thesaurus/temp/qualifier_termlistqualif_edit.html:12
-#: templates/thesaurus/temp/qualifier_termlistqualif_new.html:12
-#: templates/thesaurus/temp/thesaurus_home.html:50
 #: templates/thesaurus/thesaurus_home.html:50
 #: thesaurus/models_qualifiers.py:21
-#| msgid "Qualifier"
 msgid "Qualifiers"
 msgstr "Qualificadores"
 
 #: templates/thesaurus/page_view_desc.html:47
 #: templates/thesaurus/page_view_qualif.html:43
-#: templates/thesaurus/temp/page_view_desc.html:53
-#: templates/thesaurus/temp/page_view_qualif.html:44
-#: thesaurus/models_descriptors.py:286 thesaurus/models_qualifiers.py:211
+#: thesaurus/models_descriptors.py:311 thesaurus/models_qualifiers.py:212
 msgid "Concepts"
 msgstr "Conceitos"
 
@@ -5296,23 +4868,16 @@ msgid "Set exclusive to BIREME"
 msgstr "Conjunto exclusivo para BIREME"
 
 #: templates/thesaurus/page_view_desc.html:63
-#: templates/thesaurus/temp/page_view_desc.html:61
-#| msgid "Descriptor"
 msgid "Descriptor record"
 msgstr "Descritor"
 
 #: templates/thesaurus/page_view_desc.html:75
 #: templates/thesaurus/page_view_qualif.html:71
-#: templates/thesaurus/temp/page_view_desc.html:76
-#: templates/thesaurus/temp/page_view_qualif.html:68
-#| msgid "Number"
 msgid "Tree Number(s)"
 msgstr "Categorias"
 
 #: templates/thesaurus/page_view_desc.html:87
 #: templates/thesaurus/page_view_qualif.html:83
-#: templates/thesaurus/temp/page_view_desc.html:88
-#: templates/thesaurus/temp/page_view_qualif.html:78
 msgid "Unique ID"
 msgstr "ID MESH"
 
@@ -5323,306 +4888,203 @@ msgstr "ID do Tesauro"
 
 #: templates/thesaurus/page_view_desc.html:111
 #: templates/thesaurus/page_view_qualif.html:107
-#: templates/thesaurus/temp/page_view_desc.html:100
-#: templates/thesaurus/temp/page_view_qualif.html:90
-#: thesaurus/models_descriptors.py:77 thesaurus/models_qualifiers.py:83
-#| msgid "Location"
+#: thesaurus/models_descriptors.py:77 thesaurus/models_qualifiers.py:84
 msgid "Annotation"
 msgstr "Anotação"
 
 #: templates/thesaurus/page_view_desc.html:125
 #: templates/thesaurus/page_view_qualif.html:121
-#: templates/thesaurus/temp/page_view_desc.html:114
-#: templates/thesaurus/temp/page_view_qualif.html:104
-#| msgid "Act Scope State"
 msgid "Scope Note"
 msgstr "Nota de escopo"
 
-#: templates/thesaurus/page_view_desc.html:139
+#: templates/thesaurus/page_view_desc.html:157
 #: templates/thesaurus/page_view_qualif.html:149
-#: templates/thesaurus/temp/page_view_desc.html:128
-#: templates/thesaurus/temp/page_view_qualif.html:118
 msgid "Entry Term(s)"
 msgstr "Termos alternativos"
 
-#: templates/thesaurus/page_view_desc.html:151
+#: templates/thesaurus/page_view_desc.html:169
 #: templates/thesaurus/page_view_qualif.html:161
-#: templates/thesaurus/temp/page_view_desc.html:142
-#: templates/thesaurus/temp/page_view_qualif.html:132
-#| msgid "Actions"
 msgid "Pharm Action"
 msgstr "Ação farmacológica"
 
-#: templates/thesaurus/page_view_desc.html:165
+#: templates/thesaurus/page_view_desc.html:183
 #: templates/thesaurus/page_view_qualif.html:169
-#: templates/thesaurus/temp/page_view_desc.html:150
-#: templates/thesaurus/temp/page_view_qualif.html:140
-#| msgid "Inventory number"
 msgid "Registry Number"
 msgstr "Número de registro"
 
-#: templates/thesaurus/page_view_desc.html:181
+#: templates/thesaurus/page_view_desc.html:199
 #: templates/thesaurus/page_view_qualif.html:185
-#: templates/thesaurus/temp/page_view_desc.html:166
-#: templates/thesaurus/temp/page_view_qualif.html:156
 msgid "CAS Type 1 Name"
 msgstr "Nome do Tipo 1 do CAS"
 
-#: templates/thesaurus/page_view_desc.html:195
-#: templates/thesaurus/temp/page_view_desc.html:180
+#: templates/thesaurus/page_view_desc.html:213
 #: thesaurus/models_descriptors.py:179 thesaurus/models_descriptors.py:180
-#| msgid "Indexing"
 msgid "Previous Indexing"
 msgstr "Indexação prévia"
 
-#: templates/thesaurus/page_view_desc.html:209
-#: templates/thesaurus/temp/page_view_desc.html:194
-#| msgid "Public note"
+#: templates/thesaurus/page_view_desc.html:227
 msgid "Public MeSH Note"
 msgstr "Nota pública"
 
-#: templates/thesaurus/page_view_desc.html:223
+#: templates/thesaurus/page_view_desc.html:241
 #: templates/thesaurus/page_view_qualif.html:199
-#: templates/thesaurus/temp/page_view_desc.html:208
-#: templates/thesaurus/temp/page_view_qualif.html:170
-#| msgid "Online resource"
 msgid "Online Note"
 msgstr "Nota Online"
 
-#: templates/thesaurus/page_view_desc.html:237
+#: templates/thesaurus/page_view_desc.html:255
 #: templates/thesaurus/page_view_qualif.html:213
-#: templates/thesaurus/temp/page_view_desc.html:222
-#: templates/thesaurus/temp/page_view_qualif.html:184
-#| msgid "History type"
 msgid "History Note"
 msgstr "Nota histórica"
 
-#: templates/thesaurus/page_view_desc.html:251
-#: templates/thesaurus/temp/page_view_desc.html:236
+#: templates/thesaurus/page_view_desc.html:269
 msgid "See Also"
 msgstr "Veja também"
 
-#: templates/thesaurus/page_view_desc.html:265
-#: templates/thesaurus/temp/page_view_desc.html:250
+#: templates/thesaurus/page_view_desc.html:283
 msgid "Consider Also"
 msgstr "Considere também"
 
-#: templates/thesaurus/page_view_desc.html:279
+#: templates/thesaurus/page_view_desc.html:297
 #: templates/thesaurus/page_view_qualif.html:227
-#: templates/thesaurus/temp/page_view_desc.html:264
-#: templates/thesaurus/temp/page_view_qualif.html:198
 msgid "Date Established"
 msgstr "Data de estabelecimento"
 
-#: templates/thesaurus/page_view_desc.html:291
+#: templates/thesaurus/page_view_desc.html:309
 #: templates/thesaurus/page_view_qualif.html:239
-#: templates/thesaurus/temp/page_view_desc.html:276
-#: templates/thesaurus/temp/page_view_qualif.html:210
 msgid "Date of Entry"
 msgstr "Data de entrada"
 
-#: templates/thesaurus/page_view_desc.html:303
+#: templates/thesaurus/page_view_desc.html:321
 #: templates/thesaurus/page_view_qualif.html:251
-#: templates/thesaurus/temp/page_view_desc.html:288
-#: templates/thesaurus/temp/page_view_qualif.html:222
-#| msgid "Version notes"
 msgid "Revision Date"
 msgstr "Data da revisão"
 
-#: templates/thesaurus/page_view_desc.html:330
-#: templates/thesaurus/temp/page_view_desc.html:305
-#| msgid "Qualifier"
+#: templates/thesaurus/page_view_desc.html:371
 msgid "Allowable Qualifiers"
 msgstr "Qualificadores permitidos"
 
-#: templates/thesaurus/page_view_desc.html:345
+#: templates/thesaurus/page_view_desc.html:388
 #: templates/thesaurus/page_view_qualif.html:277
-#: templates/thesaurus/temp/page_view_desc.html:319
-#: templates/thesaurus/temp/page_view_qualif.html:239
-#| msgid "Add Phone"
 msgid "Add concept"
 msgstr "Adicionar conceito"
 
-#: templates/thesaurus/page_view_desc.html:354
+#: templates/thesaurus/page_view_desc.html:397
 #: templates/thesaurus/page_view_qualif.html:286
-#: templates/thesaurus/temp/page_view_desc.html:328
-#: templates/thesaurus/temp/page_view_qualif.html:248
-#: templates/thesaurus/temp/thesaurus_home.html:66
-#: thesaurus/models_descriptors.py:285 thesaurus/models_qualifiers.py:210
+#: thesaurus/models_descriptors.py:310 thesaurus/models_qualifiers.py:211
 msgid "Concept"
 msgstr "Conceito"
 
-#: templates/thesaurus/page_view_desc.html:363
+#: templates/thesaurus/page_view_desc.html:406
 #: templates/thesaurus/page_view_qualif.html:295
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:27
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:28
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:27
-#: templates/thesaurus/temp/page_view_desc.html:337
-#: templates/thesaurus/temp/page_view_qualif.html:257
 msgid "Narrower"
 msgstr "Mais específico"
 
-#: templates/thesaurus/page_view_desc.html:369
+#: templates/thesaurus/page_view_desc.html:416
 #: templates/thesaurus/page_view_qualif.html:301
-#: templates/thesaurus/temp/page_view_desc.html:343
-#: templates/thesaurus/temp/page_view_qualif.html:263
-#| msgid "Reference"
 msgid "Preferred Concept"
 msgstr "Conceito preferido"
 
-#: templates/thesaurus/page_view_desc.html:379
+#: templates/thesaurus/page_view_desc.html:426
 #: templates/thesaurus/page_view_qualif.html:311
-#: templates/thesaurus/temp/page_view_desc.html:353
-#: templates/thesaurus/temp/page_view_qualif.html:273
-#| msgid "Add Site"
 msgid "Add term"
 msgstr "Adicionar termo"
 
-#: templates/thesaurus/page_view_desc.html:382
+#: templates/thesaurus/page_view_desc.html:429
 #: templates/thesaurus/page_view_qualif.html:314
-#: templates/thesaurus/temp/page_view_desc.html:356
-#: templates/thesaurus/temp/page_view_qualif.html:276
-#: thesaurus/models_descriptors.py:310 thesaurus/models_qualifiers.py:233
+#: thesaurus/models_descriptors.py:335 thesaurus/models_qualifiers.py:234
 msgid "Term"
 msgstr "Termo"
 
-#: templates/thesaurus/page_view_desc.html:392
+#: templates/thesaurus/page_view_desc.html:439
 #: templates/thesaurus/page_view_qualif.html:324
-#: templates/thesaurus/temp/page_view_desc.html:365
-#: templates/thesaurus/temp/page_view_qualif.html:285
 msgid "Preferred Term"
 msgstr "Termo preferido"
 
-#: templates/thesaurus/page_view_desc.html:398
+#: templates/thesaurus/page_view_desc.html:445
 #: templates/thesaurus/page_view_qualif.html:330
-#: templates/thesaurus/temp/page_view_desc.html:371
-#: templates/thesaurus/temp/page_view_qualif.html:291
 msgid "Term UI"
 msgstr "ID do termo"
 
-#: templates/thesaurus/page_view_desc.html:399
+#: templates/thesaurus/page_view_desc.html:446
 #: templates/thesaurus/page_view_qualif.html:331
-#: templates/thesaurus/temp/page_view_desc.html:372
-#: templates/thesaurus/temp/page_view_qualif.html:292
 msgid "ConceptPreferredTerm"
 msgstr "Termo preferido do conceito"
 
-#: templates/thesaurus/page_view_desc.html:400
+#: templates/thesaurus/page_view_desc.html:447
 #: templates/thesaurus/page_view_qualif.html:332
-#: templates/thesaurus/temp/page_view_desc.html:373
-#: templates/thesaurus/temp/page_view_qualif.html:293
 msgid "Is permuted"
 msgstr "É permutado"
 
-#: templates/thesaurus/page_view_desc.html:401
+#: templates/thesaurus/page_view_desc.html:448
 #: templates/thesaurus/page_view_qualif.html:333
-#: templates/thesaurus/temp/page_view_desc.html:374
-#: templates/thesaurus/temp/page_view_qualif.html:294
 msgid "LexicalTag"
 msgstr "LexicalTag"
 
-#: templates/thesaurus/page_view_desc.html:402
+#: templates/thesaurus/page_view_desc.html:449
 #: templates/thesaurus/page_view_qualif.html:334
-#: templates/thesaurus/temp/page_view_desc.html:375
-#: templates/thesaurus/temp/page_view_qualif.html:295
-#| msgid "Record created"
 msgid "RecordPreferredTerm"
 msgstr "Termo preferido do registro"
 
-#: templates/thesaurus/page_view_desc.html:403
+#: templates/thesaurus/page_view_desc.html:450
 #: templates/thesaurus/page_view_qualif.html:335
-#: templates/thesaurus/temp/page_view_desc.html:376
-#: templates/thesaurus/temp/page_view_qualif.html:296
-#| msgid "Extension"
 msgid "Entry Version"
 msgstr "Versão de entrada"
 
-#: templates/thesaurus/page_view_desc.html:404
+#: templates/thesaurus/page_view_desc.html:451
 #: templates/thesaurus/page_view_qualif.html:336
-#: templates/thesaurus/temp/page_view_desc.html:377
-#: templates/thesaurus/temp/page_view_qualif.html:297
-#| msgid "Created"
 msgid "DateCreated"
 msgstr "Data de criação"
 
-#: templates/thesaurus/page_view_desc.html:405
+#: templates/thesaurus/page_view_desc.html:452
 #: templates/thesaurus/page_view_qualif.html:337
-#: templates/thesaurus/temp/page_view_desc.html:378
-#: templates/thesaurus/temp/page_view_qualif.html:298
-#| msgid "Alternate id"
 msgid "DateAltered"
 msgstr "Data de alteração"
 
-#: templates/thesaurus/page_view_desc.html:406
+#: templates/thesaurus/page_view_desc.html:453
 #: templates/thesaurus/page_view_qualif.html:338
-#: templates/thesaurus/temp/page_view_desc.html:379
-#: templates/thesaurus/temp/page_view_qualif.html:299
-#| msgid "translation"
 msgid "History annotation"
 msgstr "Anotações de histórico"
 
-#: templates/thesaurus/page_view_desc.html:428
+#: templates/thesaurus/page_view_desc.html:475
 #: templates/thesaurus/page_view_qualif.html:359
-#| msgid "Edit Legislation"
 msgid "Edit this configurations"
 msgstr "Editar essas configurações"
 
-#: templates/thesaurus/page_view_desc.html:544
+#: templates/thesaurus/page_view_desc.html:591
 #: templates/thesaurus/page_view_qualif.html:475
 msgid "Create this configurations"
 msgstr "Criar estas configurações"
 
 #: templates/thesaurus/page_view_qualif.html:12
 #: templates/thesaurus/qualifier_edit_term.html:16
-#: templates/thesaurus/temp/page_view_qualif.html:13
-#: templates/thesaurus/temp/qualifier_form.html:18
-#: templates/thesaurus/temp/qualifier_form.html:31
-#: templates/thesaurus/temp/qualifier_termlistqualif_edit.html:14
-#: templates/thesaurus/temp/qualifier_termlistqualif_edit.html:25
-#: templates/thesaurus/temp/qualifier_termlistqualif_new.html:18
-#| msgid "Qualifier"
 msgid "Edit Qualifier"
 msgstr "Editar qualificador"
 
 #: templates/thesaurus/page_view_qualif.html:59
-#: templates/thesaurus/temp/page_view_qualif.html:52
-#| msgid "Qualifier"
 msgid "Qualifier record"
 msgstr "Qualificador"
 
 #: templates/thesaurus/page_view_qualif.html:135
 #: templates/thesaurus/qualifier_list.html:64
 #: templates/thesaurus/qualifier_list.html:116
-#: templates/thesaurus/temp/qualifier_list.html:66
-#: templates/thesaurus/temp/qualifier_list.html:118
 #: thesaurus/models_qualifiers.py:37
-#| msgid "Observations"
 msgid "Abbreviation"
 msgstr "Abreviação"
 
 #: templates/thesaurus/qualifier_confirm_delete.html:5
 #: templates/thesaurus/qualifier_confirm_delete.html:12
 #: templates/thesaurus/qualifier_confirm_delete.html:18
-#: templates/thesaurus/temp/qualifier_confirm_delete.html:5
-#: templates/thesaurus/temp/qualifier_confirm_delete.html:12
-#: templates/thesaurus/temp/qualifier_confirm_delete.html:18
-#| msgid "Qualifier"
 msgid "Delete Qualifier"
 msgstr "Apagar qualificador"
 
 #: templates/thesaurus/qualifier_confirm_delete.html:28
 #: templates/thesaurus/qualifier_list.html:65
 #: templates/thesaurus/qualifier_list.html:117
-#: templates/thesaurus/temp/qualifier_confirm_delete.html:26
-#: templates/thesaurus/temp/qualifier_list.html:67
-#: templates/thesaurus/temp/qualifier_list.html:119
 #: thesaurus/models_qualifiers.py:27
-#| msgid "Qualifier"
 msgid "MESH Qualifier UI"
 msgstr "ID do MESH"
 
 #: templates/thesaurus/qualifier_confirm_delete.html:32
-#| msgid "Descriptor"
 msgid "Qualifier Descriptor UI"
 msgstr "ID do qualificador"
 
@@ -5639,16 +5101,11 @@ msgstr ""
 "Cria informação para novo registro, conceito e termo para qualificador"
 
 #: templates/thesaurus/qualifier_list.html:35
-#: templates/thesaurus/temp/qualifier_list.html:38
-#| msgid "Add new error report"
 msgid "Add new record for Qualifier"
 msgstr "Adicionar novo registro de qualificador"
 
 #: templates/thesaurus/qualifier_list.html:59
-#: templates/thesaurus/temp/qualifier_list.html:61
-#: templates/thesaurus/temp/thesaurus_home.html:62
 #: templates/thesaurus/thesaurus_home.html:65
-#| msgid "Field assist"
 msgid "Fields"
 msgstr "Campos"
 
@@ -5662,273 +5119,56 @@ msgid "Preferred concepts only"
 msgstr "Apenas conceitos preferidos"
 
 #: templates/thesaurus/qualifier_list.html:66
-#: templates/thesaurus/temp/qualifier_list.html:68
 #: thesaurus/models_qualifiers.py:31
-#| msgid "Qualifier"
 msgid "DeCS Qualifier UI"
 msgstr "ID do tesauro"
 
 #: templates/thesaurus/qualifier_list.html:67
-#: templates/thesaurus/temp/qualifier_list.html:69
-#: templates/thesaurus/temp/thesaurus_home.html:69
 #: templates/thesaurus/thesaurus_home.html:72
-#| msgid "Number"
 msgid "Tree Number"
 msgstr "Categoria"
 
 #: templates/thesaurus/qualifier_list.html:76
-#: templates/thesaurus/temp/qualifier_form.html:420
-#: templates/thesaurus/temp/qualifier_list.html:78
-#: templates/thesaurus/temp/thesaurus_home.html:78
 #: templates/thesaurus/thesaurus_home.html:81 thesaurus/choices.py:55
 #: utils/templatetags/app_filters.py:24
 msgid "Historical"
 msgstr "Histórico"
 
-#: templates/thesaurus/qualifier_list.html:83
-#: templates/thesaurus/temp/descriptor_form.html:190
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:90
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:90
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:90
-#: templates/thesaurus/temp/qualifier_form.html:632
-#: templates/thesaurus/temp/qualifier_form.html:712
-#: templates/thesaurus/temp/qualifier_list.html:85
-#: templates/thesaurus/temp/thesaurus_home.html:85
-#: templates/thesaurus/thesaurus_home.html:88 thesaurus/choices.py:11
-msgid "Spanish Latin America"
-msgstr "Espanhol América Latina"
-
-#: templates/thesaurus/qualifier_list.html:85
-#: templates/thesaurus/temp/descriptor_form.html:192
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:92
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:92
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:92
-#: templates/thesaurus/temp/qualifier_form.html:634
-#: templates/thesaurus/temp/qualifier_form.html:714
-#: templates/thesaurus/temp/qualifier_list.html:87
-#: templates/thesaurus/temp/thesaurus_home.html:87
-#: templates/thesaurus/thesaurus_home.html:90 thesaurus/choices.py:13
-#| msgid "Spanish"
-msgid "Spanish Spain"
-msgstr "Espanhol da  Espanha"
-
 #: templates/thesaurus/qualifier_list.html:92
-#: templates/thesaurus/temp/qualifier_list.html:94
-#: templates/thesaurus/temp/thesaurus_home.html:93
 #: templates/thesaurus/thesaurus_home.html:96
 msgid "Exact Match"
 msgstr "Pesquisa exata"
 
 #: templates/thesaurus/qualifier_list.html:109
-#: templates/thesaurus/temp/qualifier_list.html:111
-#| msgid "Qualifier"
 msgid "Qualifier Name"
 msgstr "Nome do qualificador"
 
 #: templates/thesaurus/qualifier_list.html:111
-#: templates/thesaurus/temp/qualifier_list.html:113
-#: templates/thesaurus/temp/thesaurus_home.html:110
-#| msgid "Name"
 msgid "Term Name"
 msgstr "Nome do termo"
 
 #: templates/thesaurus/qualifier_list.html:118
-#: templates/thesaurus/temp/qualifier_list.html:120
-#| msgid "Qualifier"
 msgid "DeCS Qualifer UI"
 msgstr "ID do tesauro"
 
 #: templates/thesaurus/qualifier_list.html:143
-#: templates/thesaurus/temp/qualifier_list.html:145
-#: templates/thesaurus/temp/search_concept_desc.html:88
-#: templates/thesaurus/temp/thesaurus_home.html:142
 #: templates/thesaurus/thesaurus_home.html:144
-#| msgid "No resources found"
 msgid "No results found"
 msgstr "Nenhum resultado foi encontrado"
 
-#: templates/thesaurus/temp/descriptor_form.html:14
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:14
-#: templates/thesaurus/temp/descriptor_form_step1.html:14
-#: templates/thesaurus/temp/descriptor_form_step2.html:14
-#: templates/thesaurus/temp/page_view_desc.html:14
-#: templates/thesaurus/temp/qualifier_form_step1.html:14
-#: templates/thesaurus/temp/qualifier_form_step2.html:14
-msgid "New Record, Concept and Term"
-msgstr "Novo registro, conceito e termo"
-
-#: templates/thesaurus/temp/descriptor_form.html:27
-#: templates/thesaurus/temp/descriptor_form_concept_term.html:27
-#: templates/thesaurus/temp/descriptor_form_step1.html:27
-#: templates/thesaurus/temp/descriptor_form_step2.html:27
-#: templates/thesaurus/temp/qualifier_form_step1.html:23
-#: templates/thesaurus/temp/qualifier_form_step2.html:24
-msgid "Creates information for the new Record, Concept and Term"
-msgstr "Cria informação para novo registro, conceito e termo"
-
-#: templates/thesaurus/temp/descriptor_form.html:121
-#| msgid "Number"
-msgid "Tree Numbers"
-msgstr "Categorias"
-
-#: templates/thesaurus/temp/descriptor_new_term.html:26
-#: templates/thesaurus/temp/qualifier_new_term.html:16
-#: templates/thesaurus/temp/qualifier_new_term.html:26
-#| msgid "Edit Title"
-msgid "Edit Term"
-msgstr "Editar termo"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:23
-#: templates/thesaurus/temp/fieldset_termlistdesc_new.html:24
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:23
-msgid "Preferred"
-msgstr "Preferido"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:54
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:54
-#: templates/title/form_preview.html:434 templates/title/title_list.html:118
-msgid "Edit"
-msgstr "Editar"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:133
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:132
-#: thesaurus/choices.py:39
-msgid "ABB - Abbreviation"
-msgstr "ABB - Abreviação"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:134
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:133
-#: thesaurus/choices.py:40
-msgid "ABX - Embedded abbreviation"
-msgstr "ABX - Abreviação Embutida"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:135
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:134
-#: thesaurus/choices.py:41
-#| msgid "Acronym"
-msgid "ACR - Acronym"
-msgstr "ACR - Acrônimo"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:136
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:135
-#: thesaurus/choices.py:42
-msgid "ACX - Embedded acronym"
-msgstr "ACX - Acrônimo embutido"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:137
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:136
-#: thesaurus/choices.py:43
-msgid "EPO - Eponym"
-msgstr "EPO - Epônimo"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:138
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:137
-#: thesaurus/choices.py:44
-#| msgid "Act number"
-msgid "LAB - Lab number"
-msgstr "LAB - Número do laboratório"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:139
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:138
-#: thesaurus/choices.py:45
-#| msgid "Project name"
-msgid "NAM - Proper name"
-msgstr "NAM - Nome próprio"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:140
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:139
-#: thesaurus/choices.py:46
-msgid "NON - None"
-msgstr "NON - Nenhum"
-
-#: templates/thesaurus/temp/fieldset_termlistdesc.html:141
-#: templates/thesaurus/temp/fieldset_termlistqualif.html:140
-#: thesaurus/choices.py:47
-msgid "TRD - Trade name"
-msgstr "TRD - Nome comercial"
-
-#: templates/thesaurus/temp/page_view_desc.html:27
-#: templates/thesaurus/temp/page_view_qualif.html:22
-#| msgid "Error type"
-msgid "Error"
-msgstr "Error"
-
-#: templates/thesaurus/temp/qualifier_form.html:14
-#: templates/thesaurus/temp/qualifier_form.html:482
-#: templates/thesaurus/temp/qualifier_termlistqualif_new.html:14
-#: templates/thesaurus/temp/qualifier_termlistqualif_new.html:27
-#| msgid "Qualifier"
-msgid "New Qualifier"
-msgstr "Novo qualificador"
-
-#: templates/thesaurus/temp/qualifier_form.html:69
-#: templates/thesaurus/temp/qualifier_form.html:507
-#: templates/thesaurus/temp/qualifier_form.html:594
-#: templates/thesaurus/temp/qualifier_list.html:65
-#: templates/thesaurus/temp/thesaurus_home.html:65
-#: thesaurus/models_descriptors.py:311 thesaurus/models_qualifiers.py:234
-msgid "Terms"
-msgstr "Termos"
-
-#: templates/thesaurus/temp/qualifier_form.html:73
-#: templates/thesaurus/temp/qualifier_form.html:511
-#: templates/thesaurus/temp/qualifier_form.html:795
-#| msgid "Owner List"
-msgid "Concept List"
-msgstr "Lista de conceitos"
-
-#: templates/thesaurus/temp/qualifier_form.html:440
-#| msgid "Resource successfully edited."
-msgid "Registry successfully saved"
-msgstr "Recurso salvo com sucesso."
-
-#: templates/thesaurus/temp/search_concept_desc.html:12
-#: templates/thesaurus/temp/search_concept_desc.html:13
-#: templates/thesaurus/temp/search_concept_desc.html:80
-#, fuzzy
-#| msgid "Create new legislation"
-msgid "Create new concept"
-msgstr "Cria novo conceito"
-
-#: templates/thesaurus/temp/search_concept_desc.html:35
-msgid ""
-"Search for a Active Descriptor Record that you want to insert a new concept"
-msgstr ""
-"Procurar por registro de descritor ativo para inserir um novo conceito"
-
-#: templates/thesaurus/temp/search_concept_desc.html:62
-msgid "Active Descriptor Record"
-msgstr "Registro de descritor ativo"
-
-#: templates/thesaurus/temp/search_concept_desc.html:66
-#, fuzzy
-#| msgid "Created"
-msgid "Create"
-msgstr "Criado"
-
-#: templates/thesaurus/temp/thesaurus_home.html:38
 #: templates/thesaurus/thesaurus_home.html:38
-#| msgid "Add new error report"
 msgid "Add new record for Descriptor"
 msgstr "Adiciona novo registro de descritor"
 
-#: templates/thesaurus/temp/thesaurus_home.html:112
-#| msgid "Description"
-msgid "Description Name"
-msgstr "Descrição"
-
 #: templates/thesaurus/thesaurus_home.html:68
-#| msgid "Local descriptors"
 msgid "All descriptor concepts"
 msgstr "Todos os termos"
 
 #: templates/thesaurus/thesaurus_home.html:112
-#| msgid "Field name"
 msgid "Term name"
 msgstr "Nome no termo"
 
 #: templates/thesaurus/thesaurus_home.html:114
-#| msgid "Conference name"
 msgid "Concept name"
 msgstr "Nome do conceito"
 
@@ -6045,6 +5285,10 @@ msgstr "Auditoria"
 msgid "Online resources"
 msgstr "Recursos online"
 
+#: templates/title/form_preview.html:434 templates/title/title_list.html:118
+msgid "Edit"
+msgstr "Editar"
+
 #: templates/title/title_confirm_delete.html:5
 #: templates/title/title_confirm_delete.html:9
 #: templates/title/title_confirm_delete.html:15
@@ -6148,7 +5392,6 @@ msgid "Content"
 msgstr "Conteúdo"
 
 #: thesaurus/choices.py:24
-#| msgid "Local descriptors"
 msgid "1 - Topical Descriptor"
 msgstr "1 - Descritor Tópico"
 
@@ -6161,33 +5404,77 @@ msgid "3 - Check Tag, e.g., Male - no tree number"
 msgstr "3 - Check Tag, por exemplo: Masculino - sem número de categoria"
 
 #: thesaurus/choices.py:27
-#| msgid "Local geographic descriptors"
 msgid "4 - Geographic Descriptor"
 msgstr "4 - Descritor Geográfico"
 
+#: thesaurus/choices.py:32
+#| msgid "Narrower"
+msgid "NRW - Narrower"
+msgstr "NRW - Mais específico"
+
+#: thesaurus/choices.py:33
+#| msgid "TRD - Trade name"
+msgid "BRD - Broader"
+msgstr "BRD - Mais amplo"
+
+#: thesaurus/choices.py:34
+msgid "REL - Related but not broader or narrower"
+msgstr "REL - Relacionado, mas não mais amplo ou mais específico"
+
+#: thesaurus/choices.py:39
+msgid "ABB - Abbreviation"
+msgstr "ABB - Abreviação"
+
+#: thesaurus/choices.py:40
+msgid "ABX - Embedded abbreviation"
+msgstr "ABX - Abreviação Embutida"
+
+#: thesaurus/choices.py:41
+msgid "ACR - Acronym"
+msgstr "ACR - Acrônimo"
+
+#: thesaurus/choices.py:42
+msgid "ACX - Embedded acronym"
+msgstr "ACX - Acrônimo embutido"
+
+#: thesaurus/choices.py:43
+msgid "EPO - Eponym"
+msgstr "EPO - Epônimo"
+
+#: thesaurus/choices.py:44
+msgid "LAB - Lab number"
+msgstr "LAB - Número do laboratório"
+
+#: thesaurus/choices.py:45
+msgid "NAM - Proper name"
+msgstr "NAM - Nome próprio"
+
+#: thesaurus/choices.py:46
+msgid "NON - None"
+msgstr "NON - Nenhum"
+
+#: thesaurus/choices.py:47
+msgid "TRD - Trade name"
+msgstr "TRD - Nome comercial"
+
 #: thesaurus/models_descriptors.py:28
-#| msgid "Descriptors"
 msgid "Descriptor class"
 msgstr "Classes do descritor"
 
 #: thesaurus/models_descriptors.py:38
-#| msgid "Descriptor"
 msgid "External Descriptor UI"
 msgstr "ID externo"
 
 #: thesaurus/models_descriptors.py:41
-#| msgid "Classification number"
 msgid "NLM classification number"
 msgstr "Número de classificação da NLM"
 
-#: thesaurus/models_descriptors.py:44 thesaurus/models_descriptors.py:343
-#: thesaurus/models_qualifiers.py:40 thesaurus/models_qualifiers.py:267
-#| msgid "Title created in"
+#: thesaurus/models_descriptors.py:44 thesaurus/models_descriptors.py:368
+#: thesaurus/models_qualifiers.py:40 thesaurus/models_qualifiers.py:268
 msgid "Date created"
 msgstr "Data de criação"
 
 #: thesaurus/models_descriptors.py:47 thesaurus/models_qualifiers.py:43
-#| msgid "Update review"
 msgid "Date revised"
 msgstr "Data de revisão"
 
@@ -6196,22 +5483,18 @@ msgid "Date established"
 msgstr "Data de estabelecimento"
 
 #: thesaurus/models_descriptors.py:69
-#| msgid "Description"
 msgid "Descriptions"
 msgstr "Descrições"
 
-#: thesaurus/models_descriptors.py:80 thesaurus/models_qualifiers.py:86
-#| msgid "History type"
+#: thesaurus/models_descriptors.py:80 thesaurus/models_qualifiers.py:87
 msgid "History note"
 msgstr "Nota histórica"
 
-#: thesaurus/models_descriptors.py:83 thesaurus/models_qualifiers.py:89
-#| msgid "Online resource"
+#: thesaurus/models_descriptors.py:83 thesaurus/models_qualifiers.py:90
 msgid "Online note"
 msgstr "Nota Online"
 
 #: thesaurus/models_descriptors.py:86
-#| msgid "Public note"
 msgid "Public MeSH note"
 msgstr "Nota pública do MESH"
 
@@ -6227,8 +5510,7 @@ msgstr "Categoria hierárquica de descritor"
 msgid "Tree numbers for descriptors"
 msgstr "Categorias hierárquicas de descritores"
 
-#: thesaurus/models_descriptors.py:113 thesaurus/models_qualifiers.py:114
-#| msgid "SeCS number"
+#: thesaurus/models_descriptors.py:113 thesaurus/models_qualifiers.py:115
 msgid "Tree number"
 msgstr "Categoria"
 
@@ -6237,7 +5519,6 @@ msgid "Pharmacologicals Action List"
 msgstr "Lista de ação farmacológica"
 
 #: thesaurus/models_descriptors.py:154 thesaurus/models_descriptors.py:155
-#| msgid "Related links"
 msgid "See Related List"
 msgstr "Ver lista de relacionados"
 
@@ -6246,164 +5527,174 @@ msgid "Previous indexing"
 msgstr "Indexação prévia"
 
 #: thesaurus/models_descriptors.py:201 thesaurus/models_descriptors.py:202
-#: thesaurus/models_qualifiers.py:128 thesaurus/models_qualifiers.py:129
-#| msgid "General information"
+#: thesaurus/models_qualifiers.py:129 thesaurus/models_qualifiers.py:130
 msgid "Legacy information"
 msgstr "Informações do legado"
 
-#: thesaurus/models_descriptors.py:207 thesaurus/models_qualifiers.py:134
+#: thesaurus/models_descriptors.py:207 thesaurus/models_qualifiers.py:135
 msgid "Pre-codificado"
 msgstr "Pré-codificado"
 
-#: thesaurus/models_descriptors.py:210 thesaurus/models_qualifiers.py:137
+#: thesaurus/models_descriptors.py:210 thesaurus/models_qualifiers.py:138
 msgid "Desastre"
 msgstr "Desastre"
 
-#: thesaurus/models_descriptors.py:213 thesaurus/models_qualifiers.py:140
+#: thesaurus/models_descriptors.py:213 thesaurus/models_qualifiers.py:141
 msgid "Reforma Saude"
 msgstr "Reforma Saúde"
 
-#: thesaurus/models_descriptors.py:216 thesaurus/models_qualifiers.py:143
-#| msgid "Geographic"
+#: thesaurus/models_descriptors.py:216 thesaurus/models_qualifiers.py:144
 msgid "Geografico"
 msgstr "Geográfico"
 
-#: thesaurus/models_descriptors.py:219 thesaurus/models_qualifiers.py:146
+#: thesaurus/models_descriptors.py:219 thesaurus/models_qualifiers.py:147
 msgid "MeSH"
 msgstr "MeSH"
 
-#: thesaurus/models_descriptors.py:222 thesaurus/models_qualifiers.py:149
-#| msgid "LILACS id"
+#: thesaurus/models_descriptors.py:222 thesaurus/models_qualifiers.py:150
 msgid "PT LILACS"
 msgstr "PT LILACS"
 
-#: thesaurus/models_descriptors.py:225 thesaurus/models_qualifiers.py:152
-#| msgid "Network index"
+#: thesaurus/models_descriptors.py:225 thesaurus/models_qualifiers.py:153
 msgid "Nao indexavel"
 msgstr "Nao indexavel"
 
-#: thesaurus/models_descriptors.py:228 thesaurus/models_qualifiers.py:155
+#: thesaurus/models_descriptors.py:228 thesaurus/models_qualifiers.py:156
 msgid "Homeopatia"
 msgstr "Homeopatia"
 
-#: thesaurus/models_descriptors.py:231 thesaurus/models_qualifiers.py:158
+#: thesaurus/models_descriptors.py:231 thesaurus/models_qualifiers.py:159
 msgid "Repidisca"
 msgstr "Repidisca"
 
-#: thesaurus/models_descriptors.py:234 thesaurus/models_qualifiers.py:161
+#: thesaurus/models_descriptors.py:234 thesaurus/models_qualifiers.py:162
 msgid "Saude Publica"
 msgstr "Saúde Pública"
 
-#: thesaurus/models_descriptors.py:237 thesaurus/models_qualifiers.py:164
+#: thesaurus/models_descriptors.py:237 thesaurus/models_qualifiers.py:165
 msgid "Exploded"
 msgstr "Exploded"
 
-#: thesaurus/models_descriptors.py:240 thesaurus/models_qualifiers.py:167
+#: thesaurus/models_descriptors.py:240 thesaurus/models_qualifiers.py:168
 msgid "Geog DeCS"
 msgstr "Geog DeCS"
 
-#: thesaurus/models_descriptors.py:252 thesaurus/models_qualifiers.py:179
-#| msgid "Delete record"
+#: thesaurus/models_descriptors.py:250
+msgid "Entry combination List"
+msgstr "Lista de combinações de entradas"
+
+#: thesaurus/models_descriptors.py:251
+msgid "Entry combinations List"
+msgstr "Listas de combinações de entradas"
+
+#: thesaurus/models_descriptors.py:255 thesaurus/models_descriptors.py:261
+#| msgid "Qualifiers"
+msgid "Qualifier string"
+msgstr "Qualificadores"
+
+#: thesaurus/models_descriptors.py:258
+#| msgid "Descriptors"
+msgid "Descriptor string"
+msgstr "Descritores"
+
+#: thesaurus/models_descriptors.py:277 thesaurus/models_qualifiers.py:180
 msgid "Concept record"
 msgstr "Registro de conceito"
 
-#: thesaurus/models_descriptors.py:253 thesaurus/models_qualifiers.py:180
-#| msgid "Delete record"
+#: thesaurus/models_descriptors.py:278 thesaurus/models_qualifiers.py:181
 msgid "Concept records"
 msgstr "Registro de conceito"
 
-#: thesaurus/models_descriptors.py:259 thesaurus/models_qualifiers.py:185
+#: thesaurus/models_descriptors.py:284 thesaurus/models_qualifiers.py:186
 msgid "Concept unique Identifier"
 msgstr "ID do conceito"
 
-#: thesaurus/models_descriptors.py:265 thesaurus/models_qualifiers.py:191
-#| msgid "Reference"
+#: thesaurus/models_descriptors.py:290 thesaurus/models_qualifiers.py:192
 msgid "Preferred concept"
 msgstr "Conceito preferido"
 
-#: thesaurus/models_descriptors.py:268 thesaurus/models_qualifiers.py:194
-#| msgid "abstract"
+#: thesaurus/models_descriptors.py:293 thesaurus/models_qualifiers.py:195
 msgid "Chemical abstract"
 msgstr "Resumo químico"
 
-#: thesaurus/models_descriptors.py:271 thesaurus/models_qualifiers.py:197
+#: thesaurus/models_descriptors.py:296 thesaurus/models_qualifiers.py:198
 msgid "Registry number from CAS"
 msgstr "Número de registro do CAS"
 
-#: thesaurus/models_descriptors.py:294 thesaurus/models_qualifiers.py:218
-#| msgid "Act Scope State"
+#: thesaurus/models_descriptors.py:319 thesaurus/models_qualifiers.py:219
 msgid "Scope note"
 msgstr "Nota de escopo"
 
-#: thesaurus/models_descriptors.py:320 thesaurus/models_qualifiers.py:258
+#: thesaurus/models_descriptors.py:336 thesaurus/models_qualifiers.py:235
+msgid "Terms"
+msgstr "Termos"
+
+#: thesaurus/models_descriptors.py:345 thesaurus/models_qualifiers.py:259
 msgid "Term unique identifier"
 msgstr "ID do Termo"
 
-#: thesaurus/models_descriptors.py:328 thesaurus/models_qualifiers.py:246
+#: thesaurus/models_descriptors.py:353 thesaurus/models_qualifiers.py:247
 msgid "Concept preferred term"
 msgstr "Conceito preferido do termo"
 
-#: thesaurus/models_descriptors.py:331 thesaurus/models_qualifiers.py:249
+#: thesaurus/models_descriptors.py:356 thesaurus/models_qualifiers.py:250
 msgid "Is permuted term"
 msgstr "É termo permutado"
 
-#: thesaurus/models_descriptors.py:334 thesaurus/models_qualifiers.py:252
+#: thesaurus/models_descriptors.py:359 thesaurus/models_qualifiers.py:253
 msgid "Lexical categories"
 msgstr "Categorias lexicais"
 
-#: thesaurus/models_descriptors.py:337 thesaurus/models_qualifiers.py:255
-#| msgid "Record created in"
+#: thesaurus/models_descriptors.py:362 thesaurus/models_qualifiers.py:256
 msgid "Record preferred term"
 msgstr "Termo preferido do registro"
 
-#: thesaurus/models_descriptors.py:340 thesaurus/models_qualifiers.py:264
-#| msgid "Software version"
+#: thesaurus/models_descriptors.py:365 thesaurus/models_qualifiers.py:265
 msgid "Entry version"
 msgstr "Versão de entrada"
 
-#: thesaurus/models_descriptors.py:347 thesaurus/models_qualifiers.py:270
-#| msgid "Update date"
+#: thesaurus/models_descriptors.py:372 thesaurus/models_qualifiers.py:271
 msgid "Date altered"
 msgstr "Data de alteração"
 
-#: thesaurus/models_descriptors.py:351 thesaurus/models_qualifiers.py:273
+#: thesaurus/models_descriptors.py:376 thesaurus/models_qualifiers.py:274
 msgid "Historical annotation"
 msgstr "Nota histórica"
 
+#: thesaurus/models_descriptors.py:391 thesaurus/models_descriptors.py:392
+#| msgid "Thesaurus name"
+msgid "Thesaurus occurrence"
+msgstr "Nome do tesauro"
+
+#: thesaurus/models_descriptors.py:397
+msgid "Name of a thesaurus where terms occur"
+msgstr "Nome de um tesauro onde os termos ocorrem"
+
 #: thesaurus/models_qualifiers.py:34
-#| msgid "Qualifier"
 msgid "External Qualifier UI"
 msgstr "ID externo"
 
-#: thesaurus/models_qualifiers.py:74
-#| msgid "Description"
+#: thesaurus/models_qualifiers.py:75
 msgid "Description of Qualifier"
 msgstr "Descrição do qualificador"
 
-#: thesaurus/models_qualifiers.py:75
-#| msgid "Description"
+#: thesaurus/models_qualifiers.py:76
 msgid "Descriptions of Qualifier"
 msgstr "Descrição do qualificador"
 
-#: thesaurus/models_qualifiers.py:106
+#: thesaurus/models_qualifiers.py:107
 msgid "Tree number for qualifier"
 msgstr "Categoria hierárquica de qualificador"
 
-#: thesaurus/models_qualifiers.py:107
+#: thesaurus/models_qualifiers.py:108
 msgid "Tree numbers for qualifiers"
 msgstr "Categorias hierárquicas de qualificadores"
 
-#: thesaurus/models_thesaurus.py:16
-msgid "Thesaurus name"
-msgstr "Nome do tesauro"
-
 #: thesaurus/models_thesaurus.py:18
-#| msgid "Authors"
 msgid "Author"
 msgstr "Autor"
 
 #: thesaurus/models_thesaurus.py:20
-#| msgid "Act Scope"
 msgid "Scope"
 msgstr "Escopo"
 
@@ -6416,12 +5707,10 @@ msgid "Sequencial controls"
 msgstr "Controle sequencial"
 
 #: thesaurus/models_thesaurus.py:34
-#| msgid "Initial number"
 msgid "Sequential number"
 msgstr "Número sequencial"
 
-#: thesaurus/views.py:747 thesaurus/views.py:1684
-#| msgid "This institution already exist"
+#: thesaurus/views.py:778 thesaurus/views.py:1761
 msgid "This Term already exist!"
 msgstr "Este termo já existe!"
 
@@ -6973,6 +6262,50 @@ msgstr "Recurso criado"
 #: utils/validators.py:12
 msgid "Year must be greater than 1900"
 msgstr "Ano deve ser maior que 1900"
+
+#~ msgid "New Record, Concept and Term"
+#~ msgstr "Novo registro, conceito e termo"
+
+#~ msgid "Creates information for the new Record, Concept and Term"
+#~ msgstr "Cria informação para novo registro, conceito e termo"
+
+#~ msgid "Tree Numbers"
+#~ msgstr "Categorias"
+
+#~ msgid "Edit Term"
+#~ msgstr "Editar termo"
+
+#~ msgid "Preferred"
+#~ msgstr "Preferido"
+
+#~ msgid "Error"
+#~ msgstr "Error"
+
+#~ msgid "New Qualifier"
+#~ msgstr "Novo qualificador"
+
+#~ msgid "Concept List"
+#~ msgstr "Lista de conceitos"
+
+#~ msgid "Registry successfully saved"
+#~ msgstr "Recurso salvo com sucesso."
+
+#~ msgid "Create new concept"
+#~ msgstr "Cria novo conceito"
+
+#~ msgid ""
+#~ "Search for a Active Descriptor Record that you want to insert a new concept"
+#~ msgstr ""
+#~ "Procurar por registro de descritor ativo para inserir um novo conceito"
+
+#~ msgid "Active Descriptor Record"
+#~ msgstr "Registro de descritor ativo"
+
+#~ msgid "Create"
+#~ msgstr "Criado"
+
+#~ msgid "Description Name"
+#~ msgstr "Descrição"
 
 #~ msgid "profile"
 #~ msgstr "perfis"

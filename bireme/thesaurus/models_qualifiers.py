@@ -52,7 +52,8 @@ class IdentifierQualif(Generic, AuditLog):
         if concepts_of_register:
             id_concept = concepts_of_register[0].get('id')
             # translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code)
-            translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y')
+            # translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y')
+            translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, status='1', language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y', )
 
             if translation:
                 # treatment1 = translation[0].term_string.replace('/','').upper()

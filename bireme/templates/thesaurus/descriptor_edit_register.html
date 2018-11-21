@@ -32,7 +32,7 @@
             <ul class="errorlist alert alert-error"><li>{{ msg_erro }}</li></ul>
         {% endif  %}
 
-        {% if form.errors or formset_descriptor.errors or formset_treenumber.errors or formset_related.non_form_errors or formset_previous.errors %}
+        {% if form.errors or formset_descriptor.errors or formset_treenumber.errors or formset_related.non_form_errors or formset_previous.errors or formset_entrycombination.errors %}
             <ul class="errorlist alert alert-error">
                 <li>{% trans "Please check required fields" %}</li>
             </ul>
@@ -43,6 +43,7 @@
         {{ formset_treenumber.non_form_errors }}
         {{ formset_related.non_form_errors }}
         {{ formset_previous.non_form_errors }}
+        {{ formset_entrycombination.non_form_errors }}
 
         <form method="POST" class="reference-form" encrypt="multipart/form-data">{% csrf_token %}
 
@@ -257,7 +258,7 @@
                                             <font size="2">
                                                 {% if form.instance.pk %}
                                                     <font color="#333">
-                                                    <b>Description in: {{ form.language_code.value }}</b>
+                                                    <b>{% trans 'Description in' %}: {{ form.language_code.value }}</b>
                                                     </font>
                                                 {% else %}
                                                     <br><i class='icon-file'></i>&nbsp;{% trans 'Add new description' %}
@@ -267,6 +268,13 @@
                                     </table>
 
                                     <div id="descriptiondesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+                                        <table width="98%">
+                                            <tr>
+                                                <td align="right" bgcolor="#F2F2F2">
+                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}                                                    
+                                                </td>
+                                            </tr>                                            
+                                        </table>
                                         <table class="descriptiondesc">
                                             <tr>
                                                 <td>
@@ -358,6 +366,105 @@
                             </fieldset>
                         </ul>
                     </div>
+
+                    <!-- entrycombinationlistdesc -->
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-target="#entrycombination">{% trans "Entry Combination" %}</a>
+                        </div>
+
+                        <ul>
+                            <fieldset id="entrycombination">
+
+                                {{ formset_entrycombination.management_form }}
+
+                                {% for form in formset_entrycombination %}
+
+                                    {{ form.non_field_errors.as_ul }}
+
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+
+                                    {{ formset_entrycombination.non_field_errors }}
+
+                                    {% for field in form.visible_fields %}
+                                        {% if field.errors %}
+                                            <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <table class="accordion-heading">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-target="#entrycombination_{{ form.instance.pk }}">
+                                            <font size="2">
+                                                {% if form.instance.pk %}
+                                                    <font color="#333">
+                                                    <b>
+                                                        {{ form.ecin_qualif.value }}&nbsp;:&nbsp;{{ form.ecout_desc.value }}
+                                                        {% if form.ecout_qualif.value %}
+                                                            /{{ form.ecout_qualif.value }}
+                                                        {% endif %}
+                                                    </b>
+                                                    </font>
+
+                                                    </b>
+                                                {% else %}
+                                                    <br><i class='icon-file'></i>&nbsp;{% trans 'Add new entry combination' %}
+                                                {% endif %}
+                                            </font>
+                                        </a>
+                                    </table>
+
+                                    <div id="entrycombination_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+                                        <ul>
+                                        <table class="entrycombination">
+                                            <tr>
+                                                <td colspan="5" align="right" bgcolor="#F2F2F2">
+                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.ecin_qualif.label_tag }}</td>
+                                                <td>{{ form.ecin_id.label_tag }}</td>
+                                                <td colspan="3">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.ecin_qualif }}</td>
+                                                <td>{{ form.ecin_id }}</td>
+                                                <td colspan="3">&nbsp;</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="5">
+                                                    <b>{% trans 'Entry combination' %}</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.ecout_desc.label_tag }}</td>
+                                                <td>{{ form.ecout_desc_id.label_tag }}</td>
+                                                <td>&nbsp;</td>
+                                                <td>{{ form.ecout_qualif.label_tag }}</td>
+                                                <td>{{ form.ecout_qualif_id.label_tag }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ form.ecout_desc }}</td>
+                                                <td>{{ form.ecout_desc_id }}</td>
+                                                <td><b>&nbsp;/&nbsp;</b></td>
+                                                <td>{{ form.ecout_qualif }}</td>
+                                                <td>{{ form.ecout_qualif_id }}</td>
+                                            </tr>
+                                        </table>
+                                        </ul>
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </fieldset>
+                        </ul>
+
+                    </div>
+
 
                     <div class="control-panel form-submit">
                         <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
@@ -489,6 +596,16 @@
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'previous_formset',
                     prefix: '{{ formset_previous.prefix }}'
+            });
+
+            $('[id^="entrycombination-"]').formset({
+                    addText : '{% trans "Add Entry Combination" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'entrycombination_formset',
+                    prefix: '{{ formset_entrycombination.prefix }}'
             });
 
             $('[id^="id_treenumberslistdesc_set-"]').on('blur', function() {

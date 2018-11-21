@@ -84,6 +84,7 @@ class DescUpdate(LoginRequiredView):
         formset_pharmaco = PharmacologicalActionListDescFormSet(self.request.POST, instance=self.object)
         formset_related = SeeRelatedListDescFormSet(self.request.POST, instance=self.object)
         formset_previous = PreviousIndexingListDescFormSet(self.request.POST, instance=self.object)
+        formset_entrycombination = EntryCombinationListDescFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
@@ -92,13 +93,15 @@ class DescUpdate(LoginRequiredView):
         formset_pharmaco_valid = formset_pharmaco.is_valid()
         formset_related_valid = formset_related.is_valid()
         formset_previous_valid = formset_previous.is_valid()
+        formset_entrycombination_valid = formset_entrycombination.is_valid()
 
         if (form_valid and 
             formset_descriptor_valid and 
             formset_treenumber_valid and 
             formset_pharmaco_valid and
             formset_related_valid and
-            formset_previous_valid
+            formset_previous_valid and
+            formset_entrycombination_valid
             ):
 
             # Bring the choiced language_code from the first form
@@ -131,6 +134,9 @@ class DescUpdate(LoginRequiredView):
             formset_previous.instance = self.object
             formset_previous.save()
 
+            formset_entrycombination.instance = self.object
+            formset_entrycombination.save()
+
             form.save()
             
             return redirect(reverse('create_concept_termdesc') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language)
@@ -144,6 +150,7 @@ class DescUpdate(LoginRequiredView):
                                             formset_pharmaco=formset_pharmaco,
                                             formset_related=formset_related,
                                             formset_previous=formset_previous,
+                                            formset_entrycombination=formset_entrycombination,
                                             )
                                         )
 
@@ -170,7 +177,8 @@ class DescUpdate(LoginRequiredView):
             context['formset_pharmaco'] = PharmacologicalActionListDescFormSet(instance=self.object)
             context['formset_related'] = SeeRelatedListDescFormSet(instance=self.object)
             context['formset_previous'] = PreviousIndexingListDescFormSet(instance=self.object)
-      
+            context['formset_entrycombination'] = EntryCombinationListDescFormSet(instance=self.object)
+
         return context
 
 
@@ -236,6 +244,7 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
         formset_pharmaco = PharmacologicalActionListDescFormSet(self.request.POST, instance=self.object)
         formset_related = SeeRelatedListDescFormSet(self.request.POST, instance=self.object)
         formset_previous = PreviousIndexingListDescFormSet(self.request.POST, instance=self.object)
+        formset_entrycombination = EntryCombinationListDescFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
@@ -244,13 +253,15 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
         formset_pharmaco_valid = formset_pharmaco.is_valid()
         formset_related_valid = formset_related.is_valid()
         formset_previous_valid = formset_previous.is_valid()
+        formset_entrycombination_valid = formset_entrycombination.is_valid()
 
         if (form_valid and 
             formset_descriptor_valid and 
             formset_treenumber_valid and 
             formset_related_valid and
             formset_pharmaco_valid and
-            formset_previous_valid
+            formset_previous_valid and
+            formset_entrycombination_valid
             ):
 
             # Bring the choiced language_code from the first form
@@ -273,6 +284,9 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
             formset_previous.instance = self.object
             formset_previous.save()
 
+            formset_entrycombination.instance = self.object
+            formset_entrycombination.save()
+
             form.save()
 
             return HttpResponseRedirect(self.get_success_url())
@@ -285,6 +299,7 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
                                             formset_pharmaco=formset_pharmaco,
                                             formset_related=formset_related,
                                             formset_previous=formset_previous,
+                                            formset_entrycombination=formset_entrycombination,
                                             )
                                         )
 
@@ -312,6 +327,7 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
             context['formset_pharmaco'] = PharmacologicalActionListDescFormSet(instance=self.object)
             context['formset_related'] = SeeRelatedListDescFormSet(instance=self.object)
             context['formset_previous'] = PreviousIndexingListDescFormSet(instance=self.object)
+            context['formset_entrycombination'] = EntryCombinationListDescFormSet(instance=self.object)
 
         return context
 
@@ -709,17 +725,28 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
     """
     Used as class view to create TermListDesc
     """
-    model = TermListDesc
+    # model = TermListDesc
     template_name = 'thesaurus/descriptor_new_term.html'
     form_class = TermListDescUniqueForm
 
-    def get_success_url(self):
-        ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
+
+    def get_context_data(self, **kwargs):
+        data = super(TermListDescCreateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(self.request.POST)
+        else:
+            data['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet()
+        return data
 
     def form_valid(self, form):
         
-        if form.is_valid():
+        formset_toccurrence = TheraurusOccurrenceListDescFormSet(self.request.POST, instance=self.object)
+
+        form_valid = form.is_valid()
+        formset_toccurrence_valid = formset_toccurrence.is_valid()
+
+        if (form_valid and formset_toccurrence_valid):
+
             identifier_concept_id = self.request.POST.get("identifier_concept_id")
             term_string = self.request.POST.get("term_string")
             language_code = self.request.POST.get("language_code")
@@ -740,16 +767,25 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                     self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
 
                 self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+                self.object = form.save(commit=True)
+
+                formset_toccurrence.instance = self.object
+                formset_toccurrence.save()
 
                 form.save()
                 return HttpResponseRedirect(self.get_success_url())
             else:
                 msg_erro =  _("This Term already exist!")
-                return self.render_to_response(self.get_context_data(form=form,msg_erro=msg_erro))
+                return self.render_to_response(self.get_context_data(
+                                                                    form=form,
+                                                                    formset_toccurrence=formset_toccurrence,
+                                                                    msg_erro=msg_erro,
+                                                                    ))
 
-    def get_context_data(self, **kwargs):
-        context = super(TermListDescCreateView, self).get_context_data(**kwargs)
-        return context
+    def get_success_url(self):
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
+
 
 
 
@@ -761,13 +797,22 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
     template_name = 'thesaurus/descriptor_edit_term.html'
     form_class = TermListDescUniqueForm
 
-    def get_success_url(self):
-        ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
+    def get_context_data(self, **kwargs):
+        data = super(TermListDescUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(self.request.POST)
+        else:
+            data['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(instance=self.object)
+        return data
 
     def form_valid(self, form):
 
-        if form.is_valid():
+        formset_toccurrence = TheraurusOccurrenceListDescFormSet(self.request.POST, instance=self.object)
+
+        form_valid = form.is_valid()
+        formset_toccurrence_valid = formset_toccurrence.is_valid()
+
+        if (form_valid and formset_toccurrence_valid):
             self.object = form.save(commit=False)
 
             # prove the current date if you are not informed on the form
@@ -776,14 +821,32 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
             self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
             self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+
+            self.object = form.save(commit=True)
+
+            formset_toccurrence.instance = self.object
+            formset_toccurrence.save()
+
             form.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.render_to_response(self.get_context_data(
+                                                                form=form,
+                                                                formset_toccurrence=formset_toccurrence,
+                                                                ))
+    def get_success_url(self):
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
 
-    def get_context_data(self, **kwargs):
-        context = super(TermListDescUpdateView, self).get_context_data(**kwargs)
-        return context
+
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(TermListDescUpdateView, self).get_context_data(**kwargs)
+    #     return context
+
+    #     if self.request.method == 'GET':
+    #         context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(instance=self.object)
+    #     return context
 
 
 
@@ -1030,6 +1093,20 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'geog_decs',
                                                 'identifier_id',
                                             )
+
+            context['entrycombination_objects'] = EntryCombinationListDesc.objects.filter(
+                                            identifier=id_concept,
+                                            ).values(
+                                                'id',
+                                                'ecin_qualif',
+                                                'ecin_id',
+                                                'ecout_desc',
+                                                'ecout_desc_id',
+                                                'ecout_qualif',
+                                                'ecout_qualif_id',
+                                                'identifier_id',
+                                            )
+
 
             # Usado para mostrar informações de conceitos e termos
             context['identifierconceptlist_objects'] = IdentifierConceptListDesc.objects.filter(

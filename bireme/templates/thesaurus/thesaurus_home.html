@@ -77,7 +77,7 @@
                     <option value="">{% trans "All" %}</option>
                     <option value="-1" {% if actions.filter_status == '-1' %}selected="true"{% endif %}>{% trans "Draft" %}</option>
                     <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Published" %}</option>
-                    <!-- <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option> -->
+                    <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
                     <option value="5" {% if actions.filter_status == '5' %}selected="true"{% endif %}>{% trans "Historical" %}</option>
                 </select>
 
