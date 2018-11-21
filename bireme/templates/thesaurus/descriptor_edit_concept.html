@@ -110,7 +110,7 @@
                                             <font size="2">
                                                 {% if form.instance.pk %}
                                                     <font color="#333">
-                                                    <b>Description in: {{ form.language_code.value }}</b>
+                                                    <b>{% trans 'Description in' %}: {{ form.language_code.value }}</b>
                                                     </font>
                                                 {% else %}
                                                     <br><i class='icon-file'></i>&nbsp;{% trans 'Add new description' %}
@@ -122,6 +122,13 @@
                                     <input type="hidden" id="id_identifier_concept_id" name="identifier_concept_id" value="{{ request.GET.identifier_concept_id }}">
 
                                     <div id="conceptlistdesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+                                        <table width="98%">
+                                            <tr>
+                                                <td align="right" bgcolor="#F2F2F2">
+                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}
+                                                </td>
+                                            </tr>
+                                        </table>
                                         <table class="descriptiondesc">
                                             <tr>
                                                 <td>{{ form.language_code.label }}:<br>{{ form.language_code }}</td>

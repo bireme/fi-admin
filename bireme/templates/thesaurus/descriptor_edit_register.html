@@ -258,7 +258,7 @@
                                             <font size="2">
                                                 {% if form.instance.pk %}
                                                     <font color="#333">
-                                                    <b>Description in: {{ form.language_code.value }}</b>
+                                                    <b>{% trans 'Description in' %}: {{ form.language_code.value }}</b>
                                                     </font>
                                                 {% else %}
                                                     <br><i class='icon-file'></i>&nbsp;{% trans 'Add new description' %}
@@ -268,6 +268,13 @@
                                     </table>
 
                                     <div id="descriptiondesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
+                                        <table width="98%">
+                                            <tr>
+                                                <td align="right" bgcolor="#F2F2F2">
+                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}                                                    
+                                                </td>
+                                            </tr>                                            
+                                        </table>
                                         <table class="descriptiondesc">
                                             <tr>
                                                 <td>
@@ -412,21 +419,23 @@
                                         <ul>
                                         <table class="entrycombination">
                                             <tr>
-                                                <td>
-                                                    <b>{% trans 'Qualifier combination prohibited' %}</b>        
+                                                <td colspan="5" align="right" bgcolor="#F2F2F2">
+                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}                                                    
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>{{ form.ecin_qualif.label_tag }}</td>
                                                 <td>{{ form.ecin_id.label_tag }}</td>
+                                                <td colspan="3">&nbsp;</td>
                                             </tr>
                                             <tr>
                                                 <td>{{ form.ecin_qualif }}</td>
                                                 <td>{{ form.ecin_id }}</td>
+                                                <td colspan="3">&nbsp;</td>
                                             </tr>
 
                                             <tr>
-                                                <td>
+                                                <td colspan="5">
                                                     <b>{% trans 'Entry combination' %}</b>
                                                 </td>
                                             </tr>
