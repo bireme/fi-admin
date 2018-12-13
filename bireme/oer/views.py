@@ -222,23 +222,31 @@ class OERUpdate(LoginRequiredView):
 
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('OER')
+        user_cc = user_data['user_cc']
         user_id = self.request.user.id
+        user_cvsp_node = None
         if self.object:
             user_data['is_owner'] = True if self.object.created_by == self.request.user else False
 
-        context['user_data'] = user_data
-        context['user_role'] = user_role
+            # check if user participate of CVSP network
+            user_network = user_data['networks']
+            user_cvsp_node = next((node.lower() for node in user_network if node.startswith('CVSP')), None)
+            if user_cvsp_node:
+                user_cvsp_node = user_cvsp_node.split("-",1)[1]
 
         # create flag that control if user have permission to edit the reference
+        obj = self.object
         if user_role == 'doc':
             # documentalist can create and edit your own records
-            context['user_can_edit'] = True if not self.object or ((self.object.created_by == self.request.user) and self.object.status < 1) else False
+            context['user_can_edit'] = True if not obj or ((obj.created_by == self.request.user) and obj.status < 1) else False
             context['user_can_change_status'] = False
         elif user_role == 'edi':
-            # editor can create, edit and change status (publish) your and institution records
-            context['user_can_edit'] = True if not self.object or self.object.cooperative_center_code == user_data['user_cc'] else False
-            context['user_can_change_status'] = True if not self.object or self.object.cooperative_center_code == user_data['user_cc'] else False
+            # editor can create, edit and change status (publish) for oer of same center code or CVSP node
+            context['user_can_edit'] = True if not obj or obj.cooperative_center_code == user_cc or obj.cvsp_node == user_cvsp_node else False
+            context['user_can_change_status'] = True if not obj or obj.cooperative_center_code == user_cc or obj.cvsp_node == user_cvsp_node else False
 
+        context['user_data'] = user_data
+        context['user_role'] = user_role
         context['settings'] = settings
         context['help_fields'] = get_help_fields('oer')
         context['mandatory_fields'] = ['learning_objectives', 'description', 'type', 'learning_context',
