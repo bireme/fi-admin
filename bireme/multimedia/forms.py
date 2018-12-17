@@ -9,6 +9,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from models import *
 from main.models import Descriptor, Keyword, ResourceThematic
+from attachments.models import Attachment
 
 from utils.forms import DescriptorRequired, ResourceThematicRequired
 
@@ -58,6 +59,21 @@ class MediaCollectionForm(forms.ModelForm):
         exclude = ('cooperative_center_code',)
 
 
+class AttachmentForm(forms.ModelForm):
+    # change widget from attachment_file field for simple select
+    attachment_file = forms.FileField(widget=widgets.FileInput)
+
+    def clean_attachment_file(self):
+        data = self.cleaned_data['attachment_file']
+        if data.size > int(settings.MAX_UPLOAD_SIZE):
+            raise forms.ValidationError(_('Maximum allowed size %(max)s. Current filesize %(size)s') % ({
+                                           'max': filesizeformat(settings.MAX_UPLOAD_SIZE),
+                                           'size': filesizeformat(data.size)
+                                           }))
+
+        return data
+
+
 # definition of inline formsets
 
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, exclude=['primary'],
@@ -73,3 +89,6 @@ TypeTranslationFormSet = inlineformset_factory(MediaType, MediaTypeLocal, fields
 
 MediaCollectionTranslationFormSet = inlineformset_factory(MediaCollection, MediaCollectionLocal,
                                                           fields='__all__', can_delete=True, extra=1)
+
+AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
+                                                  exclude=('short_url',), can_delete=True, extra=1)

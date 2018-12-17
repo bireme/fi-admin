@@ -43,11 +43,12 @@
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Indexing" %}</a></li>
+        <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-file"></i> {% trans "Media file" %}{% if formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         <li><a href="#tab-thematic" data-toggle="tab"><i class="icon-tags"></i> {% trans "Thematic areas" %}</a></li>
     </ul>
 
 
-    <form method="POST" class="media-form">
+    <form method="POST" enctype="multipart/form-data" class="media-form">
         {% csrf_token %}
 
         <div class="tab-content">
@@ -336,7 +337,59 @@
                     </table>
                 </fieldset>
             </div>
-        </div>
+
+            <div id='tab-attachment' class="tab-pane">
+                <fieldset id="attachment">
+                    <table class="table table-condensed table-striped span8">
+                        <thead>
+                            <th>{% trans "File" %}</th>
+                            <th>{% trans "Language" %}</th>
+                            {% if user_data.is_owner %}
+                                <th>{% trans "Delete?" %}</th>
+                            {% endif %}
+                        </thead>
+                        <tbody>
+                        {% if attachment_list %}
+                            {% for attachment in attachment_list %}
+                                <tr>
+                                    <td colspan="3"><a href="{% url 'attachments.views.view_document' %}{{attachment.short_url}}" target="_blank">{{ attachment }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+
+                        {{ formset_attachment.management_form }}
+
+                        {% for form in formset_attachment %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <tr id="attachment-{{ forloop.counter0 }}" class="attachment-row{% if form.errors %} error{% endif %} formset-row">
+                                {% for field in form.visible_fields %}
+                                    {% if field.name == 'attachment_file' and form.instance.pk %}
+                                        <td>
+                                            <strong><a href="{% url 'attachments.views.view_document' %}{{form.instance.short_url}}" target="_blank">{{ form.instance.filename }}</a></strong>
+                                        </td>
+                                    {% elif field.name != 'DELETE' %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if user_data.is_owner %}
+                                    <td>
+                                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+
+        </div> <!-- /div class="tab-content" -->
 
         <div class="control-panel form-submit">
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
@@ -380,6 +433,16 @@
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'keyword_formset',
                     prefix: '{{ formset_keyword.prefix }}'
+            });
+
+            $('.attachment-row').formset({
+                    addText : '{% trans "Add File" %}',
+                    deleteText: '{% trans "delete" %}',
+                    addCssClass : 'icon-plus-sign btn',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'attachment_formset',
+                    prefix: '{{ formset_attachment.prefix }}'
             });
 
             $('.thematic-row').formset({

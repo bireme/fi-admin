@@ -16,6 +16,7 @@ from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
 
 from main.models import ThematicArea
+from attachments.models import Attachment
 from help.models import get_help_fields
 
 from models import *
@@ -118,19 +119,21 @@ class MediaUpdate(LoginRequiredView):
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
         formset_keyword = KeywordFormSet(self.request.POST, instance=self.object)
         formset_thematic = ResourceThematicFormSet(self.request.POST, instance=self.object)
+        formset_attachment = AttachmentFormSet(self.request.POST, self.request.FILES, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
         formset_keyword_valid = formset_keyword.is_valid()
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_thematic_valid = formset_thematic.is_valid()
+        formset_attachment_valid = formset_attachment.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
         valid_for_publication = is_valid_for_publication(form,
                                                          [formset_descriptor, formset_keyword, formset_thematic])
 
         if (form_valid and formset_descriptor_valid and formset_keyword_valid and
-           formset_thematic_valid and valid_for_publication):
+           formset_thematic_valid and valid_for_publication and formset_attachment_valid):
 
                 self.object = form.save()
                 formset_descriptor.instance = self.object
@@ -141,6 +144,9 @@ class MediaUpdate(LoginRequiredView):
 
                 formset_thematic.instance = self.object
                 formset_thematic.save()
+
+                formset_attachment.instance = self.object
+                formset_attachment.save()
 
                 # update solr index
                 form.save()
@@ -153,6 +159,7 @@ class MediaUpdate(LoginRequiredView):
                                                  formset_descriptor=formset_descriptor,
                                                  formset_keyword=formset_keyword,
                                                  formset_thematic=formset_thematic,
+                                                 formset_attachment=formset_attachment,
                                                  valid_for_publication=valid_for_publication))
 
     def form_invalid(self, form):
@@ -219,6 +226,8 @@ class MediaUpdate(LoginRequiredView):
                 context['formset_keyword'] = KeywordFormSet(instance=self.object)
                 context['formset_thematic'] = ResourceThematicFormSet(instance=self.object)
 
+            context['formset_attachment'] = AttachmentFormSet(instance=self.object)
+
         return context
 
 
@@ -259,6 +268,7 @@ class MediaDeleteView(LoginRequiredView, DeleteView):
         Descriptor.objects.filter(object_id=obj.id, content_type=c_type).delete()
         Keyword.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
+        Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
 
         return super(MediaDeleteView, self).delete(request, *args, **kwargs)
 

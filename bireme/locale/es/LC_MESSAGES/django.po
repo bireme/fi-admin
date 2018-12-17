@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-21 09:13-0200\n"
-"PO-Revision-Date: 2018-11-21 11:35-0306\n"
-"Last-Translator:   <>\n"
+"POT-Creation-Date: 2018-12-17 13:07-0200\n"
+"PO-Revision-Date: 2018-12-17 13:09-0306\n"
+"Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,10 +39,12 @@ msgstr "Seleccione el archivo"
 #: oer/models.py:535 templates/biblioref/fieldset_fulltext.html:21
 #: templates/leisref/fieldset_fulltext.html:15
 #: templates/leisref/fieldset_fulltext.html:75
-#: templates/main/edit-language.html:8 templates/oer/fieldset_fulltext.html:15
+#: templates/main/edit-language.html:8
+#: templates/multimedia/media_form.html:347
+#: templates/oer/fieldset_fulltext.html:15
 #: templates/oer/fieldset_fulltext.html:75
 #: templates/thesaurus/descriptor_edit_register.html:161
-#: templates/thesaurus/descriptor_edit_register.html:330
+#: templates/thesaurus/descriptor_edit_register.html:337
 #: templates/thesaurus/qualifier_list.html:79
 #: templates/thesaurus/thesaurus_home.html:84 text_block/models.py:16
 #: text_block/models.py:52 utils/models.py:116 utils/models.py:150
@@ -789,8 +791,8 @@ msgstr "Publicado"
 #: templates/leisref/act_list.html:70 templates/main/edit-resource.html:168
 #: templates/main/edit-resource.html:239 templates/main/edit-resource.html:309
 #: templates/main/resources.html:76 templates/main/resources.html.py:122
-#: templates/multimedia/media_form.html:172
-#: templates/multimedia/media_form.html:245
+#: templates/multimedia/media_form.html:173
+#: templates/multimedia/media_form.html:246
 #: templates/multimedia/media_list.html:68
 #: templates/multimedia/media_list.html:135 templates/oer/oer_list.html:72
 #: templates/reports/index.html:68 templates/reports/index.html.py:146
@@ -813,8 +815,8 @@ msgstr "Rechazado"
 #: templates/leisref/act_list.html:71 templates/main/edit-resource.html:170
 #: templates/main/edit-resource.html:241 templates/main/edit-resource.html:311
 #: templates/main/resources.html:77 templates/main/resources.html.py:124
-#: templates/multimedia/media_form.html:174
-#: templates/multimedia/media_form.html:247
+#: templates/multimedia/media_form.html:175
+#: templates/multimedia/media_form.html:248
 #: templates/multimedia/media_list.html:69
 #: templates/multimedia/media_list.html:137 templates/oer/oer_list.html:73
 #: templates/reports/index.html:69 templates/reports/index.html.py:148
@@ -864,9 +866,9 @@ msgstr "Registro Bibliográficos"
 #: templates/main/edit-resource.html:153 templates/main/edit-resource.html:223
 #: templates/main/edit-resource.html:295 templates/main/resources.html:71
 #: templates/main/resources.html.py:104
-#: templates/multimedia/media_form.html:157
-#: templates/multimedia/media_form.html:229
-#: templates/multimedia/media_form.html:301
+#: templates/multimedia/media_form.html:158
+#: templates/multimedia/media_form.html:230
+#: templates/multimedia/media_form.html:302
 #: templates/multimedia/media_list.html:63
 #: templates/multimedia/media_list.html:120 templates/oer/oer_list.html:67
 #: templates/oer/oer_list.html.py:107 templates/reports/index.html:61
@@ -929,7 +931,7 @@ msgid "Internal note"
 msgstr "Nota interna"
 
 #: biblioref/models.py:57 leisref/forms.py:29 leisref/models.py:470
-#: multimedia/forms.py:27 multimedia/models.py:117
+#: multimedia/forms.py:28 multimedia/models.py:117
 msgid "Publication date"
 msgstr "Fecha de publicación"
 
@@ -1233,6 +1235,26 @@ msgstr "Datos locales JSON"
 msgid "Other fields JSON"
 msgstr "Otros campos JSON"
 
+#: biremelogin/models.py:12
+msgid "profile"
+msgstr "perfis"
+
+#: biremelogin/models.py:13
+msgid "profiles"
+msgstr "perfis"
+
+#: biremelogin/models.py:16
+msgid "Basic"
+msgstr "Básico"
+
+#: biremelogin/models.py:17
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: biremelogin/models.py:20
+msgid "data"
+msgstr "datos"
+
 #: classification/models.py:27 classification/models.py:66
 #: classification/models.py:82 leisref/models.py:449 multimedia/models.py:67
 #: multimedia/models.py:80 multimedia/models.py:102
@@ -1441,8 +1463,8 @@ msgstr "Informe de errores"
 #: templates/main/edit-resource.html:164 templates/main/edit-resource.html:235
 #: templates/main/edit-resource.html:305 templates/main/resources.html:74
 #: templates/main/resources.html.py:118
-#: templates/multimedia/media_form.html:168
-#: templates/multimedia/media_form.html:241
+#: templates/multimedia/media_form.html:169
+#: templates/multimedia/media_form.html:242
 #: templates/multimedia/media_list.html:66
 #: templates/multimedia/media_list.html:131 templates/reports/index.html:65
 #: templates/reports/index.html.py:142 templates/suggest/list.html:52
@@ -1542,8 +1564,8 @@ msgstr "Eventos"
 #: templates/main/edit-resource.html:166 templates/main/edit-resource.html:237
 #: templates/main/edit-resource.html:307 templates/main/resources.html:75
 #: templates/main/resources.html.py:120
-#: templates/multimedia/media_form.html:170
-#: templates/multimedia/media_form.html:243
+#: templates/multimedia/media_form.html:171
+#: templates/multimedia/media_form.html:244
 #: templates/multimedia/media_list.html:67
 #: templates/multimedia/media_list.html:133 templates/reports/index.html:67
 #: templates/reports/index.html.py:144 templates/suggest/list.html:53
@@ -2100,7 +2122,7 @@ msgstr "DeCS: Descriptores en Ciencias de la Salud"
 #: main/choices.py:41 suggest/models.py:31
 #: templates/biblioref/reference_form.html:208
 #: templates/events/edit-event.html:231 templates/main/edit-resource.html:222
-#: templates/multimedia/media_form.html:228 templates/suggest/list.html:34
+#: templates/multimedia/media_form.html:229 templates/suggest/list.html:34
 #: templates/title/form_preview.html:148 templates/title/title_form.html:214
 msgid "Keywords"
 msgstr "Palabras clave"
@@ -2134,7 +2156,7 @@ msgstr "Idiomas de la fuente"
 #: templates/institution/institution_form.html:193
 #: templates/leisref/act_form.html:262 templates/main/edit-resource.html:294
 #: templates/main/edit-thematic.html:8 templates/main/resources.html:79
-#: templates/multimedia/media_form.html:300
+#: templates/multimedia/media_form.html:301
 #: templates/multimedia/media_list.html:94 templates/oer/oer_form.html:226
 #: templates/reports/index.html:80 title/models.py:108 title/models.py:202
 msgid "Thematic area"
@@ -2145,7 +2167,7 @@ msgstr "Área temática"
 #: templates/events/edit-event.html:48 templates/leisref/act_form.html:40
 #: templates/main/edit-resource.html:37 templates/main/thematics.html:4
 #: templates/main/thematics.html.py:7 templates/main/thematics.html:21
-#: templates/menu.html:88 templates/multimedia/media_form.html:46
+#: templates/menu.html:88 templates/multimedia/media_form.html:47
 #: templates/oer/oer_form.html:40
 msgid "Thematic areas"
 msgstr "Área temática"
@@ -2161,7 +2183,7 @@ msgid "Code"
 msgstr "Código"
 
 #: main/models.py:177 templates/biblioref/duplicate_detail.html:53
-#: templates/biblioref/fieldset_indexing.html:10
+#: templates/biblioref/fieldset_indexing.html:13
 #: templates/biblioref/reference_form.html:137
 #: templates/leisref/act_form.html:179 templates/oer/oer_form.html:136
 msgid "Primary?"
@@ -2257,6 +2279,11 @@ msgstr "Idioma editado con éxito."
 msgid "Language deleted."
 msgstr "Idioma borrado."
 
+#: multimedia/forms.py:69 oer/forms.py:99
+#, python-format
+msgid "Maximum allowed size %(max)s. Current filesize %(size)s"
+msgstr "Tamaño máximo permitido %(max)s. Tamaño del archivo %(size)s"
+
 #: multimedia/models.py:18 multimedia/models.py:49 multimedia/models.py:101
 #: templates/multimedia/media_confirm_delete.html:8
 #: templates/multimedia/media_list.html:119
@@ -2334,11 +2361,6 @@ msgstr "Colaborador"
 #: oer/forms.py:45
 msgid "Required for publication"
 msgstr "Requerido para la publicación"
-
-#: oer/forms.py:99
-#, python-format
-msgid "Maximum allowed size %(max)s. Current filesize %(size)s"
-msgstr "Tamaño máximo permitido %(max)s. Tamaño del archivo %(size)s"
 
 #: oer/models.py:25
 msgid "Types"
@@ -2513,7 +2535,7 @@ msgstr "Relaciones"
 msgid "OER related"
 msgstr "Recurso relacionado"
 
-#: oer/views.py:338 templates/biblioref/reference_form.html:323
+#: oer/views.py:346 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:161
 #: templates/classification/classify.html:98
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:346
@@ -2529,28 +2551,29 @@ msgstr "Recurso relacionado"
 #: templates/leisref/acttype_form.html:72 templates/main/edit-language.html:56
 #: templates/main/edit-resource.html:348 templates/main/edit-resource.html:391
 #: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
-#: templates/multimedia/media_form.html:343
+#: templates/multimedia/media_form.html:396
 #: templates/multimedia/mediacollection_form.html:54
 #: templates/multimedia/mediatype_form.html:56
 #: templates/suggest/edit-suggested-event.html:58
 #: templates/suggest/edit-suggested-resource.html:59
-#: templates/thesaurus/descriptor_edit_concept.html:146
+#: templates/thesaurus/descriptor_edit_concept.html:153
 #: templates/thesaurus/descriptor_edit_legacy.html:86
-#: templates/thesaurus/descriptor_edit_register.html:462
+#: templates/thesaurus/descriptor_edit_register.html:471
 #: templates/thesaurus/descriptor_edit_term.html:178
 #: templates/thesaurus/descriptor_form_step2.html:221
 #: templates/thesaurus/descriptor_new_concept.html:236
 #: templates/thesaurus/descriptor_new_legacy.html:84
 #: templates/thesaurus/descriptor_new_term.html:171
-#: templates/thesaurus/qualifier_edit_concept.html:145
+#: templates/thesaurus/qualifier_edit_concept.html:152
 #: templates/thesaurus/qualifier_edit_legacy.html:86
-#: templates/thesaurus/qualifier_edit_register.html:223
+#: templates/thesaurus/qualifier_edit_register.html:230
 #: templates/thesaurus/qualifier_edit_term.html:112
 #: templates/thesaurus/qualifier_form_step2.html:216
 #: templates/thesaurus/qualifier_new_concept.html:231
 #: templates/thesaurus/qualifier_new_legacy.html:84
 #: templates/thesaurus/qualifier_new_term.html:110
-#: templates/title/form_preview.html:435 utils/views.py:183
+#: templates/title/form_preview.html:435
+#: templates/utils/decs_suggestion.html:85 utils/views.py:184
 msgid "Save"
 msgstr "Guardar"
 
@@ -2718,12 +2741,13 @@ msgstr "Notas de proyecto"
 
 #: templates/biblioref/fieldset_fulltext.html:20
 #: templates/leisref/fieldset_fulltext.html:74
+#: templates/multimedia/media_form.html:346
 #: templates/oer/fieldset_fulltext.html:74
 msgid "File"
 msgstr "Archivo"
 
 #: templates/biblioref/fieldset_fulltext.html:23
-#: templates/biblioref/fieldset_indexing.html:12
+#: templates/biblioref/fieldset_indexing.html:15
 #: templates/biblioref/fieldset_thematic.html:11
 #: templates/biblioref/reference_form.html:138
 #: templates/biblioref/reference_form.html:211
@@ -2738,9 +2762,10 @@ msgstr "Archivo"
 #: templates/leisref/fieldset_fulltext.html:17
 #: templates/leisref/fieldset_fulltext.html:77
 #: templates/leisref/fieldset_relationship.html:18
-#: templates/multimedia/media_form.html:158
-#: templates/multimedia/media_form.html:231
-#: templates/multimedia/media_form.html:302
+#: templates/multimedia/media_form.html:159
+#: templates/multimedia/media_form.html:232
+#: templates/multimedia/media_form.html:303
+#: templates/multimedia/media_form.html:349
 #: templates/oer/fieldset_fulltext.html:17
 #: templates/oer/fieldset_fulltext.html:77
 #: templates/oer/fieldset_relationship.html:18 templates/oer/oer_form.html:228
@@ -2771,11 +2796,17 @@ msgstr ""
 msgid "Show DeCS definition"
 msgstr "Consultar definición en el DeCS"
 
-#: templates/biblioref/fieldset_indexing.html:9
+#: templates/biblioref/fieldset_indexing.html:7
+#, fuzzy
+#| msgid "Descriptor string"
+msgid "see descriptores suggestions"
+msgstr "Descriptores"
+
+#: templates/biblioref/fieldset_indexing.html:12
 #: templates/biblioref/reference_form.html:135
 #: templates/events/edit-event.html:161 templates/leisref/act_form.html:178
 #: templates/main/edit-resource.html:152
-#: templates/multimedia/media_form.html:156 templates/oer/oer_form.html:135
+#: templates/multimedia/media_form.html:157 templates/oer/oer_form.html:135
 #: templates/thesaurus/page_view_desc.html:22
 #: templates/thesaurus/qualifier_list.html:42
 #: templates/thesaurus/thesaurus_home.html:32
@@ -2785,20 +2816,20 @@ msgstr "Consultar definición en el DeCS"
 msgid "Descriptors"
 msgstr "Descriptores"
 
-#: templates/biblioref/fieldset_indexing.html:44
+#: templates/biblioref/fieldset_indexing.html:47
 #: templates/biblioref/reference_form.html:181
 #: templates/events/edit-event.html:205
 #: templates/institution/fieldset_unitlevel.html:37
 #: templates/leisref/act_form.html:210
 #: templates/leisref/fieldset_relationship.html:62
 #: templates/main/edit-resource.html:196
-#: templates/multimedia/media_form.html:102
-#: templates/multimedia/media_form.html:201 templates/oer/oer_form.html:159
+#: templates/multimedia/media_form.html:103
+#: templates/multimedia/media_form.html:202 templates/oer/oer_form.html:159
 #: templates/title/title_form.html:187
 msgid "Select by search"
 msgstr "Seleccione por búsqueda"
 
-#: templates/biblioref/fieldset_indexing.html:70
+#: templates/biblioref/fieldset_indexing.html:73
 #: templates/biblioref/reference_confirm_delete.html:29
 #: templates/biblioref/referenceanalytic_form.html:434
 #: templates/biblioref/referenceanalytic_form.html:481
@@ -2919,7 +2950,7 @@ msgstr ""
 #: templates/events/edit-event.html:60
 #: templates/institution/institution_form.html:56
 #: templates/leisref/act_form.html:56 templates/main/edit-resource.html:49
-#: templates/multimedia/media_form.html:58
+#: templates/multimedia/media_form.html:59
 #: templates/title/form_preview.html:55 templates/title/title_form.html:61
 #: thesaurus/models_descriptors.py:256 thesaurus/models_descriptors.py:259
 #: thesaurus/models_descriptors.py:262
@@ -2927,7 +2958,7 @@ msgid "Identifier"
 msgstr "Identificador"
 
 #: templates/biblioref/reference_form.html:121
-#: templates/multimedia/media_form.html:140
+#: templates/multimedia/media_form.html:141
 msgid "Media created in"
 msgstr "Medio creado en"
 
@@ -2942,8 +2973,8 @@ msgstr "Medio creado en"
 #: templates/institution/institution_form.html:164
 #: templates/leisref/act_form.html:163 templates/leisref/act_form.html:166
 #: templates/main/edit-resource.html:117 templates/main/edit-resource.html:120
-#: templates/multimedia/media_form.html:140
-#: templates/multimedia/media_form.html:143 templates/oer/oer_form.html:117
+#: templates/multimedia/media_form.html:141
+#: templates/multimedia/media_form.html:144 templates/oer/oer_form.html:117
 #: templates/oer/oer_form.html.py:123 templates/title/title_form.html:123
 #: templates/title/title_form.html:126
 msgid "by user"
@@ -2955,7 +2986,7 @@ msgstr "por el usuario"
 #: templates/events/edit-event.html:134
 #: templates/institution/institution_form.html:162
 #: templates/leisref/act_form.html:164 templates/main/edit-resource.html:118
-#: templates/multimedia/media_form.html:141 templates/oer/oer_form.html:119
+#: templates/multimedia/media_form.html:142 templates/oer/oer_form.html:119
 #: templates/title/title_form.html:124
 msgid "Cooperative center code"
 msgstr "Código del centro cooperante"
@@ -2966,14 +2997,14 @@ msgstr "Código del centro cooperante"
 #: templates/events/edit-event.html:136
 #: templates/institution/institution_form.html:164
 #: templates/leisref/act_form.html:166 templates/main/edit-resource.html:120
-#: templates/multimedia/media_form.html:143 templates/oer/oer_form.html:123
+#: templates/multimedia/media_form.html:144 templates/oer/oer_form.html:123
 #: templates/title/title_form.html:126
 msgid "Last edit in"
 msgstr "Última edición en"
 
 #: templates/biblioref/reference_form.html:210
 #: templates/events/edit-event.html:233 templates/main/edit-resource.html:224
-#: templates/multimedia/media_form.html:230
+#: templates/multimedia/media_form.html:231
 msgid "Suggestion"
 msgstr "Sugerencia"
 
@@ -2981,8 +3012,8 @@ msgstr "Sugerencia"
 #: templates/biblioref/reference_form.html:255
 #: templates/events/edit-event.html:255 templates/events/edit-event.html:278
 #: templates/main/edit-resource.html:246 templates/main/edit-resource.html:269
-#: templates/multimedia/media_form.html:252
-#: templates/multimedia/media_form.html:275
+#: templates/multimedia/media_form.html:253
+#: templates/multimedia/media_form.html:276
 #: templates/title/title_form.html:237
 msgid "Suggested"
 msgstr "Sugerido"
@@ -2992,7 +3023,7 @@ msgstr "Sugerido"
 #: templates/biblioref/referencesource_form.html:268
 #: templates/events/edit-event.html:415 templates/leisref/act_form.html:340
 #: templates/main/edit-resource.html:417
-#: templates/multimedia/media_form.html:367 templates/oer/oer_form.html:372
+#: templates/multimedia/media_form.html:420 templates/oer/oer_form.html:372
 #: templates/title/title_form.html:519
 msgid "Add descriptor"
 msgstr "Añadir descriptor"
@@ -3025,20 +3056,21 @@ msgstr "Añadir descriptor"
 #: templates/leisref/acttype_form.html:88 templates/main/edit-language.html:72
 #: templates/main/edit-resource.html:418 templates/main/edit-resource.html:428
 #: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
-#: templates/multimedia/media_form.html:368
-#: templates/multimedia/media_form.html:378
-#: templates/multimedia/media_form.html:388
+#: templates/multimedia/media_form.html:421
+#: templates/multimedia/media_form.html:431
+#: templates/multimedia/media_form.html:441
+#: templates/multimedia/media_form.html:451
 #: templates/multimedia/mediacollection_form.html:70
 #: templates/multimedia/mediatype_form.html:72 templates/oer/oer_form.html:373
 #: templates/oer/oer_form.html.py:383 templates/oer/oer_form.html:393
 #: templates/oer/oer_form.html.py:403 templates/oer/oer_form.html:413
-#: templates/thesaurus/descriptor_edit_concept.html:232
-#: templates/thesaurus/descriptor_edit_concept.html:242
-#: templates/thesaurus/descriptor_edit_register.html:554
-#: templates/thesaurus/descriptor_edit_register.html:564
-#: templates/thesaurus/descriptor_edit_register.html:574
-#: templates/thesaurus/descriptor_edit_register.html:584
-#: templates/thesaurus/descriptor_edit_register.html:594
+#: templates/thesaurus/descriptor_edit_concept.html:239
+#: templates/thesaurus/descriptor_edit_concept.html:249
+#: templates/thesaurus/descriptor_edit_register.html:563
+#: templates/thesaurus/descriptor_edit_register.html:573
+#: templates/thesaurus/descriptor_edit_register.html:583
+#: templates/thesaurus/descriptor_edit_register.html:593
+#: templates/thesaurus/descriptor_edit_register.html:603
 #: templates/thesaurus/descriptor_edit_term.html:200
 #: templates/thesaurus/descriptor_form_step1.html:558
 #: templates/thesaurus/descriptor_form_step1.html:568
@@ -3050,9 +3082,9 @@ msgstr "Añadir descriptor"
 #: templates/thesaurus/descriptor_new_concept.html:322
 #: templates/thesaurus/descriptor_new_concept.html:332
 #: templates/thesaurus/descriptor_new_term.html:193
-#: templates/thesaurus/qualifier_edit_concept.html:222
-#: templates/thesaurus/qualifier_edit_concept.html:232
-#: templates/thesaurus/qualifier_edit_register.html:300
+#: templates/thesaurus/qualifier_edit_concept.html:229
+#: templates/thesaurus/qualifier_edit_concept.html:239
+#: templates/thesaurus/qualifier_edit_register.html:307
 #: templates/thesaurus/qualifier_form_step1.html:303
 #: templates/thesaurus/qualifier_new_concept.html:307
 #: templates/thesaurus/qualifier_new_concept.html:317
@@ -3066,7 +3098,7 @@ msgstr "borrar"
 #: templates/biblioref/reference_form.html:406
 #: templates/biblioref/referencesource_form.html:288
 #: templates/events/edit-event.html:425 templates/main/edit-resource.html:427
-#: templates/multimedia/media_form.html:377
+#: templates/multimedia/media_form.html:430
 #: templates/title/title_form.html:528
 msgid "Add keyword"
 msgstr "Añadir palabra clave"
@@ -3074,7 +3106,7 @@ msgstr "Añadir palabra clave"
 #: templates/biblioref/reference_form.html:416
 #: templates/events/edit-event.html:435 templates/leisref/act_form.html:380
 #: templates/main/edit-resource.html:437
-#: templates/multimedia/media_form.html:387 templates/oer/oer_form.html:412
+#: templates/multimedia/media_form.html:450 templates/oer/oer_form.html:412
 msgid "Add thematic area"
 msgstr "Añadir área temática"
 
@@ -3322,7 +3354,7 @@ msgstr "Código del centro indizador"
 #: templates/biblioref/referencesource_form.html:128
 #: templates/institution/institution_form.html:168
 #: templates/main/edit-resource.html:124 templates/modal_log.html:6
-#: templates/multimedia/media_form.html:147
+#: templates/multimedia/media_form.html:148
 #: templates/thesaurus/page_view_desc.html:336
 #: templates/thesaurus/page_view_qualif.html:265
 #: templates/title/title_form.html:130
@@ -3447,6 +3479,7 @@ msgid "Select the community"
 msgstr "Seleccione la comunidad"
 
 #: templates/classification/classify.html:83
+#: templates/utils/decs_suggestion.html:70
 msgid "Classification updated"
 msgstr "Clasificación actualizada"
 
@@ -3461,9 +3494,9 @@ msgstr "Clasificación actualizada"
 #: templates/leisref/actstate_form.html:56
 #: templates/leisref/acttype_form.html:70
 #: templates/main/edit-resource.html:390
-#: templates/thesaurus/descriptor_edit_concept.html:145
+#: templates/thesaurus/descriptor_edit_concept.html:152
 #: templates/thesaurus/descriptor_edit_legacy.html:85
-#: templates/thesaurus/descriptor_edit_register.html:461
+#: templates/thesaurus/descriptor_edit_register.html:470
 #: templates/thesaurus/descriptor_edit_term.html:177
 #: templates/thesaurus/descriptor_form_step1.html:465
 #: templates/thesaurus/descriptor_form_step2.html:220
@@ -3472,15 +3505,16 @@ msgstr "Clasificación actualizada"
 #: templates/thesaurus/descriptor_new_term.html:170
 #: templates/thesaurus/page_view_desc.html:624
 #: templates/thesaurus/page_view_qualif.html:508
-#: templates/thesaurus/qualifier_edit_concept.html:144
+#: templates/thesaurus/qualifier_edit_concept.html:151
 #: templates/thesaurus/qualifier_edit_legacy.html:85
-#: templates/thesaurus/qualifier_edit_register.html:222
+#: templates/thesaurus/qualifier_edit_register.html:229
 #: templates/thesaurus/qualifier_edit_term.html:111
 #: templates/thesaurus/qualifier_form_step1.html:224
 #: templates/thesaurus/qualifier_form_step2.html:215
 #: templates/thesaurus/qualifier_new_concept.html:230
 #: templates/thesaurus/qualifier_new_legacy.html:83
 #: templates/thesaurus/qualifier_new_term.html:109
+#: templates/utils/decs_suggestion.html:80
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -3510,13 +3544,18 @@ msgid "No records found"
 msgstr "No se encontraron registros"
 
 #: templates/delete_confirm.html:5
-#: templates/thesaurus/descriptor_edit_concept.html:282
-#: templates/thesaurus/descriptor_edit_register.html:633
+#: templates/thesaurus/descriptor_edit_concept.html:128
+#: templates/thesaurus/descriptor_edit_concept.html:289
+#: templates/thesaurus/descriptor_edit_register.html:274
+#: templates/thesaurus/descriptor_edit_register.html:423
+#: templates/thesaurus/descriptor_edit_register.html:642
 #: templates/thesaurus/descriptor_form_step1.html:637
 #: templates/thesaurus/descriptor_form_step2.html:357
 #: templates/thesaurus/descriptor_new_concept.html:372
-#: templates/thesaurus/qualifier_edit_concept.html:272
-#: templates/thesaurus/qualifier_edit_register.html:340
+#: templates/thesaurus/qualifier_edit_concept.html:127
+#: templates/thesaurus/qualifier_edit_concept.html:279
+#: templates/thesaurus/qualifier_edit_register.html:192
+#: templates/thesaurus/qualifier_edit_register.html:347
 #: templates/thesaurus/qualifier_form_step1.html:343
 #: templates/thesaurus/qualifier_form_step2.html:290
 #: templates/thesaurus/qualifier_new_concept.html:357
@@ -3752,7 +3791,8 @@ msgstr "Ato creado en"
 msgid "Add URL"
 msgstr "Añadir URL"
 
-#: templates/leisref/act_form.html:360 templates/oer/oer_form.html:392
+#: templates/leisref/act_form.html:360
+#: templates/multimedia/media_form.html:440 templates/oer/oer_form.html:392
 msgid "Add File"
 msgstr "Añadir Archivo"
 
@@ -4123,7 +4163,8 @@ msgstr "Sugerencias"
 
 #: templates/menu.html:77 templates/reports/index.html:5
 #: templates/reports/index.html.py:8 templates/reports/index.html:23
-#: templates/reports/index.html.py:177
+#: templates/reports/index.html.py:177 templates/reports/select_report.html:6
+#: templates/reports/select_report.html:9
 msgid "Reports"
 msgstr "Informes"
 
@@ -4161,6 +4202,11 @@ msgstr "Borrar medio"
 #: templates/multimedia/media_list.html:24
 msgid "New Media"
 msgstr "Nuevo Medio"
+
+#: templates/multimedia/media_form.html:46
+#| msgid "Media type"
+msgid "Media file"
+msgstr "Archivo multimedia"
 
 #: templates/multimedia/media_list.html:32
 msgid "My medias"
@@ -4344,6 +4390,10 @@ msgstr "No hay datos para estes criterios"
 msgid "Combination (Source x Report / Filter) not available"
 msgstr "Combinación (Fuente x Informe / Filtro) no disponible"
 
+#: templates/reports/select_report.html:15
+msgid "Select report"
+msgstr "Seleccione el informe"
+
 #: templates/suggest/edit-suggested-event.html:5
 #: templates/suggest/edit-suggested-event.html:15
 msgid "Edit Suggested Event"
@@ -4506,7 +4556,6 @@ msgstr "Descripción del concepto"
 #: templates/thesaurus/descriptor_edit_register.html:261
 #: templates/thesaurus/qualifier_edit_concept.html:112
 #: templates/thesaurus/qualifier_edit_register.html:179
-#| msgid "Description"
 msgid "Description in"
 msgstr "Descripción en"
 
@@ -4517,34 +4566,34 @@ msgstr "Descripción en"
 msgid "Add new description"
 msgstr "Añadir nueva descripción"
 
-#: templates/thesaurus/descriptor_edit_concept.html:231
-#: templates/thesaurus/descriptor_edit_register.html:553
+#: templates/thesaurus/descriptor_edit_concept.html:238
+#: templates/thesaurus/descriptor_edit_register.html:562
 #: templates/thesaurus/descriptor_form_step1.html:557
 #: templates/thesaurus/descriptor_form_step2.html:306
 #: templates/thesaurus/descriptor_new_concept.html:321
-#: templates/thesaurus/qualifier_edit_concept.html:221
-#: templates/thesaurus/qualifier_edit_register.html:299
+#: templates/thesaurus/qualifier_edit_concept.html:228
+#: templates/thesaurus/qualifier_edit_register.html:306
 #: templates/thesaurus/qualifier_form_step1.html:302
 #: templates/thesaurus/qualifier_new_concept.html:306
 msgid "Add Tree Number"
 msgstr "Agregar categoría jerárquica"
 
-#: templates/thesaurus/descriptor_edit_concept.html:241
-#: templates/thesaurus/descriptor_edit_register.html:583
+#: templates/thesaurus/descriptor_edit_concept.html:248
+#: templates/thesaurus/descriptor_edit_register.html:592
 #: templates/thesaurus/descriptor_form_step1.html:587
 #: templates/thesaurus/descriptor_form_step2.html:316
 #: templates/thesaurus/descriptor_new_concept.html:331
-#: templates/thesaurus/qualifier_edit_concept.html:231
+#: templates/thesaurus/qualifier_edit_concept.html:238
 #: templates/thesaurus/qualifier_new_concept.html:316
 msgid "Add Previous Index"
 msgstr "Agregar indización previa"
 
-#: templates/thesaurus/descriptor_edit_concept.html:265
-#: templates/thesaurus/descriptor_edit_concept.html:274
-#: templates/thesaurus/descriptor_edit_concept.html:304
-#: templates/thesaurus/descriptor_edit_register.html:616
+#: templates/thesaurus/descriptor_edit_concept.html:272
+#: templates/thesaurus/descriptor_edit_concept.html:281
+#: templates/thesaurus/descriptor_edit_concept.html:311
 #: templates/thesaurus/descriptor_edit_register.html:625
-#: templates/thesaurus/descriptor_edit_register.html:645
+#: templates/thesaurus/descriptor_edit_register.html:634
+#: templates/thesaurus/descriptor_edit_register.html:654
 #: templates/thesaurus/descriptor_form_step1.html:620
 #: templates/thesaurus/descriptor_form_step1.html:629
 #: templates/thesaurus/descriptor_form_step1.html:659
@@ -4554,12 +4603,12 @@ msgstr "Agregar indización previa"
 #: templates/thesaurus/descriptor_new_concept.html:355
 #: templates/thesaurus/descriptor_new_concept.html:364
 #: templates/thesaurus/descriptor_new_concept.html:394
-#: templates/thesaurus/qualifier_edit_concept.html:255
-#: templates/thesaurus/qualifier_edit_concept.html:264
-#: templates/thesaurus/qualifier_edit_concept.html:294
-#: templates/thesaurus/qualifier_edit_register.html:323
-#: templates/thesaurus/qualifier_edit_register.html:332
-#: templates/thesaurus/qualifier_edit_register.html:352
+#: templates/thesaurus/qualifier_edit_concept.html:262
+#: templates/thesaurus/qualifier_edit_concept.html:271
+#: templates/thesaurus/qualifier_edit_concept.html:301
+#: templates/thesaurus/qualifier_edit_register.html:330
+#: templates/thesaurus/qualifier_edit_register.html:339
+#: templates/thesaurus/qualifier_edit_register.html:359
 #: templates/thesaurus/qualifier_form_step1.html:326
 #: templates/thesaurus/qualifier_form_step1.html:335
 #: templates/thesaurus/qualifier_form_step1.html:363
@@ -4569,20 +4618,20 @@ msgstr "Agregar indización previa"
 msgid "Warning"
 msgstr "Advertencia"
 
-#: templates/thesaurus/descriptor_edit_concept.html:314
-#: templates/thesaurus/descriptor_edit_concept.html:315
-#: templates/thesaurus/descriptor_edit_register.html:655
-#: templates/thesaurus/descriptor_edit_register.html:656
+#: templates/thesaurus/descriptor_edit_concept.html:321
+#: templates/thesaurus/descriptor_edit_concept.html:322
+#: templates/thesaurus/descriptor_edit_register.html:664
+#: templates/thesaurus/descriptor_edit_register.html:665
 #: templates/thesaurus/descriptor_form_step1.html:669
 #: templates/thesaurus/descriptor_form_step1.html:670
 #: templates/thesaurus/descriptor_form_step2.html:389
 #: templates/thesaurus/descriptor_form_step2.html:390
 #: templates/thesaurus/descriptor_new_concept.html:404
 #: templates/thesaurus/descriptor_new_concept.html:405
-#: templates/thesaurus/qualifier_edit_concept.html:304
-#: templates/thesaurus/qualifier_edit_concept.html:305
-#: templates/thesaurus/qualifier_edit_register.html:362
-#: templates/thesaurus/qualifier_edit_register.html:363
+#: templates/thesaurus/qualifier_edit_concept.html:311
+#: templates/thesaurus/qualifier_edit_concept.html:312
+#: templates/thesaurus/qualifier_edit_register.html:369
+#: templates/thesaurus/qualifier_edit_register.html:370
 #: templates/thesaurus/qualifier_form_step1.html:373
 #: templates/thesaurus/qualifier_form_step1.html:374
 #: templates/thesaurus/qualifier_new_concept.html:389
@@ -4655,54 +4704,45 @@ msgstr "Lista relacionada"
 msgid "Description of Record"
 msgstr "Descripción del registro"
 
-#: templates/thesaurus/descriptor_edit_register.html:321
+#: templates/thesaurus/descriptor_edit_register.html:328
 #: templates/thesaurus/descriptor_form_step1.html:324
 msgid "Previous Indexing List"
 msgstr "Lista de indexación previa"
 
-#: templates/thesaurus/descriptor_edit_register.html:329
+#: templates/thesaurus/descriptor_edit_register.html:336
 #: templates/thesaurus/descriptor_form_step1.html:332
 msgid "Previous Index"
 msgstr "Indexación previa"
 
-#: templates/thesaurus/descriptor_edit_register.html:366
+#: templates/thesaurus/descriptor_edit_register.html:373
 #: templates/thesaurus/descriptor_form_step1.html:369
 #: templates/thesaurus/page_view_desc.html:139
 #: templates/thesaurus/page_view_desc.html:350
-#| msgid "Denomination"
 msgid "Entry Combination"
 msgstr "Combinación de entrada"
 
-#: templates/thesaurus/descriptor_edit_register.html:405
+#: templates/thesaurus/descriptor_edit_register.html:412
 #: templates/thesaurus/descriptor_form_step1.html:408
-#| msgid "Add new description"
 msgid "Add new entry combination"
 msgstr "Añadir nueva combinación de entrada"
 
-#: templates/thesaurus/descriptor_edit_register.html:416
-#: templates/thesaurus/descriptor_form_step1.html:419
-msgid "Qualifier combination prohibited"
-msgstr "Combinación calificada prohibida"
-
-#: templates/thesaurus/descriptor_edit_register.html:430
+#: templates/thesaurus/descriptor_edit_register.html:439
 #: templates/thesaurus/descriptor_form_step1.html:433
-#| msgid "Denomination"
 msgid "Entry combination"
 msgstr "Combinación de entrada"
 
-#: templates/thesaurus/descriptor_edit_register.html:563
+#: templates/thesaurus/descriptor_edit_register.html:572
 #: templates/thesaurus/descriptor_form_step1.html:567
 msgid "Add Pharmacological Action"
 msgstr "Añadir acción farmacológica"
 
-#: templates/thesaurus/descriptor_edit_register.html:573
+#: templates/thesaurus/descriptor_edit_register.html:582
 #: templates/thesaurus/descriptor_form_step1.html:577
 msgid "Add Related"
 msgstr "Añadir Relacionados"
 
-#: templates/thesaurus/descriptor_edit_register.html:593
+#: templates/thesaurus/descriptor_edit_register.html:602
 #: templates/thesaurus/descriptor_form_step1.html:597
-#| msgid "Add translation"
 msgid "Add Entry Combination"
 msgstr "Añadir combinación de entrada"
 
@@ -4727,7 +4767,6 @@ msgstr "Editar Información del descriptor"
 
 #: templates/thesaurus/descriptor_edit_term.html:68
 #: templates/thesaurus/descriptor_new_term.html:63
-#| msgid "Edit term information"
 msgid "Term information"
 msgstr "Información del término"
 
@@ -4744,7 +4783,6 @@ msgstr "Nombre del tesauro"
 
 #: templates/thesaurus/descriptor_edit_term.html:199
 #: templates/thesaurus/descriptor_new_term.html:192
-#| msgid "Thesaurus name"
 msgid "Add thesaurus name"
 msgstr "Añadir nombre de tesauro"
 
@@ -4811,6 +4849,10 @@ msgstr "Español latino america"
 #: templates/thesaurus/thesaurus_home.html:90 thesaurus/choices.py:13
 msgid "Spanish Spain"
 msgstr "lengua española utilizada en españa"
+
+#: templates/thesaurus/descriptor_form_step1.html:419
+msgid "Qualifier combination prohibited"
+msgstr "Combinación calificada prohibida"
 
 #: templates/thesaurus/descriptor_form_step1.html:466
 #: templates/thesaurus/qualifier_form_step1.html:225
@@ -5384,6 +5426,16 @@ msgstr "Número SeCS"
 msgid "Editor code"
 msgstr "Codigo del editor"
 
+#: templates/utils/decs_suggestion.html:26
+#, fuzzy
+#| msgid "Geog DeCS"
+msgid "DeCS"
+msgstr "Geog DeCS"
+
+#: templates/utils/decs_suggestion.html:36
+msgid "List of descriptors identified in the abstract"
+msgstr ""
+
 #: templates/utils/field_assist.html:7 templates/utils/field_assist.html:41
 msgid "Field assist"
 msgstr "Ayuda de campo"
@@ -5612,12 +5664,10 @@ msgid "Entry combinations List"
 msgstr "Lista de combinaciones de entrada"
 
 #: thesaurus/models_descriptors.py:255 thesaurus/models_descriptors.py:261
-#| msgid "Qualifiers"
 msgid "Qualifier string"
 msgstr "Calificador"
 
 #: thesaurus/models_descriptors.py:258
-#| msgid "Descriptors"
 msgid "Descriptor string"
 msgstr "Descriptores"
 
@@ -5686,7 +5736,6 @@ msgid "Historical annotation"
 msgstr "Anotación histórica"
 
 #: thesaurus/models_descriptors.py:391 thesaurus/models_descriptors.py:392
-#| msgid "Thesaurus name"
 msgid "Thesaurus occurrence"
 msgstr "Nombre del tesauro"
 
@@ -6330,24 +6379,6 @@ msgstr "El año debe ser mayor que 1900"
 
 #~ msgid "Description Name"
 #~ msgstr "Descripción"
-
-#~ msgid "profile"
-#~ msgstr "perfis"
-
-#~ msgid "profiles"
-#~ msgstr "perfis"
-
-#~ msgid "Basic"
-#~ msgstr "Básico"
-
-#~ msgid "Advanced"
-#~ msgstr "Avanzado"
-
-#~ msgid "data"
-#~ msgstr "datos"
-
-#~ msgid "Select report"
-#~ msgstr "Seleccione el informe"
 
 #~ msgid "Classification types"
 #~ msgstr "Número de clasificación"
