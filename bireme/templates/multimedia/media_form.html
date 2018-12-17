@@ -344,9 +344,7 @@
                         <thead>
                             <th>{% trans "File" %}</th>
                             <th>{% trans "Language" %}</th>
-                            {% if user_data.is_owner %}
-                                <th>{% trans "Delete?" %}</th>
-                            {% endif %}
+                            <th>{% trans "Delete?" %}</th>
                         </thead>
                         <tbody>
                         {% if attachment_list %}
@@ -376,11 +374,9 @@
                                         </td>
                                     {% endif %}
                                 {% endfor %}
-                                {% if user_data.is_owner %}
-                                    <td>
-                                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                    </td>
-                                {% endif %}
+                                <td>
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
 
