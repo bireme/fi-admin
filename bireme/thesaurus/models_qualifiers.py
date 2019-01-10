@@ -24,11 +24,11 @@ class IdentifierQualif(Generic, AuditLog):
     thesaurus = models.ForeignKey(Thesaurus, null=True, blank=False, default=None)
 
     # MESH Qualifier Unique Identifier
-    qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True)
+    qualifier_ui = models.CharField(_("Transport UI"), max_length=250, blank=True)
 
     # BIREME Qualifier Unique Identifier
     # decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True, unique=True)
-    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True)
+    decs_code = models.CharField(_("Thesaurus UI"), max_length=250, blank=True)
 
     # External Qualifier Unique Identifier
     external_code = models.CharField(_("External Qualifier UI"), max_length=250, blank=True)

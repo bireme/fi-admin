@@ -28,11 +28,11 @@ class IdentifierDesc(Generic, AuditLog):
     descriptor_class = models.CharField(_("Descriptor class"), choices=DESCRIPTOR_CLASS_CODE, max_length=2, blank=True)
 
     # MESH Descriptor Unique Identifier
-    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
+    descriptor_ui = models.CharField(_("Transport UI"), max_length=250, blank=True)
 
     # BIREME Descriptor Unique Identifier
     # decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=True, unique=True) # Apos load habilitar esse
-    decs_code = models.CharField(_("DeCS Descriptor UI"), max_length=250, blank=True)
+    decs_code = models.CharField(_("Thesaurus UI"), max_length=250, blank=True)
 
     # External Descriptor Unique Identifier
     external_code = models.CharField(_("External Descriptor UI"), max_length=250, blank=True)
@@ -133,7 +133,7 @@ class PharmacologicalActionList(models.Model, AuditLog):
     term_string = models.CharField(_("String"), max_length=250, blank=True)
 
     # MESH Descriptor Unique Identifier
-    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
+    descriptor_ui = models.CharField(_("Transport UI"), max_length=250, blank=True)
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
@@ -160,7 +160,7 @@ class SeeRelatedListDesc(models.Model, AuditLog):
     term_string = models.CharField(_("String"), max_length=250, blank=True)
 
     # MESH Descriptor Unique Identifier
-    descriptor_ui = models.CharField(_("MESH Descriptor UI"), max_length=250, blank=True)
+    descriptor_ui = models.CharField(_("Transport UI"), max_length=250, blank=True)
 
     def get_parent(self):
         return self.identifier

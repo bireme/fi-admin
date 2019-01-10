@@ -88,17 +88,6 @@
                                     <td colspan="1">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>{{ form.qualifier_ui.label }}:</td>
-                                    <td>{{ form.external_code.label }}:</td>
-                                    <td><!-- {{ form.decs_code.label }}:<span class="mark">*</span> -->&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form.qualifier_ui }}</td>
-                                    <td>{{ form.external_code }}</td>
-                                    <td><!-- {{ form.decs_code }} -->&nbsp;
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td>{{ form.date_created.label }}:
                                         <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
                                     </td>
@@ -116,6 +105,14 @@
                                     </td>
                                     <td>{{ form.date_revised }}</td>
                                     <td>{{ form.date_established }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form.external_code.label }}:</td>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form.external_code }}</td>
+                                    <td colspan="2">&nbsp;</td>
                                 </tr>
                                 <tr>
                                     <td colspan=3>

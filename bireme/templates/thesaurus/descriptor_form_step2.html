@@ -72,9 +72,6 @@
                             {% endfor %}
                             <table class="descriptiondesc">
                                 <tr>
-                                    <td colspan="3">{{ form.concept_ui.label }}:<br>{{ form.concept_ui }}</td>
-                                </tr>
-                                <tr>
                                     <td width="20%">{{ form.concept_relation_name.label }}:<br>{{ form.concept_relation_name }}</td>
                                     <td width="20%">{{ form.preferred_concept.label }}:<br>{{ form.preferred_concept }}</td>
                                     <td width="60%">&nbsp;</td>
@@ -160,42 +157,52 @@
                                     <table class="termlistdesc" border="0">
                                         <tr>
                                             <td>{{ form.status.label_tag }}</td>
+                                            <td colspan="3">&nbsp;</td>
                                         <tr>
                                         <tr>
                                             <td>{{ form.status }}</td>
+                                            <td colspan="3">&nbsp;</td>
                                         <tr>
                                         <tr>
                                             <td colspan="3" class="term_stringn" width="60%">
                                                 <label for="term_string">{{ form.term_string.label_tag }}</label>
                                             </td>
-                                            <td>{{ form.term_ui.label_tag }}</td>
-                                            <td>{{ form.date_created.label_tag }}
-                                                <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
-                                            </td>
+                                            <td>&nbsp;</td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="term_stringn" width="60%">
                                                 <!-- term_string -->
                                                 <input id="id_termdesc-0-term_string" name="termdesc-0-term_string" value="" maxlength="250" required="" type="text">
                                             </td>
-                                            <td>{{ form.term_ui }}</td>
-                                            <td>
-                                                <input id="id_termdesc-0-date_created" name="termdesc-0-date_created" type="text" value="{% now "d/m/Y" %}" maxlength="10">
-                                            </td>
+                                            <td>&nbsp;</td>
                                         </tr>
                                         <tr>
                                             <td>{{ form.concept_preferred_term.label_tag }}</td>
                                             <td>{{ form.is_permuted_term.label_tag }}</td>
                                             <td>{{ form.lexical_tag.label_tag }}</td>
                                             <td>{{ form.record_preferred_term.label_tag }}</td>
-                                            <td>{{ form.date_altered.label_tag }}</td>
+
                                         </tr>
                                         <tr>
                                             <td>{{ form.concept_preferred_term }}</td>
                                             <td>{{ form.is_permuted_term }}</td>
                                             <td>{{ form.lexical_tag }}</td>
                                             <td>{{ form.record_preferred_term }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>{{ form.date_created.label_tag }}
+                                                <font color="#999"><i>{{ form.date_revised.help_text }}</i></font>
+                                            </td>
+                                            <td>{{ form.date_altered.label_tag }}</td>
+                                            <td colspan="2">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input id="id_termdesc-0-date_created" name="termdesc-0-date_created" type="text" value="{% now "d/m/Y" %}" maxlength="10">
+                                            </td>
                                             <td>{{ form.date_altered }}</td>
+                                            <td colspan="2">&nbsp;</td>
                                         </tr>
 
                                         <tr>

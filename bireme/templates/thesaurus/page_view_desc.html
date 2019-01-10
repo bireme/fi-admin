@@ -158,8 +158,10 @@
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
                         {% for obj in entry_terms_objects %}
-                            {{ obj.termdesc__term_string }}
-                            {% if obj.termdesc__language_code %}({{ obj.termdesc__language_code }}){% endif %}
+                            {% if obj.termdesc__status != -3 %}
+                                {{ obj.termdesc__term_string }}
+                                {% if obj.termdesc__language_code %}({{ obj.termdesc__language_code }}){% endif %}
+                            {% endif %}
                             <br>
                         {% endfor %}
                         </td>
@@ -388,7 +390,8 @@
                     <i class='icon-file'></i>&nbsp;{% trans "Add concept" %}</a>
                 </ul>
 
-                {% for obj in identifierconceptlist_objects %}
+
+                {% for obj in identifierconceptlist_objects_preferred %}
 
                     <ul>
 
@@ -397,28 +400,24 @@
                             <b>{% trans "Concept" %}</b>:
                             <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termdesc__id }}"> -->
                             {{ obj.termdesc__term_string }}
-                            {{ obj.concept_ui }}
+                            <b>[ {{ obj.concept_ui }} ]</b>
                             <!-- </a> -->
                         {% endifchanged %}
                     {% endif %}
 
-                    {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' and obj.termdesc__language_code = 'en' %}
-                        <font color="gray"><i>&nbsp;{% trans "Narrower" %}
-                            {% if obj.termdesc__status == '3' %}
-                                {{ obj.termdesc__status|display_status_label }}
+                    {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'Y' and obj.termdesc__language_code = 'en' %}
+                        {% ifchanged %}
+                            <font color="blue"><i>&nbsp;{% trans "Preferred Concept" %}</i></font>
+                            <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
+
+                            {% if identifierconceptlist_objects %}
+                                <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class="icon-share"></i>
+                                </a>
                             {% endif %}
-                        </i></font>
-                        <!-- <a href="#"><i class="icon-pencil"></i></a> -->
-                        <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
-                    {% else %}
-                        {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'Y' and obj.termdesc__language_code = 'en' %}
-                            {% ifchanged %}
-                                <font color="blue"><i>&nbsp;{% trans "Preferred Concept" %}</i></font>
-                                <!-- <a href="#"><i class="icon-pencil"></i></a> -->
-                                <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
-                            {% endifchanged %}
-                        {% endif %}
+
+                        {% endifchanged %}
                     {% endif %}
+
 
                     <!-- <div id="concept_{{ obj.id }}" class="collapse"> -->
                         <ul>
@@ -438,7 +437,15 @@
                                 {% if obj.termdesc__concept_preferred_term == 'Y' %}
                                     <font color="blue"><i>&nbsp;{% trans "Preferred Term" %}</i></font>
                                 {% endif %}
-                                <a href="{% url 'edit_term_desc' obj.termdesc__id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class="icon-pencil"></i></a>
+
+                                {% if obj.termdesc__status != -3 %}
+                                    <a href="{% url 'edit_term_desc' obj.termdesc__id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}">
+                                    <i class="icon-pencil"></i></a>
+
+                                    <a href="{% url 'list_term' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_id={{ obj.termdesc__id }}">
+                                    <i class="icon-share"></i></a>
+                                {% endif %}
+
                                 {{ obj.termdesc__status|display_status_label }}
 
                                 <ul id="term_{{ obj.termdesc__id }}" class="collapse">
@@ -463,6 +470,99 @@
 
                 {% endfor %}
 
+
+                {% for obj in identifierconceptlist_objects %}
+
+                    <ul>
+
+                    {% if obj.termdesc__concept_preferred_term == 'Y' %}
+                        {% ifchanged obj.termdesc__identifier_concept_id %}
+                            <b>{% trans "Concept" %}</b>:
+                            <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termdesc__id }}"> -->
+                            {{ obj.termdesc__term_string }}
+                            <b>[ {{ obj.concept_ui }} ]</b>
+                            <!-- </a> -->
+                        {% endifchanged %}
+                    {% endif %}
+
+
+                    {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' and obj.termdesc__language_code == 'en' %}
+                        <font color="gray"><i>&nbsp;{% trans "Narrower" %}
+                            {% if obj.termdesc__status == '3' %}
+                                {{ obj.termdesc__status|display_status_label }}
+                            {% endif %}
+                        </i></font>
+
+                            <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
+
+                            <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class="icon-share"></i></a>
+
+                    {% endif %}
+
+
+                    {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' and obj.concept_ui|slice:"0:1" == 'F' %}
+                        <font color="gray"><i>&nbsp;{% trans "Narrower" %}
+                            {% if obj.termdesc__status == '3' %}
+                                {{ obj.termdesc__status|display_status_label }}
+                            {% endif %}
+                        </i></font>
+
+                            <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
+
+                            <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class="icon-share"></i></a>
+
+                    {% endif %}
+
+
+                    <!-- <div id="concept_{{ obj.id }}" class="collapse"> -->
+                        <ul>
+                            {% ifchanged %}
+                                <a href="{% url 'create_term_desc' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class='icon-file'></i>&nbsp;{% trans "Add term" %}</a>
+                             
+                                <br>
+                                <b>{% trans "Term" %}</b>:
+                            {% endifchanged %}
+                            
+                            {% ifchanged obj.termdesc__id %}
+                            <ul>
+                                <a class="accordion-toggle" data-toggle="collapse" data-target="#term_{{ obj.termdesc__id }}">
+                                    {{ obj.termdesc__term_string }}
+                                </a>
+                                {% if obj.termdesc__language_code %}({{ obj.termdesc__language_code }}){% endif %}
+                                {% if obj.termdesc__concept_preferred_term == 'Y' %}
+                                    <font color="blue"><i>&nbsp;{% trans "Preferred Term" %}</i></font>
+                                {% endif %}
+
+                                {% if obj.termdesc__status != -3 %}
+                                    <a href="{% url 'edit_term_desc' obj.termdesc__id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class="icon-pencil"></i></a>
+
+                                    <a href="{% url 'list_term' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_id={{ obj.termdesc__id }}">
+                                    <i class="icon-share"></i></a>
+                                {% endif %}
+
+                                {{ obj.termdesc__status|display_status_label }}
+
+                                <ul id="term_{{ obj.termdesc__id }}" class="collapse">
+                                    {% if obj.termdesc__term_ui %}{% trans "Term UI" %}: {{ obj.termdesc__term_ui }}<br>{% endif %}
+                                    {% if obj.termdesc__concept_preferred_term %}{% trans "ConceptPreferredTerm" %}: {{ obj.termdesc__concept_preferred_term }}<br>{% endif %}
+                                    {% if obj.termdesc__is_permuted_term %}{% trans "Is permuted" %}: {{ obj.termdesc__is_permuted_term }}<br>{% endif %}
+                                    {% if obj.termdesc__lexical_tag %}{% trans "LexicalTag" %}: {{ obj.termdesc__lexical_tag }}<br>{% endif %}
+                                    {% if obj.termdesc__record_preferred_term %}{% trans "RecordPreferredTerm" %}: {{ obj.termdesc__record_preferred_term }}<br>{% endif %}
+                                    {% if obj.termdesc__entry_version %}{% trans "Entry Version" %}: {{ obj.termdesc__entry_version }}<br>{% endif %}
+                                    {% if obj.termdesc__date_created %}{% trans "DateCreated" %}: {{ obj.termdesc__date_created }}<br>{% endif %}
+                                    {% if obj.termdesc__date_altered %}{% trans "DateAltered" %}: {{ obj.termdesc__date_altered }}<br>{% endif %}
+                                    {% if obj.termdesc__historical_annotation %}{% trans "History annotation" %}: {{ obj.termdesc__historical_annotation }}<br>{% endif %}
+                                </ul>
+
+                            </ul>
+                            {% endifchanged %}
+                        </ul>
+
+                    <!-- </div> -->
+
+                    </ul>
+
+                {% endfor %}
             </div>
 
             <div id="tab-legacy" class="tab-pane">

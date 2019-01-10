@@ -19,19 +19,36 @@ class Thesaurus(models.Model):
 
     thesaurus_scope = models.CharField(_("Scope"), max_length=250, blank=False)
 
+    thesaurus_acronym = models.CharField(_("Thesaurus acronym"), max_length=3, blank=True)
+
 
     def __unicode__(self):
         return self.thesaurus_name
 
 
-# DeCS Code - Sequential control table of codes
+# Sequential control table of codes for decs_code, descriptor_ui and qualifier_ui uses
 class code_controller(models.Model):
+    class Meta:
+        verbose_name = _("Sequencial control")
+        verbose_name_plural = _("Sequencial controls")
 
-	class Meta:
-		verbose_name = _("Sequencial control")
-		verbose_name_plural = _("Sequencial controls")
+    sequential_number = models.CharField(_("Sequential number"), max_length=250, blank=False)
 
-	sequential_number = models.CharField(_("Sequential number"), max_length=250, blank=False)
+    thesaurus = models.CharField(_("Thesaurus"), max_length=50, blank=True)
 
-	def __unicode__(self):
-		return self.id
+    def __unicode__(self):
+        return self.id
+
+
+# TERMs - Sequential control table of codes for term_ui use
+class code_controller_term(models.Model):
+    class Meta:
+        verbose_name = _("Sequencial control")
+        verbose_name_plural = _("Sequencial controls")
+
+    sequential_number = models.CharField(_("Sequential number"), max_length=250, blank=False)
+
+    thesaurus = models.CharField(_("Thesaurus"), max_length=50, blank=True)
+
+    def __unicode__(self):
+        return self.id

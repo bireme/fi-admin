@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
+
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
@@ -61,6 +62,10 @@ ACTIONS = {
 
     'choiced_thesaurus': '',
 
+    'choiced_concept_identifier_id': '',
+
+    'choiced_term_id': '',
+
 }
 
 
@@ -78,7 +83,6 @@ class DescUpdate(LoginRequiredView):
     template_name = "thesaurus/descriptor_form_step1.html"
 
     def form_valid(self, form):
-
         formset_descriptor = DescriptionDescFormSet(self.request.POST, instance=self.object)
         formset_treenumber = TreeNumbersListDescFormSet(self.request.POST, instance=self.object)
         formset_pharmaco = PharmacologicalActionListDescFormSet(self.request.POST, instance=self.object)
@@ -104,19 +108,39 @@ class DescUpdate(LoginRequiredView):
             formset_entrycombination_valid
             ):
 
+
+            # self.object = form.save()
+
             # Bring the choiced language_code from the first form
             registry_language = formset_descriptor.cleaned_data[0].get('language_code')
 
-            # self.object = form.save()
-            self.object = form.save(commit=False)
-            
             # Get sequential number to write to decs_code
-            seq = code_controller.objects.get(pk=1)
-            nseq = str(int(seq.sequential_number) + 1)
-            seq.sequential_number = nseq
-            seq.save()
-
+            self.object = form.save(commit=False)
+            ths = self.request.GET.get("ths")
+            try:
+                seq = code_controller.objects.get(thesaurus=self.request.GET.get("ths"))
+                nseq = str(int(seq.sequential_number) + 1)
+                seq.sequential_number = nseq
+                seq.save()
+            except code_controller.DoesNotExist:
+                seq = code_controller(sequential_number=1,thesaurus=ths)
+                nseq = 1
+                seq.save()
             self.object.decs_code = nseq
+            self.object = form.save(commit=True)
+
+            # Get thesaurus_acronym to create new ID format to descriptor_ui field
+            self.object = form.save(commit=False)
+            try:
+                acronym = Thesaurus.objects.filter(id=self.request.GET.get("ths")).values('thesaurus_acronym')
+                # recupera o acronimo e transforma em maiusuclo
+                acronym = str(acronym[0].get('thesaurus_acronym')).upper()
+                # utiliza self.object.decs_code para compor descriptor_ui
+                zseq = str(self.object.decs_code).zfill(6) # preenche zeros a esquerda
+                self.object.descriptor_ui = 'D' + acronym + zseq
+            except Thesaurus.DoesNotExist:
+                id_thesaurus = str(self.object.id)
+                print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
             self.object = form.save(commit=True)
 
             formset_descriptor.instance = self.object
@@ -380,10 +404,10 @@ class DescListView(LoginRequiredView, ListView):
         # AND performance for Term ------------------------------------------------------------------------
         # Do the initial search in term_string field
         if self.actions['s'] and not self.actions['filter_fields']:
-            object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
         else:
             # bring all registers
-            object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
 
         # term_string
         if self.actions['filter_fields'] == 'term_string' and self.actions['s']:
@@ -480,10 +504,10 @@ class DescListView(LoginRequiredView, ListView):
         context = super(DescListView, self).get_context_data(**kwargs)
         context['actions'] = self.actions
 
+        context['last_created_objects_list'] = TermListDesc.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(status=3).exclude(status=5).exclude(date_created__isnull=True).order_by('-date_created','-id')[:10][::-1]
+        context['last_altered_objects_list'] = TermListDesc.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(date_altered__isnull=True).order_by('-date_altered','-id')[:10][::-1]
+
         return context
-
-
-
 
 
 
@@ -514,11 +538,56 @@ class ConceptTermUpdate(LoginRequiredView):
 
             self.object = form.save()
 
+            # Get thesaurus_acronym to create new ID format to concept_ui field
+            self.object = form.save(commit=False)
+            zseq = str(self.object.id).zfill(8) # preenche zeros a esquerda
+            self.object.concept_ui = 'FD' + zseq
+            self.object = form.save(commit=True)
+
             formset_concept.instance = self.object
             formset_concept.save()
 
             formset_term.instance = self.object
             formset_term.save()
+
+            # Bring the choiced language_code from the first form
+            registry_language = formset_term.cleaned_data[0].get('language_code')
+
+            # Update term_ui with a new format
+            try:
+
+                ths = self.request.GET.get("ths")
+                try:
+                    seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                    nseq = str(int(seq.sequential_number) + 1)
+                    seq.sequential_number = nseq
+                    seq.save()
+                except code_controller_term.DoesNotExist:
+                    seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                    nseq = 1
+                    seq.save()
+                created_id = int(TermListDesc.objects.latest('id').id)
+                update_field = TermListDesc.objects.get(id=created_id)
+
+                # substitui idioma do sistema por sigla de 3 letras
+                if registry_language == 'en':
+                    language_3letters = 'eng'
+                if registry_language == 'es':
+                    language_3letters = 'spa'
+                if registry_language == 'pt-br':
+                    language_3letters = 'por'
+                if registry_language == 'fr':
+                    language_3letters = 'fre'
+                if registry_language == 'es-es':
+                    language_3letters = 'spa'
+
+                # preenche zeros a esquerda
+                zseq = str(nseq).zfill(6)
+
+                update_field.term_ui = language_3letters + 'd' + zseq
+                update_field.save()
+            except TermListDesc.DoesNotExist:
+                print 'Warning! Does not exist id to this Term'
 
             form.save()
 
@@ -567,8 +636,8 @@ class DescCreateView2(ConceptTermUpdate, CreateView):
         return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
 
 
-# Pesquisa conceito para poder trazer ID do registro para novo conceito
-# Não está sendo utilizado por enquanto
+
+# Pesquisa ID do registro para poder saber qual é o ID do conceito destino
 class ConceptListDescView(LoginRequiredView, ListView):
     """
     List descriptor records (used by relationship popup selection window)
@@ -586,18 +655,23 @@ class ConceptListDescView(LoginRequiredView, ListView):
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
-        # q_term_string = Q(term_string__icontains=self.actions['s'])
-        q_term_string = Q(termdesc__term_string__icontains=self.actions['s'])
-        q_preferred_concept = Q(preferred_concept='Y')
+        if self.actions['choiced_concept_identifier_id']:
+            concept_identifier_id = self.actions['choiced_concept_identifier_id']
+            # print 'concept_identifier_id-->',concept_identifier_id
 
-        object_list = IdentifierConceptListDesc.objects.filter( q_preferred_concept & q_term_string ).values('identifier_id','termdesc__term_string','termdesc__language_code')
+        if self.actions['s']:
+            try:
+                id_registro = IdentifierDesc.objects.get(descriptor_ui=self.actions['s'],thesaurus_id=self.actions['choiced_thesaurus'])
+                # print 'ID do registro-->',id_registro
+                object_list = IdentifierConceptListDesc.objects.filter(identifier_id=id_registro).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')
+            except IdentifierDesc.DoesNotExist:
+                # order performance -------------------------------------------------------------------------------------
+                if self.actions['order'] == "-":
+                    object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
-        # order performance -------------------------------------------------------------------------------------
-        if self.actions['order'] == "-":
-            object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+                if self.actions['visited'] != 'ok':
+                    object_list = object_list.none()
 
-        if self.actions['visited'] != 'ok':
-            object_list = object_list.none()
 
         return object_list
 
@@ -606,7 +680,240 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
         context['actions'] = self.actions
 
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        if self.actions['s']:
+            try:
+                id_registro = str(IdentifierDesc.objects.get(descriptor_ui=self.actions['s']),thesaurus_id=self.actions['choiced_thesaurus'])
+
+                # IdentifierDesc
+                context['id_register_objects'] = IdentifierDesc.objects.filter(
+                                                id=id_registro,
+                                                ).values(
+                                                    # IdentifierDesc
+                                                    'id',
+                                                    'thesaurus',
+                                                    'descriptor_class',
+                                                    'descriptor_ui',
+                                                    'decs_code',
+                                                    'external_code',
+                                                    'nlm_class_number',
+                                                    'date_created',
+                                                    'date_revised',
+                                                    'date_established',
+                                                    'abbreviation',
+                                                )
+                context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+
+            except IdentifierDesc.DoesNotExist:
+                context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+
         return context
+
+
+
+def ConceptListDescModification(request,term_id, ths, concept_ori):
+
+    # print 'term_id',term_id
+    # print 'ths ---> ',ths
+    # print 'Concept--->',concept_ori
+
+    # Descobre qual é o id do conceito do termo destino
+    id_concept_destino = TermListDesc.objects.filter(id=term_id).values('identifier_concept_id')
+    id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
+    # print 'id_concept_destino-->',id_concept_destino
+
+    identifier_id_destino = IdentifierConceptListDesc.objects.filter(id=id_concept_destino).values('identifier_id')
+    identifier_id_destino = identifier_id_destino[0].get('identifier_id')
+    # print 'identifier_id_destino-->',identifier_id_destino
+
+    # Verifica se o conceito é preferido, se for deverá ser escolhido o proximo nao preferido que assumirá a predileção
+    check_preferred_concept_origem = IdentifierConceptListDesc.objects.filter(id=concept_ori).values('preferred_concept')
+    check_preferred_concept_origem = check_preferred_concept_origem[0].get('preferred_concept')
+    # print 'check_preferred_concept_origem', check_preferred_concept_origem
+
+    if check_preferred_concept_origem == 'Y':
+
+        # Verifica se o conceito origem tem irmãos, se houver e se o conceito origem for preferido então o segundo conceito assumirá a predileção
+        check_concept_id_origem = IdentifierConceptListDesc.objects.filter(id=concept_ori).values('identifier_id')
+        check_concept_id_origem = check_concept_id_origem[0].get('identifier_id')
+        # print 'check_concept_id_origem -->',check_concept_id_origem
+        check_concept_id_origem = IdentifierConceptListDesc.objects.filter(identifier_id=check_concept_id_origem).values('identifier_id')
+        # print 'qtd conceitos',check_concept_id_origem
+
+        if len(check_concept_id_origem) > 1:
+            # print 'Qtd:',len(check_concept_id_origem)
+
+            # Descobre qual o id do primeiro registro nao preferido
+            check_concept_id_not_preferred = IdentifierConceptListDesc.objects.filter(identifier_id=check_concept_id_origem,preferred_concept='N').values('id')
+            check_concept_id_not_preferred = check_concept_id_not_preferred[0].get('id')
+            # print 'check_concept_id_not_preferred-->',check_concept_id_not_preferred
+
+            # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
+            IdentifierConceptListDesc.objects.filter(id=check_concept_id_not_preferred).update(concept_relation_name='',preferred_concept='Y')
+
+
+    # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
+    IdentifierConceptListDesc.objects.filter(id=concept_ori).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N')
+
+
+    url = '/thesaurus/descriptors/view/' + term_id + '?ths=' + ths
+    return HttpResponseRedirect(url)
+
+
+
+# Pesquisa conceito para poder trazer ID do registro para novo conceito
+# Não está sendo utilizado por enquanto
+class TermListDescView(LoginRequiredView, ListView):
+    """
+    List descriptor records (used by relationship popup selection window)
+    """
+    template_name = "thesaurus/search_term_desc.html"
+    context_object_name = "registers"
+    paginate_by = ITEMS_PER_PAGE
+
+    def get_queryset(self):
+        lang_code = get_language()
+        object_list = []
+
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        if self.actions['choiced_concept_identifier_id']:
+            concept_identifier_id = self.actions['choiced_concept_identifier_id']
+            # print 'concept_identifier_id-->',concept_identifier_id
+
+        if self.actions['s']:
+            try:
+                # id_conceito = IdentifierConceptListDesc.objects.get(concept_ui=self.actions['s'])
+                # print 'ID do conceito-->',id_conceito
+                object_list = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')
+            except IdentifierConceptListDesc.DoesNotExist:
+                # order performance -------------------------------------------------------------------------------------
+                if self.actions['order'] == "-":
+                    object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+
+                if self.actions['visited'] != 'ok':
+                    object_list = object_list.none()
+
+
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super(TermListDescView, self).get_context_data(**kwargs)
+
+        context['actions'] = self.actions
+
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        if self.actions['s']:
+            try:
+                id_conceito = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('id')
+
+                # IdentifierDesc
+                context['id_register_objects'] = IdentifierConceptListDesc.objects.filter(
+                                                id=id_conceito,
+                                                ).values(
+                                                    # IdentifierConceptListDesc
+                                                    'id',
+                                                    'concept_ui',
+                                                )
+                context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+
+            except IdentifierDesc.DoesNotExist:
+                context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+
+
+
+        return context
+
+
+
+def TermListDescModification(request,term_id, ths, term_ori):
+
+    # print 'term_ori--->',term_ori
+    # print 'term_id',term_id
+    # print 'ths ---> ',ths
+
+    # Descobre qual é o identifier_concept_id do termo destino
+    id_concept_destino = TermListDesc.objects.filter(id=term_id).values('identifier_concept_id')
+
+    # Descobre qual é o identifier_id do conceito
+    identifier_id_destino = IdentifierConceptListDesc.objects.filter(id=id_concept_destino).values('identifier_id')
+    identifier_id_destino = identifier_id_destino[0].get('identifier_id')
+    id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
+
+    # Descobre qual é o identifier_concept_id do termo origem
+    term_origem_values = TermListDesc.objects.filter(id=term_ori).values('identifier_concept_id','term_ui')
+    id_concept_origem = term_origem_values[0].get('identifier_concept_id')
+    term_ui_origem = term_origem_values[0].get('term_ui')
+
+    qtd_id_concept_origem = TermListDesc.objects.filter(identifier_concept_id=id_concept_origem)
+    if len(qtd_id_concept_origem) == 1:
+        # Quando existe apenas um termo para o conceito, deverá ser atualizado para a informação do novo conceito:
+        # termlistdesc --> campo identifier_concept_id --> recebe valor do identifier_concept_id do termo destino
+        # identifierconceptlistdesc --> campo identifier_id --> recebe o valor do identifier_id do conceito destino
+
+        # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
+        IdentifierConceptListDesc.objects.filter(id=id_concept_origem).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N')
+
+    else:
+        # Atualiza informações do termo origem e destino
+        # Prepara informacoes do historico origem
+        concept_ui_origem = IdentifierConceptListDesc.objects.filter(id=id_concept_origem).values('concept_ui')
+        concept_ui_origem = concept_ui_origem[0].get('concept_ui')
+        historical_annotation_old=TermListDesc.objects.filter(id=term_ori).values('id','historical_annotation')
+        historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
+
+        # Prepara informacoes do historico destino
+        concept_ui_destino = IdentifierConceptListDesc.objects.filter(id=id_concept_destino).values('concept_ui')
+        concept_ui_destino = concept_ui_destino[0].get('concept_ui')
+        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+        # Atualiza historico da origem
+        TermListDesc.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new )
+
+        # Pesquisa a existencia de um registro existente no destino com o status de migracao - 3
+        # para isso pesquisa o term_ui de origem e o status=-3
+        new_term=TermListDesc.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
+        term_ui_ori=new_term[0].get('term_ui')
+        exist_term=TermListDesc.objects.filter(status=-3, term_ui=term_ui_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
+
+        if len(exist_term) > 0:
+            term_id_exist=exist_term[0].get('id')
+            historical_annotation_old=exist_term[0].get('historical_annotation')
+            historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
+            historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+            # Atualiza o historico do destino
+            TermListDesc.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new)
+
+        else:
+            # Cria nova entrada
+            item = TermListDesc.objects.create(
+                    status='1',
+                    term_ui=new_term[0].get('term_ui'),
+                    language_code=new_term[0].get('language_code'),
+                    term_string=new_term[0].get('term_string'),
+                    concept_preferred_term='N',
+                    is_permuted_term='N',
+                    lexical_tag=new_term[0].get('lexical_tag'),
+                    record_preferred_term='N',
+                    entry_version=new_term[0].get('entry_version'),
+                    date_created=new_term[0].get('date_created'),
+                    date_altered=new_term[0].get('date_altered'),
+                    historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem,
+                    term_thesaurus=new_term[0].get('term_thesaurus'),
+                    identifier_concept_id=id_concept_destino,
+                    )
+
+    url = '/thesaurus/descriptors/view/' + term_id + '?ths=' + ths
+    return HttpResponseRedirect(url)
 
 
 
@@ -651,7 +958,69 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
             formset_term.instance = self.object
             formset_term.save()
 
+            # Bring the choiced language_code from the first form
+            registry_language = formset_term.cleaned_data[0].get('language_code')
+
             form.save()
+
+            # Update concept_ui with a new format
+            try:
+                created_concept_id = int(IdentifierConceptListDesc.objects.latest('id').id)
+                update_concept_field = IdentifierConceptListDesc.objects.get(id=created_concept_id)
+
+                # preenche zeros a esquerda
+                zseq = str(created_concept_id).zfill(8)
+
+                update_concept_field.concept_ui = 'FD' + zseq
+                update_concept_field.save()
+            except IdentifierConceptListDesc.DoesNotExist:
+                print 'Warning! Does not exist id to this Concept'
+
+            # Update term_ui with a new format
+            try:
+
+                ths = self.request.GET.get("ths")
+                try:
+                    seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                    nseq = str(int(seq.sequential_number) + 1)
+                    seq.sequential_number = nseq
+                    seq.save()
+                except code_controller_term.DoesNotExist:
+                    seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                    nseq = 1
+                    seq.save()
+                created_id = int(TermListDesc.objects.latest('id').id)
+                update_field = TermListDesc.objects.get(id=created_id)
+
+                # substitui idioma do sistema por sigla de 3 letras
+                if registry_language == 'en':
+                    language_3letters = 'eng'
+                if registry_language == 'es':
+                    language_3letters = 'spa'
+                if registry_language == 'pt-br':
+                    language_3letters = 'por'
+                if registry_language == 'fr':
+                    language_3letters = 'fre'
+                if registry_language == 'es-es':
+                    language_3letters = 'spa'
+
+                # preenche zeros a esquerda
+                zseq = str(nseq).zfill(6)
+
+                update_field.term_ui = language_3letters + 'd' + zseq
+                update_field.save()
+            except TermListDesc.DoesNotExist:
+                print 'Warning! Does not exist id to this Term'
+
+            # Update created_date
+            try:
+                created_id = int(TermListDesc.objects.latest('id').id)
+                update_date_created = TermListDesc.objects.get(id=created_id)
+                update_date_created.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+                update_date_created.save()
+            except TermListDesc.DoesNotExist:
+                print 'Warning! Does not exist id to this Term'
+
 
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -773,6 +1142,45 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                 formset_toccurrence.save()
 
                 form.save()
+
+                registry_language = self.request.POST.get("language_code")
+
+                # Update term_ui with a new format
+                try:
+
+                    ths = self.request.GET.get("ths")
+                    try:
+                        seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                        nseq = str(int(seq.sequential_number) + 1)
+                        seq.sequential_number = nseq
+                        seq.save()
+                    except code_controller_term.DoesNotExist:
+                        seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                        nseq = 1
+                        seq.save()
+                    created_id = int(TermListDesc.objects.latest('id').id)
+                    update_field = TermListDesc.objects.get(id=created_id)
+
+                    # substitui idioma do sistema por sigla de 3 letras
+                    if registry_language == 'en':
+                        language_3letters = 'eng'
+                    if registry_language == 'es':
+                        language_3letters = 'spa'
+                    if registry_language == 'pt-br':
+                        language_3letters = 'por'
+                    if registry_language == 'fr':
+                        language_3letters = 'fre'
+                    if registry_language == 'es-es':
+                        language_3letters = 'spa'
+
+                    # preenche zeros a esquerda
+                    zseq = str(nseq).zfill(6)
+
+                    update_field.term_ui = language_3letters + 'd' + zseq
+                    update_field.save()
+                except TermListDesc.DoesNotExist:
+                    print 'Warning! Does not exist id to this Term'
+
                 return HttpResponseRedirect(self.get_success_url())
             else:
                 msg_erro =  _("This Term already exist!")
@@ -1056,7 +1464,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                             )
 
             context['entry_terms_objects'] = IdentifierConceptListDesc.objects.filter(
-                                            identifier=id_concept,termdesc__record_preferred_term='N',
+                                            identifier=id_concept,termdesc__status=1,termdesc__record_preferred_term='N',
                                             ).order_by('identifier_id',
                                                         'termdesc__language_code',
                                                         'termdesc__term_string',
@@ -1108,9 +1516,9 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                             )
 
 
-            # Usado para mostrar informações de conceitos e termos
-            context['identifierconceptlist_objects'] = IdentifierConceptListDesc.objects.filter(
-                                            identifier=id_concept,
+            # Usado para mostrar informações de conceitos e termos Preferidos
+            context['identifierconceptlist_objects_preferred'] = IdentifierConceptListDesc.objects.filter(
+                                            identifier=id_concept,preferred_concept='Y',
                                             ).order_by('identifier_id',
                                                         'termdesc__identifier_concept_id',
                                                         '-preferred_concept',
@@ -1145,6 +1553,47 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                     'termdesc__date_altered',
                                                     'termdesc__historical_annotation',
                                             ).distinct()
+
+            # Usado para mostrar informações de conceitos e termos Não Preferidos 
+            context['identifierconceptlist_objects'] = IdentifierConceptListDesc.objects.filter(
+                                            identifier=id_concept,preferred_concept='N',
+                                            ).order_by('identifier_id',
+                                                        'termdesc__identifier_concept_id',
+                                                        '-preferred_concept',
+                                                        '-termdesc__concept_preferred_term',
+                                                        'termdesc__language_code',
+                                                        'termdesc__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'identifier_id',
+                                                    'concept_ui',
+                                                    'concept_relation_name',
+                                                    'preferred_concept',
+                                                    'casn1_name',
+                                                    'registry_number',
+
+                                                    'conceptdesc__identifier_concept_id',
+                                                    'conceptdesc__language_code',
+                                                    'conceptdesc__scope_note',
+
+                                                    'termdesc__id',
+                                                    'termdesc__identifier_concept_id',
+                                                    'termdesc__status',
+                                                    'termdesc__term_ui',
+                                                    'termdesc__language_code',
+                                                    'termdesc__term_string',
+                                                    'termdesc__concept_preferred_term',
+                                                    'termdesc__is_permuted_term',
+                                                    'termdesc__lexical_tag',
+                                                    'termdesc__record_preferred_term',
+                                                    'termdesc__entry_version',
+                                                    'termdesc__date_created',
+                                                    'termdesc__date_altered',
+                                                    'termdesc__historical_annotation',
+                                            ).distinct()
+
+
+
 
             # Traz abbreviation e term_string do idioma da interface no momento
             id_abbrev = IdentifierDesc.objects.filter(id=id_concept).values('abbreviation')
@@ -1200,21 +1649,38 @@ class QualifUpdate(LoginRequiredView):
             formset_descriptor_valid and 
             formset_treenumber_valid
             ):
+            # self.object = form.save()
 
             # Bring the choiced language_code from the first form
             registry_language = formset_descriptor.cleaned_data[0].get('language_code')
 
-            # self.object = form.save()
+            # Get sequential number to write to decs_code
             self.object = form.save(commit=False)
-            
-            # Pega info de sequencial para salvar em decs_code
-            seq = code_controller.objects.get(pk=1)
-            nseq = str(int(seq.sequential_number) + 1)
-            seq.sequential_number = nseq
-            seq.save()
-
-
+            ths = self.request.GET.get("ths")
+            try:
+                seq = code_controller.objects.get(thesaurus=self.request.GET.get("ths"))
+                nseq = str(int(seq.sequential_number) + 1)
+                seq.sequential_number = nseq
+                seq.save()
+            except code_controller.DoesNotExist:
+                seq = code_controller(sequential_number=1,thesaurus=ths)
+                nseq = 1
+                seq.save()
             self.object.decs_code = nseq
+            self.object = form.save(commit=True)
+
+            # Get thesaurus_acronym to create new ID format to descriptor_ui field
+            self.object = form.save(commit=False)
+            try:
+                acronym = Thesaurus.objects.filter(id=self.request.GET.get("ths")).values('thesaurus_acronym')
+                # recupera o acronimo e transforma em maiusuclo
+                acronym = str(acronym[0].get('thesaurus_acronym')).upper()
+                # utiliza self.object.decs_code para compor qualifier_ui
+                zseq = str(self.object.decs_code).zfill(6) # preenche zeros a esquerda
+                self.object.qualifier_ui = 'Q' + acronym + zseq
+            except Thesaurus.DoesNotExist:
+                id_thesaurus = str(self.object.id)
+                print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
             self.object = form.save(commit=True)
 
             formset_descriptor.instance = self.object
@@ -1402,10 +1868,10 @@ class QualifListView(LoginRequiredView, ListView):
         # AND performance for Term ------------------------------------------------------------------------
         # Do the initial search in term_string field
         if self.actions['s'] and not self.actions['filter_fields']:
-            object_list = TermListQualif.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListQualif.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
         else:
             # bring all registers
-            object_list = TermListQualif.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            object_list = TermListQualif.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
 
         # term_string
         if self.actions['filter_fields'] == 'term_string' and self.actions['s']:
@@ -1521,6 +1987,9 @@ class QualifListView(LoginRequiredView, ListView):
 
         context['actions'] = self.actions
 
+        context['last_created_objects_list'] = TermListQualif.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(status=3).exclude(status=5).exclude(date_created__isnull=True).order_by('-date_created','-id')[:10][::-1]
+        context['last_altered_objects_list'] = TermListQualif.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(date_altered__isnull=True).order_by('-date_altered','-id')[:10][::-1]
+
         return context
 
 
@@ -1552,11 +2021,65 @@ class QualifConceptTermUpdate(LoginRequiredView):
 
             self.object = form.save()
 
+            # Get thesaurus_acronym to create new ID format to concept_ui field
+            self.object = form.save(commit=False)
+            zseq = str(self.object.id).zfill(8) # preenche zeros a esquerda
+            self.object.concept_ui = 'FQ' + zseq
+            self.object = form.save(commit=True)
+
             formset_concept.instance = self.object
             formset_concept.save()
 
             formset_term.instance = self.object
             formset_term.save()
+
+            # Bring the choiced language_code from the first form
+            registry_language = formset_term.cleaned_data[0].get('language_code')
+
+            # Get thesaurus_acronym to create new ID format to term_ui field
+            try:
+                acronym = Thesaurus.objects.filter(id=self.request.GET.get("ths")).values('thesaurus_acronym')
+                acronym = acronym[0].get('thesaurus_acronym')
+            except Thesaurus.DoesNotExist:
+                id_thesaurus = str(self.object.id)
+                print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
+                acronym = ''
+
+            # Update term_ui with a new format
+            try:
+
+                ths = self.request.GET.get("ths")
+                try:
+                    seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                    nseq = str(int(seq.sequential_number) + 1)
+                    seq.sequential_number = nseq
+                    seq.save()
+                except code_controller_term.DoesNotExist:
+                    seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                    nseq = 1
+                    seq.save()
+                created_id = int(TermListQualif.objects.latest('id').id)
+                update_field = TermListQualif.objects.get(id=created_id)
+
+                # substitui idioma do sistema por sigla de 3 letras
+                if registry_language == 'en':
+                    language_3letters = 'eng'
+                if registry_language == 'es':
+                    language_3letters = 'spa'
+                if registry_language == 'pt-br':
+                    language_3letters = 'por'
+                if registry_language == 'fr':
+                    language_3letters = 'fre'
+                if registry_language == 'es-es':
+                    language_3letters = 'spa'
+
+                # preenche zeros a esquerda
+                zseq = str(nseq).zfill(6)
+
+                update_field.term_ui = language_3letters + 'q' + zseq
+                update_field.save()
+            except TermListQualif.DoesNotExist:
+                print 'Warning! Does not exist id to this Term'
 
             form.save()
 
@@ -1608,6 +2131,288 @@ class QualifCreateView2(QualifConceptTermUpdate, CreateView):
 
 
 
+# Pesquisa ID do registro para poder saber qual é o ID do conceito destino
+class ConceptListQualifView(LoginRequiredView, ListView):
+    """
+    List descriptor records (used by relationship popup selection window)
+    """
+    template_name = "thesaurus/search_concept_qualif.html"
+    context_object_name = "registers"
+    paginate_by = ITEMS_PER_PAGE
+
+    def get_queryset(self):
+        lang_code = get_language()
+        object_list = []
+
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        if self.actions['choiced_concept_identifier_id']:
+            concept_identifier_id = self.actions['choiced_concept_identifier_id']
+            # print 'concept_identifier_id-->',concept_identifier_id
+
+        if self.actions['s']:
+            try:
+                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s']).values('id')
+                if len(id_registro)>0:
+                    id_registro = id_registro[0].get('id')
+                    object_list = IdentifierConceptListQualif.objects.filter(identifier_id=id_registro).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')
+            except IdentifierQualif.DoesNotExist:
+                # order performance -------------------------------------------------------------------------------------
+                if self.actions['order'] == "-":
+                    object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+
+                if self.actions['visited'] != 'ok':
+                    object_list = object_list.none()
+
+
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super(ConceptListQualifView, self).get_context_data(**kwargs)
+
+        context['actions'] = self.actions
+
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        if self.actions['s']:
+            try:
+                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s']).values('id')
+                if len(id_registro)>0:
+                    id_registro = id_registro[0].get('id')
+
+                    # IdentifierQualif
+                    context['id_register_objects'] = IdentifierQualif.objects.filter(
+                                                    id=id_registro,
+                                                    ).values(
+                                                        # IdentifierQualif
+                                                        'id',
+                                                        'thesaurus',
+                                                        'qualifier_ui',
+                                                        'decs_code',
+                                                        'external_code',
+                                                        'date_created',
+                                                        'date_revised',
+                                                        'date_established',
+                                                        'abbreviation',
+                                                    )
+                    context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+
+            except IdentifierQualif.DoesNotExist:
+                context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+
+        return context
+
+
+
+def ConceptListQualifModification(request,term_id, ths, concept_ori):
+
+    # print 'term_id',term_id
+    # print 'ths ---> ',ths
+    # print 'Concept--->',concept_ori
+
+    # Descobre qual é o id do conceito do termo destino
+    id_concept_destino = TermListQualif.objects.filter(id=term_id).values('identifier_concept_id')
+    id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
+    # print 'id_concept_destino-->',id_concept_destino
+
+    identifier_id_destino = IdentifierConceptListQualif.objects.filter(id=id_concept_destino).values('identifier_id')
+    identifier_id_destino = identifier_id_destino[0].get('identifier_id')
+    # print 'identifier_id_destino-->',identifier_id_destino
+
+    # Verifica se o conceito é preferido, se for deverá ser escolhido o proximo nao preferido que assumirá a predileção
+    check_preferred_concept_origem = IdentifierConceptListQualif.objects.filter(id=concept_ori).values('preferred_concept')
+    check_preferred_concept_origem = check_preferred_concept_origem[0].get('preferred_concept')
+    # print 'check_preferred_concept_origem', check_preferred_concept_origem
+
+    if check_preferred_concept_origem == 'Y':
+
+        # Verifica se o conceito origem tem irmãos, se houver e se o conceito origem for preferido então o segundo conceito assumirá a predileção
+        check_concept_id_origem = IdentifierConceptListQualif.objects.filter(id=concept_ori).values('identifier_id')
+        check_concept_id_origem = check_concept_id_origem[0].get('identifier_id')
+        # print 'check_concept_id_origem -->',check_concept_id_origem
+        check_concept_id_origem = IdentifierConceptListQualif.objects.filter(identifier_id=check_concept_id_origem).values('identifier_id')
+        # print 'qtd conceitos',check_concept_id_origem
+
+        if len(check_concept_id_origem) > 1:
+            # print 'Qtd:',len(check_concept_id_origem)
+
+            # Descobre qual o id do primeiro registro nao preferido
+            check_concept_id_not_preferred = IdentifierConceptListQualif.objects.filter(identifier_id=check_concept_id_origem,preferred_concept='N').values('id')
+            check_concept_id_not_preferred = check_concept_id_not_preferred[0].get('id')
+            # print 'check_concept_id_not_preferred-->',check_concept_id_not_preferred
+
+            # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
+            IdentifierConceptListQualif.objects.filter(id=check_concept_id_not_preferred).update(concept_relation_name='',preferred_concept='Y')
+
+
+    # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
+    IdentifierConceptListQualif.objects.filter(id=concept_ori).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N')
+
+
+    url = '/thesaurus/qualifiers/view/' + term_id + '?ths=' + ths
+    return HttpResponseRedirect(url)
+
+
+
+
+# Pesquisa conceito para poder trazer ID do registro para novo conceito
+# Não está sendo utilizado por enquanto
+class TermListQualifView(LoginRequiredView, ListView):
+    """
+    List descriptor records (used by relationship popup selection window)
+    """
+    template_name = "thesaurus/search_term_qualif.html"
+    context_object_name = "registers"
+    paginate_by = ITEMS_PER_PAGE
+
+    def get_queryset(self):
+        lang_code = get_language()
+        object_list = []
+
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        if self.actions['choiced_concept_identifier_id']:
+            concept_identifier_id = self.actions['choiced_concept_identifier_id']
+            # print 'concept_identifier_id-->',concept_identifier_id
+
+        if self.actions['s']:
+            try:
+                # id_conceito = IdentifierConceptListQualif.objects.get(concept_ui=self.actions['s'])
+                # print 'ID do conceito-->',id_conceito
+                object_list = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')
+            except IdentifierConceptListQualif.DoesNotExist:
+                # order performance -------------------------------------------------------------------------------------
+                if self.actions['order'] == "-":
+                    object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
+
+                if self.actions['visited'] != 'ok':
+                    object_list = object_list.none()
+
+
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super(TermListQualifView, self).get_context_data(**kwargs)
+
+        context['actions'] = self.actions
+
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        if self.actions['s']:
+            try:
+                id_conceito = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('id')
+
+                # IdentifierDesc
+                context['id_register_objects'] = IdentifierConceptListQualif.objects.filter(
+                                                id=id_conceito,
+                                                ).values(
+                                                    # IdentifierConceptListQualif
+                                                    'id',
+                                                    'concept_ui',
+                                                )
+                context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+
+            except IdentifierDesc.DoesNotExist:
+                context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+
+
+
+        return context
+
+
+
+def TermListQualifModification(request,term_id, ths, term_ori):
+
+    # print 'term_ori--->',term_ori
+    # print 'term_id',term_id
+    # print 'ths ---> ',ths
+
+    # Descobre qual é o identifier_concept_id do termo destino
+    id_concept_destino = TermListQualif.objects.filter(id=term_id).values('identifier_concept_id')
+
+    # Descobre qual é o identifier_id do conceito
+    identifier_id_destino = IdentifierConceptListQualif.objects.filter(id=id_concept_destino).values('identifier_id')
+    identifier_id_destino = identifier_id_destino[0].get('identifier_id')
+    id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
+
+    # Descobre qual é o identifier_concept_id do termo origem
+    term_origem_values = TermListQualif.objects.filter(id=term_ori).values('identifier_concept_id','term_ui')
+    id_concept_origem = term_origem_values[0].get('identifier_concept_id')
+    term_ui_origem = term_origem_values[0].get('term_ui')
+
+    qtd_id_concept_origem = TermListQualif.objects.filter(identifier_concept_id=id_concept_origem)
+    if len(qtd_id_concept_origem) == 1:
+        # Quando existe apenas um termo para o conceito, deverá ser atualizado para a informação do novo conceito:
+        # TermListQualif --> campo identifier_concept_id --> recebe valor do identifier_concept_id do termo destino
+        # IdentifierConceptListQualif --> campo identifier_id --> recebe o valor do identifier_id do conceito destino
+
+        # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
+        IdentifierConceptListQualif.objects.filter(id=id_concept_origem).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N')
+
+    else:
+        # Atualiza informações do termo origem e destino
+        # Prepara informacoes do historico origem
+        concept_ui_origem = IdentifierConceptListQualif.objects.filter(id=id_concept_origem).values('concept_ui')
+        concept_ui_origem = concept_ui_origem[0].get('concept_ui')
+        historical_annotation_old=TermListQualif.objects.filter(id=term_ori).values('id','historical_annotation')
+        historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
+
+        # Prepara informacoes do historico destino
+        concept_ui_destino = IdentifierConceptListQualif.objects.filter(id=id_concept_destino).values('concept_ui')
+        concept_ui_destino = concept_ui_destino[0].get('concept_ui')
+        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+        # Atualiza historico da origem
+        TermListQualif.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new )
+
+        # Pesquisa a existencia de um registro existente no destino com o status de migracao - 3
+        # para isso pesquisa o term_ui de origem e o status=-3
+        new_term=TermListQualif.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
+        term_ui_ori=new_term[0].get('term_ui')
+        exist_term=TermListQualif.objects.filter(status=-3, term_ui=term_ui_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
+
+        if len(exist_term) > 0:
+            term_id_exist=exist_term[0].get('id')
+            historical_annotation_old=exist_term[0].get('historical_annotation')
+            historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
+            historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+            # Atualiza o historico do destino
+            TermListQualif.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new)
+
+        else:
+            # Cria nova entrada
+            item = TermListQualif.objects.create(
+                    status='1',
+                    term_ui=new_term[0].get('term_ui'),
+                    language_code=new_term[0].get('language_code'),
+                    term_string=new_term[0].get('term_string'),
+                    concept_preferred_term='N',
+                    is_permuted_term='N',
+                    lexical_tag=new_term[0].get('lexical_tag'),
+                    record_preferred_term='N',
+                    entry_version=new_term[0].get('entry_version'),
+                    date_created=new_term[0].get('date_created'),
+                    date_altered=new_term[0].get('date_altered'),
+                    historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem,
+                    term_thesaurus=new_term[0].get('term_thesaurus'),
+                    identifier_concept_id=id_concept_destino,
+                    )
+
+    url = '/thesaurus/qualifiers/view/' + term_id + '?ths=' + ths
+    return HttpResponseRedirect(url)
+
+
+
 class ConceptListQualifCreateView(LoginRequiredView, CreateView):
     """
     Used as class view to create concept and term of qualifier
@@ -1648,7 +2453,68 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
             formset_term.instance = self.object
             formset_term.save()
 
+            # Bring the choiced language_code from the first form
+            registry_language = formset_term.cleaned_data[0].get('language_code')
+
             form.save()
+
+            # Update concept_ui with a new format
+            try:
+                created_concept_id = int(IdentifierConceptListQualif.objects.latest('id').id)
+                update_concept_field = IdentifierConceptListQualif.objects.get(id=created_concept_id)
+
+                # preenche zeros a esquerda
+                zseq = str(created_concept_id).zfill(8)
+
+                update_concept_field.concept_ui = 'FQ' + zseq
+                update_concept_field.save()
+            except IdentifierConceptListQualif.DoesNotExist:
+                print 'Warning! Does not exist id to this Concept'
+
+            # Update term_ui with a new format
+            try:
+
+                ths = self.request.GET.get("ths")
+                try:
+                    seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                    nseq = str(int(seq.sequential_number) + 1)
+                    seq.sequential_number = nseq
+                    seq.save()
+                except code_controller_term.DoesNotExist:
+                    seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                    nseq = 1
+                    seq.save()
+                created_id = int(TermListQualif.objects.latest('id').id)
+                update_field = TermListQualif.objects.get(id=created_id)
+
+                # substitui idioma do sistema por sigla de 3 letras
+                if registry_language == 'en':
+                    language_3letters = 'eng'
+                if registry_language == 'es':
+                    language_3letters = 'spa'
+                if registry_language == 'pt-br':
+                    language_3letters = 'por'
+                if registry_language == 'fr':
+                    language_3letters = 'fre'
+                if registry_language == 'es-es':
+                    language_3letters = 'spa'
+
+                # preenche zeros a esquerda
+                zseq = str(nseq).zfill(6)
+
+                update_field.term_ui = language_3letters + 'q' + zseq
+                update_field.save()
+            except TermListQualif.DoesNotExist:
+                print 'Warning! Does not exist id to this Term'
+
+            # Update created_date
+            try:
+                created_id = int(TermListQualif.objects.latest('id').id)
+                update_date_created = TermListQualif.objects.get(id=created_id)
+                update_date_created.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+                update_date_created.save()
+            except TermListQualif.DoesNotExist:
+                print 'Warning! Does not exist id to this Term'
 
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -1756,6 +2622,45 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
                 self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
 
                 form.save()
+
+                registry_language = self.request.POST.get("language_code")
+
+                # Update term_ui with a new format
+                try:
+
+                    ths = self.request.GET.get("ths")
+                    try:
+                        seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                        nseq = str(int(seq.sequential_number) + 1)
+                        seq.sequential_number = nseq
+                        seq.save()
+                    except code_controller_term.DoesNotExist:
+                        seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                        nseq = 1
+                        seq.save()
+                    created_id = int(TermListQualif.objects.latest('id').id)
+                    update_field = TermListQualif.objects.get(id=created_id)
+
+                    # substitui idioma do sistema por sigla de 3 letras
+                    if registry_language == 'en':
+                        language_3letters = 'eng'
+                    if registry_language == 'es':
+                        language_3letters = 'spa'
+                    if registry_language == 'pt-br':
+                        language_3letters = 'por'
+                    if registry_language == 'fr':
+                        language_3letters = 'fre'
+                    if registry_language == 'es-es':
+                        language_3letters = 'spa'
+
+                    # preenche zeros a esquerda
+                    zseq = str(nseq).zfill(6)
+
+                    update_field.term_ui = language_3letters + 'q' + zseq
+                    update_field.save()
+                except TermListQualif.DoesNotExist:
+                    print 'Warning! Does not exist id to this Term'
+
                 return HttpResponseRedirect(self.get_success_url())
             else:
                 msg_erro =  _("This Term already exist!")
@@ -1963,7 +2868,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                             )
 
             context['entry_terms_objects'] = IdentifierConceptListQualif.objects.filter(
-                                            identifier=id_concept,termqualif__record_preferred_term='N',
+                                            identifier=id_concept,termqualif__status=1,termqualif__record_preferred_term='N',
                                             ).order_by('identifier_id',
                                                         'termqualif__language_code',
                                                         'termqualif__term_string',
@@ -2001,9 +2906,48 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                 'identifier_id',
                                             )
 
-            # Used to show concept and term information
+            # Usado para mostrar informações de conceitos e termos Preferidos
+            context['identifierconceptlist_objects_preferred'] = IdentifierConceptListQualif.objects.filter(
+                                            identifier=id_concept,preferred_concept='Y',
+                                            ).order_by('identifier_id',
+                                                        'termqualif__identifier_concept_id',
+                                                        '-preferred_concept',
+                                                        '-termqualif__concept_preferred_term',
+                                                        'termqualif__language_code',
+                                                        'termqualif__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'identifier_id',
+                                                    'concept_ui',
+                                                    'concept_relation_name',
+                                                    'preferred_concept',
+                                                    'casn1_name',
+                                                    'registry_number',
+
+                                                    'conceptqualif__identifier_concept_id',
+                                                    'conceptqualif__language_code',
+                                                    'conceptqualif__scope_note',
+
+                                                    'termqualif__id',
+                                                    'termqualif__identifier_concept_id',
+                                                    'termqualif__status',
+                                                    'termqualif__term_ui',
+                                                    'termqualif__language_code',
+                                                    'termqualif__term_string',
+                                                    'termqualif__concept_preferred_term',
+                                                    'termqualif__is_permuted_term',
+                                                    'termqualif__lexical_tag',
+                                                    'termqualif__record_preferred_term',
+                                                    'termqualif__entry_version',
+                                                    'termqualif__date_created',
+                                                    'termqualif__date_altered',
+                                                    'termqualif__historical_annotation',
+                                            ).distinct()
+
+
+            # Usado para mostrar informações de conceitos e termos Não Preferidos
             context['identifierconceptlist_objects'] = IdentifierConceptListQualif.objects.filter(
-                                            identifier=id_concept,
+                                            identifier=id_concept,preferred_concept='N',
                                             ).order_by('identifier_id',
                                                         'termqualif__identifier_concept_id',
                                                         '-preferred_concept',

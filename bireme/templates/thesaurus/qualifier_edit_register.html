@@ -74,7 +74,9 @@
                                 <td>{{ form.external_code.label }}:</td>
                             </tr>
                             <tr>
-                                <td>{{ form.qualifier_ui }}</td>
+                                <td>
+                                    <input type="text" id="id_qualifier_ui" name="qualifier_ui" value="{% if form.qualifier_ui.value %}{{ form.qualifier_ui.value }}{% endif %}" readonly="True">
+                                </td>
                                 <td>
                                     <input type="text" id="id_decs_code" name="decs_code" value="{% if form.decs_code.value %}{{ form.decs_code.value }}{% endif %}" readonly="True">
                                 </td>

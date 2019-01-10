@@ -75,7 +75,7 @@
                                 <table>
                                     <tr>
                                         <td colspan="1">{% trans "Language used for description" %}:<span class="mark">*</span></td>
-                                        <td colspan="2">&nbsp;</td>
+                                        <td colspan="3">&nbsp;</td>
                                     </tr>
                                     <tr>
                                         <td colspan="1">
@@ -88,19 +88,7 @@
                                                 <option value="fr">{% trans "French" %}</option>
                                             </select>
                                         </td>
-                                        <td colspan="2">&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ form.descriptor_ui.label }}:</td>
-                                        <td>{{ form.external_code.label }}:</td>
-                                        <td>{{ form.nlm_class_number.label }}:</td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ form.descriptor_ui }}</td>
-                                        <td>{{ form.external_code }}</td>
-                                        <td>{{ form.nlm_class_number }}</td>
-                                        <td>&nbsp;</td>
+                                        <td colspan="3">&nbsp;</td>
                                     </tr>
                                     <tr>
                                         <td>{{ form.descriptor_class.label }}:</td>
@@ -122,6 +110,16 @@
                                         </td>
                                         <td>{{ form.date_revised }}</td>
                                         <td>{{ form.date_established }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ form.external_code.label }}:</td>
+                                        <td>{{ form.nlm_class_number.label }}:</td>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ form.external_code }}</td>
+                                        <td>{{ form.nlm_class_number }}</td>
+                                        <td colspan="2">&nbsp;</td>
                                     </tr>
                                     <tr>
                                         <td colspan=4>{{ form.abbreviation }}</td>
@@ -179,7 +177,7 @@
                                 <table>
                                     <tr>
                                         <td>{% trans "String" %}:</td>
-                                        <td>{% trans "Descriptor UI" %}:</td>
+                                        <td>{% trans "Transport UI" %}:</td>
                                     </tr>
 
                                     {{ formset_pharmaco.management_form }}
@@ -228,7 +226,7 @@
                                 <table>
                                     <tr>
                                         <td>{% trans "String" %}:</td>
-                                        <td>{% trans "Descriptor UI" %}:</td>
+                                        <td>{% trans "Transport UI" %}:</td>
                                     </tr>
                                     <tr>
                                     {{ formset_related.management_form }}

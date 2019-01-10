@@ -62,7 +62,9 @@
                             {% endfor %}
                             <table class="descriptionqualif">
                                 <tr>
-                                    <td colspan="2">{{ form.concept_ui.label }}:<br>{{ form.concept_ui }}</td>
+                                    <td colspan="2">{{ form.concept_ui.label }}:<br>
+                                        <input type="text" id="id_concept_ui" name="concept_ui" value="{% if form.concept_ui.value %}{{ form.concept_ui.value }}{% endif %}" readonly="True">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td width="20%">{{ form.concept_relation_name.label }}:<br>{{ form.concept_relation_name }}</td>

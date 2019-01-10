@@ -76,7 +76,9 @@
                     <td>
                         {{ form.language_code }}
                     </td>
-                    <td>{{ form.term_ui }}</td>
+                    <td>
+                        <input type="text" id="id_term_ui" name="term_ui" value="{% if form.term_ui.value %}{{ form.term_ui.value }}{% endif %}" readonly="True">
+                    </td>
                     <td>{{ form.date_created }}</td>
                 </tr>
                 <tr>

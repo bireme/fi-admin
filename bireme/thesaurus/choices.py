@@ -49,6 +49,7 @@ LEXICALTAG_OPTION=(
 
 
 STATUS_CHOICES=(
+    # (-3, _('Migration')),
     (-1, _('Draft')),
     (1, _('Published')),
     (3, _('Deleted')),

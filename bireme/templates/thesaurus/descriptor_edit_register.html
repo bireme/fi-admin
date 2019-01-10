@@ -76,7 +76,9 @@
                                         <td>{{ form.nlm_class_number.label }}:</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ form.descriptor_ui }}</td>
+                                        <td>
+                                            <input type="text" id="id_descriptor_ui" name="descriptor_ui" value="{% if form.descriptor_ui.value %}{{ form.descriptor_ui.value }}{% endif %}" readonly="True">
+                                        </td>
                                         <td>
                                             <input type="text" id="id_decs_code" name="decs_code" value="{% if form.decs_code.value %}{{ form.decs_code.value }}{% endif %}" readonly="True">
                                         </td>
@@ -157,7 +159,7 @@
                                 <table>
                                     <tr>
                                         <td>{% trans "String" %}:</td>
-                                        <td>{% trans "Descriptor UI" %}:</td>
+                                        <td>{% trans "Transport UI" %}:</td>
                                         <td>{% trans "Language" %}:</td>
                                     </tr>
                                     <tr>
@@ -198,7 +200,7 @@
                                 <table>
                                     <tr>
                                         <td>{% trans "String" %}:</td>
-                                        <td>{% trans "Descriptor UI" %}:</td>
+                                        <td>{% trans "Transport UI" %}:</td>
                                     </tr>
                                     <tr>
                                     {{ formset_related.management_form }}

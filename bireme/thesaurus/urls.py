@@ -35,12 +35,13 @@ urlpatterns = [
     url(r'^descriptors/legacy/new/?$', legacyInformationDescCreateView.as_view(), name='create_legacy_desc'),
     url(r'^descriptors/legacy/edit/(?P<pk>\d+)/?$', legacyInformationDescUpdateView.as_view(), name='edit_legacy_desc'),
 
-
-
-    # Nao esta sendo utilizado por enquanto
-    # Lista conceitos
+    # Referente a migracao de conceito
     url(r'^descriptors/concept/?$', ConceptListDescView.as_view(), name='list_concept'),
+    url(r'^descriptors/concept/move/(?P<term_id>\d+)/(?P<ths>\d+)/(?P<concept_ori>\d+)?$', ConceptListDescModification, name='move_concept_desc'),
 
+    # Referente a migracao de termo
+    url(r'^descriptors/term/?$', TermListDescView.as_view(), name='list_term'),
+    url(r'^descriptors/term/move/(?P<term_id>\d+)/(?P<ths>\d+)/(?P<term_ori>\d+)?$', TermListDescModification, name='move_term_desc'),
 
 
     # Qualifiers --------------------------------------------------------------------------------------------
@@ -72,6 +73,15 @@ urlpatterns = [
     # Cria Edita Legado
     url(r'^qualifiers/legacy/new/?$', legacyInformationQualifCreateView.as_view(), name='create_legacy_qualif'),
     url(r'^qualifiers/legacy/edit/(?P<pk>\d+)/?$', legacyInformationQualifUpdateView.as_view(), name='edit_legacy_qualif'),
+
+    # Referente a migracao de conceito
+    url(r'^qualifiers/concept/?$', ConceptListQualifView.as_view(), name='list_concept_qualif'),
+    url(r'^qualifiers/concept/move/(?P<term_id>\d+)/(?P<ths>\d+)/(?P<concept_ori>\d+)?$', ConceptListQualifModification, name='move_concept_qualif'),
+
+    # Referente a migracao de termo
+    url(r'^qualifiers/term/?$', TermListQualifView.as_view(), name='list_qualif'),
+    url(r'^qualifiers/term/move/(?P<term_id>\d+)/(?P<ths>\d+)/(?P<term_ori>\d+)?$', TermListQualifModification, name='move_term_qualif'),
+
 
 
 ]

@@ -40,7 +40,8 @@
 
 </div>
 
-<div class='body'>    
+
+<div class='body'>
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active">
@@ -106,47 +107,80 @@
             <table class='table'>
                 <thead>
 
-                    <th>
-                        <a href="javascript:orderby('term_string');" id="id_term_string">
-                            {% if actions.filter_fields == 'term_string' or actions.filter_fields == '' %}
-                                {% trans "Term name" %}
-                            {% else %}
-                                {% trans "Concept name" %}
-                            {% endif %}
-                        </a>
-                    </th>
+                    {% if actions.visited %}
 
-                    <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
-                    <th>{% trans "Actions" %}</th>
-                </thead>
-                <tbody>
-
-                {% for obj in registers %}
-                    <tr>
-                        <td>
-                            {% if obj.term_string %}
-                                {% if obj.term_string %}
-                                    {{ obj.term_string }} ({{ obj.language_code }})
+                        <th>
+                            <a href="javascript:orderby('term_string');" id="id_term_string">
+                                {% if actions.filter_fields == 'term_string' or actions.filter_fields == '' %}
+                                    {% trans "Term name" %}
+                                {% else %}
+                                    {% trans "Concept name" %}
                                 {% endif %}
+                            </a>
+                        </th>
+
+                        <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+
+                    </thead>
+                    <tbody>
+
+                    {% for obj in registers %}
+                        <tr>
+                            <td>
+                                {% if obj.term_string %}
+                                    {% if obj.term_string %}
+                                        {{ obj.term_string }} ({{ obj.language_code }})
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ obj.status|display_status_label }}
+                                <a href="{% url 'detail_descriptor' obj.id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class='btn btn-mini'><i class='icon-search'></i></a>
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+                            {% if actions.visited %}
+                                <tr>
+                                    <td colspan="5">{% trans "No results found" %}</td>
+                                </tr>
                             {% endif %}
-                        </td>
-                        <td>
-                            {{ obj.status|display_status_label }}
-                        </td>
-                        <td>
-                            <a href="{% url 'detail_descriptor' obj.id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                        </td>
-                    </tr>
 
-                    {% empty %}
-                        {% if actions.visited %}
-                            <tr>
-                                <td colspan="5">{% trans "No results found" %}</td>
-                            </tr>
-                        {% endif %}
+                    {% endfor %}
+                    </tbody>
 
-                {% endfor %}
-                </tbody>
+                {% else %}
+
+                    {% if last_created_objects_list %}
+                        <h3>{% trans "Last additions" %}</h3>
+                        <ul>
+                            {% for obj in last_created_objects_list %}
+                                <a href="{% url 'detail_descriptor' obj.id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+                                {{ obj.term_string }}  ({{ obj.language_code }})</a>
+                                {% if obj.date_created %} - {{ obj.date_created}}{% endif %}
+                                {{ obj.status|display_status_label }}
+                                <br>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    <br>
+
+                    {% if last_altered_objects_list %}
+                        <h3>{% trans "Last modified" %}</h3>
+                        <ul>
+                            {% for obj in last_altered_objects_list %}
+                                <a href="{% url 'detail_descriptor' obj.id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+                                {{ obj.term_string }}  ({{ obj.language_code }})</a>
+                                {% if obj.date_created %} - {{ obj.date_created}}{% endif %}
+                                {{ obj.status|display_status_label }}
+                                <br>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                {% endif %}
             </table>
 
         {% include "pagination_generic.html" %}
