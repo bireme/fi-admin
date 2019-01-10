@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% load app_filters %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+        <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
+        <span class="divider">/</span></li>
+        <li>{% trans "Move term" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<form name="actions">
+
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type="hidden" name="filter_language" value="{{ actions.filter_language }}">
+    <input type="hidden" name="filter_fields" value="{{ actions.filter_fields }}">
+    <input type="hidden" name="filter_status" value="{{ actions.filter_status }}">
+    <input type="hidden" name="visited" value="{{ actions.visited }}">
+    <input type='hidden' name="s" value="{{ actions.s }}">
+    <input type='hidden' name="exact" value="{{ actions.exact }}">
+    <input type='hidden' name="ths" value="{{ actions.choiced_thesaurus }}">
+    <input type='hidden' name="choiced_term_id" value="{{ actions.choiced_term_id }}">
+
+</form>
+
+<!--  header -->
+<div class='header'>
+    <h3>{% trans "Warning!" %}<br>
+        {% trans "You will be making a major change, if you are sure you will do ok" %}<br>
+        {% trans "Enter the concept ID to find the destination you want to migrate" %}<br>
+        {% trans "Hint: The code starts with the letter M or F" %}
+    </h3>
+</div>
+
+<div class='body'>    
+
+    <div class="row">
+        <div class="span12">
+            <form name="search">
+                <input type="hidden" name="page" value="">
+                <input type="hidden" name="visited" value="ok">
+                <input type="hidden" id="id_thesaurus" name="ths" value="{{ request.GET.ths }}">
+                <input type='text' name="s" value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
+                <input type='hidden' name="choiced_term_id" value="{% if request.GET.term_id %}{{ request.GET.term_id }}{% else %}{{ actions.choiced_term_id }}{% endif %}">
+
+                <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
+            </form>
+        </div>
+    </div>
+
+    
+    <div class="tab-content">
+        <div>
+            <table class='table'>
+                {% for obj in registers|slice:":1" %}
+                <thead>
+                    <th colspan="2">
+                        <a href="#">
+                        {% trans "Concept found" %}
+                        </a>
+                    </th>
+
+
+                </thead>
+                    {% empty %}
+                        {% if actions.visited %}&nbsp;{% endif %}
+                {% endfor %}
+                <tbody>
+
+                {% for obj in registers|slice:":1" %}
+                    <tr>
+                        <td>
+                            {% if obj.termdesc__term_string %}
+                                {% if obj.termdesc__term_string %}
+                                    {% trans "Descriptor" %}: {{ obj.termdesc__term_string }} ({{ obj.termdesc__language_code }})
+                                    <br>
+                                {% endif %}
+                            {% endif %}
+                            {% for desc in id_register_objects|slice:":1" %}
+                                {% if desc.concept_ui %}
+                                    {% trans "Unique ID" %}: {{ desc.concept_ui }}
+                                {% endif %}
+                            {% endfor %}
+
+                        </td>
+                        <td>
+                            <a href="{% url 'move_term_desc' term_id=obj.termdesc__id ths=request.GET.ths  %}{% if request.GET.choiced_term_id %}{{ request.GET.choiced_term_id }}{% endif %}" class='btn btn-primary'></i> {% trans "Move to this concept?" %}</a>
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+                        {% if actions.visited %}
+                            <tr>
+                                <td colspan="5">{% trans "No descriptor records were found" %}</td>
+                            </tr>
+                        {% endif %}
+
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include "pagination_generic.html" %}
+
+        </div>
+
+
+        <div class="control-panel form-submit">
+            <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}
