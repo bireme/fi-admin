@@ -168,7 +168,7 @@
                         <h3>{% trans "Last modified" %}</h3>
                         <ul>
                             {% for obj in last_altered_objects_list %}
-                                [{{ obj.id }}]<a href="{% url 'detail_qualifier' obj.id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+                                <a href="{% url 'detail_qualifier' obj.id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
                                 {{ obj.term_string }}  ({{ obj.language_code }})</a>
                                 {% if obj.date_created %} - {{ obj.date_created}}{% endif %}
                                 {{ obj.status|display_status_label }}

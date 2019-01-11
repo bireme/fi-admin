@@ -475,44 +475,24 @@
 
                     <ul>
 
-                    {% if obj.termdesc__concept_preferred_term == 'Y' %}
-                        {% ifchanged obj.termdesc__identifier_concept_id %}
-                            <b>{% trans "Concept" %}</b>:
-                            <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termdesc__id }}"> -->
-                            {{ obj.termdesc__term_string }}
-                            <b>[ {{ obj.concept_ui }} ]</b>
-                            <!-- </a> -->
-                        {% endifchanged %}
-                    {% endif %}
+                        {% if obj.termdesc__concept_preferred_term == 'Y' %}
+                            {% ifchanged obj.termdesc__identifier_concept_id %}
+                                <b>{% trans "Concept" %}</b>:
+                                <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termdesc__id }}"> -->
+                                {{ obj.termdesc__term_string }}
+                                <b>[ {{ obj.concept_ui }} ]</b>
+                                <font color="gray"><i>&nbsp;{% trans "Narrower" %}
+                                    {% if obj.termdesc__status == '3' %}
+                                        {{ obj.termdesc__status|display_status_label }}
+                                    {% endif %}
+                                </i></font>
+                                
+                                <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
 
-
-                    {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' and obj.termdesc__language_code == 'en' %}
-                        <font color="gray"><i>&nbsp;{% trans "Narrower" %}
-                            {% if obj.termdesc__status == '3' %}
-                                {{ obj.termdesc__status|display_status_label }}
-                            {% endif %}
-                        </i></font>
-
-                            <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
-
-                            <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class="icon-share"></i></a>
-
-                    {% endif %}
-
-
-                    {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'N' and obj.concept_ui|slice:"0:1" == 'F' %}
-                        <font color="gray"><i>&nbsp;{% trans "Narrower" %}
-                            {% if obj.termdesc__status == '3' %}
-                                {{ obj.termdesc__status|display_status_label }}
-                            {% endif %}
-                        </i></font>
-
-                            <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
-
-                            <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class="icon-share"></i></a>
-
-                    {% endif %}
-
+                                <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class="icon-share"></i></a>
+                                <!-- </a> -->
+                            {% endifchanged %}
+                        {% endif %}
 
                     <!-- <div id="concept_{{ obj.id }}" class="collapse"> -->
                         <ul>

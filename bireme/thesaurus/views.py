@@ -657,13 +657,14 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
         if self.actions['choiced_concept_identifier_id']:
             concept_identifier_id = self.actions['choiced_concept_identifier_id']
-            # print 'concept_identifier_id-->',concept_identifier_id
 
         if self.actions['s']:
             try:
-                id_registro = IdentifierDesc.objects.get(descriptor_ui=self.actions['s'],thesaurus_id=self.actions['choiced_thesaurus'])
+                id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')
                 # print 'ID do registro-->',id_registro
-                object_list = IdentifierConceptListDesc.objects.filter(identifier_id=id_registro).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')
+                if len(id_registro)>0:
+                    id_registro = id_registro[0].get('id')                
+                    object_list = IdentifierConceptListDesc.objects.filter(identifier_id=id_registro).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')
             except IdentifierDesc.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
                 if self.actions['order'] == "-":
@@ -685,7 +686,7 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                id_registro = str(IdentifierDesc.objects.get(descriptor_ui=self.actions['s']),thesaurus_id=self.actions['choiced_thesaurus'])
+                id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')
 
                 # IdentifierDesc
                 context['id_register_objects'] = IdentifierDesc.objects.filter(
@@ -2155,7 +2156,7 @@ class ConceptListQualifView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s']).values('id')
+                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')
                 if len(id_registro)>0:
                     id_registro = id_registro[0].get('id')
                     object_list = IdentifierConceptListQualif.objects.filter(identifier_id=id_registro).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')
