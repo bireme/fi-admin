@@ -74,7 +74,11 @@
 
                             <td colspan="5">
                                 {{ form.status.label_tag }}
-                                {{ form.status }}
+                                <!-- {{ form.status }} -->
+                                <select id="id_status" name="status">
+                                    <option value="-1" selected="selected">{% trans "Draft" %}</option>
+                                    <option value="1">{% trans "Published" %}</option>
+                                </select>
                             </td>
 
                             <tr>
@@ -167,7 +171,7 @@
             </div>
 
             <div class="control-panel form-submit">
-                <button class="btn btn-large btn-danger" onclick="window.history.go(-1); return false;">{% trans "Cancel" %}</button>
+                <button class="btn btn-large btn-danger" onclick="window.history.go(-2); return false;">{% trans "Cancel" %}</button>
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             </div>
 

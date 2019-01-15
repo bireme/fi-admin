@@ -72,8 +72,20 @@
                             {% endfor %}
                             <table class="descriptiondesc">
                                 <tr>
-                                    <td width="20%">{{ form.concept_relation_name.label }}:<br>{{ form.concept_relation_name }}</td>
-                                    <td width="20%">{{ form.preferred_concept.label }}:<br>{{ form.preferred_concept }}</td>
+                                    <td width="20%">{{ form.concept_relation_name.label }}:
+                                        <br>
+                                        <!-- {{ form.concept_relation_name }} -->
+                                        <select id="id_concept_relation_name" name="concept_relation_name">
+                                            <option value="" selected="selected">---------</option>
+                                        </select>                                        
+                                    </td>
+                                    <td width="20%">{{ form.preferred_concept.label }}:
+                                        <br>
+                                        <!-- {{ form.preferred_concept }} -->
+                                        <select id="id_preferred_concept" name="preferred_concept">
+                                            <option value="Y" selected="selected">{% trans "Yes" %}</option>
+                                        </select>
+                                    </td>
                                     <td width="60%">&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -160,7 +172,13 @@
                                             <td colspan="3">&nbsp;</td>
                                         <tr>
                                         <tr>
-                                            <td>{{ form.status }}</td>
+                                            <td>
+                                                <!-- {{ form.status }} -->
+                                                <select id="id_termdesc-0-status" name="termdesc-0-status">
+                                                    <option value="-1" selected="selected">{% trans "Draft" %}</option>
+                                                    <option value="1">{% trans "Published" %}</option>
+                                                </select>
+                                            </td>
                                             <td colspan="3">&nbsp;</td>
                                         <tr>
                                         <tr>
@@ -184,10 +202,20 @@
 
                                         </tr>
                                         <tr>
-                                            <td>{{ form.concept_preferred_term }}</td>
+                                            <td>
+                                                <!-- {{ form.concept_preferred_term }} -->
+                                                <select id="id_termdesc-0-concept_preferred_term" name="termdesc-0-concept_preferred_term">
+                                                    <option value="Y" selected="selected">{% trans "Yes" %}</option>
+                                                </select>
+                                            </td>
                                             <td>{{ form.is_permuted_term }}</td>
                                             <td>{{ form.lexical_tag }}</td>
-                                            <td>{{ form.record_preferred_term }}</td>
+                                            <td>
+                                                <!-- {{ form.record_preferred_term }} -->
+                                                <select id="id_termdesc-0-record_preferred_term" name="termdesc-0-record_preferred_term">
+                                                    <option value="Y" selected="selected">{% trans "Yes" %}</option>
+                                                </select>
+                                            </td>
                                         </tr>
 
                                         <tr>

@@ -74,7 +74,14 @@
                                 </tr>
                                 <tr>
                                     <td width="20%">{{ form.concept_relation_name.label }}:<br>{{ form.concept_relation_name }}</td>
-                                    <td width="20%">{{ form.preferred_concept.label }}:<br>{{ form.preferred_concept }}</td>
+                                    <td width="20%">{{ form.preferred_concept.label }}:<br>
+
+                                    <!-- {{ form.preferred_concept }} -->
+                                        <select id="id_preferred_concept" name="preferred_concept">
+                                            <option value="N" selected="selected">{% trans "No" %}</option>
+                                        </select>
+
+                                    </td>
                                     <td width="60%">&nbsp;</td>
                                 </tr>
                                 <tr>
@@ -156,7 +163,13 @@
                                         <tr>
 
                                             <td colspan="4" class="td-r-del">
-                                                {% trans 'Status' %}:&nbsp;{{ form.status }}
+                                                {% trans 'Status' %}:&nbsp;
+                                                <!-- {{ form.status }} -->
+                                                <select id="id_termdesc-0-status" name="termdesc-0-status">
+                                                    <option value="-1" selected="selected">{% trans "Draft" %}</option>
+                                                    <option value="1">{% trans "Published" %}</option>
+                                                </select>
+
                                                 {% if form.instance.pk %}
                                                         {% trans 'Remove' %}? {{ form.DELETE }}
                                                 {% endif %}
@@ -200,11 +213,18 @@
 
                                         </tr>
                                         <tr>
-                                            <td>{{ form.concept_preferred_term }}</td>
+                                            <td>
+                                                <select id="id_termdesc-0-concept_preferred_term" name="termdesc-0-concept_preferred_term">
+                                                    <option value="Y" selected="selected">{% trans "Yes" %}</option>
+                                                </select>
+                                            </td>
                                             <td>{{ form.is_permuted_term }}</td>
                                             <td>{{ form.lexical_tag }}</td>
-                                            <td>{{ form.record_preferred_term }}</td>
-
+                                            <td>
+                                                <select id="id_termdesc-0-record_preferred_term" name="termdesc-0-record_preferred_term">
+                                                    <option value="N" selected="selected">{% trans "No" %}</option>
+                                                </select>
+                                            </td>
                                         </tr>
 
                                         <tr>
@@ -240,7 +260,7 @@
 
             <div>
                 <br>
-                <button class="btn btn-large btn-danger" onclick="window.history.go(-1); return false;">{% trans "Cancel" %}</button>
+                <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             </div>
 

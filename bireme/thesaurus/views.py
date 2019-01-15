@@ -535,70 +535,83 @@ class ConceptTermUpdate(LoginRequiredView):
         formset_term_valid = formset_term.is_valid()
 
         if (form_valid and formset_concept_valid and formset_term_valid):
+            # Brings form variables to check if it already exists
+            term_string = self.request.POST.get("termdesc-0-term_string")
+            language_code = self.request.POST.get("termdesc-0-language_code")
+            term_thesaurus = self.request.GET.get("ths")
 
-            self.object = form.save()
+            has_term = TermListDesc.objects.filter(
+                term_string__iexact=term_string,
+                language_code=language_code,
+                term_thesaurus=term_thesaurus,
+                ).exists()
 
-            # Get thesaurus_acronym to create new ID format to concept_ui field
-            self.object = form.save(commit=False)
-            zseq = str(self.object.id).zfill(8) # preenche zeros a esquerda
-            self.object.concept_ui = 'FD' + zseq
-            self.object = form.save(commit=True)
+            if not has_term:
 
-            formset_concept.instance = self.object
-            formset_concept.save()
+                self.object = form.save()
 
-            formset_term.instance = self.object
-            formset_term.save()
+                # Get thesaurus_acronym to create new ID format to concept_ui field
+                self.object = form.save(commit=False)
+                zseq = str(self.object.id).zfill(8) # preenche zeros a esquerda
+                self.object.concept_ui = 'FD' + zseq
+                self.object = form.save(commit=True)
 
-            # Bring the choiced language_code from the first form
-            registry_language = formset_term.cleaned_data[0].get('language_code')
+                formset_concept.instance = self.object
+                formset_concept.save()
 
-            # Update term_ui with a new format
-            try:
+                formset_term.instance = self.object
+                formset_term.save()
 
-                ths = self.request.GET.get("ths")
+                # Bring the choiced language_code from the first form
+                registry_language = formset_term.cleaned_data[0].get('language_code')
+
+                # Update term_ui with a new format
                 try:
-                    seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
-                    nseq = str(int(seq.sequential_number) + 1)
-                    seq.sequential_number = nseq
-                    seq.save()
-                except code_controller_term.DoesNotExist:
-                    seq = code_controller_term(sequential_number=1,thesaurus=ths)
-                    nseq = 1
-                    seq.save()
-                created_id = int(TermListDesc.objects.latest('id').id)
-                update_field = TermListDesc.objects.get(id=created_id)
 
-                # substitui idioma do sistema por sigla de 3 letras
-                if registry_language == 'en':
-                    language_3letters = 'eng'
-                if registry_language == 'es':
-                    language_3letters = 'spa'
-                if registry_language == 'pt-br':
-                    language_3letters = 'por'
-                if registry_language == 'fr':
-                    language_3letters = 'fre'
-                if registry_language == 'es-es':
-                    language_3letters = 'spa'
+                    ths = self.request.GET.get("ths")
+                    try:
+                        seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                        nseq = str(int(seq.sequential_number) + 1)
+                        seq.sequential_number = nseq
+                        seq.save()
+                    except code_controller_term.DoesNotExist:
+                        seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                        nseq = 1
+                        seq.save()
+                    created_id = int(TermListDesc.objects.latest('id').id)
+                    update_field = TermListDesc.objects.get(id=created_id)
 
-                # preenche zeros a esquerda
-                zseq = str(nseq).zfill(6)
+                    # substitui idioma do sistema por sigla de 3 letras
+                    if registry_language == 'en':
+                        language_3letters = 'eng'
+                    if registry_language == 'es':
+                        language_3letters = 'spa'
+                    if registry_language == 'pt-br':
+                        language_3letters = 'por'
+                    if registry_language == 'fr':
+                        language_3letters = 'fre'
+                    if registry_language == 'es-es':
+                        language_3letters = 'spa'
 
-                update_field.term_ui = language_3letters + 'd' + zseq
-                update_field.save()
-            except TermListDesc.DoesNotExist:
-                print 'Warning! Does not exist id to this Term'
+                    # preenche zeros a esquerda
+                    zseq = str(nseq).zfill(6)
 
-            form.save()
+                    update_field.term_ui = language_3letters + 'd' + zseq
+                    update_field.save()
+                except TermListDesc.DoesNotExist:
+                    print 'Warning! Does not exist id to this Term'
 
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(
-                                            form=form,
-                                            formset_concept=formset_concept,
-                                            formset_term=formset_term,
-                                            )
-                        )
+                form.save()
+
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                msg_erro =  _("This Concept already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+                return self.render_to_response(self.get_context_data(
+                                                form=form,
+                                                formset_concept=formset_concept,
+                                                formset_term=formset_term,
+                                                msg_erro=msg_erro,
+                                                ))
 
     def get_context_data(self, **kwargs):
         context = super(ConceptTermUpdate, self).get_context_data(**kwargs)
@@ -948,95 +961,105 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
         formset_term_valid = formset_term.is_valid()
 
         if (form_valid and formset_concept_valid and formset_term_valid):
+            # Brings form variables to check if it already exists
+            term_string = self.request.POST.get("termdesc-0-term_string")
+            language_code = self.request.POST.get("termdesc-0-language_code")
+            term_thesaurus = self.request.GET.get("ths")
 
-            self.object = form.save(commit=False)
-            self.object.identifier_id = int(self.request.POST.get("identifier_id"))
-            self.object = form.save(commit=True)
+            has_term = TermListDesc.objects.filter(
+                term_string__iexact=term_string,
+                language_code=language_code,
+                term_thesaurus=term_thesaurus,
+                ).exists()
 
-            formset_concept.instance = self.object
-            formset_concept.save()
+            if not has_term:
+                self.object = form.save(commit=False)
+                self.object.identifier_id = int(self.request.POST.get("identifier_id"))
+                self.object = form.save(commit=True)
 
-            formset_term.instance = self.object
-            formset_term.save()
+                formset_concept.instance = self.object
+                formset_concept.save()
 
-            # Bring the choiced language_code from the first form
-            registry_language = formset_term.cleaned_data[0].get('language_code')
+                formset_term.instance = self.object
+                formset_term.save()
 
-            form.save()
+                # Bring the choiced language_code from the first form
+                registry_language = formset_term.cleaned_data[0].get('language_code')
 
-            # Update concept_ui with a new format
-            try:
-                created_concept_id = int(IdentifierConceptListDesc.objects.latest('id').id)
-                update_concept_field = IdentifierConceptListDesc.objects.get(id=created_concept_id)
+                form.save()
 
-                # preenche zeros a esquerda
-                zseq = str(created_concept_id).zfill(8)
-
-                update_concept_field.concept_ui = 'FD' + zseq
-                update_concept_field.save()
-            except IdentifierConceptListDesc.DoesNotExist:
-                print 'Warning! Does not exist id to this Concept'
-
-            # Update term_ui with a new format
-            try:
-
-                ths = self.request.GET.get("ths")
+                # Update concept_ui with a new format
                 try:
-                    seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
-                    nseq = str(int(seq.sequential_number) + 1)
-                    seq.sequential_number = nseq
-                    seq.save()
-                except code_controller_term.DoesNotExist:
-                    seq = code_controller_term(sequential_number=1,thesaurus=ths)
-                    nseq = 1
-                    seq.save()
-                created_id = int(TermListDesc.objects.latest('id').id)
-                update_field = TermListDesc.objects.get(id=created_id)
+                    created_concept_id = int(IdentifierConceptListDesc.objects.latest('id').id)
+                    update_concept_field = IdentifierConceptListDesc.objects.get(id=created_concept_id)
 
-                # substitui idioma do sistema por sigla de 3 letras
-                if registry_language == 'en':
-                    language_3letters = 'eng'
-                if registry_language == 'es':
-                    language_3letters = 'spa'
-                if registry_language == 'pt-br':
-                    language_3letters = 'por'
-                if registry_language == 'fr':
-                    language_3letters = 'fre'
-                if registry_language == 'es-es':
-                    language_3letters = 'spa'
+                    # preenche zeros a esquerda
+                    zseq = str(created_concept_id).zfill(8)
 
-                # preenche zeros a esquerda
-                zseq = str(nseq).zfill(6)
+                    update_concept_field.concept_ui = 'FD' + zseq
+                    update_concept_field.save()
+                except IdentifierConceptListDesc.DoesNotExist:
+                    print 'Warning! Does not exist id to this Concept'
 
-                update_field.term_ui = language_3letters + 'd' + zseq
-                update_field.save()
-            except TermListDesc.DoesNotExist:
-                print 'Warning! Does not exist id to this Term'
+                # Update term_ui with a new format
+                try:
 
-            # Update created_date
-            try:
-                created_id = int(TermListDesc.objects.latest('id').id)
-                update_date_created = TermListDesc.objects.get(id=created_id)
-                update_date_created.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
-                update_date_created.save()
-            except TermListDesc.DoesNotExist:
-                print 'Warning! Does not exist id to this Term'
+                    ths = self.request.GET.get("ths")
+                    try:
+                        seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                        nseq = str(int(seq.sequential_number) + 1)
+                        seq.sequential_number = nseq
+                        seq.save()
+                    except code_controller_term.DoesNotExist:
+                        seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                        nseq = 1
+                        seq.save()
+                    created_id = int(TermListDesc.objects.latest('id').id)
+                    update_field = TermListDesc.objects.get(id=created_id)
 
+                    # substitui idioma do sistema por sigla de 3 letras
+                    if registry_language == 'en':
+                        language_3letters = 'eng'
+                    if registry_language == 'es':
+                        language_3letters = 'spa'
+                    if registry_language == 'pt-br':
+                        language_3letters = 'por'
+                    if registry_language == 'fr':
+                        language_3letters = 'fre'
+                    if registry_language == 'es-es':
+                        language_3letters = 'spa'
 
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(
-                                            form=form,
-                                            formset_concept=formset_concept,
-                                            formset_term=formset_term,
-                                            )
-                        )
+                    # preenche zeros a esquerda
+                    zseq = str(nseq).zfill(6)
+
+                    update_field.term_ui = language_3letters + 'd' + zseq
+                    update_field.save()
+                except TermListDesc.DoesNotExist:
+                    print 'Warning! Does not exist id to this Term'
+
+                # Update created_date
+                try:
+                    created_id = int(TermListDesc.objects.latest('id').id)
+                    update_date_created = TermListDesc.objects.get(id=created_id)
+                    update_date_created.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+                    update_date_created.save()
+                except TermListDesc.DoesNotExist:
+                    print 'Warning! Does not exist id to this Term'
+
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                msg_erro =  _("This Concept already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+                return self.render_to_response(self.get_context_data(
+                                                form=form,
+                                                formset_concept=formset_concept,
+                                                formset_term=formset_term,
+                                                msg_erro=msg_erro,
+                                                ))
 
     def get_context_data(self, **kwargs):
         context = super(ConceptListDescCreateView, self).get_context_data(**kwargs)
 
         if self.request.method == 'GET':
-
             context['formset_concept'] = ConceptListDescFormSet(instance=self.object)
             context['formset_term'] = TermListDescFormSet(instance=self.object)
 
@@ -1116,17 +1139,15 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
         formset_toccurrence_valid = formset_toccurrence.is_valid()
 
         if (form_valid and formset_toccurrence_valid):
-
-            identifier_concept_id = self.request.POST.get("identifier_concept_id")
+            # Brings form variables to check if it already exists
             term_string = self.request.POST.get("term_string")
             language_code = self.request.POST.get("language_code")
-            status = self.request.POST.get("status")
+            term_thesaurus = self.request.GET.get("ths")
 
             has_term = TermListDesc.objects.filter(
-                identifier_concept_id=identifier_concept_id,
                 term_string__iexact=term_string,
                 language_code=language_code,
-                status=status,
+                term_thesaurus=term_thesaurus,
                 ).exists()
 
             if not has_term:
@@ -2019,79 +2040,91 @@ class QualifConceptTermUpdate(LoginRequiredView):
         formset_term_valid = formset_term.is_valid()
 
         if (form_valid and formset_concept_valid and formset_term_valid):
+            # Brings form variables to check if it already exists
+            term_string = self.request.POST.get("termqualif-0-term_string")
+            language_code = self.request.POST.get("termqualif-0-language_code")
+            term_thesaurus = self.request.GET.get("ths")
 
-            self.object = form.save()
+            has_term = TermListQualif.objects.filter(
+                term_string__iexact=term_string,
+                language_code=language_code,
+                term_thesaurus=term_thesaurus,
+                ).exists()
 
-            # Get thesaurus_acronym to create new ID format to concept_ui field
-            self.object = form.save(commit=False)
-            zseq = str(self.object.id).zfill(8) # preenche zeros a esquerda
-            self.object.concept_ui = 'FQ' + zseq
-            self.object = form.save(commit=True)
+            if not has_term:
+                self.object = form.save()
 
-            formset_concept.instance = self.object
-            formset_concept.save()
+                # Get thesaurus_acronym to create new ID format to concept_ui field
+                self.object = form.save(commit=False)
+                zseq = str(self.object.id).zfill(8) # preenche zeros a esquerda
+                self.object.concept_ui = 'FQ' + zseq
+                self.object = form.save(commit=True)
 
-            formset_term.instance = self.object
-            formset_term.save()
+                formset_concept.instance = self.object
+                formset_concept.save()
 
-            # Bring the choiced language_code from the first form
-            registry_language = formset_term.cleaned_data[0].get('language_code')
+                formset_term.instance = self.object
+                formset_term.save()
 
-            # Get thesaurus_acronym to create new ID format to term_ui field
-            try:
-                acronym = Thesaurus.objects.filter(id=self.request.GET.get("ths")).values('thesaurus_acronym')
-                acronym = acronym[0].get('thesaurus_acronym')
-            except Thesaurus.DoesNotExist:
-                id_thesaurus = str(self.object.id)
-                print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
-                acronym = ''
+                # Bring the choiced language_code from the first form
+                registry_language = formset_term.cleaned_data[0].get('language_code')
 
-            # Update term_ui with a new format
-            try:
-
-                ths = self.request.GET.get("ths")
+                # Get thesaurus_acronym to create new ID format to term_ui field
                 try:
-                    seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
-                    nseq = str(int(seq.sequential_number) + 1)
-                    seq.sequential_number = nseq
-                    seq.save()
-                except code_controller_term.DoesNotExist:
-                    seq = code_controller_term(sequential_number=1,thesaurus=ths)
-                    nseq = 1
-                    seq.save()
-                created_id = int(TermListQualif.objects.latest('id').id)
-                update_field = TermListQualif.objects.get(id=created_id)
+                    acronym = Thesaurus.objects.filter(id=self.request.GET.get("ths")).values('thesaurus_acronym')
+                    acronym = acronym[0].get('thesaurus_acronym')
+                except Thesaurus.DoesNotExist:
+                    id_thesaurus = str(self.object.id)
+                    print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
+                    acronym = ''
 
-                # substitui idioma do sistema por sigla de 3 letras
-                if registry_language == 'en':
-                    language_3letters = 'eng'
-                if registry_language == 'es':
-                    language_3letters = 'spa'
-                if registry_language == 'pt-br':
-                    language_3letters = 'por'
-                if registry_language == 'fr':
-                    language_3letters = 'fre'
-                if registry_language == 'es-es':
-                    language_3letters = 'spa'
+                # Update term_ui with a new format
+                try:
 
-                # preenche zeros a esquerda
-                zseq = str(nseq).zfill(6)
+                    ths = self.request.GET.get("ths")
+                    try:
+                        seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                        nseq = str(int(seq.sequential_number) + 1)
+                        seq.sequential_number = nseq
+                        seq.save()
+                    except code_controller_term.DoesNotExist:
+                        seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                        nseq = 1
+                        seq.save()
+                    created_id = int(TermListQualif.objects.latest('id').id)
+                    update_field = TermListQualif.objects.get(id=created_id)
 
-                update_field.term_ui = language_3letters + 'q' + zseq
-                update_field.save()
-            except TermListQualif.DoesNotExist:
-                print 'Warning! Does not exist id to this Term'
+                    # substitui idioma do sistema por sigla de 3 letras
+                    if registry_language == 'en':
+                        language_3letters = 'eng'
+                    if registry_language == 'es':
+                        language_3letters = 'spa'
+                    if registry_language == 'pt-br':
+                        language_3letters = 'por'
+                    if registry_language == 'fr':
+                        language_3letters = 'fre'
+                    if registry_language == 'es-es':
+                        language_3letters = 'spa'
 
-            form.save()
+                    # preenche zeros a esquerda
+                    zseq = str(nseq).zfill(6)
 
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(
-                                            form=form,
-                                            formset_concept=formset_concept,
-                                            formset_term=formset_term,
-                                            )
-                        )
+                    update_field.term_ui = language_3letters + 'q' + zseq
+                    update_field.save()
+                except TermListQualif.DoesNotExist:
+                    print 'Warning! Does not exist id to this Term'
+
+                form.save()
+
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                msg_erro =  _("This Concept already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+                return self.render_to_response(self.get_context_data(
+                                                form=form,
+                                                formset_concept=formset_concept,
+                                                formset_term=formset_term,
+                                                msg_erro=msg_erro,
+                                                ))
 
 
     def get_context_data(self, **kwargs):
@@ -2443,88 +2476,100 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
         formset_term_valid = formset_term.is_valid()
 
         if (form_valid and formset_concept_valid and formset_term_valid):
+            # Brings form variables to check if it already exists
+            term_string = self.request.POST.get("termqualif-0-term_string")
+            language_code = self.request.POST.get("termqualif-0-language_code")
+            term_thesaurus = self.request.GET.get("ths")
 
-            self.object = form.save(commit=False)
-            self.object.identifier_id = int(self.request.POST.get("identifier_id"))
-            self.object = form.save(commit=True)
+            has_term = TermListQualif.objects.filter(
+                term_string__iexact=term_string,
+                language_code=language_code,
+                term_thesaurus=term_thesaurus,
+                ).exists()
 
-            formset_concept.instance = self.object
-            formset_concept.save()
+            if not has_term:
+                self.object = form.save(commit=False)
+                self.object.identifier_id = int(self.request.POST.get("identifier_id"))
+                self.object = form.save(commit=True)
 
-            formset_term.instance = self.object
-            formset_term.save()
+                formset_concept.instance = self.object
+                formset_concept.save()
 
-            # Bring the choiced language_code from the first form
-            registry_language = formset_term.cleaned_data[0].get('language_code')
+                formset_term.instance = self.object
+                formset_term.save()
 
-            form.save()
+                # Bring the choiced language_code from the first form
+                registry_language = formset_term.cleaned_data[0].get('language_code')
 
-            # Update concept_ui with a new format
-            try:
-                created_concept_id = int(IdentifierConceptListQualif.objects.latest('id').id)
-                update_concept_field = IdentifierConceptListQualif.objects.get(id=created_concept_id)
+                form.save()
 
-                # preenche zeros a esquerda
-                zseq = str(created_concept_id).zfill(8)
-
-                update_concept_field.concept_ui = 'FQ' + zseq
-                update_concept_field.save()
-            except IdentifierConceptListQualif.DoesNotExist:
-                print 'Warning! Does not exist id to this Concept'
-
-            # Update term_ui with a new format
-            try:
-
-                ths = self.request.GET.get("ths")
+                # Update concept_ui with a new format
                 try:
-                    seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
-                    nseq = str(int(seq.sequential_number) + 1)
-                    seq.sequential_number = nseq
-                    seq.save()
-                except code_controller_term.DoesNotExist:
-                    seq = code_controller_term(sequential_number=1,thesaurus=ths)
-                    nseq = 1
-                    seq.save()
-                created_id = int(TermListQualif.objects.latest('id').id)
-                update_field = TermListQualif.objects.get(id=created_id)
+                    created_concept_id = int(IdentifierConceptListQualif.objects.latest('id').id)
+                    update_concept_field = IdentifierConceptListQualif.objects.get(id=created_concept_id)
 
-                # substitui idioma do sistema por sigla de 3 letras
-                if registry_language == 'en':
-                    language_3letters = 'eng'
-                if registry_language == 'es':
-                    language_3letters = 'spa'
-                if registry_language == 'pt-br':
-                    language_3letters = 'por'
-                if registry_language == 'fr':
-                    language_3letters = 'fre'
-                if registry_language == 'es-es':
-                    language_3letters = 'spa'
+                    # preenche zeros a esquerda
+                    zseq = str(created_concept_id).zfill(8)
 
-                # preenche zeros a esquerda
-                zseq = str(nseq).zfill(6)
+                    update_concept_field.concept_ui = 'FQ' + zseq
+                    update_concept_field.save()
+                except IdentifierConceptListQualif.DoesNotExist:
+                    print 'Warning! Does not exist id to this Concept'
 
-                update_field.term_ui = language_3letters + 'q' + zseq
-                update_field.save()
-            except TermListQualif.DoesNotExist:
-                print 'Warning! Does not exist id to this Term'
+                # Update term_ui with a new format
+                try:
 
-            # Update created_date
-            try:
-                created_id = int(TermListQualif.objects.latest('id').id)
-                update_date_created = TermListQualif.objects.get(id=created_id)
-                update_date_created.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
-                update_date_created.save()
-            except TermListQualif.DoesNotExist:
-                print 'Warning! Does not exist id to this Term'
+                    ths = self.request.GET.get("ths")
+                    try:
+                        seq = code_controller_term.objects.get(thesaurus=self.request.GET.get("ths"))
+                        nseq = str(int(seq.sequential_number) + 1)
+                        seq.sequential_number = nseq
+                        seq.save()
+                    except code_controller_term.DoesNotExist:
+                        seq = code_controller_term(sequential_number=1,thesaurus=ths)
+                        nseq = 1
+                        seq.save()
+                    created_id = int(TermListQualif.objects.latest('id').id)
+                    update_field = TermListQualif.objects.get(id=created_id)
 
-            return HttpResponseRedirect(self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(
-                                            form=form,
-                                            formset_concept=formset_concept,
-                                            formset_term=formset_term,
-                                            )
-                        )
+                    # substitui idioma do sistema por sigla de 3 letras
+                    if registry_language == 'en':
+                        language_3letters = 'eng'
+                    if registry_language == 'es':
+                        language_3letters = 'spa'
+                    if registry_language == 'pt-br':
+                        language_3letters = 'por'
+                    if registry_language == 'fr':
+                        language_3letters = 'fre'
+                    if registry_language == 'es-es':
+                        language_3letters = 'spa'
+
+                    # preenche zeros a esquerda
+                    zseq = str(nseq).zfill(6)
+
+                    update_field.term_ui = language_3letters + 'q' + zseq
+                    update_field.save()
+                except TermListQualif.DoesNotExist:
+                    print 'Warning! Does not exist id to this Term'
+
+                # Update created_date
+                try:
+                    created_id = int(TermListQualif.objects.latest('id').id)
+                    update_date_created = TermListQualif.objects.get(id=created_id)
+                    update_date_created.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+                    update_date_created.save()
+                except TermListQualif.DoesNotExist:
+                    print 'Warning! Does not exist id to this Term'
+
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                msg_erro =  _("This Concept already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+                return self.render_to_response(self.get_context_data(
+                                                form=form,
+                                                formset_concept=formset_concept,
+                                                formset_term=formset_term,
+                                                msg_erro=msg_erro,
+                                                ))
 
     def get_context_data(self, **kwargs):
         context = super(ConceptListQualifCreateView, self).get_context_data(**kwargs)
@@ -2601,16 +2646,15 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
     def form_valid(self, form):
         
         if form.is_valid():
-            identifier_concept_id = self.request.POST.get("identifier_concept_id")
+            # Brings form variables to check if it already exists
             term_string = self.request.POST.get("term_string")
             language_code = self.request.POST.get("language_code")
-            status = self.request.POST.get("status")
+            term_thesaurus = self.request.GET.get("ths")
 
             has_term = TermListQualif.objects.filter(
-                identifier_concept_id=identifier_concept_id,
                 term_string__iexact=term_string,
                 language_code=language_code,
-                status=status,
+                term_thesaurus=term_thesaurus,
                 ).exists()
 
             if not has_term:
