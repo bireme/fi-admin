@@ -263,11 +263,18 @@ class BiblioRefForm(BetterModelForm):
                 if not data.get('volume_serial') and not data.get('issue_number'):
                     self.add_error('volume_serial', _("Volume or issue number mandatory"))
 
+            #LILACS validation flag is mandatory when indexed in LILACS
+            indexed_list = [indexed.acronym for indexed in self.cleaned_data.get('indexed_database')]
+            if 'LILACS' in indexed_list:
+                lilacs_validation_flag = self.cleaned_data.get('LILACS_indexed')
+                if not lilacs_validation_flag:
+                    self.add_error('LILACS_indexed', _("Required when indexed in LILACS database"))
+
         # Always return the full collection of cleaned data.
         return data
 
     def clean_LILACS_indexed(self):
-        data = self.cleaned_data['LILACS_indexed']
+        data = self.cleaned_data.get('LILACS_indexed')
         if data is True:
             self.is_LILACS = True
 
