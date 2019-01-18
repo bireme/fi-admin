@@ -540,7 +540,7 @@ class BiblioRefForm(BetterModelForm):
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
         url_list = []
 
-        if self.is_visiblefield('title') and status == 1:
+        if self.is_visiblefield('title'):
             if not data:
                 self.add_error(field, _("Mandatory"))
             else:
@@ -565,7 +565,7 @@ class BiblioRefForm(BetterModelForm):
         status = self.cleaned_data.get('status')
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
 
-        if self.is_visiblefield('title_monographic') and status == 1:
+        if self.is_visiblefield('title_monographic'):
             if data:
                 occ = 0
                 for title in data:
