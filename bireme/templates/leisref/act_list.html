@@ -92,6 +92,15 @@
                                         <option value="{{ country.id }}" {% if actions.filter_country|add:"0" == country.id %}selected="true"{% endif %}>{{ country }}</option>
                                     {% endfor %}
                                 </select>
+
+                                {% trans "Indexed in" %}:
+                                <select name="filter_indexed_database">
+                                    <option value="">{% trans "All" %}</option>
+                                    {% for idb in indexed_database_list %}
+                                        <option value="{{ idb.id }}" {% if actions.filter_indexed_database|add:"0" == idb.id %}selected="true"{% endif %}>{{ idb }}</option>
+                                    {% endfor %}
+                                </select>
+
                                 <button class="btn" type="submit" name="apply_filters" value="true"><i class='icon-refresh'> {% trans "Apply" %}</i></button>
                             </div>
 
