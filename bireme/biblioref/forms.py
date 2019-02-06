@@ -263,11 +263,18 @@ class BiblioRefForm(BetterModelForm):
                 if not data.get('volume_serial') and not data.get('issue_number'):
                     self.add_error('volume_serial', _("Volume or issue number mandatory"))
 
+            #LILACS validation flag is mandatory when indexed in LILACS
+            indexed_list = [indexed.acronym for indexed in self.cleaned_data.get('indexed_database')]
+            if 'LILACS' in indexed_list:
+                lilacs_validation_flag = self.cleaned_data.get('LILACS_indexed')
+                if not lilacs_validation_flag:
+                    self.add_error('LILACS_indexed', _("Required when indexed in LILACS database"))
+
         # Always return the full collection of cleaned data.
         return data
 
     def clean_LILACS_indexed(self):
-        data = self.cleaned_data['LILACS_indexed']
+        data = self.cleaned_data.get('LILACS_indexed')
         if data is True:
             self.is_LILACS = True
 
@@ -540,7 +547,7 @@ class BiblioRefForm(BetterModelForm):
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
         url_list = []
 
-        if self.is_visiblefield('title') and status == 1:
+        if self.is_visiblefield('title'):
             if not data:
                 self.add_error(field, _("Mandatory"))
             else:
@@ -565,7 +572,7 @@ class BiblioRefForm(BetterModelForm):
         status = self.cleaned_data.get('status')
         LILACS_compatible_languages = ['pt', 'es', 'en', 'fr']
 
-        if self.is_visiblefield('title_monographic') and status == 1:
+        if self.is_visiblefield('title_monographic'):
             if data:
                 occ = 0
                 for title in data:
@@ -916,12 +923,25 @@ class BiblioRefForm(BetterModelForm):
 
         # update DeDup service
         if self.document_type == 'Sas':
-            dedup_params = {"ano_publicacao": obj.source.publication_date_normalized[:4],
-                            "titulo_artigo": obj.title[0]['text'], "titulo_revista": obj.source.title_serial}
+            # for status LLXP and Published use more complete schema of DeDup index
+            if obj.status == 0 or obj.status == 1:
+                dedup_schema = 'LILACS_Sas_Seven'
+                author_list = [au.get('text') for au in obj.individual_author]
+                first_page = obj.pages[0].get('_f', '') if obj.pages else ''
+                dedup_params = {"ano_publicacao": obj.source.publication_date_normalized[:4],
+                                "numero_fasciculo": obj.source.issue_number, "volume_fasciculo": obj.source.volume_serial,
+                                "titulo_artigo": obj.title[0]['text'], "titulo_revista": obj.source.title_serial,
+                                "autores": '; '.join(author_list), "pagina_inicial": first_page}
+            else:
+                dedup_schema = 'LILACS_Sas_Five'
+                dedup_params = {"ano_publicacao": obj.source.publication_date_normalized[:4],
+                                "numero_fasciculo": obj.source.issue_number, "volume_fasciculo": obj.source.volume_serial,
+                                "titulo_artigo": obj.title[0]['text'], "titulo_revista": obj.source.title_serial}
+
             json_data = json.dumps(dedup_params, ensure_ascii=True)
             dedup_headers = {'Content-Type': 'application/json'}
             ref_id = "fiadmin-{0}".format(obj.id)
-            dedup_url = "{0}/{1}/{2}/{3}".format(settings.DEDUP_PUT_URL, 'lilacs_Sas', 'LILACS_Sas_Three', ref_id)
+            dedup_url = "{0}/{1}/{2}/{3}".format(settings.DEDUP_PUT_URL, 'lilacs_Sas', dedup_schema, ref_id)
             try:
                 dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
             except:

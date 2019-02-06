@@ -60,8 +60,7 @@
                     <td>{{ aux.scope_region.all|join:", " }}</td>
                     {% if user.is_superuser %}
                         <td>
-                            <a href="{% url 'edit_act_scope' aux.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                            <a href="{% url 'delete_act_scope' aux.id %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                            <a href="{% url 'edit_act_scope' aux.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>                            
                         </td>
                     {% endif %}
                 </tr>

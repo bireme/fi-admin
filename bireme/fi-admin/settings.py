@@ -253,7 +253,7 @@ AUTHENTICATION_BACKENDS = (
     'biremelogin.authenticate.EmailModelBackend',
 )
 
-BIREMELOGIN_BASE_URL = "http://accounts.bireme.org"
+BIREMELOGIN_BASE_URL = "https://accounts.bireme.org"
 SITE_URL = ""
 BIREMELOGIN_SERVICE = ""
 GOOGLE_ANALYTICS_ID = ""

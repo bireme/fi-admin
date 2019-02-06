@@ -54,8 +54,7 @@
                     <td><a href="{% url 'edit_country_region' aux.id %}">{{ aux.id }}</a></td>
                     <td>{{ aux.name }}</td>
                     <td>
-                        <a href="{% url 'edit_country_region' aux.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                        <a href="{% url 'delete_country_region' aux.id %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                        <a href="{% url 'edit_country_region' aux.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>                        
                     </td>
                 </tr>
             {% endfor %}

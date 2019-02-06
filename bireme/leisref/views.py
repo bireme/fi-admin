@@ -58,14 +58,17 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
             filter_qs =  filter_qs | Q(title__icontains=search) | Q(denomination__icontains=search)
 
         object_list = self.model.objects.filter(filter_qs)
-
+        # filter by status
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
-
         # filter by scope region country
         if self.actions['filter_country'] != '':
             object_list = object_list.filter(scope_region=self.actions['filter_country'])
+        # filter by indexed database
+        if self.actions['filter_indexed_database'] != '':
+            object_list = object_list.filter(indexed_database=self.actions['filter_indexed_database'])
 
+        # order
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
@@ -84,11 +87,13 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         user_role = user_data['service_role'].get('LeisRef')
         show_advaced_filters = self.request.GET.get('apply_filters', False)
         scope_region_list = ActCountryRegion.objects.all().order_by('name')
+        indexed_database_list = Database.objects.all().order_by('name')
 
         context['actions'] = self.actions
         context['user_role'] = user_role
         context['scope_region_list'] = scope_region_list
         context['show_advaced_filters'] = show_advaced_filters
+        context['indexed_database_list'] = indexed_database_list
 
         return context
 
