@@ -7,8 +7,17 @@
 
 {% block breadcrumb %}
     {% if object %}
-        <li><a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
-        <span class="divider">/</span></li>
+        <li>
+            <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+                {% trans "Thesaurus" %}
+                {% if choiced_thesaurus_name %}
+                    {% for obj in choiced_thesaurus_name %}
+                        {{ obj.thesaurus_name }}
+                    {% endfor %}
+                {% endif %}
+            </a>
+            <span class="divider">/</span>
+        </li>
         <li>{% trans "Edit Qualifier" %}</li>
     {% endif %}
 {% endblock %}
@@ -299,7 +308,7 @@
                             <a href="{% url 'edit_concept_qualif' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&id={{ obj.termqualif__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
 
                             {% if identifierconceptlist_objects %}
-                                <a href="{% url 'list_concept_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}"><i class="icon-share"></i>
+                                <a href="{% url 'list_concept_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}"><i class="icon-share"></i>
                                 </a>
                             {% endif %}
 
@@ -330,7 +339,7 @@
                                     <a href="{% url 'edit_term_qualif' obj.termqualif__id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}">
                                     <i class="icon-pencil"></i></a>
 
-                                    <a href="{% url 'list_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_id={{ obj.termqualif__id }}">
+                                    <a href="{% url 'list_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_id={{ obj.termqualif__id }}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}">
                                     <i class="icon-share"></i></a>
                                 {% endif %}
 
@@ -378,7 +387,7 @@
 
                             <a href="{% url 'edit_concept_qualif' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&id={{ obj.termqualif__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
 
-                            <a href="{% url 'list_concept_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}"><i class="icon-share"></i></a>
+                            <a href="{% url 'list_concept_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}"><i class="icon-share"></i>
                             <!-- </a> -->
                         {% endifchanged %}
                     {% endif %}
@@ -405,7 +414,7 @@
                                 {% if obj.termqualif__status != -3 %}
                                     <a href="{% url 'edit_term_qualif' obj.termqualif__id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}"><i class="icon-pencil"></i></a>
 
-                                    <a href="{% url 'list_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_id={{ obj.termqualif__id }}">
+                                    <a href="{% url 'list_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_id={{ obj.termqualif__id }}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}">
                                     <i class="icon-share"></i></a>
                                 {% endif %}
 
@@ -469,7 +478,7 @@
                                 {% endif %}
                                 </td>
 
-                                <td>Reforma Saude:<br>
+                                <td>Vigilância Sanitária:<br>
                                 {% if obj.reforma_saude %}
                                     <input type="checkbox" name="reforma_saude" value="" checked="true" disabled>
                                 {% else %}
@@ -564,7 +573,7 @@
                                 <td>MeSH:<br><input type="checkbox" name="mesh" value="" disabled=></td>
                                 <td>Saude Publica:<br><input type="checkbox" name="saude_publica" value="" disabled=""></td>
                                 <td>Homeopatia:<br><input type="checkbox" name="homeopatia" value="" disabled=""></td>
-                                <td>Reforma Saude:<br><input type="checkbox" name="reforma_saude" value="" disabled=""></td>
+                                <td>Vigilância Sanitária:<br><input type="checkbox" name="reforma_saude" value="" disabled=""></td>
                             </tr>
 
                             <tr>

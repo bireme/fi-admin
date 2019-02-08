@@ -6,7 +6,17 @@
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    <li>{% trans "Thesaurus" %}</li>
+    <li>
+        <a href="">
+        {% trans "Thesaurus" %}
+
+        {% if choiced_thesaurus_name %}
+            {% for obj in choiced_thesaurus_name %}
+                {{ obj.thesaurus_name }}
+            {% endfor %}
+        {% endif %}
+        </a>
+    </li>
 {% endblock %}
 
 {% block content %}

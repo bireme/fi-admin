@@ -6,9 +6,17 @@
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-        <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
-        <span class="divider">/</span></li>
-        <!-- <li>{% trans "New Descriptor" %}</li> -->
+        <li>
+            <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+                {% trans "Thesaurus" %}
+                {% if choiced_thesaurus_name %}
+                    {% for obj in choiced_thesaurus_name %}
+                        {{ obj.thesaurus_name }}
+                    {% endfor %}
+                {% endif %}
+            </a>
+            <span class="divider">/</span>
+        </li>
         <li>{% trans "New Concept and Term" %}</li>
 {% endblock %}
 

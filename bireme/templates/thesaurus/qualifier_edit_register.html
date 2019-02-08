@@ -6,11 +6,18 @@
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-    {% if object %}
-        <li><a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
-        <span class="divider">/</span></li>
-        <li>{% trans "Edit Register" %}</li>
-    {% endif %}
+    <li>
+        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+            {% trans "Thesaurus" %}
+            {% if choiced_thesaurus_name %}
+                {% for obj in choiced_thesaurus_name %}
+                    {{ obj.thesaurus_name }}
+                {% endfor %}
+            {% endif %}
+        </a>
+        <span class="divider">/</span>
+    </li>
+    <li>{% trans "Edit Register" %}</li>
 {% endblock %}
 
 {% block content %}
@@ -228,7 +235,7 @@
                 </div>
 
                 <div class="control-panel form-submit">
-                    <button class="btn btn-large btn-danger" onclick="window.history.go(-1); return false;">{% trans "Cancel" %}</button>
+                    <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
                     <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
                 </div>
 

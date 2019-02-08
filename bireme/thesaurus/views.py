@@ -61,11 +61,10 @@ ACTIONS = {
     'form_language': '',
 
     'choiced_thesaurus': '',
-
     'choiced_concept_identifier_id': '',
-
     'choiced_term_id': '',
-
+    'choiced_term_string': '',
+    'choiced_language_code': '',
 }
 
 
@@ -191,6 +190,8 @@ class DescUpdate(LoginRequiredView):
 
     def get_context_data(self, **kwargs):
         context = super(DescUpdate, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         context['language_system'] = get_language()
 
@@ -343,6 +344,8 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
         context = super(DescRegisterUpdateView, self).get_context_data(**kwargs)
 
         context['language_system'] = get_language()
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         if self.request.method == 'GET':
 
@@ -507,6 +510,8 @@ class DescListView(LoginRequiredView, ListView):
         context['last_created_objects_list'] = TermListDesc.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(status=3).exclude(status=5).exclude(date_created__isnull=True).order_by('-date_created','-id')[:10][::-1]
         context['last_altered_objects_list'] = TermListDesc.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(date_altered__isnull=True).order_by('-date_altered','-id')[:10][::-1]
 
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         return context
 
 
@@ -616,6 +621,8 @@ class ConceptTermUpdate(LoginRequiredView):
     def get_context_data(self, **kwargs):
         context = super(ConceptTermUpdate, self).get_context_data(**kwargs)
 
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         context['language_system'] = get_language()
 
         if IdentifierDesc.objects.count() > 0:
@@ -691,6 +698,8 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ConceptListDescView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         context['actions'] = self.actions
 
@@ -818,6 +827,8 @@ class TermListDescView(LoginRequiredView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(TermListDescView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         context['actions'] = self.actions
 
@@ -1059,6 +1070,8 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
     def get_context_data(self, **kwargs):
         context = super(ConceptListDescCreateView, self).get_context_data(**kwargs)
 
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         if self.request.method == 'GET':
             context['formset_concept'] = ConceptListDescFormSet(instance=self.object)
             context['formset_term'] = TermListDescFormSet(instance=self.object)
@@ -1107,6 +1120,8 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ConceptListDescUpdateView, self).get_context_data(**kwargs)
 
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         if self.request.method == 'GET':
             context['formset_concept'] = ConceptListDescFormSet(instance=self.object)
         return context
@@ -1122,14 +1137,16 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
     template_name = 'thesaurus/descriptor_new_term.html'
     form_class = TermListDescUniqueForm
 
-
     def get_context_data(self, **kwargs):
-        data = super(TermListDescCreateView, self).get_context_data(**kwargs)
+        context = super(TermListDescCreateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         if self.request.POST:
-            data['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(self.request.POST)
+            context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(self.request.POST)
         else:
-            data['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet()
-        return data
+            context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet()
+        return context
 
     def form_valid(self, form):
         
@@ -1228,12 +1245,15 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
     form_class = TermListDescUniqueForm
 
     def get_context_data(self, **kwargs):
-        data = super(TermListDescUpdateView, self).get_context_data(**kwargs)
+        context = super(TermListDescUpdateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         if self.request.POST:
-            data['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(self.request.POST)
+            context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(self.request.POST)
         else:
-            data['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(instance=self.object)
-        return data
+            context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(instance=self.object)
+        return context
 
     def form_valid(self, form):
 
@@ -1318,6 +1338,9 @@ class legacyInformationDescCreateView(LoginRequiredView, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(legacyInformationDescCreateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         return context
 
 
@@ -1359,6 +1382,9 @@ class legacyInformationDescUpdateView(LoginRequiredView, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(legacyInformationDescUpdateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         return context
 
 
@@ -1639,6 +1665,8 @@ class PageViewDesc(LoginRequiredView, DetailView):
             # id_identifierdesc = IdentifierDesc.objects.filter(id=id_concept).values('id')
             # context['id_identifierdesc'] = id_identifierdesc[0].get('id')
 
+            context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
             return context
 
 
@@ -1732,6 +1760,8 @@ class QualifUpdate(LoginRequiredView):
 
     def get_context_data(self, **kwargs):
         context = super(QualifUpdate, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         context['language_system'] = get_language()
 
@@ -1831,6 +1861,8 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(QualifRegisterUpdateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         context['language_system'] = get_language()
 
@@ -2009,6 +2041,7 @@ class QualifListView(LoginRequiredView, ListView):
 
         context['actions'] = self.actions
 
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
         context['last_created_objects_list'] = TermListQualif.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(status=3).exclude(status=5).exclude(date_created__isnull=True).order_by('-date_created','-id')[:10][::-1]
         context['last_altered_objects_list'] = TermListQualif.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(date_altered__isnull=True).order_by('-date_altered','-id')[:10][::-1]
 
@@ -2130,6 +2163,8 @@ class QualifConceptTermUpdate(LoginRequiredView):
     def get_context_data(self, **kwargs):
         context = super(QualifConceptTermUpdate, self).get_context_data(**kwargs)
 
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         context['language_system'] = get_language()
 
         if IdentifierQualif.objects.count() > 0:
@@ -2206,6 +2241,8 @@ class ConceptListQualifView(LoginRequiredView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ConceptListQualifView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         context['actions'] = self.actions
 
@@ -2334,6 +2371,8 @@ class TermListQualifView(LoginRequiredView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(TermListQualifView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         context['actions'] = self.actions
 
@@ -2574,6 +2613,8 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
     def get_context_data(self, **kwargs):
         context = super(ConceptListQualifCreateView, self).get_context_data(**kwargs)
 
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         if self.request.method == 'GET':
 
             context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
@@ -2623,6 +2664,8 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ConceptListQualifUpdateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         if self.request.method == 'GET':
             context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
@@ -2713,6 +2756,9 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(TermListQualifCreateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         return context
 
 
@@ -2742,6 +2788,9 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(TermListQualifUpdateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         return context
 
 
@@ -2784,6 +2833,9 @@ class legacyInformationQualifCreateView(LoginRequiredView, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(legacyInformationQualifCreateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
         return context
 
 
@@ -2825,6 +2877,9 @@ class legacyInformationQualifUpdateView(LoginRequiredView, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(legacyInformationQualifUpdateView, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+        
         return context
 
 
@@ -3036,6 +3091,8 @@ class PageViewQualif(LoginRequiredView, DetailView):
             # ID do registro
             id_identifierqualif = IdentifierQualif.objects.filter(id=id_concept).values('id')
             context['id_identifierqualif'] = id_identifierqualif[0].get('id')
+
+            context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
             return context
 

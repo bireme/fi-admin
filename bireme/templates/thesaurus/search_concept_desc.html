@@ -7,9 +7,18 @@
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
-        <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
-        <span class="divider">/</span></li>
-        <li>{% trans "Move concept" %}</li>
+    <li>
+        <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+            {% trans "Thesaurus" %}
+            {% if choiced_thesaurus_name %}
+                {% for obj in choiced_thesaurus_name %}
+                    {{ obj.thesaurus_name }}
+                {% endfor %}
+            {% endif %}
+        </a>
+        <span class="divider">/</span>
+    </li>
+    <li>{% trans "Move concept" %}</li>
 {% endblock %}
 
 
@@ -27,16 +36,28 @@
     <input type='hidden' name="exact" value="{{ actions.exact }}">
     <input type='hidden' name="ths" value="{{ actions.choiced_thesaurus }}">
     <input type='hidden' name="choiced_concept_identifier_id" value="{{ actions.choiced_concept_identifier_id }}">
+    <input type='hidden' name="term_string" value="{{ actions.choiced_term_string }}">
+    <input type='hidden' name="language_code" value="{{ actions.choiced_language_code }}">
 
 </form>
 
 <!--  header -->
 <div class='header'>
-    <h3>{% trans "Warning!" %}<br>
+    <h3>{% trans "Concept to be migrated" %}:&nbsp;
+        <font color="red">
+            {% if request.GET.term_string %}
+                {{ request.GET.term_string }} ({{ request.GET.language_code }})
+            {% else %}
+                {{ actions.choiced_term_string }} ({{ actions.choiced_language_code }})
+            {% endif %}
+        </font>
+    </h3>
+    <br>
+    <h4>{% trans "Warning!" %}<br>
         {% trans "You will be making a major change, if you are sure you will do ok" %}<br>
         {% trans "Enter the ID code to find the destination you want to migrate" %}<br>
         {% trans "Hint: The code starts with the letter D" %}
-    </h3>
+    </h4>
 </div>
 
             <!-- debug -->
@@ -66,7 +87,8 @@
                 <input type="hidden" id="id_thesaurus" name="ths" value="{{ request.GET.ths }}">
                 <input type='text' name="s" value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
                 <input type='hidden' name="choiced_concept_identifier_id" value="{% if request.GET.identifier_concept_id %}{{ request.GET.identifier_concept_id }}{% else %}{{ actions.choiced_concept_identifier_id }}{% endif %}">
-
+                <input type='hidden' name="choiced_term_string" value="{% if request.GET.term_string %}{{ request.GET.term_string }}{% else %}{{ actions.choiced_term_string }}{% endif %}">
+                <input type='hidden' name="choiced_language_code" value="{% if request.GET.language_code %}{{ request.GET.language_code }}{% else %}{{ actions.choiced_language_code }}{% endif %}">
                 <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
             </form>
         </div>
