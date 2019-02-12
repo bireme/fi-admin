@@ -47,15 +47,18 @@
         {{ formset_treenumber.non_form_errors }}
 
         <ul class="nav nav-tabs" id='tab'>
-            <li class="active"><a href="#tab-data1" data-toggle="tab">{% trans "Step 1" %}</a></li>
             <li><a href="#">{% trans "Step 2" %}</a></li>
+            <li class="active"><a href="#tab-data2" data-toggle="tab">{% trans "Step 2" %}</a></li>
+            <li><a href="#">{% trans "Step 3" %}</a></li>
         </ul>
 
         <form method="POST" class="reference-form" encrypt="multipart/form-data">{% csrf_token %}
         
             <input type="hidden" id="id_thesaurus" name="thesaurus" value="{{ request.GET.ths }}">
+            <input type="hidden" id="id_term" name="term" value="{{ request.GET.term }}">
+            <input type="hidden" id="id_language_code" name="language_code" value="{{ request.GET.language_code }}">
 
-            <div class="tab-data1">
+            <div class="tab-data2">
 
                 <!-- identifierqualif -->
                 <div class="accordion-group">
@@ -76,23 +79,6 @@
 
                         <table class="identifierqualif">
 
-                                <tr>
-                                    <td colspan="1">{% trans "Language used for description" %}:<span class="mark">*</span></td>
-                                    <td colspan="1">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1">
-                                        <select id="id_registry-0" class="registry_language" name="registry_language" required="true">
-                                            <option value="">---------</option>
-                                            <option value="en">{% trans "English" %}</option>
-                                            <option value="es">{% trans "Spanish Latin America" %}</option>
-                                            <option value="pt-br">{% trans "Portuguese" %}</option>
-                                            <option value="es-es">{% trans "Spanish Spain" %}</option>
-                                            <option value="fr">{% trans "French" %}</option>
-                                        </select>
-                                    </td>
-                                    <td colspan="1">&nbsp;</td>
-                                </tr>
                                 <tr>
                                     <td>{{ form.date_created.label }}:
                                         <font color="#999"><i>{{ form.date_created.help_text }}</i></font>
@@ -196,7 +182,7 @@
                                 {% endfor %}
 
                                 <table class="descriptionqualif">
-                                    <input type="hidden" class="id_descriptors_language_selected" name="descriptionqualif-0-language_code">
+                                    <input type="hidden" value="{{ request.GET.language_code }}" name="descriptionqualif-0-language_code">
                                     <tr>
                                         <td>
                                             {{ form.annotation.label_tag }}
@@ -350,34 +336,6 @@
 
                 }
             });
-
-
-            // Garante o preenchimento de idioma dos models baseando-se no campo registry_language
-            $(document).on("submit", function(e) {
-                var registry_language = $(".registry_language").val();
-                $(".id_descriptors_language_selected").val(registry_language);
-            });
-
-
-            // Alerta sobre não preenchimento
-            // $('[id^="id_descriptors-"]').on('blur', function() {
-            //     val = $(this).val();
-            //     if ( val == '' ){
-            //         alert('{% trans "Warning" %}');
-            //         return false;
-            //     }
-            // });
-
-
-            // // Alerta sobre não preenchimento
-            // $('[id$="-term_string"]').on('blur', function() {
-            //     val = $(this).val();
-            //     if ( val == '' ){
-            //         // alert('{% trans "Warning: Field is empty!" %}');
-            //         alert('{% trans "Warning: Field is empty!" %}: '+$(this).val());
-            //         return false;
-            //     }
-            // });
 
 
             if ($("<input />").prop("required") === undefined) {

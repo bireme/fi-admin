@@ -44,16 +44,17 @@
         {{ formset_concept.non_form_errors }}
         {{ formset_term.non_form_errors }}
 
-    <ul class="nav nav-tabs" id='tab'>
-        <li><a href="#">{% trans "Step 1" %}</a></li>
-        <li class="active"><a href="#tab-data2" data-toggle="tab">{% trans "Step 2" %}</a></li>
-    </ul>
+        <ul class="nav nav-tabs" id='tab'>
+            <li><a href="#">{% trans "Step 1" %}</a></li>
+            <li><a href="#">{% trans "Step 2" %}</a></li>
+            <li class="active"><a href="#tab-data3" data-toggle="tab">{% trans "Step 3" %}</a></li>
+        </ul>
 
         <form method="POST" class="act-form" encrypt="multipart/form-data">{% csrf_token %}
 
             <input type="hidden" class="registry_language" name="registry_language" value="{{ request.GET.registry_language }}">
 
-            <div class="tab-data1">
+            <div class="tab-data3">
 
                 <!-- identifierconceptlistdesc -->
                 <div class="accordion-group">
@@ -190,7 +191,7 @@
                                         <tr>
                                             <td colspan="3" class="term_stringn" width="60%">
                                                 <!-- term_string -->
-                                                <input id="id_termdesc-0-term_string" name="termdesc-0-term_string" value="" maxlength="250" required="" type="text">
+                                                <input id="id_termdesc-0-term_string" name="termdesc-0-term_string" value="{{ request.GET.term }}" maxlength="250" readonly="True" type="text">
                                             </td>
                                             <td>&nbsp;</td>
                                         </tr>

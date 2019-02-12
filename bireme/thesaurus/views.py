@@ -111,7 +111,8 @@ class DescUpdate(LoginRequiredView):
             # self.object = form.save()
 
             # Bring the choiced language_code from the first form
-            registry_language = formset_descriptor.cleaned_data[0].get('language_code')
+            registry_language = self.request.GET.get("language_code")
+
 
             # Get sequential number to write to decs_code
             self.object = form.save(commit=False)
@@ -162,7 +163,7 @@ class DescUpdate(LoginRequiredView):
 
             form.save()
             
-            return redirect(reverse('create_concept_termdesc') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language)
+            return redirect(reverse('create_concept_termdesc') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language + '&term=' + self.request.GET.get("term"))
 
         else:
             return self.render_to_response(
@@ -240,6 +241,58 @@ class DescDeleteView(DescUpdate, DeleteView):
 
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/descriptors/%s' % ths 
+
+
+
+class TermListDescChk(LoginRequiredView, ListView):
+    """
+    Used to verify if already exist the term
+    """
+    template_name = "thesaurus/descriptor_form_step0.html"
+    context_object_name = "registers"
+
+
+    def get_queryset(self):
+        object_list = []
+
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        return object_list
+
+
+    def get_context_data(self, **kwargs):
+        context = super(TermListDescChk, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_info'] = Thesaurus.objects.filter(id=self.request.GET.get("thesaurus"))
+
+        context['term_choiced'] = self.actions['term_string']
+        context['filter_language'] = self.actions['filter_language']
+
+        return context
+
+
+    def render_to_response(self, context):
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        if self.actions['term_string'] and self.actions['filter_language']:
+            # print 'TERMO:',self.actions['term_string']
+            # print 'LANG:',self.actions['filter_language']
+            # print 'THS:',self.request.GET.get("thesaurus")
+
+            exist_term = TermListDesc.objects.filter(term_string=self.actions['term_string'],language_code=self.actions['filter_language'],term_thesaurus=self.request.GET.get("thesaurus")).values('id')
+            if not exist_term:
+                return redirect('/thesaurus/descriptors/new/?ths=' + self.request.GET.get("thesaurus") + '&term=' + self.actions['term_string'] + '&language_code=' + self.actions['filter_language'])
+
+        return super(TermListDescChk, self).render_to_response(context)
+
+
+
 
 
 class DescRegisterUpdateView(LoginRequiredView, UpdateView):
@@ -1702,7 +1755,8 @@ class QualifUpdate(LoginRequiredView):
             # self.object = form.save()
 
             # Bring the choiced language_code from the first form
-            registry_language = formset_descriptor.cleaned_data[0].get('language_code')
+            # registry_language = formset_descriptor.cleaned_data[0].get('language_code')
+            registry_language = self.request.GET.get("language_code")
 
             # Get sequential number to write to decs_code
             self.object = form.save(commit=False)
@@ -1742,7 +1796,7 @@ class QualifUpdate(LoginRequiredView):
             form.save()
             # form.save_m2m()
 
-            return redirect(reverse('create_concept_termqualif') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language)
+            return redirect(reverse('create_concept_termqualif') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language + '&term=' + self.request.GET.get("term"))
 
         else:
             return self.render_to_response(
@@ -1789,6 +1843,55 @@ class QualifDeleteView(QualifUpdate, DeleteView):
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
         return '/thesaurus/qualifiers/%s' % ths 
+
+
+
+class QualifListDescChk(LoginRequiredView, ListView):
+    """
+    Used to verify if already exist the term
+    """
+    template_name = "thesaurus/qualifier_form_step0.html"
+    context_object_name = "registers"
+
+
+    def get_queryset(self):
+        object_list = []
+
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        return object_list
+
+
+    def get_context_data(self, **kwargs):
+        context = super(QualifListDescChk, self).get_context_data(**kwargs)
+
+        context['choiced_thesaurus_info'] = Thesaurus.objects.filter(id=self.request.GET.get("thesaurus"))
+
+        context['term_choiced'] = self.actions['term_string']
+        context['filter_language'] = self.actions['filter_language']
+
+        return context
+
+
+    def render_to_response(self, context):
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+
+        if self.actions['term_string'] and self.actions['filter_language']:
+            # print 'TERMO:',self.actions['term_string']
+            # print 'LANG:',self.actions['filter_language']
+            # print 'THS:',self.request.GET.get("thesaurus")
+
+            exist_term = TermListQualif.objects.filter(term_string=self.actions['term_string'],language_code=self.actions['filter_language'],term_thesaurus=self.request.GET.get("thesaurus")).values('id')
+            if not exist_term:
+                return redirect('/thesaurus/qualifiers/new/?ths=' + self.request.GET.get("thesaurus") + '&term=' + self.actions['term_string'] + '&language_code=' + self.actions['filter_language'])
+
+        return super(QualifListDescChk, self).render_to_response(context)
 
 
 

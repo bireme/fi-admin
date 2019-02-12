@@ -41,9 +41,11 @@
         <span class="badge badge-info" style="vertical-align: middle;">{{ paginator.count }}</span>
         {% endif %}
     </h2>
+
     <div class='pull-right'>
-        <a href="{% url 'create_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "Add new record for Qualifier" %}</a>
+        <a href="{% url 'chk_termqualif' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&thesaurus_name={% if choiced_thesaurus_name %}{% for obj in choiced_thesaurus_name %}{{ obj.thesaurus_name }}{% endfor %}{% endif %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "Add new record for Qualifier" %}</a>
     </div>
+
 </div>
 
 <div class='body'>    
