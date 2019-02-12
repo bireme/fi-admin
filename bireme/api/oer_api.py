@@ -121,6 +121,34 @@ class OERResource(ModelResource):
             bundle.data['audience'] = [audience for audience in bundle.obj.audience.all()]
         if bundle.obj.language:
             bundle.data['language'] = bundle.obj.language.acronym.lower()
+        if bundle.obj.learning_context:
+            bundle.data['learning_context'] = "|".join(bundle.obj.learning_context.get_translations())
+
+        active_list = Relationship.objects.filter(oer_related=bundle.obj.pk)
+        if active_list:
+            active_relationships = []
+            for oer in active_list:
+                label_active = "|".join(oer.relation_type.get_label_active_translations())
+                ref_lnk = "oer.oer.{0}".format(oer.oer_referred.id) if oer.oer_referred.status in [-2, 1] else ''
+                if ref_lnk:
+                    active_relation = u"{0}@{1}@{2}".format(label_active, oer.oer_referred, ref_lnk)
+                    active_relationships.append(active_relation)
+
+            bundle.data['active_relationships'] = active_relationships
+
+        passive_list = Relationship.objects.filter(oer_referred=bundle.obj.pk)
+        if passive_list:
+            passive_relationships = []
+            for oer in passive_list:
+                label_passive = "|".join(oer.relation_type.get_label_passive_translations())
+                ref_lnk = "oer.oer.{0}".format(oer.oer_related.id) if oer.oer_related.status in [-2, 1] else ''
+                if ref_lnk:
+                    passive_relation = u"{0}@{1}@{2}".format(label_passive, oer.oer_related,  ref_lnk)
+                    passive_relationships.append(passive_relation)
+
+            bundle.data['passive_relationships'] = passive_relationships
+
+
 
         # create a single list of urls and attachments associated with the object
         url_list = [u.url for u in urls]
