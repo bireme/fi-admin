@@ -114,7 +114,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
                 if self.actions['filter_status'] == '':
                     object_list = object_list.filter(status=0)
                 # by default filter by articles (exclude sources of list)
-                if self.actions['filter_document_type'] == '':
+                if self.actions['document_type'] == '':
                     object_list = object_list.filter(treatment_level='as')
             else:
                 # if no indexed journals are found return a empty list
