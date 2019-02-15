@@ -246,10 +246,11 @@ class BiblioRefUpdate(LoginRequiredView):
                 formset_complement.instance = self.object
                 formset_complement.save()
 
-                # update solr index
-                form.save()
                 # save many-to-many relation fields
                 form.save_m2m()
+                # update solr index
+                form.save()
+
                 return HttpResponseRedirect(self.get_success_url())
         else:
             # if not valid for publication return status to original (previous) value
