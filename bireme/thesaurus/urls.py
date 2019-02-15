@@ -8,6 +8,10 @@ urlpatterns = [
     # Descriptors -------------------------------------------------------------------------------------------
     url(r'^descriptors/?$', DescListView.as_view(), name='list_descriptor'),
 
+    # Pagina de redirecionamento para criação de novo registro a partir de um termo existente
+    url(r'^descriptors/create/term/confirm/?$', TermCreateDescConfirm.as_view(), name='create_confirm_termdesc'),
+    url(r'^descriptors/create/term/do/(?P<ths>\d+)/?$', TermCreateDescDo, name='do_create_termdesc'),
+
     # Form 0 para pesquisa de existencia de termo - Se não existir segue Form1
     url(r'^descriptors/chk/?$', TermListDescChk.as_view(), name='chk_termdesc'),
 
@@ -49,6 +53,10 @@ urlpatterns = [
 
     # Qualifiers --------------------------------------------------------------------------------------------
     url(r'^qualifiers/?$', QualifListView.as_view(), name='list_qualifier'),
+
+    # Pagina de redirecionamento para criação de novo registro a partir de um termo existente
+    url(r'^qualifiers/create/term/confirm/?$', TermCreateQualifConfirm.as_view(), name='create_confirm_termqualif'),
+    url(r'^qualifiers/create/term/do/(?P<ths>\d+)/?$', TermCreateQualifDo, name='do_create_termqualif'),
 
     # Form 0 para pesquisa de existencia de qualificador - Se não existir segue Form1
     url(r'^qualifiers/chk/?$', QualifListDescChk.as_view(), name='chk_termqualif'),

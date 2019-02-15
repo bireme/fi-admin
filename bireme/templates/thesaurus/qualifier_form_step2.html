@@ -54,6 +54,14 @@
 
             <input type="hidden" class="registry_language" name="registry_language" value="{{ request.GET.registry_language }}">
 
+            <!-- Leva variáveis de criação de novo registro a partir de um termo existente quando existente -->
+            {% if request.GET.term_ui_alter %}
+                <input type="hidden" id="id_term_ui_alter" name="term_ui_alter" value="{{ request.GET.term_ui_alter }}">
+            {% endif %}
+            {% if request.GET.term_id_alter %}
+                <input type="hidden" id="id_term_id_alter" name="term_id_alter" value="{{ request.GET.term_id_alter }}">
+            {% endif %}
+
             <div class="tab-data3">
 
                 <!-- identifierconceptlistqualif -->

@@ -85,10 +85,17 @@
                         </tr>
                         <tr>
                             <td colspan="2" class="term_string" width="40%">
-                                {{ form.term_string }}
+                                <input id="id_term_string" maxlength="250" name="term_string" type="text" required="True">
                             </td>
                             <td>
-                                {{ form.language_code }}
+                                <select id="id_language_code" name="language_code" required="True">
+                                    <option value="" selected="selected">---------</option>
+                                    <option value="en">{% trans "English" %}</option>
+                                    <option value="es">{% trans "Spanish Latin America" %}</option>
+                                    <option value="pt-br">{% trans "Portuguese" %}</option>
+                                    <option value="es-es">{% trans "Spanish Spain" %}</option>
+                                    <option value="fr">{% trans "French" %}</option>
+                                </select>
                             </td>
                             <td>
                                 <input id="id_termqualif-0-date_created" name="termqualif-0-date_created" type="text" value="{% now "d/m/Y" %}" maxlength="10">
@@ -103,10 +110,28 @@
                             <td>{{ form.entry_version.label_tag }}</td>
                         </tr>
                         <tr>
-                            <td>{{ form.concept_preferred_term }}</td>
+                            <td>
+                                <select id="id_concept_preferred_term" name="concept_preferred_term" required="True">
+                                    <option value="" selected="selected">---------</option>
+                                    <option value="Y">{% trans "Yes" %}</option>
+                                    <option value="N">{% trans "No" %}</option>
+                                </select>
+                            </td>
                             <td>{{ form.is_permuted_term }}</td>
                             <td>{{ form.lexical_tag }}</td>
-                            <td>{{ form.record_preferred_term }}</td>
+                            <td>
+                                {% if request.GET.record_preferred_term == 'N' %}
+                                    <select id="id_record_preferred_term" name="record_preferred_term" readonly="True">
+                                        <option value="N">{% trans "No" %}</option>
+                                    </select>
+                                {% else %}
+                                    <select id="id_record_preferred_term" name="record_preferred_term" required="True">
+                                        <option value="" selected="selected">---------</option>
+                                        <option value="Y">{% trans "Yes" %}</option>
+                                        <option value="N">{% trans "No" %}</option>
+                                    </select>
+                                {% endif %}
+                            </td>
                             <td>{{ form.entry_version }}</td>
                         </tr>
 

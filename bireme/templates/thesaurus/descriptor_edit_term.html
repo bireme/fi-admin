@@ -96,8 +96,17 @@
                                 <td colspan="2" class="term_string" width="40%">
                                     {{ form.term_string }}
                                 </td>
-                                <td>
-                                    {{ form.language_code }}
+                                <td valign="top">
+                                    <input type="hidden" id="id_language_code" name="language_code" value="{{ form.language_code.value }}" >
+                                    <center>
+                                        <font color="gray">
+                                        {% if form.language_code.value == 'en' %}{% trans "English" %}{% endif %}
+                                        {% if form.language_code.value == 'es' %}{% trans "Spanish Latin America" %}{% endif %}
+                                        {% if form.language_code.value == 'pt-br' %}{% trans "Portuguese" %}{% endif %}
+                                        {% if form.language_code.value == 'es-es' %}{% trans "Spanish Spain" %}{% endif %}
+                                        {% if form.language_code.value == 'fr' %}{% trans "French" %}{% endif %}
+                                        </font>
+                                    </center>
                                 </td>
                                 <td>
                                     <input type="text" id="id_term_ui" name="term_ui" value="{% if form.term_ui.value %}{{ form.term_ui.value }}{% endif %}" readonly="True">
@@ -115,7 +124,17 @@
                                 <td>{{ form.concept_preferred_term }}</td>
                                 <td>{{ form.is_permuted_term }}</td>
                                 <td>{{ form.lexical_tag }}</td>
-                                <td>{{ form.record_preferred_term }}</td>
+
+                                <td>
+                                    {% if request.GET.record_preferred_term == 'N' %}
+                                        <select id="id_record_preferred_term" name="record_preferred_term" readonly="True">
+                                            <option value="N">{% trans "No" %}</option>
+                                        </select>
+                                    {% else %}
+                                        {{ form.record_preferred_term }}
+                                    {% endif %}
+                                </td>
+
                                 <td>{{ form.entry_version }}</td>
                             </tr>
 

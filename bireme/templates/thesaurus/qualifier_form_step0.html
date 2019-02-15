@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load app_filters %}
+
+{% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{% if choiced_thesaurus_info %}{% for obj in choiced_thesaurus_info %}{{ obj.id }}{% endfor %}{% endif %}{% endif %}">
+            {% trans "Thesaurus" %}
+            {% if choiced_thesaurus_info %}
+                {% for obj in choiced_thesaurus_info %}
+                    {{ obj.thesaurus_name }}
+                {% endfor %}
+            {% else %}
+                {% if request.GET.thesaurus_name %}
+                    {{ request.GET.thesaurus_name }}
+                {% endif %}
+            {% endif %}
+        </a>
+        <span class="divider">/</span>
+    </li>
+    <li>{% trans "New Record, Concept and Term for Qualifiers" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<form name="actions">
+
+    <input type='hidden' name="choiced_thesaurus" value="{{ actions.choiced_thesaurus }}">
+
+</form>
+
+
+    <div class='header'>
+        <h3><i class='icon-book'></i>
+            {% if not object %}
+                {% trans "Creates information for the new Record, Concept and Term for Qualifiers" %}
+            {% endif %}
+        </h3>
+    </div>
+
+    <div class='body'>
+
+        <ul class="nav nav-tabs" id='tab'>
+            <li class="active"><a href="#tab-data1" data-toggle="tab">{% trans "Step 1" %}</a></li>
+            <li><a href="#">{% trans "Step 2" %}</a></li>
+            <li><a href="#">{% trans "Step 3" %}</a></li>
+        </ul>
+
+
+        <form name="search" method="GET">
+
+            <input type="hidden" id="id_thesaurus" name="thesaurus" value="{% if request.GET.ths %}{{ request.GET.ths }}{% else %}{% if choiced_thesaurus_info %}{% for obj in choiced_thesaurus_info %}{{ obj.id }}{% endfor %}{% endif %}{% endif %}">
+
+            <div class="tab-data1">
+
+                    <!-- identifierdesc -->
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-target="#identifierqualif">{% trans "Choice of qualifier" %}</a>
+                        </div>
+
+                        <ul>
+                            {% if term_choiced and filter_language %}
+                                <font color="red"><b>{{ term_choiced }} ({{ filter_language }})</b> {% trans "already exists!!!" %}</font>
+                            {%  endif %}
+                            <fieldset id="identifierqualif">
+
+                                <table class="termlistqualif" border="0">
+                                    <tr>
+                                        <td>{% trans "String" %}</td>
+                                        <td>{% trans "Language used for description" %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="term_string" width="40%"><input id="id_term_string" maxlength="250" name="term_string" type="text" required="true"></td>
+                                        <td>
+                                            <select name="filter_language" required="true">
+                                                <option value="">{% trans "All" %}</option>
+                                                <option value="en" {% if actions.filter_language == 'en' %}selected="true"{% endif %}>{% trans "English" %}</option>
+                                                <option value="es" {% if actions.filter_language == 'es' %}selected="true"{% endif %}>{% trans "Spanish Latin America" %}</option>
+                                                <option value="pt-br" {% if actions.filter_language == 'pt-br' %}selected="true"{% endif %}>{% trans "Portuguese" %}</option>
+                                                <option value="es-es" {% if actions.filter_language == 'es-es' %}selected="true"{% endif %}>{% trans "Spanish Spain" %}</option>
+                                                <option value="fr" {% if actions.filter_language == 'fr' %}selected="true"{% endif %}>{% trans "French" %}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+                            </fieldset>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <br>
+
+                        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{% if choiced_thesaurus_info %}{% for obj in choiced_thesaurus_info %}{{ obj.id }}{% endfor %}{% endif %}{% endif %}" class="btn btn-large btn-danger"">{% trans "Cancel" %}</a>
+                        <button class="btn btn-primary btn-large" type="submit">{% trans "Next" %}</button>
+
+                    </div>
+            </div>
+
+        <form>
+
+    </div>
+
+    <script src="{% static "site/js/jquery.js" %}"></script>
+    <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
+    <script type="text/javascript" src="/admin/jsi18n/"></script>
+    <script type="text/javascript" src="{% static "admin/js/core.js" %}"></script>
+    <script type="text/javascript" src="{% static "admin/js/SelectBox.js" %}"></script>
+    <script type="text/javascript" src="{% static "admin/js/SelectFilter2.js" %}"></script>
+    <script type="text/javascript">
+        // PARAMETROS DO SELECT FILTER:
+        // ID do seu elemento select
+        // NAME do seu elemento select
+        // 0 - para filter_horizontal / 1 para filter_vertical
+        // Caminho do admin para source de imagens utilizadas
+
+        addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "abbreviation", 1, "/static/admin/"); });
+    </script>
+
+{% endblock %}
+
+
+
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+
+{% endblock %}

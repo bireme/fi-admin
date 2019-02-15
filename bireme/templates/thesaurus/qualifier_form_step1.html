@@ -7,14 +7,12 @@
 
 {% block breadcrumb %}
     <li>
-        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
-            {% trans "Thesaurus" %}
-            {% if choiced_thesaurus_name %}
-                {% for obj in choiced_thesaurus_name %}
-                    {{ obj.thesaurus_name }}
-                {% endfor %}
-            {% endif %}
-        </a>
+        {% trans "Thesaurus" %}
+        {% if choiced_thesaurus_name %}
+            {% for obj in choiced_thesaurus_name %}
+                {{ obj.thesaurus_name }}
+            {% endfor %}
+        {% endif %}
         <span class="divider">/</span>
     </li>
     <li>{% trans "New Record, Concept and Term for Qualifiers" %}</li>
@@ -47,7 +45,7 @@
         {{ formset_treenumber.non_form_errors }}
 
         <ul class="nav nav-tabs" id='tab'>
-            <li><a href="#">{% trans "Step 2" %}</a></li>
+            <li><a href="#">{% trans "Step 1" %}</a></li>
             <li class="active"><a href="#tab-data2" data-toggle="tab">{% trans "Step 2" %}</a></li>
             <li><a href="#">{% trans "Step 3" %}</a></li>
         </ul>
@@ -57,6 +55,14 @@
             <input type="hidden" id="id_thesaurus" name="thesaurus" value="{{ request.GET.ths }}">
             <input type="hidden" id="id_term" name="term" value="{{ request.GET.term }}">
             <input type="hidden" id="id_language_code" name="language_code" value="{{ request.GET.language_code }}">
+
+            <!-- Leva variáveis de criação de novo registro a partir de um termo existente quando existente -->
+            {% if request.GET.term_ui %}
+                <input type="hidden" id="id_term_ui" name="term_ui" value="{{ request.GET.term_ui }}">
+            {% endif %}
+            {% if request.GET.term_id %}
+                <input type="hidden" id="id_term_id" name="term_id" value="{{ request.GET.term_id }}">
+            {% endif %}
 
             <div class="tab-data2">
 

@@ -58,6 +58,14 @@
             <input type="hidden" id="id_term" name="term" value="{{ request.GET.term }}">
             <input type="hidden" id="id_language_code" name="language_code" value="{{ request.GET.language_code }}">
 
+            <!-- Leva variáveis de criação de novo registro a partir de um termo existente quando existente -->
+            {% if request.GET.term_ui %}
+                <input type="hidden" id="id_term_ui" name="term_ui" value="{{ request.GET.term_ui }}">
+            {% endif %}
+            {% if request.GET.term_id %}
+                <input type="hidden" id="id_term_id" name="term_id" value="{{ request.GET.term_id }}">
+            {% endif %}
+
             <div class="tab-data2">
 
                     <!-- identifierdesc -->

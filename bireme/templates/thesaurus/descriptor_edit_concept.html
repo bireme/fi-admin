@@ -76,7 +76,15 @@
                                 </tr>
                                 <tr>
                                     <td width="20%">{{ form.concept_relation_name.label }}:<br>{{ form.concept_relation_name }}</td>
-                                    <td width="20%">{{ form.preferred_concept.label }}:<br>{{ form.preferred_concept }}</td>
+                                    <td width="20%">{{ form.preferred_concept.label }}:<br>
+                                        {% if request.GET.preferred_concept == 'N' %}
+                                            <select id="id_preferred_concept" name="preferred_concept" readonly="True">
+                                                <option value="N">{% trans "No" %}</option>
+                                            </select>
+                                        {% else %}
+                                            {{ form.preferred_concept }}
+                                        {% endif %}
+                                    </td>
                                     <td width="60%">&nbsp;</td>
                                 </tr>
                                 <tr>
