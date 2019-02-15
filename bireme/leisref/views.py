@@ -201,10 +201,11 @@ class LeisRefUpdate(LoginRequiredView):
                 formset_thematic.instance = self.object
                 formset_thematic.save()
 
-                # update solr index
-                form.save()
                 # save many-to-many relation fields
                 form.save_m2m()
+                # update solr index
+                form.save()
+
                 return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(

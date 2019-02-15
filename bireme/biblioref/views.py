@@ -110,10 +110,12 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
                     filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title) | Q(referencesource__title_serial=title)
 
                 object_list = object_list.filter(filter_title_qs)
-                # by default filter by LILACS express references
+                # by default filter by LILACS express status
                 if self.actions['filter_status'] == '':
-                    self.actions['filter_status'] = 0
                     object_list = object_list.filter(status=0)
+                # by default filter by articles (exclude sources of list)
+                if self.actions['document_type'] == '':
+                    object_list = object_list.filter(treatment_level='as')
             else:
                 # if no indexed journals are found return a empty list
                 object_list = self.model.objects.none()
@@ -140,6 +142,13 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('LILDBI')
         source_id = self.request.GET.get('source')
+
+        # change defaults filter for indexed tab
+        if self.actions['filter_owner'] == 'indexed':
+            if self.actions['filter_status'] == '':
+                self.actions['filter_status'] = '0'
+            if self.actions['document_type'] == '':
+                self.actions['document_type'] = 'Sas'
 
         context['actions'] = self.actions
         context['document_type'] = self.request.GET.get('document_type')
@@ -237,10 +246,11 @@ class BiblioRefUpdate(LoginRequiredView):
                 formset_complement.instance = self.object
                 formset_complement.save()
 
-                # update solr index
-                form.save()
                 # save many-to-many relation fields
                 form.save_m2m()
+                # update solr index
+                form.save()
+
                 return HttpResponseRedirect(self.get_success_url())
         else:
             # if not valid for publication return status to original (previous) value
