@@ -193,14 +193,24 @@
                                             <td colspan="3" class="term_stringn" width="60%">
                                                 <label for="term_string">{{ form.term_string.label_tag }}</label>
                                             </td>
-                                            <td>&nbsp;</td>
+                                            <td>
+                                                <label for="language_code">{{ form.language_code.label_tag }}</label>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="term_stringn" width="60%">
                                                 <!-- term_string -->
                                                 <input id="id_termqualif-0-term_string" name="termqualif-0-term_string" value="{{ request.GET.term }}" maxlength="250" readonly="True" type="text">
                                             </td>
-                                            <td>&nbsp;</td>
+                                            <td>
+                                                <font color="gray">
+                                                {% if request.GET.registry_language == 'en' %}{% trans "English" %}{% endif %}
+                                                {% if request.GET.registry_language == 'es' %}{% trans "Spanish Latin America" %}{% endif %}
+                                                {% if request.GET.registry_language == 'pt-br' %}{% trans "Portuguese" %}{% endif %}
+                                                {% if request.GET.registry_language == 'es-es' %}{% trans "Spanish Spain" %}{% endif %}
+                                                {% if request.GET.registry_language == 'fr' %}{% trans "French" %}{% endif %}
+                                                </font>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>{{ form.concept_preferred_term.label_tag }}</td>

@@ -29,11 +29,11 @@ class ThesaurusForm(forms.ModelForm):
 # Register - Form1
 class IdentifierQualifForm(forms.ModelForm):
     date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date created"), required=False)
     date_revised = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date revised"), required=False)
     date_established = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date established"), required=False)
 
     class Meta:
         model = IdentifierQualif
@@ -74,9 +74,9 @@ class ConceptListQualifForm(forms.ModelForm):
 
 class TermListQualifForm(forms.ModelForm):
     date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date created"), required=False)
     date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date altered"), required=False)
 
     class Meta:
         model = TermListQualif
@@ -89,9 +89,9 @@ class TermListQualifUniqueForm(forms.ModelForm):
         exclude = ('identifier',)
 
     date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date created"), required=False)
     date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date altered"), required=False)
 
 
 class legacyInformationQualifForm(forms.ModelForm):
@@ -111,11 +111,11 @@ class IdentifierDescForm(forms.ModelForm):
         fields = '__all__'
 
     date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date created"), required=False)
     date_revised = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date revised"), required=False)
     date_established = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date established"), required=False)
 
     # Utilizado para pre filtrar abbreviation com registros especificos do tesauro escolhido
     def __init__(self, *args, **kwargs):
@@ -214,9 +214,9 @@ class ConceptListDescForm(forms.ModelForm):
 
 class TermListDescForm(forms.ModelForm):
     date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date created"), required=False)
     date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date altered"), required=False)
 
     class Meta:
         Model = TermListDesc
@@ -232,9 +232,9 @@ class TermListDescUniqueForm(forms.ModelForm):
         exclude = ('identifier',)
 
     date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date created"), required=False)
     date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
-                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', required=False)
+                                    input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date altered"), required=False)
 
 class TheraurusOccurrenceListDescForm(forms.ModelForm):
     class Meta:

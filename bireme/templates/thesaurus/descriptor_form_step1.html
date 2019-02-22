@@ -34,7 +34,7 @@
             <ul class="errorlist alert alert-error"><li>{{ msg_erro }}</li></ul>
         {% endif  %}
 
-        {% if form.errors or formset_descriptor.errors or formset_treenumber.errors or formset_previous.errors %}
+        {% if form.errors or formset_descriptor.errors or formset_treenumber.errors or formset_related.non_form_errors or formset_previous.errors or formset_entrycombination.errors %}
             <ul class="errorlist alert alert-error">
                 <li>{% trans "Please check required fields" %}</li>
             </ul>
@@ -45,6 +45,7 @@
         {{ formset_treenumber.non_form_errors }}
         {{ formset_related.non_form_errors }}
         {{ formset_previous.non_form_errors }}
+        {{ formset_entrycombination.non_form_errors }}
 
         <ul class="nav nav-tabs" id='tab'>
             <li><a href="#">{% trans "Step 1" %}</a></li>
@@ -640,7 +641,7 @@
 
             // Garante o preenchimento de idioma dos models baseando-se no campo registry_language
             $(document).on("submit", function(e) {
-                var registry_language = {{ request.GET.language_code }};
+                var registry_language = "{{ request.GET.language_code }}";
                 $(".id_pharmacologicalactionlist_language_selected").val(registry_language);
                 $(".id_previousindexinglistdesc_language_selected").val(registry_language);
             });

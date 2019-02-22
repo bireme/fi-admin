@@ -166,10 +166,6 @@ class DescUpdate(LoginRequiredView):
             # Essas variaveis dizem respeito a criação de novo registro a partir de um termo existente
             # Quando existirem serão repassadas para a faze de criação de conceito
             if self.request.GET.get("term_ui") and self.request.GET.get("term_id"):
-                # print 'DEBUG'
-                # print '--->',self.request.GET.get("term_ui")
-                # print '--->',self.request.GET.get("term_id")
-                # print 'DEBUG'
                 term_ui_alter = self.request.GET.get("term_ui")
                 term_id_alter = self.request.GET.get("term_id")
                 return redirect(reverse('create_concept_termdesc') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language + '&term=' + self.request.GET.get("term") + '&term_ui_alter=' + term_ui_alter + '&term_id_alter=' + term_id_alter)
@@ -291,21 +287,34 @@ class TermListDescChk(LoginRequiredView, ListView):
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
         if self.actions['term_string'] and self.actions['filter_language']:
-            # print 'TERMO:',self.actions['term_string']
-            # print 'LANG:',self.actions['filter_language']
-            # print 'THS:',self.request.GET.get("thesaurus")
 
-            # exist_term = TermListDesc.objects.filter(term_string=self.actions['term_string'],language_code=self.actions['filter_language'],term_thesaurus=self.request.GET.get("thesaurus")).values('id')
-            # This Concept already exist!
+            # Search by draft record
+            q_status_draft = Q(
+                                term_string__iexact=self.actions['term_string'],
+                                language_code=self.actions['filter_language'],
+                                term_thesaurus=self.request.GET.get("thesaurus"),
+                                status=-1,
+                                )
 
             # Search by published record
-            q_status_published = Q(term_string=self.actions['term_string'],language_code=self.actions['filter_language'],term_thesaurus=self.request.GET.get("thesaurus"),status=1)
-            # Search for record with draft status
-            # q_status_draft = Q(term_string=self.actions['term_string'],language_code=self.actions['filter_language'],term_thesaurus=self.request.GET.get("thesaurus"),status=-3)
-            # exist_term = TermListDesc.objects.filter( q_status_published | q_status_draft ).values('id')
+            q_status_published = Q(
+                                term_string__iexact=self.actions['term_string'],
+                                language_code=self.actions['filter_language'],
+                                term_thesaurus=self.request.GET.get("thesaurus"),
+                                status=1,
+                                )
 
-            exist_term = TermListDesc.objects.filter( q_status_published ).values('id')
-            if not exist_term:
+            # Search by historical record
+            q_status_historical = Q(
+                                term_string__iexact=self.actions['term_string'],
+                                language_code=self.actions['filter_language'],
+                                term_thesaurus=self.request.GET.get("thesaurus"),
+                                status=5,
+                                )
+
+            has_term = TermListDesc.objects.filter( q_status_draft | q_status_published | q_status_historical ).exists()
+
+            if not has_term:
                 return redirect('/thesaurus/descriptors/new/?ths=' + self.request.GET.get("thesaurus") + '&term=' + self.actions['term_string'] + '&language_code=' + self.actions['filter_language'])
 
         return super(TermListDescChk, self).render_to_response(context)
@@ -842,7 +851,6 @@ class ConceptListDescView(LoginRequiredView, ListView):
         if self.actions['s']:
             try:
                 id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')
-                # print 'ID do registro-->',id_registro
                 if len(id_registro)>0:
                     id_registro = id_registro[0].get('id')                
                     object_list = IdentifierConceptListDesc.objects.filter(identifier_id=id_registro).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')
@@ -899,23 +907,16 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
 def ConceptListDescModification(request,term_id, ths, concept_ori):
 
-    # print 'term_id',term_id
-    # print 'ths ---> ',ths
-    # print 'Concept--->',concept_ori
-
     # Descobre qual é o id do conceito do termo destino
     id_concept_destino = TermListDesc.objects.filter(id=term_id).values('identifier_concept_id')
     id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
-    # print 'id_concept_destino-->',id_concept_destino
 
     identifier_id_destino = IdentifierConceptListDesc.objects.filter(id=id_concept_destino).values('identifier_id')
     identifier_id_destino = identifier_id_destino[0].get('identifier_id')
-    # print 'identifier_id_destino-->',identifier_id_destino
 
     # Verifica se o conceito é preferido, se for deverá ser escolhido o proximo nao preferido que assumirá a predileção
     check_preferred_concept_origem = IdentifierConceptListDesc.objects.filter(id=concept_ori).values('preferred_concept')
     check_preferred_concept_origem = check_preferred_concept_origem[0].get('preferred_concept')
-    # print 'check_preferred_concept_origem', check_preferred_concept_origem
 
     # Como o registro em TermListDesc será nao preferido, record_preferred_term deverá ser N obrigatoriamente no destino
     # Para isso, devo trazer todos os registros de concept_ori e atualizá-los
@@ -926,17 +927,14 @@ def ConceptListDescModification(request,term_id, ths, concept_ori):
         # Verifica se o conceito origem tem irmãos, se houver e se o conceito origem for preferido então o segundo conceito assumirá a predileção
         check_concept_id_origem = IdentifierConceptListDesc.objects.filter(id=concept_ori).values('identifier_id')
         check_concept_id_origem = check_concept_id_origem[0].get('identifier_id')
-        # print 'check_concept_id_origem -->',check_concept_id_origem
+
         check_concept_id_origem = IdentifierConceptListDesc.objects.filter(identifier_id=check_concept_id_origem).values('identifier_id')
-        # print 'qtd conceitos',check_concept_id_origem
 
         if len(check_concept_id_origem) > 1:
-            # print 'Qtd:',len(check_concept_id_origem)
 
             # Descobre qual o id do primeiro registro nao preferido
             check_concept_id_not_preferred = IdentifierConceptListDesc.objects.filter(identifier_id=check_concept_id_origem,preferred_concept='N').values('id')
             check_concept_id_not_preferred = check_concept_id_not_preferred[0].get('id')
-            # print 'check_concept_id_not_preferred-->',check_concept_id_not_preferred
 
             # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
             IdentifierConceptListDesc.objects.filter(id=check_concept_id_not_preferred).update(concept_relation_name='',preferred_concept='Y')
@@ -972,12 +970,9 @@ class TermListDescView(LoginRequiredView, ListView):
 
         if self.actions['choiced_concept_identifier_id']:
             concept_identifier_id = self.actions['choiced_concept_identifier_id']
-            # print 'concept_identifier_id-->',concept_identifier_id
 
         if self.actions['s']:
             try:
-                # id_conceito = IdentifierConceptListDesc.objects.get(concept_ui=self.actions['s'])
-                # print 'ID do conceito-->',id_conceito
                 object_list = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')
             except IdentifierConceptListDesc.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
@@ -1024,10 +1019,6 @@ class TermListDescView(LoginRequiredView, ListView):
 
 
 def TermListDescModification(request,term_id, ths, term_ori):
-
-    # print 'term_ori--->',term_ori
-    # print 'term_id',term_id
-    # print 'ths ---> ',ths
 
     # Descobre qual é o identifier_concept_id do termo destino
     id_concept_destino = TermListDesc.objects.filter(id=term_id).values('identifier_concept_id')
@@ -1120,7 +1111,7 @@ class TermCreateDescConfirm(LoginRequiredView, TemplateView):
         return context
 
 
-# def TermCreateDescDo(request, ths, term_string, language_code, term_ui):
+
 def TermCreateDescDo(request, ths):
 
     term_string = request.GET.get("term_string")
@@ -1350,11 +1341,37 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
             language_code = self.request.POST.get("language_code")
             term_thesaurus = self.request.GET.get("ths")
 
-            has_term = TermListDesc.objects.filter(
-                term_string__iexact=term_string,
-                language_code=language_code,
-                term_thesaurus=term_thesaurus,
-                ).exists()
+            # Para poder criar um termo novo, não deve existir
+            # -1 - Rascunho
+            # 1  - PublicadoTermListDescChk
+            # 5  - Histórico
+
+            # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "Y"
+            # Search by draft record
+            q_status_draft = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=-1,
+                                )
+
+            # Search by published record
+            q_status_published = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=1,
+                                )
+
+            # Search by historical record
+            q_status_historical = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=5,
+                                )
+
+            has_term = TermListDesc.objects.filter( q_status_draft | q_status_published | q_status_historical ).exists()
 
             if not has_term:
                 self.object = form.save(commit=False)
@@ -1433,6 +1450,176 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
     template_name = 'thesaurus/descriptor_edit_term.html'
     form_class = TermListDescUniqueForm
 
+    def form_valid(self, form):
+
+        formset_toccurrence = TheraurusOccurrenceListDescFormSet(self.request.POST, instance=self.object)
+
+        # Brings form variables to check if it already exists
+        term_string = self.request.POST.get("term_string")
+        language_code = self.request.POST.get("language_code")
+        concept_preferred_term = self.request.POST.get("concept_preferred_term")
+        record_preferred_term = self.request.POST.get("record_preferred_term")
+        identifier_concept_id = self.request.POST.get("identifier_concept_id")
+        term_thesaurus = self.request.GET.get("ths")
+
+        if concept_preferred_term == 'Y' and record_preferred_term == 'Y':
+
+            # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "Y"
+            # Search by published record
+            q_status_published = Q(
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                concept_preferred_term="Y",
+                                record_preferred_term="Y",
+                                identifier_concept_id=identifier_concept_id,
+                                # status=1,
+                                )
+
+            has_term_config = TermListDesc.objects.filter( q_status_published ).values('id').exclude(id=self.object.id,)
+
+            if len(has_term_config) > 0:
+
+                msg_erro =  _("This configuration already exists for this concept!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+                return self.render_to_response(self.get_context_data(
+                                                                    form=form,
+                                                                    formset_toccurrence=formset_toccurrence,
+                                                                    msg_erro=msg_erro,
+                                                                    ))
+            else:
+
+                # Search by draft record
+                q_status_draft = Q(
+                                    term_string__iexact=term_string,
+                                    language_code=language_code,
+                                    term_thesaurus=term_thesaurus,
+                                    status=-1,
+                                    )
+
+                # Search by published record
+                q_status_published = Q(
+                                    term_string__iexact=term_string,
+                                    language_code=language_code,
+                                    term_thesaurus=term_thesaurus,
+                                    status=1,
+                                    )
+
+                # Search by historical record
+                q_status_historical = Q(
+                                    term_string__iexact=term_string,
+                                    language_code=language_code,
+                                    term_thesaurus=term_thesaurus,
+                                    status=5,
+                                    )
+
+                has_term = TermListDesc.objects.filter( q_status_draft | q_status_published | q_status_historical ).values('id').exclude(id=self.object.id,)
+
+                if len(has_term) > 0:
+
+                    msg_erro =  _("This Term already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+                    return self.render_to_response(self.get_context_data(
+                                                                        form=form,
+                                                                        formset_toccurrence=formset_toccurrence,
+                                                                        msg_erro=msg_erro,
+                                                                        ))
+                else:
+
+                    form_valid = form.is_valid()
+                    formset_toccurrence_valid = formset_toccurrence.is_valid()
+
+                    if (form_valid and formset_toccurrence_valid):
+
+                        self.object = form.save(commit=False)
+
+                        # prove the current date if you are not informed on the form
+                        if not self.object.date_created:
+                            self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+
+                        self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+                        self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+
+                        self.object = form.save(commit=True)
+
+                        formset_toccurrence.instance = self.object
+                        formset_toccurrence.save()
+
+                        form.save()
+                        return HttpResponseRedirect(self.get_success_url())
+
+                    else:
+                        return self.render_to_response(self.get_context_data(
+                                                                            form=form,
+                                                                            formset_toccurrence=formset_toccurrence,
+                                                                            ))
+        else:
+
+            # Search by draft record
+            q_status_draft = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=-1,
+                                )
+
+            # Search by published record
+            q_status_published = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=1,
+                                )
+
+            # Search by historical record
+            q_status_historical = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=5,
+                                )
+
+            has_term = TermListDesc.objects.filter( q_status_draft | q_status_published | q_status_historical ).values('id').exclude(id=self.object.id,)
+
+            if len(has_term) > 0:
+
+                msg_erro =  _("This Term already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+                return self.render_to_response(self.get_context_data(
+                                                                    form=form,
+                                                                    formset_toccurrence=formset_toccurrence,
+                                                                    msg_erro=msg_erro,
+                                                                    ))
+            else:
+                form_valid = form.is_valid()
+                formset_toccurrence_valid = formset_toccurrence.is_valid()
+
+                if (form_valid and formset_toccurrence_valid):
+
+                    self.object = form.save(commit=False)
+
+                    # prove the current date if you are not informed on the form
+                    if not self.object.date_created:
+                        self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+
+                    self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+                    self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+
+                    self.object = form.save(commit=True)
+
+                    formset_toccurrence.instance = self.object
+                    formset_toccurrence.save()
+
+                    form.save()
+                    return HttpResponseRedirect(self.get_success_url())
+
+                else:
+                    return self.render_to_response(self.get_context_data(
+                                                                        form=form,
+                                                                        formset_toccurrence=formset_toccurrence,
+                                                                        ))
+
+    def get_success_url(self):
+        ths = '?ths=' + self.request.GET.get("ths")
+        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
+
+
     def get_context_data(self, **kwargs):
         context = super(TermListDescUpdateView, self).get_context_data(**kwargs)
 
@@ -1443,71 +1630,6 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
         else:
             context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(instance=self.object)
         return context
-
-    def form_valid(self, form):
-
-        formset_toccurrence = TheraurusOccurrenceListDescFormSet(self.request.POST, instance=self.object)
-
-        form_valid = form.is_valid()
-        formset_toccurrence_valid = formset_toccurrence.is_valid()
-
-        if (form_valid and formset_toccurrence_valid):
-            # Brings form variables to check if it already exists
-            term_string = self.request.POST.get("term_string")
-            language_code = self.request.POST.get("language_code")
-            concept_preferred_term = self.request.GET.get("concept_preferred_term")
-            record_preferred_term = self.request.GET.get("record_preferred_term")
-            term_thesaurus = self.request.GET.get("ths")
-
-            has_term = TermListDesc.objects.filter(
-                term_string__iexact=term_string,
-                language_code=language_code,
-                term_thesaurus=term_thesaurus,
-                concept_preferred_term=concept_preferred_term,
-                record_preferred_term=record_preferred_term,
-                status=1,
-                ).exists()
-
-            if not has_term:
-
-                self.object = form.save(commit=False)
-
-                # prove the current date if you are not informed on the form
-                if not self.object.date_created:
-                    self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
-
-                self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
-                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
-
-                self.object = form.save(commit=True)
-
-                formset_toccurrence.instance = self.object
-                formset_toccurrence.save()
-
-                form.save()
-                return HttpResponseRedirect(self.get_success_url())
-
-            # 
-            else:
-                msg_erro =  _("This Term already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
-                return self.render_to_response(self.get_context_data(
-                                                                    form=form,
-                                                                    formset_toccurrence=formset_toccurrence,
-                                                                    msg_erro=msg_erro,
-                                                                    ))
-    def get_success_url(self):
-        ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
-
-
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(TermListDescUpdateView, self).get_context_data(**kwargs)
-    #     return context
-
-    #     if self.request.method == 'GET':
-    #         context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(instance=self.object)
-    #     return context
 
 
 
@@ -1957,10 +2079,7 @@ class QualifUpdate(LoginRequiredView):
             # Essas variaveis dizem respeito a criação de novo registro a partir de um termo existente
             # Quando existirem serão repassadas para a faze de criação de conceito
             if self.request.GET.get("term_ui") and self.request.GET.get("term_id"):
-                # print 'DEBUG'
-                # print '--->',self.request.GET.get("term_ui")
-                # print '--->',self.request.GET.get("term_id")
-                # print 'DEBUG'
+
                 term_ui_alter = self.request.GET.get("term_ui")
                 term_id_alter = self.request.GET.get("term_id")
                 return redirect(reverse('create_concept_termqualif') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language + '&term=' + self.request.GET.get("term") + '&term_ui_alter=' + term_ui_alter + '&term_id_alter=' + term_id_alter)
@@ -2051,20 +2170,32 @@ class QualifListDescChk(LoginRequiredView, ListView):
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
         if self.actions['term_string'] and self.actions['filter_language']:
-            # print 'TERMO:',self.actions['term_string']
-            # print 'LANG:',self.actions['filter_language']
-            # print 'THS:',self.request.GET.get("thesaurus")
-
-            # exist_term = TermListQualif.objects.filter(term_string=self.actions['term_string'],language_code=self.actions['filter_language'],term_thesaurus=self.request.GET.get("thesaurus")).values('id')
+            # Search by draft record
+            q_status_draft = Q(
+                                term_string__iexact=self.actions['term_string'],
+                                language_code=self.actions['filter_language'],
+                                term_thesaurus=self.request.GET.get("thesaurus"),
+                                status=-1,
+                                )
 
             # Search by published record
-            q_status_published = Q(term_string=self.actions['term_string'],language_code=self.actions['filter_language'],term_thesaurus=self.request.GET.get("thesaurus"),status=1)
-            # Search for record with draft status
-            # q_status_draft = Q(term_string=self.actions['term_string'],language_code=self.actions['filter_language'],term_thesaurus=self.request.GET.get("thesaurus"),status=-3)
-            # exist_term = TermListDesc.objects.filter( q_status_published | q_status_draft ).values('id')
+            q_status_published = Q(
+                                term_string__iexact=self.actions['term_string'],
+                                language_code=self.actions['filter_language'],
+                                term_thesaurus=self.request.GET.get("thesaurus"),
+                                status=1,
+                                )
 
-            exist_term = TermListQualif.objects.filter( q_status_published ).values('id')
-            if not exist_term:
+            # Search by historical record
+            q_status_historical = Q(
+                                term_string__iexact=self.actions['term_string'],
+                                language_code=self.actions['filter_language'],
+                                term_thesaurus=self.request.GET.get("thesaurus"),
+                                status=5,
+                                )
+
+            has_term = TermListQualif.objects.filter( q_status_draft | q_status_published | q_status_historical ).exists()
+            if not has_term:
                 return redirect('/thesaurus/qualifiers/new/?ths=' + self.request.GET.get("thesaurus") + '&term=' + self.actions['term_string'] + '&language_code=' + self.actions['filter_language'])
 
         return super(QualifListDescChk, self).render_to_response(context)
@@ -2588,7 +2719,6 @@ class ConceptListQualifView(LoginRequiredView, ListView):
 
         if self.actions['choiced_concept_identifier_id']:
             concept_identifier_id = self.actions['choiced_concept_identifier_id']
-            # print 'concept_identifier_id-->',concept_identifier_id
 
         if self.actions['s']:
             try:
@@ -2649,40 +2779,30 @@ class ConceptListQualifView(LoginRequiredView, ListView):
 
 def ConceptListQualifModification(request,term_id, ths, concept_ori):
 
-    # print 'term_id',term_id
-    # print 'ths ---> ',ths
-    # print 'Concept--->',concept_ori
-
     # Descobre qual é o id do conceito do termo destino
     id_concept_destino = TermListQualif.objects.filter(id=term_id).values('identifier_concept_id')
     id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
-    # print 'id_concept_destino-->',id_concept_destino
 
     identifier_id_destino = IdentifierConceptListQualif.objects.filter(id=id_concept_destino).values('identifier_id')
     identifier_id_destino = identifier_id_destino[0].get('identifier_id')
-    # print 'identifier_id_destino-->',identifier_id_destino
 
     # Verifica se o conceito é preferido, se for deverá ser escolhido o proximo nao preferido que assumirá a predileção
     check_preferred_concept_origem = IdentifierConceptListQualif.objects.filter(id=concept_ori).values('preferred_concept')
     check_preferred_concept_origem = check_preferred_concept_origem[0].get('preferred_concept')
-    # print 'check_preferred_concept_origem', check_preferred_concept_origem
 
     if check_preferred_concept_origem == 'Y':
 
         # Verifica se o conceito origem tem irmãos, se houver e se o conceito origem for preferido então o segundo conceito assumirá a predileção
         check_concept_id_origem = IdentifierConceptListQualif.objects.filter(id=concept_ori).values('identifier_id')
         check_concept_id_origem = check_concept_id_origem[0].get('identifier_id')
-        # print 'check_concept_id_origem -->',check_concept_id_origem
+
         check_concept_id_origem = IdentifierConceptListQualif.objects.filter(identifier_id=check_concept_id_origem).values('identifier_id')
-        # print 'qtd conceitos',check_concept_id_origem
 
         if len(check_concept_id_origem) > 1:
-            # print 'Qtd:',len(check_concept_id_origem)
 
             # Descobre qual o id do primeiro registro nao preferido
             check_concept_id_not_preferred = IdentifierConceptListQualif.objects.filter(identifier_id=check_concept_id_origem,preferred_concept='N').values('id')
             check_concept_id_not_preferred = check_concept_id_not_preferred[0].get('id')
-            # print 'check_concept_id_not_preferred-->',check_concept_id_not_preferred
 
             # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
             IdentifierConceptListQualif.objects.filter(id=check_concept_id_not_preferred).update(concept_relation_name='',preferred_concept='Y')
@@ -2719,12 +2839,9 @@ class TermListQualifView(LoginRequiredView, ListView):
 
         if self.actions['choiced_concept_identifier_id']:
             concept_identifier_id = self.actions['choiced_concept_identifier_id']
-            # print 'concept_identifier_id-->',concept_identifier_id
 
         if self.actions['s']:
             try:
-                # id_conceito = IdentifierConceptListQualif.objects.get(concept_ui=self.actions['s'])
-                # print 'ID do conceito-->',id_conceito
                 object_list = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')
             except IdentifierConceptListQualif.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
@@ -2771,10 +2888,6 @@ class TermListQualifView(LoginRequiredView, ListView):
 
 
 def TermListQualifModification(request,term_id, ths, term_ori):
-
-    # print 'term_ori--->',term_ori
-    # print 'term_id',term_id
-    # print 'ths ---> ',ths
 
     # Descobre qual é o identifier_concept_id do termo destino
     id_concept_destino = TermListQualif.objects.filter(id=term_id).values('identifier_concept_id')
@@ -3087,11 +3200,33 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
             language_code = self.request.POST.get("language_code")
             term_thesaurus = self.request.GET.get("ths")
 
-            has_term = TermListQualif.objects.filter(
-                term_string__iexact=term_string,
-                language_code=language_code,
-                term_thesaurus=term_thesaurus,
-                ).exists()
+            # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "Y"
+            # Search by draft record
+            q_status_draft = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=-1,
+                                )
+
+            # Search by published record
+            q_status_published = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=1,
+                                )
+
+            # Search by historical record
+            q_status_historical = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=5,
+                                )
+
+            has_term = TermListQualif.objects.filter( q_status_draft | q_status_published | q_status_historical ).exists()
+
 
             if not has_term:
                 self.object = form.save(commit=False)
@@ -3174,28 +3309,169 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
             # Brings form variables to check if it already exists
             term_string = self.request.POST.get("term_string")
             language_code = self.request.POST.get("language_code")
-            concept_preferred_term = self.request.GET.get("concept_preferred_term")
-            record_preferred_term = self.request.GET.get("record_preferred_term")
+            concept_preferred_term = self.request.POST.get("concept_preferred_term")
+            record_preferred_term = self.request.POST.get("record_preferred_term")
+            identifier_concept_id = self.request.POST.get("identifier_concept_id")
             term_thesaurus = self.request.GET.get("ths")
 
-            has_term = TermListQualif.objects.filter(
-                term_string__iexact=term_string,
-                language_code=language_code,
-                term_thesaurus=term_thesaurus,
-                concept_preferred_term=concept_preferred_term,
-                record_preferred_term=record_preferred_term,
-                status=1,
-                ).exists()
+            # has_term = TermListQualif.objects.filter(
+            #     term_string__iexact=term_string,
+            #     language_code=language_code,
+            #     term_thesaurus=term_thesaurus,
+            #     concept_preferred_term=concept_preferred_term,
+            #     record_preferred_term=record_preferred_term,
+            #     status=1,
+            #     ).exists()
 
-            if not has_term:
-                self.object = form.save(commit=False)
-                self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
-                self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
-                form.save()
-                return HttpResponseRedirect(self.get_success_url())
+            # if not has_term:
+            #     self.object = form.save(commit=False)
+            #     self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+            #     self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+            #     form.save()
+            #     return HttpResponseRedirect(self.get_success_url())
+            # else:
+            #     msg_erro =  _("This Term already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+            #     return self.render_to_response(self.get_context_data(form=form,msg_erro=msg_erro))
+
+        if concept_preferred_term == 'Y' and record_preferred_term == 'Y':
+
+            # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "Y"
+            # Search by published record
+            q_status_published = Q(
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                concept_preferred_term="Y",
+                                record_preferred_term="Y",
+                                identifier_concept_id=identifier_concept_id,
+                                # status=1,
+                                )
+
+            has_term_config = TermListQualif.objects.filter( q_status_published ).values('id').exclude(id=self.object.id,)
+
+            if len(has_term_config) > 0:
+
+                msg_erro =  _("This configuration already exists for this concept!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+                return self.render_to_response(self.get_context_data(
+                                                                    form=form,
+                                                                    msg_erro=msg_erro,
+                                                                    ))
             else:
+
+                # Search by draft record
+                q_status_draft = Q(
+                                    term_string__iexact=term_string,
+                                    language_code=language_code,
+                                    term_thesaurus=term_thesaurus,
+                                    status=-1,
+                                    )
+
+                # Search by published record
+                q_status_published = Q(
+                                    term_string__iexact=term_string,
+                                    language_code=language_code,
+                                    term_thesaurus=term_thesaurus,
+                                    status=1,
+                                    )
+
+                # Search by historical record
+                q_status_historical = Q(
+                                    term_string__iexact=term_string,
+                                    language_code=language_code,
+                                    term_thesaurus=term_thesaurus,
+                                    status=5,
+                                    )
+
+                has_term = TermListQualif.objects.filter( q_status_draft | q_status_published | q_status_historical ).values('id').exclude(id=self.object.id,)
+
+                if len(has_term) > 0:
+
+                    msg_erro =  _("This Term already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
+                    return self.render_to_response(self.get_context_data(
+                                                                        form=form,
+                                                                        msg_erro=msg_erro,
+                                                                        ))
+                else:
+
+                    form_valid = form.is_valid()
+
+                    if form_valid:
+
+                        self.object = form.save(commit=False)
+
+                        # prove the current date if you are not informed on the form
+                        if not self.object.date_created:
+                            self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+
+                        self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+                        self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+
+                        self.object = form.save(commit=True)
+
+                        form.save()
+                        return HttpResponseRedirect(self.get_success_url())
+
+                    else:
+                        return self.render_to_response(self.get_context_data(
+                                                                            form=form,
+                                                                            ))
+        else:
+
+            # Search by draft record
+            q_status_draft = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=-1,
+                                )
+
+            # Search by published record
+            q_status_published = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=1,
+                                )
+
+            # Search by historical record
+            q_status_historical = Q(
+                                term_string__iexact=term_string,
+                                language_code=language_code,
+                                term_thesaurus=term_thesaurus,
+                                status=5,
+                                )
+
+            has_term = TermListQualif.objects.filter( q_status_draft | q_status_published | q_status_historical ).values('id').exclude(id=self.object.id,)
+
+            if len(has_term) > 0:
+
                 msg_erro =  _("This Term already exist!") + ' -----> ' + term_string + ' (' + language_code +  ')'
-                return self.render_to_response(self.get_context_data(form=form,msg_erro=msg_erro))
+                return self.render_to_response(self.get_context_data(
+                                                                    form=form,
+                                                                    msg_erro=msg_erro,
+                                                                    ))
+            else:
+                form_valid = form.is_valid()
+                if form_valid:
+
+                    self.object = form.save(commit=False)
+
+                    # prove the current date if you are not informed on the form
+                    if not self.object.date_created:
+                        self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
+
+                    self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+                    self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+
+                    self.object = form.save(commit=True)
+
+                    form.save()
+                    return HttpResponseRedirect(self.get_success_url())
+
+                else:
+                    return self.render_to_response(self.get_context_data(
+                                                                        form=form,
+                                                                        ))
+
 
     def get_context_data(self, **kwargs):
         context = super(TermListQualifUpdateView, self).get_context_data(**kwargs)

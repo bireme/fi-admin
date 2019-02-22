@@ -77,7 +77,7 @@
                         {% for obj in term_string_info_preferred_objects %}
                             {% if obj.termdesc__status != 3 %}
                                 {{ obj.termdesc__term_string }} ({{ obj.termdesc__language_code }})
-                                <a href="{% url 'edit_register_desc' obj.identifier_id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}"><i class="icon-pencil"></i></a>
+                                <a href="{% url 'edit_register_desc' obj.identifier_id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}" title="{% trans "Edit registration information, description, abbreviations, hierarchical code, pharmacological action, related, pre-indexing and Precoord" %}"><i class="icon-pencil"></i></a>
                                 <br>
                             {% endif %}
                         {% endfor %}
@@ -507,9 +507,12 @@
                                     {% endif %}
                                 </i></font>
                                 
-                                <!-- force preferred_concept=N -->
-                                <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}&preferred_concept=N"><i class="icon-pencil"></i></a>
-
+                                {% if identifierconceptlist_objects_preferred|length == 0 %}
+                                    <!-- force preferred_concept=N -->
+                                    <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}"><i class="icon-pencil"></i></a>
+                                {% else %}
+                                    <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}&preferred_concept=N"><i class="icon-pencil"></i></a>
+                                {% endif %}
                                 <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}"><i class="icon-share"></i></a>
                                 <!-- </a> -->
                             {% endifchanged %}
