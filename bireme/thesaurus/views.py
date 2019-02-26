@@ -936,12 +936,28 @@ def ConceptListDescModification(request,term_id, ths, concept_ori):
             check_concept_id_not_preferred = IdentifierConceptListDesc.objects.filter(identifier_id=check_concept_id_origem,preferred_concept='N').values('id')
             check_concept_id_not_preferred = check_concept_id_not_preferred[0].get('id')
 
-            # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
+            # Atualiza o status do conceito para preferred_concept='Y'
             IdentifierConceptListDesc.objects.filter(id=check_concept_id_not_preferred).update(concept_relation_name='',preferred_concept='Y')
+
+            # Necessário atualizar também os termos que são preferidos no conceito para também preferidos do registro
+            TermListDesc.objects.filter(identifier_concept_id=check_concept_id_not_preferred, concept_preferred_term='Y').update(record_preferred_term='Y')
 
 
     # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
-    IdentifierConceptListDesc.objects.filter(id=concept_ori).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N')
+    # Atualiza o campo de histórico gravando informação de que registro foi originado
+    identifier_id_ori = IdentifierConceptListDesc.objects.filter(id=concept_ori).values('identifier_id')
+    identifier_id_ori = identifier_id_ori[0].get('identifier_id')
+    descriptor_ui_ori = IdentifierDesc.objects.filter(id=identifier_id_ori).values('descriptor_ui')
+    descriptor_ui_ori = descriptor_ui_ori[0].get('descriptor_ui')
+
+    # Verifica se já existe anotação no historico
+    has_hist=IdentifierConceptListDesc.objects.filter(id=concept_ori).values('historical_annotation')
+    if has_hist:
+        historical_annotation_old=has_hist[0].get('historical_annotation')
+        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+    IdentifierConceptListDesc.objects.filter(id=concept_ori).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N', historical_annotation=historical_annotation_new)
 
 
     url = '/thesaurus/descriptors/view/' + term_id + '?ths=' + ths
@@ -2790,6 +2806,10 @@ def ConceptListQualifModification(request,term_id, ths, concept_ori):
     check_preferred_concept_origem = IdentifierConceptListQualif.objects.filter(id=concept_ori).values('preferred_concept')
     check_preferred_concept_origem = check_preferred_concept_origem[0].get('preferred_concept')
 
+    # Como o registro em TermListDesc será nao preferido, record_preferred_term deverá ser N obrigatoriamente no destino
+    # Para isso, devo trazer todos os registros de concept_ori e atualizá-los
+    TermListQualif.objects.filter(identifier_concept_id=concept_ori).update(record_preferred_term='N')
+
     if check_preferred_concept_origem == 'Y':
 
         # Verifica se o conceito origem tem irmãos, se houver e se o conceito origem for preferido então o segundo conceito assumirá a predileção
@@ -2807,9 +2827,24 @@ def ConceptListQualifModification(request,term_id, ths, concept_ori):
             # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
             IdentifierConceptListQualif.objects.filter(id=check_concept_id_not_preferred).update(concept_relation_name='',preferred_concept='Y')
 
+            # Necessário atualizar também os termos que são preferidos no conceito para também preferidos do registro
+            TermListQualif.objects.filter(identifier_concept_id=check_concept_id_not_preferred, concept_preferred_term='Y').update(record_preferred_term='Y')
 
     # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
-    IdentifierConceptListQualif.objects.filter(id=concept_ori).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N')
+    # Atualiza o campo de histórico gravando informação de que registro foi originado
+    identifier_id_ori = IdentifierConceptListQualif.objects.filter(id=concept_ori).values('identifier_id')
+    identifier_id_ori = identifier_id_ori[0].get('identifier_id')
+    qualifier_ui_ori = IdentifierQualif.objects.filter(id=identifier_id_ori).values('qualifier_ui')
+    qualifier_ui_ori = qualifier_ui_ori[0].get('descriptor_ui')
+
+    # Verifica se já existe anotação no historico
+    has_hist=IdentifierConceptListQualif.objects.filter(id=concept_ori).values('historical_annotation')
+    if has_hist:
+        historical_annotation_old=has_hist[0].get('historical_annotation')
+        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+    IdentifierConceptListQualif.objects.filter(id=concept_ori).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N', historical_annotation=historical_annotation_new)
 
 
     url = '/thesaurus/qualifiers/view/' + term_id + '?ths=' + ths

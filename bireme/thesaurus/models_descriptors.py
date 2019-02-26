@@ -295,6 +295,8 @@ class IdentifierConceptListDesc(models.Model):
     # RegistryNumber
     registry_number = models.CharField(_("Registry number from CAS"), max_length=250, blank=True)
 
+    # Historical annotation
+    historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
     def __unicode__(self):
         return '%s' % (self.id)
