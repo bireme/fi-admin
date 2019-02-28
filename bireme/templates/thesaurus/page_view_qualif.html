@@ -24,19 +24,39 @@
 
 {% block content %}
 
+    <style rel="stylesheet" type="text/css">
+        .float-banner {
+            position: absolute;
+            left: 95%;
+            width: 350px; height: 100px;
+            margin-top: 25px; margin-left: -300px;
+        }
+    </style>
+
     <div class='header'>
-        <table>
+        <table width="98%">
             <tr>
-                <td valign="top">
+                <td valign="top" width="20%">
                     <h2><i class='icon-file'></i> {% trans "Qualifiers" %}</h2>
                 </td>
                 <td valign="top">
                     <ul>
                         {% for obj in term_string_info_preferred_objects %}
-                            {{ obj.termqualif__term_string }} ({{ obj.termqualif__language_code }})<br>
+                            {% if obj.termqualif__status != 3 %}
+                                {{ obj.termqualif__term_string }} ({{ obj.termqualif__language_code }})<br>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </td>
+
+                <div id="float-banner" class="float-banner">
+                    <form name="f1" action="" onSubmit="if(this.t1.value!=null && this.t1.value!='') findString(this.t1.value);return false">
+                        <input type="text" name=t1 value="" size=20 placeholder="{% trans "Search" %}">
+                        <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
+                        <button class="btn btn-primary" type="reset" style="margin-top: -10px"><i class="icon-refresh"></i></button>
+                    </form>
+                </div>
+
             </tr>
         </table>
     </div>
@@ -294,6 +314,7 @@
 
                     {% if obj.termqualif__concept_preferred_term == 'Y' %}
                         {% ifchanged obj.termqualif__identifier_concept_id %}
+                            <hr>
                             <b>{% trans "Concept" %}</b>:
                             <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termqualif__id }}"> -->
                             {{ obj.termqualif__term_string }}
@@ -381,6 +402,7 @@
 
                         {% if obj.termqualif__concept_preferred_term == 'Y' %}
                             {% ifchanged obj.termqualif__identifier_concept_id %}
+                                <hr>
                                 <b>{% trans "Concept" %}</b>:
                                 <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termqualif__id }}"> -->
                                 {{ obj.termqualif__term_string }}
@@ -635,5 +657,64 @@
    {% if LANGUAGE_CODE != 'en' %}
        <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
    {% endif %}
+
+    <script language="JavaScript">
+        jQuery(document).ready(function() {
+            $(window).scroll(function () {
+                set = $(document).scrollTop()+"px";
+                jQuery('#float-banner').animate(
+                    {top:set},
+                    {duration:1000, queue:false}
+                );
+            });
+        });
+    </script>
+
+
+   <!-- Search process -->
+    <script language="JavaScript">
+    <!--
+    var TRange=null
+
+    function findString (str) {
+        if (parseInt(navigator.appVersion)<4) return;
+        var strFound;
+
+        if (window.find) {
+    // CODE FOR BROWSERS THAT SUPPORT window.find
+
+            strFound=self.find(str);
+            if (strFound && self.getSelection && !self.getSelection().anchorNode) {
+                strFound=self.find(str)
+            }
+            if (!strFound) {
+                strFound=self.find(str,0,1)
+                while (self.find(str,0,1)) continue
+            }
+        }
+        else if (navigator.appName.indexOf("Microsoft")!=-1) {
+            // EXPLORER-SPECIFIC CODE
+            if (TRange!=null) {
+                TRange.collapse(false)
+                strFound=TRange.findText(str)
+                if (strFound)
+                    TRange.select()
+            }
+            if (TRange==null || strFound==0) {
+                TRange=self.document.body.createTextRange()
+                strFound=TRange.findText(str)
+                if (strFound) TRange.select()
+                }
+            }
+            else if (navigator.appName=="Opera") {
+                alert ("Opera browsers not supported, sorry...")
+                return;
+            }
+            if (!strFound) alert ('{% trans "No results found" %}')
+                return;
+            }
+    //-->
+    </script>
+
 
 {% endblock %}
