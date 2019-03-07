@@ -61,6 +61,7 @@ ACTIONS = {
     'form_language': '',
 
     'choiced_thesaurus': '',
+    'choiced_thesaurus_name': '',
     'choiced_concept_identifier_id': '',
     'choiced_term_id': '',
     'choiced_term_string': '',

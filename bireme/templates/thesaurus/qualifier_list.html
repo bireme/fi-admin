@@ -14,6 +14,10 @@
             {% for obj in choiced_thesaurus_name %}
                 {{ obj.thesaurus_name }}
             {% endfor %}
+        {% else %}
+            {% if actions.choiced_thesaurus_name %}
+                {{ actions.choiced_thesaurus_name }}
+            {% endif %}
         {% endif %}
         </a>
     </li>
@@ -31,6 +35,7 @@
     <input type='hidden' name="s" value="{{ actions.s }}">
     <input type='hidden' name="exact" value="{{ actions.exact }}">
     <input type='hidden' name="choiced_thesaurus" value="{{ actions.choiced_thesaurus }}">
+    <input type='hidden' name="choiced_thesaurus_name" value="{{ actions.choiced_thesaurus_name }}">
 </form>
 
 <!--  header -->
@@ -49,6 +54,7 @@
 </div>
 
 <div class='body'>    
+    
     <ul class="nav nav-tabs" id='tab'>
         <li class="">
             <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}"><strong>{% trans "Descriptors" %}</strong></a>
@@ -60,8 +66,10 @@
 
     <div class="row">
         <div class="span12">
-            <form name="search">
+            <form name="search" method="GET">
+
                 <input type='hidden' name="choiced_thesaurus" value="{% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+                <input type='hidden' name="choiced_thesaurus_name" value="{% if request.GET.choiced_thesaurus_name %}{{ request.GET.choiced_thesaurus_name }}{% else %}{% if choiced_thesaurus_name %}{% for obj in choiced_thesaurus_name %}{{ obj.thesaurus_name }}{% endfor %}{% endif %}{% endif %}">
 
                 <input type="hidden" name="page" value="">
                 <input type="hidden" name="visited" value="ok">
@@ -97,7 +105,6 @@
                     <option value="es-es" {% if actions.filter_language == 'es-es' %}selected="true"{% endif %}>{% trans "Spanish Spain" %}</option>
                     <option value="fr" {% if actions.filter_language == 'fr' %}selected="true"{% endif %}>{% trans "French" %}</option>
                 </select>
-
 
                 <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
                 <br>

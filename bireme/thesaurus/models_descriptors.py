@@ -110,7 +110,7 @@ class TreeNumbersListDesc(models.Model, AuditLog):
     identifier = models.ForeignKey(IdentifierDesc, related_name="dtreenumbers", null=True)
 
     # Tree Number
-    tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
+    tree_number = models.CharField(_("Tree number"), max_length=250, blank=True, unique=True)
 
     def get_parent(self):
         return self.identifier
