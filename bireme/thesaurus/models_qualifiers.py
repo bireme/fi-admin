@@ -24,11 +24,11 @@ class IdentifierQualif(Generic, AuditLog):
     thesaurus = models.ForeignKey(Thesaurus, null=True, blank=False, default=None)
 
     # MESH Qualifier Unique Identifier
-    qualifier_ui = models.CharField(_("MESH Qualifier UI"), max_length=250, blank=True)
+    qualifier_ui = models.CharField(_("Transport UI"), max_length=250, blank=True)
 
     # BIREME Qualifier Unique Identifier
     # decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True, unique=True)
-    decs_code = models.CharField(_("DeCS Qualifier UI"), max_length=250, blank=True)
+    decs_code = models.CharField(_("Thesaurus UI"), max_length=250, blank=True)
 
     # External Qualifier Unique Identifier
     external_code = models.CharField(_("External Qualifier UI"), max_length=250, blank=True)
@@ -51,17 +51,19 @@ class IdentifierQualif(Generic, AuditLog):
         concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=self.id).values('id')
         if concepts_of_register:
             id_concept = concepts_of_register[0].get('id')
-            # translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code)
-            # translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y')
-            translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, status='1', language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y', )
-
-            if translation:
-                # treatment1 = translation[0].term_string.replace('/','').upper()
-                treatment1 = translation[0].term_string.replace('/','')
-                # return '%s%s%s' % (self.abbreviation,' - ',treatment1)
-                return '%s%s%s%s' % (treatment1,' (',self.abbreviation,')')
-            else:
-                return '%s%s%s' % ('Description without translation (',self.abbreviation,')')
+            # Verify if exist term with published status
+            has_term = TermListQualif.objects.filter(identifier_concept_id=id_concept, status='1', concept_preferred_term='Y', record_preferred_term='Y', )
+            if len(has_term) > 0:
+                # Verifý if exist tradution for the interface choiced
+                translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, status='1', language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y', )
+                if translation:
+                    # treatment1 = translation[0].term_string.replace('/','').upper()
+                    treatment1 = translation[0].term_string.replace('/','')
+                    # return '%s%s%s' % (self.abbreviation,' - ',treatment1)
+                    return '%s%s%s%s' % (treatment1,' (',self.abbreviation,')')
+                else:
+                    return '%s%s%s' % ('Description without translation (',self.abbreviation,')')
+            return '%s' % ''
         else:
             return '%s' % (self.id)
 
@@ -197,6 +199,8 @@ class IdentifierConceptListQualif(models.Model):
     # RegistryNumber
     registry_number = models.CharField(_("Registry number from CAS"), max_length=250, blank=True)
 
+    # Historical annotation
+    historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
     def __unicode__(self):
         return '%s' % (self.id)

@@ -7,8 +7,17 @@
 
 {% block breadcrumb %}
     {% if object %}
-        <li><a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
-        <span class="divider">/</span></li>
+        <li>
+            <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+                {% trans "Thesaurus" %}
+                {% if choiced_thesaurus_name %}
+                    {% for obj in choiced_thesaurus_name %}
+                        {{ obj.thesaurus_name }}
+                    {% endfor %}
+                {% endif %}
+            </a>
+            <span class="divider">/</span>
+        </li>
         <li>{% trans "Edit Register" %}</li>
     {% endif %}
 {% endblock %}
@@ -71,12 +80,14 @@
                                 <table>
                                     <tr>
                                         <td>{{ form.descriptor_ui.label }}:</td>
-                                        <td>{{ form.decs_code.label }}</span></td>
+                                        <td>{{ form.decs_code.label }}:</span></td>
                                         <td>{{ form.external_code.label }}:</td>
                                         <td>{{ form.nlm_class_number.label }}:</td>
                                     </tr>
                                     <tr>
-                                        <td>{{ form.descriptor_ui }}</td>
+                                        <td>
+                                            <input type="text" id="id_descriptor_ui" name="descriptor_ui" value="{% if form.descriptor_ui.value %}{{ form.descriptor_ui.value }}{% endif %}" readonly="True">
+                                        </td>
                                         <td>
                                             <input type="text" id="id_decs_code" name="decs_code" value="{% if form.decs_code.value %}{{ form.decs_code.value }}{% endif %}" readonly="True">
                                         </td>
@@ -141,87 +152,6 @@
                                     {% endfor %}
                                     </tr>
                                 </table>
-                            </fieldset>
-                        </ul>
-                    </div>
-
-                    <!-- pharmacologicalactionlist -->
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-target="#pharmaco">{% trans "Pharmacological Action List" %}</a>
-                        </div>
-
-                        <ul>
-                            <fieldset id="pharmaco">
-
-                                <table>
-                                    <tr>
-                                        <td>{% trans "String" %}:</td>
-                                        <td>{% trans "Descriptor UI" %}:</td>
-                                        <td>{% trans "Language" %}:</td>
-                                    </tr>
-                                    <tr>
-                                    {{ formset_pharmaco.management_form }}
-
-                                    {% for form in formset_pharmaco %}
-
-                                        {{ form.non_field_errors.as_ul }}
-
-                                        {% for hidden in form.hidden_fields %}
-                                            {{ hidden }}
-                                        {% endfor %}
-                                        <tr id="pharmaco-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
-                                            {% for field in form.visible_fields %}
-                                            <td>
-                                                {{ field }}
-                                                {{ field.errors }}
-                                            </td>
-                                            {% endfor %}
-                                        </tr>
-                                    {% endfor %}
-                                    </tr>
-                                </table>
-
-                            </fieldset>
-                        </ul>
-                    </div>
-
-                    <!-- seerelatedlistdesc -->
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-target="#relatedlistdesc">{% trans "Related List" %}</a>
-                        </div>
-
-                        <ul>
-                            <fieldset id="relatedlistdesc">
-
-                                <table>
-                                    <tr>
-                                        <td>{% trans "String" %}:</td>
-                                        <td>{% trans "Descriptor UI" %}:</td>
-                                    </tr>
-                                    <tr>
-                                    {{ formset_related.management_form }}
-
-                                    {% for form in formset_related %}
-
-                                        {{ form.non_field_errors.as_ul }}
-
-                                        {% for hidden in form.hidden_fields %}
-                                            {{ hidden }}
-                                        {% endfor %}
-                                        <tr id="relatedlistdesc-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
-                                            {% for field in form.visible_fields %}
-                                            <td>
-                                                {{ field }}
-                                                {{ field.errors }}
-                                            </td>
-                                            {% endfor %}
-                                        </tr>
-                                    {% endfor %}
-                                    </tr>
-                                </table>
-
                             </fieldset>
                         </ul>
                     </div>
@@ -322,6 +252,88 @@
                         </ul>
                     </div>
 
+                    <!-- pharmacologicalactionlist -->
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-target="#pharmaco">{% trans "Pharmacological Action List" %}</a>
+                        </div>
+
+                        <ul>
+                            <fieldset class="collapse" id="pharmaco">
+
+                                <table>
+                                    <tr>
+                                        <td>{% trans "String" %}:</td>
+                                        <td>{% trans "Transport UI" %}:</td>
+                                        <td>{% trans "Language" %}:</td>
+                                    </tr>
+                                    <tr>
+                                    {{ formset_pharmaco.management_form }}
+
+                                    {% for form in formset_pharmaco %}
+
+                                        {{ form.non_field_errors.as_ul }}
+
+                                        {% for hidden in form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor %}
+                                        <tr id="pharmaco-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
+                                            {% for field in form.visible_fields %}
+                                            <td>
+                                                {{ field }}
+                                                {{ field.errors }}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tr>
+                                </table>
+
+                            </fieldset>
+                        </ul>
+                    </div>
+
+                    <!-- seerelatedlistdesc -->
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-target="#relatedlistdesc">{% trans "Related List" %}</a>
+                        </div>
+
+                        <ul>
+                            <fieldset class="collapse" id="relatedlistdesc">
+
+                                <table>
+                                    <tr>
+                                        <td>{% trans "String" %}:</td>
+                                        <td>{% trans "Transport UI" %}:</td>
+                                    </tr>
+                                    <tr>
+                                    {{ formset_related.management_form }}
+
+                                    {% for form in formset_related %}
+
+                                        {{ form.non_field_errors.as_ul }}
+
+                                        {% for hidden in form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor %}
+                                        <tr id="relatedlistdesc-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
+                                            {% for field in form.visible_fields %}
+                                            <td>
+                                                {{ field }}
+                                                {{ field.errors }}
+                                            </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tr>
+                                </table>
+
+                            </fieldset>
+                        </ul>
+                    </div>
+
+
                     <!-- previousindexinglistdesc -->
                     <div class="accordion-group">
                         <div class="accordion-heading">
@@ -329,7 +341,7 @@
                         </div>
 
                         <ul>
-                            <fieldset id="previousindexinglistdesc">
+                            <fieldset class="collapse" id="previousindexinglistdesc">
 
                                 <table>
                                     <tr>
@@ -370,11 +382,11 @@
                     <!-- entrycombinationlistdesc -->
                     <div class="accordion-group">
                         <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-target="#entrycombination">{% trans "Entry Combination" %}</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-target="#entrycombination">{% trans "Entry Combination List" %}</a>
                         </div>
 
                         <ul>
-                            <fieldset id="entrycombination">
+                            <fieldset class="collapse" id="entrycombination">
 
                                 {{ formset_entrycombination.management_form }}
 

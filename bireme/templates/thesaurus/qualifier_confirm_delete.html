@@ -6,7 +6,13 @@
 
 {% block breadcrumb %}
     <li>
-        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">{% trans "Thesaurus" %}</a>
+        {% trans "Thesaurus" %}
+
+        {% if choiced_thesaurus_name %}
+            {% for obj in choiced_thesaurus_name %}
+                {{ obj.thesaurus_name }}
+            {% endfor %}
+        {% endif %}
         <span class="divider">/</span>
     </li>
     <li>{% trans "Delete Qualifier" %}</li>

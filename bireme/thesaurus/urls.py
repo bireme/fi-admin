@@ -8,6 +8,17 @@ urlpatterns = [
     # Descriptors -------------------------------------------------------------------------------------------
     url(r'^descriptors/?$', DescListView.as_view(), name='list_descriptor'),
 
+    # Pagina de redirecionamento para criação de novo registro a partir de um TERMO existente
+    url(r'^descriptors/create/term/confirm/?$', TermCreateDescConfirm.as_view(), name='create_confirm_termdesc'),
+    url(r'^descriptors/create/term/do/(?P<ths>\d+)/?$', TermCreateDescDo, name='do_create_termdesc'),
+
+    # Pagina de redirecionamento para criação de novo registro a partir de um CONCEITO existente
+    url(r'^descriptors/create/concept/confirm/?$', ConceptCreateDescConfirm.as_view(), name='create_confirm_conceptdesc'),
+    url(r'^descriptors/create/concept/do/(?P<ths>\d+)/?$', ConceptCreateDescDo, name='do_create_conceptdesc'),
+
+    # Form 0 para pesquisa de existencia de termo - Se não existir segue Form1
+    url(r'^descriptors/chk/?$', TermListDescChk.as_view(), name='chk_termdesc'),
+
     # Form 1 para criacao de novo registro
     url(r'^descriptors/new/?$', DescCreateView.as_view(), name='create_descriptor'),
 
@@ -35,16 +46,28 @@ urlpatterns = [
     url(r'^descriptors/legacy/new/?$', legacyInformationDescCreateView.as_view(), name='create_legacy_desc'),
     url(r'^descriptors/legacy/edit/(?P<pk>\d+)/?$', legacyInformationDescUpdateView.as_view(), name='edit_legacy_desc'),
 
-
-
-    # Nao esta sendo utilizado por enquanto
-    # Lista conceitos
+    # Referente a migracao de conceito
     url(r'^descriptors/concept/?$', ConceptListDescView.as_view(), name='list_concept'),
+    url(r'^descriptors/concept/move/(?P<term_id>\d+)/(?P<ths>\d+)/(?P<concept_ori>\d+)?$', ConceptListDescModification, name='move_concept_desc'),
 
+    # Referente a migracao de termo
+    url(r'^descriptors/term/?$', TermListDescView.as_view(), name='list_term'),
+    url(r'^descriptors/term/move/(?P<term_id>\d+)/(?P<ths>\d+)/(?P<term_ori>\d+)?$', TermListDescModification, name='move_term_desc'),
 
 
     # Qualifiers --------------------------------------------------------------------------------------------
     url(r'^qualifiers/?$', QualifListView.as_view(), name='list_qualifier'),
+
+    # Pagina de redirecionamento para criação de novo registro a partir de um TERMO existente
+    url(r'^qualifiers/create/term/confirm/?$', TermCreateQualifConfirm.as_view(), name='create_confirm_termqualif'),
+    url(r'^qualifiers/create/term/do/(?P<ths>\d+)/?$', TermCreateQualifDo, name='do_create_termqualif'),
+
+    # Pagina de redirecionamento para criação de novo registro a partir de um CONCEITO existente
+    url(r'^qualifiers/create/concept/confirm/?$', ConceptCreateQualifConfirm.as_view(), name='create_confirm_conceptqualif'),
+    url(r'^qualifiers/create/concept/do/(?P<ths>\d+)/?$', ConceptCreateQualifDo, name='do_create_conceptqualif'),
+
+    # Form 0 para pesquisa de existencia de qualificador - Se não existir segue Form1
+    url(r'^qualifiers/chk/?$', QualifListDescChk.as_view(), name='chk_termqualif'),
 
     # Form 1 para criacao de novo registro
     url(r'^qualifiers/new/?$', QualifCreateView.as_view(), name='create_qualifier'),
@@ -72,6 +95,15 @@ urlpatterns = [
     # Cria Edita Legado
     url(r'^qualifiers/legacy/new/?$', legacyInformationQualifCreateView.as_view(), name='create_legacy_qualif'),
     url(r'^qualifiers/legacy/edit/(?P<pk>\d+)/?$', legacyInformationQualifUpdateView.as_view(), name='edit_legacy_qualif'),
+
+    # Referente a migracao de conceito
+    url(r'^qualifiers/concept/?$', ConceptListQualifView.as_view(), name='list_concept_qualif'),
+    url(r'^qualifiers/concept/move/(?P<term_id>\d+)/(?P<ths>\d+)/(?P<concept_ori>\d+)?$', ConceptListQualifModification, name='move_concept_qualif'),
+
+    # Referente a migracao de termo
+    url(r'^qualifiers/term/?$', TermListQualifView.as_view(), name='list_qualif'),
+    url(r'^qualifiers/term/move/(?P<term_id>\d+)/(?P<ths>\d+)/(?P<term_ori>\d+)?$', TermListQualifModification, name='move_term_qualif'),
+
 
 
 ]
