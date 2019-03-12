@@ -419,8 +419,12 @@
                                     <a href="{% url 'edit_concept_qualif' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&id={{ obj.termqualif__id }}&identifier_id={{obj.identifier_id}}" title="{% trans "Edit concept information" %}"><i class="icon-pencil"></i></a>
                                 {% else %}
                                     <a href="{% url 'edit_concept_qualif' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&id={{ obj.termqualif__id }}&identifier_id={{obj.identifier_id}}&preferred_concept=N" title="{% trans "Edit concept information" %}"><i class="icon-pencil"></i></a>
-                                    <a href="{% url 'list_concept_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}" title="{% trans "Move this concept to another record" %}"><i class="icon-share"></i>
                                 {% endif %}
+
+                                <a href="{% url 'list_concept_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}" title="{% trans "Move this concept to another record" %}"><i class="icon-share"></i>
+
+                                <a href="{% url 'create_confirm_conceptqualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}&concept_id={{ obj.id }}&term_id={{ obj.termqualif__id }}&created_by={{ user_id }}" title="{% trans "Create a new record from this concept" %}"><i class="icon-plus-sign"></i></a>
+
                                 <!-- </a> -->
                             {% endifchanged %}
                         {% endif %}

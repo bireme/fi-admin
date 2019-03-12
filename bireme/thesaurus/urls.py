@@ -8,9 +8,13 @@ urlpatterns = [
     # Descriptors -------------------------------------------------------------------------------------------
     url(r'^descriptors/?$', DescListView.as_view(), name='list_descriptor'),
 
-    # Pagina de redirecionamento para criação de novo registro a partir de um termo existente
+    # Pagina de redirecionamento para criação de novo registro a partir de um TERMO existente
     url(r'^descriptors/create/term/confirm/?$', TermCreateDescConfirm.as_view(), name='create_confirm_termdesc'),
     url(r'^descriptors/create/term/do/(?P<ths>\d+)/?$', TermCreateDescDo, name='do_create_termdesc'),
+
+    # Pagina de redirecionamento para criação de novo registro a partir de um CONCEITO existente
+    url(r'^descriptors/create/concept/confirm/?$', ConceptCreateDescConfirm.as_view(), name='create_confirm_conceptdesc'),
+    url(r'^descriptors/create/concept/do/(?P<ths>\d+)/?$', ConceptCreateDescDo, name='do_create_conceptdesc'),
 
     # Form 0 para pesquisa de existencia de termo - Se não existir segue Form1
     url(r'^descriptors/chk/?$', TermListDescChk.as_view(), name='chk_termdesc'),
@@ -54,9 +58,13 @@ urlpatterns = [
     # Qualifiers --------------------------------------------------------------------------------------------
     url(r'^qualifiers/?$', QualifListView.as_view(), name='list_qualifier'),
 
-    # Pagina de redirecionamento para criação de novo registro a partir de um termo existente
+    # Pagina de redirecionamento para criação de novo registro a partir de um TERMO existente
     url(r'^qualifiers/create/term/confirm/?$', TermCreateQualifConfirm.as_view(), name='create_confirm_termqualif'),
     url(r'^qualifiers/create/term/do/(?P<ths>\d+)/?$', TermCreateQualifDo, name='do_create_termqualif'),
+
+    # Pagina de redirecionamento para criação de novo registro a partir de um CONCEITO existente
+    url(r'^qualifiers/create/concept/confirm/?$', ConceptCreateQualifConfirm.as_view(), name='create_confirm_conceptqualif'),
+    url(r'^qualifiers/create/concept/do/(?P<ths>\d+)/?$', ConceptCreateQualifDo, name='do_create_conceptqualif'),
 
     # Form 0 para pesquisa de existencia de qualificador - Se não existir segue Form1
     url(r'^qualifiers/chk/?$', QualifListDescChk.as_view(), name='chk_termqualif'),

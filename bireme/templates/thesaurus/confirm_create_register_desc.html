@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load app_filters %}
+
+{% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+            {% trans "Thesaurus" %}
+            {% if thesaurus_name %}{{ thesaurus_name }}{% endif %}
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+    <div class='header'>
+        <table>
+            <tr>
+                <td valign="top">
+                    <h3><i class='icon-file'></i>
+                        {% trans "Do you confirm the creation of a new record with this concept?" %}
+                        <br>
+                        {% trans "All the synonyms existing in this concept will belong to a new registry" %}
+
+<!-- Todos los sinonimos existentes en este concepto pertenecer a un nuevo registro -->
+<!-- Todos os sinonimos existentes nesse conceito pertencerão a um novo registro -->
+
+                    </h3>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class='body'>
+
+        <fieldset id="identifierdesc">
+
+            <input type='hidden' name="concept_id" value="{% if request.GET.concept_id %}{{ request.GET.concept_id }}{% endif %}">
+
+            <table class="termlistdesc" border="0">
+                <tr>
+                    <td>{% trans "String" %}</td>
+                    <td>{% trans "Language used for description" %}</td>
+                </tr>
+                <tr>
+                    <td class="term_string" width="40%">
+                        <input id="id_term_string" maxlength="250" name="term_string" value="{{ request.GET.term_string }}" type="text" readonly="true">
+                    </td>
+                    <td>
+                        <select name="filter_language" readonly="true">
+                            <option value="">{% trans "All" %}</option>
+                            <option value="en" {% if request.GET.language_code == 'en' %}selected="true"{% endif %}>{% trans "English" %}</option>
+                            <option value="es" {% if request.GET.language_code == 'es' %}selected="true"{% endif %}>{% trans "Spanish Latin America" %}</option>
+                            <option value="pt-br" {% if request.GET.language_code == 'pt-br' %}selected="true"{% endif %}>{% trans "Portuguese" %}</option>
+                            <option value="es-es" {% if request.GET.language_code == 'es-es' %}selected="true"{% endif %}>{% trans "Spanish Spain" %}</option>
+                            <option value="fr" {% if request.GET.language_code == 'fr' %}selected="true"{% endif %}>{% trans "French" %}</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+
+        </fieldset>
+
+        <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+
+        <a href="{% url 'do_create_conceptdesc' ths=request.GET.ths %}?term_string={{ request.GET.term_string }}&language_code={{ request.GET.language_code }}&term_id={{ request.GET.term_id }}&concept_id={{ request.GET.concept_id }}&created_by={{ request.GET.created_by }}" class='btn btn-primary btn-large'></i> {% trans "Confirm" %}?</a>
+
+    </div>
+
+{% endblock %}
+
+{% block extrajs %}
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+
+   {% if LANGUAGE_CODE != 'en' %}
+       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
+   {% endif %}
+
+{% endblock %}

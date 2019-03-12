@@ -535,6 +535,10 @@
                                     <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}&preferred_concept=N" title="{% trans "Edit concept information" %}"><i class="icon-pencil"></i></a>
                                 {% endif %}
                                 <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}" title="{% trans "Move this concept to another record" %}"><i class="icon-share"></i></a>
+
+                                <a href="{% url 'create_confirm_conceptdesc' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}&concept_id={{ obj.id }}&term_id={{ obj.termdesc__id }}&created_by={{ user_id }}" title="{% trans "Create a new record from this concept" %}"><i class="icon-plus-sign"></i></a>
+
+
                                 <!-- </a> -->
                             {% endifchanged %}
                         {% endif %}

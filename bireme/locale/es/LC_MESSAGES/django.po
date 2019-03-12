@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-01 09:56-0300\n"
-"PO-Revision-Date: 2019-03-01 10:08-0306\n"
+"POT-Creation-Date: 2019-03-12 13:34-0300\n"
+"PO-Revision-Date: 2019-03-12 13:47-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1373,6 +1373,8 @@ msgstr "Traducciones"
 #: database/models.py:8 main/choices.py:6 templates/menu.html:116
 #: templates/thesaurus/confirm_create_desc.html:47
 #: templates/thesaurus/confirm_create_qualif.html:47
+#: templates/thesaurus/confirm_create_register_desc.html:55
+#: templates/thesaurus/confirm_create_register_qualif.html:55
 #: templates/thesaurus/descriptor_edit_term.html:104
 #: templates/thesaurus/descriptor_form_step0.html:81
 #: templates/thesaurus/descriptor_form_step2.html:208
@@ -1391,6 +1393,8 @@ msgstr "Inglés"
 #: database/models.py:9 main/choices.py:7 templates/menu.html:117
 #: templates/thesaurus/confirm_create_desc.html:49
 #: templates/thesaurus/confirm_create_qualif.html:49
+#: templates/thesaurus/confirm_create_register_desc.html:57
+#: templates/thesaurus/confirm_create_register_qualif.html:57
 #: templates/thesaurus/descriptor_edit_term.html:106
 #: templates/thesaurus/descriptor_form_step0.html:83
 #: templates/thesaurus/descriptor_form_step2.html:210
@@ -2071,6 +2075,8 @@ msgstr "Aprobado"
 
 #: main/choices.py:9 templates/thesaurus/confirm_create_desc.html:51
 #: templates/thesaurus/confirm_create_qualif.html:51
+#: templates/thesaurus/confirm_create_register_desc.html:59
+#: templates/thesaurus/confirm_create_register_qualif.html:59
 #: templates/thesaurus/descriptor_edit_term.html:108
 #: templates/thesaurus/descriptor_form_step0.html:85
 #: templates/thesaurus/descriptor_form_step2.html:212
@@ -3241,6 +3247,8 @@ msgstr "Buscar"
 #: templates/suggest/list.html:51
 #: templates/thesaurus/confirm_create_desc.html:46
 #: templates/thesaurus/confirm_create_qualif.html:46
+#: templates/thesaurus/confirm_create_register_desc.html:54
+#: templates/thesaurus/confirm_create_register_qualif.html:54
 #: templates/thesaurus/descriptor_form_step0.html:80
 #: templates/thesaurus/qualifier_form_step0.html:80
 #: templates/thesaurus/qualifier_list.html:92
@@ -3543,6 +3551,8 @@ msgstr "Clasificación actualizada"
 #: templates/main/edit-resource.html:390
 #: templates/thesaurus/confirm_create_desc.html:60
 #: templates/thesaurus/confirm_create_qualif.html:60
+#: templates/thesaurus/confirm_create_register_desc.html:68
+#: templates/thesaurus/confirm_create_register_qualif.html:79
 #: templates/thesaurus/descriptor_edit_concept.html:173
 #: templates/thesaurus/descriptor_edit_legacy.html:94
 #: templates/thesaurus/descriptor_edit_register.html:482
@@ -3553,8 +3563,8 @@ msgstr "Clasificación actualizada"
 #: templates/thesaurus/descriptor_new_concept.html:271
 #: templates/thesaurus/descriptor_new_legacy.html:92
 #: templates/thesaurus/descriptor_new_term.html:208
-#: templates/thesaurus/page_view_desc.html:759
-#: templates/thesaurus/page_view_qualif.html:645
+#: templates/thesaurus/page_view_desc.html:763
+#: templates/thesaurus/page_view_qualif.html:649
 #: templates/thesaurus/qualifier_edit_concept.html:173
 #: templates/thesaurus/qualifier_edit_legacy.html:94
 #: templates/thesaurus/qualifier_edit_register.html:238
@@ -4502,6 +4512,10 @@ msgstr ""
 #: templates/thesaurus/confirm_create_desc.html:11
 #: templates/thesaurus/confirm_create_qualif.html:6
 #: templates/thesaurus/confirm_create_qualif.html:11
+#: templates/thesaurus/confirm_create_register_desc.html:6
+#: templates/thesaurus/confirm_create_register_desc.html:11
+#: templates/thesaurus/confirm_create_register_qualif.html:6
+#: templates/thesaurus/confirm_create_register_qualif.html:11
 #: templates/thesaurus/descriptor_confirm_delete.html:9
 #: templates/thesaurus/descriptor_edit_concept.html:6
 #: templates/thesaurus/descriptor_edit_concept.html:11
@@ -4573,6 +4587,8 @@ msgstr "¿Confirma la creación de un nuevo registro con este término?"
 
 #: templates/thesaurus/confirm_create_desc.html:37
 #: templates/thesaurus/confirm_create_qualif.html:37
+#: templates/thesaurus/confirm_create_register_desc.html:45
+#: templates/thesaurus/confirm_create_register_qualif.html:45
 #: templates/thesaurus/descriptor_edit_register.html:266
 #: templates/thesaurus/descriptor_edit_register.html:307
 #: templates/thesaurus/descriptor_form_step0.html:73
@@ -4586,6 +4602,8 @@ msgstr "Término"
 
 #: templates/thesaurus/confirm_create_desc.html:38
 #: templates/thesaurus/confirm_create_qualif.html:38
+#: templates/thesaurus/confirm_create_register_desc.html:46
+#: templates/thesaurus/confirm_create_register_qualif.html:46
 #: templates/thesaurus/descriptor_form_step0.html:74
 #: templates/thesaurus/descriptor_new_concept.html:70
 #: templates/thesaurus/qualifier_form_step0.html:74
@@ -4599,6 +4617,8 @@ msgstr "Lenguaje utilizado para la descripción."
 
 #: templates/thesaurus/confirm_create_desc.html:48
 #: templates/thesaurus/confirm_create_qualif.html:48
+#: templates/thesaurus/confirm_create_register_desc.html:56
+#: templates/thesaurus/confirm_create_register_qualif.html:56
 #: templates/thesaurus/descriptor_edit_term.html:105
 #: templates/thesaurus/descriptor_form_step0.html:82
 #: templates/thesaurus/descriptor_form_step2.html:209
@@ -4616,6 +4636,8 @@ msgstr "Español latino america"
 
 #: templates/thesaurus/confirm_create_desc.html:50
 #: templates/thesaurus/confirm_create_qualif.html:50
+#: templates/thesaurus/confirm_create_register_desc.html:58
+#: templates/thesaurus/confirm_create_register_qualif.html:58
 #: templates/thesaurus/descriptor_edit_term.html:107
 #: templates/thesaurus/descriptor_form_step0.html:84
 #: templates/thesaurus/descriptor_form_step2.html:211
@@ -4633,8 +4655,32 @@ msgstr "lengua española utilizada en españa"
 
 #: templates/thesaurus/confirm_create_desc.html:62
 #: templates/thesaurus/confirm_create_qualif.html:62
+#: templates/thesaurus/confirm_create_register_desc.html:70
+#: templates/thesaurus/confirm_create_register_qualif.html:81
 msgid "Confirm"
 msgstr "Confirmar"
+
+#: templates/thesaurus/confirm_create_register_desc.html:24
+#: templates/thesaurus/confirm_create_register_qualif.html:24
+#| msgid "Do you confirm the creation of a new record with this term?"
+msgid "Do you confirm the creation of a new record with this concept?"
+msgstr "¿Confirma la creación de un nuevo registro a partir de este concepto?"
+
+#: templates/thesaurus/confirm_create_register_desc.html:26
+#: templates/thesaurus/confirm_create_register_qualif.html:26
+msgid ""
+"All the synonyms existing in this concept will belong to a new registry"
+msgstr ""
+"Todos los sinonimos existentes en este concepto pertenecerán a un nuevo "
+"registro"
+
+#: templates/thesaurus/confirm_create_register_qualif.html:66
+msgid "Choose the abbreviation that this record will have"
+msgstr "Seleccione la abreviatura que este registro tendrá"
+
+#: templates/thesaurus/confirm_create_register_qualif.html:68
+msgid "Field required"
+msgstr "Campo obrigatório"
 
 #: templates/thesaurus/descriptor_confirm_delete.html:5
 #: templates/thesaurus/descriptor_confirm_delete.html:18
@@ -4840,7 +4886,6 @@ msgstr "Indexación previa"
 
 #: templates/thesaurus/descriptor_edit_register.html:385
 #: templates/thesaurus/descriptor_form_step1.html:365
-#| msgid "Entry combination List"
 msgid "Entry Combination List"
 msgstr "Lista de Precoord"
 
@@ -4875,7 +4920,7 @@ msgstr "Editar término"
 
 #: templates/thesaurus/descriptor_edit_term.html:29
 #: templates/thesaurus/page_view_desc.html:476
-#: templates/thesaurus/page_view_desc.html:565
+#: templates/thesaurus/page_view_desc.html:569
 #: templates/thesaurus/qualifier_edit_term.html:29
 msgid "Edit term information"
 msgstr "Editar Información del descriptor"
@@ -5167,102 +5212,102 @@ msgstr "Concepto preferido"
 #: templates/thesaurus/page_view_desc.html:446
 #: templates/thesaurus/page_view_desc.html:537
 #: templates/thesaurus/page_view_qualif.html:332
-#: templates/thesaurus/page_view_qualif.html:422
+#: templates/thesaurus/page_view_qualif.html:424
 msgid "Move this concept to another record"
 msgstr "Mover este concepto a otro registro"
 
 #: templates/thesaurus/page_view_desc.html:457
-#: templates/thesaurus/page_view_desc.html:546
+#: templates/thesaurus/page_view_desc.html:550
 #: templates/thesaurus/page_view_qualif.html:343
-#: templates/thesaurus/page_view_qualif.html:432
+#: templates/thesaurus/page_view_qualif.html:436
 msgid "Add term"
 msgstr "Añadir término"
 
 #: templates/thesaurus/page_view_desc.html:460
-#: templates/thesaurus/page_view_desc.html:549
+#: templates/thesaurus/page_view_desc.html:553
 #: templates/thesaurus/page_view_qualif.html:346
-#: templates/thesaurus/page_view_qualif.html:435
+#: templates/thesaurus/page_view_qualif.html:439
 #: thesaurus/models_descriptors.py:337 thesaurus/models_qualifiers.py:238
 msgid "Term"
 msgstr "Término"
 
 #: templates/thesaurus/page_view_desc.html:471
-#: templates/thesaurus/page_view_desc.html:559
+#: templates/thesaurus/page_view_desc.html:563
 #: templates/thesaurus/page_view_qualif.html:356
-#: templates/thesaurus/page_view_qualif.html:445
+#: templates/thesaurus/page_view_qualif.html:449
 msgid "Preferred Term"
 msgstr "Término preferido"
 
 #: templates/thesaurus/page_view_desc.html:481
-#: templates/thesaurus/page_view_desc.html:570
+#: templates/thesaurus/page_view_desc.html:574
 msgid "Move this term to another concept"
 msgstr "Mover este término a otro concepto"
 
 #: templates/thesaurus/page_view_desc.html:483
-#: templates/thesaurus/page_view_desc.html:572
+#: templates/thesaurus/page_view_desc.html:576
 msgid "Create a new record from this term"
 msgstr "Crear un nuevo registro a partir de este término"
 
 #: templates/thesaurus/page_view_desc.html:492
-#: templates/thesaurus/page_view_desc.html:581
+#: templates/thesaurus/page_view_desc.html:585
 #: templates/thesaurus/page_view_qualif.html:377
-#: templates/thesaurus/page_view_qualif.html:467
+#: templates/thesaurus/page_view_qualif.html:471
 msgid "Term UI"
 msgstr "ID de término"
 
 #: templates/thesaurus/page_view_desc.html:493
-#: templates/thesaurus/page_view_desc.html:582
+#: templates/thesaurus/page_view_desc.html:586
 #: templates/thesaurus/page_view_qualif.html:378
-#: templates/thesaurus/page_view_qualif.html:468
+#: templates/thesaurus/page_view_qualif.html:472
 msgid "ConceptPreferredTerm"
 msgstr "Término preferido del concepto"
 
 #: templates/thesaurus/page_view_desc.html:494
-#: templates/thesaurus/page_view_desc.html:583
+#: templates/thesaurus/page_view_desc.html:587
 #: templates/thesaurus/page_view_qualif.html:379
-#: templates/thesaurus/page_view_qualif.html:469
+#: templates/thesaurus/page_view_qualif.html:473
 msgid "Is permuted"
 msgstr "Está permutado"
 
 #: templates/thesaurus/page_view_desc.html:495
-#: templates/thesaurus/page_view_desc.html:584
+#: templates/thesaurus/page_view_desc.html:588
 #: templates/thesaurus/page_view_qualif.html:380
-#: templates/thesaurus/page_view_qualif.html:470
+#: templates/thesaurus/page_view_qualif.html:474
 msgid "LexicalTag"
 msgstr "Etiqueta léxico"
 
 #: templates/thesaurus/page_view_desc.html:496
-#: templates/thesaurus/page_view_desc.html:585
+#: templates/thesaurus/page_view_desc.html:589
 #: templates/thesaurus/page_view_qualif.html:381
-#: templates/thesaurus/page_view_qualif.html:471
+#: templates/thesaurus/page_view_qualif.html:475
 msgid "RecordPreferredTerm"
 msgstr "Término preferido de registro"
 
 #: templates/thesaurus/page_view_desc.html:497
-#: templates/thesaurus/page_view_desc.html:586
+#: templates/thesaurus/page_view_desc.html:590
 #: templates/thesaurus/page_view_qualif.html:382
-#: templates/thesaurus/page_view_qualif.html:472
+#: templates/thesaurus/page_view_qualif.html:476
 msgid "Entry Version"
 msgstr "Versión de entrada"
 
 #: templates/thesaurus/page_view_desc.html:498
-#: templates/thesaurus/page_view_desc.html:587
+#: templates/thesaurus/page_view_desc.html:591
 #: templates/thesaurus/page_view_qualif.html:383
-#: templates/thesaurus/page_view_qualif.html:473
+#: templates/thesaurus/page_view_qualif.html:477
 msgid "DateCreated"
 msgstr "Fecha de creacion"
 
 #: templates/thesaurus/page_view_desc.html:499
-#: templates/thesaurus/page_view_desc.html:588
+#: templates/thesaurus/page_view_desc.html:592
 #: templates/thesaurus/page_view_qualif.html:384
-#: templates/thesaurus/page_view_qualif.html:474
+#: templates/thesaurus/page_view_qualif.html:478
 msgid "DateAltered"
 msgstr "Fecha alterada"
 
 #: templates/thesaurus/page_view_desc.html:500
-#: templates/thesaurus/page_view_desc.html:589
+#: templates/thesaurus/page_view_desc.html:593
 #: templates/thesaurus/page_view_qualif.html:385
-#: templates/thesaurus/page_view_qualif.html:475
+#: templates/thesaurus/page_view_qualif.html:479
 msgid "History annotation"
 msgstr "Anotación de la historia"
 
@@ -5271,18 +5316,24 @@ msgstr "Anotación de la historia"
 msgid "Narrower"
 msgstr "Más estrecho"
 
-#: templates/thesaurus/page_view_desc.html:610
-#: templates/thesaurus/page_view_qualif.html:496
+#: templates/thesaurus/page_view_desc.html:539
+#: templates/thesaurus/page_view_qualif.html:426
+#| msgid "Create a new record from this term"
+msgid "Create a new record from this concept"
+msgstr "Crear un nuevo registro a partir de este concepto"
+
+#: templates/thesaurus/page_view_desc.html:614
+#: templates/thesaurus/page_view_qualif.html:500
 msgid "Edit this configurations"
 msgstr "Editar esta configuraciones"
 
-#: templates/thesaurus/page_view_desc.html:726
-#: templates/thesaurus/page_view_qualif.html:612
+#: templates/thesaurus/page_view_desc.html:730
+#: templates/thesaurus/page_view_qualif.html:616
 msgid "Create this configurations"
 msgstr "Crea estas configuraciones"
 
-#: templates/thesaurus/page_view_desc.html:828
-#: templates/thesaurus/page_view_qualif.html:713
+#: templates/thesaurus/page_view_desc.html:832
+#: templates/thesaurus/page_view_qualif.html:717
 #: templates/thesaurus/qualifier_list.html:161
 #: templates/thesaurus/thesaurus_home.html:159
 msgid "No results found"
@@ -5312,17 +5363,17 @@ msgid "Abbreviation"
 msgstr "Abreviatura"
 
 #: templates/thesaurus/page_view_qualif.html:361
-#: templates/thesaurus/page_view_qualif.html:451
+#: templates/thesaurus/page_view_qualif.html:455
 msgid "Edit qualifier information"
 msgstr "Editar información del calificador"
 
 #: templates/thesaurus/page_view_qualif.html:366
-#: templates/thesaurus/page_view_qualif.html:456
+#: templates/thesaurus/page_view_qualif.html:460
 msgid "Move this qualifier to another concept"
 msgstr "Mover este calificador a otro concepto"
 
 #: templates/thesaurus/page_view_qualif.html:368
-#: templates/thesaurus/page_view_qualif.html:458
+#: templates/thesaurus/page_view_qualif.html:462
 msgid "Create a new record from this qualifier"
 msgstr "Crear un nuevo registro a partir de este calificador"
 
@@ -6101,17 +6152,17 @@ msgstr "Control secuencial"
 msgid "Sequential number"
 msgstr "Numero secuencial"
 
-#: thesaurus/views.py:784 thesaurus/views.py:1259 thesaurus/views.py:2670
-#: thesaurus/views.py:3147
+#: thesaurus/views.py:784 thesaurus/views.py:1346 thesaurus/views.py:2757
+#: thesaurus/views.py:3350
 msgid "This Concept already exist!"
 msgstr "¡Este concepto ya existe!"
 
-#: thesaurus/views.py:1448 thesaurus/views.py:1535 thesaurus/views.py:1600
-#: thesaurus/views.py:3318 thesaurus/views.py:3424 thesaurus/views.py:3483
+#: thesaurus/views.py:1535 thesaurus/views.py:1622 thesaurus/views.py:1687
+#: thesaurus/views.py:3521 thesaurus/views.py:3627 thesaurus/views.py:3686
 msgid "This Term already exist!"
 msgstr "¡Este término ya existe!"
 
-#: thesaurus/views.py:1499 thesaurus/views.py:3389
+#: thesaurus/views.py:1586 thesaurus/views.py:3592
 msgid "This configuration already exists for this concept!"
 msgstr "Esta configuración ya existe para este concepto!"
 

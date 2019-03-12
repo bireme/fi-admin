@@ -1115,7 +1115,6 @@ def TermListDescModification(request,term_id, ths, term_ori):
 
 
 
-
 class TermCreateDescConfirm(LoginRequiredView, TemplateView):
 
     template_name = 'thesaurus/confirm_create_desc.html'
@@ -1137,6 +1136,94 @@ def TermCreateDescDo(request, ths):
     term_id = request.GET.get("term_id")
 
     return redirect('/thesaurus/descriptors/new/?ths=' + ths + '&term=' + term_string + '&language_code=' + language_code + '&term_ui=' + term_ui + '&term_id=' + term_id)
+
+
+
+class ConceptCreateDescConfirm(LoginRequiredView, TemplateView):
+
+    template_name = 'thesaurus/confirm_create_register_desc.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ConceptCreateDescConfirm, self).get_context_data(**kwargs)
+        thesaurus_name = Thesaurus.objects.filter(id=self.request.GET.get("ths")).values('thesaurus_name')
+        context['thesaurus_name'] = thesaurus_name[0].get('thesaurus_name')
+
+        return context
+
+
+
+def ConceptCreateDescDo(request, ths):
+
+    term_string = request.GET.get("term_string")
+    language_code = request.GET.get("language_code")
+    concept_id = request.GET.get("concept_id")
+    term_id = request.GET.get("term_id")
+    created_by = request.GET.get("created_by")
+
+    # Descobrindo qual é o descriptor_ui do registro origem
+    identifier_id_ori = IdentifierConceptListDesc.objects.filter(id=concept_id).values('identifier_id')
+    identifier_id_ori = identifier_id_ori[0].get('identifier_id')
+    descriptor_ui_ori = IdentifierDesc.objects.filter(id=identifier_id_ori).values('descriptor_ui')
+    descriptor_ui_ori = descriptor_ui_ori[0].get('descriptor_ui')
+
+    # Verifica se já existe anotação no historico
+    has_hist=IdentifierConceptListDesc.objects.filter(id=concept_id).values('historical_annotation')
+    if has_hist:
+        historical_annotation_old=has_hist[0].get('historical_annotation')
+        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(descriptor_ui_ori)
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+    created_time=datetime.datetime.now().strftime('%Y-%m-%d')
+    created_time = created_time.encode('utf-8')
+
+    # Get sequential number to write to decs_code
+    try:
+        seq = code_controller.objects.get(thesaurus=ths)
+        nseq = str(int(seq.sequential_number) + 1)
+        seq.sequential_number = nseq
+        seq.save()
+    except code_controller.DoesNotExist:
+        seq = code_controller(sequential_number=1,thesaurus=ths)
+        nseq = 1
+        seq.save()
+    decs_code=nseq
+
+    # Get thesaurus_acronym to create new ID format to descriptor_ui field
+    try:
+        acronym = Thesaurus.objects.filter(id=ths).values('thesaurus_acronym')
+        # recupera o acronimo e transforma em maiusuclo
+        acronym = str(acronym[0].get('thesaurus_acronym')).upper()
+        # utiliza self.object.decs_code para compor descriptor_ui
+        zseq = str(nseq).zfill(6) # preenche zeros a esquerda
+        descriptor_ui = 'D' + acronym + zseq
+    except Thesaurus.DoesNotExist:
+        id_thesaurus = str(self.object.id)
+        print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
+
+    add_reg = IdentifierDesc(descriptor_class='', descriptor_ui=descriptor_ui, decs_code=decs_code, external_code='', nlm_class_number='', date_created=created_time, created_by_id=created_by, thesaurus_id=ths)
+    add_reg.save()
+
+    # Descobrindo último ID inserido
+    last_id = IdentifierDesc.objects.filter(thesaurus_id=ths).order_by('id').last()
+    # print '[last_id - ' ,last_id,' ]'
+
+    # Atualiza identifier_id antigo para novo id, apaga concept_relation_name, atualiza preferred_concept como preferido e atualiza hsitórico
+    update_field = IdentifierConceptListDesc.objects.get(id=concept_id)
+    update_field.identifier_id = last_id
+    update_field.concept_relation_name = ""
+    update_field.preferred_concept = "Y"
+    update_field.historical_annotation = historical_annotation_new
+    update_field.save()
+
+    # Atualiza record_preferred_term dos Termos que foram elegidos como preferidos no registro novo
+    update_registers = TermListDesc.objects.filter(identifier_concept_id=concept_id, concept_preferred_term='Y', record_preferred_term='N')
+    # print '[ DEBUG]', update_registers
+    if update_registers:
+        for upd in update_registers:
+            print '---> ',upd
+            TermListDesc.objects.filter(id=str(upd)).update(record_preferred_term='Y')
+
+    return redirect('/thesaurus/descriptors/view/' + term_id + '?ths=' + ths)
 
 
 
@@ -3025,6 +3112,122 @@ def TermCreateQualifDo(request, ths):
 
     return redirect('/thesaurus/qualifiers/new/?ths=' + ths + '&term=' + term_string + '&language_code=' + language_code + '&term_ui=' + term_ui + '&term_id=' + term_id)
 
+
+
+class ConceptCreateQualifConfirm(LoginRequiredView, TemplateView):
+
+    template_name = 'thesaurus/confirm_create_register_qualif.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ConceptCreateQualifConfirm, self).get_context_data(**kwargs)
+        thesaurus_name = Thesaurus.objects.filter(id=self.request.GET.get("ths")).values('thesaurus_name')
+        context['thesaurus_name'] = thesaurus_name[0].get('thesaurus_name')
+
+        return context
+
+
+
+def ConceptCreateQualifDo(request, ths):
+
+    # ths = request.GET.get("ths")
+    term_string = request.GET.get("term_string")
+    language_code = request.GET.get("language_code")
+    concept_id = request.GET.get("concept_id")
+    term_id = request.GET.get("term_id")
+    created_by = request.GET.get("created_by")
+    abbreviation = request.GET.get("abbreviation")
+
+    print 'DEBUG'
+    print '[ths - ' ,ths,' ]'
+    print '[term_string - ' ,term_string,' ]'
+    print '[language_code - ' ,language_code,' ]'
+    print '[concept_id - ' ,concept_id,' ]'
+    print '[term_id - ' ,term_id,' ]'
+    print '[created_by - ' ,created_by,' ]'
+    print '[abbreviation - ' ,abbreviation,' ]'
+    print 'DEBUG'
+
+    # Descobrindo qual é o descriptor_ui do registro origem
+    identifier_id_ori = IdentifierConceptListQualif.objects.filter(id=concept_id).values('identifier_id')
+    identifier_id_ori = identifier_id_ori[0].get('identifier_id')
+    qualifier_ui_ori = IdentifierQualif.objects.filter(id=identifier_id_ori).values('qualifier_ui')
+    qualifier_ui_ori = qualifier_ui_ori[0].get('qualifier_ui')
+
+    # Verifica se já existe anotação no historico
+    has_hist=IdentifierConceptListQualif.objects.filter(id=concept_id).values('historical_annotation')
+    if has_hist:
+        historical_annotation_old=has_hist[0].get('historical_annotation')
+        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(qualifier_ui_ori)
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+    created_time=datetime.datetime.now().strftime('%Y-%m-%d')
+    created_time = created_time.encode('utf-8')
+
+    # Get sequential number to write to decs_code
+    try:
+        seq = code_controller.objects.get(thesaurus=ths)
+        nseq = str(int(seq.sequential_number) + 1)
+        seq.sequential_number = nseq
+        seq.save()
+    except code_controller.DoesNotExist:
+        seq = code_controller(sequential_number=1,thesaurus=ths)
+        nseq = 1
+        seq.save()
+    decs_code=nseq
+
+    print 'decs_code: ',decs_code
+
+    # Get thesaurus_acronym to create new ID format to descriptor_ui field
+    try:
+        acronym = Thesaurus.objects.filter(id=ths).values('thesaurus_acronym')
+        # recupera o acronimo e transforma em maiusuclo
+        acronym = str(acronym[0].get('thesaurus_acronym')).upper()
+        # utiliza self.object.decs_code para compor descriptor_ui
+        zseq = str(nseq).zfill(6) # preenche zeros a esquerda
+        qualifier_ui = 'Q' + acronym + zseq
+    except Thesaurus.DoesNotExist:
+        id_thesaurus = str(self.object.id)
+        print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
+
+
+    print 'passou1'
+    add_reg = IdentifierQualif(qualifier_ui=qualifier_ui, decs_code=decs_code, abbreviation='DDD', date_created=created_time, created_by_id=created_by, thesaurus_id=ths)
+    print 'passou2'
+
+
+    print '---> qualifier_ui: ',qualifier_ui
+    print '---> decs_code: ',decs_code
+    print '---> date_created: ',created_time
+    print '---> created_by_id: ', created_by
+    print '---> thesaurus_id: ', ths
+
+
+    add_reg.save()
+    print 'passou3'
+
+    # # Descobrindo último ID inserido
+    last_id = IdentifierQualif.objects.filter(thesaurus_id=ths).order_by('id').last()
+    print '[last_id - ' ,last_id,' ]'
+
+    # Atualiza identifier_id antigo para novo id, apaga concept_relation_name, atualiza preferred_concept como preferido e atualiza hsitórico
+    update_field = IdentifierConceptListQualif.objects.get(id=concept_id)
+    update_field.identifier_id = last_id
+    update_field.concept_relation_name = ""
+    update_field.preferred_concept = "Y"
+    update_field.historical_annotation = historical_annotation_new
+    update_field.save()
+
+
+
+    # Atualiza record_preferred_term dos Termos que foram elegidos como preferidos no registro novo
+    update_registers = TermListQualif.objects.filter(identifier_concept_id=concept_id, concept_preferred_term='Y', record_preferred_term='N')
+    print '[ DEBUG]', update_registers
+    if update_registers:
+        for upd in update_registers:
+            print '---> ',upd
+            TermListQualif.objects.filter(id=str(upd)).update(record_preferred_term='Y')
+
+    return redirect('/thesaurus/qualifiers/view/' + term_id + '?ths=' + ths)
 
 
 
