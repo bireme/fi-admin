@@ -38,7 +38,7 @@
                             {% elif field.name == 'text' %}
                                 <td class="span9">
                                     {{ field.as_hidden }}
-                                    <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:decs_search(this)">
+                                    <div class="input-xxlarge uneditable-input cursor-copy {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:decs_search(this)">
                                         {% spaceless %}
                                         {% if field.value == None or field.value == '' %}
                                             {% trans "Select by search" %}
@@ -76,6 +76,12 @@
             </tbody>
             </table>
         </fieldset>
+
+        {% if settings.DECS_HIGHLIGHTER_URL %}
+            <div class="decs_suggestion btn btn-info">
+                <i class="icon icon-eye-open"></i> <a href="#" onclick="javascript:open_decs_suggestions('abstract', '{{LANGUAGE_CODE}}')" class="">{% trans "see descriptores suggestions" %}</a>
+            </div>
+        {% endif %}
 
         {% for fieldset in form.fieldsets %}
             {% if fieldset.name == 'indexing' %}

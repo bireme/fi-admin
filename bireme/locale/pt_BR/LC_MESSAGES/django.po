@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-12 13:34-0300\n"
-"PO-Revision-Date: 2019-03-12 13:40-0306\n"
+"POT-Creation-Date: 2019-03-13 09:48-0300\n"
+"PO-Revision-Date: 2019-03-13 09:54-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -452,7 +452,7 @@ msgstr "Volume ou número da edição obrigatório"
 
 #: biblioref/forms.py:271
 msgid "Required when indexed in LILACS database"
-msgstr ""
+msgstr "Obrigatório quando indexado na base de dados LILACS"
 
 #: biblioref/forms.py:295 biblioref/forms.py:323 biblioref/forms.py:346
 #, python-format
@@ -1250,6 +1250,26 @@ msgstr "Dados locais JSON"
 msgid "Other fields JSON"
 msgstr "Outros campos JSON"
 
+#: biremelogin/models.py:12
+msgid "profile"
+msgstr "perfis"
+
+#: biremelogin/models.py:13
+msgid "profiles"
+msgstr "perfis"
+
+#: biremelogin/models.py:16
+msgid "Basic"
+msgstr "Básico"
+
+#: biremelogin/models.py:17
+msgid "Advanced"
+msgstr "Avançado"
+
+#: biremelogin/models.py:20
+msgid "data"
+msgstr "dados"
+
 #: classification/models.py:27 classification/models.py:66
 #: classification/models.py:82 leisref/models.py:449 multimedia/models.py:67
 #: multimedia/models.py:80 multimedia/models.py:102
@@ -1266,10 +1286,9 @@ msgid "Collections"
 msgstr "Coleções"
 
 #: classification/models.py:30
-#, fuzzy
 #| msgid "Current"
 msgid "Parent"
-msgstr "Corrente"
+msgstr "Pai"
 
 #: classification/models.py:32 events/models.py:78 institution/models.py:66
 #: institution/models.py:215 multimedia/models.py:60 title/models.py:86
@@ -1327,7 +1346,7 @@ msgstr "Descrição"
 
 #: classification/models.py:36 classification/models.py:70
 msgid "Image"
-msgstr ""
+msgstr "Imagem"
 
 #: classification/models.py:63 events/models.py:45 help/models.py:49
 #: institution/models.py:47 leisref/models.py:52 leisref/models.py:92
@@ -1691,10 +1710,9 @@ msgid "Field name"
 msgstr "Nome do campo"
 
 #: institution/forms.py:64
-#, fuzzy
 #| msgid "This institution already exist"
 msgid "This unit already exist"
-msgstr "Esta instituição já existe"
+msgstr "Esta unidade já existe"
 
 #: institution/models.py:20 institution/models.py:103
 msgid "Institution type"
@@ -1743,20 +1761,18 @@ msgid "Mailbox"
 msgstr "Caixa Postal"
 
 #: institution/models.py:98
-#, fuzzy
 #| msgid "Descriptive information"
 msgid "Administrative information"
-msgstr "Informação descritiva"
+msgstr "Informação administrativa"
 
 #: institution/models.py:99
-#, fuzzy
 #| msgid "Administrative comments"
 msgid "Administrative informations"
-msgstr "Comentários administrativos"
+msgstr "Informações administrativas"
 
 #: institution/models.py:102
 msgid "Category"
-msgstr ""
+msgstr "Categoria"
 
 #: institution/models.py:104 leisref/models.py:485 title/models.py:122
 msgid "Notes"
@@ -1834,20 +1850,18 @@ msgstr "Endereços eletrônicos"
 
 #: institution/models.py:210 institution/models.py:239
 #: templates/institution/fieldset_unitlevel.html:16
-#, fuzzy
 #| msgid "Units"
 msgid "Unit"
-msgstr "Unidades"
+msgstr "Unidade"
 
 #: institution/models.py:211 templates/institution/institution_form.html:37
 msgid "Units"
 msgstr "Unidades"
 
 #: institution/models.py:227
-#, fuzzy
 #| msgid "Fourth level"
 msgid "First level"
-msgstr "Quarto nível"
+msgstr "Primeiro nível"
 
 #: institution/models.py:228
 msgid "Second level"
@@ -1858,16 +1872,14 @@ msgid "Third level"
 msgstr "Terceiro nível"
 
 #: institution/models.py:233
-#, fuzzy
 #| msgid "Serial level"
 msgid "Hierarchical level"
-msgstr "Nível Série"
+msgstr "Nível hierárquico"
 
 #: institution/models.py:234
-#, fuzzy
 #| msgid "Serial level"
 msgid "Hierarchical levels"
-msgstr "Nível Série"
+msgstr "Níveis hierárquicos"
 
 #: institution/models.py:238 templates/institution/fieldset_unitlevel.html:15
 msgid "Level"
@@ -2601,7 +2613,7 @@ msgstr "Objeto relacionado"
 #: templates/thesaurus/qualifier_new_concept.html:270
 #: templates/thesaurus/qualifier_new_legacy.html:93
 #: templates/thesaurus/qualifier_new_term.html:153
-#: templates/title/form_preview.html:435 utils/views.py:183
+#: templates/title/form_preview.html:435 utils/views.py:185
 msgid "Save"
 msgstr "Gravar"
 
@@ -2852,9 +2864,9 @@ msgstr "Selecione pela pesquisa"
 
 #: templates/biblioref/fieldset_indexing.html:70
 #: templates/biblioref/reference_confirm_delete.html:29
-#: templates/biblioref/referenceanalytic_form.html:434
-#: templates/biblioref/referenceanalytic_form.html:481
-#: templates/biblioref/referencesource_form.html:355
+#: templates/biblioref/referenceanalytic_form.html:456
+#: templates/biblioref/referenceanalytic_form.html:508
+#: templates/biblioref/referencesource_form.html:382
 #: templates/delete_confirm.html:17
 #: templates/institution/institution_confirm_delete.html:29
 #: templates/leisref/act_confirm_delete.html:29
@@ -2880,6 +2892,10 @@ msgstr "Selecione pela pesquisa"
 msgid "Yes"
 msgstr "Sim"
 
+#: templates/biblioref/fieldset_indexing.html:82
+msgid "see descriptores suggestions"
+msgstr "Descritores"
+
 #: templates/biblioref/reference_confirm_delete.html:5
 #: templates/biblioref/reference_confirm_delete.html:9
 #: templates/biblioref/reference_confirm_delete.html:15
@@ -2891,7 +2907,7 @@ msgid "Record"
 msgstr "Registro"
 
 #: templates/biblioref/reference_confirm_delete.html:27
-#: templates/biblioref/referenceanalytic_form.html:427
+#: templates/biblioref/referenceanalytic_form.html:449
 #: templates/delete_confirm.html:9
 #: templates/institution/institution_confirm_delete.html:27
 #: templates/leisref/act_confirm_delete.html:27
@@ -2906,9 +2922,9 @@ msgid "Are you sure you want to delete?"
 msgstr "Você tem certeza que deseja apagar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
-#: templates/biblioref/referenceanalytic_form.html:435
-#: templates/biblioref/referenceanalytic_form.html:482
-#: templates/biblioref/referencesource_form.html:356
+#: templates/biblioref/referenceanalytic_form.html:457
+#: templates/biblioref/referenceanalytic_form.html:509
+#: templates/biblioref/referencesource_form.html:383
 #: templates/delete_confirm.html:16
 #: templates/institution/institution_confirm_delete.html:28
 #: templates/leisref/act_confirm_delete.html:28
@@ -3462,8 +3478,8 @@ msgstr "Voltar"
 msgid "Add file"
 msgstr "Adicionar arquivo"
 
-#: templates/biblioref/referenceanalytic_form.html:472
-#: templates/biblioref/referencesource_form.html:346
+#: templates/biblioref/referenceanalytic_form.html:499
+#: templates/biblioref/referencesource_form.html:373
 msgid ""
 "After publication the record can only be modified by a user with editor "
 "profile. Continue?"
@@ -3530,6 +3546,7 @@ msgid "Select the community"
 msgstr "Selecione a comunidade"
 
 #: templates/classification/classify.html:83
+#: templates/utils/decs_suggestion.html:69
 msgid "Classification updated"
 msgstr "Classificação atualizada"
 
@@ -3789,25 +3806,23 @@ msgid "CC"
 msgstr ""
 
 #: templates/institution/institution_unit.html:41
-#, fuzzy
 #| msgid "Select the institution"
 msgid "Select the unity"
-msgstr "Selecione a instituição"
+msgstr "Selecione a unidade"
 
 #: templates/institution/institution_unit.html:58
-#, fuzzy
 #| msgid "No institution was found"
 msgid "No unit was found"
-msgstr "Nenhuma instituição encontrada"
+msgstr "Nenhuma unidade encontrada"
 
 #: templates/institution/institution_unit.html:62
-#, fuzzy
 #| msgid "Create new legislation"
 msgid "Create new unity"
-msgstr "Criar nova legislação"
+msgstr "Criar nova unidade"
 
 #: templates/institution/institution_unit.html:91
 #: templates/leisref/act_related.html:106
+#: templates/utils/decs_suggestion.html:47
 msgid "Add"
 msgstr "Adicionar"
 
@@ -4222,7 +4237,8 @@ msgstr "Sugestões"
 
 #: templates/menu.html:77 templates/reports/index.html:5
 #: templates/reports/index.html.py:8 templates/reports/index.html:23
-#: templates/reports/index.html.py:177
+#: templates/reports/index.html.py:177 templates/reports/select_report.html:6
+#: templates/reports/select_report.html:9
 msgid "Reports"
 msgstr "Relatórios"
 
@@ -4235,10 +4251,9 @@ msgid "Languages"
 msgstr "Idiomas"
 
 #: templates/menu.html:105
-#, fuzzy
 #| msgid "Admitted"
 msgid "Admin"
-msgstr "Admitido"
+msgstr "Admin"
 
 #: templates/menu.html:133
 msgid "Logout"
@@ -4446,6 +4461,10 @@ msgstr "Nenhum dado para estes critérios"
 #: templates/reports/index.html:200
 msgid "Combination (Source x Report / Filter) not available"
 msgstr "Combinação (Fonte x Relatório / Filtro) não disponível"
+
+#: templates/reports/select_report.html:15
+msgid "Select report"
+msgstr "Selecione o relatório"
 
 #: templates/suggest/edit-suggested-event.html:5
 #: templates/suggest/edit-suggested-event.html:15
@@ -4656,7 +4675,6 @@ msgstr "Confirmar"
 
 #: templates/thesaurus/confirm_create_register_desc.html:24
 #: templates/thesaurus/confirm_create_register_qualif.html:24
-#| msgid "Do you confirm the creation of a new record with this term?"
 msgid "Do you confirm the creation of a new record with this concept?"
 msgstr "Você confirma a criação de um novo registro a partir deste conceito?"
 
@@ -5309,7 +5327,6 @@ msgstr "Mais específico"
 
 #: templates/thesaurus/page_view_desc.html:539
 #: templates/thesaurus/page_view_qualif.html:426
-#| msgid "Create a new record from this term"
 msgid "Create a new record from this concept"
 msgstr "Criar um novo registro a partir deste conceito"
 
@@ -5761,6 +5778,23 @@ msgstr "Número SeCS"
 #: templates/title/title_list.html:104 title/models.py:128
 msgid "Editor code"
 msgstr "Código do editor"
+
+#: templates/utils/decs_suggestion.html:26
+msgid "DeCS"
+msgstr "Geog DeCS"
+
+#: templates/utils/decs_suggestion.html:37
+msgid "List of descriptors identified in the abstract"
+msgstr "Lista de descritores identificados no resumo"
+
+#: templates/utils/decs_suggestion.html:55
+#| msgid "No descriptor records were found"
+msgid "No descriptor identified"
+msgstr "Nenhum descritor identificado"
+
+#: templates/utils/decs_suggestion.html:56
+msgid "Check if the abstract is filled in"
+msgstr "Verifique se o resumo está preenchido"
 
 #: templates/utils/field_assist.html:7 templates/utils/field_assist.html:41
 msgid "Field assist"
@@ -6691,30 +6725,6 @@ msgstr "Ano deve ser maior que 1900"
 
 #~ msgid "Descriptor UI"
 #~ msgstr "ID do descritor"
-
-#~ msgid "profile"
-#~ msgstr "perfis"
-
-#~ msgid "profiles"
-#~ msgstr "perfis"
-
-#~ msgid "Basic"
-#~ msgstr "Básico"
-
-#~ msgid "Advanced"
-#~ msgstr "Avançado"
-
-#~ msgid "data"
-#~ msgstr "dados"
-
-#~ msgid "see descriptores suggestions"
-#~ msgstr "Descritores"
-
-#~ msgid "Select report"
-#~ msgstr "Selecione o relatório"
-
-#~ msgid "DeCS"
-#~ msgstr "Geog DeCS"
 
 #~ msgid "New Record, Concept and Term"
 #~ msgstr "Novo registro, conceito e termo"

@@ -25,3 +25,26 @@ function open_classification(c_type, object){
     open_popup_win(classification_url, 'classification');
     return false;
 }
+
+function open_decs_suggestions(field_name, language){
+    lang = language.substring(0,2);
+    field = $('#id_' + field_name).val();
+    field_value = '';
+    if (field != ''){
+        field_json = jQuery.parseJSON(field);
+        field_value = field_json[0]['text'];
+
+        var count;
+        for (count = 0; count < field_json.length; count++ ){
+            if (field_json[count]['_i'] == lang){
+                field_value = field_json[count]['text'];
+            }
+        }    
+    }
+
+    decs_suggestion_url = '/utils/decs_suggestion/';
+    post_params = {'field_value' : field_value, 'field_name': field_name};
+
+    open_window_with_post('POST', decs_suggestion_url, post_params, 'decs_suggestions');
+    return false;
+}

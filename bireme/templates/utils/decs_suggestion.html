@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block top %}{% endblock %}
+
+{% block extrahead %}
+    <style>
+        .cancel_btn {
+            width: 45%; margin-left: 5px; float: left; background: rgba(169, 68, 66, 0.78) !important; color: #fff; padding: 10px; text-align: center; margin-right: 5px
+        }
+        .save_btn{
+            width: 45%; float: left; background: rgba(0, 163, 54, 0.64) !important; color: #fff; padding: 10px; text-align: center;
+        }
+        ul{
+            list-style: none;
+        }
+        label{
+            display: initial;
+        }
+        .box{
+            margin: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}{% trans "DeCS" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block content %}
+<div class="body box">
+
+    {% if decs_list %}
+        <form id="" action="" method="POST">
+            {% csrf_token %}
+            <h3>
+                {% trans "List of descriptors identified in the abstract" %}
+            </h3>
+
+            <table class="table table-condensed table-striped span8">
+                {% for decs in decs_list %}
+                <tr>
+                    <td>
+                        <strong>{{ decs.descriptor|title }}</strong>
+                    <td>
+                    <td>
+                        <a href="#" id="{{ decs.id }}" value="{{ decs.id }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.id|add:"0" }}|ADD');" class="btn"><i class="icon-plus"></i>{% trans "Add" %}</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </form>
+    {% else %}
+        <div class="jumbotron" style="margin-top: 50px">
+          <h1>{% trans 'No descriptor identified' %}!</h1>
+          <div class="alert alert-danger" role="alert">{% trans 'Check if the abstract is filled in' %}</div>
+          <br/>
+          <p><a class="btn btn-primary btn-lg" href="javascript:this.close()" role="button">Fechar</a></p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+     function updateAndClose(){
+         $.post($("form").attr('action'), $("form").serializeArray());
+         alert("{% trans 'Classification updated' %}");
+         window.close();
+     }
+
+     function postMsg(descriptor) {
+          window.opener.postMessage(descriptor, '*');
+          window.close();
+      }
+</script>
+{% endblock %}
+
+{% block footer %}{% endblock %}

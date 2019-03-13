@@ -586,7 +586,7 @@ tr.relation-row td input, tr.relation-row td select{
 /* Horizontal filter */
 .stacked{
   display: flex;
-  width: 100%; 
+  width: 100%;
 /*  border: solid 1px red*/
 }
 
@@ -599,7 +599,7 @@ tr.relation-row td input, tr.relation-row td select{
 }
 
 /* left column - DIV*/
-.selector-available { 
+.selector-available {
     width: 245px;
 }
 
@@ -734,7 +734,14 @@ tr.relation-row td input, tr.relation-row td select{
     color: #08c;
 }
 
+.cursor-copy{
+    cursor: copy;
+}
 
+.decs_suggestion{
+    margin: -50px 0 40px 570px;
 
-
-
+}
+.decs_suggestion a{
+    color: #ffff;
+}

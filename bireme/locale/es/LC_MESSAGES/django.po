@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-12 13:34-0300\n"
-"PO-Revision-Date: 2019-03-12 13:47-0306\n"
+"POT-Creation-Date: 2019-03-13 09:48-0300\n"
+"PO-Revision-Date: 2019-03-13 09:59-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -452,7 +452,7 @@ msgstr "Volumen o Número del fascículo obligatorio"
 
 #: biblioref/forms.py:271
 msgid "Required when indexed in LILACS database"
-msgstr ""
+msgstr "Requerido cuando se indexa en la base de datos LILACS"
 
 #: biblioref/forms.py:295 biblioref/forms.py:323 biblioref/forms.py:346
 #, python-format
@@ -1059,10 +1059,9 @@ msgid "Interoperability source"
 msgstr "Fuente de interoperabilidad"
 
 #: biblioref/models.py:112
-#, fuzzy
 #| msgid "Indexed in"
 msgid "Indexed by"
-msgstr "Indizado en"
+msgstr "Indizado por"
 
 #: biblioref/models.py:181
 msgid "Bibliographic Record Source"
@@ -1254,6 +1253,26 @@ msgstr "Datos locales JSON"
 msgid "Other fields JSON"
 msgstr "Otros campos JSON"
 
+#: biremelogin/models.py:12
+msgid "profile"
+msgstr "perfis"
+
+#: biremelogin/models.py:13
+msgid "profiles"
+msgstr "perfis"
+
+#: biremelogin/models.py:16
+msgid "Basic"
+msgstr "Básico"
+
+#: biremelogin/models.py:17
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: biremelogin/models.py:20
+msgid "data"
+msgstr "datos"
+
 #: classification/models.py:27 classification/models.py:66
 #: classification/models.py:82 leisref/models.py:449 multimedia/models.py:67
 #: multimedia/models.py:80 multimedia/models.py:102
@@ -1271,7 +1290,7 @@ msgstr "Colecciones"
 
 #: classification/models.py:30
 msgid "Parent"
-msgstr ""
+msgstr "Padre"
 
 #: classification/models.py:32 events/models.py:78 institution/models.py:66
 #: institution/models.py:215 multimedia/models.py:60 title/models.py:86
@@ -1329,7 +1348,7 @@ msgstr "Descripción"
 
 #: classification/models.py:36 classification/models.py:70
 msgid "Image"
-msgstr ""
+msgstr "Imagen"
 
 #: classification/models.py:63 events/models.py:45 help/models.py:49
 #: institution/models.py:47 leisref/models.py:52 leisref/models.py:92
@@ -1693,10 +1712,9 @@ msgid "Field name"
 msgstr "Nombre del campo"
 
 #: institution/forms.py:64
-#, fuzzy
 #| msgid "This institution already exist"
 msgid "This unit already exist"
-msgstr "Esta institución ya existe"
+msgstr "Esta unidad ya existe"
 
 #: institution/models.py:20 institution/models.py:103
 msgid "Institution type"
@@ -1758,7 +1776,7 @@ msgstr "Comentarios administrativos"
 
 #: institution/models.py:102
 msgid "Category"
-msgstr ""
+msgstr "Categoría"
 
 #: institution/models.py:104 leisref/models.py:485 title/models.py:122
 msgid "Notes"
@@ -1836,20 +1854,18 @@ msgstr "Direcciones electrónicas"
 
 #: institution/models.py:210 institution/models.py:239
 #: templates/institution/fieldset_unitlevel.html:16
-#, fuzzy
 #| msgid "Units"
 msgid "Unit"
-msgstr "Unidades"
+msgstr "Unidad"
 
 #: institution/models.py:211 templates/institution/institution_form.html:37
 msgid "Units"
 msgstr "Unidades"
 
 #: institution/models.py:227
-#, fuzzy
 #| msgid "Fourth level"
 msgid "First level"
-msgstr "Cuarto nivel"
+msgstr "Primer nivel"
 
 #: institution/models.py:228
 msgid "Second level"
@@ -1860,16 +1876,14 @@ msgid "Third level"
 msgstr "Tercer nivel"
 
 #: institution/models.py:233
-#, fuzzy
 #| msgid "Serial level"
 msgid "Hierarchical level"
-msgstr "Nivel Serie"
+msgstr "Nivel jerárquico"
 
 #: institution/models.py:234
-#, fuzzy
 #| msgid "Serial level"
 msgid "Hierarchical levels"
-msgstr "Nivel Serie"
+msgstr "Niveles jerárquicos"
 
 #: institution/models.py:238 templates/institution/fieldset_unitlevel.html:15
 msgid "Level"
@@ -2604,7 +2618,7 @@ msgstr "Recurso relacionado"
 #: templates/thesaurus/qualifier_new_concept.html:270
 #: templates/thesaurus/qualifier_new_legacy.html:93
 #: templates/thesaurus/qualifier_new_term.html:153
-#: templates/title/form_preview.html:435 utils/views.py:183
+#: templates/title/form_preview.html:435 utils/views.py:185
 msgid "Save"
 msgstr "Guardar"
 
@@ -2856,9 +2870,9 @@ msgstr "Seleccione por búsqueda"
 
 #: templates/biblioref/fieldset_indexing.html:70
 #: templates/biblioref/reference_confirm_delete.html:29
-#: templates/biblioref/referenceanalytic_form.html:434
-#: templates/biblioref/referenceanalytic_form.html:481
-#: templates/biblioref/referencesource_form.html:355
+#: templates/biblioref/referenceanalytic_form.html:456
+#: templates/biblioref/referenceanalytic_form.html:508
+#: templates/biblioref/referencesource_form.html:382
 #: templates/delete_confirm.html:17
 #: templates/institution/institution_confirm_delete.html:29
 #: templates/leisref/act_confirm_delete.html:29
@@ -2884,6 +2898,10 @@ msgstr "Seleccione por búsqueda"
 msgid "Yes"
 msgstr "Sí"
 
+#: templates/biblioref/fieldset_indexing.html:82
+msgid "see descriptores suggestions"
+msgstr "Descriptores"
+
 #: templates/biblioref/reference_confirm_delete.html:5
 #: templates/biblioref/reference_confirm_delete.html:9
 #: templates/biblioref/reference_confirm_delete.html:15
@@ -2895,7 +2913,7 @@ msgid "Record"
 msgstr "Registro"
 
 #: templates/biblioref/reference_confirm_delete.html:27
-#: templates/biblioref/referenceanalytic_form.html:427
+#: templates/biblioref/referenceanalytic_form.html:449
 #: templates/delete_confirm.html:9
 #: templates/institution/institution_confirm_delete.html:27
 #: templates/leisref/act_confirm_delete.html:27
@@ -2910,9 +2928,9 @@ msgid "Are you sure you want to delete?"
 msgstr "¿Está seguro que desea borrar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
-#: templates/biblioref/referenceanalytic_form.html:435
-#: templates/biblioref/referenceanalytic_form.html:482
-#: templates/biblioref/referencesource_form.html:356
+#: templates/biblioref/referenceanalytic_form.html:457
+#: templates/biblioref/referenceanalytic_form.html:509
+#: templates/biblioref/referencesource_form.html:383
 #: templates/delete_confirm.html:16
 #: templates/institution/institution_confirm_delete.html:28
 #: templates/leisref/act_confirm_delete.html:28
@@ -3467,8 +3485,8 @@ msgstr "Volver"
 msgid "Add file"
 msgstr "Añadir archivo"
 
-#: templates/biblioref/referenceanalytic_form.html:472
-#: templates/biblioref/referencesource_form.html:346
+#: templates/biblioref/referenceanalytic_form.html:499
+#: templates/biblioref/referencesource_form.html:373
 msgid ""
 "After publication the record can only be modified by a user with editor "
 "profile. Continue?"
@@ -3535,6 +3553,7 @@ msgid "Select the community"
 msgstr "Seleccione la comunidad"
 
 #: templates/classification/classify.html:83
+#: templates/utils/decs_suggestion.html:69
 msgid "Classification updated"
 msgstr "Clasificación actualizada"
 
@@ -3794,10 +3813,9 @@ msgid "CC"
 msgstr ""
 
 #: templates/institution/institution_unit.html:41
-#, fuzzy
 #| msgid "Select the institution"
 msgid "Select the unity"
-msgstr "Seleccione la institución"
+msgstr "Seleccione la unidad"
 
 #: templates/institution/institution_unit.html:58
 #, fuzzy
@@ -3806,13 +3824,13 @@ msgid "No unit was found"
 msgstr "No se encontró ninguna institución"
 
 #: templates/institution/institution_unit.html:62
-#, fuzzy
 #| msgid "Create new legislation"
 msgid "Create new unity"
-msgstr "Crear nueva legislación"
+msgstr "Crear nueva unidad"
 
 #: templates/institution/institution_unit.html:91
 #: templates/leisref/act_related.html:106
+#: templates/utils/decs_suggestion.html:47
 msgid "Add"
 msgstr "Añadir"
 
@@ -4227,7 +4245,8 @@ msgstr "Sugerencias"
 
 #: templates/menu.html:77 templates/reports/index.html:5
 #: templates/reports/index.html.py:8 templates/reports/index.html:23
-#: templates/reports/index.html.py:177
+#: templates/reports/index.html.py:177 templates/reports/select_report.html:6
+#: templates/reports/select_report.html:9
 msgid "Reports"
 msgstr "Informes"
 
@@ -4240,10 +4259,9 @@ msgid "Languages"
 msgstr "Idiomas"
 
 #: templates/menu.html:105
-#, fuzzy
 #| msgid "Admitted"
 msgid "Admin"
-msgstr "Aceptado"
+msgstr "Admin"
 
 #: templates/menu.html:133
 msgid "Logout"
@@ -4430,7 +4448,7 @@ msgstr "Ejecutar"
 
 #: templates/reports/index.html:118 title/models.py:36
 msgid "Current"
-msgstr ""
+msgstr "Corriente"
 
 #: templates/reports/index.html:120 title/choices.py:25 title/models.py:37
 msgid "Unknown"
@@ -4451,6 +4469,10 @@ msgstr "No hay datos para estes criterios"
 #: templates/reports/index.html:200
 msgid "Combination (Source x Report / Filter) not available"
 msgstr "Combinación (Fuente x Informe / Filtro) no disponible"
+
+#: templates/reports/select_report.html:15
+msgid "Select report"
+msgstr "Seleccione el informe"
 
 #: templates/suggest/edit-suggested-event.html:5
 #: templates/suggest/edit-suggested-event.html:15
@@ -4662,7 +4684,6 @@ msgstr "Confirmar"
 
 #: templates/thesaurus/confirm_create_register_desc.html:24
 #: templates/thesaurus/confirm_create_register_qualif.html:24
-#| msgid "Do you confirm the creation of a new record with this term?"
 msgid "Do you confirm the creation of a new record with this concept?"
 msgstr "¿Confirma la creación de un nuevo registro a partir de este concepto?"
 
@@ -5318,7 +5339,6 @@ msgstr "Más estrecho"
 
 #: templates/thesaurus/page_view_desc.html:539
 #: templates/thesaurus/page_view_qualif.html:426
-#| msgid "Create a new record from this term"
 msgid "Create a new record from this concept"
 msgstr "Crear un nuevo registro a partir de este concepto"
 
@@ -5789,6 +5809,24 @@ msgstr "Número SeCS"
 #: templates/title/title_list.html:104 title/models.py:128
 msgid "Editor code"
 msgstr "Codigo del editor"
+
+#: templates/utils/decs_suggestion.html:26
+msgid "DeCS"
+msgstr "Geog DeCS"
+
+#: templates/utils/decs_suggestion.html:37
+msgid "List of descriptors identified in the abstract"
+msgstr "Listado de descriptores identificados en el resumen"
+
+#: templates/utils/decs_suggestion.html:55
+#, fuzzy
+#| msgid "No descriptor records were found"
+msgid "No descriptor identified"
+msgstr "No se encontraron registros de descriptores"
+
+#: templates/utils/decs_suggestion.html:56
+msgid "Check if the abstract is filled in"
+msgstr "Verifique si el campo de resumen fue llenado"
 
 #: templates/utils/field_assist.html:7 templates/utils/field_assist.html:41
 msgid "Field assist"
@@ -6722,30 +6760,6 @@ msgstr "El año debe ser mayor que 1900"
 
 #~ msgid "Descriptor UI"
 #~ msgstr "ID de término"
-
-#~ msgid "profile"
-#~ msgstr "perfis"
-
-#~ msgid "profiles"
-#~ msgstr "perfis"
-
-#~ msgid "Basic"
-#~ msgstr "Básico"
-
-#~ msgid "Advanced"
-#~ msgstr "Avanzado"
-
-#~ msgid "data"
-#~ msgstr "datos"
-
-#~ msgid "see descriptores suggestions"
-#~ msgstr "Descriptores"
-
-#~ msgid "Select report"
-#~ msgstr "Seleccione el informe"
-
-#~ msgid "DeCS"
-#~ msgstr "Geog DeCS"
 
 #~ msgid "New Record, Concept and Term"
 #~ msgstr "Nuevo registro, concepto y término"

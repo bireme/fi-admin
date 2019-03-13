@@ -15,8 +15,10 @@ from pkg_resources import resource_filename
 
 import csv
 import colander
+import requests
 import deform
 import json
+import urllib
 
 
 # form actions
@@ -232,3 +234,32 @@ def field_assist(request, **kwargs):
         'module_name': module_name,
         'deform_dependencies': form.get_widget_resources()
     })
+
+@csrf_exempt
+def decs_suggestion(request):
+    field_name_param = request.POST.get('field_name')
+    field_value_param = request.POST.get('field_value')
+    decs_list = []
+
+    service_url = settings.DECS_HIGHLIGHTER_URL
+    service_params = {'document': field_value_param}
+
+    headers = {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"}
+
+    r = requests.post(service_url, data=service_params, headers=headers)
+    if r.status_code == 200:
+        response_json = r.json()
+        decs_list_response = response_json['positions']
+        decs_list_unique = []
+        decs_ids = []
+        for decs_term in decs_list_response:
+            decs_id = decs_term['id']
+            if decs_id not in decs_ids:
+                decs_ids.append(decs_id)
+                decs_list_unique.append(decs_term)
+
+        decs_list = sorted(decs_list_unique, key=lambda k: k['descriptor'])
+
+
+    return render_to_response('utils/decs_suggestion.html',
+                              {'decs_list': decs_list, 'field_name': field_name_param})

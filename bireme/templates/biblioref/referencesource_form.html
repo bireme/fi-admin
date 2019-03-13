@@ -301,12 +301,34 @@
 
             // Listen to message from child window
             eventer(messageEvent,function(e) {
-                var decs_data = e.data;
-                var pipe_pos = decs_data.lastIndexOf('|');
-                var decs_text = decs_data.substring(0, pipe_pos);
-                var decs_code = decs_data.substring(pipe_pos+1);
+                var decs_data = e.data.split('|');
+                var decs_text = decs_data[0];
+                var decs_code = decs_data[1];
+                var decs_op = decs_data[2];
 
-                var decs_row = decs_field.replace( /[A-Za-z_$-]/g, '');
+                console.log(decs_data);
+                if (decs_op == 'ADD'){
+                    decs_field = null;
+                    total_lines = $('#id_main-descriptor-content_type-object_id-TOTAL_FORMS').val();
+
+                    for (var count = 1; count < total_lines; count++){
+                        // found first empty line
+                        descriptor_row = $('#id_main-descriptor-content_type-object_id-' + count + '-code');
+                        if ( descriptor_row.val() == '' ){
+                            decs_field = count.toString()
+                            break;
+                        }
+                    }
+                    if (decs_field == null){
+                        // add new line
+                        var btn_add_descriptor = $('#descriptors .icon-plus-sign');
+                        btn_add_descriptor.click();
+                        decs_field = total_lines.toString();
+                    }
+                }
+
+                var decs_row = decs_field.replace(/[A-Za-z_$-]/g, '');
+
                 // set code, text and label for the new descriptor
                 $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
                 $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);
@@ -328,7 +350,12 @@
         function decs_search(obj){
             var row = $(obj).parent();
             decs_field = row.find('input').attr('name');
-            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=870,height=550');
+            decs_term = row.find('input').attr('value');
+            if (decs_term.indexOf('/') !== -1){
+                decs_term = decs_term.substr(0, decs_term.indexOf('/'));
+            }
+
+            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}&descriptor=' + decs_term, 'decslookup', 'scrollbars=1,width=870,height=550');
         }
 
         $("#save-inprocess").click(function() {
