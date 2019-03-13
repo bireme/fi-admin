@@ -51,7 +51,8 @@
 
                 <div id="float-banner" class="float-banner">
                     <form name="f1" action="" onSubmit="if(this.t1.value!=null && this.t1.value!='') findString(this.t1.value);return false">
-                        <input type="text" name=t1 value="" size=20 placeholder="{% trans "Search" %}">
+                        <input type="text" id="id_t1" name=t1 value="" size=20 placeholder="{% trans "Search" %}">
+                        <input type="hidden" name=ths value="{% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
                         <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
                         <button class="btn btn-primary" type="reset" style="margin-top: -10px"><i class="icon-refresh"></i></button>
                     </form>
@@ -832,6 +833,16 @@
             if (!strFound) alert ('{% trans "No results found" %}')
                 return;
             }
+
+
+        $('#id_t1').keypress(function(e) {
+            if(e.which == 13) {
+              e.preventDefault();
+              console.log('Não vou enviar');
+            }
+        });
+
+
     //-->
     </script>
 
