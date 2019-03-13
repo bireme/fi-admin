@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-13 09:48-0300\n"
-"PO-Revision-Date: 2019-03-13 09:54-0306\n"
+"POT-Creation-Date: 2019-03-13 12:53-0300\n"
+"PO-Revision-Date: 2019-03-13 12:53-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1286,7 +1286,6 @@ msgid "Collections"
 msgstr "Coleções"
 
 #: classification/models.py:30
-#| msgid "Current"
 msgid "Parent"
 msgstr "Pai"
 
@@ -1710,7 +1709,6 @@ msgid "Field name"
 msgstr "Nome do campo"
 
 #: institution/forms.py:64
-#| msgid "This institution already exist"
 msgid "This unit already exist"
 msgstr "Esta unidade já existe"
 
@@ -1761,12 +1759,10 @@ msgid "Mailbox"
 msgstr "Caixa Postal"
 
 #: institution/models.py:98
-#| msgid "Descriptive information"
 msgid "Administrative information"
 msgstr "Informação administrativa"
 
 #: institution/models.py:99
-#| msgid "Administrative comments"
 msgid "Administrative informations"
 msgstr "Informações administrativas"
 
@@ -1850,7 +1846,6 @@ msgstr "Endereços eletrônicos"
 
 #: institution/models.py:210 institution/models.py:239
 #: templates/institution/fieldset_unitlevel.html:16
-#| msgid "Units"
 msgid "Unit"
 msgstr "Unidade"
 
@@ -1859,7 +1854,6 @@ msgid "Units"
 msgstr "Unidades"
 
 #: institution/models.py:227
-#| msgid "Fourth level"
 msgid "First level"
 msgstr "Primeiro nível"
 
@@ -1872,12 +1866,10 @@ msgid "Third level"
 msgstr "Terceiro nível"
 
 #: institution/models.py:233
-#| msgid "Serial level"
 msgid "Hierarchical level"
 msgstr "Nível hierárquico"
 
 #: institution/models.py:234
-#| msgid "Serial level"
 msgid "Hierarchical levels"
 msgstr "Níveis hierárquicos"
 
@@ -2893,8 +2885,9 @@ msgid "Yes"
 msgstr "Sim"
 
 #: templates/biblioref/fieldset_indexing.html:82
-msgid "see descriptores suggestions"
-msgstr "Descritores"
+#| msgid "List of descriptors identified in the abstract"
+msgid "descriptores from abstract"
+msgstr "descritores do resumo"
 
 #: templates/biblioref/reference_confirm_delete.html:5
 #: templates/biblioref/reference_confirm_delete.html:9
@@ -3806,17 +3799,14 @@ msgid "CC"
 msgstr ""
 
 #: templates/institution/institution_unit.html:41
-#| msgid "Select the institution"
 msgid "Select the unity"
 msgstr "Selecione a unidade"
 
 #: templates/institution/institution_unit.html:58
-#| msgid "No institution was found"
 msgid "No unit was found"
 msgstr "Nenhuma unidade encontrada"
 
 #: templates/institution/institution_unit.html:62
-#| msgid "Create new legislation"
 msgid "Create new unity"
 msgstr "Criar nova unidade"
 
@@ -4251,7 +4241,6 @@ msgid "Languages"
 msgstr "Idiomas"
 
 #: templates/menu.html:105
-#| msgid "Admitted"
 msgid "Admin"
 msgstr "Admin"
 
@@ -5788,7 +5777,6 @@ msgid "List of descriptors identified in the abstract"
 msgstr "Lista de descritores identificados no resumo"
 
 #: templates/utils/decs_suggestion.html:55
-#| msgid "No descriptor records were found"
 msgid "No descriptor identified"
 msgstr "Nenhum descritor identificado"
 
@@ -6719,6 +6707,9 @@ msgstr "Recurso criado"
 #: utils/validators.py:12
 msgid "Year must be greater than 1900"
 msgstr "Ano deve ser maior que 1900"
+
+#~ msgid "see descriptores suggestions"
+#~ msgstr "Descritores"
 
 #~ msgid "New Descriptor"
 #~ msgstr "No descritor"

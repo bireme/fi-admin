@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-13 09:48-0300\n"
-"PO-Revision-Date: 2019-03-13 09:59-0306\n"
+"POT-Creation-Date: 2019-03-13 12:53-0300\n"
+"PO-Revision-Date: 2019-03-13 12:54-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1059,7 +1059,6 @@ msgid "Interoperability source"
 msgstr "Fuente de interoperabilidad"
 
 #: biblioref/models.py:112
-#| msgid "Indexed in"
 msgid "Indexed by"
 msgstr "Indizado por"
 
@@ -1712,7 +1711,6 @@ msgid "Field name"
 msgstr "Nombre del campo"
 
 #: institution/forms.py:64
-#| msgid "This institution already exist"
 msgid "This unit already exist"
 msgstr "Esta unidad ya existe"
 
@@ -1854,7 +1852,6 @@ msgstr "Direcciones electrónicas"
 
 #: institution/models.py:210 institution/models.py:239
 #: templates/institution/fieldset_unitlevel.html:16
-#| msgid "Units"
 msgid "Unit"
 msgstr "Unidad"
 
@@ -1863,7 +1860,6 @@ msgid "Units"
 msgstr "Unidades"
 
 #: institution/models.py:227
-#| msgid "Fourth level"
 msgid "First level"
 msgstr "Primer nivel"
 
@@ -1876,12 +1872,10 @@ msgid "Third level"
 msgstr "Tercer nivel"
 
 #: institution/models.py:233
-#| msgid "Serial level"
 msgid "Hierarchical level"
 msgstr "Nivel jerárquico"
 
 #: institution/models.py:234
-#| msgid "Serial level"
 msgid "Hierarchical levels"
 msgstr "Niveles jerárquicos"
 
@@ -2899,8 +2893,9 @@ msgid "Yes"
 msgstr "Sí"
 
 #: templates/biblioref/fieldset_indexing.html:82
-msgid "see descriptores suggestions"
-msgstr "Descriptores"
+#| msgid "List of descriptors identified in the abstract"
+msgid "descriptores from abstract"
+msgstr "descriptores del resumen"
 
 #: templates/biblioref/reference_confirm_delete.html:5
 #: templates/biblioref/reference_confirm_delete.html:9
@@ -3813,7 +3808,6 @@ msgid "CC"
 msgstr ""
 
 #: templates/institution/institution_unit.html:41
-#| msgid "Select the institution"
 msgid "Select the unity"
 msgstr "Seleccione la unidad"
 
@@ -3824,7 +3818,6 @@ msgid "No unit was found"
 msgstr "No se encontró ninguna institución"
 
 #: templates/institution/institution_unit.html:62
-#| msgid "Create new legislation"
 msgid "Create new unity"
 msgstr "Crear nueva unidad"
 
@@ -4259,7 +4252,6 @@ msgid "Languages"
 msgstr "Idiomas"
 
 #: templates/menu.html:105
-#| msgid "Admitted"
 msgid "Admin"
 msgstr "Admin"
 
@@ -6754,6 +6746,9 @@ msgstr "Registro creado"
 #: utils/validators.py:12
 msgid "Year must be greater than 1900"
 msgstr "El año debe ser mayor que 1900"
+
+#~ msgid "see descriptores suggestions"
+#~ msgstr "Descriptores"
 
 #~ msgid "New Descriptor"
 #~ msgstr "Nuevo descriptor"
