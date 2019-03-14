@@ -1,3 +1,4 @@
+#! coding: utf-8
 import datetime
 from haystack import indexes
 from attachments.models import Attachment
@@ -54,12 +55,12 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
                 act_date = _date(obj.issue_date, "d \d\e F \d\e Y")
                 for act_type in act_type_trans:
                     act_type_label = act_type.split('^')[1]
-                    act_title = u"{0} {1} - {2}".format(act_type_label, obj.act_number, act_date)
+                    act_title = u"{0} Nº {1} - {2}".format(act_type_label, obj.act_number, act_date)
                     ref_title_list.append(act_title)
             else:
                 for act_type in act_type_trans:
                     act_type_label = act_type.split('^')[1]
-                    act_title = u"{0} {1}".format(act_type_label, obj.act_number)
+                    act_title = u"{0} Nº {1}".format(act_type_label, obj.act_number)
                     ref_title_list.append(act_title)
 
         return ref_title_list
