@@ -5,6 +5,7 @@ from attachments.models import Attachment
 from django.conf import settings
 from django.template.defaultfilters import date as _date
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import activate
 
 from main.models import Descriptor, ResourceThematic
 from models import *
@@ -52,9 +53,12 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
 
         if not obj.title:
             if obj.issue_date:
-                act_date = _date(obj.issue_date, "d \d\e F \d\e Y")
                 for act_type in act_type_trans:
+                    act_type_lang = act_type.split('^')[0]
                     act_type_label = act_type.split('^')[1]
+                    activate(act_type_lang)
+                    act_date = _date(obj.issue_date, "d \d\e F \d\e Y")
+
                     act_title = u"{0} Nº {1} - {2}".format(act_type_label, obj.act_number, act_date)
                     ref_title_list.append(act_title)
             else:
