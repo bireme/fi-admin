@@ -1,16 +1,17 @@
 import datetime
 from haystack import indexes
-from main.models import Descriptor, ResourceThematic
-from models import *
 from attachments.models import Attachment
 from django.conf import settings
-
+from django.template.defaultfilters import date as _date
 from django.contrib.contenttypes.models import ContentType
 
+from main.models import Descriptor, ResourceThematic
+from models import *
 
 class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
+    reference_title = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
     scope_region = indexes.CharField()
     act_type = indexes.CharField()
@@ -40,6 +41,28 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Act
+
+    def prepare_reference_title(self, obj):
+        '''
+        Used for search purpose, index act title different languages
+        '''
+        ref_title_list = []
+        act_type_trans = obj.act_type.get_translations()
+
+        if not obj.title:
+            if obj.issue_date:
+                act_date = _date(obj.issue_date, "d \d\e F \d\e Y")
+                for act_type in act_type_trans:
+                    act_type_label = act_type.split('^')[1]
+                    act_title = u"{0} {1} de {2}".format(act_type_label, obj.act_number, act_date)
+                    ref_title_list.append(act_title)
+            else:
+                for act_type in act_type_trans:
+                    act_type_label = act_type.split('^')[1]
+                    act_title = u"{0} {1}".format(act_type_label, obj.act_number)
+                    ref_title_list.append(act_title)
+
+        return ref_title_list
 
     def prepare_scope_region(self, obj):
         if obj.scope_region:
