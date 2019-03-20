@@ -86,7 +86,6 @@ class BiblioRefForm(BetterModelForm):
             self.fields['publisher'].widget = widgets.HiddenInput()
             self.fields['isbn'].widget = widgets.HiddenInput()
 
-
         # load serial titles for serial analytic
         if self.document_type == 'S' and not self.reference_source:
             title_objects = Title.objects.all()
@@ -918,6 +917,17 @@ class BiblioRefForm(BetterModelForm):
         if self.document_type == 'Tm':
             obj.publisher = 's.n'
 
+        # check if reference doesn't have indexer_cc_code info
+        if not obj.indexer_cc_code:
+            ctype = obj.get_content_type_id()
+            # check if user has indexed this document
+            has_indexed = Descriptor.objects.filter(object_id=obj.id, content_type_id=ctype,
+                                                    created_by=self.user).exists()
+
+            if has_indexed:
+                # update reference indexer_cc_code field
+                obj.indexer_cc_code = self.user_data.get('user_cc','')
+
         # save object
         obj.save()
 
@@ -952,13 +962,13 @@ class BiblioRefForm(BetterModelForm):
 class BiblioRefSourceForm(BiblioRefForm):
     class Meta:
         model = ReferenceSource
-        exclude = ('cooperative_center_code',)
+        exclude = ('cooperative_center_code', 'indexer_cc_code')
 
 
 class BiblioRefAnalyticForm(BiblioRefForm):
     class Meta:
         model = ReferenceAnalytic
-        exclude = ('source', 'cooperative_center_code',)
+        exclude = ('source', 'cooperative_center_code', 'indexer_cc_code')
 
 
 class AttachmentForm(forms.ModelForm):
@@ -1040,19 +1050,7 @@ class DescriptorForm(forms.ModelForm):
         obj = super(DescriptorForm, self).save(commit=False)
         # for bibliographic default value for descriptor is admited
         obj.status = 1
-
         obj.save()
-        # if is first center to index the reference save the code in indexer_cc_code
-        reference = Reference.objects.get(id=obj.object_id)
-        # check if reference already have indexer_cc_code info
-        if not reference.indexer_cc_code:
-            # get user profile cc code
-            user = obj.created_by
-            user_data = simplejson.loads(user.profile.data)
-            # fill reference field
-            reference.indexer_cc_code = user_data.get('cc','')
-            # update record
-            reference.save()
 
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,
