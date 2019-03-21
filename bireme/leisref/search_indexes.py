@@ -130,8 +130,9 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
             ref_number = act.act_referred.act_number
             ref_date = act.act_referred.issue_date
             ref_lnk = "leisref.act.{0}".format(act.act_referred.id) if act.act_referred.status in [-2, 1] else ''
-            active_relation = u"{0}@{1}@{2}@{3}@{4}@{5}".format(label_present, ref_type, ref_number,
-                                                               ref_date, act.act_apparatus, ref_lnk)
+            ref_title = act.act_referred.title
+            active_relation = u"{0}@{1}@{2}@{3}@{4}@{5}@{6}".format(label_present, ref_type, ref_number,
+                                                                    ref_date, act.act_apparatus, ref_lnk, ref_title)
             active_relationships.append(active_relation)
 
         return active_relationships
@@ -141,10 +142,14 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
         act_list = ActRelationship.objects.filter(act_referred=obj.pk)
         for act in act_list:
             label_past = "|".join(act.relation_type.get_label_past_translations())
-            act_type = "|".join(obj.act_type.get_translations())
-            ref_lnk = "leisref.act.{0}".format(act.act_related.id) if act.act_related.status in [-2, 1] else ''
-            passive_relation = u"{0}@{1}@{2}@{3}@{4}".format(label_past, act_type, act.act_related.act_number,
-                                                            act.act_related.issue_date, ref_lnk)
+            rel_type = "|".join(obj.act_type.get_translations())
+            rel_number = act.act_related.act_number
+            rel_date = act.act_related.issue_date
+            rel_lnk = "leisref.act.{0}".format(act.act_related.id) if act.act_related.status in [-2, 1] else ''
+            rel_title = act.act_related.title
+            rel_apparatus = act.act_apparatus
+            passive_relation = u"{0}@{1}@{2}@{3}@{4}@{5}@{6}".format(label_past, rel_type, rel_number, rel_date,
+                                                                     rel_lnk, rel_title, rel_apparatus)
             passive_relationships.append(passive_relation)
 
         return passive_relationships
