@@ -1,16 +1,19 @@
+#! coding: utf-8
 import datetime
 from haystack import indexes
-from main.models import Descriptor, ResourceThematic
-from models import *
 from attachments.models import Attachment
 from django.conf import settings
-
+from django.template.defaultfilters import date as _date
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import activate
 
+from main.models import Descriptor, ResourceThematic
+from models import *
 
 class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
+    reference_title = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
     scope_region = indexes.CharField()
     act_type = indexes.CharField()
@@ -40,6 +43,31 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Act
+
+    def prepare_reference_title(self, obj):
+        '''
+        Used for search purpose, index act title different languages
+        '''
+        ref_title_list = []
+        act_type_trans = obj.act_type.get_translations()
+
+        if not obj.title:
+            if obj.issue_date:
+                for act_type in act_type_trans:
+                    act_type_lang = act_type.split('^')[0]
+                    act_type_label = act_type.split('^')[1]
+                    activate(act_type_lang)
+                    act_date = _date(obj.issue_date, "d \d\e F \d\e Y")
+
+                    act_title = u"{0} Nº {1} - {2}".format(act_type_label, obj.act_number, act_date)
+                    ref_title_list.append(act_title)
+            else:
+                for act_type in act_type_trans:
+                    act_type_label = act_type.split('^')[1]
+                    act_title = u"{0} Nº {1}".format(act_type_label, obj.act_number)
+                    ref_title_list.append(act_title)
+
+        return ref_title_list
 
     def prepare_scope_region(self, obj):
         if obj.scope_region:
@@ -102,8 +130,9 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
             ref_number = act.act_referred.act_number
             ref_date = act.act_referred.issue_date
             ref_lnk = "leisref.act.{0}".format(act.act_referred.id) if act.act_referred.status in [-2, 1] else ''
-            active_relation = u"{0}@{1}@{2}@{3}@{4}@{5}".format(label_present, ref_type, ref_number,
-                                                               ref_date, act.act_apparatus, ref_lnk)
+            ref_title = act.act_referred.title
+            active_relation = u"{0}@{1}@{2}@{3}@{4}@{5}@{6}".format(label_present, ref_type, ref_number,
+                                                                    ref_date, act.act_apparatus, ref_lnk, ref_title)
             active_relationships.append(active_relation)
 
         return active_relationships
@@ -113,10 +142,14 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
         act_list = ActRelationship.objects.filter(act_referred=obj.pk)
         for act in act_list:
             label_past = "|".join(act.relation_type.get_label_past_translations())
-            act_type = "|".join(obj.act_type.get_translations())
-            ref_lnk = "leisref.act.{0}".format(act.act_related.id) if act.act_related.status in [-2, 1] else ''
-            passive_relation = u"{0}@{1}@{2}@{3}@{4}".format(label_past, act_type, act.act_related.act_number,
-                                                            act.act_related.issue_date, ref_lnk)
+            rel_type = "|".join(obj.act_type.get_translations())
+            rel_number = act.act_related.act_number
+            rel_date = act.act_related.issue_date
+            rel_lnk = "leisref.act.{0}".format(act.act_related.id) if act.act_related.status in [-2, 1] else ''
+            rel_title = act.act_related.title
+            rel_apparatus = act.act_apparatus
+            passive_relation = u"{0}@{1}@{2}@{3}@{4}@{5}@{6}".format(label_past, rel_type, rel_number, rel_date,
+                                                                     rel_lnk, rel_title, rel_apparatus)
             passive_relationships.append(passive_relation)
 
         return passive_relationships
