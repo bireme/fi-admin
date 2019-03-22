@@ -739,9 +739,9 @@ tr.relation-row td input, tr.relation-row td select{
 }
 
 .decs_suggestion{
-    margin: -50px 0 40px 600px;
-
+    margin: -52px 0 40px 190px;
 }
 .decs_suggestion a{
     color: #ffff;
+    padding: 7px 10px 7px;
 }
