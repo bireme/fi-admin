@@ -209,10 +209,11 @@
                     {%if object.pk %}
                         <div class="alert alert-info">
                             <p>{% trans "Record created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
-                            <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
+                            <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong>
                             {% if object.indexer_cc_code and object.indexer_cc_code != object.cooperative_center_code %}
-                                <p>{% trans "Indexer cooperative center code" %}: <strong>{{ object.indexer_cc_code }}</strong></p>
+                                | {% trans "Indexer cooperative center code" %}: <strong>{{ object.indexer_cc_code }}</strong>
                             {% endif %}
+                            </p>
                             {% if object.updated_by %}
                                 <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
                             {% endif %}
@@ -536,25 +537,45 @@
                           "ano_publicacao": publication_year, "titulo_artigo": title, "titulo_revista": journal},
                   dataType: "json",
                   success: function(data){
-                      if (data.total > 0) {
+                      articles = data.result;
+                      duplicates_total = 0;
+                      {% if object.pk %}
+                          ref_id = '{{ object.pk }}';
+                          for (i = 0; i < articles.length; i++){
+                              article = articles[i];
+                              article_id = article['id'].split('-')[1]; // get only id number. ex. fiadmin-9999-pt
+                              if (article_id != ref_id){
+                                  duplicates_total++;
+                              }
+                          }
+                      {% else %}
+                          duplicates_total = data.total;
+                      {% endif %}
+
+                      if (duplicates_total > 0) {
                           $('.dedup-alert').show();
                           $('.dedup-alert').addClass('animated shake');
-                          articles = data.result;
+
                           $('#dedup_result .modal-body').empty();
                           for (i = 0; i < articles.length; i++){
                               pos = i+1;
                               article = articles[i];
                               article_id = article['id'];
+                              detail_url = '';
                               if (article_id.startsWith('fiadmin')){
-                                article_id = article_id.substring(article_id.lastIndexOf('-')+1)
-                                detail_url = '{% url "list_biblioref" %}edit-analytic/' + article_id ;
+                                article_id = article['id'].split('-')[1];
+                                if (article_id != ref_id){
+                                    detail_url = '{% url "list_biblioref" %}edit-analytic/' + article_id;
+                                }
                               }else{
                                 detail_url = '{{settings.DEDUP_ARTICLE_DETAIL}}lil-' + article_id;
                               }
-                              $('#dedup_result .modal-body').append($('<div>', {
-                                    html: pos + '. <a href="' + detail_url + '" target="_dedup">' + article['titulo_artigo']
-                                      + '</a> - ' + article['titulo_revista'] + ' (' + article['ano_publicacao'] + ')'
-                              }));
+                              if (detail_url != ''){
+                                  $('#dedup_result .modal-body').append($('<div>', {
+                                        html: pos + '. <a href="' + detail_url + '" target="_dedup">' + article['titulo_artigo']
+                                          + '</a> - ' + article['titulo_revista'] + ' (' + article['ano_publicacao'] + ')'
+                                  }));
+                             }
                           }
                       }else{
                         $('.dedup-alert').hide();
