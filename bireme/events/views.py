@@ -165,10 +165,10 @@ def create_edit_event(request, **kwargs):
             formset_keyword.save()
             formset_thematic.save()
 
+            # save many-to-many relation fields
+            form.save_m2m()
             # update solr index
             form.save()
-            # update solr index
-            form.save_m2m()
 
             output['alert'] = _("Event successfully edited.")
             output['alerttype'] = "alert-success"
