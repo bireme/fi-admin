@@ -23,7 +23,7 @@
     </style>
 {% endblock %}
 
-{% block title %}{% trans "DeCS" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Abstract DeCS subjects" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb_wrap %}{% endblock %}
 
@@ -43,7 +43,7 @@
                     <td>
                         <strong>{{ decs.descriptor|title }}</strong>
                     <td>
-                    <td>
+                    <td style="text-align: right">
                         <a href="#" id="{{ decs.id }}" value="{{ decs.id }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.id|add:"0" }}|ADD');" class="btn"><i class="icon-plus"></i>{% trans "Add" %}</a>
                     </td>
                 </tr>

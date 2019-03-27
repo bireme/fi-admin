@@ -931,32 +931,6 @@ class BiblioRefForm(BetterModelForm):
         # save object
         obj.save()
 
-        # update DeDup service
-        if self.document_type == 'Sas':
-            # for status LLXP and Published use more complete schema of DeDup index
-            if obj.status == 0 or obj.status == 1:
-                dedup_schema = 'LILACS_Sas_Seven'
-                author_list = [au.get('text') for au in obj.individual_author] if obj.individual_author else []
-                first_page = obj.pages[0].get('_f', '') if obj.pages else ''
-                dedup_params = {"ano_publicacao": obj.source.publication_date_normalized[:4],
-                                "numero_fasciculo": obj.source.issue_number, "volume_fasciculo": obj.source.volume_serial,
-                                "titulo_artigo": obj.title[0]['text'], "titulo_revista": obj.source.title_serial,
-                                "autores": '//@//'.join(author_list), "pagina_inicial": first_page}
-            else:
-                dedup_schema = 'LILACS_Sas_Five'
-                dedup_params = {"ano_publicacao": obj.source.publication_date_normalized[:4],
-                                "numero_fasciculo": obj.source.issue_number, "volume_fasciculo": obj.source.volume_serial,
-                                "titulo_artigo": obj.title[0]['text'], "titulo_revista": obj.source.title_serial}
-
-            json_data = json.dumps(dedup_params, ensure_ascii=True)
-            dedup_headers = {'Content-Type': 'application/json'}
-            ref_id = "fiadmin-{0}".format(obj.id)
-            dedup_url = "{0}/{1}/{2}/{3}".format(settings.DEDUP_PUT_URL, 'lilacs_Sas', dedup_schema, ref_id)
-            try:
-                dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
-            except:
-                pass
-
         return obj
 
 class BiblioRefSourceForm(BiblioRefForm):
