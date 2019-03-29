@@ -140,22 +140,22 @@ class ThesaurusResourceQualif(CustomResource):
         # 'scope_note_en': '005',
         scope_note_en = ConceptListQualif.objects.filter(identifier_concept_id=id_concept,language_code='en')
         for field in scope_note_en:
-            bundle.data['scope_note_en'] = field.scope_note
+            bundle.data['scope_note_en'] = '^n' + field.scope_note
 
         # # 'scope_note_es': '006',
         scope_note_es = ConceptListQualif.objects.filter(identifier_concept_id=id_concept,language_code='es')
         for field in scope_note_es:
-            bundle.data['scope_note_es'] = field.scope_note
+            bundle.data['scope_note_es'] = '^n' + field.scope_note
 
         # # 'scope_note_pt_br': '007',
         scope_note_pt_br = ConceptListQualif.objects.filter(identifier_concept_id=id_concept,language_code='pt-br')
         for field in scope_note_pt_br:
-            bundle.data['scope_note_pt_br'] = field.scope_note
+            bundle.data['scope_note_pt_br'] = '^n' + field.scope_note
 
         # # 'scope_note_es_es': '008',
         scope_note_es_es = ConceptListQualif.objects.filter(identifier_concept_id=id_concept,language_code='es-es')
         for field in scope_note_es_es:
-            bundle.data['scope_note_es_es'] = field.scope_note
+            bundle.data['scope_note_es_es'] = '^n' + field.scope_note
 
 
 
@@ -163,33 +163,47 @@ class ThesaurusResourceQualif(CustomResource):
         tree_number_list = []
         tree_number_arr = TreeNumbersListQualif.objects.filter(identifier_id=bundle.obj.id)
         for field in tree_number_arr:
-            item = field.tree_number
-            tree_number_list.append(item)
+            letter_chk = field.tree_number[0:1]
+            if letter_chk == 'Q':
+                item = field.tree_number
+                tree_number_list.append(item)
         bundle.data['tree_number'] = tree_number_list
 
+        # 'tree_number_201': '201',
+        tree_number_list = []
+        tree_number_arr = TreeNumbersListQualif.objects.filter(identifier_id=bundle.obj.id)
+        for field in tree_number_arr:
+            letter_chk = field.tree_number[0:1]
+            if letter_chk != 'Q':
+                item = field.tree_number
+                tree_number_list.append(item)
+        bundle.data['tree_number_201'] = tree_number_list
 
 
         # Usado para mostrar EntryVersion
         # en
         # 'entry_version_en': '011',
-        entry_version_en = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='Y',record_preferred_term='Y',status='1')
+        entry_version_en = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='en',status='1')
         for field in entry_version_en:
-            item = '/' + field.entry_version
-            bundle.data['entry_version_en'] = item.lower()
+            if field.entry_version:
+                item = '/' + field.entry_version
+        bundle.data['entry_version_en'] = item.lower()
 
         # es
         # 'entry_version_es': '012',
-        entry_version_es = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='es',concept_preferred_term='Y',record_preferred_term='Y',status='1')
+        entry_version_es = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='es',status='1')
         for field in entry_version_es:
-            item = '/' + field.entry_version
-            bundle.data['entry_version_es'] = item.lower()
+            if field.entry_version:
+                item = '/' + field.entry_version
+        bundle.data['entry_version_es'] = item.lower()
 
         # pt-br
         # 'entry_version_pt_br': '013',
-        entry_version_pt_br = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='pt-br',concept_preferred_term='Y',record_preferred_term='Y',status='1')
+        entry_version_pt_br = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='pt-br',status='1')
         for field in entry_version_pt_br:
-            item = '/' + field.entry_version
-            bundle.data['entry_version_pt_br'] = item.lower()
+            if field.entry_version:
+                item = '/' + field.entry_version
+        bundle.data['entry_version_pt_br'] = item.lower()
 
 
 

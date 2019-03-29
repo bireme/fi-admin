@@ -124,7 +124,7 @@
                 {% if actions.visited %}
 
                     <thead>
-                        <th>
+                        <th width="90%">
                             <a href="javascript:orderby('term_string');" id="id_term_string">
                             {% if not actions.filter_fields == 'term_string' %}
                                 {% trans "Qualifier Name" %}
@@ -137,7 +137,7 @@
                         <!-- <th><a href="javascript:orderby('abbreviation');" id="id_abbreviation">{% trans "Abbreviation" %}</a></th> -->
                         <!-- <th><a href="javascript:orderby('qualifier_ui');" id="id_qualifier_ui">{% trans "MESH Qualifier UI" %}</a></th> -->
                         <!-- <th><a href="javascript:orderby('decs_code');" id="id_decs_code">{% trans "DeCS Qualifer UI" %}</a></th> -->
-                        <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                        <th width="10%"><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     </thead>
                     <tbody>
                         {% for obj in registers %}
