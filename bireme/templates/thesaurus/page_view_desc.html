@@ -31,6 +31,27 @@
             width: 350px; height: 100px;
             margin-top: 25px; margin-left: -300px;
         }
+
+        .tb_concept_preferred {
+            background-color: #FAFAD2;
+        }
+
+        .tb_concept {
+            background-color: #F5F5F5;
+        }
+
+        a[href="#top"]{
+            padding:10px;
+            position:fixed;
+            top: 75%;
+            right:40px;
+            display:none;
+            font-size: 20px;
+        }
+        a[href="#top"]:hover{
+            text-decoration:none;
+        }
+
     </style>
 
     <div class='header'>
@@ -43,7 +64,7 @@
                     <ul>
                         {% for obj in term_string_info_preferred_objects %}
                             {% if obj.termdesc__status != 3 %}
-                                {{ obj.termdesc__term_string }} ({{ obj.termdesc__language_code }})<br>
+                                {{ obj.termdesc__term_string }} <font color="blue">({{ obj.termdesc__language_code }})</font><br>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -51,7 +72,8 @@
 
                 <div id="float-banner" class="float-banner">
                     <form name="f1" action="" onSubmit="if(this.t1.value!=null && this.t1.value!='') findString(this.t1.value);return false">
-                        <input type="text" name=t1 value="" size=20 placeholder="{% trans "Search" %}">
+                        <input type="text" id="id_t1" name="t1" value="" size="20" placeholder="{% trans "Search" %}">
+                        <input type="hidden" name=ths value="{% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
                         <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
                         <button class="btn btn-primary" type="reset" style="margin-top: -10px"><i class="icon-refresh"></i></button>
                     </form>
@@ -87,14 +109,14 @@
 
         <div class="tab-content">
             <div id="tab-details" class="tab-pane active">
-                <table width="90%">
+                <table width="95%">
                     <tr>
                         <td valign="top" align="right" width="15%"><b>{% trans "Descriptor record" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
                         {% for obj in term_string_info_preferred_objects %}
                             {% if obj.termdesc__status != 3 %}
-                                {{ obj.termdesc__term_string }} ({{ obj.termdesc__language_code }})
+                                {{ obj.termdesc__term_string }} <font color="blue">({{ obj.termdesc__language_code }})</font>
                                 <a href="{% url 'edit_register_desc' obj.identifier_id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}" title="{% trans "Edit record information, descriptions, abbreviations, hierarchical codes, pharmacological actions, related, previous indexes and Precoord" %}"><i class="icon-pencil"></i></a>
                                 <br>
                             {% endif %}
@@ -142,13 +164,22 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Annotation" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in description_objects %}
-                            {% ifchanged %}
-                                {% if obj.descriptiondesc__annotation %}
-                                    {{ obj.descriptiondesc__annotation }} ({{ obj.descriptiondesc__language_code }})<br>
-                                {% endif %}
-                            {% endifchanged %}
-                        {% endfor %}
+                            <table class="table table-striped">
+                            {% for obj in description_objects %}
+                                {% ifchanged %}
+                                    {% if obj.descriptiondesc__annotation %}
+                                    <tr>
+                                        <td width="8%">
+                                            <font color="blue">{{ obj.descriptiondesc__language_code }}</font>
+                                        </td>
+                                        <td>
+                                            {{ obj.descriptiondesc__annotation }}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                {% endifchanged %}
+                            {% endfor %}
+                            </table>
                         </td>
                     </tr>
 
@@ -156,13 +187,22 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Scope Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in scope_note_objects %}
-                            {% if obj.conceptdesc__scope_note %}
-                                {% ifchanged %}
-                                    {{ obj.conceptdesc__scope_note }} ({{ obj.conceptdesc__language_code }})<br>
-                                {% endifchanged %}
-                            {% endif %}
-                        {% endfor %}
+                            <table class="table table-striped">
+                            {% for obj in scope_note_objects %}
+                                {% if obj.conceptdesc__scope_note %}
+                                    {% ifchanged %}
+                                    <tr>
+                                        <td width="8%">
+                                            <font color="blue">{{ obj.conceptdesc__language_code }}</font>
+                                        </td>
+                                        <td>
+                                            {{ obj.conceptdesc__scope_note }}
+                                        </td>
+                                    </tr>
+                                    {% endifchanged %}
+                                {% endif %}
+                            {% endfor %}
+                            </table>
                         </td>
                     </tr>
 
@@ -188,13 +228,30 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Entry Term(s)" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in entry_terms_objects %}
-                            {% if obj.termdesc__status != -3 %}
-                                {{ obj.termdesc__term_string }}
-                                {% if obj.termdesc__language_code %}({{ obj.termdesc__language_code }}){% endif %}
-                            {% endif %}
-                            <br>
+
+                        {% regroup entry_terms_objects by termdesc__language_code as entry_terms_objects_list %}
+
+                        <table class="table table-striped">
+
+                        {% for termdesc__language_code in entry_terms_objects_list %}
+                            <tr>
+                                <td width="8%">
+                                    <font color="blue">{{ termdesc__language_code.grouper }}</font>
+                                </td>
+                                <td>
+                                    {% for obj in termdesc__language_code.list %}
+                                        {% if obj.termdesc__status != -3 %}
+                                            {{ obj.termdesc__term_string }}<br>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+
+                            </tr>
+
                         {% endfor %}
+
+                        </table>
+
                         </td>
                     </tr>
 
@@ -205,7 +262,7 @@
                         {% for obj in pharmaco_objects %}
                             {% ifchanged %}
                                 {% if obj.pharmacodesc__term_string %}
-                                    {{ obj.pharmacodesc__term_string }} ({{ obj.pharmacodesc__language_code }})<br>
+                                    {{ obj.pharmacodesc__term_string }} <font color="blue">({{ obj.pharmacodesc__language_code }})</font><br>
                                 {% endif %}
                             {% endifchanged %}
                         {% endfor %}
@@ -249,7 +306,7 @@
                         {% for obj in previous_objects %}
                             {% ifchanged %}
                                 {% if obj.previousdesc__previous_indexing %}
-                                    {{ obj.previousdesc__previous_indexing }} ({{ obj.previousdesc__language_code }})<br>
+                                    {{ obj.previousdesc__previous_indexing }} <font color="blue">({{ obj.previousdesc__language_code }})</font><br>
                                 {% endif %}
                             {% endifchanged %}
                         {% endfor %}
@@ -263,7 +320,7 @@
                         {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptiondesc__public_mesh_note %}
-                                    {{ obj.descriptiondesc__public_mesh_note }} ({{ obj.descriptiondesc__language_code }})<br>
+                                    {{ obj.descriptiondesc__public_mesh_note }} <font color="blue">({{ obj.descriptiondesc__language_code }})</font><br>
                                 {% endif %}
                             {% endifchanged %}
                         {% endfor %}
@@ -277,7 +334,7 @@
                         {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptiondesc__online_note %}
-                                    {{ obj.descriptiondesc__online_note }} ({{ obj.descriptiondesc__language_code }})<br>
+                                    {{ obj.descriptiondesc__online_note }} <font color="blue">({{ obj.descriptiondesc__language_code }})</font><br>
                                 {% endif %}
                             {% endifchanged %}
                         {% endfor %}
@@ -291,7 +348,7 @@
                         {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptiondesc__history_note %}
-                                    {{ obj.descriptiondesc__history_note }} ({{ obj.descriptiondesc__language_code }})<br>
+                                    {{ obj.descriptiondesc__history_note }} <font color="blue">({{ obj.descriptiondesc__language_code }})</font><br>
                                 {% endif %}
                             {% endifchanged %}
                         {% endfor %}
@@ -319,7 +376,7 @@
                         {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptiondesc__consider_also %}
-                                    {{ obj.descriptiondesc__consider_also }} ({{ obj.descriptiondesc__language_code }})<br>
+                                    {{ obj.descriptiondesc__consider_also }} <font color="blue">({{ obj.descriptiondesc__language_code }})</font><br>
                                 {% endif %}
                             {% endifchanged %}
                         {% endfor %}
@@ -372,6 +429,7 @@
                     {% include "modal_log.html" %}
                 {% endif %}
 
+                <a href="#top" class="glyphicon glyphicon-chevron-up"><i class="icon-arrow-up"></i></a>
 
             </div>
 
@@ -428,12 +486,14 @@
 
                     {% if obj.termdesc__concept_preferred_term == 'Y' %}
                         {% ifchanged obj.termdesc__identifier_concept_id %}
-                            <hr>
+
+                            <table width="100%" class="tb_concept_preferred">
+                                <tr>
+                                    <td>
+                                        
                             <b>{% trans "Concept" %}</b>:
-                            <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termdesc__id }}"> -->
                             {{ obj.termdesc__term_string }}
                             <b>[ {{ obj.concept_ui }} ]</b>
-                            <!-- </a> -->
                         {% endifchanged %}
                     {% endif %}
 
@@ -447,11 +507,13 @@
                                 </a>
                             {% endif %}
 
+                                    </td>
+                                </tr>
+                            </table>
+
                         {% endifchanged %}
                     {% endif %}
 
-
-                    <!-- <div id="concept_{{ obj.id }}" class="collapse"> -->
                         <ul>
                             {% ifchanged %}
                                 <a href="{% url 'create_term_desc' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}"><i class='icon-file'></i>&nbsp;{% trans "Add term" %}</a>
@@ -460,13 +522,23 @@
                                 <b>{% trans "Term" %}</b>:
                             {% endifchanged %}
                             
+                            {% ifchanged obj.termdesc__language_code %} <!-- Faz a separação em grupo de UPs por idioma -->
+                                {% if obj.termdesc__concept_preferred_term == 'N' %}
+                                    <ul><hr></ul>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <font color="blue">{{ obj.termdesc__language_code }}</font>
+                                {% endif %}
+                            {% endifchanged %}
+
                             {% ifchanged obj.termdesc__id %}
 
-                            <ul>
                                 <a class="accordion-toggle" data-toggle="collapse" data-target="#term_{{ obj.termdesc__id }}">
+                                    {% if obj.termdesc__concept_preferred_term == 'Y' %}<ul>{% else %}<ul><ul>{% endif %}
+
                                     {{ obj.termdesc__term_string }}
+
+                                    {% if obj.termdesc__concept_preferred_term == 'Y' %}<font color="blue">({{ obj.termdesc__language_code }})</font>{% endif %}
                                 </a>
-                                {% if obj.termdesc__language_code %}({{ obj.termdesc__language_code }}){% endif %}
                                 {% if obj.termdesc__concept_preferred_term == 'Y' %}
                                     <font color="blue"><i>&nbsp;{% trans "Preferred Term" %}</i></font>
                                 {% endif %}
@@ -500,16 +572,14 @@
                                     {% if obj.termdesc__historical_annotation %}{% trans "History annotation" %}: {{ obj.termdesc__historical_annotation }}<br>{% endif %}
                                 </ul>
 
-                            </ul>
+                                {% if obj.termdesc__concept_preferred_term == 'Y' %}</ul>{% else %}</ul></ul>{% endif %}
+
                             {% endifchanged %}
                         </ul>
-
-                    <!-- </div> -->
 
                     </ul>
 
                 {% endfor %}
-
 
                 {% for obj in identifierconceptlist_objects %}
 
@@ -518,8 +588,11 @@
                         {% if obj.termdesc__concept_preferred_term == 'Y' %}
                             {% ifchanged obj.termdesc__identifier_concept_id %}
                                 <hr>
+                                <table width="100%" class="tb_concept">
+                                    <tr>
+                                        <td>
+
                                 <b>{% trans "Concept" %}</b>:
-                                <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termdesc__id }}"> -->
                                 {{ obj.termdesc__term_string }}
                                 <b>[ {{ obj.concept_ui }} ]</b>
                                 <font color="gray"><i>&nbsp;{% trans "Narrower" %}
@@ -538,12 +611,13 @@
 
                                 <a href="{% url 'create_confirm_conceptdesc' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}&concept_id={{ obj.id }}&term_id={{ obj.termdesc__id }}&created_by={{ user_id }}" title="{% trans "Create a new record from this concept" %}"><i class="icon-plus-sign"></i></a>
 
+                                        </td>
+                                    </tr>
+                                </table>
 
-                                <!-- </a> -->
                             {% endifchanged %}
                         {% endif %}
 
-                    <!-- <div id="concept_{{ obj.id }}" class="collapse"> -->
                         <ul>
                             {% ifchanged %}
                                 <!-- force record_preferred_term=N -->
@@ -553,12 +627,24 @@
                                 <b>{% trans "Term" %}</b>:
                             {% endifchanged %}
                             
+                            {% ifchanged obj.termdesc__language_code %} <!-- Faz a separação em grupo de UPs por idioma -->
+                                {% if obj.termdesc__concept_preferred_term == 'N' %}
+                                    <ul><hr></ul>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <font color="blue">{{ obj.termdesc__language_code }}</font>
+                                {% endif %}
+                            {% endifchanged %}
+
                             {% ifchanged obj.termdesc__id %}
-                            <ul>
+
                                 <a class="accordion-toggle" data-toggle="collapse" data-target="#term_{{ obj.termdesc__id }}">
+                                    {% if obj.termdesc__concept_preferred_term == 'Y' %}<ul>{% else %}<ul><ul>{% endif %}
+
                                     {{ obj.termdesc__term_string }}
+
+                                    {% if obj.termdesc__concept_preferred_term == 'Y' %}<font color="blue">({{ obj.termdesc__language_code }})</font>{% endif %}
                                 </a>
-                                {% if obj.termdesc__language_code %}({{ obj.termdesc__language_code }}){% endif %}
+
                                 {% if obj.termdesc__concept_preferred_term == 'Y' %}
                                     <font color="blue"><i>&nbsp;{% trans "Preferred Term" %}</i></font>
                                 {% endif %}
@@ -593,16 +679,20 @@
                                     {% if obj.termdesc__historical_annotation %}{% trans "History annotation" %}: {{ obj.termdesc__historical_annotation }}<br>{% endif %}
                                 </ul>
 
-                            </ul>
+                                {% if obj.termdesc__concept_preferred_term == 'Y' %}</ul>{% else %}</ul></ul>{% endif %}
+
                             {% endifchanged %}
                         </ul>
-
-                    <!-- </div> -->
 
                     </ul>
 
                 {% endfor %}
+
+                <a href="#top" class="glyphicon glyphicon-chevron-up"><i class="icon-arrow-up"></i></a>
+
             </div>
+
+
 
             <div id="tab-legacy" class="tab-pane">
 
@@ -832,6 +922,32 @@
             if (!strFound) alert ('{% trans "No results found" %}')
                 return;
             }
+
+
+        $('#id_t1').keypress(function(e) {
+            if(e.which == 13) {
+              e.preventDefault();
+              console.log('Não vou enviar');
+            }
+        });
+
+
+        $(document).ready(function(){
+            $(window).scroll(function(){
+                if ($(this).scrollTop() > 100) {
+                    $('a[href="#top"]').fadeIn();
+                } else {
+                    $('a[href="#top"]').fadeOut();
+                }
+            });
+
+            $('a[href="#top"]').click(function(){
+                $('html, body').animate({scrollTop : 0},800);
+                return false;
+            });
+        });
+
+
     //-->
     </script>
 

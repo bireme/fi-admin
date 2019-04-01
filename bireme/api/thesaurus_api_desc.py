@@ -102,7 +102,7 @@ class ThesaurusResourceDesc(CustomResource):
         # 776
         thesaurus_id = IdentifierDesc.objects.filter(id=bundle.obj.id)
         for field in thesaurus_id:
-            bundle.data['identifier'] = bundle.obj.id
+            bundle.data['identifier'] = str(bundle.obj.id).zfill(6)
 
         id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=bundle.obj.id,preferred_concept='Y')
 
@@ -136,22 +136,22 @@ class ThesaurusResourceDesc(CustomResource):
         # 'scope_note_en': '005',
         scope_note_en = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en')
         for field in scope_note_en:
-            bundle.data['scope_note_en'] = field.scope_note
+            bundle.data['scope_note_en'] = '^n' + field.scope_note
 
         # # 'scope_note_es': '006',
         scope_note_es = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es')
         for field in scope_note_es:
-            bundle.data['scope_note_es'] = field.scope_note
+            bundle.data['scope_note_es'] = '^n' + field.scope_note
 
         # # 'scope_note_pt_br': '007',
         scope_note_pt_br = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='pt-br')
         for field in scope_note_pt_br:
-            bundle.data['scope_note_pt_br'] = field.scope_note
+            bundle.data['scope_note_pt_br'] = '^n' + field.scope_note
 
         # # 'scope_note_es_es': '008',
         scope_note_es_es = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es-es')
         for field in scope_note_es_es:
-            bundle.data['scope_note_es_es'] = field.scope_note
+            bundle.data['scope_note_es_es'] = '^n' + field.scope_note
 
 
 
@@ -258,14 +258,14 @@ class ThesaurusResourceDesc(CustomResource):
         # 'term_string_see_related_en': '060', # ^i
         term_string_see_related_en = SeeRelatedListDesc.objects.filter(identifier_id=bundle.obj.id)
         for field in term_string_see_related_en:
-            bundle.data['term_string_see_related_en'] = field.term_string
+            bundle.data['term_string_see_related_en'] = '^i' + field.term_string
 
 
 
         # 'decs_code': '099',
         decs_code = IdentifierDesc.objects.filter(id=bundle.obj.id)
         for field in decs_code:
-            bundle.data['decs_code'] = field.decs_code
+            bundle.data['decs_code'] = str(field.decs_code).zfill(6)
 
 
 
@@ -374,7 +374,11 @@ class ThesaurusResourceDesc(CustomResource):
             if field.history_note:
                 bundle.data['history_note_en'] = '^n' + field.history_note
 
-
+        # 'pharmacologicalaction_en': '192',
+        pharmacologicalaction_en = PharmacologicalActionList.objects.filter(identifier_id=bundle.obj.id,language_code='en')
+        for field in pharmacologicalaction_en:
+            if field.term_string:
+                bundle.data['pharmacologicalaction_en'] = field.term_string
 
         # 'annotation_es': '210', 
         annotation_es = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='es')

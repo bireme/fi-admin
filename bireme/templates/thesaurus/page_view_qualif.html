@@ -31,6 +31,27 @@
             width: 350px; height: 100px;
             margin-top: 25px; margin-left: -300px;
         }
+
+        .tb_concept_preferred {
+            background-color: #FAFAD2;
+        }
+
+        .tb_concept {
+            background-color: #F5F5F5;
+        }
+
+        a[href="#top"]{
+            padding:10px;
+            position:fixed;
+            top: 75%;
+            right:40px;
+            display:none;
+            font-size: 20px;
+        }
+        a[href="#top"]:hover{
+            text-decoration:none;
+        }
+
     </style>
 
     <div class='header'>
@@ -43,7 +64,7 @@
                     <ul>
                         {% for obj in term_string_info_preferred_objects %}
                             {% if obj.termqualif__status != 3 %}
-                                {{ obj.termqualif__term_string }} ({{ obj.termqualif__language_code }})<br>
+                                {{ obj.termqualif__term_string }} <font color="blue">({{ obj.termqualif__language_code }})</font><br>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -51,7 +72,8 @@
 
                 <div id="float-banner" class="float-banner">
                     <form name="f1" action="" onSubmit="if(this.t1.value!=null && this.t1.value!='') findString(this.t1.value);return false">
-                        <input type="text" name=t1 value="" size=20 placeholder="{% trans "Search" %}">
+                        <input type="text" id="id_t1" name=t1 value="" size=20 placeholder="{% trans "Search" %}">
+                        <input type="hidden" name=ths value="{% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
                         <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
                         <button class="btn btn-primary" type="reset" style="margin-top: -10px"><i class="icon-refresh"></i></button>
                     </form>
@@ -83,13 +105,13 @@
 
         <div class="tab-content">
             <div id="tab-details" class="tab-pane active">
-                <table width="90%">
+                <table width="95%">
                     <tr>
                         <td valign="top" align="right" width="15%"><b>{% trans "Qualifier record" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
                         {% for obj in term_string_info_preferred_objects %}
-                            {{ obj.termqualif__term_string }} ({{ obj.termqualif__language_code }})
+                            {{ obj.termqualif__term_string }} <font color="blue">({{ obj.termqualif__language_code }})</font>
                             <a href="{% url 'edit_register_qualif' obj.identifier_id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}" title="{% trans "Edit record information, abbreviation, hierarchical codes and descriptions" %}"><i class="icon-pencil"></i></a>
                             <br>
                         {% endfor %}
@@ -136,13 +158,22 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Annotation" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in description_objects %}
-                            {% ifchanged %}
-                                {% if obj.descriptionqualif__annotation %}
-                                    {{ obj.descriptionqualif__annotation }} ({{ obj.descriptionqualif__language_code }})<br>
-                                {% endif %}
-                            {% endifchanged %}
-                        {% endfor %}
+                            <table class="table table-striped">
+                            {% for obj in description_objects %}
+                                {% ifchanged %}
+                                    {% if obj.descriptionqualif__annotation %}
+                                    <tr>
+                                        <td width="8%">
+                                            <font color="blue">{{ obj.descriptionqualif__language_code }}</font>
+                                        </td>
+                                        <td>
+                                            {{ obj.descriptionqualif__annotation }}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                {% endifchanged %}
+                            {% endfor %}
+                            </table>
                         </td>
                     </tr>
 
@@ -150,13 +181,22 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Scope Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in scope_note_objects %}
-                            {% if obj.conceptqualif__scope_note %}
-                                {% ifchanged %}
-                                    {{ obj.conceptqualif__scope_note }} ({{ obj.conceptqualif__language_code }})<br>
-                                {% endifchanged %}
-                            {% endif %}
-                        {% endfor %}
+                            <table class="table table-striped">
+                            {% for obj in scope_note_objects %}
+                                {% if obj.conceptqualif__scope_note %}
+                                    {% ifchanged %}
+                                    <tr>
+                                        <td width="8%">
+                                            <font color="blue">{{ obj.conceptqualif__language_code }}</font>
+                                        </td>
+                                        <td>
+                                        {{ obj.conceptqualif__scope_note }}
+                                        </td>
+                                    </tr>
+                                    {% endifchanged %}
+                                {% endif %}
+                            {% endfor %}
+                            </table>
                         </td>
                     </tr>
 
@@ -178,13 +218,30 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Entry Term(s)" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in entry_terms_objects %}
-                            {% if obj.termqualif__status != -3 %}
-                                {{ obj.termqualif__term_string }}
-                                {% if obj.termqualif__language_code %}({{ obj.termqualif__language_code }}){% endif %}
-                            {% endif %}
-                            <br>
+
+                        {% regroup entry_terms_objects by termqualif__language_code as entry_terms_objects_list %}
+
+                        <table  class="table table-striped">
+
+                        {% for termqualif__language_code in entry_terms_objects_list %}
+                            <tr>
+                                <td width="8%">
+                                    <font color="blue">{{ termqualif__language_code.grouper }}</font>
+                                </td>
+                                <td>
+                                    {% for obj in termqualif__language_code.list %}
+                                        {% if obj.termqualif__status != -3 %}
+                                            {{ obj.termqualif__term_string }}<br>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+
+                            </tr>
+
                         {% endfor %}
+
+                        </table>
+
                         </td>
                     </tr>
 
@@ -233,7 +290,7 @@
                         {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptionqualif__online_note %}
-                                    {{ obj.descriptionqualif__online_note }} ({{ obj.descriptionqualif__language_code }})<br>
+                                    {{ obj.descriptionqualif__online_note }} <font color="blue">({{ obj.descriptionqualif__language_code }})</font><br>
                                 {% endif %}
                             {% endifchanged %}
                         {% endfor %}
@@ -247,7 +304,7 @@
                         {% for obj in description_objects %}
                             {% ifchanged %}
                                 {% if obj.descriptionqualif__history_note %}
-                                    {{ obj.descriptionqualif__history_note }} ({{ obj.descriptionqualif__language_code }})<br>
+                                    {{ obj.descriptionqualif__history_note }} <font color="blue">({{ obj.descriptionqualif__language_code }})</font><br>
                                 {% endif %}
                             {% endifchanged %}
                         {% endfor %}
@@ -299,6 +356,8 @@
                     {% include "modal_log.html" %}
                 {% endif %}
 
+                <a href="#top" class="glyphicon glyphicon-chevron-up"><i class="icon-arrow-up"></i></a>
+
             </div>
 
             <div id="tab-concepts" class="tab-pane">
@@ -314,12 +373,15 @@
 
                     {% if obj.termqualif__concept_preferred_term == 'Y' %}
                         {% ifchanged obj.termqualif__identifier_concept_id %}
-                            <hr>
+
+                            <table width="100%" class="tb_concept_preferred">
+                                <tr>
+                                    <td>
+
                             <b>{% trans "Concept" %}</b>:
-                            <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termqualif__id }}"> -->
                             {{ obj.termqualif__term_string }}
                             <b>[ {{ obj.concept_ui }} ]</b>
-                            <!-- </a> -->
+
                         {% endifchanged %}
                     {% endif %}
 
@@ -333,11 +395,13 @@
                                 </a>
                             {% endif %}
 
+                                    </td>
+                                </tr>
+                            </table>
+
                         {% endifchanged %}
                     {% endif %}
 
-
-                    <!-- <div id="concept_{{ obj.id }}" class="collapse"> -->
                         <ul>
                             {% ifchanged %}
                                 <a href="{% url 'create_term_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}"><i class='icon-file'></i>&nbsp;{% trans "Add term" %}</a>
@@ -346,12 +410,23 @@
                                 <b>{% trans "Term" %}</b>:
                             {% endifchanged %}
                             
+                            {% ifchanged obj.termqualif__language_code %} <!-- Faz a separação em grupo de UPs por idioma -->
+                                {% if obj.termqualif__concept_preferred_term == 'N' %}
+                                    <ul><hr></ul>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <font color="blue">{{ obj.termqualif__language_code }}</font>
+                                {% endif %}
+                            {% endifchanged %}
+
                             {% ifchanged obj.termqualif__id %}
-                            <ul>
+
                                 <a class="accordion-toggle" data-toggle="collapse" data-target="#term_{{ obj.termqualif__id }}">
+                                    {% if obj.termqualif__concept_preferred_term == 'Y' %}<ul>{% else %}<ul><ul>{% endif %}
+
                                     {{ obj.termqualif__term_string }}
+
+                                    {% if obj.termqualif__concept_preferred_term == 'Y' %}<font color="blue">({{ obj.termqualif__language_code }})</font>{% endif %}
                                 </a>
-                                {% if obj.termqualif__language_code %}({{ obj.termqualif__language_code }}){% endif %}
                                 {% if obj.termqualif__concept_preferred_term == 'Y' %}
                                     <font color="blue"><i>&nbsp;{% trans "Preferred Term" %}</i></font>
                                 {% endif %}
@@ -385,16 +460,14 @@
                                     {% if obj.termqualif__historical_annotation %}{% trans "History annotation" %}: {{ obj.termqualif__historical_annotation }}<br>{% endif %}
                                 </ul>
 
-                            </ul>
+                                {% if obj.termqualif__concept_preferred_term == 'Y' %}</ul>{% else %}</ul></ul>{% endif %}
+
                             {% endifchanged %}
                         </ul>
-
-                    <!-- </div> -->
 
                     </ul>
 
                 {% endfor %}
-
 
                 {% for obj in identifierconceptlist_objects %}
 
@@ -403,14 +476,18 @@
                         {% if obj.termqualif__concept_preferred_term == 'Y' %}
                             {% ifchanged obj.termqualif__identifier_concept_id %}
                                 <hr>
+
+                            <table width="100%" class="tb_concept">
+                                <tr>
+                                    <td>
+
                                 <b>{% trans "Concept" %}</b>:
-                                <!-- <a class="accordion-toggle" data-toggle="collapse" data-target="#concept_{{ obj.termqualif__id }}"> -->
                                 {{ obj.termqualif__term_string }}
                                 <b>[ {{ obj.concept_ui }} ]</b>
 
                                 <font color="gray"><i>&nbsp;{% trans "Narrower" %}
-                                    {% if obj.termdesc__status == '3' %}
-                                        {{ obj.termdesc__status|display_status_label }}
+                                    {% if obj.termqualif__status == '3' %}
+                                        {{ obj.termqualif__status|display_status_label }}
                                     {% endif %}
                                 </i></font>
 
@@ -423,13 +500,15 @@
 
                                 <a href="{% url 'list_concept_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}" title="{% trans "Move this concept to another record" %}"><i class="icon-share"></i>
 
-                                <a href="{% url 'create_confirm_conceptqualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}&concept_id={{ obj.id }}&term_id={{ obj.termqualif__id }}&created_by={{ user_id }}" title="{% trans "Create a new record from this concept" %}"><i class="icon-plus-sign"></i></a>
+                                <a href="{% url 'create_confirm_conceptqualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_string={{ obj.termqualif__term_string }}&language_code={{ obj.termqualif__language_code }}&concept_id={{ obj.id }}&term_id={{ obj.termqualif__id }}&created_by={{ user_id }}&thesaurus_name={% if choiced_thesaurus_name %}{% for obj in choiced_thesaurus_name %}{{ obj.thesaurus_name }}{% endfor %}{% endif %}" title="{% trans "Create a new record from this concept" %}"><i class="icon-plus-sign"></i></a>
 
-                                <!-- </a> -->
+                                        </td>
+                                    </tr>
+                                </table>
+
                             {% endifchanged %}
                         {% endif %}
 
-                    <!-- <div id="concept_{{ obj.id }}" class="collapse"> -->
                         <ul>
                             {% ifchanged %}
                                 <!-- force record_preferred_term=N -->
@@ -439,12 +518,23 @@
                                 <b>{% trans "Term" %}</b>:
                             {% endifchanged %}
                             
+                            {% ifchanged obj.termqualif__language_code %} <!-- Faz a separação em grupo de UPs por idioma -->
+                                {% if obj.termqualif__concept_preferred_term == 'N' %}
+                                    <ul><hr></ul>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <font color="blue">{{ obj.termqualif__language_code }}</font>
+                                {% endif %}
+                            {% endifchanged %}
+
                             {% ifchanged obj.termqualif__id %}
-                            <ul>
+
                                 <a class="accordion-toggle" data-toggle="collapse" data-target="#term_{{ obj.termqualif__id }}">
+                                    {% if obj.termqualif__concept_preferred_term == 'Y' %}<ul>{% else %}<ul><ul>{% endif %}
+
                                     {{ obj.termqualif__term_string }}
+
+                                    {% if obj.termqualif__concept_preferred_term == 'Y' %}<font color="blue">({{ obj.termqualif__language_code }})</font>{% endif %}
                                 </a>
-                                {% if obj.termqualif__language_code %}({{ obj.termqualif__language_code }}){% endif %}
                                 {% if obj.termqualif__concept_preferred_term == 'Y' %}
                                     <font color="blue"><i>&nbsp;{% trans "Preferred Term" %}</i></font>
                                 {% endif %}
@@ -479,15 +569,16 @@
                                     {% if obj.termqualif__historical_annotation %}{% trans "History annotation" %}: {{ obj.termqualif__historical_annotation }}<br>{% endif %}
                                 </ul>
 
-                            </ul>
+                                {% if obj.termqualif__concept_preferred_term == 'Y' %}</ul>{% else %}</ul></ul>{% endif %}
+
                             {% endifchanged %}
                         </ul>
-
-                    <!-- </div> -->
 
                     </ul>
 
                 {% endfor %}
+
+                <a href="#top" class="glyphicon glyphicon-chevron-up"><i class="icon-arrow-up"></i></a>
 
             </div>
 
@@ -641,7 +732,6 @@
                     </ul>
                 {% endif %}
 
-
             </div>
 
         </div>
@@ -717,6 +807,29 @@
             if (!strFound) alert ('{% trans "No results found" %}')
                 return;
             }
+
+        $('#id_t1').keypress(function(e) {
+            if(e.which == 13) {
+              e.preventDefault();
+              console.log('Não vou enviar');
+            }
+        });
+
+        $(document).ready(function(){
+            $(window).scroll(function(){
+                if ($(this).scrollTop() > 100) {
+                    $('a[href="#top"]').fadeIn();
+                } else {
+                    $('a[href="#top"]').fadeOut();
+                }
+            });
+
+            $('a[href="#top"]').click(function(){
+                $('html, body').animate({scrollTop : 0},800);
+                return false;
+            });
+        });
+
     //-->
     </script>
 

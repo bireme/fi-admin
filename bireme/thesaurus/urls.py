@@ -64,7 +64,6 @@ urlpatterns = [
 
     # Pagina de redirecionamento para criação de novo registro a partir de um CONCEITO existente
     url(r'^qualifiers/create/concept/confirm/?$', ConceptCreateQualifConfirm.as_view(), name='create_confirm_conceptqualif'),
-    url(r'^qualifiers/create/concept/do/(?P<ths>\d+)/?$', ConceptCreateQualifDo, name='do_create_conceptqualif'),
 
     # Form 0 para pesquisa de existencia de qualificador - Se não existir segue Form1
     url(r'^qualifiers/chk/?$', QualifListDescChk.as_view(), name='chk_termqualif'),
@@ -103,8 +102,6 @@ urlpatterns = [
     # Referente a migracao de termo
     url(r'^qualifiers/term/?$', TermListQualifView.as_view(), name='list_qualif'),
     url(r'^qualifiers/term/move/(?P<term_id>\d+)/(?P<ths>\d+)/(?P<term_ori>\d+)?$', TermListQualifModification, name='move_term_qualif'),
-
-
 
 ]
 

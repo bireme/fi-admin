@@ -117,12 +117,12 @@
     <div class="tab-content">
         <div class="tab-pane active" id="tab-descriptor">
 
-            <table class='table'>
+            <table class="table">
                 <thead>
 
                     {% if actions.visited %}
 
-                        <th>
+                        <th width="90%">
                             <a href="javascript:orderby('term_string');" id="id_term_string">
                                 {% if actions.filter_fields == 'term_string' or actions.filter_fields == '' %}
                                     {% trans "Term name" %}
@@ -132,7 +132,7 @@
                             </a>
                         </th>
 
-                        <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                        <th width="10%"><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
 
                     </thead>
                     <tbody>

@@ -7,9 +7,10 @@
 
 {% block breadcrumb %}
     <li>
-        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
+        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{% if choiced_thesaurus %}{{ choiced_thesaurus }}{% endif %}{% endif %}">
             {% trans "Thesaurus" %}
-            {% if thesaurus_name %}{{ thesaurus_name }}{% endif %}
+            {% if request.GET.thesaurus_name %}{{ request.GET.thesaurus_name }}{% else %}{% if request.GET.choiced_thesaurus_name %}{{ request.GET.choiced_thesaurus_name }}{% endif %}{% endif %}            
+
         </a>
     </li>
 {% endblock %}
@@ -24,10 +25,6 @@
                         {% trans "Do you confirm the creation of a new record with this concept?" %}
                         <br>
                         {% trans "All the synonyms existing in this concept will belong to a new registry" %}
-
-<!-- Todos los sinonimos existentes en este concepto pertenecer a un nuevo registro -->
-<!-- Todos os sinonimos existentes nesse conceito pertencerão a um novo registro -->
-
                     </h3>
                 </td>
             </tr>
@@ -36,53 +33,66 @@
 
     <div class='body'>
 
-        <fieldset id="identifierdesc">
 
-            <input type='hidden' name="concept_id" value="{% if request.GET.concept_id %}{{ request.GET.concept_id }}{% endif %}">
+        <form name="search" method="GET">
+            <fieldset id="identifierdesc">
 
-            <table class="termlistqualif" border="0">
-                <tr>
-                    <td>{% trans "String" %}</td>
-                    <td>{% trans "Language used for description" %}</td>
-                </tr>
-                <tr>
-                    <td class="term_string" width="40%">
-                        <input id="id_term_string" maxlength="250" name="term_string" value="{{ request.GET.term_string }}" type="text" readonly="true">
-                    </td>
-                    <td>
-                        <select name="filter_language" readonly="true">
-                            <option value="">{% trans "All" %}</option>
-                            <option value="en" {% if request.GET.language_code == 'en' %}selected="true"{% endif %}>{% trans "English" %}</option>
-                            <option value="es" {% if request.GET.language_code == 'es' %}selected="true"{% endif %}>{% trans "Spanish Latin America" %}</option>
-                            <option value="pt-br" {% if request.GET.language_code == 'pt-br' %}selected="true"{% endif %}>{% trans "Portuguese" %}</option>
-                            <option value="es-es" {% if request.GET.language_code == 'es-es' %}selected="true"{% endif %}>{% trans "Spanish Spain" %}</option>
-                            <option value="fr" {% if request.GET.language_code == 'fr' %}selected="true"{% endif %}>{% trans "French" %}</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <br>
-                        {% trans "Choose the abbreviation that this record will have" %}:
-                        <br>
-                        <input maxlength="4" id="abbreviation" name="abbreviation" title="{% trans "Field required" %}" type="text" required>
-<!--                         Seleccione la abreviatura que este registro tendrá -->
-<!--                         Escolha a abreviação que esse registro terá -->
-                    </td>
-                </tr>
+                <input type="hidden" id="id_thesaurus" name="choiced_thesaurus_name" value="{% if request.GET.thesaurus_name %}{{ request.GET.thesaurus_name }}{% else %}{% if choiced_thesaurus_name %}{{ choiced_thesaurus_name }}{% endif %}{% endif %}">
 
-            </table>
+                <input type="hidden" id="id_thesaurus" name="choiced_thesaurus" value="{% if request.GET.ths %}{{ request.GET.ths }}{% else %}{% if choiced_thesaurus %}{{ choiced_thesaurus }}{% endif %}{% endif %}">
 
-        </fieldset>
 
-        <br>
-        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
 
-        <a href="{% url 'do_create_conceptqualif' ths=request.GET.ths %}?term_string={{ request.GET.term_string }}&language_code={{ request.GET.language_code }}&term_id={{ request.GET.term_id }}&concept_id={{ request.GET.concept_id }}&created_by={{ request.GET.created_by }}&abbreviation=abbreviation" class='btn btn-primary btn-large'></i> {% trans "Confirm" %}?</a>
+                <input type='hidden' id="id_concept_id" name="concept_id" value="{% if request.GET.concept_id %}{{ request.GET.concept_id }}{% endif %}">
+                <input type='hidden' id="id_term_id" name="term_id" value="{% if request.GET.term_id %}{{ request.GET.term_id }}{% endif %}">
+                <input type='hidden' id="id_created_by" name="created_by" value="{% if request.GET.created_by %}{{ request.GET.created_by }}{% endif %}">
+
+                <table class="termlistqualif" border="0">
+                    <tr>
+                        <td>{% trans "String" %}</td>
+                        <td>{% trans "Language used for description" %}</td>
+                    </tr>
+                    <tr>
+                        <td class="term_string" width="40%">
+                            <input id="id_term_string" maxlength="250" name="term_string" value="{{ request.GET.term_string }}" type="text" readonly="true">
+
+                        </td>
+                        <td>
+                            <select name="filter_language" readonly="true">
+                                <option value="">{% trans "All" %}</option>
+                                <option value="en" {% if request.GET.language_code == 'en' %}selected="true"{% endif %}>{% trans "English" %}</option>
+                                <option value="es" {% if request.GET.language_code == 'es' %}selected="true"{% endif %}>{% trans "Spanish Latin America" %}</option>
+                                <option value="pt-br" {% if request.GET.language_code == 'pt-br' %}selected="true"{% endif %}>{% trans "Portuguese" %}</option>
+                                <option value="es-es" {% if request.GET.language_code == 'es-es' %}selected="true"{% endif %}>{% trans "Spanish Spain" %}</option>
+                                <option value="fr" {% if request.GET.language_code == 'fr' %}selected="true"{% endif %}>{% trans "French" %}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br>
+                            {% trans "Choose the abbreviation that this record will have" %}:
+                            <br>
+                            <input maxlength="4" id="id_abbreviation" name="abbreviation" title="{% trans "Field required" %}" type="text" required="true" value="">
+                            {% if request.GET.has_abbreviation  %}
+                                <font color="red"><b>[{{ request.GET.has_abbreviation }}]</b> {% trans "already exists!!!" %}</font>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                </table>
+
+            </fieldset>
+
+            <br>
+            <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{% if choiced_thesaurus %}{{ choiced_thesaurus }}{% endif %}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+            <button class="btn btn-primary btn-large" type="submit">{% trans "Confirm" %}</button>
+
+        </form>
 
     </div>
 
-{% endblock %}
+{% endblock %} 
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>

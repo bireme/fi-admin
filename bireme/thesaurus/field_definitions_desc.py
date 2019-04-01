@@ -107,6 +107,8 @@ field_tag_map = {
                 'online_note_en': '117',
                 'history_note_en': '119',
 
+                'pharmacologicalaction_en': '192',
+
                 'annotation_es': '210',
                 'online_note_es': '217',
                 'history_note_es': '219',
