@@ -7,7 +7,7 @@
 
 {% block breadcrumb %}
     <li>
-        <a href="">
+        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
         {% trans "Thesaurus" %}
 
         {% if choiced_thesaurus_name %}
