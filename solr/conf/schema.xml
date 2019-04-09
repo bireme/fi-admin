@@ -194,6 +194,7 @@
    <field name="reference_source" type="string" indexed="false" stored="true" multiValued="false"/>
    <field name="database" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="journal" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="publication_date" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="publication_year" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="publication_type" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="publication_language" type="string" indexed="true" stored="true" multiValued="true"/>

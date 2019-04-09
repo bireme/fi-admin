@@ -24,6 +24,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     indexed_database = indexes.MultiValueField()
     database = indexes.MultiValueField()
     publication_language = indexes.MultiValueField()
+    publication_date = indexes.CharField()
     publication_year = indexes.CharField()
     publication_country = indexes.CharField()
     journal = indexes.CharField()
@@ -117,6 +118,9 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         literature_type = re.sub('[CP]', '', obj.literature_type)
         return literature_type
 
+    def prepare_publication_date(self, obj):
+        return obj.source.publication_date_normalized
+
     def prepare_publication_year(self, obj):
         return obj.source.publication_date_normalized[:4]
 
@@ -176,6 +180,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     indexed_database = indexes.MultiValueField()
     database = indexes.MultiValueField()
     publication_language = indexes.MultiValueField()
+    publication_date = indexes.CharField()
     publication_year = indexes.CharField()
     publication_country = indexes.CharField()
 
@@ -279,6 +284,9 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_publication_country(self, obj):
         if obj.publication_country:
             return ["|".join(obj.publication_country.get_translations())]
+
+    def prepare_publication_date(self, obj):
+        return obj.publication_date_normalized
 
     def prepare_publication_year(self, obj):
         return obj.publication_date_normalized[:4]
