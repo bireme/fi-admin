@@ -3308,7 +3308,10 @@ class ConceptCreateQualifConfirm(LoginRequiredView, ListView):
             concept_id = self.request.GET.get("concept_id")
             term_id = self.request.GET.get("term_id")
             created_by = self.request.GET.get("created_by")
-            abbreviation = self.request.GET.get("abbreviation")
+            abbreviation = self.request.GET.get("abbreviation").upper()
+
+            # print 'Abbreviation--->',abbreviation
+            
             thesaurus_name = self.request.GET.get("choiced_thesaurus_name")
 
             # print 'DEBUG'

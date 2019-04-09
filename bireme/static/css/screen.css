@@ -643,6 +643,12 @@ tr.relation-row td input, tr.relation-row td select{
     padding: 2px;
 }
 
+.abbrev input[type="text"] {
+    text-transform: uppercase;
+    width: 50px;
+}
+
+
 
 .descriptiondesc, .conceptlistdesc, .termlistdesc, .descriptionqualif, .conceptlistqualif, .termlistqualif {
     width: 98%;
@@ -713,6 +719,11 @@ tr.relation-row td input, tr.relation-row td select{
     padding: 2px;
 }
 
+
+.treenumber input[type="text"] {
+    text-transform: uppercase;
+    width: 600px;
+}
 
 /*conceptlistdesc*/
 .casn1 textarea {

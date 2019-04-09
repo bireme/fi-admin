@@ -118,7 +118,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan=3>
+                                    <td colspan=3 class=abbrev>
                                         {{ form.abbreviation }}
                                     </td>
                                 </tr>
@@ -132,11 +132,11 @@
                 <!-- treenumberslistdesc -->
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-target="#treenumberslistdesc">{% trans "Tree Numbers List" %}</a>
+                        <a class="accordion-toggle" data-toggle="collapse" data-target="#treenumber">{% trans "Tree Numbers List" %}</a>
                     </div>
 
                     <ul>
-                        <fieldset id="treenumberslistdesc">
+                        <fieldset id="treenumber">
 
                             <table>
                                 <tr>
@@ -149,7 +149,7 @@
                                     {% for hidden in form.hidden_fields %}
                                         {{ hidden }}
                                     {% endfor %}
-                                    <tr id="treenumber-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
+                                    <tr id="treenumber-{{ forloop.counter0 }}" class="treenumber previous-row{% if form.errors %} error{% endif %} formset-row">
                                         {% for field in form.visible_fields %}
                                         <td>
                                             {{ field }}
@@ -303,35 +303,6 @@
                     prefix: '{{ formset_treenumber.prefix }}'
             });
 
-
-            $('[id^="id_treenumberslistdesc_set-"]').on('blur', function() {
-                val = $(this).val();
-                $(this).val(val.replace(/\s/g, ''));
-
-                tam = val.length;
-                // alert(tam);
-                if( tam % 2 !== 0 ){
-                    // É impar
-                    // alert("Impar "+tam);
-                    // Verifica quantidade de pontos
-                    qtd_pontos = ((tam + 1) / 4) - 1;
-                    // alert('Numero de pontos:'+qtd_pontos);
-                    if ( !( (parseFloat(qtd_pontos) == parseInt(qtd_pontos)) && !isNaN(qtd_pontos) ) ) {
-                        // alert("Não é inteiro"+qtd_pontos)
-                        alert('{% trans "Warning" %}: '+$(this).val());
-                        return false
-                    } else {
-                        $(this).val;
-                    }
-
-                } else {
-                    // se eh par está errado
-                    if ( tam != 0 ){
-                        alert('{% trans "Warning" %}: '+$(this).val());
-                        return false
-                    }
-                }
-            });
 
             $('[id$="-DELETE"]').on('click', function() {
                 val = $(this).val();

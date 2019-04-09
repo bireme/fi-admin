@@ -39,6 +39,18 @@ class IdentifierQualifForm(forms.ModelForm):
         model = IdentifierQualif
         fields = '__all__'
 
+    # Verifica a quantidade de caracteres e formatacao adequada
+    def clean_abbreviation(self):
+        data = self.cleaned_data.get('abbreviation')
+        # print 'abbreviation---',data
+        # Força que seja maiusculo
+        upper_data = data.upper()
+        # print 'M -->',upper_data
+        data = upper_data
+        return data
+
+
+
 class DescriptionQualifForm(forms.ModelForm):
     class Meta:
         model = DescriptionQualif
@@ -55,11 +67,48 @@ class TreeNumbersListQualifForm(forms.ModelForm):
         model = TreeNumbersListQualif
         fields = '__all__'
 
-        error_messages = {
-            NON_FIELD_ERRORS: {
-                'unique_together': "%(field_labels)s already exist.",
-            }
-        }
+        # error_messages = {
+        #     NON_FIELD_ERRORS: {
+        #         'unique_together': "%(field_labels)s already exist.",
+        #     }
+        # }
+
+    # Verifica a quantidade de caracteres e formatacao adequada
+    def clean_tree_number(self):
+        data = self.cleaned_data.get('tree_number')
+        # print '---->',data
+        tam = len(data)
+        # print 'tam-->',tam
+
+        # Nunca podera ser de tamanho PAR
+        if int(tam) % 2 == 0:
+            # print 'Par'
+            message = _("Format")
+            self.add_error('tree_number', message)
+        else:
+            # Se for IMPAR será verificado a quantidade de pontos existentes
+            # print 'Impar'
+            qtd_pontos_esperado = ((tam + 1) / 4) - 1
+            # print 'Qtd pontos esperado',qtd_pontos_esperado
+
+            tponto = 0
+            for letra in data:
+                # print 'letra -> ',letra
+                if letra == '.':
+                    tponto = tponto + 1
+
+            # print 'Qtd pontos existentes', tponto
+            if qtd_pontos_esperado != tponto:
+                message = _("Format")
+                self.add_error('tree_number', message)
+
+        # Força que seja maiusculo
+        upper_data = data.upper()
+        # print 'M -->',upper_data
+        data = upper_data
+
+        return data
+
 
 # Concept + Term - Form2
 class IdentifierConceptListQualifForm(forms.ModelForm):
@@ -140,11 +189,47 @@ class TreeNumbersListDescForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
 
-        error_messages = {
-            NON_FIELD_ERRORS: {
-                'unique_together': "%(field_labels)s already exist.",
-            }
-        }
+        # error_messages = {
+        #     NON_FIELD_ERRORS: {
+        #         'unique_together': "%(field_labels)s already exist.",
+        #     }
+        # }
+
+    # Verifica a quantidade de caracteres e formatacao adequada
+    def clean_tree_number(self):
+        data = self.cleaned_data.get('tree_number')
+        # print '---->',data
+        tam = len(data)
+        # print 'tam-->',tam
+
+        # Nunca podera ser de tamanho PAR
+        if int(tam) % 2 == 0:
+            # print 'Par'
+            message = _("Format")
+            self.add_error('tree_number', message)
+        else:
+            # Se for IMPAR será verificado a quantidade de pontos existentes
+            # print 'Impar'
+            qtd_pontos_esperado = ((tam + 1) / 4) - 1
+            # print 'Qtd pontos esperado',qtd_pontos_esperado
+
+            tponto = 0
+            for letra in data:
+                # print 'letra -> ',letra
+                if letra == '.':
+                    tponto = tponto + 1
+
+            # print 'Qtd pontos existentes', tponto
+            if qtd_pontos_esperado != tponto:
+                message = _("Format")
+                self.add_error('tree_number', message)
+
+        # Força que seja maiusculo
+        upper_data = data.upper()
+        # print 'M -->',upper_data
+        data = upper_data
+
+        return data
 
 
 class PharmacologicalActionListDescForm(forms.ModelForm):
