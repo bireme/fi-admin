@@ -7,7 +7,7 @@
 
 {% block breadcrumb %}
     <li>
-        <a href="">
+        <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
         {% trans "Thesaurus" %}
 
         {% if choiced_thesaurus_name %}
@@ -189,7 +189,7 @@
                             {% for obj in last_altered_objects_list %}
                                 <a href="{% url 'detail_qualifier' obj.id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}">
                                 {{ obj.term_string }}  ({{ obj.language_code }})</a>
-                                {% if obj.date_created %} - {{ obj.date_created}}{% endif %}
+                                {% if obj.date_altered %} - {{ obj.date_altered}}{% endif %}
                                 {{ obj.status|display_status_label }}
                                 <br>
                             {% endfor %}

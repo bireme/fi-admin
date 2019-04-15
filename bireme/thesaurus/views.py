@@ -1387,11 +1387,21 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
 
             self.object = form.save(commit=False)
             self.object.identifier_id = int(self.request.POST.get("identifier_id"))
-
+    
             formset_concept.instance = self.object
             formset_concept.save()
 
             form.save()
+
+            # Necessário atualizar também os termos que são preferidos no conceito para também preferidos do registro
+            # print 'id ----->',self.object.id
+            check_preferred_concept = self.request.POST.get("preferred_concept")
+            # print 'check_preferred_concept ---->',check_preferred_concept
+
+            if check_preferred_concept == 'Y':
+                TermListDesc.objects.filter(identifier_concept_id=self.object.id, concept_preferred_term='Y').update(record_preferred_term='Y')
+            else:
+                TermListDesc.objects.filter(identifier_concept_id=self.object.id, concept_preferred_term='Y').update(record_preferred_term='N')
 
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -3308,7 +3318,10 @@ class ConceptCreateQualifConfirm(LoginRequiredView, ListView):
             concept_id = self.request.GET.get("concept_id")
             term_id = self.request.GET.get("term_id")
             created_by = self.request.GET.get("created_by")
-            abbreviation = self.request.GET.get("abbreviation")
+            abbreviation = self.request.GET.get("abbreviation").upper()
+
+            # print 'Abbreviation--->',abbreviation
+            
             thesaurus_name = self.request.GET.get("choiced_thesaurus_name")
 
             # print 'DEBUG'
@@ -3562,6 +3575,16 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
             formset_concept.save()
 
             form.save()
+
+            # Necessário atualizar também os termos que são preferidos no conceito para também preferidos do registro
+            # print 'id ----->',self.object.id
+            check_preferred_concept = self.request.POST.get("preferred_concept")
+            # print 'check_preferred_concept ---->',check_preferred_concept
+
+            if check_preferred_concept == 'Y':
+                TermListQualif.objects.filter(identifier_concept_id=self.object.id, concept_preferred_term='Y').update(record_preferred_term='Y')
+            else:
+                TermListQualif.objects.filter(identifier_concept_id=self.object.id, concept_preferred_term='Y').update(record_preferred_term='N')
 
             return HttpResponseRedirect(self.get_success_url())
         else:

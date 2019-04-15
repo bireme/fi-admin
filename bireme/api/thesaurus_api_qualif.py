@@ -451,12 +451,12 @@ class ThesaurusResourceQualif(CustomResource):
             if field.history_note:
                 bundle.data['history_note_pt_br'] = '^n' + field.history_note
 
-
-
-        # 'mesh_id_qualifier_ui': '480',
-        mesh_id_qualifier_ui = IdentifierQualif.objects.filter(id=bundle.obj.id)
-        for field in mesh_id_qualifier_ui:
-            bundle.data['mesh_id_qualifier_ui'] = field.qualifier_ui
+        # 'mesh_id_descriptor_ui': '480',
+        mesh_id_qualifier_arr = IdentifierQualif.objects.filter(id=bundle.obj.id)
+        for field in mesh_id_qualifier_arr:
+            letter_chk = field.qualifier_ui[0:1].upper()
+            if letter_chk == 'Q':
+                bundle.data['mesh_id_qualifier_ui'] = field.qualifier_ui
 
 
 

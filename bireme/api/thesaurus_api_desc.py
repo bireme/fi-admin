@@ -418,14 +418,12 @@ class ThesaurusResourceDesc(CustomResource):
             if field.history_note:
                 bundle.data['history_note_pt_br'] = '^n' + field.history_note
 
-
-
         # 'mesh_id_descriptor_ui': '480',
-        mesh_id_descriptor_ui = IdentifierDesc.objects.filter(id=bundle.obj.id)
-        for field in mesh_id_descriptor_ui:
-            bundle.data['mesh_id_descriptor_ui'] = field.descriptor_ui
-
-
+        mesh_id_descriptor_arr = IdentifierDesc.objects.filter(id=bundle.obj.id)
+        for field in mesh_id_descriptor_arr:
+            letter_chk = field.descriptor_ui[0:1].upper()
+            if letter_chk == 'D':
+                bundle.data['mesh_id_descriptor_ui'] = field.descriptor_ui
 
         # 'allowed_qualifiers': '950',
         id_abbrev = IdentifierDesc.objects.filter(id=bundle.obj.id).values('abbreviation')
