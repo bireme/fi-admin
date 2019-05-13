@@ -479,40 +479,42 @@
                     <i class='icon-file'></i>&nbsp;{% trans "Add concept" %}</a>
                 </ul>
 
-
                 {% for obj in identifierconceptlist_objects_preferred %}
 
                     <ul>
 
-                    {% if obj.termdesc__concept_preferred_term == 'Y' %}
-                        {% ifchanged obj.termdesc__identifier_concept_id %}
+                        {% if forloop.counter == 1 %}
 
-                            <table width="100%" class="tb_concept_preferred">
-                                <tr>
-                                    <td>
-                                        
-                            <b>{% trans "Concept" %}</b>:
-                            {{ obj.termdesc__term_string }}
-                            <b>[ {{ obj.concept_ui }} ]</b>
-                        {% endifchanged %}
-                    {% endif %}
+                            {% if obj.termdesc__concept_preferred_term == 'Y' %}
+                                {% ifchanged obj.termdesc__identifier_concept_id %}
 
-                    {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'Y' and obj.termdesc__language_code = 'en' %}
-                        {% ifchanged %}
-                            <font color="blue"><i>&nbsp;{% trans "Preferred Concept" %}</i></font>
-                            <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}" title="{% trans "Edit concept information" %}"><i class="icon-pencil"></i></a>
-
-                            {% if identifierconceptlist_objects %}
-                                <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}" title="{% trans "Move this concept to another record" %}"><i class="icon-share"></i>
-                                </a>
+                                    <table width="100%" class="tb_concept_preferred">
+                                        <tr>
+                                            <td>
+                                                
+                                                <b>{% trans "Concept" %}</b>:
+                                                {{ obj.termdesc__term_string }}&nbsp;<font color="blue">({{ obj.termdesc__language_code }})</font>
+                                                <b>[ {{ obj.concept_ui }} ]</b>
+                                {% endifchanged %}
                             {% endif %}
 
-                                    </td>
-                                </tr>
-                            </table>
+                            {% if obj.termdesc__concept_preferred_term == 'Y' and obj.preferred_concept == 'Y' and obj.termdesc__language_code %}
 
-                        {% endifchanged %}
-                    {% endif %}
+                                    <font color="blue"><i>&nbsp;{% trans "Preferred Concept" %}</i></font>
+                                    <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}" title="{% trans "Edit concept information" %}"><i class="icon-pencil"></i></a>
+
+                                    {% if identifierconceptlist_objects %}
+                                        <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}" title="{% trans "Move this concept to another record" %}"><i class="icon-share"></i>
+                                        </a>
+                                    {% endif %}
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                            {% endif %}
+
+                        {% endif %}
 
                         <ul>
                             {% ifchanged %}
@@ -585,38 +587,53 @@
 
                     <ul>
 
-                        {% if obj.termdesc__concept_preferred_term == 'Y' %}
-                            {% ifchanged obj.termdesc__identifier_concept_id %}
-                                <hr>
-                                <table width="100%" class="tb_concept">
-                                    <tr>
-                                        <td>
+                        {% ifchanged obj.termdesc__identifier_concept_id %}
 
-                                <b>{% trans "Concept" %}</b>:
-                                {{ obj.termdesc__term_string }}
-                                <b>[ {{ obj.concept_ui }} ]</b>
-                                <font color="gray"><i>&nbsp;{% trans "Narrower" %}
-                                    {% if obj.termdesc__status == '3' %}
-                                        {{ obj.termdesc__status|display_status_label }}
+                            {% if obj.termdesc__concept_preferred_term == 'Y' %}
+
+                                    <hr>
+                                    <table width="100%" class="tb_concept">
+                                        <tr>
+                                            <td>
+
+                                    <b>{% trans "Concept" %}</b>:
+                                    {{ obj.termdesc__term_string }}&nbsp;<font color="blue">({{ obj.termdesc__language_code }})</font>
+                                    <b>[ {{ obj.concept_ui }} ]</b>
+                                    <font color="gray"><i>&nbsp;{% trans "Narrower" %}
+                                        {% if obj.termdesc__status == '3' %}
+                                            {{ obj.termdesc__status|display_status_label }}
+                                        {% endif %}
+                                    </i></font>
+                                    
+                                    {% if identifierconceptlist_objects_preferred|length == 0 %}
+                                        <!-- force preferred_concept=N -->
+                                        <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}" title="{% trans "Edit concept information" %}"><i class="icon-pencil"></i></a>
+                                    {% else %}
+                                        <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}&preferred_concept=N" title="{% trans "Edit concept information" %}"><i class="icon-pencil"></i></a>
                                     {% endif %}
-                                </i></font>
-                                
-                                {% if identifierconceptlist_objects_preferred|length == 0 %}
-                                    <!-- force preferred_concept=N -->
-                                    <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}" title="{% trans "Edit concept information" %}"><i class="icon-pencil"></i></a>
+                                    <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}" title="{% trans "Move this concept to another record" %}"><i class="icon-share"></i></a>
+
+                                    <a href="{% url 'create_confirm_conceptdesc' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}&concept_id={{ obj.id }}&term_id={{ obj.termdesc__id }}&created_by={{ user_id }}" title="{% trans "Create a new record from this concept" %}"><i class="icon-plus-sign"></i></a>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+
                                 {% else %}
-                                    <a href="{% url 'edit_concept_desc' obj.id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}&id={{ obj.termdesc__id }}&identifier_id={{obj.identifier_id}}&preferred_concept=N" title="{% trans "Edit concept information" %}"><i class="icon-pencil"></i></a>
+                                    <hr>
+                                    <table width="100%" class="tb_concept">
+                                        <tr>
+                                            <td>
+                                                <b>{% trans "Concept" %}</b>:&nbsp;<font color="red"><b>{% trans "Please set the preferred term for this concept" %}</b></font>&nbsp;<b>[ {{ obj.concept_ui }} ]</b>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+
                                 {% endif %}
-                                <a href="{% url 'list_concept' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termdesc__identifier_concept_id }}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}" title="{% trans "Move this concept to another record" %}"><i class="icon-share"></i></a>
-
-                                <a href="{% url 'create_confirm_conceptdesc' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&term_string={{ obj.termdesc__term_string }}&language_code={{ obj.termdesc__language_code }}&concept_id={{ obj.id }}&term_id={{ obj.termdesc__id }}&created_by={{ user_id }}" title="{% trans "Create a new record from this concept" %}"><i class="icon-plus-sign"></i></a>
-
-                                        </td>
-                                    </tr>
-                                </table>
 
                             {% endifchanged %}
-                        {% endif %}
 
                         <ul>
                             {% ifchanged %}

@@ -145,9 +145,10 @@
                                         {% for hidden in form.hidden_fields %}
                                             {{ hidden }}
                                         {% endfor %}
-                                        <tr id="treenumber-{{ forloop.counter0 }}" class="treenumber previous-row{% if form.errors %} error{% endif %} formset-row">
+
+                                        <tr id="treenumber-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
                                             {% for field in form.visible_fields %}
-                                            <td>
+                                            <td class="treenumber">
                                                 {{ field }}
                                                 {{ field.errors }}
                                             </td>
@@ -156,6 +157,7 @@
                                     {% endfor %}
                                     </tr>
                                 </table>
+
                             </fieldset>
                         </ul>
                     </div>
@@ -481,7 +483,7 @@
         // 0 - para filter_horizontal / 1 para filter_vertical
         // Caminho do admin para source de imagens utilizadas
 
-        addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "abbreviation", 1, "/static/admin/"); });
+        addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "{% trans "Qualifiers" %}", 1, "/static/admin/"); });
     </script>
 
 {% endblock %}
@@ -633,6 +635,16 @@
             //     if ( val == '' ){
             //         // alert('{% trans "Warning: Field is empty!" %}');
             //         alert('{% trans "Warning: Field is empty!" %}: '+$(this).val());
+            //         return false;
+            //     }
+            // });
+
+
+            // Alerta sobre não preenchimento
+            // $('[id^="id_dtreenumbers-"]').on('submit', function() {
+            //     val = $(this).val();
+            //     if ( val == '' ){
+            //         alert('{% trans "Field required" %}');
             //         return false;
             //     }
             // });
