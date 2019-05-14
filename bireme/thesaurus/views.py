@@ -893,8 +893,9 @@ class ConceptListDescView(LoginRequiredView, ListView):
             try:
                 id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')
                 if len(id_registro)>0:
-                    id_registro = id_registro[0].get('id')                
-                    object_list = IdentifierConceptListDesc.objects.filter(identifier_id=id_registro).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')
+                    id_registro = id_registro[0].get('id')
+                    # Força somente 1 resultado
+                    object_list = IdentifierConceptListDesc.objects.filter(identifier_id=id_registro).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')[:1]
             except IdentifierDesc.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
                 if self.actions['order'] == "-":
@@ -918,7 +919,8 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')
+                # Força somente 1 resultado
+                id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')[:1]
 
                 # IdentifierDesc
                 context['id_register_objects'] = IdentifierDesc.objects.filter(
@@ -3127,7 +3129,8 @@ class ConceptListQualifView(LoginRequiredView, ListView):
                 id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')
                 if len(id_registro)>0:
                     id_registro = id_registro[0].get('id')
-                    object_list = IdentifierConceptListQualif.objects.filter(identifier_id=id_registro).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')
+                    # Força somente 1 resultado
+                    object_list = IdentifierConceptListQualif.objects.filter(identifier_id=id_registro).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')[:1]
             except IdentifierQualif.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
                 if self.actions['order'] == "-":
@@ -3151,7 +3154,8 @@ class ConceptListQualifView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s']).values('id')
+                # Força somente 1 resultado
+                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s']).values('id')[:1]
                 if len(id_registro)>0:
                     id_registro = id_registro[0].get('id')
 
