@@ -120,6 +120,9 @@ field_tag_map = {
                 'mesh_id_descriptor_ui': '480',
 
                 'allowed_qualifiers': '950',
+
+                'historical_annotation': '998',
+
                 }
 
 

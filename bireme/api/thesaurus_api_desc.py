@@ -166,11 +166,17 @@ class ThesaurusResourceDesc(CustomResource):
 
 
         # Coleta UPs do conceito preferido
+
         # 'term_string_print_entries_en': '050', # ^i
         term_string_print_entries_en_list = []
         term_string_print_entries_en = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='N',record_preferred_term='N',status='1')
         for field in term_string_print_entries_en:
-            item = '^i' + field.term_string
+            term_ui_first_letter = field.term_ui[0:1]
+            # atribui subcampo t quando o código do termo não for do MESH
+            if term_ui_first_letter != 'T':
+                item = '^i' + field.term_string + '^t'
+            else:
+                item = '^i' + field.term_string
             term_string_print_entries_en_list.append(item)
         bundle.data['term_string_print_entries_en'] = term_string_print_entries_en_list
 
@@ -435,5 +441,38 @@ class ThesaurusResourceDesc(CustomResource):
         bundle.data['allowed_qualifiers'] = allowed_qualifiers_concat
 
 
+        # 'historical_annotation': '998',
+        # ingles
+        historical_annotation_concat = ''
+        historical_annotation_en = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='Y',record_preferred_term='Y',status='1')
+        for field in historical_annotation_en:
+            historical_annotation_concat_en = field.historical_annotation.replace('^i','^h')
+
+        # espanhol
+        historical_annotation_es = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es',concept_preferred_term='Y',record_preferred_term='Y',status='1')
+        for field in historical_annotation_es:
+            historical_annotation_concat_es = field.historical_annotation.replace('^e','^h')
+
+        # portugues
+        historical_annotation_pt_br = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='pt-br',concept_preferred_term='Y',record_preferred_term='Y',status='1')
+        for field in historical_annotation_pt_br:
+            historical_annotation_concat_pt_br = field.historical_annotation.replace('^p','^h')
+
+        if len(historical_annotation_concat)>0 and len(historical_annotation_concat_en)>0:
+            historical_annotation_concat = historical_annotation_concat + ';' + historical_annotation_concat_en
+        else:
+            historical_annotation_concat = historical_annotation_concat_en
+
+        if len(historical_annotation_concat)>0 and len(historical_annotation_concat_es)>0:
+            historical_annotation_concat = historical_annotation_concat + ';' + historical_annotation_concat_es
+        else:
+            historical_annotation_concat = historical_annotation_concat_es
+
+        if len(historical_annotation_concat)>0 and len(historical_annotation_concat_pt_br)>0:
+            historical_annotation_concat = historical_annotation_concat + ';' + historical_annotation_concat_pt_br
+        else:
+            historical_annotation_concat = historical_annotation_concat_pt_br
+
+        bundle.data['historical_annotation'] = historical_annotation_concat
 
         return bundle
