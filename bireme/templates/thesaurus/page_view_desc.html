@@ -63,7 +63,7 @@
                 <td valign="top">
                     <ul>
                         {% for obj in term_string_info_preferred_objects %}
-                            {% if obj.termdesc__status != 3 %}
+                            {% if obj.termdesc__status == 1 %}
                                 {{ obj.termdesc__term_string }} <font color="blue">({{ obj.termdesc__language_code }})</font><br>
                             {% endif %}
                         {% endfor %}
@@ -115,7 +115,7 @@
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
                         {% for obj in term_string_info_preferred_objects %}
-                            {% if obj.termdesc__status != 3 %}
+                            {% if obj.termdesc__status == 1 %}
                                 {{ obj.termdesc__term_string }} <font color="blue">({{ obj.termdesc__language_code }})</font>
                                 <a href="{% url 'edit_register_desc' obj.identifier_id %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termdesc__term_string }}&lang={{obj.termdesc__language_code}}" title="{% trans "Edit record information, descriptions, abbreviations, hierarchical codes, pharmacological actions, related, previous indexes and Precoord" %}"><i class="icon-pencil"></i></a>
                                 <br>
