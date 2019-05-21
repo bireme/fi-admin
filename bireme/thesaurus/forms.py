@@ -186,22 +186,17 @@ class DescriptionDescForm(forms.ModelForm):
 
 
 class TreeNumbersListDescForm(forms.ModelForm):
+
+    # tree_number = forms.CharField(widget=widgets.TextInput(attrs={'required': True}))
+
     class Meta:
         fields = '__all__'
-
-        # error_messages = {
-        #     NON_FIELD_ERRORS: {
-        #         'unique_together': "%(field_labels)s already exist.",
-        #     }
-        # }
 
     # Verifica a quantidade de caracteres e formatacao adequada
     def clean_tree_number(self):
         data = self.cleaned_data.get('tree_number')
-        # print '---->',data
+        # print 'Data --->',data
         tam = len(data)
-        # print 'tam-->',tam
-
         # Nunca podera ser de tamanho PAR
         if int(tam) % 2 == 0:
             # print 'Par'

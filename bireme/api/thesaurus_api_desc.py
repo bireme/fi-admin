@@ -25,6 +25,8 @@ import requests
 import urllib
 import json
 
+from django.db.models import Q
+
 
 class ThesaurusResourceDesc(CustomResource):
     class Meta:
@@ -166,11 +168,17 @@ class ThesaurusResourceDesc(CustomResource):
 
 
         # Coleta UPs do conceito preferido
+
         # 'term_string_print_entries_en': '050', # ^i
         term_string_print_entries_en_list = []
         term_string_print_entries_en = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='N',record_preferred_term='N',status='1')
         for field in term_string_print_entries_en:
-            item = '^i' + field.term_string
+            term_ui_first_letter = field.term_ui[0:1]
+            # atribui subcampo t quando o código do termo não for do MESH
+            if term_ui_first_letter != 'T':
+                item = '^i' + field.term_string + '^tDeCS'
+            else:
+                item = '^i' + field.term_string
             term_string_print_entries_en_list.append(item)
         bundle.data['term_string_print_entries_en'] = term_string_print_entries_en_list
 
@@ -256,10 +264,21 @@ class ThesaurusResourceDesc(CustomResource):
 
 
         # 'term_string_see_related_en': '060', # ^i
+        term_string_see_related_en_list=[]
         term_string_see_related_en = SeeRelatedListDesc.objects.filter(identifier_id=bundle.obj.id)
         for field in term_string_see_related_en:
-            bundle.data['term_string_see_related_en'] = '^i' + field.term_string
-
+            chk_id = field.descriptor_ui
+            if len(chk_id)>0:
+                # Quando for um termo que nao eh mesh colocar ^tDeCS
+                if field.descriptor_ui[0:1].upper() != 'D':
+                    item = '^i' + field.term_string + '^tDeCS'
+                else:
+                    item = '^i' + field.term_string
+            else:
+                # Se não existir descriptor_ui colocar ^tr
+                item = '^i' + field.term_string + '^tDeCS'
+            term_string_see_related_en_list.append(item)
+        bundle.data['term_string_see_related_en'] = term_string_see_related_en_list
 
 
         # 'decs_code': '099',
@@ -434,6 +453,56 @@ class ThesaurusResourceDesc(CustomResource):
             allowed_qualifiers_concat = allowed_qualifiers_concat + ' ' + item
         bundle.data['allowed_qualifiers'] = allowed_qualifiers_concat
 
+        # Fazer filtro pelos conceitos do registro
+        # Entrar em cada familia do conceito e analisar seus termos
+        # 'historical_annotation': '998',
+        lista_maior=[]
+        x_array=[]
+        concept_arr = IdentifierConceptListDesc.objects.filter(identifier_id=bundle.obj.id).values('id')
+        for concept_id in concept_arr:
+            c_id=concept_id.get('id')
+            bundle.data['historical_annotation'] = c_id
 
+            q_published = Q(identifier_concept_id=c_id,status='1')
+            q_historical = Q(identifier_concept_id=c_id,status='5')
+            historical_annotation_concat = ''
+
+            # ingles
+            q_language = Q(language_code='en')
+            historical_annotation_en = TermListDesc.objects.filter( ( q_published | q_historical ) & q_language ).values('historical_annotation')
+            for field in historical_annotation_en:
+                t=field.get('historical_annotation')
+                if len(t)>0:
+                    t=t.replace('^i','^h')
+                    x_array.append(t)
+            if len(x_array)>0:
+                historical_annotation_concat_en=x_array
+                lista_maior=historical_annotation_concat_en
+
+            # espanhol
+            q_language = Q(language_code='es')
+            historical_annotation_es = TermListDesc.objects.filter( ( q_published | q_historical ) & q_language ).values('historical_annotation')
+            for field in historical_annotation_es:
+                t=field.get('historical_annotation')
+                if len(t)>0:
+                    t=t.replace('^e','^h')
+                    x_array.append(t)
+            if len(x_array)>0:
+                historical_annotation_concat_es=x_array
+                lista_maior=historical_annotation_concat_es
+
+            # português
+            q_language = Q(language_code='pt-br')
+            historical_annotation_pt_br = TermListDesc.objects.filter( ( q_published | q_historical ) & q_language ).values('historical_annotation')
+            for field in historical_annotation_pt_br:
+                t=field.get('historical_annotation')
+                if len(t)>0:
+                    t=t.replace('^p','^h')
+                    x_array.append(t)
+            if len(x_array)>0:
+                historical_annotation_concat_pt_br=x_array
+                lista_maior=historical_annotation_concat_pt_br
+
+        bundle.data['historical_annotation'] = lista_maior
 
         return bundle

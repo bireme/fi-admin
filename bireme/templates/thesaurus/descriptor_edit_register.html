@@ -129,7 +129,6 @@
 
                         <ul>
                             <fieldset id="treenumber">
-
                                 <table>
                                     <tr>
                                     {{ formset_treenumber.management_form }}
@@ -143,7 +142,7 @@
                                         {% endfor %}
                                         <tr id="treenumber-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
                                             {% for field in form.visible_fields %}
-                                            <td class="treenumber" width="600px">
+                                            <td class="treenumber">
                                                 {{ field }}
                                                 {{ field.errors }}
                                             </td>
@@ -502,7 +501,8 @@
         // 0 - para filter_horizontal / 1 para filter_vertical
         // Caminho do admin para source de imagens utilizadas
 
-        addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "abbreviation", 1, "/static/admin/"); });
+        addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "{% trans "Qualifiers" %}", 1, "/static/admin/"); });
+
     </script>
 
 {% endblock %}
@@ -629,6 +629,7 @@
 
                 }
             });
+
 
             // Alerta sobre não preenchimento
             // $('[id^="id_descriptors-"]').on('blur', function() {

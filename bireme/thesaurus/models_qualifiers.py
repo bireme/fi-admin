@@ -263,7 +263,7 @@ class TermListQualif(models.Model):
     term_ui = models.CharField(_("Term unique identifier"), max_length=250, blank=True)
 
     # String
-    term_string = models.CharField(_("String"), max_length=250, blank=True)
+    term_string = models.CharField(_("String"), max_length=250, blank=False)
 
     # EntryVersion
     entry_version = models.CharField(_("Entry version"), max_length=250, blank=True)
