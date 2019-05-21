@@ -33,6 +33,9 @@ from django.contrib import messages
 import datetime
 
 
+from utils.context_processors import additional_user_info
+
+
 ITEMS_PER_PAGE = 10
 
 # form actions
@@ -1818,11 +1821,23 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
         changed_registry=''
         if ( concept_preferred_term_old != concept_preferred_term ) or ( term_string_old != term_string ):
             changed_registry='1'
+        # Username
+        user_data = additional_user_info(self.request)
+        for user_name in user_data:
+            username=user_data.get('user_name').encode('utf-8')
+            break
 
+        v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^u' + username + '^t'
         preferido=''
         npreferido=''
 
-        v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^t'
+        # Username
+        user_data = additional_user_info(self.request)
+        for user_name in user_data:
+            username=user_data.get('user_name').encode('utf-8')
+            break
+
+        v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^u' + username + '^t'
 
         if concept_preferred_term == 'Y' and record_preferred_term == 'Y':
             preferido='1'
@@ -4159,7 +4174,13 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
         preferido=''
         npreferido=''
 
-        v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^t'
+        # Username
+        user_data = additional_user_info(self.request)
+        for user_name in user_data:
+            username=user_data.get('user_name').encode('utf-8')
+            break
+
+        v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^u' + username + '^t'
 
         if concept_preferred_term == 'Y' and record_preferred_term == 'Y':
             preferido='1'

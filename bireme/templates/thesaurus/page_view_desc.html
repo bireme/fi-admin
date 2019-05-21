@@ -362,7 +362,19 @@
                         {% for obj in related_objects %}
                             {% ifchanged %}
                                 {% if obj.relateddesc__term_string %}
-                                    {{ obj.relateddesc__term_string }}<br>
+                                    {{ obj.relateddesc__term_string }}
+
+                                    <!-- Utilizado para visualizar termos que foram criados pelo DeCS -->
+                                    {% if user_cc = 'BR1.1' %}
+                                        {% if not obj.relateddesc__descriptor_ui %}
+                                            <font color="blue">DeCS</font>
+                                        <!-- Tipo de codigo utilizado para registros DeCS -->
+                                        {% elif obj.relateddesc__descriptor_ui|slice:":2" == 'UI' or obj.relateddesc__descriptor_ui|slice:":2" == 'DDCS' %}
+                                            <font color="blue">DeCS</font>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    <br>
                                 {% endif %}
                             {% endifchanged %}
                         {% endfor %}
