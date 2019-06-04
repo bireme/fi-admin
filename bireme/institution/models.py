@@ -8,8 +8,8 @@ from log.models import AuditLog
 
 STATUS_CHOICES = (
     (-1, _('Draft')),
-    (1, _('Published')),
-    (2, _('Refused')),
+    (1, _('Active')),
+    (2, _('Inactive')),
     (3, _('Deleted')),
 )
 
@@ -126,7 +126,7 @@ class ContactPhone(models.Model, AuditLog):
     phone_type = models.CharField(_("Type"), max_length=75, choices=PHONE_CHOICES)
     phone_name = models.CharField(_("Name"), max_length=85)
     country_code = models.CharField(_("Country code"), max_length=4)
-    phone_number = models.CharField(_("Number"), max_length=55)
+    phone_number = models.CharField(_("Number"), max_length=255)
 
     def get_parent(self):
         return self.institution
