@@ -64,9 +64,9 @@
                             {% trans "Status" %}:
                             <select name="filter_status">
                                 <option value="">{% trans "All" %}</option>
-                                <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "Pending" %}</option>
-                                <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Admitted" %}</option>
-                                <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
+                                <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "Draft" %}</option>
+                                <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Active" %}</option>
+                                <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Inactive" %}</option>
                                 <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
                             </select>
                             <button class="btn" type="submit"><i class='icon-search'></i></button>

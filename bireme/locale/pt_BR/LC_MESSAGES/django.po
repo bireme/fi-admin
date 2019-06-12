@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-13 14:28-0300\n"
-"PO-Revision-Date: 2019-05-13 14:33-0306\n"
-"Last-Translator:   <>\n"
+"POT-Creation-Date: 2019-06-04 13:07-0300\n"
+"PO-Revision-Date: 2019-06-04 13:15-0306\n"
+"Last-Translator:   <admin@localhost.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -780,8 +780,8 @@ msgstr "Rascunho"
 msgid "Inprocess"
 msgstr "LILACS-Express"
 
-#: biblioref/models.py:19 institution/models.py:11 leisref/models.py:15
-#: oer/models.py:13 templates/biblioref/reference_list.html:115
+#: biblioref/models.py:19 leisref/models.py:15 oer/models.py:13
+#: templates/biblioref/reference_list.html:115
 #: templates/leisref/act_list.html:69 templates/oer/oer_list.html:71
 #: templates/thesaurus/descriptor_form_step2.html:188
 #: templates/thesaurus/descriptor_new_concept.html:178
@@ -795,11 +795,10 @@ msgstr "LILACS-Express"
 msgid "Published"
 msgstr "Publicado"
 
-#: biblioref/models.py:20 events/models.py:63 institution/models.py:12
-#: leisref/models.py:16 main/models.py:144 main/models.py:167
-#: main/models.py:188 main/models.py:213 multimedia/models.py:96
-#: oer/models.py:14 suggest/models.py:18 suggest/models.py:50
-#: templates/biblioref/reference_form.html:152
+#: biblioref/models.py:20 events/models.py:63 leisref/models.py:16
+#: main/models.py:144 main/models.py:167 main/models.py:188 main/models.py:213
+#: multimedia/models.py:96 oer/models.py:14 suggest/models.py:18
+#: suggest/models.py:50 templates/biblioref/reference_form.html:152
 #: templates/biblioref/reference_form.html:225
 #: templates/biblioref/reference_list.html:116
 #: templates/events/edit-event.html:177 templates/events/edit-event.html:248
@@ -1250,6 +1249,26 @@ msgstr "Dados locais JSON"
 msgid "Other fields JSON"
 msgstr "Outros campos JSON"
 
+#: biremelogin/models.py:12
+msgid "profile"
+msgstr "perfis"
+
+#: biremelogin/models.py:13
+msgid "profiles"
+msgstr "perfis"
+
+#: biremelogin/models.py:16
+msgid "Basic"
+msgstr "Básico"
+
+#: biremelogin/models.py:17
+msgid "Advanced"
+msgstr "Avançado"
+
+#: biremelogin/models.py:20
+msgid "data"
+msgstr "dados"
+
 #: classification/models.py:27 classification/models.py:66
 #: classification/models.py:82 leisref/models.py:449 multimedia/models.py:67
 #: multimedia/models.py:80 multimedia/models.py:102
@@ -1691,6 +1710,16 @@ msgstr "Nome do campo"
 #: institution/forms.py:64
 msgid "This unit already exist"
 msgstr "Esta unidade já existe"
+
+#: institution/models.py:11
+#| msgid "Active form"
+msgid "Active"
+msgstr "Ativa"
+
+#: institution/models.py:12
+#| msgid "Interactivity type"
+msgid "Inactive"
+msgstr "Inativa"
 
 #: institution/models.py:20 institution/models.py:103
 msgid "Institution type"
@@ -2164,7 +2193,7 @@ msgstr "Idiomas da fonte"
 #: templates/biblioref/fieldset_thematic.html:9
 #: templates/biblioref/reference_form.html:280
 #: templates/events/edit-event.html:303 templates/events/events.html:79
-#: templates/institution/institution_form.html:193
+#: templates/institution/institution_form.html:197
 #: templates/leisref/act_form.html:262 templates/main/edit-resource.html:294
 #: templates/main/edit-thematic.html:8 templates/main/resources.html:79
 #: templates/multimedia/media_form.html:301
@@ -2771,7 +2800,7 @@ msgstr "Arquivo"
 #: templates/institution/fieldset_person.html:18
 #: templates/institution/fieldset_unitlevel.html:17
 #: templates/institution/fieldset_url.html:17
-#: templates/institution/institution_form.html:194
+#: templates/institution/institution_form.html:198
 #: templates/leisref/act_form.html:263
 #: templates/leisref/fieldset_fulltext.html:17
 #: templates/leisref/fieldset_fulltext.html:77
@@ -3076,11 +3105,11 @@ msgstr "Adicionar descritor"
 #: templates/biblioref/referencesource_form.html:289
 #: templates/events/edit-event.html:416 templates/events/edit-event.html:426
 #: templates/events/edit-event.html:436 templates/events/edit-type.html:72
-#: templates/institution/institution_form.html:276
-#: templates/institution/institution_form.html:286
-#: templates/institution/institution_form.html:296
-#: templates/institution/institution_form.html:306
-#: templates/institution/institution_form.html:316
+#: templates/institution/institution_form.html:280
+#: templates/institution/institution_form.html:290
+#: templates/institution/institution_form.html:300
+#: templates/institution/institution_form.html:310
+#: templates/institution/institution_form.html:320
 #: templates/leisref/act_form.html:341 templates/leisref/act_form.html:351
 #: templates/leisref/act_form.html:361 templates/leisref/act_form.html:371
 #: templates/leisref/act_form.html:381 templates/leisref/actcity_form.html:74
@@ -3396,8 +3425,8 @@ msgstr "Código do centro indexador"
 #: templates/institution/institution_form.html:168
 #: templates/main/edit-resource.html:124 templates/modal_log.html:6
 #: templates/multimedia/media_form.html:148
-#: templates/thesaurus/page_view_desc.html:426
-#: templates/thesaurus/page_view_qualif.html:353
+#: templates/thesaurus/page_view_desc.html:438
+#: templates/thesaurus/page_view_qualif.html:355
 #: templates/title/title_form.html:130
 msgid "Changes history"
 msgstr "Histórico de mudanças"
@@ -3410,14 +3439,14 @@ msgstr "Duplicados"
 
 #: templates/biblioref/referenceanalytic_form.html:251
 #: templates/biblioref/referencesource_form.html:163
-#: templates/institution/institution_form.html:236
+#: templates/institution/institution_form.html:240
 #: templates/leisref/act_form.html:305 templates/oer/oer_form.html:277
 msgid "Save Draft"
 msgstr "Gravar Rascunho"
 
 #: templates/biblioref/referenceanalytic_form.html:253
 #: templates/biblioref/referencesource_form.html:165
-#: templates/institution/institution_form.html:238
+#: templates/institution/institution_form.html:242
 #: templates/leisref/act_form.html:307 templates/oer/oer_form.html:279
 msgid "Save as"
 msgstr "Gravar como"
@@ -3434,14 +3463,14 @@ msgstr "Publicar como LILACS-Express"
 #: templates/biblioref/referenceanalytic_form.html:268
 #: templates/biblioref/referencesource_form.html:169
 #: templates/biblioref/referencesource_form.html:173
-#: templates/institution/institution_form.html:242
+#: templates/institution/institution_form.html:246
 #: templates/leisref/act_form.html:311 templates/oer/oer_form.html:283
 msgid "Publish"
 msgstr "Publicar"
 
 #: templates/biblioref/referenceanalytic_form.html:273
 #: templates/biblioref/referencesource_form.html:177
-#: templates/institution/institution_form.html:246
+#: templates/institution/institution_form.html:250
 #: templates/leisref/act_form.html:315 templates/oer/oer_form.html:287
 #: templates/suggest/invalid-link.html:47 templates/suggest/thanks.html:29
 msgid "Back"
@@ -3549,8 +3578,8 @@ msgstr "Classificação atualizada"
 #: templates/thesaurus/descriptor_new_concept.html:271
 #: templates/thesaurus/descriptor_new_legacy.html:92
 #: templates/thesaurus/descriptor_new_term.html:208
-#: templates/thesaurus/page_view_desc.html:870
-#: templates/thesaurus/page_view_qualif.html:756
+#: templates/thesaurus/page_view_desc.html:885
+#: templates/thesaurus/page_view_qualif.html:759
 #: templates/thesaurus/qualifier_edit_concept.html:173
 #: templates/thesaurus/qualifier_edit_legacy.html:94
 #: templates/thesaurus/qualifier_edit_register.html:238
@@ -3561,10 +3590,10 @@ msgstr "Classificação atualizada"
 #: templates/thesaurus/qualifier_new_concept.html:269
 #: templates/thesaurus/qualifier_new_legacy.html:92
 #: templates/thesaurus/qualifier_new_term.html:152
-#: templates/thesaurus/search_concept_desc.html:154
-#: templates/thesaurus/search_concept_qualif.html:154
-#: templates/thesaurus/search_term_desc.html:139
-#: templates/thesaurus/search_term_qualif.html:137
+#: templates/thesaurus/search_concept_desc.html:152
+#: templates/thesaurus/search_concept_qualif.html:152
+#: templates/thesaurus/search_term_desc.html:137
+#: templates/thesaurus/search_term_qualif.html:135
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -3747,23 +3776,27 @@ msgstr "FI Administração"
 msgid "Created in"
 msgstr "Criado em"
 
-#: templates/institution/institution_form.html:275
+#: templates/institution/institution_form.html:171
+msgid "Membership term"
+msgstr ""
+
+#: templates/institution/institution_form.html:279
 msgid "Add Person"
 msgstr "Adicionar Pessoa"
 
-#: templates/institution/institution_form.html:285
+#: templates/institution/institution_form.html:289
 msgid "Add Site"
 msgstr "Adicionar Site"
 
-#: templates/institution/institution_form.html:295
+#: templates/institution/institution_form.html:299
 msgid "Add Phone"
 msgstr "Adicionar Telefone"
 
-#: templates/institution/institution_form.html:305
+#: templates/institution/institution_form.html:309
 msgid "Add Email"
 msgstr "Adicionar Email"
 
-#: templates/institution/institution_form.html:315
+#: templates/institution/institution_form.html:319
 msgid "Add Unit"
 msgstr "Adicionar Unidade"
 
@@ -4208,7 +4241,8 @@ msgstr "Sugestões"
 
 #: templates/menu.html:77 templates/reports/index.html:5
 #: templates/reports/index.html.py:8 templates/reports/index.html:23
-#: templates/reports/index.html.py:177
+#: templates/reports/index.html.py:177 templates/reports/select_report.html:6
+#: templates/reports/select_report.html:9
 msgid "Reports"
 msgstr "Relatórios"
 
@@ -4430,6 +4464,10 @@ msgstr "Nenhum dado para estes critérios"
 #: templates/reports/index.html:200
 msgid "Combination (Source x Report / Filter) not available"
 msgstr "Combinação (Fonte x Relatório / Filtro) não disponível"
+
+#: templates/reports/select_report.html:15
+msgid "Select report"
+msgstr "Selecione o relatório"
 
 #: templates/suggest/edit-suggested-event.html:5
 #: templates/suggest/edit-suggested-event.html:15
@@ -4687,12 +4725,12 @@ msgid "Edit Concept"
 msgstr "Editar conceito"
 
 #: templates/thesaurus/descriptor_edit_concept.html:28
-#: templates/thesaurus/page_view_desc.html:504
-#: templates/thesaurus/page_view_desc.html:610
-#: templates/thesaurus/page_view_desc.html:612
-#: templates/thesaurus/page_view_qualif.html:393
-#: templates/thesaurus/page_view_qualif.html:500
+#: templates/thesaurus/page_view_desc.html:516
+#: templates/thesaurus/page_view_desc.html:622
+#: templates/thesaurus/page_view_desc.html:624
+#: templates/thesaurus/page_view_qualif.html:395
 #: templates/thesaurus/page_view_qualif.html:502
+#: templates/thesaurus/page_view_qualif.html:504
 #: templates/thesaurus/qualifier_edit_concept.html:29
 msgid "Edit concept information"
 msgstr "Editar informações do conceito"
@@ -4905,8 +4943,8 @@ msgid "Edit term"
 msgstr "Editar termo"
 
 #: templates/thesaurus/descriptor_edit_term.html:29
-#: templates/thesaurus/page_view_desc.html:550
-#: templates/thesaurus/page_view_desc.html:672
+#: templates/thesaurus/page_view_desc.html:562
+#: templates/thesaurus/page_view_desc.html:687
 #: templates/thesaurus/qualifier_edit_term.html:29
 msgid "Edit term information"
 msgstr "Editar informações do termo"
@@ -5061,12 +5099,12 @@ msgstr ""
 "Precoord"
 
 #: templates/thesaurus/page_view_desc.html:128
-#: templates/thesaurus/page_view_qualif.html:122
+#: templates/thesaurus/page_view_qualif.html:124
 msgid "Tree Number(s)"
 msgstr "Categorias"
 
 #: templates/thesaurus/page_view_desc.html:140
-#: templates/thesaurus/page_view_qualif.html:134
+#: templates/thesaurus/page_view_qualif.html:136
 #: templates/thesaurus/search_concept_desc.html:127
 #: templates/thesaurus/search_concept_qualif.html:127
 #: templates/thesaurus/search_term_desc.html:111
@@ -5075,42 +5113,42 @@ msgid "Unique ID"
 msgstr "ID de transporte"
 
 #: templates/thesaurus/page_view_desc.html:152
-#: templates/thesaurus/page_view_qualif.html:146
+#: templates/thesaurus/page_view_qualif.html:148
 msgid "Thesaurus ID"
 msgstr "ID no tesauro"
 
 #: templates/thesaurus/page_view_desc.html:164
-#: templates/thesaurus/page_view_qualif.html:158
+#: templates/thesaurus/page_view_qualif.html:160
 msgid "Indexing Annotation"
 msgstr "Nota de Indexação"
 
 #: templates/thesaurus/page_view_desc.html:187
-#: templates/thesaurus/page_view_qualif.html:181
+#: templates/thesaurus/page_view_qualif.html:183
 msgid "Definition"
 msgstr "Definição"
 
 #: templates/thesaurus/page_view_desc.html:210
-#: templates/thesaurus/page_view_desc.html:441
+#: templates/thesaurus/page_view_desc.html:453
 msgid "Entry Combination"
 msgstr "Precoord"
 
 #: templates/thesaurus/page_view_desc.html:228
-#: templates/thesaurus/page_view_qualif.html:218
+#: templates/thesaurus/page_view_qualif.html:220
 msgid "Entry Term(s)"
 msgstr "Termos alternativos"
 
 #: templates/thesaurus/page_view_desc.html:259
-#: templates/thesaurus/page_view_qualif.html:249
+#: templates/thesaurus/page_view_qualif.html:251
 msgid "Pharmacological Action"
 msgstr "Ação Farmacológica"
 
 #: templates/thesaurus/page_view_desc.html:273
-#: templates/thesaurus/page_view_qualif.html:257
+#: templates/thesaurus/page_view_qualif.html:259
 msgid "Registry Number"
 msgstr "Número de registro"
 
 #: templates/thesaurus/page_view_desc.html:289
-#: templates/thesaurus/page_view_qualif.html:273
+#: templates/thesaurus/page_view_qualif.html:275
 msgid "CAS Type 1 Name"
 msgstr "Nome do Tipo 1 do CAS"
 
@@ -5124,12 +5162,12 @@ msgid "Public MeSH Note"
 msgstr "Nota pública"
 
 #: templates/thesaurus/page_view_desc.html:331
-#: templates/thesaurus/page_view_qualif.html:287
+#: templates/thesaurus/page_view_qualif.html:289
 msgid "Online Note"
 msgstr "Nota Online"
 
 #: templates/thesaurus/page_view_desc.html:345
-#: templates/thesaurus/page_view_qualif.html:301
+#: templates/thesaurus/page_view_qualif.html:303
 msgid "History Note"
 msgstr "Nota histórica"
 
@@ -5137,179 +5175,178 @@ msgstr "Nota histórica"
 msgid "See Also"
 msgstr "Veja também"
 
-#: templates/thesaurus/page_view_desc.html:373
+#: templates/thesaurus/page_view_desc.html:385
 msgid "Consider Also"
 msgstr "Considere também"
 
-#: templates/thesaurus/page_view_desc.html:387
-#: templates/thesaurus/page_view_qualif.html:315
+#: templates/thesaurus/page_view_desc.html:399
+#: templates/thesaurus/page_view_qualif.html:317
 msgid "Date Established"
 msgstr "Data de estabelecimento"
 
-#: templates/thesaurus/page_view_desc.html:399
-#: templates/thesaurus/page_view_qualif.html:327
+#: templates/thesaurus/page_view_desc.html:411
+#: templates/thesaurus/page_view_qualif.html:329
 msgid "Date of Entry"
 msgstr "Data de entrada"
 
-#: templates/thesaurus/page_view_desc.html:411
-#: templates/thesaurus/page_view_qualif.html:339
+#: templates/thesaurus/page_view_desc.html:423
+#: templates/thesaurus/page_view_qualif.html:341
 msgid "Revision Date"
 msgstr "Data da revisão"
 
-#: templates/thesaurus/page_view_desc.html:462
+#: templates/thesaurus/page_view_desc.html:474
 msgid "Allowable Qualifiers"
 msgstr "Qualificadores permitidos"
 
-#: templates/thesaurus/page_view_desc.html:479
-#: templates/thesaurus/page_view_qualif.html:367
+#: templates/thesaurus/page_view_desc.html:491
+#: templates/thesaurus/page_view_qualif.html:369
 msgid "Add concept"
 msgstr "Adicionar conceito"
 
-#: templates/thesaurus/page_view_desc.html:495
-#: templates/thesaurus/page_view_desc.html:599
-#: templates/thesaurus/page_view_desc.html:627
-#: templates/thesaurus/page_view_qualif.html:383
-#: templates/thesaurus/page_view_qualif.html:488
-#: templates/thesaurus/page_view_qualif.html:520
+#: templates/thesaurus/page_view_desc.html:507
+#: templates/thesaurus/page_view_desc.html:611
+#: templates/thesaurus/page_view_desc.html:640
+#: templates/thesaurus/page_view_qualif.html:385
+#: templates/thesaurus/page_view_qualif.html:490
+#: templates/thesaurus/page_view_qualif.html:522
 #: thesaurus/models_descriptors.py:312 thesaurus/models_qualifiers.py:215
 msgid "Concept"
 msgstr "Conceito"
 
-#: templates/thesaurus/page_view_desc.html:503
-#: templates/thesaurus/page_view_qualif.html:392
+#: templates/thesaurus/page_view_desc.html:515
+#: templates/thesaurus/page_view_qualif.html:394
 msgid "Preferred Concept"
 msgstr "Conceito preferido"
 
-#: templates/thesaurus/page_view_desc.html:507
-#: templates/thesaurus/page_view_desc.html:614
-#: templates/thesaurus/page_view_qualif.html:396
-#: templates/thesaurus/page_view_qualif.html:505
+#: templates/thesaurus/page_view_desc.html:519
+#: templates/thesaurus/page_view_desc.html:626
+#: templates/thesaurus/page_view_qualif.html:398
+#: templates/thesaurus/page_view_qualif.html:507
 msgid "Move this concept to another record"
 msgstr "Mover este conceito para outro registro"
 
-#: templates/thesaurus/page_view_desc.html:521
-#: templates/thesaurus/page_view_desc.html:641
-#: templates/thesaurus/page_view_qualif.html:409
-#: templates/thesaurus/page_view_qualif.html:532
+#: templates/thesaurus/page_view_desc.html:533
+#: templates/thesaurus/page_view_desc.html:656
+#: templates/thesaurus/page_view_qualif.html:412
+#: templates/thesaurus/page_view_qualif.html:535
 msgid "Add term"
 msgstr "Adicionar termo"
 
-#: templates/thesaurus/page_view_desc.html:524
-#: templates/thesaurus/page_view_desc.html:644
-#: templates/thesaurus/page_view_qualif.html:412
-#: templates/thesaurus/page_view_qualif.html:535
+#: templates/thesaurus/page_view_desc.html:536
+#: templates/thesaurus/page_view_desc.html:659
+#: templates/thesaurus/page_view_qualif.html:415
+#: templates/thesaurus/page_view_qualif.html:538
 #: thesaurus/models_descriptors.py:337 thesaurus/models_qualifiers.py:238
 msgid "Term"
 msgstr "Termo"
 
-#: templates/thesaurus/page_view_desc.html:545
-#: templates/thesaurus/page_view_desc.html:666
-#: templates/thesaurus/page_view_qualif.html:433
-#: templates/thesaurus/page_view_qualif.html:556
+#: templates/thesaurus/page_view_desc.html:557
+#: templates/thesaurus/page_view_desc.html:681
+#: templates/thesaurus/page_view_qualif.html:436
+#: templates/thesaurus/page_view_qualif.html:559
 msgid "Preferred Term"
 msgstr "Termo preferido"
 
-#: templates/thesaurus/page_view_desc.html:555
-#: templates/thesaurus/page_view_desc.html:677
+#: templates/thesaurus/page_view_desc.html:567
+#: templates/thesaurus/page_view_desc.html:692
 msgid "Move this term to another concept"
 msgstr "Mover este termo para outro conceito"
 
-#: templates/thesaurus/page_view_desc.html:557
-#: templates/thesaurus/page_view_desc.html:679
+#: templates/thesaurus/page_view_desc.html:569
+#: templates/thesaurus/page_view_desc.html:694
 msgid "Create a new record from this term"
 msgstr "Criar um novo registro a partir deste termo"
 
-#: templates/thesaurus/page_view_desc.html:566
-#: templates/thesaurus/page_view_desc.html:688
-#: templates/thesaurus/page_view_qualif.html:454
-#: templates/thesaurus/page_view_qualif.html:578
+#: templates/thesaurus/page_view_desc.html:578
+#: templates/thesaurus/page_view_desc.html:703
+#: templates/thesaurus/page_view_qualif.html:457
+#: templates/thesaurus/page_view_qualif.html:581
 msgid "Term UI"
 msgstr "ID do termo"
 
-#: templates/thesaurus/page_view_desc.html:567
-#: templates/thesaurus/page_view_desc.html:689
-#: templates/thesaurus/page_view_qualif.html:455
-#: templates/thesaurus/page_view_qualif.html:579
+#: templates/thesaurus/page_view_desc.html:579
+#: templates/thesaurus/page_view_desc.html:704
+#: templates/thesaurus/page_view_qualif.html:458
+#: templates/thesaurus/page_view_qualif.html:582
 msgid "ConceptPreferredTerm"
 msgstr "Termo preferido do conceito"
 
-#: templates/thesaurus/page_view_desc.html:568
-#: templates/thesaurus/page_view_desc.html:690
-#: templates/thesaurus/page_view_qualif.html:456
-#: templates/thesaurus/page_view_qualif.html:580
+#: templates/thesaurus/page_view_desc.html:580
+#: templates/thesaurus/page_view_desc.html:705
+#: templates/thesaurus/page_view_qualif.html:459
+#: templates/thesaurus/page_view_qualif.html:583
 msgid "Is permuted"
 msgstr "É permutado"
 
-#: templates/thesaurus/page_view_desc.html:569
-#: templates/thesaurus/page_view_desc.html:691
-#: templates/thesaurus/page_view_qualif.html:457
-#: templates/thesaurus/page_view_qualif.html:581
+#: templates/thesaurus/page_view_desc.html:581
+#: templates/thesaurus/page_view_desc.html:706
+#: templates/thesaurus/page_view_qualif.html:460
+#: templates/thesaurus/page_view_qualif.html:584
 msgid "LexicalTag"
 msgstr "LexicalTag"
 
-#: templates/thesaurus/page_view_desc.html:570
-#: templates/thesaurus/page_view_desc.html:692
-#: templates/thesaurus/page_view_qualif.html:458
-#: templates/thesaurus/page_view_qualif.html:582
+#: templates/thesaurus/page_view_desc.html:582
+#: templates/thesaurus/page_view_desc.html:707
+#: templates/thesaurus/page_view_qualif.html:461
+#: templates/thesaurus/page_view_qualif.html:585
 msgid "RecordPreferredTerm"
 msgstr "Termo preferido do registro"
 
-#: templates/thesaurus/page_view_desc.html:571
-#: templates/thesaurus/page_view_desc.html:693
-#: templates/thesaurus/page_view_qualif.html:459
-#: templates/thesaurus/page_view_qualif.html:583
+#: templates/thesaurus/page_view_desc.html:583
+#: templates/thesaurus/page_view_desc.html:708
+#: templates/thesaurus/page_view_qualif.html:462
+#: templates/thesaurus/page_view_qualif.html:586
 msgid "Entry Version"
 msgstr "Versão de entrada"
 
-#: templates/thesaurus/page_view_desc.html:572
-#: templates/thesaurus/page_view_desc.html:694
-#: templates/thesaurus/page_view_qualif.html:460
-#: templates/thesaurus/page_view_qualif.html:584
+#: templates/thesaurus/page_view_desc.html:584
+#: templates/thesaurus/page_view_desc.html:709
+#: templates/thesaurus/page_view_qualif.html:463
+#: templates/thesaurus/page_view_qualif.html:587
 msgid "DateCreated"
 msgstr "Data de criação"
 
-#: templates/thesaurus/page_view_desc.html:573
-#: templates/thesaurus/page_view_desc.html:695
-#: templates/thesaurus/page_view_qualif.html:461
-#: templates/thesaurus/page_view_qualif.html:585
+#: templates/thesaurus/page_view_desc.html:585
+#: templates/thesaurus/page_view_desc.html:710
+#: templates/thesaurus/page_view_qualif.html:464
+#: templates/thesaurus/page_view_qualif.html:588
 msgid "DateAltered"
 msgstr "Data de alteração"
 
-#: templates/thesaurus/page_view_desc.html:574
-#: templates/thesaurus/page_view_desc.html:696
-#: templates/thesaurus/page_view_qualif.html:462
-#: templates/thesaurus/page_view_qualif.html:586
+#: templates/thesaurus/page_view_desc.html:586
+#: templates/thesaurus/page_view_desc.html:711
+#: templates/thesaurus/page_view_qualif.html:465
+#: templates/thesaurus/page_view_qualif.html:589
 msgid "History annotation"
 msgstr "Anotações de histórico"
 
-#: templates/thesaurus/page_view_desc.html:602
-#: templates/thesaurus/page_view_qualif.html:492
+#: templates/thesaurus/page_view_desc.html:614
+#: templates/thesaurus/page_view_qualif.html:494
 msgid "Narrower"
 msgstr "Mais específico"
 
-#: templates/thesaurus/page_view_desc.html:616
-#: templates/thesaurus/page_view_qualif.html:507
+#: templates/thesaurus/page_view_desc.html:628
+#: templates/thesaurus/page_view_qualif.html:509
 msgid "Create a new record from this concept"
 msgstr "Criar um novo registro a partir deste conceito"
 
-#: templates/thesaurus/page_view_desc.html:627
-#: templates/thesaurus/page_view_qualif.html:520
-#| msgid "Create a new record from this concept"
+#: templates/thesaurus/page_view_desc.html:640
+#: templates/thesaurus/page_view_qualif.html:522
 msgid "Please set the preferred term for this concept"
 msgstr "Por favor, defina o termo preferido para este conceito"
 
-#: templates/thesaurus/page_view_desc.html:721
-#: templates/thesaurus/page_view_qualif.html:608
+#: templates/thesaurus/page_view_desc.html:736
+#: templates/thesaurus/page_view_qualif.html:611
 msgid "Edit this configurations"
 msgstr "Editar essas configurações"
 
-#: templates/thesaurus/page_view_desc.html:837
-#: templates/thesaurus/page_view_qualif.html:724
+#: templates/thesaurus/page_view_desc.html:852
+#: templates/thesaurus/page_view_qualif.html:727
 msgid "Create this configurations"
 msgstr "Criar estas configurações"
 
-#: templates/thesaurus/page_view_desc.html:939
-#: templates/thesaurus/page_view_qualif.html:824
+#: templates/thesaurus/page_view_desc.html:954
+#: templates/thesaurus/page_view_qualif.html:827
 #: templates/thesaurus/qualifier_list.html:161
 #: templates/thesaurus/thesaurus_home.html:159
 msgid "No results found"
@@ -5324,32 +5361,32 @@ msgstr "Editar qualificador"
 msgid "Qualifier record"
 msgstr "Qualificador"
 
-#: templates/thesaurus/page_view_qualif.html:115
+#: templates/thesaurus/page_view_qualif.html:116
 msgid ""
 "Edit record information, abbreviation, hierarchical codes and descriptions"
 msgstr ""
 "Editar informações de registro, abreviação, códigos hierárquicos e "
 "descrições"
 
-#: templates/thesaurus/page_view_qualif.html:204
+#: templates/thesaurus/page_view_qualif.html:206
 #: templates/thesaurus/qualifier_list.html:84
 #: templates/thesaurus/qualifier_list.html:137
 #: thesaurus/models_qualifiers.py:37
 msgid "Abbreviation"
 msgstr "Abreviação"
 
-#: templates/thesaurus/page_view_qualif.html:438
-#: templates/thesaurus/page_view_qualif.html:562
+#: templates/thesaurus/page_view_qualif.html:441
+#: templates/thesaurus/page_view_qualif.html:565
 msgid "Edit qualifier information"
 msgstr "Editar informações do qualificador"
 
-#: templates/thesaurus/page_view_qualif.html:443
-#: templates/thesaurus/page_view_qualif.html:567
+#: templates/thesaurus/page_view_qualif.html:446
+#: templates/thesaurus/page_view_qualif.html:570
 msgid "Move this qualifier to another concept"
 msgstr "Mover este qualificador para outro conceito"
 
-#: templates/thesaurus/page_view_qualif.html:445
-#: templates/thesaurus/page_view_qualif.html:569
+#: templates/thesaurus/page_view_qualif.html:448
+#: templates/thesaurus/page_view_qualif.html:572
 msgid "Create a new record from this qualifier"
 msgstr "Criar um novo registro a partir deste qualificador"
 
@@ -6128,25 +6165,25 @@ msgstr "Controle sequencial"
 msgid "Sequential number"
 msgstr "Número sequencial"
 
-#: thesaurus/views.py:185 thesaurus/views.py:2464
+#: thesaurus/views.py:188 thesaurus/views.py:2570
 #, fuzzy
 #| msgid "Field required"
 msgid "Field Tree number is required!"
 msgstr "Campo obrigatório"
 
-#: thesaurus/views.py:824 thesaurus/views.py:1415 thesaurus/views.py:3055
-#: thesaurus/views.py:3693
+#: thesaurus/views.py:827 thesaurus/views.py:1420 thesaurus/views.py:3161
+#: thesaurus/views.py:3801
 msgid "This Concept already exist!"
 msgstr "Este conceito já existe!"
 
-#: thesaurus/views.py:1560 thesaurus/views.py:1834 thesaurus/views.py:3828
-#: thesaurus/views.py:4084
+#: thesaurus/views.py:1565 thesaurus/views.py:1876 thesaurus/views.py:3936
+#: thesaurus/views.py:4219
 msgid "This configuration already exists for this concept!"
 msgstr "Esta configuração já existe para este conceito!"
 
-#: thesaurus/views.py:1665 thesaurus/views.py:1769 thesaurus/views.py:1877
-#: thesaurus/views.py:1949 thesaurus/views.py:3927 thesaurus/views.py:4016
-#: thesaurus/views.py:4126 thesaurus/views.py:4192
+#: thesaurus/views.py:1670 thesaurus/views.py:1774 thesaurus/views.py:1919
+#: thesaurus/views.py:2032 thesaurus/views.py:4035 thesaurus/views.py:4124
+#: thesaurus/views.py:4261 thesaurus/views.py:4366
 msgid "This Term already exist!"
 msgstr "Este termo já existe!"
 
@@ -6704,24 +6741,6 @@ msgstr "Ano deve ser maior que 1900"
 
 #~ msgid "Pharm Action"
 #~ msgstr "Ação farmacológica"
-
-#~ msgid "profile"
-#~ msgstr "perfis"
-
-#~ msgid "profiles"
-#~ msgstr "perfis"
-
-#~ msgid "Basic"
-#~ msgstr "Básico"
-
-#~ msgid "Advanced"
-#~ msgstr "Avançado"
-
-#~ msgid "data"
-#~ msgstr "dados"
-
-#~ msgid "Select report"
-#~ msgstr "Selecione o relatório"
 
 #~ msgid "DeCS"
 #~ msgstr "Geog DeCS"
