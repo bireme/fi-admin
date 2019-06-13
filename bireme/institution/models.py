@@ -1,5 +1,6 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
+from tinymce.models import HTMLField
 from django.db import models
 
 from main.choices import LANGUAGES_CHOICES
@@ -243,3 +244,89 @@ class UnitLevel(models.Model, AuditLog):
 
     def __unicode__(self):
         return u'{0} - {1}'.format(UnitLevel.LEVEL_CHOICES[self.level-1][1], self.unit)
+
+
+# Adhesion Term
+class AdhesionTerm(models.Model, AuditLog):
+    class Meta:
+        verbose_name = _("Adhesion term")
+        verbose_name_plural = _("Adhesion terms")
+
+    text = HTMLField(_("Text"), blank=False)
+    version = models.CharField(_("Version"), max_length=25, blank=True)
+
+    def __unicode__(self):
+        return u'{0}'.format(self.version)
+
+    def get_term(self):
+        lang_code = get_language()
+        translation = AdhesionTermLocal.objects.filter(adhesionterm=self.id, language=lang_code)
+        if translation:
+            return translation[0].text
+        else:
+            return self.text
+
+
+class AdhesionTermLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    adhesionterm = models.ForeignKey(AdhesionTerm, verbose_name=_("Adhesion term"))
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
+    text = HTMLField(_("Text"), blank=False)
+
+
+# Institution x Adhesion Term
+class InstitutionAdhesion(models.Model, AuditLog):
+    class Meta:
+        verbose_name = _("Adhesion term" )
+        verbose_name_plural = _("Adhesion terms")
+
+    institution = models.ForeignKey(Institution, null=True)
+    adhesionterm = models.ForeignKey(AdhesionTerm, null=True)
+    acepted = models.BooleanField(_("Acepted"), default=False)
+
+    def __unicode__(self):
+        return u'Adhesion term - {0}'.format(self.institution)
+
+
+class ServiceProduct(models.Model):
+    class Meta:
+        verbose_name = _("Service/Product")
+        verbose_name_plural = _("Services/Products")
+
+    name = models.CharField(_("Name"), max_length=155, blank=True)
+    acronym = models.CharField(_("Acronym"), max_length=35, blank=True)
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = ServiceProductLocal.objects.filter(serviceproduct=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class ServiceProductLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    serviceproduct = models.ForeignKey(ServiceProduct, verbose_name=_("Service/Product"))
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
+    name = models.CharField(_("Name"), max_length=155, blank=True)
+
+
+class InstitutionServiceProduct(models.Model, AuditLog):
+    class Meta:
+        verbose_name = _("Institution service product")
+        verbose_name_plural = _("Instituion services products")
+
+    institution = models.ForeignKey(Institution, null=True)
+    serviceproduct = models.ForeignKey(ServiceProduct, null=True)
+
+    def __unicode__(self):
+        return u'InstitutionServiceProduct: {0} - {1}'.format(self.institution, self.serviceproduct)

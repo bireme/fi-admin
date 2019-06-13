@@ -3,14 +3,25 @@ from models import *
 
 from utils.admin import GenericAdmin
 
-class TypeLocalAdmin(admin.TabularInline):
-    model = TypeLocal
-    extra = 0
+class AdhesionTermLocalAdmin(admin.TabularInline):
+    model = AdhesionTermLocal
+    extra = 1
 
 
-class TypeAdmin(GenericAdmin):
-    model = Type
-    inlines = [TypeLocalAdmin, ]
+class AdhesionTermAdmin(admin.ModelAdmin):
+    model = AdhesionTerm
+    inlines = [AdhesionTermLocalAdmin, ]
 
-# Register your models here.
-admin.site.register(Type, TypeAdmin)
+
+class ServiceProductLocalAdmin(admin.TabularInline):
+    model = ServiceProductLocal
+    extra = 1
+
+class ServiceProductAdmin(admin.ModelAdmin):
+    model = ServiceProduct
+    inlines = [ServiceProductLocalAdmin, ]
+
+
+# Django Admin models register
+admin.site.register(AdhesionTerm, AdhesionTermAdmin)
+admin.site.register(ServiceProduct, ServiceProductAdmin)

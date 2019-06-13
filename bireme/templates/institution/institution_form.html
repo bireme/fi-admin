@@ -166,6 +166,10 @@
                         <div class="btn-group pull-right">
                             <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
                         </div>
+                        <div class="btn-group pull-right">
+                            <a href="#" onclick="javascript:open_adhesionterm('{{object.id}}')" class="btn"><i class="icon icon-file"></i> {% trans "Adhesion term" %}</a>
+                        </div>
+
                     {% endif %}
             </div>
 
@@ -252,6 +256,7 @@
 
 {% if object.id %}
     {% include "modal_log.html" %}
+    {% include "modal_adhesion.html" %}
 {% endif %}
 
 {% include "modal_dedup.html" %}
@@ -262,6 +267,7 @@
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
    <script src="{% static 'js/multiselect.min.js' %}"></script>
+   <script src="{% static 'js/adhesionterm.js' %}"></script>
    {% if LANGUAGE_CODE != 'en' %}
        <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
    {% endif %}

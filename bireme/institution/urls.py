@@ -11,4 +11,7 @@ urlpatterns = [
 
     url(r'^unit/?$', UnitListView.as_view(), name='list_unit'),
     url(r'^add-unit/', add_unit, name='add_unit'),
+
+    url(r'^adhesionterm/(?P<institution_id>\d+)/?$', adhesionterm, name="adhesionterm"),
+
 ]
