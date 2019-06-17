@@ -13,6 +13,7 @@ from text_block.models import TextBlock
 from django.contrib.admin.models import LogEntry
 from django.db.models import Count, Q
 from biblioref.models import Reference
+from institution.models import Institution
 
 
 @login_required
@@ -23,11 +24,16 @@ def widgets(request):
     user_data = additional_user_info(request)
     user_roles = ['']
     user_roles.extend([role for role in user_data['service_role'].values()])
+    institution_id = ''
 
     # retrive text blocks
     text_blocks = TextBlock.objects.filter(slot='dashboard', user_profile__in=user_roles).order_by('order')
 
+    if 'DirIns' in user_data['service_role']:
+        institution_id = Institution.objects.get(cc_code=user_data['user_cc']).id
+
     output['text_blocks'] = text_blocks
+    output['institution_id'] = institution_id
 
     return render_to_response('dashboard/index.html', output,
                               context_instance=RequestContext(request))

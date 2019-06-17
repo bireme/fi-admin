@@ -55,11 +55,23 @@
                     <div id="llxp_indexed_by_cc"></div>
                 </div>
             {% endif %}
+
+            {% if service_role.DirIns %}
+            <div class="well sidebar-nav">
+                <h3>{% trans "Institutional" %}</h3>
+                <ul>
+                    <li><a href="{% url 'list_institution' %}">{% trans "Update your institution information" %}</a></li>
+                    <li><a href="#" onclick="javascript:open_adhesionterm('{{institution_id}}')">{% trans "Review adhesion term" %}</a></li>
+                </ul>
+            </div>
+            {% endif %}
+
         </div>
     </div>
 {% endblock %}
 
 {% block extrajs %}
+<script src="{% static 'js/adhesionterm.js' %}"></script>
 
 <script type="text/javascript">
     $(function() {

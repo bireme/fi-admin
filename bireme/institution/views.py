@@ -7,7 +7,9 @@ from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.admin.models import LogEntry
 from django.shortcuts import render, render_to_response
+from django.template import RequestContext
 from django.db.models import Q
 
 from utils.views import ACTIONS
@@ -62,6 +64,7 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         context['actions'] = self.actions
         context['user_role'] = user_role
+        context['user_cc'] = user_data.get('user_cc')
 
         return context
 
@@ -295,3 +298,74 @@ def add_unit(request):
                           {'form': form, 'param_country': param_country})
 
     return HttpResponseRedirect(success_url)
+
+@login_required
+def adhesionterm(request, institution_id):
+    serviceproduct_list = ServiceProduct.objects.all()
+    adhesionterm = AdhesionTerm.objects.last()
+    inst_servproduct_list = []
+    acepted_status = False
+
+    if request.POST:
+        acepted_param = request.POST.get('acepted_flag')
+        set_list_param = request.POST.getlist('set')
+        unset_list_param = request.POST.getlist('unset')
+
+        acepted_flag = True if acepted_param == '1' else False
+
+        inst_adhesion, created = InstitutionAdhesion.objects.get_or_create(
+            institution_id=institution_id, adhesionterm_id=adhesionterm.pk
+        )
+        # update acepted flag
+        inst_adhesion.acepted = acepted_flag
+        inst_adhesion.save()
+
+        if set_list_param or unset_list_param:
+            # remove duplicated ID's from set/unset lists
+            set_list = list(set(set_list_param))
+            unset_list = list(set(unset_list_param))
+
+            for srvprod_id in set_list:
+                inst_servprod, created = InstitutionServiceProduct.objects.get_or_create(institution_id=institution_id,
+                                                                            serviceproduct_id=srvprod_id)
+
+            if unset_list:
+                InstitutionServiceProduct.objects.filter(institution_id=institution_id, serviceproduct_id__in=unset_list).delete()
+
+
+    else:
+        # check if institution already acepted term
+        inst_adhesion = InstitutionAdhesion.objects.filter(
+                            institution=institution_id, adhesionterm=adhesionterm.pk)
+
+        if inst_adhesion:
+            acepted_status = inst_adhesion[0].acepted
+
+        inst_servproduct_filter = InstitutionServiceProduct.objects.filter(institution_id=institution_id)
+        inst_servproduct_list = [ips.serviceproduct for ips in inst_servproduct_filter]
+
+        user_data = additional_user_info(request)
+        user_cc = user_data['user_cc']
+
+        # get log info for BR1.1 users (administrative)
+        if user_cc ==  'BR1.1':
+            if inst_adhesion:
+                ctype_adhesion = ContentType.objects.get_for_model(inst_adhesion[0])
+                logs_adhesion = LogEntry.objects.filter(content_type=ctype_adhesion,
+                                                object_id=inst_adhesion[0].id)
+
+
+            if inst_servproduct_filter:
+                ctype_inst_servproduct = ContentType.objects.get_for_model(inst_servproduct_filter[0])
+
+                inst_servproduct_id_list = [ips.id for ips in inst_servproduct_filter]
+                logs_serviceproduct = LogEntry.objects.filter(content_type=ctype_inst_servproduct,
+                                                    object_id__in=inst_servproduct_id_list)
+
+
+
+    return render_to_response('institution/adhesionterm.html',
+                              {'institution_id': institution_id, 'adhesionterm': adhesionterm,
+                               'acepted_status': acepted_status, 'serviceproduct_list': serviceproduct_list,
+                               'inst_servproduct_list': inst_servproduct_list},
+                                context_instance=RequestContext(request))

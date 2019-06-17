@@ -21,9 +21,11 @@
 <!--  header -->
 <div class='header'>
     <h2><i class='icon-file'></i> {% trans "Institution" %}</h2>
+    {% if user_cc == 'BR1.1' %}
         <div class='pull-right'>
             <a href="{% url 'create_institution' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Institution" %}</a>
         </div>
+    {% endif %}
 </div>
 
 <div class='body'>
@@ -36,18 +38,21 @@
             {% endif %}
             </a>
         </li>
-        <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
-            <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
-                <strong>{% trans "All instutions" %}</strong>
-               {% if  actions.filter_owner == '*' %}
-                   <span class="badge badge-info">{{ paginator.count }}</span>
-               {% endif %}
-            </a>
-        </li>
+        {% if user_cc == 'BR1.1' %}
+            <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
+                <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
+                    <strong>{% trans "All instutions" %}</strong>
+                   {% if  actions.filter_owner == '*' %}
+                       <span class="badge badge-info">{{ paginator.count }}</span>
+                   {% endif %}
+                </a>
+            </li>
+        {% endif %}
     </ul>
 
     <div class="tab-content">
         <div class="tab-pane active">
+            {% if user_cc == 'BR1.1' %}
             <div class="row">
                 <div class="span-4">
                     <div class="input-append" style="margin-left: 10px">
@@ -74,6 +79,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
 
             <table class='table'>
                 <thead>

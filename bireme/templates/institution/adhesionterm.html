@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block top %}{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block title %}{% trans "Adhesion term" %} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<style>
+.cancel_btn {
+    width: 45%; margin-left: 5px; float: left; background: rgba(169, 68, 66, 0.78) !important; color: #fff; padding: 10px; text-align: center; margin-right: 5px
+}
+.save_btn{
+    width: 45%; float: left; background: rgba(0, 163, 54, 0.64) !important; color: #fff; padding: 10px; text-align: center;
+}
+.box{
+    margin: 20px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+<div class="body box">
+    <form id="setUnsetForm" action="{% url 'adhesionterm' institution_id=institution_id %}" method="POST">
+        {% csrf_token %}
+
+        <div class="jumbotron">
+            <h3>{% trans "Adhesion term" %}</h3>
+            <br>
+
+            {{ adhesionterm.get_term|safe }}
+
+            <div class="alert alert-info" role="alert">
+                <strong>{% trans "I agree with the adhesion terms" %}</strong>
+                <!-- Rounded switch -->
+                <label class="switch">
+                  <input type="checkbox" name="acepted_flag" value="1" {% if acepted_status %}checked{% endif %}>
+                  <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <hr>
+
+        <h3>{% trans "Products and services" %}</h3>
+        {% if serviceproduct_list %}
+            <table class="table table-hover">
+                {% for serviceproduct in serviceproduct_list %}
+                    <tr>
+                        <td>{{serviceproduct}}</td>
+                        <td>
+                            <label class="switch">
+                              <input type="checkbox" class="set_unset" id="{{ serviceproduct.id }}" value="{{ serviceproduct.id }}" {% if serviceproduct in inst_servproduct_list %}checked{% endif %}>
+                              <span class="slider round"></span>
+                            </label>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".set_unset").change(function() {
+            op = 'set';  // default operation set
+            checked = $(this).is(':checked');
+            service_id = $(this).val();
+            if (!checked) {
+                op = 'unset';
+            }
+            $('<input>').attr({type: 'hidden', name: op, value: service_id}).appendTo('#setUnsetForm');
+        });
+     });
+
+     function updateAndClose(){
+         $.post($("form").attr('action'), $("form").serializeArray());
+         alert("{% trans 'Adhesion term updated' %}");
+         window.close();
+     }
+</script>
+{% endblock %}
+
+{% block footer %}
+<div class="row">
+    <a href="#" onclick="javascript:window.close();">
+        <div class="cancel_btn" data-dismiss="modal">
+            {% trans 'Cancel' as cancel %}{{ cancel|lower }}
+        </div>
+    </a>
+    <a href="#" onclick="javascript:updateAndClose();">
+        <div class="save_btn">
+            {% trans 'Save' as save %}{{ save|lower }}
+        </div>
+    </a>
+</div>
+<br>
+{% endblock %}
