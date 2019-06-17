@@ -64,6 +64,7 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         context['actions'] = self.actions
         context['user_role'] = user_role
+        context['user_cc'] = user_data.get('user_cc')
 
         return context
 
