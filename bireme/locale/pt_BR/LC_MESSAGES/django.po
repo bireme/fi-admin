@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-13 17:10-0300\n"
-"PO-Revision-Date: 2019-06-13 17:11-0306\n"
+"POT-Creation-Date: 2019-06-17 14:32-0300\n"
+"PO-Revision-Date: 2019-06-17 14:33-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -763,7 +763,7 @@ msgstr "Submissão"
 
 #: biblioref/models.py:17 institution/models.py:11 leisref/models.py:14
 #: oer/models.py:12 templates/biblioref/reference_list.html:113
-#: templates/institution/institution_list.html:67
+#: templates/institution/institution_list.html:72
 #: templates/leisref/act_list.html:68 templates/oer/oer_list.html:70
 #: templates/reports/index.html:64
 #: templates/thesaurus/descriptor_form_step2.html:187
@@ -828,7 +828,7 @@ msgstr "Recusado"
 #: templates/biblioref/reference_list.html:117
 #: templates/events/edit-event.html:179 templates/events/edit-event.html:250
 #: templates/events/events.html:77 templates/events/events.html.py:125
-#: templates/institution/institution_list.html:70
+#: templates/institution/institution_list.html:75
 #: templates/leisref/act_list.html:71 templates/main/edit-resource.html:170
 #: templates/main/edit-resource.html:241 templates/main/edit-resource.html:311
 #: templates/main/resources.html:77 templates/main/resources.html.py:124
@@ -877,8 +877,8 @@ msgstr "Registros bibliográficos"
 #: templates/events/edit-event.html:162 templates/events/edit-event.html:232
 #: templates/events/edit-event.html:304 templates/events/events.html:71
 #: templates/events/events.html.py:103
-#: templates/institution/institution_list.html:64
-#: templates/institution/institution_list.html:83
+#: templates/institution/institution_list.html:69
+#: templates/institution/institution_list.html:89
 #: templates/leisref/act_list.html:64 templates/leisref/act_list.html.py:117
 #: templates/main/edit-resource.html:153 templates/main/edit-resource.html:223
 #: templates/main/edit-resource.html:295 templates/main/resources.html:71
@@ -1311,7 +1311,7 @@ msgstr "País"
 #: templates/institution/fieldset_contact.html:15
 #: templates/institution/fieldset_contact.html:68
 #: templates/institution/fieldset_person.html:15
-#: templates/institution/institution_list.html:82
+#: templates/institution/institution_list.html:88
 #: templates/institution/institution_unit.html:31
 #: templates/institution/institution_unit.html:44
 #: templates/institution/institution_unit.html:77
@@ -1712,11 +1712,11 @@ msgstr "Nome do campo"
 msgid "This unit already exist"
 msgstr "Esta unidade já existe"
 
-#: institution/models.py:12 templates/institution/institution_list.html:68
+#: institution/models.py:12 templates/institution/institution_list.html:73
 msgid "Active"
 msgstr "Ativa"
 
-#: institution/models.py:13 templates/institution/institution_list.html:69
+#: institution/models.py:13 templates/institution/institution_list.html:74
 msgid "Inactive"
 msgstr "Inativa"
 
@@ -1889,7 +1889,6 @@ msgstr "Nível"
 #: institution/models.py:284 templates/institution/adhesionterm.html:8
 #: templates/institution/adhesionterm.html:86
 #: templates/institution/institution_form.html:171
-#: templates/modal_adhesion.html:6
 msgid "Adhesion term"
 msgstr "Termo de adesão"
 
@@ -3248,7 +3247,7 @@ msgstr "Revisão de colaboração"
 #: templates/error_report/list.html:115 templates/error_report/list.html:125
 #: templates/events/events.html:69 templates/events/types.html:30
 #: templates/events/types.html.py:38
-#: templates/institution/institution_list.html:62
+#: templates/institution/institution_list.html:67
 #: templates/leisref/act_list.html:62 templates/leisref/act_list.html.py:84
 #: templates/leisref/actcity_list.html:30
 #: templates/leisref/actcity_list.html:39
@@ -3292,7 +3291,7 @@ msgstr "Pesquisa"
 #: templates/biblioref/reference_list.html:112
 #: templates/biblioref/reference_list.html:126 templates/events/events.html:73
 #: templates/events/events.html.py:81
-#: templates/institution/institution_list.html:66
+#: templates/institution/institution_list.html:71
 #: templates/leisref/act_list.html:66 templates/leisref/act_list.html.py:90
 #: templates/leisref/act_list.html:98 templates/main/resources.html:73
 #: templates/main/resources.html.py:81 templates/multimedia/media_list.html:65
@@ -3368,7 +3367,7 @@ msgstr "Modificado por outros usuários"
 #: templates/error_report/list.html:77 templates/error_report/list.html:137
 #: templates/events/edit-event.html:305 templates/events/events.html:104
 #: templates/events/types.html:48
-#: templates/institution/institution_list.html:84
+#: templates/institution/institution_list.html:90
 #: templates/leisref/act_list.html:118 templates/leisref/actcity_list.html:51
 #: templates/leisref/actcollection_list.html:49
 #: templates/leisref/actcountryregion_list.html:49
@@ -3394,7 +3393,7 @@ msgstr "Ações"
 #: templates/biblioref/referencesource_list.html:80
 #: templates/biblioref/referencesource_list.html:84
 #: templates/events/events.html:131 templates/events/types.html:57
-#: templates/institution/institution_list.html:102
+#: templates/institution/institution_list.html:108
 #: templates/leisref/act_list.html:130 templates/main/languages.html:57
 #: templates/main/resources.html:130 templates/main/thematics.html:57
 #: templates/main/types.html:57 templates/multimedia/media_list.html:143
@@ -3653,6 +3652,20 @@ msgstr "Ações recentes"
 msgid "LILACS-Express records for indexing"
 msgstr "Registros LILACS-Express para indexação"
 
+#: templates/dashboard/index.html:61
+msgid "Institutional"
+msgstr "Institucional"
+
+#: templates/dashboard/index.html:63
+#| msgid "Edit registry information"
+msgid "Update your institution information"
+msgstr "Atualize as informações da sua instituição"
+
+#: templates/dashboard/index.html:64
+#| msgid "Adhesion term"
+msgid "Review adhesion term"
+msgstr "Revisar o termo de adesão"
+
 #: templates/dashboard/widget_action.html:7
 msgid "Created"
 msgstr "Criado"
@@ -3784,7 +3797,6 @@ msgid "Products and services"
 msgstr "Produtos e serviços"
 
 #: templates/institution/adhesionterm.html:139
-#| msgid "Adhesion term"
 msgid "Adhesion term updated"
 msgstr "Termo de adesão atualizado"
 
@@ -3806,7 +3818,7 @@ msgstr "Editar Instituição"
 
 #: templates/institution/institution_form.html:14
 #: templates/institution/institution_form.html:21
-#: templates/institution/institution_list.html:25
+#: templates/institution/institution_list.html:26
 msgid "New Institution"
 msgstr "Nova Instituição"
 
@@ -3853,15 +3865,15 @@ msgstr "Adicionar Email"
 msgid "Add Unit"
 msgstr "Adicionar Unidade"
 
-#: templates/institution/institution_list.html:33
+#: templates/institution/institution_list.html:35
 msgid "My institution"
 msgstr "Minha instituição"
 
-#: templates/institution/institution_list.html:41
+#: templates/institution/institution_list.html:44
 msgid "All instutions"
 msgstr "Todas instituições"
 
-#: templates/institution/institution_list.html:81
+#: templates/institution/institution_list.html:87
 msgid "CC"
 msgstr ""
 
