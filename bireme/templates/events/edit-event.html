@@ -399,7 +399,7 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
-   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+   <script src="https://maps.googleapis.com/maps/api/js?key={{ settings.GOOGLE_MAPS_APIKEY }}&libraries=places&callback=initAutocomplete"></script>
 
    <script type="text/javascript">
         var decs_field;
@@ -492,7 +492,7 @@
           // Get the place details from the autocomplete object.
           var place = autocomplete.getPlace();
 
-          var street_name, street_number = 's/n', neighborhood, city;
+          var street_name, street_number = 's/n', neighborhood, city, state, country;
 
           // Get each component of the address from the place details
           // and fill the corresponding field on the form.
@@ -507,27 +507,23 @@
                 case 'street_number':
                     street_number = addressValue;
                     break;
-                case 'neighborhood':
+                case 'sublocality_level_1':
                     neighborhood = addressValue;
                     break;
-                case 'locality':
-                    city = addressValue;
-                    break;
                 case 'administrative_area_level_1':
-                    area_level_1 = addressValue;
+                    state = addressValue;
                     break;
                 case 'administrative_area_level_2':
-                    area_level_2 = addressValue;
+                    city = addressValue;
                     break;
                 case 'country':
                     country = addressValue;
-
             }
           }
 
           // rewrite form elements using Google API information
           document.getElementById('id_address').value = street_name + ', ' + street_number + ' - ' +
-                                                        area_level_1 + ' - ' + area_level_2 + ' - ' + country;
+                                                        neighborhood + ' - ' + state + ' - ' + country;
           document.getElementById('id_city').value = city;
 
 
