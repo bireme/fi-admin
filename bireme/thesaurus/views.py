@@ -997,11 +997,14 @@ def ConceptListDescModification(request,term_id, ths, concept_ori):
     descriptor_ui_ori = descriptor_ui_ori[0].get('descriptor_ui')
 
     # Verifica se já existe anotação no historico
-    has_hist=IdentifierConceptListDesc.objects.filter(id=concept_ori).values('historical_annotation')
+    # has_hist=IdentifierConceptListDesc.objects.filter(id=concept_ori).values('historical_annotation')
+    has_hist=IdentifierConceptListDesc.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='')
     if has_hist:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
         historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+    else:
+        historical_annotation_new=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
 
     IdentifierConceptListDesc.objects.filter(id=concept_ori).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N', historical_annotation=historical_annotation_new)
 
@@ -1035,8 +1038,15 @@ class TermListDescView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                # Força somente 1 resultado
-                object_list = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')[:1]
+                # Como o concept_ui pode existir em mais de um tesauro devemos descobrir qual o id em IdentifierDesc que é pertinente ao tesauro em questão
+                concepts = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+                for x in concepts:
+                    id_identifier = x.get('identifier_id')
+                    has_register = IdentifierDesc.objects.filter(id=id_identifier,thesaurus_id=self.request.GET.get("ths")).exists()
+                    if has_register:
+                        # Força somente 1 resultado
+                        object_list = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s'],identifier_id=id_identifier).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')[:1]
+
             except IdentifierConceptListDesc.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
                 if self.actions['order'] == "-":
@@ -1059,22 +1069,25 @@ class TermListDescView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                id_conceito = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('id')
+                concepts = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+                for x in concepts:
+                    id_identifier = x.get('identifier_id')
+                    has_register = IdentifierDesc.objects.filter(id=id_identifier,thesaurus_id=self.request.GET.get("ths")).exists()
+                    if has_register:
+                        # print 'ID pertinente',id_identifier
 
-                # IdentifierDesc
-                context['id_register_objects'] = IdentifierConceptListDesc.objects.filter(
-                                                id=id_conceito,
-                                                ).values(
-                                                    # IdentifierConceptListDesc
-                                                    'id',
-                                                    'concept_ui',
-                                                )
-                context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+                        # IdentifierDesc
+                        context['id_register_objects'] = IdentifierConceptListDesc.objects.filter(
+                                                        concept_ui=self.actions['s'],identifier_id=id_identifier
+                                                        ).values(
+                                                            # IdentifierConceptListDesc
+                                                            'id',
+                                                            'concept_ui',
+                                                        )
+                        context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
 
             except IdentifierDesc.DoesNotExist:
                 context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
-
-
 
         return context
 
@@ -3329,14 +3342,16 @@ def ConceptListQualifModification(request,term_id, ths, concept_ori):
     identifier_id_ori = IdentifierConceptListQualif.objects.filter(id=concept_ori).values('identifier_id')
     identifier_id_ori = identifier_id_ori[0].get('identifier_id')
     qualifier_ui_ori = IdentifierQualif.objects.filter(id=identifier_id_ori).values('qualifier_ui')
-    qualifier_ui_ori = qualifier_ui_ori[0].get('descriptor_ui')
+    qualifier_ui_ori = qualifier_ui_ori[0].get('qualifier_ui')
 
     # Verifica se já existe anotação no historico
-    has_hist=IdentifierConceptListQualif.objects.filter(id=concept_ori).values('historical_annotation')
+    has_hist=IdentifierConceptListQualif.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='')
     if has_hist:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
         historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+    else:
+        historical_annotation_new=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
 
     IdentifierConceptListQualif.objects.filter(id=concept_ori).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N', historical_annotation=historical_annotation_new)
 
@@ -3371,8 +3386,15 @@ class TermListQualifView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                # Força somente 1 resultado
-                object_list = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')[:1]
+                # Como o concept_ui pode existir em mais de um tesauro devemos descobrir qual o id em IdentifierQualif que é pertinente ao tesauro em questão
+                concepts = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+                for x in concepts:
+                    id_identifier = x.get('identifier_id')
+                    has_register = IdentifierQualif.objects.filter(id=id_identifier,thesaurus_id=self.request.GET.get("ths")).exists()
+                    if has_register:
+                        # Força somente 1 resultado
+                        object_list = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s'],identifier_id=id_identifier).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')[:1]
+
             except IdentifierConceptListQualif.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
                 if self.actions['order'] == "-":
@@ -3380,7 +3402,6 @@ class TermListQualifView(LoginRequiredView, ListView):
 
                 if self.actions['visited'] != 'ok':
                     object_list = object_list.none()
-
 
         return object_list
 
@@ -3396,22 +3417,25 @@ class TermListQualifView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                id_conceito = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('id')
+                concepts = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+                for x in concepts:
+                    id_identifier = x.get('identifier_id')
+                    # print 'IDs --->',id_identifier
+                    has_register = IdentifierQualif.objects.filter(id=id_identifier,thesaurus_id=self.request.GET.get("ths")).exists()
+                    if has_register:
+                        # print 'ID pertinente',id_identifier
 
-                # IdentifierDesc
-                context['id_register_objects'] = IdentifierConceptListQualif.objects.filter(
-                                                id=id_conceito,
-                                                ).values(
-                                                    # IdentifierConceptListQualif
-                                                    'id',
-                                                    'concept_ui',
-                                                )
+                        # IdentifierQualif
+                        context['id_register_objects'] = IdentifierConceptListQualif.objects.filter(
+                                                        concept_ui=self.actions['s'],identifier_id=id_identifier
+                                                        ).values(
+                                                            # IdentifierConceptListDesc
+                                                            'id',
+                                                            'concept_ui',
+                                                        )
+                        context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
+            except IdentifierQualif.DoesNotExist:
                 context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
-
-            except IdentifierDesc.DoesNotExist:
-                context['identifier_concept_id'] = self.actions['choiced_concept_identifier_id']
-
-
 
         return context
 
