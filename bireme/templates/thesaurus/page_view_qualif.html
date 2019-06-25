@@ -259,7 +259,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Registry Number" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
+                        {% for obj in identifierconceptlist_objects_preferred %}
                             {% if obj.registry_number %}
                                 {% ifchanged %}
                                     {{ obj.registry_number }}<br>
@@ -275,7 +275,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "CAS Type 1 Name" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
+                        {% for obj in identifierconceptlist_objects_preferred %}
                             {% if obj.casn1_name %}
                                 {% ifchanged %}
                                     {{ obj.casn1_name }}<br>
