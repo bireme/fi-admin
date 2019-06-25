@@ -219,7 +219,7 @@ class ThesaurusResourceQualif(CustomResource):
         term_string_print_entries_en_list = []
         term_string_print_entries_en = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='N',record_preferred_term='N',status='1')
         for field in term_string_print_entries_en:
-            item = '^i' + field.term_string
+            item = '^i/' + field.term_string
             term_string_print_entries_en_list.append(item)
         bundle.data['term_string_print_entries_en'] = term_string_print_entries_en_list
 
@@ -227,7 +227,7 @@ class ThesaurusResourceQualif(CustomResource):
         term_string_print_entries_es_list = []
         term_string_print_entries_es = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='es',concept_preferred_term='N',record_preferred_term='N',status='1')
         for field in term_string_print_entries_es:
-            item = '^e' + field.term_string
+            item = '^e/' + field.term_string
             term_string_print_entries_es_list.append(item)
         bundle.data['term_string_print_entries_es'] = term_string_print_entries_es_list
 
@@ -235,7 +235,7 @@ class ThesaurusResourceQualif(CustomResource):
         term_string_print_entries_pt_br_list = []
         term_string_print_entries_pt_br = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='pt-br',concept_preferred_term='N',record_preferred_term='N',status='1')
         for field in term_string_print_entries_pt_br:
-            item = '^p' + field.term_string
+            item = '^p/' + field.term_string
             term_string_print_entries_pt_br_list.append(item)
         bundle.data['term_string_print_entries_pt_br'] = term_string_print_entries_pt_br_list
 
@@ -243,7 +243,7 @@ class ThesaurusResourceQualif(CustomResource):
         term_string_print_entries_es_es_list = []
         term_string_print_entries_es_es = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='es-es',concept_preferred_term='N',record_preferred_term='N',status='1')
         for field in term_string_print_entries_es_es:
-            item = '^s' + field.term_string
+            item = '^s/' + field.term_string
             term_string_print_entries_es_es_list.append(item)
         bundle.data['term_string_print_entries_es_es'] = term_string_print_entries_es_es_list
 
@@ -251,7 +251,7 @@ class ThesaurusResourceQualif(CustomResource):
         term_string_print_entries_fr_list = []
         term_string_print_entries_fr = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='fr',concept_preferred_term='N',record_preferred_term='N',status='1')
         for field in term_string_print_entries_fr:
-            item = '^f' + field.term_string
+            item = '^f/' + field.term_string
             term_string_print_entries_fr_list.append(item)
         bundle.data['term_string_print_entries_fr'] = term_string_print_entries_fr_list
 
@@ -269,7 +269,7 @@ class ThesaurusResourceQualif(CustomResource):
             # 'term_string_print_entries_en': '050', # ^i
             term_string_print_entries_en = TermListQualif.objects.filter(identifier_concept_id=ids_nopreferred,language_code='en',status='1')
             for field in term_string_print_entries_en:
-                item = '^i' + field.term_string
+                item = '^i/' + field.term_string
                 term_string_print_entries_en_list_NP.append(item)
                 # print term_string_print_entries_en_list_NP
             bundle.data['term_string_print_entries_en_NP'] = term_string_print_entries_en_list_NP
@@ -277,28 +277,28 @@ class ThesaurusResourceQualif(CustomResource):
             # 'term_string_print_entries_es': '050', # ^e
             term_string_print_entries_es = TermListQualif.objects.filter(identifier_concept_id=ids_nopreferred,language_code='es',status='1')
             for field in term_string_print_entries_es:
-                item = '^e' + field.term_string
+                item = '^e/' + field.term_string
                 term_string_print_entries_es_list_NP.append(item)
             bundle.data['term_string_print_entries_es_NP'] = term_string_print_entries_es_list_NP
 
             # 'term_string_print_entries_pt_br': '050', # ^p
             term_string_print_entries_pt_br = TermListQualif.objects.filter(identifier_concept_id=ids_nopreferred,language_code='pt-br',status='1')
             for field in term_string_print_entries_pt_br:
-                item = '^p' + field.term_string
+                item = '^p/' + field.term_string
                 term_string_print_entries_pt_br_list_NP.append(item)
             bundle.data['term_string_print_entries_pt_br_NP'] = term_string_print_entries_pt_br_list_NP
 
             # 'term_string_print_entries_es_es': '050', # ^s
             term_string_print_entries_es_es = TermListQualif.objects.filter(identifier_concept_id=ids_nopreferred,language_code='es-es',status='1')
             for field in term_string_print_entries_es_es:
-                item = '^s' + field.term_string
+                item = '^s/' + field.term_string
                 term_string_print_entries_es_es_list_NP.append(item)
             bundle.data['term_string_print_entries_es_es_NP'] = term_string_print_entries_es_es_list_NP
 
             # 'term_string_print_entries_fr': '050', # ^f
             term_string_print_entries_fr = TermListQualif.objects.filter(identifier_concept_id=ids_nopreferred,language_code='fr',status='1')
             for field in term_string_print_entries_fr:
-                item = '^f' + field.term_string
+                item = '^f/' + field.term_string
                 term_string_print_entries_fr_list_NP.append(item)
             bundle.data['term_string_print_entries_fr_NP'] = term_string_print_entries_fr_list_NP
 
