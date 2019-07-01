@@ -111,7 +111,7 @@
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
                         {% for obj in term_string_info_preferred_objects %}
-                            {% if obj.termdesc__status == 1 %}
+                            {% if obj.termqualif__status == 1 %}
                                 {{ obj.termqualif__term_string }} <font color="blue">({{ obj.termqualif__language_code }})</font>
                                 <a href="{% url 'edit_register_qualif' obj.identifier_id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}" title="{% trans "Edit record information, abbreviation, hierarchical codes and descriptions" %}"><i class="icon-pencil"></i></a>
                                 <br>

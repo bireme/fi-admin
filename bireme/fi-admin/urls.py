@@ -13,6 +13,7 @@ from api.oer_api import OERResource
 from api.classification_api import *
 from api.thesaurus_api_desc import *
 from api.thesaurus_api_qualif import *
+from api.thesaurus_api import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -30,6 +31,8 @@ classification_resource = ClassificationResource()
 community_resource = CommunityResource()
 thesaurus_resource_desc = ThesaurusResourceDesc()
 thesaurus_resource_qualif = ThesaurusResourceQualif()
+thesaurus_resource = ThesaurusResource()
+
 
 urlpatterns = patterns('',
     # Examples:
@@ -161,6 +164,7 @@ urlpatterns = patterns('',
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
     (r'^api/users/get_user_id/(?P<username>[a-zA-z0-9\.\-]{0,30})/$', 'api.users.get_user_id'),
     (r'^api/thematic/get_thematic_id/(?P<thematic_acronym>[a-zA-z0-9\.\-]{0,40})/$', 'api.thematic.get_thematic_id'),
+    (r'^api/', include(thesaurus_resource.urls)),
 
     # internationalization
     url(r'^i18n/', include('django.conf.urls.i18n')),

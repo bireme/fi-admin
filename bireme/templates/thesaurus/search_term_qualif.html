@@ -107,7 +107,7 @@
                             {% endif %}
                             {% for desc in id_register_objects|slice:":1" %}
                                 {% if desc.concept_ui %}
-                                    {% trans "Unique ID" %}: {{ desc.concept_ui }}
+                                    {{ desc.concept_ui }}
                                 {% endif %}
                             {% endfor %}
 
