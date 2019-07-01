@@ -117,7 +117,7 @@ class WhodidMiddleware(object):
                 else:
                     log_object_ct_id = ContentType.objects.get_for_model(instance).pk
                     log_object_id = instance.pk
-                    log_repr = str(instance)
+                    log_repr = unicode(instance)
 
                 # set default change type to CHANGE
                 log_change_type = CHANGE
