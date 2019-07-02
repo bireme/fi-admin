@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-17 14:32-0300\n"
-"PO-Revision-Date: 2019-06-17 14:33-0306\n"
+"POT-Creation-Date: 2019-07-02 12:19-0300\n"
+"PO-Revision-Date: 2019-07-02 12:20-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -879,7 +879,7 @@ msgstr "Registros bibliográficos"
 #: templates/events/events.html.py:103
 #: templates/institution/institution_list.html:69
 #: templates/institution/institution_list.html:89
-#: templates/leisref/act_list.html:64 templates/leisref/act_list.html.py:117
+#: templates/leisref/act_list.html:64 templates/leisref/act_list.html.py:126
 #: templates/main/edit-resource.html:153 templates/main/edit-resource.html:223
 #: templates/main/edit-resource.html:295 templates/main/resources.html:71
 #: templates/main/resources.html.py:104
@@ -922,7 +922,7 @@ msgstr "Centro cooperante"
 #: templates/biblioref/fieldset_include.html:43
 #: templates/biblioref/reference_list.html:124
 #: templates/institution/institution_form.html:87
-#: templates/leisref/act_form.html:87 templates/leisref/act_list.html:96
+#: templates/leisref/act_form.html:87 templates/leisref/act_list.html:105
 msgid "Indexed in"
 msgstr "Indexado em"
 
@@ -1679,19 +1679,19 @@ msgstr ""
 msgid "Target groups"
 msgstr "Público alvo"
 
-#: events/views.py:171 suggest/views.py:291
+#: events/views.py:173 suggest/views.py:291
 msgid "Event successfully edited."
 msgstr "Evento editado com sucesso."
 
-#: events/views.py:239
+#: events/views.py:241
 msgid "Event deleted."
 msgstr "Evento apagado."
 
-#: events/views.py:312 main/views.py:403
+#: events/views.py:314 main/views.py:403
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: events/views.py:336 main/views.py:427
+#: events/views.py:338 main/views.py:427
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
@@ -1940,12 +1940,13 @@ msgid "Related"
 msgstr "Lei relacionada"
 
 #: leisref/models.py:25 leisref/models.py:26 leisref/models.py:435
-#: templates/leisref/act_list.html:88
+#: templates/leisref/act_list.html:97
 msgid "Act country/region"
 msgstr "País/Região de alcance do ato"
 
 #: leisref/models.py:64 leisref/models.py:95 leisref/models.py:437
-#: templates/leisref/act_related.html:29 templates/leisref/act_related.html:85
+#: templates/leisref/act_list.html:88 templates/leisref/act_related.html:29
+#: templates/leisref/act_related.html:85
 msgid "Act type"
 msgstr "Tipo do ato"
 
@@ -1956,7 +1957,7 @@ msgstr "Tipos de ato"
 #: leisref/models.py:69 leisref/models.py:109 leisref/models.py:149
 #: leisref/models.py:189 leisref/models.py:231 leisref/models.py:287
 #: leisref/models.py:326 leisref/models.py:366
-#: templates/leisref/act_list.html:116 templates/leisref/actcity_list.html:49
+#: templates/leisref/act_list.html:125 templates/leisref/actcity_list.html:49
 #: templates/leisref/actorganissuer_list.html:49
 #: templates/leisref/actrelationtype_list.html:49
 #: templates/leisref/actscope_list.html:50
@@ -2657,7 +2658,7 @@ msgstr "Objeto relacionado"
 #: templates/thesaurus/qualifier_new_concept.html:270
 #: templates/thesaurus/qualifier_new_legacy.html:93
 #: templates/thesaurus/qualifier_new_term.html:153
-#: templates/title/form_preview.html:435 utils/views.py:185
+#: templates/title/form_preview.html:435 utils/views.py:186
 msgid "Save"
 msgstr "Gravar"
 
@@ -3248,8 +3249,7 @@ msgstr "Revisão de colaboração"
 #: templates/events/events.html:69 templates/events/types.html:30
 #: templates/events/types.html.py:38
 #: templates/institution/institution_list.html:67
-#: templates/leisref/act_list.html:62 templates/leisref/act_list.html.py:84
-#: templates/leisref/actcity_list.html:30
+#: templates/leisref/act_list.html:84 templates/leisref/actcity_list.html:30
 #: templates/leisref/actcity_list.html:39
 #: templates/leisref/actcollection_list.html:30
 #: templates/leisref/actcollection_list.html:39
@@ -3293,8 +3293,9 @@ msgstr "Pesquisa"
 #: templates/events/events.html.py:81
 #: templates/institution/institution_list.html:71
 #: templates/leisref/act_list.html:66 templates/leisref/act_list.html.py:90
-#: templates/leisref/act_list.html:98 templates/main/resources.html:73
-#: templates/main/resources.html.py:81 templates/multimedia/media_list.html:65
+#: templates/leisref/act_list.html:99 templates/leisref/act_list.html.py:107
+#: templates/main/resources.html:73 templates/main/resources.html.py:81
+#: templates/multimedia/media_list.html:65
 #: templates/multimedia/media_list.html:80
 #: templates/multimedia/media_list.html:88
 #: templates/multimedia/media_list.html:96 templates/oer/oer_list.html:69
@@ -3333,7 +3334,7 @@ msgid "Filters"
 msgstr "Filtros"
 
 #: templates/biblioref/reference_list.html:132
-#: templates/leisref/act_list.html:104
+#: templates/leisref/act_list.html:113
 #: templates/multimedia/media_list.html:102 templates/oer/oer_list.html:90
 #: templates/reports/index.html:88
 msgid "Apply"
@@ -3368,7 +3369,7 @@ msgstr "Modificado por outros usuários"
 #: templates/events/edit-event.html:305 templates/events/events.html:104
 #: templates/events/types.html:48
 #: templates/institution/institution_list.html:90
-#: templates/leisref/act_list.html:118 templates/leisref/actcity_list.html:51
+#: templates/leisref/act_list.html:127 templates/leisref/actcity_list.html:51
 #: templates/leisref/actcollection_list.html:49
 #: templates/leisref/actcountryregion_list.html:49
 #: templates/leisref/actorganissuer_list.html:51
@@ -3394,7 +3395,7 @@ msgstr "Ações"
 #: templates/biblioref/referencesource_list.html:84
 #: templates/events/events.html:131 templates/events/types.html:57
 #: templates/institution/institution_list.html:108
-#: templates/leisref/act_list.html:130 templates/main/languages.html:57
+#: templates/leisref/act_list.html:139 templates/main/languages.html:57
 #: templates/main/resources.html:130 templates/main/thematics.html:57
 #: templates/main/types.html:57 templates/multimedia/media_list.html:143
 #: templates/multimedia/mediacollection_list.html:49
@@ -3657,12 +3658,10 @@ msgid "Institutional"
 msgstr "Institucional"
 
 #: templates/dashboard/index.html:63
-#| msgid "Edit registry information"
 msgid "Update your institution information"
 msgstr "Atualize as informações da sua instituição"
 
 #: templates/dashboard/index.html:64
-#| msgid "Adhesion term"
 msgid "Review adhesion term"
 msgstr "Revisar o termo de adesão"
 
@@ -3903,7 +3902,7 @@ msgstr "Apagar legislação"
 #: templates/leisref/act_confirm_delete.html:8
 #: templates/leisref/act_form.html:13 templates/leisref/act_list.html:5
 #: templates/leisref/act_list.html.py:8 templates/leisref/act_list.html:23
-#: templates/leisref/act_list.html.py:115
+#: templates/leisref/act_list.html.py:124
 #: templates/leisref/act_related.html:12
 #: templates/leisref/fieldset_relationship.html:16 templates/menu.html:55
 msgid "Legislation"
@@ -3950,6 +3949,10 @@ msgstr "Minhas legislações"
 #: templates/leisref/act_list.html:41
 msgid "All legislation"
 msgstr "Todas legislações"
+
+#: templates/leisref/act_list.html:62
+msgid "Search by act number. Ex. 1234"
+msgstr "Busque por número do ato. Ex. 1234"
 
 #: templates/leisref/act_list.html:74
 msgid "Results per page"
@@ -5172,8 +5175,6 @@ msgstr "Categorias"
 #: templates/thesaurus/page_view_qualif.html:136
 #: templates/thesaurus/search_concept_desc.html:127
 #: templates/thesaurus/search_concept_qualif.html:127
-#: templates/thesaurus/search_term_desc.html:111
-#: templates/thesaurus/search_term_qualif.html:110
 msgid "Unique ID"
 msgstr "ID de transporte"
 
@@ -6230,25 +6231,25 @@ msgstr "Controle sequencial"
 msgid "Sequential number"
 msgstr "Número sequencial"
 
-#: thesaurus/views.py:188 thesaurus/views.py:2570
+#: thesaurus/views.py:188 thesaurus/views.py:2583
 #, fuzzy
 #| msgid "Field required"
 msgid "Field Tree number is required!"
 msgstr "Campo obrigatório"
 
-#: thesaurus/views.py:827 thesaurus/views.py:1420 thesaurus/views.py:3161
-#: thesaurus/views.py:3801
+#: thesaurus/views.py:827 thesaurus/views.py:1433 thesaurus/views.py:3174
+#: thesaurus/views.py:3825
 msgid "This Concept already exist!"
 msgstr "Este conceito já existe!"
 
-#: thesaurus/views.py:1565 thesaurus/views.py:1876 thesaurus/views.py:3936
-#: thesaurus/views.py:4219
+#: thesaurus/views.py:1578 thesaurus/views.py:1889 thesaurus/views.py:3960
+#: thesaurus/views.py:4243
 msgid "This configuration already exists for this concept!"
 msgstr "Esta configuração já existe para este conceito!"
 
-#: thesaurus/views.py:1670 thesaurus/views.py:1774 thesaurus/views.py:1919
-#: thesaurus/views.py:2032 thesaurus/views.py:4035 thesaurus/views.py:4124
-#: thesaurus/views.py:4261 thesaurus/views.py:4366
+#: thesaurus/views.py:1683 thesaurus/views.py:1787 thesaurus/views.py:1932
+#: thesaurus/views.py:2045 thesaurus/views.py:4059 thesaurus/views.py:4148
+#: thesaurus/views.py:4285 thesaurus/views.py:4390
 msgid "This Term already exist!"
 msgstr "Este termo já existe!"
 
