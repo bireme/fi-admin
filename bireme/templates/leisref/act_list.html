@@ -59,7 +59,7 @@
                             {% elif actions.filter_owner == 'network' %}
                                 <input type="hidden" name="filter_owner" value="network"/>
                             {% endif %}
-                            <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
+                            <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search by act number. Ex. 1234" %}">&nbsp;
 
                             {% trans "Status" %}:
                             <select name="filter_status">
@@ -85,6 +85,15 @@
 
                             <a href="javascript:void()" id="show_advaced_filters">{% trans "Filters" %}</a>
                             <div class="advanced_filters {% if not show_advaced_filters %}hide{% endif %}">
+                                {% trans "Act type" %}:
+                                <select name="filter_act_type">
+                                    <option value="">{% trans "All" %}</option>
+                                    {% for act_type in act_type_list %}
+                                        <option value="{{ act_type.id }}" {% if actions.filter_act_type|add:"0" == act_type.id %}selected="true"{% endif %}>{{ act_type }}</option>
+                                    {% endfor %}
+                                </select>
+
+
                                 {% trans "Act country/region" %}:
                                 <select name="filter_country">
                                     <option value="">{% trans "All" %}</option>

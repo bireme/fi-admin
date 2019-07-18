@@ -35,11 +35,6 @@ class EventForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         obj = super(EventForm, self).save(commit=False)
 
-        # for fields with readonly attribute restore the original value for prevent POST data insertions hack
-        for name, field in self.fields.items():
-            if hasattr(field.widget.attrs, 'readonly'):
-                setattr(obj, name, field.widget.original_value)
-
         # add cooperative center code to model for new records
         if self.user:
             if not obj.cooperative_center_code:
@@ -58,9 +53,6 @@ class EventForm(forms.ModelForm):
     class Meta:
         model  = Event
         exclude = ('cooperative_center_code',)
-
-        source_language = forms.MultipleChoiceField()
-        event_type = forms.MultipleChoiceField()
 
 
 class TypeForm(forms.ModelForm):

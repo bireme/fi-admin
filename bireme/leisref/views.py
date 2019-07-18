@@ -67,6 +67,9 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         # filter by indexed database
         if self.actions['filter_indexed_database'] != '':
             object_list = object_list.filter(indexed_database=self.actions['filter_indexed_database'])
+        # filter by act_type
+        if self.actions['filter_act_type'] != '':
+            object_list = object_list.filter(act_type=self.actions['filter_act_type'])
 
         # order
         if self.actions['order'] == "-":
@@ -88,12 +91,14 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         show_advaced_filters = self.request.GET.get('apply_filters', False)
         scope_region_list = ActCountryRegion.objects.all().order_by('name')
         indexed_database_list = Database.objects.all().order_by('name')
+        act_type_list = ActType.objects.all().order_by('name')
 
         context['actions'] = self.actions
         context['user_role'] = user_role
         context['scope_region_list'] = scope_region_list
         context['show_advaced_filters'] = show_advaced_filters
         context['indexed_database_list'] = indexed_database_list
+        context['act_type_list'] = act_type_list
 
         return context
 

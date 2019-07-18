@@ -109,15 +109,15 @@ class WhodidMiddleware(object):
                 if inline_model:
                     log_object_ct_id = instance.content_type.pk
                     log_object_id = instance.content_object.pk
-                    log_repr = str(instance.content_object)
+                    log_repr = unicode(instance.content_object)
                 elif related_model:
                     log_object_ct_id = ContentType.objects.get_for_model(instance.get_parent()).pk
                     log_object_id = instance.get_parent().pk
-                    log_repr = str(instance.get_parent())
+                    log_repr = unicode(instance.get_parent())
                 else:
                     log_object_ct_id = ContentType.objects.get_for_model(instance).pk
                     log_object_id = instance.pk
-                    log_repr = str(instance)
+                    log_repr = unicode(instance)
 
                 # set default change type to CHANGE
                 log_change_type = CHANGE

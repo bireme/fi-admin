@@ -167,6 +167,8 @@ def create_edit_event(request, **kwargs):
 
             # update solr index
             form.save()
+            # save many-to-many relation fields
+            form.save_m2m()
 
             output['alert'] = _("Event successfully edited.")
             output['alerttype'] = "alert-success"

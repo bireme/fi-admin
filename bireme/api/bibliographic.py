@@ -80,11 +80,11 @@ class ReferenceResource(CustomResource):
         id = request.GET.get('id', '')
         sort = request.GET.get('sort', 'publication_date desc')
 
-        # filter result by approved resources (status=1)
+        # filter result by status = -3 (Migration) OR 0 (LILACS Express) OR 1 (published)
         if fq != '':
-            fq = '(status:1 AND django_ct:biblioref.reference*) AND %s' % fq
+            fq = '(status:("-3" OR "0" OR "1") AND django_ct:biblioref.reference*) AND %s' % fq
         else:
-            fq = '(status:1 AND django_ct:biblioref.reference*)'
+            fq = '(status:("-3" OR "0" OR "1") AND django_ct:biblioref.reference*)'
 
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
