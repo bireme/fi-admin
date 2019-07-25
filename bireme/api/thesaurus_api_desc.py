@@ -105,6 +105,8 @@ class ThesaurusResourceDesc(CustomResource):
         thesaurus_id = IdentifierDesc.objects.filter(id=bundle.obj.id)
         for field in thesaurus_id:
             bundle.data['identifier'] = str(bundle.obj.id).zfill(6)
+            # usado para filtrar pesquisa de qualificador
+            thesaurus_id_choiced = field.thesaurus_id
 
         id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=bundle.obj.id,preferred_concept='Y')
 
@@ -393,11 +395,58 @@ class ThesaurusResourceDesc(CustomResource):
             if field.history_note:
                 bundle.data['history_note_en'] = '^n' + field.history_note
 
+
+
+        # 'entrycombination': '170',
+        # EntryCombinationListDesc
+        entrycombination_en_list = []
+        entrycombination_en = EntryCombinationListDesc.objects.filter(identifier_id=bundle.obj.id)
+        for field in entrycombination_en:
+            ecin_qualif = field.ecin_qualif
+            ecin_id = field.ecin_id
+            ecout_desc = field.ecout_desc
+            ecout_qualif = field.ecout_qualif
+            # print '----->', ecin_qualif,'  - ',ecin_id
+            # Faz primeiro pesquisa para ver se tem ecin_id (código do qualificador)
+            if len(ecin_id)>0:
+                # abbrev_en = IdentifierQualif.objects.filter(qualifier_ui=ecin_id,thesaurus_id=ths)
+                abbrev_en = IdentifierQualif.objects.filter(qualifier_ui=ecin_id)
+                for field in abbrev_en:
+                    abbreviation = field.abbreviation
+                    # print ' ---> abbrev', abbreviation,' -- ',thesaurus_id_choiced
+            else:
+                if len(ecin_qualif)>0:
+                    # Pesquisa a existencia de term_string para econtrar abreviação
+                    terms = TermListQualif.objects.filter( term_thesaurus=thesaurus_id_choiced, term_string=ecin_qualif, language_code='en', concept_preferred_term='Y', record_preferred_term='Y' )
+                    for field in terms:
+                        identifier_concept_id = field.identifier_concept_id
+                        # print ' ---> identifier_concept_id', identifier_concept_id
+                        concepts = IdentifierConceptListQualif.objects.filter ( id=identifier_concept_id, preferred_concept='Y' )
+                        for field in concepts:
+                            identifier_id = field.identifier_id
+                            # print ' ---> identifier_id', identifier_id
+                            abbrev_en = IdentifierQualif.objects.filter(id=identifier_id)
+                            for field in abbrev_en:
+                                abbreviation = field.abbreviation
+                                # print ' ---> abbrev', abbreviation,' -- ',thesaurus_id_choiced
+            # print 'Abreviation---> ',abbreviation,'^i',ecout_desc
+            item = abbreviation + '^i' + ecout_desc
+            if len(ecout_qualif)>0:
+                item = item + '^q' + ecout_qualif
+            # print 'item---> ',item
+
+            entrycombination_en_list.append(item)
+        bundle.data['entrycombination_en'] = entrycombination_en_list
+
+
         # 'pharmacologicalaction_en': '192',
+        pharmacologicalaction_en_list = []
         pharmacologicalaction_en = PharmacologicalActionList.objects.filter(identifier_id=bundle.obj.id,language_code='en')
         for field in pharmacologicalaction_en:
-            if field.term_string:
-                bundle.data['pharmacologicalaction_en'] = field.term_string
+            item = field.term_string
+            pharmacologicalaction_en_list.append(item)
+        bundle.data['pharmacologicalaction_en'] = pharmacologicalaction_en_list
+
 
         # 'annotation_es': '210', 
         annotation_es = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='es')
@@ -443,6 +492,39 @@ class ThesaurusResourceDesc(CustomResource):
             letter_chk = field.descriptor_ui[0:1].upper()
             if letter_chk == 'D':
                 bundle.data['mesh_id_descriptor_ui'] = field.descriptor_ui
+
+
+
+        # 'consider_also_en': '569',
+        consider_also_en = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='en')
+        for field in consider_also_en:
+            if field.consider_also:
+                bundle.data['consider_also_en'] = '^i' + field.consider_also.replace('consider also terms at ','')
+
+        # 'consider_also_es': '569',
+        consider_also_es = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='es')
+        for field in consider_also_es:
+            if field.consider_also:
+                bundle.data['consider_also_es'] = '^e' + field.consider_also
+
+        # 'consider_also_pt_br': '569',
+        consider_also_pt_br = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='pt-br')
+        for field in consider_also_pt_br:
+            if field.consider_also:
+                bundle.data['consider_also_pt_br'] = '^p' + field.consider_also
+
+        # 'consider_also_es_es': '569',
+        consider_also_es_es = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='es-es')
+        for field in consider_also_es_es:
+            if field.consider_also:
+                bundle.data['consider_also_es_es'] = '^s' + field.consider_also
+
+        # 'consider_also_fr': '569',
+        consider_also_fr = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='fr')
+        for field in consider_also_fr:
+            if field.consider_also:
+                bundle.data['consider_also_fr'] = '^f' + field.consider_also
+
 
         # 'allowed_qualifiers': '950',
         id_abbrev = IdentifierDesc.objects.filter(id=bundle.obj.id).values('abbreviation')

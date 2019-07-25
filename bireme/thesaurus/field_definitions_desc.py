@@ -107,6 +107,8 @@ field_tag_map = {
                 'online_note_en': '117',
                 'history_note_en': '119',
 
+                'entrycombination_en': '170',
+
                 'pharmacologicalaction_en': '192',
 
                 'annotation_es': '210',
@@ -118,6 +120,12 @@ field_tag_map = {
                 'history_note_pt_br': '319',
 
                 'mesh_id_descriptor_ui': '480',
+
+                'consider_also_en': '569',
+                'consider_also_es': '569',
+                'consider_also_pt_br': '569',
+                'consider_also_es_es': '569',
+                'consider_also_fr': '569',
 
                 'allowed_qualifiers': '950',
 

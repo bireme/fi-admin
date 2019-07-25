@@ -273,7 +273,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Registry Number" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
+                        {% for obj in identifierconceptlist_objects_preferred %}
                             {% if obj.registry_number %}
                                 {% ifchanged %}
                                     {{ obj.registry_number }}<br>
@@ -289,7 +289,7 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "CAS Type 1 Name" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in identifierconceptlist_objects %}
+                        {% for obj in identifierconceptlist_objects_preferred %}
                             {% if obj.casn1_name %}
                                 {% ifchanged %}
                                     {{ obj.casn1_name }}<br>
@@ -491,7 +491,7 @@
                     <i class='icon-file'></i>&nbsp;{% trans "Add concept" %}</a>
                 </ul>
 
-                {% for obj in identifierconceptlist_objects_preferred %}
+                {% for obj in identifierconceptlist_objects_preferred_for_concepts %}
 
                     <ul>
 
@@ -595,7 +595,7 @@
 
                 {% endfor %}
 
-                {% for obj in identifierconceptlist_objects %}
+                {% for obj in identifierconceptlist_objects_for_concepts %}
 
                     <ul>
 
