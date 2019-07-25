@@ -1138,7 +1138,9 @@ def TermListDescModification(request,term_id, ths, term_ori):
         # para isso pesquisa o term_ui de origem e o status=-3
         new_term=TermListDesc.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
         term_ui_ori=new_term[0].get('term_ui')
-        exist_term=TermListDesc.objects.filter(status=-3, term_ui=term_ui_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
+        term_string_ori=new_term[0].get('term_string').encode('utf-8')
+        
+        exist_term=TermListDesc.objects.filter(status=-3, term_ui=term_ui_ori, term_string=term_string_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
 
         if len(exist_term) > 0:
             term_id_exist=exist_term[0].get('id')
@@ -2420,6 +2422,36 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                     'termdesc__historical_annotation',
                                             ).distinct()
 
+            # Usado para mostrar informações de conceitos e termos Preferidos para Aba de Conceitos
+            context['identifierconceptlist_objects_preferred_for_concepts'] = IdentifierConceptListDesc.objects.filter(
+                                            identifier=id_concept,preferred_concept='Y',
+                                            ).order_by(
+                                                        '-preferred_concept',
+                                                        '-termdesc__concept_preferred_term',
+                                                        'termdesc__language_code',
+                                                        'termdesc__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'concept_ui',
+                                                    'preferred_concept',
+
+                                                    'termdesc__id',
+                                                    'termdesc__identifier_concept_id',
+                                                    'termdesc__status',
+                                                    'termdesc__term_ui',
+                                                    'termdesc__language_code',
+                                                    'termdesc__term_string',
+                                                    'termdesc__concept_preferred_term',
+                                                    'termdesc__is_permuted_term',
+                                                    'termdesc__lexical_tag',
+                                                    'termdesc__record_preferred_term',
+                                                    'termdesc__entry_version',
+                                                    'termdesc__date_created',
+                                                    'termdesc__date_altered',
+                                                    'termdesc__historical_annotation',
+                                            ).distinct()
+
+
             # Usado para mostrar informações de conceitos e termos Não Preferidos 
             context['identifierconceptlist_objects'] = IdentifierConceptListDesc.objects.filter(
                                             identifier=id_concept,preferred_concept='N',
@@ -2441,6 +2473,36 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                     'conceptdesc__identifier_concept_id',
                                                     'conceptdesc__language_code',
                                                     'conceptdesc__scope_note',
+
+                                                    'termdesc__id',
+                                                    'termdesc__identifier_concept_id',
+                                                    'termdesc__status',
+                                                    'termdesc__term_ui',
+                                                    'termdesc__language_code',
+                                                    'termdesc__term_string',
+                                                    'termdesc__concept_preferred_term',
+                                                    'termdesc__is_permuted_term',
+                                                    'termdesc__lexical_tag',
+                                                    'termdesc__record_preferred_term',
+                                                    'termdesc__entry_version',
+                                                    'termdesc__date_created',
+                                                    'termdesc__date_altered',
+                                                    'termdesc__historical_annotation',
+                                            ).distinct()
+
+            # Usado para mostrar informações de conceitos e termos Não Preferidos para Aba Conceitos
+            context['identifierconceptlist_objects_for_concepts'] = IdentifierConceptListDesc.objects.filter(
+                                            identifier=id_concept,preferred_concept='N',
+                                            ).order_by('identifier_id',
+                                                        'termdesc__identifier_concept_id',
+                                                        '-preferred_concept',
+                                                        '-termdesc__concept_preferred_term',
+                                                        'termdesc__language_code',
+                                                        'termdesc__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'concept_ui',
+                                                    'preferred_concept',
 
                                                     'termdesc__id',
                                                     'termdesc__identifier_concept_id',
@@ -3486,7 +3548,9 @@ def TermListQualifModification(request,term_id, ths, term_ori):
         # para isso pesquisa o term_ui de origem e o status=-3
         new_term=TermListQualif.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
         term_ui_ori=new_term[0].get('term_ui')
-        exist_term=TermListQualif.objects.filter(status=-3, term_ui=term_ui_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
+        term_string_ori=new_term[0].get('term_string').encode('utf-8')
+
+        exist_term=TermListQualif.objects.filter(status=-3, term_ui=term_ui_ori, term_string=term_string_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
 
         if len(exist_term) > 0:
             term_id_exist=exist_term[0].get('id')
@@ -4697,6 +4761,34 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                     'termqualif__historical_annotation',
                                             ).distinct()
 
+            # Usado para mostrar informações de conceitos e termos Preferidos para Aba de Conceitos
+            context['identifierconceptlist_objects_preferred_for_concepts'] = IdentifierConceptListQualif.objects.filter(
+                                            identifier=id_concept,preferred_concept='Y',
+                                            ).order_by(
+                                                        '-preferred_concept',
+                                                        '-termqualif__concept_preferred_term',
+                                                        'termqualif__language_code',
+                                                        'termqualif__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'concept_ui',
+                                                    'preferred_concept',
+
+                                                    'termqualif__id',
+                                                    'termqualif__identifier_concept_id',
+                                                    'termqualif__status',
+                                                    'termqualif__term_ui',
+                                                    'termqualif__language_code',
+                                                    'termqualif__term_string',
+                                                    'termqualif__concept_preferred_term',
+                                                    'termqualif__is_permuted_term',
+                                                    'termqualif__lexical_tag',
+                                                    'termqualif__record_preferred_term',
+                                                    'termqualif__entry_version',
+                                                    'termqualif__date_created',
+                                                    'termqualif__date_altered',
+                                                    'termqualif__historical_annotation',
+                                            ).distinct()
 
             # Usado para mostrar informações de conceitos e termos Não Preferidos
             context['identifierconceptlist_objects'] = IdentifierConceptListQualif.objects.filter(
@@ -4719,6 +4811,36 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                     'conceptqualif__identifier_concept_id',
                                                     'conceptqualif__language_code',
                                                     'conceptqualif__scope_note',
+
+                                                    'termqualif__id',
+                                                    'termqualif__identifier_concept_id',
+                                                    'termqualif__status',
+                                                    'termqualif__term_ui',
+                                                    'termqualif__language_code',
+                                                    'termqualif__term_string',
+                                                    'termqualif__concept_preferred_term',
+                                                    'termqualif__is_permuted_term',
+                                                    'termqualif__lexical_tag',
+                                                    'termqualif__record_preferred_term',
+                                                    'termqualif__entry_version',
+                                                    'termqualif__date_created',
+                                                    'termqualif__date_altered',
+                                                    'termqualif__historical_annotation',
+                                            ).distinct()
+
+            # Usado para mostrar informações de conceitos e termos Não Preferidos para Aba Conceitos
+            context['identifierconceptlist_objects_for_concepts'] = IdentifierConceptListQualif.objects.filter(
+                                            identifier=id_concept,preferred_concept='N',
+                                            ).order_by('identifier_id',
+                                                        'termqualif__identifier_concept_id',
+                                                        '-preferred_concept',
+                                                        '-termqualif__concept_preferred_term',
+                                                        'termqualif__language_code',
+                                                        'termqualif__term_string',
+                                            ).values(
+                                                    'id',
+                                                    'concept_ui',
+                                                    'preferred_concept',
 
                                                     'termqualif__id',
                                                     'termqualif__identifier_concept_id',
