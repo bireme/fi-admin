@@ -1117,58 +1117,57 @@ def TermListDescModification(request,term_id, ths, term_ori):
         # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
         IdentifierConceptListDesc.objects.filter(id=id_concept_origem).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N')
 
-    else:
-        # Atualiza informações do termo origem e destino
-        # Prepara informacoes do historico origem
-        concept_ui_origem = IdentifierConceptListDesc.objects.filter(id=id_concept_origem).values('concept_ui')
-        concept_ui_origem = concept_ui_origem[0].get('concept_ui')
-        historical_annotation_old=TermListDesc.objects.filter(id=term_ori).values('id','historical_annotation')
-        historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
+    # Atualiza informações do termo origem e destino
+    # Prepara informacoes do historico origem
+    concept_ui_origem = IdentifierConceptListDesc.objects.filter(id=id_concept_origem).values('concept_ui')
+    concept_ui_origem = concept_ui_origem[0].get('concept_ui')
+    historical_annotation_old=TermListDesc.objects.filter(id=term_ori).values('id','historical_annotation')
+    historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
 
-        # Prepara informacoes do historico destino
-        concept_ui_destino = IdentifierConceptListDesc.objects.filter(id=id_concept_destino).values('concept_ui')
-        concept_ui_destino = concept_ui_destino[0].get('concept_ui')
-        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
+    # Prepara informacoes do historico destino
+    concept_ui_destino = IdentifierConceptListDesc.objects.filter(id=id_concept_destino).values('concept_ui')
+    concept_ui_destino = concept_ui_destino[0].get('concept_ui')
+    historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
+    historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+    # Atualiza historico da origem
+    TermListDesc.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
+
+    # Pesquisa a existencia de um registro existente no destino com o status de migracao - 3
+    # para isso pesquisa o term_ui de origem e o status=-3
+    new_term=TermListDesc.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
+    term_ui_ori=new_term[0].get('term_ui')
+    term_string_ori=new_term[0].get('term_string').encode('utf-8')
+    
+    exist_term=TermListDesc.objects.filter(status=-3, term_ui=term_ui_ori, term_string=term_string_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
+
+    if len(exist_term) > 0:
+        term_id_exist=exist_term[0].get('id')
+        historical_annotation_old=exist_term[0].get('historical_annotation')
+        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
         historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
 
-        # Atualiza historico da origem
-        TermListDesc.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new )
+        # Atualiza o historico do destino
+        TermListDesc.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
 
-        # Pesquisa a existencia de um registro existente no destino com o status de migracao - 3
-        # para isso pesquisa o term_ui de origem e o status=-3
-        new_term=TermListDesc.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
-        term_ui_ori=new_term[0].get('term_ui')
-        term_string_ori=new_term[0].get('term_string').encode('utf-8')
-        
-        exist_term=TermListDesc.objects.filter(status=-3, term_ui=term_ui_ori, term_string=term_string_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
-
-        if len(exist_term) > 0:
-            term_id_exist=exist_term[0].get('id')
-            historical_annotation_old=exist_term[0].get('historical_annotation')
-            historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
-            historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
-
-            # Atualiza o historico do destino
-            TermListDesc.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new)
-
-        else:
-            # Cria nova entrada
-            item = TermListDesc.objects.create(
-                    status='1',
-                    term_ui=new_term[0].get('term_ui'),
-                    language_code=new_term[0].get('language_code'),
-                    term_string=new_term[0].get('term_string'),
-                    concept_preferred_term='N',
-                    is_permuted_term='N',
-                    lexical_tag=new_term[0].get('lexical_tag'),
-                    record_preferred_term='N',
-                    entry_version=new_term[0].get('entry_version'),
-                    date_created=new_term[0].get('date_created'),
-                    date_altered=new_term[0].get('date_altered'),
-                    historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem,
-                    term_thesaurus=new_term[0].get('term_thesaurus'),
-                    identifier_concept_id=id_concept_destino,
-                    )
+    else:
+        # Cria nova entrada
+        item = TermListDesc.objects.create(
+                status='1',
+                term_ui=new_term[0].get('term_ui'),
+                language_code=new_term[0].get('language_code'),
+                term_string=new_term[0].get('term_string'),
+                concept_preferred_term='N',
+                is_permuted_term='N',
+                lexical_tag=new_term[0].get('lexical_tag'),
+                record_preferred_term='N',
+                entry_version=new_term[0].get('entry_version'),
+                date_created=new_term[0].get('date_created'),
+                date_altered=datetime.datetime.now().strftime('%Y-%m-%d'),
+                historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem,
+                term_thesaurus=new_term[0].get('term_thesaurus'),
+                identifier_concept_id=id_concept_destino,
+                )
 
     url = '/thesaurus/descriptors/view/' + term_id + '?ths=' + ths
     return HttpResponseRedirect(url)
@@ -2431,6 +2430,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                         'termdesc__language_code',
                                                         'termdesc__term_string',
                                             ).values(
+                                                    'identifier_id',
                                                     'id',
                                                     'concept_ui',
                                                     'preferred_concept',
@@ -2500,6 +2500,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                         'termdesc__language_code',
                                                         'termdesc__term_string',
                                             ).values(
+                                                    'identifier_id',
                                                     'id',
                                                     'concept_ui',
                                                     'preferred_concept',
@@ -3527,58 +3528,57 @@ def TermListQualifModification(request,term_id, ths, term_ori):
         # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
         IdentifierConceptListQualif.objects.filter(id=id_concept_origem).update(identifier_id=identifier_id_destino,concept_relation_name='NRW',preferred_concept='N')
 
-    else:
-        # Atualiza informações do termo origem e destino
-        # Prepara informacoes do historico origem
-        concept_ui_origem = IdentifierConceptListQualif.objects.filter(id=id_concept_origem).values('concept_ui')
-        concept_ui_origem = concept_ui_origem[0].get('concept_ui')
-        historical_annotation_old=TermListQualif.objects.filter(id=term_ori).values('id','historical_annotation')
-        historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
+    # Atualiza informações do termo origem e destino
+    # Prepara informacoes do historico origem
+    concept_ui_origem = IdentifierConceptListQualif.objects.filter(id=id_concept_origem).values('concept_ui')
+    concept_ui_origem = concept_ui_origem[0].get('concept_ui')
+    historical_annotation_old=TermListQualif.objects.filter(id=term_ori).values('id','historical_annotation')
+    historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
 
-        # Prepara informacoes do historico destino
-        concept_ui_destino = IdentifierConceptListQualif.objects.filter(id=id_concept_destino).values('concept_ui')
-        concept_ui_destino = concept_ui_destino[0].get('concept_ui')
-        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
+    # Prepara informacoes do historico destino
+    concept_ui_destino = IdentifierConceptListQualif.objects.filter(id=id_concept_destino).values('concept_ui')
+    concept_ui_destino = concept_ui_destino[0].get('concept_ui')
+    historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
+    historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+
+    # Atualiza historico da origem
+    TermListQualif.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
+
+    # Pesquisa a existencia de um registro existente no destino com o status de migracao - 3
+    # para isso pesquisa o term_ui de origem e o status=-3
+    new_term=TermListQualif.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
+    term_ui_ori=new_term[0].get('term_ui')
+    term_string_ori=new_term[0].get('term_string').encode('utf-8')
+
+    exist_term=TermListQualif.objects.filter(status=-3, term_ui=term_ui_ori, term_string=term_string_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
+
+    if len(exist_term) > 0:
+        term_id_exist=exist_term[0].get('id')
+        historical_annotation_old=exist_term[0].get('historical_annotation')
+        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
         historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
 
-        # Atualiza historico da origem
-        TermListQualif.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new )
+        # Atualiza o historico do destino
+        TermListQualif.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
 
-        # Pesquisa a existencia de um registro existente no destino com o status de migracao - 3
-        # para isso pesquisa o term_ui de origem e o status=-3
-        new_term=TermListQualif.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
-        term_ui_ori=new_term[0].get('term_ui')
-        term_string_ori=new_term[0].get('term_string').encode('utf-8')
-
-        exist_term=TermListQualif.objects.filter(status=-3, term_ui=term_ui_ori, term_string=term_string_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
-
-        if len(exist_term) > 0:
-            term_id_exist=exist_term[0].get('id')
-            historical_annotation_old=exist_term[0].get('historical_annotation')
-            historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
-            historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
-
-            # Atualiza o historico do destino
-            TermListQualif.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new)
-
-        else:
-            # Cria nova entrada
-            item = TermListQualif.objects.create(
-                    status='1',
-                    term_ui=new_term[0].get('term_ui'),
-                    language_code=new_term[0].get('language_code'),
-                    term_string=new_term[0].get('term_string'),
-                    concept_preferred_term='N',
-                    is_permuted_term='N',
-                    lexical_tag=new_term[0].get('lexical_tag'),
-                    record_preferred_term='N',
-                    entry_version=new_term[0].get('entry_version'),
-                    date_created=new_term[0].get('date_created'),
-                    date_altered=new_term[0].get('date_altered'),
-                    historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem,
-                    term_thesaurus=new_term[0].get('term_thesaurus'),
-                    identifier_concept_id=id_concept_destino,
-                    )
+    else:
+        # Cria nova entrada
+        item = TermListQualif.objects.create(
+                status='1',
+                term_ui=new_term[0].get('term_ui'),
+                language_code=new_term[0].get('language_code'),
+                term_string=new_term[0].get('term_string'),
+                concept_preferred_term='N',
+                is_permuted_term='N',
+                lexical_tag=new_term[0].get('lexical_tag'),
+                record_preferred_term='N',
+                entry_version=new_term[0].get('entry_version'),
+                date_created=new_term[0].get('date_created'),
+                date_altered=datetime.datetime.now().strftime('%Y-%m-%d'),
+                historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem,
+                term_thesaurus=new_term[0].get('term_thesaurus'),
+                identifier_concept_id=id_concept_destino,
+                )
 
     url = '/thesaurus/qualifiers/view/' + term_id + '?ths=' + ths
     return HttpResponseRedirect(url)
@@ -4770,6 +4770,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                         'termqualif__language_code',
                                                         'termqualif__term_string',
                                             ).values(
+                                                    'identifier_id',
                                                     'id',
                                                     'concept_ui',
                                                     'preferred_concept',
@@ -4838,6 +4839,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                         'termqualif__language_code',
                                                         'termqualif__term_string',
                                             ).values(
+                                                    'identifier_id',
                                                     'id',
                                                     'concept_ui',
                                                     'preferred_concept',
