@@ -17,21 +17,24 @@ def check_url_or_page(form, formset_attachment):
         field_pages = 'pages_monographic'
 
     pages = form.cleaned_data.get(field_pages)
+    status = form.cleaned_data.get('status')
     electronic_address = form.cleaned_data.get('electronic_address')
 
-    # if not electronic_address field check for attachment files
-    if not electronic_address:
-        for form_attach in formset_attachment:
-            try:
-                if form_attach.cleaned_data and form_attach.cleaned_data.get('DELETE') == False:
-                    electronic_address = True
-            except AttributeError:
-                pass
+    # only apply checks for status published
+    if status == 1:
+        # if not electronic_address field check for attachment files
+        if not electronic_address:
+            for form_attach in formset_attachment:
+                try:
+                    if form_attach.cleaned_data and form_attach.cleaned_data.get('DELETE') == False:
+                        electronic_address = True
+                except AttributeError:
+                    pass
 
-    # run LILACS validation check
-    if not pages and not electronic_address:
-        form.add_error(field_pages, _('Eletronic address, fulltext file OR pages are required'))
-        url_or_page = False
+        # run LILACS validation check
+        if not pages and not electronic_address:
+            form.add_error(field_pages, _('Eletronic address, fulltext file OR pages are required'))
+            url_or_page = False
 
     return url_or_page
 
@@ -41,21 +44,24 @@ def check_url_or_attachment(form, formset_attachment):
     Check if is present the electronic_address field or attachment
     """
     url_or_attachment = True
+    status = form.cleaned_data.get('status')
     electronic_address = form.cleaned_data.get('electronic_address')
 
-    # if not electronic_address field check for attachment files
-    if not electronic_address:
-        for form_attach in formset_attachment:
-            try:
-                if form_attach.cleaned_data and form_attach.cleaned_data.get('DELETE') == False:
-                    electronic_address = True
-            except AttributeError:
-                pass
+    # only apply checks for status published
+    if status == 1:
+        # if not electronic_address field check for attachment files
+        if not electronic_address:
+            for form_attach in formset_attachment:
+                try:
+                    if form_attach.cleaned_data and form_attach.cleaned_data.get('DELETE') == False:
+                        electronic_address = True
+                except AttributeError:
+                    pass
 
-    if not electronic_address:
-        formset_attachment.non_form_errors = ErrorList([_('Eletronic address or fulltext file required')])
-        formset_attachment.is_valid = False
-        url_or_attachment = False
+        if not electronic_address:
+            formset_attachment.non_form_errors = ErrorList([_('Eletronic address or fulltext file required')])
+            formset_attachment.is_valid = False
+            url_or_attachment = False
 
     return url_or_attachment
 
