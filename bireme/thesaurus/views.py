@@ -710,7 +710,7 @@ class ConceptTermUpdate(LoginRequiredView):
                     if len(historical_annotation_old) > 0:
                         historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + concept_ui_origem
-                        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+                        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
                     else:
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + concept_ui_origem
                         historical_annotation_new=historical_annotation_now.encode('utf-8')
@@ -740,7 +740,7 @@ class ConceptTermUpdate(LoginRequiredView):
                     if len(historical_annotation_old) > 0:
                         historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - sent to ' + concept_ui_destino
-                        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+                        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
                     else:
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - sent to ' + concept_ui_origem
                         historical_annotation_new=historical_annotation_now.encode('utf-8')
@@ -1002,7 +1002,7 @@ def ConceptListDescModification(request,term_id, ths, concept_ori):
     if has_hist:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
     else:
         historical_annotation_new=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
 
@@ -1124,11 +1124,14 @@ def TermListDescModification(request,term_id, ths, term_ori):
     historical_annotation_old=TermListDesc.objects.filter(id=term_ori).values('id','historical_annotation')
     historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
 
+    # Armazena informacao para histórico destibo
+    historical_annotation_old_origem=historical_annotation_old
+
     # Prepara informacoes do historico destino
     concept_ui_destino = IdentifierConceptListDesc.objects.filter(id=id_concept_destino).values('concept_ui')
     concept_ui_destino = concept_ui_destino[0].get('concept_ui')
     historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
-    historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+    historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
 
     # Atualiza historico da origem
     TermListDesc.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -1145,7 +1148,7 @@ def TermListDescModification(request,term_id, ths, term_ori):
         term_id_exist=exist_term[0].get('id')
         historical_annotation_old=exist_term[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
 
         # Atualiza o historico do destino
         TermListDesc.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -1164,7 +1167,7 @@ def TermListDescModification(request,term_id, ths, term_ori):
                 entry_version=new_term[0].get('entry_version'),
                 date_created=new_term[0].get('date_created'),
                 date_altered=datetime.datetime.now().strftime('%Y-%m-%d'),
-                historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem,
+                historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem + ';' + historical_annotation_old_origem,
                 term_thesaurus=new_term[0].get('term_thesaurus'),
                 identifier_concept_id=id_concept_destino,
                 )
@@ -1230,7 +1233,7 @@ def ConceptCreateDescDo(request, ths):
     if has_hist:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(descriptor_ui_ori)
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
 
     created_time=datetime.datetime.now().strftime('%Y-%m-%d')
     created_time = created_time.encode('utf-8')
@@ -1823,18 +1826,12 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
         # Brings form variables to check if it already exists
         term_string = self.request.POST.get("term_string")
 
-        # print 'Alterado ----->',term_string
-
         language_code = self.request.POST.get("language_code")
         concept_preferred_term = self.request.POST.get("concept_preferred_term")
         record_preferred_term = self.request.POST.get("record_preferred_term")
         identifier_concept_id = self.request.POST.get("identifier_concept_id")
         term_thesaurus = self.request.GET.get("ths")
 
-        # Produz mensagem para historicaa_annotation
-        changed_registry=''
-        if ( concept_preferred_term_old != concept_preferred_term ) or ( term_string_old != term_string ):
-            changed_registry='1'
         # Username
         user_data = additional_user_info(self.request)
         for user_name in user_data:
@@ -1842,19 +1839,36 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
             break
 
         v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^u' + username + '^t'
-        preferido=''
-        npreferido=''
 
-        # Username
-        user_data = additional_user_info(self.request)
-        for user_name in user_data:
-            username=user_data.get('user_name').encode('utf-8')
-            break
-
-        v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^u' + username + '^t'
+        # Se ocorreu alteracao
+        # Grava configuração anterior
+        # concept_preferred_term_old
+        # Decide prenchimento com [ 01, 02, 03, 04 ou 16 ] ou [ 51, 52, 53, 54 e 516]
+        if concept_preferred_term_old == 'Y':
+            if language_code == 'en':
+                sub_t='01'
+            if language_code == 'es':
+                sub_t='02'
+            if language_code == 'pt-br':
+                sub_t='03'
+            if language_code == 'es-es':
+                sub_t='04'
+            if language_code == 'fr':
+                sub_t='16'
+        else:
+            if language_code == 'en':
+                sub_t='51'
+            if language_code == 'es':
+                sub_t='52'
+            if language_code == 'pt-br':
+                sub_t='53'
+            if language_code == 'es-es':
+                sub_t='54'
+            if language_code == 'fr':
+                sub_t='516'
+        term_string_historical = v998 + sub_t
 
         if concept_preferred_term == 'Y' and record_preferred_term == 'Y':
-            preferido='1'
 
             # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "Y"
             # Search by published record
@@ -1868,7 +1882,6 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
                                 )
 
         if concept_preferred_term == 'Y' and record_preferred_term == 'N':
-            npreferido='1'
 
             # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "N"
             # Search by published record
@@ -1880,7 +1893,7 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
                                 identifier_concept_id=identifier_concept_id,
                                 # status=1,
                                 )
-
+        # Avalia conceito PREFERIDO
         if ( concept_preferred_term == 'Y' and record_preferred_term == 'Y' ) or ( concept_preferred_term == 'Y' and record_preferred_term == 'N' ):
 
             has_term_config = TermListDesc.objects.filter( q_status_published ).values('id').exclude(id=self.object.id,)
@@ -1938,6 +1951,7 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
                                                                         ))
                 else:
 
+                    # Se não existe configuração para o termo e não existe um termo igual pode prosseguir com a atualização.
                     form_valid = form.is_valid()
                     formset_toccurrence_valid = formset_toccurrence.is_valid()
 
@@ -1945,53 +1959,14 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
                         self.object = form.save(commit=False)
 
-                        # prove the current date if you are not informed on the form
-                        if not self.object.date_created:
-                            self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
-
                         self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
 
-                        # Se ocorreu alteracao
-                        if len(changed_registry)>0:
-                            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                        self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
 
-                            # print 'Entrou 1 - Operando em preferido'
-                            if len(preferido)>0:
-                                # print 'Eh descritor!!!'
-                                # Decide prenchimento com 01, 02, 03, 04 ou 16
-                                if language_code == 'en':
-                                    sub_t='01'
-                                if language_code == 'es':
-                                    sub_t='02'
-                                if language_code == 'pt-br':
-                                    sub_t='03'
-                                if language_code == 'es-es':
-                                    sub_t='04'
-                                if language_code == 'fr':
-                                    sub_t='16'
-                                term_string_historical = v998 + sub_t
+                        if len(historical_annotation_old) > 0:
+                            term_string_historical=term_string_historical + ';' + historical_annotation_old
 
-                            if len(npreferido)>0:
-                                # print 'Nao eh descritor!!!'
-                                # Decide prenchimento com 01, 02, 03, 04 ou 16
-                                if language_code == 'en':
-                                    sub_t='51'
-                                if language_code == 'es':
-                                    sub_t='52'
-                                if language_code == 'pt-br':
-                                    sub_t='53'
-                                if language_code == 'es-es':
-                                    sub_t='54'
-                                if language_code == 'fr':
-                                    sub_t='516'
-                                term_string_historical = v998 + sub_t
-
-                            if len(historical_annotation_old) > 0:
-                                term_string_historical=term_string_historical + ';' + historical_annotation_old
-
-                            self.object.historical_annotation = term_string_historical
-
-
+                        self.object.historical_annotation = term_string_historical
 
                         self.object = form.save(commit=True)
 
@@ -2007,6 +1982,8 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
                                                                             formset_toccurrence=formset_toccurrence,
                                                                             ))
         else:
+        
+            # Avalia conceito NÃO PREFERIDO
 
             # Search by draft record
             q_status_draft = Q(
@@ -2057,35 +2034,16 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
                     self.object = form.save(commit=False)
 
-                    # prove the current date if you are not informed on the form
-                    if not self.object.date_created:
-                        self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
-
                     self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
 
-                    # Se ocorreu alteracao
-                    if len(changed_registry)>0:
-                        self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                    self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
 
-                        # print 'Entrou 2 - Operando em NAO preferido - sinonimo'
+                    term_string_historical = v998 + sub_t
 
-                        # Decide prenchimento com 01, 02, 03, 04 ou 16
-                        if language_code == 'en':
-                            sub_t='51'
-                        if language_code == 'es':
-                            sub_t='52'
-                        if language_code == 'pt-br':
-                            sub_t='53'
-                        if language_code == 'es-es':
-                            sub_t='54'
-                        if language_code == 'fr':
-                            sub_t='516'
-                        term_string_historical = v998 + sub_t
+                    if len(historical_annotation_old) > 0:
+                        term_string_historical=term_string_historical + ';' + historical_annotation_old
 
-                        if len(historical_annotation_old) > 0:
-                            term_string_historical=term_string_historical + ';' + historical_annotation_old
-
-                        self.object.historical_annotation = term_string_historical
+                    self.object.historical_annotation = term_string_historical
 
                     self.object = form.save(commit=True)
 
@@ -3112,7 +3070,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
                     if len(historical_annotation_old) > 0:
                         historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + concept_ui_origem
-                        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+                        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
                     else:
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + concept_ui_origem
                         historical_annotation_new=historical_annotation_now.encode('utf-8')
@@ -3142,7 +3100,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
                     if len(historical_annotation_old) > 0:
                         historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - sent to ' + concept_ui_destino
-                        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+                        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
                     else:
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - sent to ' + concept_ui_origem
                         historical_annotation_new=historical_annotation_now.encode('utf-8')
@@ -3412,7 +3370,7 @@ def ConceptListQualifModification(request,term_id, ths, concept_ori):
     if has_hist:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
     else:
         historical_annotation_new=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
 
@@ -3535,11 +3493,14 @@ def TermListQualifModification(request,term_id, ths, term_ori):
     historical_annotation_old=TermListQualif.objects.filter(id=term_ori).values('id','historical_annotation')
     historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
 
+    # Armazena informacao para histórico destino
+    historical_annotation_old_origem=historical_annotation_old
+
     # Prepara informacoes do historico destino
     concept_ui_destino = IdentifierConceptListQualif.objects.filter(id=id_concept_destino).values('concept_ui')
     concept_ui_destino = concept_ui_destino[0].get('concept_ui')
     historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
-    historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+    historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
 
     # Atualiza historico da origem
     TermListQualif.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -3556,7 +3517,7 @@ def TermListQualifModification(request,term_id, ths, term_ori):
         term_id_exist=exist_term[0].get('id')
         historical_annotation_old=exist_term[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
 
         # Atualiza o historico do destino
         TermListQualif.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -3575,7 +3536,7 @@ def TermListQualifModification(request,term_id, ths, term_ori):
                 entry_version=new_term[0].get('entry_version'),
                 date_created=new_term[0].get('date_created'),
                 date_altered=datetime.datetime.now().strftime('%Y-%m-%d'),
-                historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem,
+                historical_annotation=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem + ';' + historical_annotation_old_origem,
                 term_thesaurus=new_term[0].get('term_thesaurus'),
                 identifier_concept_id=id_concept_destino,
                 )
@@ -3684,7 +3645,7 @@ class ConceptCreateQualifConfirm(LoginRequiredView, ListView):
                 if has_hist:
                     historical_annotation_old=has_hist[0].get('historical_annotation')
                     historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(qualifier_ui_ori)
-                    historical_annotation_new=historical_annotation_now.encode('utf-8') + '; ' + historical_annotation_old.encode('utf-8')
+                    historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
 
                 created_time=datetime.datetime.now().strftime('%Y-%m-%d')
                 created_time = created_time.encode('utf-8')
@@ -4245,22 +4206,13 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
             # print 'Current - TERM ----->',term_string_old
             # print 'Current - Historico --->',historical_annotation_old
 
-        if form.is_valid():
-            # Brings form variables to check if it already exists
-            term_string = self.request.POST.get("term_string")
-            language_code = self.request.POST.get("language_code")
-            concept_preferred_term = self.request.POST.get("concept_preferred_term")
-            record_preferred_term = self.request.POST.get("record_preferred_term")
-            identifier_concept_id = self.request.POST.get("identifier_concept_id")
-            term_thesaurus = self.request.GET.get("ths")
-
-        # Produz mensagem para historicaa_annotation
-        changed_registry=''
-        if ( concept_preferred_term_old != concept_preferred_term ) or ( term_string_old != term_string ):
-            changed_registry='1'
-
-        preferido=''
-        npreferido=''
+        # Brings form variables to check if it already exists
+        term_string = self.request.POST.get("term_string")
+        language_code = self.request.POST.get("language_code")
+        concept_preferred_term = self.request.POST.get("concept_preferred_term")
+        record_preferred_term = self.request.POST.get("record_preferred_term")
+        identifier_concept_id = self.request.POST.get("identifier_concept_id")
+        term_thesaurus = self.request.GET.get("ths")
 
         # Username
         user_data = additional_user_info(self.request)
@@ -4270,8 +4222,35 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
         v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^u' + username + '^t'
 
+        # Se ocorreu alteracao
+        # Grava configuração anterior
+        # concept_preferred_term_old
+        # Decide prenchimento com [ 01, 02, 03, 04 ou 16 ] ou [ 51, 52, 53, 54 e 516]
+        if concept_preferred_term_old == 'Y':
+            if language_code == 'en':
+                sub_t='01'
+            if language_code == 'es':
+                sub_t='02'
+            if language_code == 'pt-br':
+                sub_t='03'
+            if language_code == 'es-es':
+                sub_t='04'
+            if language_code == 'fr':
+                sub_t='16'
+        else:
+            if language_code == 'en':
+                sub_t='51'
+            if language_code == 'es':
+                sub_t='52'
+            if language_code == 'pt-br':
+                sub_t='53'
+            if language_code == 'es-es':
+                sub_t='54'
+            if language_code == 'fr':
+                sub_t='516'
+        term_string_historical = v998 + sub_t
+
         if concept_preferred_term == 'Y' and record_preferred_term == 'Y':
-            preferido='1'
 
             # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "Y"
             # Search by published record
@@ -4285,7 +4264,6 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
                                 )
 
         if concept_preferred_term == 'Y' and record_preferred_term == 'N':
-            npreferido='1'
 
             # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "Y"
             # Search by published record
@@ -4359,51 +4337,16 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
                         self.object = form.save(commit=False)
 
-                        # prove the current date if you are not informed on the form
-                        if not self.object.date_created:
-                            self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
-
                         self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
 
-                        # Se ocorreu alteracao
-                        if len(changed_registry)>0:
-                            self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                        self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
 
-                            # print 'Entrou 1 - Operando em preferido'
-                            if len(preferido)>0:
-                                # print 'Eh descritor!!!'
-                                # Decide prenchimento com 01, 02, 03, 04 ou 16
-                                if language_code == 'en':
-                                    sub_t='01'
-                                if language_code == 'es':
-                                    sub_t='02'
-                                if language_code == 'pt-br':
-                                    sub_t='03'
-                                if language_code == 'es-es':
-                                    sub_t='04'
-                                if language_code == 'fr':
-                                    sub_t='16'
-                                term_string_historical = v998 + sub_t
+                        term_string_historical = v998 + sub_t
 
-                            if len(npreferido)>0:
-                                # print 'Nao eh descritor!!!'
-                                # Decide prenchimento com 01, 02, 03, 04 ou 16
-                                if language_code == 'en':
-                                    sub_t='51'
-                                if language_code == 'es':
-                                    sub_t='52'
-                                if language_code == 'pt-br':
-                                    sub_t='53'
-                                if language_code == 'es-es':
-                                    sub_t='54'
-                                if language_code == 'fr':
-                                    sub_t='516'
-                                term_string_historical = v998 + sub_t
+                        if len(historical_annotation_old) > 0:
+                            term_string_historical=term_string_historical + ';' + historical_annotation_old
 
-                            if len(historical_annotation_old) > 0:
-                                term_string_historical=term_string_historical + ';' + historical_annotation_old
-
-                            self.object.historical_annotation = term_string_historical
+                        self.object.historical_annotation = term_string_historical
 
                         self.object = form.save(commit=True)
 
@@ -4462,35 +4405,16 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
                     self.object = form.save(commit=False)
 
-                    # prove the current date if you are not informed on the form
-                    if not self.object.date_created:
-                        self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
-
                     self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
 
-                    # Se ocorreu alteracao
-                    if len(changed_registry)>0:
-                        self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
+                    self.object.date_altered = datetime.datetime.now().strftime('%Y-%m-%d')
 
-                        # print 'Entrou 2 - Operando em NAO preferido - sinonimo'
+                    term_string_historical = v998 + sub_t
 
-                        # Decide prenchimento com 01, 02, 03, 04 ou 16
-                        if language_code == 'en':
-                            sub_t='51'
-                        if language_code == 'es':
-                            sub_t='52'
-                        if language_code == 'pt-br':
-                            sub_t='53'
-                        if language_code == 'es-es':
-                            sub_t='54'
-                        if language_code == 'fr':
-                            sub_t='516'
-                        term_string_historical = v998 + sub_t
+                    if len(historical_annotation_old) > 0:
+                        term_string_historical=term_string_historical + ';' + historical_annotation_old
 
-                        if len(historical_annotation_old) > 0:
-                            term_string_historical=term_string_historical + ';' + historical_annotation_old
-
-                        self.object.historical_annotation = term_string_historical
+                    self.object.historical_annotation = term_string_historical
 
                     self.object = form.save(commit=True)
 
