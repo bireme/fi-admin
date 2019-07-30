@@ -3,10 +3,6 @@
 {% load static %}
 {% load app_filters %}
 
-{% block extrahead %}
-<link href="{% static "css/bootstrap-datepicker.min.css" %}" rel="stylesheet">
-{% endblock %}
-
 {% block title %}{% trans "Edit Institution" %}{% endblock %}
 
 {% block breadcrumb %}
@@ -80,74 +76,24 @@
                               {% endfor %}
                               {{ form.non_field_errors }}
                               {% for field in form.visible_fields %}
-                                  {% if field.name == 'indexed_database' %}
-                                      <fieldset id="indexed_database" style="width: 53%">
-                                          <div class="row">
-                                              <div class="span3">
-                                                  {% trans "Indexed in" %}
-                                              </div>
-                                              <div class="multiselect_buttons">&nbsp;</div>
-                                              <div class="span3">
-                                                  <span class="multiselect_label">{% trans "Selected" %}</span>
-                                              </div>
-                                          </div>
-
-                                          <div class="row">
-                                              <div class="span3">
-                                                  <select multiple="multiple" name="indexed_databases_available" id="multiselect">
-                                                      {% for value,label in form.indexed_database.field.choices %}
-                                                          {% if form.indexed_database.value %}
-                                                              {% if not value|inintvalues:form.indexed_database.value %}
-                                                                  <option value="{{ value }}">{{ label }}</option>
-                                                              {% endif %}
-                                                          {% else %}
-                                                              <option value="{{ value }}">{{ label }}</option>
-                                                          {% endif %}
-                                                      {% endfor %}
-                                                  </select>
-                                              </div>
-                                              <div class="multiselect_buttons">
-                                                  <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="icon-chevron-right"></i></button>
-                                                  <br/><br/>
-                                                  <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="icon-chevron-left"></i></button>
-                                              </div>
-                                              <div class="span3">
-                                                 <select name="{{ field.name }}"  id="multiselect_to" class="form-control" multiple="multiple">
-                                                     {% for value,label in form.indexed_database.field.choices %}
-                                                          {% if form.indexed_database.value %}
-                                                              {% if value|inintvalues:form.indexed_database.value  %}
-                                                                  <option value="{{ value }}">{{ label }}</option>
-                                                              {% endif %}
-                                                          {% else %}
-                                                              {% if value in field.value %}
-                                                                  <option value="{{ value }}">{{ label }}</option>
-                                                              {% endif %}
-                                                          {% endif %}
-                                                     {% endfor %}
-                                                 </select>
-                                              </div>
-                                          </div>
-                                      </fieldset>
-                                  {% else %}
-                                      <li id="field_{{ field.name }}">
-                                          {% if field.field|fieldtype == 'BooleanField' %}
-                                                <span>{{ field.label }}</span>
-                                          {% else %}
-                                                <label for="{{ field.auto_id }}">
-                                                    {% if field.field.required %}
-                                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                                    {% else %}
-                                                        {{ field.label }}
-                                                    {% endif %}
-                                                </label>
-                                          {% endif %}
-                                          {% if field.help_text %}
-                                              <p class="muted">{{ field.help_text }}</p>
-                                          {% endif %}
-                                          {{ field.errors }}
-                                          {{ field }}
-                                      </li>
-                                  {% endif %}
+                                  <li id="field_{{ field.name }}">
+                                      {% if field.field|fieldtype == 'BooleanField' %}
+                                            <span>{{ field.label }}</span>
+                                      {% else %}
+                                            <label for="{{ field.auto_id }}">
+                                                {% if field.field.required %}
+                                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                                {% else %}
+                                                    {{ field.label }}
+                                                {% endif %}
+                                            </label>
+                                      {% endif %}
+                                      {% if field.help_text %}
+                                          <p class="muted">{{ field.help_text }}</p>
+                                      {% endif %}
+                                      {{ field.errors }}
+                                      {{ field }}
+                                  </li>
                               {% endfor %}
                             </ul>
                         </fieldset>
@@ -158,8 +104,7 @@
                     {% if object.id %}
                         <div class="alert alert-info">
                             <p>{% trans "Created in" %}: <strong>{{ object.created_time }}</strong> {% trans "by user" %}  <strong>{{ object.created_by.username }}</strong></p>
-                            <p>{% trans "Cooperative center code" %}: <strong>{{ object.cooperative_center_code }}</strong></p>
-                            {% if act.updated_by %}
+                            {% if object.updated_by %}
                                 <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
@@ -188,49 +133,6 @@
             <!-- ADM FORMSET -->
             {% include "institution/fieldset_adm.html" %}
 
-
-            <div id='tab-thematic' class="tab-pane">
-                <fieldset id="thematic">
-                    <table class="table table-condensed table-striped span8">
-                        <thead>
-                            <th>{% trans "Thematic area" %}</th>
-                            <th>{% trans "Delete?" %}</th>
-                        </thead>
-                        <tbody>
-                        {% if thematic_list %}
-                            {% for thematic in thematic_list %}
-                                <tr>
-                                    <td colspan="3">{{ thematic }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-
-                        {{ formset_thematic.management_form }}
-
-                        {% for form in formset_thematic %}
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
-                            <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
-                                {% for field in form.visible_fields %}
-                                    {% if role == 'doc' and field.name == 'status' %}
-                                       <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
-                                    {% elif field.name != 'DELETE' %}
-                                        <td>
-                                            {{ field }}
-                                            {{ field.errors }}
-                                        </td>
-                                    {% endif %}
-                                {% endfor %}
-                                <td>
-                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </fieldset>
-            </div>
         </div>
 
         <div class="control-panel form-submit">
@@ -256,7 +158,6 @@
 
 {% if object.id %}
     {% include "modal_log.html" %}
-    {% include "modal_adhesion.html" %}
 {% endif %}
 
 {% include "modal_dedup.html" %}
@@ -265,12 +166,7 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
-   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
-   <script src="{% static 'js/multiselect.min.js' %}"></script>
    <script src="{% static 'js/adhesionterm.js' %}"></script>
-   {% if LANGUAGE_CODE != 'en' %}
-       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
-   {% endif %}
 
    <script type="text/javascript">
         var decs_field;

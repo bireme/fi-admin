@@ -55,7 +55,7 @@
                                 <li><a href="{% url 'list_legislation' %}" title=""><i class="icon-book"></i> {% trans "Legislation" %}</a></li>
                             {% endif %}
 
-                            {% if service_role.DirIns %}
+                            {% if user_type = 'advanced' and service_role.DirIns %}
                                 <li><a href="{% url 'list_institution' %}" title=""><i class="icon-home"></i> {% trans "Institutions" %}</a></li>
                             {% endif %}
 

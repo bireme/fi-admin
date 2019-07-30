@@ -1,7 +1,7 @@
 #! coding: utf-8
 from django.core.urlresolvers import reverse_lazy
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
@@ -27,17 +27,25 @@ class InstGenericListView(LoginRequiredView, ListView):
     search_field = "name"
 
     def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_role = user_data['service_role'].get('DirIns')
+        user_type = user_data.get('user_type')
+        # restrict institution module to advanced users with DirIns permission
+        if user_type != 'advanced' or not user_role:
+            return HttpResponseForbidden()
+
         return super(InstGenericListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('DirIns')
+        user_cc = user_data.get('user_cc')
+        user_type = user_data.get('user_type')
 
         # getting action parameter
         self.actions = {}
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
-
 
         # search filter
         search = self.actions['s']
@@ -52,8 +60,8 @@ class InstGenericListView(LoginRequiredView, ListView):
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
         # filter by institution of user
-        if self.actions['filter_owner'] != "*":
-            object_list = object_list.filter(cc_code=user_data['user_cc'])
+        if self.actions['filter_owner'] != "*" or user_cc != 'BR1.1':
+            object_list = object_list.filter(cc_code=user_cc)
 
         return object_list
 
@@ -122,6 +130,21 @@ class InstUpdate(LoginRequiredView):
     model = Institution
     success_url = reverse_lazy('list_institution')
     form_class = InstitutionForm
+
+    def get_object(self, *args, **kwargs):
+        obj = super(InstUpdate, self).get_object(*args, **kwargs)
+
+        user_data = additional_user_info(self.request)
+        user_role = user_data['service_role'].get('DirIns')
+        user_cc = user_data.get('user_cc')
+        user_type = user_data.get('user_type')
+
+        # restrict edition to BR1.1 users or advanced users with same CC code
+        if user_cc != 'BR1.1':
+            if user_cc != obj.cc_code or user_type != 'advanced':
+                return None
+
+        return obj
 
     def form_valid(self, form):
         formset_person = PersonFormSet(self.request.POST, instance=self.object)
@@ -206,6 +229,7 @@ class InstUpdate(LoginRequiredView):
 
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('DirIns')
+        user_cc = user_data['user_cc']
         user_id = self.request.user.id
         if self.object:
             user_data['is_owner'] = True if self.object.created_by == self.request.user else False
@@ -215,10 +239,10 @@ class InstUpdate(LoginRequiredView):
 
         # create flag that control if user have permission to edit the reference
         context['user_can_edit'] = True if not self.object or self.object.cooperative_center_code in ['BR1.1', user_data['user_cc']] else False
-        if user_role == 'doc':
-            context['user_can_change_status'] = False
-        else:
+        if user_cc == 'BR1.1':
             context['user_can_change_status'] = True
+        else:
+            context['user_can_change_status'] = False
 
         context['settings'] = settings
         context['help_fields'] = get_help_fields('institution')
@@ -249,6 +273,14 @@ class InstCreateView(InstUpdate, CreateView):
     Used as class view to create Institution
     Extend InstUpdate that do all the work
     """
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data.get('user_cc')
+        # restrict create of new institution to BIREME (BR1.1)
+        if user_cc != 'BR1.1':
+            return HttpResponseForbidden()
+
+        return super(InstCreateView, self).dispatch(*args, **kwargs)
 
 
 class InstDeleteView(LoginRequiredView, DeleteView):
@@ -257,6 +289,16 @@ class InstDeleteView(LoginRequiredView, DeleteView):
     """
     model = Institution
     success_url = reverse_lazy('list_institution')
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data.get('user_cc')
+        # restrict delete of institution to BIREME (BR1.1)
+        if user_cc != 'BR1.1':
+            return HttpResponseForbidden()
+
+        return super(InstCreateView, self).dispatch(*args, **kwargs)
+
 
     def get_object(self, queryset=None):
         obj = super(InstDeleteView, self).get_object()
