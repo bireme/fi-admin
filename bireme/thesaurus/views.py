@@ -997,9 +997,8 @@ def ConceptListDescModification(request,term_id, ths, concept_ori):
     descriptor_ui_ori = descriptor_ui_ori[0].get('descriptor_ui')
 
     # Verifica se já existe anotação no historico
-    # has_hist=IdentifierConceptListDesc.objects.filter(id=concept_ori).values('historical_annotation')
-    has_hist=IdentifierConceptListDesc.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='')
-    if has_hist:
+    has_hist=IdentifierConceptListDesc.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='').values('id','historical_annotation')
+    if len(has_hist)>0:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
         historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
@@ -1124,7 +1123,7 @@ def TermListDescModification(request,term_id, ths, term_ori):
     historical_annotation_old=TermListDesc.objects.filter(id=term_ori).values('id','historical_annotation')
     historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
 
-    # Armazena informacao para histórico destibo
+    # Armazena informacao para histórico destino
     historical_annotation_old_origem=historical_annotation_old
 
     # Prepara informacoes do historico destino
@@ -1172,7 +1171,9 @@ def TermListDescModification(request,term_id, ths, term_ori):
                 identifier_concept_id=id_concept_destino,
                 )
 
-    url = '/thesaurus/descriptors/view/' + term_id + '?ths=' + ths
+    # direciona para página origem na aba tab-concepts
+    url = '/thesaurus/descriptors/view/' + term_ori + '?ths=' + ths + '#tab-concepts'
+
     return HttpResponseRedirect(url)
 
 
@@ -1306,7 +1307,8 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
+        tab_position='#tab-concepts'
+        return '/thesaurus/descriptors/view/%s%s%s' % ( id_term, ths, tab_position )
 
     def form_valid(self, form):
 
@@ -1465,7 +1467,8 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/view/%s%s' % ( int(self.request.POST.get("termdesc__id")), ths )
+        tab_position='#tab-concepts'
+        return '/thesaurus/descriptors/view/%s%s%s' % ( int(self.request.POST.get("termdesc__id")), ths, tab_position )
 
     def form_valid(self, form):
 
@@ -1796,7 +1799,8 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                                                                         ))
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
+        tab_position='#tab-concepts'
+        return '/thesaurus/descriptors/view/%s%s%s' % ( self.object.id, ths, tab_position )
 
 
 
@@ -2061,7 +2065,9 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
+        # Usado para direcionar para aba tab-concepts
+        tab_position='#tab-concepts'
+        return '/thesaurus/descriptors/view/%s%s%s' % ( self.object.id, ths, tab_position )
 
 
     def get_context_data(self, **kwargs):
@@ -2098,7 +2104,8 @@ class legacyInformationDescCreateView(LoginRequiredView, CreateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
+        tab_position='#tab-legacy'
+        return '/thesaurus/descriptors/view/%s%s%s' % ( id_term, ths, tab_position )
 
     def form_valid(self, form):
 
@@ -2144,7 +2151,8 @@ class legacyInformationDescUpdateView(LoginRequiredView, UpdateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
+        tab_position='#tab-legacy'
+        return '/thesaurus/descriptors/view/%s%s%s' % ( id_term, ths, tab_position )
 
     def form_valid(self, form):
 
@@ -3366,8 +3374,8 @@ def ConceptListQualifModification(request,term_id, ths, concept_ori):
     qualifier_ui_ori = qualifier_ui_ori[0].get('qualifier_ui')
 
     # Verifica se já existe anotação no historico
-    has_hist=IdentifierConceptListQualif.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='')
-    if has_hist:
+    has_hist=IdentifierConceptListQualif.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='').values('id','historical_annotation')
+    if len(has_hist)>0:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
         historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
@@ -3540,8 +3548,8 @@ def TermListQualifModification(request,term_id, ths, term_ori):
                 term_thesaurus=new_term[0].get('term_thesaurus'),
                 identifier_concept_id=id_concept_destino,
                 )
-
-    url = '/thesaurus/qualifiers/view/' + term_id + '?ths=' + ths
+    # direciona para página origem na aba tab-concepts
+    url = '/thesaurus/qualifiers/view/' + term_ori + '?ths=' + ths + '#tab-concepts'
     return HttpResponseRedirect(url)
 
 
@@ -3720,7 +3728,8 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/qualifiers/view/%s%s' % ( id_term, ths )
+        tab_position='#tab-concepts'
+        return '/thesaurus/qualifiers/view/%s%s%s' % ( id_term, ths, tab_position )
 
     def form_valid(self, form):
 
@@ -3879,7 +3888,8 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/qualifiers/view/%s%s' % ( int(self.request.POST.get("termqualif__id")), ths )
+        tab_position='#tab-concepts'
+        return '/thesaurus/qualifiers/view/%s%s%s' % ( int(self.request.POST.get("termqualif__id")), ths, tab_position )
 
 
     def form_valid(self, form):
@@ -3939,7 +3949,8 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
 
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/qualifiers/view/%s%s' % ( self.object.id, ths )
+        tab_position='#tab-concepts'
+        return '/thesaurus/qualifiers/view/%s%s%s' % ( self.object.id, ths, tab_position )
 
     def form_valid(self, form):
         
@@ -4192,7 +4203,9 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/qualifiers/view/%s%s' % ( self.object.id, ths )
+        # Usado para direcionar para aba tab-concepts
+        tab_position='#tab-concepts'
+        return '/thesaurus/qualifiers/view/%s%s%s' % ( self.object.id, ths, tab_position)
 
     def form_valid(self, form):
 
@@ -4457,7 +4470,8 @@ class legacyInformationQualifCreateView(LoginRequiredView, CreateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/qualifiers/view/%s%s' % ( id_term, ths )
+        tab_position='#tab-legacy'
+        return '/thesaurus/qualifiers/view/%s%s%s' % ( id_term, ths, tab_position )
 
     def form_valid(self, form):
 
@@ -4503,7 +4517,8 @@ class legacyInformationQualifUpdateView(LoginRequiredView, UpdateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/qualifiers/view/%s%s' % ( id_term, ths )
+        tab_position='#tab-legacy'
+        return '/thesaurus/qualifiers/view/%s%s%s' % ( id_term, ths, tab_position)
 
     def form_valid(self, form):
 
