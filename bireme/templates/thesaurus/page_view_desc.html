@@ -980,6 +980,22 @@
         });
 
 
+        // Utilizado para deixar a ultima aba ativa apos refresh
+        $('ul.nav-tabs li a').click(function(e){
+            e.preventDefault();
+            $(this).tab('show');
+            window.scrollTo(0, 0);
+        });
+
+        $('ul.nav-tabs > li > a').on('shown.bs.tab', function(e){
+            var id = $(e.target).attr("href").substr(1);
+            window.location.hash = id;
+        });
+
+        var hash = window.location.hash;
+        $('ul.nav-tabs li a[href="' + hash + '"]').tab('show');
+
+
     //-->
     </script>
 
