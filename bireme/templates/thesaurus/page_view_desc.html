@@ -612,7 +612,7 @@
                                             {{ obj.termdesc__term_string }}&nbsp;<font color="blue">({{ obj.termdesc__language_code }})</font>
                                             <b>[ {{ obj.concept_ui }} ]</b>
                                             <font color="gray"><i>&nbsp;{% trans "Narrower" %}
-                                                {% if obj.termdesc__status == '3' %}tab-concepts
+                                                {% if obj.termdesc__status == '3' %}
                                                     {{ obj.termdesc__status|display_status_label }}
                                                 {% endif %}
                                             </i></font>
