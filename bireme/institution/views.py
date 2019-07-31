@@ -158,9 +158,7 @@ class InstUpdate(LoginRequiredView):
         return obj
 
     def form_valid(self, form):
-        formset_person = PersonFormSet(self.request.POST, instance=self.object)
-        formset_phone = PhoneFormSet(self.request.POST, instance=self.object)
-        formset_email = EmailFormSet(self.request.POST, instance=self.object)
+        formset_contact = ContactFormSet(self.request.POST, instance=self.object)
         formset_url = URLFormSet(self.request.POST, instance=self.object)
         formset_unitlevel = UnitLevelFormSet(self.request.POST, instance=self.object)
         formset_adm = AdmFormSet(self.request.POST, instance=self.object)
@@ -168,29 +166,20 @@ class InstUpdate(LoginRequiredView):
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
 
-        formset_person_valid = formset_person.is_valid()
-        formset_phone_valid = formset_phone.is_valid()
-        formset_email_valid = formset_email.is_valid()
+        formset_contact_valid = formset_contact.is_valid()
         formset_url_valid = formset_url.is_valid()
         formset_unitlevel_valid = formset_unitlevel.is_valid()
         formset_adm_valid = formset_adm.is_valid()
 
         user_data = additional_user_info(self.request)
 
-        if (form_valid and formset_person_valid and formset_phone_valid and
-            formset_email_valid and formset_url_valid and formset_unitlevel_valid and
-            formset_adm_valid):
+        if (form_valid and formset_contact_valid and formset_url_valid and
+            formset_unitlevel_valid and formset_adm_valid):
 
                 self.object = form.save()
 
-                formset_person.instance = self.object
-                formset_person.save()
-
-                formset_phone.instance = self.object
-                formset_phone.save()
-
-                formset_email.instance = self.object
-                formset_email.save()
+                formset_contact.instance = self.object
+                formset_contact.save()
 
                 formset_url.instance = self.object
                 formset_url.save()
@@ -203,16 +192,12 @@ class InstUpdate(LoginRequiredView):
 
                 # update solr index
                 form.save()
-                # save many-to-many relation fields
-                form.save_m2m()
 
                 return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(
                            self.get_context_data(form=form,
-                                                 formset_person=formset_person,
-                                                 formset_phone=formset_phone,
-                                                 formset_email=formset_email,
+                                                 formset_contact=formset_contact,
                                                  formset_url=formset_url,
                                                  formset_adm=formset_adm,
                                                  formset_unitlevel=formset_unitlevel))
@@ -263,9 +248,7 @@ class InstUpdate(LoginRequiredView):
             context['c_type'] = c_type
 
         if self.request.method == 'GET':
-            context['formset_person'] = PersonFormSet(instance=self.object)
-            context['formset_phone'] = PhoneFormSet(instance=self.object)
-            context['formset_email'] = EmailFormSet(instance=self.object)
+            context['formset_contact'] = ContactFormSet(instance=self.object)
             context['formset_url'] = URLFormSet(instance=self.object)
             context['formset_adm'] = AdmFormSet(instance=self.object)
             context['formset_unitlevel'] = UnitLevelFormSet(instance=self.object)
@@ -324,9 +307,7 @@ class InstDeleteView(LoginRequiredView, DeleteView):
         c_type = ContentType.objects.get_for_model(obj)
 
         # delete associated data
-        ContactPerson.objects.filter(institution_id=obj.id).delete()
-        ContactPhone.objects.filter(institution_id=obj.id).delete()
-        ContactEmail.objects.filter(institution_id=obj.id).delete()
+        Contact.objects.filter(institution_id=obj.id).delete()
         URL.objects.filter(institution_id=obj.id).delete()
 
         return super(InstDeleteView, self).delete(request, *args, **kwargs)

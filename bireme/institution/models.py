@@ -81,11 +81,15 @@ class Institution(Generic, AuditLog):
         has_unit = UnitLevel.objects.filter(institution=self.pk).exists()
         return has_unit
 
-    def units(self):
+    def get_units_names(self):
         units = [unit_level.unit.name for unit_level in UnitLevel.objects.filter(institution=self.pk).order_by('level')]
 
         return units
 
+    def get_units_level(self):
+        units = [unit_level for unit_level in UnitLevel.objects.filter(institution=self.pk).order_by('level')]
+
+        return units
 
     def status_label(self):
         status_dict = dict(STATUS_CHOICES)
@@ -182,6 +186,31 @@ class ContactPerson(models.Model, AuditLog):
     def __unicode__(self):
         return u"{0} {1} ({2})".format(self.prefix, self.name, self.job_title)
 
+
+# Institution contacts
+class Contact(models.Model, AuditLog):
+    PREFIX_CHOICES = (
+        ('Mr.', _('Mr.')),
+        ('Mrs.', _('Mrs.')),
+        ('Dr.', _('Dr.')),
+    )
+
+    class Meta:
+        verbose_name = _("Contact")
+        verbose_name_plural = _("Contacts")
+
+    institution = models.ForeignKey(Institution, null=True)
+    prefix = models.CharField(_("Prefix"), max_length=45, choices=PREFIX_CHOICES, blank=True)
+    name = models.CharField(_("Name"), max_length=155, blank=True)
+    job_title = models.CharField(_("Job title"), max_length=155, blank=True)
+    email = models.EmailField(_("Email"), max_length=155, blank=True)
+    phone_number = models.CharField(_("Phone"), max_length=255, blank=True)
+
+    def get_parent(self):
+        return self.institution
+
+    def __unicode__(self):
+        return u"{0} {1} ({2})".format(self.prefix, self.name, self.job_title)
 
 # Institution URL
 class URL(models.Model, AuditLog):
