@@ -10,7 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
@@ -56,6 +56,9 @@ class InstGenericListView(LoginRequiredView, ListView):
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
 
+        if self.actions['filter_country'] != '':
+            object_list = object_list.filter(country=self.actions['filter_country'])
+
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
@@ -70,9 +73,17 @@ class InstGenericListView(LoginRequiredView, ListView):
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('DirIns')
 
+        country_list = Institution.objects.values('country').distinct().annotate(total=Count('pk')).order_by('-total')
+        for country in country_list:
+            country_id = country['country']
+            if country_id > 0:
+                country['country_name'] = unicode(Country.objects.get(pk=country_id))
+
+
         context['actions'] = self.actions
         context['user_role'] = user_role
         context['user_cc'] = user_data.get('user_cc')
+        context['country_list'] = country_list
 
         return context
 

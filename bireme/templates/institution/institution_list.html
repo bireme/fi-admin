@@ -52,7 +52,7 @@
 
     <div class="tab-content">
         <div class="tab-pane active">
-            {% if user_cc == 'BR1.1' %}
+            {% if user_cc == 'BR1.1' and actions.filter_owner == '*' %}
             <div class="row">
                 <div class="span-4">
                     <div class="input-append" style="margin-left: 10px">
@@ -74,6 +74,15 @@
                                 <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Inactive" %}</option>
                                 <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
                             </select>
+
+                            {% trans "Country" %}:
+                            <select name="filter_country">
+                                <option value="">{% trans "All" %}</option>
+                                {% for c in country_list %}
+                                    <option value="{{c.country}}" {% if actions.filter_country == c.country|slugify %}selected="true"{% endif %}>{{ c.country_name }} ({{ c.total}})</option>
+                                {% endfor %}
+                            </select>
+
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
                         </form>
                     </div>
@@ -86,6 +95,7 @@
                     <th><a href="javascript:orderby('id');" id="id_id">#</a></th>
                     <th><a href="javascript:orderby('title');" id="id_cc">{% trans "CC" %}</a></th>
                     <th><a href="javascript:orderby('title');" id="id_title">{% trans "Name" %}</a></th>
+                    <th><a href="javascript:orderby('country');" id="id_country">{% trans "Country" %}</a></th>
                     <th><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
@@ -101,6 +111,7 @@
                                         - {{ institution.units|join:" - " }}
                                     {% endif %}
                                     {% if institution|length > 90 %}...{% endif %}</span></td>
+                            <td>{{ institution.country }}</a></td>
                             <td>{{ institution.status_label }}</a></td>
                             <td>
                                 <a href="{% url 'edit_institution' institution.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
