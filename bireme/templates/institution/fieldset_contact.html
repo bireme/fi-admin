@@ -2,18 +2,20 @@
 
 <div id='tab-contact' class="tab-pane">
 
-    {% for error in formset_email.non_form_errors  %}
+    {% for error in formset_contact.non_form_errors  %}
         <p class="errorlist alert alert-error">
             {{ error|escape }}
         </p>
     {% endfor %}
 
-    <fieldset id="email">
+    <fieldset id="contact">
         <table class="table table-condensed table-striped span8">
             <thead>
-                <th>{% trans "Type" %}</th>
+                <th>{% trans "Prefix" %}</th>
                 <th>{% trans "Name" %}</th>
+                <th>{% trans "Job title" %}</th>
                 <th>{% trans "Email" %}</th>
+                <th>{% trans "Phone" %}</th>
                 {% if user_can_edit %}
                     <th>{% trans "Delete?" %}</th>
                 {% endif %}
@@ -21,13 +23,13 @@
             <tbody>
             {% if user_can_edit %}
 
-                {{ formset_email.management_form }}
+                {{ formset_contact.management_form }}
 
-                {% for form in formset_email %}
+                {% for form in formset_contact %}
                     {% for hidden in form.hidden_fields %}
                         {{ hidden }}
                     {% endfor %}
-                    <tr id="email-{{ forloop.counter0 }}" class="email-row{% if form.errors %} error{% endif %} formset-row">
+                    <tr id="contact-{{ forloop.counter0 }}" class="contact-row{% if form.errors %} error{% endif %} formset-row">
                         {% for field in form.visible_fields %}
                             {% if field.name != 'DELETE' %}
                                 <td>
@@ -42,7 +44,7 @@
                     </tr>
                 {% endfor %}
             {% else %}
-                {% for form in formset_email %}
+                {% for form in formset_contact %}
                     {% for field in form %}
                         {% if field.name == 'email' %}
                             <td>
@@ -53,54 +55,6 @@
                                 {{field.value}}
                             </td>
                         {% endif %}
-                    {% endfor %}
-                {% endfor %}
-            {% endif %}
-            </tbody>
-        </table>
-    </fieldset>
-
-
-    <fieldset id="phone">
-        <table class="table table-condensed table-striped span8">
-            <thead>
-                <th>{% trans "Type" %}</th>
-                <th>{% trans "Name" %}</th>
-                <th>{% trans "Country code" %}</th>
-                <th>{% trans "Phone number" %}</th>
-                {% if user_can_edit %}
-                    <th>{% trans "Delete?" %}</th>
-                {% endif %}
-            </thead>
-            <tbody>
-            {% if user_can_edit %}
-
-                {{ formset_phone.management_form }}
-
-                {% for form in formset_phone %}
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-                    <tr id="phone-{{ forloop.counter0 }}" class="phone-row{% if form.errors %} error{% endif %} formset-row">
-                        {% for field in form.visible_fields %}
-                            {% if field.name != 'DELETE' %}
-                                <td>
-                                    {{ field }}
-                                    {{ field.errors }}
-                                </td>
-                            {% endif %}
-                        {% endfor %}
-                        <td>
-                            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            {% else %}
-                {% for form in formset_phone %}
-                    {% for field in form %}
-                        <td>
-                            {{field.value}}
-                        </td>
                     {% endfor %}
                 {% endfor %}
             {% endif %}

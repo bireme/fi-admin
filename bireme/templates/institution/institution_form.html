@@ -27,11 +27,10 @@
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
-        <li><a href="#tab-person" data-toggle="tab"><i class="icon-user"></i> {% trans "Persons" %}{% if formset_person.errors and not formset_person.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
-        <li><a href="#tab-contact" data-toggle="tab"><i class="icon-book"></i>  {% trans "Phones/Emails" %}{% if formset_phone.errors and not formset_phone.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-contact" data-toggle="tab"><i class="icon-user"></i> {% trans "Contacts" %}{% if formset_person.errors and not formset_person.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li-->
         <li><a href="#tab-url" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Sites" %}{% if formset_url.errors and not formset_url.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
-        <li><a href="#tab-unitlevel" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Units" %}{% if formset_unitlevel.errors and not formset_unitlevel.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         {% if user_cc = 'BR1.1' %}
+            <li><a href="#tab-unitlevel" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Units" %}{% if formset_unitlevel.errors and not formset_unitlevel.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             <li><a href="#tab-adm" data-toggle="tab"><i class="icon-folder-open"></i>  {% trans "Administrative" %}{% if formset_adm.errors and not formset_adm.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         {% endif %}
     </ul>
@@ -46,58 +45,43 @@
 
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
-                    {% if role == 'doc' and not user_data.is_owner and institution %}
-                        <div class="well">
-                            <blockquote>
-                                <p><strong>{% trans 'Identifier' %}</strong><p>
-                                <p>{{ act.id }}</p>
-                            </blockquote>
+                    <fieldset class="metadata">
+                        <ul>
+                          {% if user_cc != 'BR1.1' %}
+                              <h3>{{object.cc_code}}</h3>
+                          {% endif %}
+                          {% for hidden in form.hidden_fields %}
+                              {{ hidden }}
+                          {% endfor %}
+                          {{ form.non_field_errors }}
+                          {% for field in form.visible_fields %}
+                              <li id="field_{{ field.name }}">
+                                  {% if field.field|fieldtype == 'BooleanField' %}
+                                        <span>{{ field.label }}</span>
+                                  {% else %}
+                                        <label for="{{ field.auto_id }}">
+                                            {% if field.field.required %}
+                                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                            {% else %}
+                                                {{ field.label }}
+                                            {% endif %}
+                                        </label>
+                                  {% endif %}
+                                  {% if field.help_text %}
+                                      <p class="muted">{{ field.help_text }}</p>
+                                  {% endif %}
+                                  {{ field.errors }}
+                                  {{ field }}
 
-                            {% for field in form %}
-                                {{ field.as_hidden }}
-                                {{ field.errors }}
-                                <blockquote>
-                                    <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
-                                        <p>{{ act.get_status_display }}</p>
-                                    {% else %}
-                                        <p>{{ field.value|linebreaks }}<p>
-                                    {% endif %}
-                                </blockquote>
-                            {% endfor %}
-                        </div>
-
-                    {% else %}
-
-                        <fieldset class="metadata">
-                            <ul>
-                              {% for hidden in form.hidden_fields %}
-                                  {{ hidden }}
-                              {% endfor %}
-                              {{ form.non_field_errors }}
-                              {% for field in form.visible_fields %}
-                                  <li id="field_{{ field.name }}">
-                                      {% if field.field|fieldtype == 'BooleanField' %}
-                                            <span>{{ field.label }}</span>
-                                      {% else %}
-                                            <label for="{{ field.auto_id }}">
-                                                {% if field.field.required %}
-                                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                                {% else %}
-                                                    {{ field.label }}
-                                                {% endif %}
-                                            </label>
-                                      {% endif %}
-                                      {% if field.help_text %}
-                                          <p class="muted">{{ field.help_text }}</p>
-                                      {% endif %}
-                                      {{ field.errors }}
-                                      {{ field }}
-                                  </li>
-                              {% endfor %}
-                            </ul>
-                        </fieldset>
-                    {% endif %}
+                                  {% if field.name = 'name' %}
+                                      {% for ul in object.get_units_level %}
+                                        <p><strong>{{ul.get_level_display}} - {{ul.unit.name}}</strong></p>
+                                      {% endfor %}
+                                  {% endif %}
+                              </li>
+                          {% endfor %}
+                        </ul>
+                    </fieldset>
 
                     {% comment %}Display administrative information{% endcomment %}
 
@@ -118,10 +102,7 @@
                     {% endif %}
             </div>
 
-            <!-- PERSON FORMSET -->
-            {% include "institution/fieldset_person.html" %}
-
-            <!-- PHONE/EMAIL FORMSET -->
+            <!-- CONTACT FORMSET -->
             {% include "institution/fieldset_contact.html" %}
 
             <!-- URL FORMSET -->
@@ -172,14 +153,14 @@
         var decs_field;
 
         $(function() {
-            $('.person-row').formset({
-                    addText : '{% trans "Add Person" %}',
+            $('.contact-row').formset({
+                    addText : '{% trans "Add Contact" %}',
                     deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
-                    formCssClass: 'person_formset',
-                    prefix: '{{ formset_person.prefix }}'
+                    formCssClass: 'contact_formset',
+                    prefix: '{{ formset_contact.prefix }}'
             });
 
             $('.url-row').formset({
@@ -190,26 +171,6 @@
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'url_formset',
                     prefix: '{{ formset_url.prefix }}'
-            });
-
-            $('.phone-row').formset({
-                    addText : '{% trans "Add Phone" %}',
-                    deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'btn',
-                    keepFieldValues: '.keep-field-value',
-                    formCssClass: 'phone_formset',
-                    prefix: '{{ formset_phone.prefix }}'
-            });
-
-            $('.email-row').formset({
-                    addText : '{% trans "Add Email" %}',
-                    deleteText: '{% trans "delete" %}',
-                    addCssClass : 'icon-plus-sign btn',
-                    deleteCssClass : 'btn',
-                    keepFieldValues: '.keep-field-value',
-                    formCssClass: 'email_formset',
-                    prefix: '{{ formset_email.prefix }}'
             });
 
             $('.unit-row').formset({

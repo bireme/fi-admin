@@ -108,7 +108,7 @@
                                 <span title="{{ institution }}">
                                     {{ institution|slice:"90" }}
                                     {% if institution.has_unit %}
-                                        - {{ institution.units|join:" - " }}
+                                        - {{ institution.get_units_names|join:" - " }}
                                     {% endif %}
                                     {% if institution|length > 90 %}...{% endif %}</span></td>
                             <td>{{ institution.country }}</a></td>
