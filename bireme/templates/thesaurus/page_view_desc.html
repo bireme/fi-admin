@@ -980,23 +980,36 @@
         });
 
 
-        // Utilizado para deixar a ultima aba ativa apos refresh
-        $('ul.nav-tabs li a').click(function(e){
-            e.preventDefault();
-            $(this).tab('show');
-            window.scrollTo(0, 0);
+        var menuId = location.hash.substring(1);
+        $( document ).ready(function() {
+        if (menuId) {
+            var menu = $('#myTab');
+            var current = $("li[id='" + menuId + "']");
+            if(!current.hasClass("current")){
+            $('.current').removeClass('current');
+            current.addClass("current");
+            $('.pbox:visible').hide();
+            $('#' + menuId + '.pbox').show(600);
+            history.pushState(null, null, '#' + menuId);
+        }
+        }
         });
-
-        $('ul.nav-tabs > li > a').on('shown.bs.tab', function(e){
-            var id = $(e.target).attr("href").substr(1);
-            window.location.hash = id;
-        });
-
-        var hash = window.location.hash;
-        $('ul.nav-tabs li a[href="' + hash + '"]').tab('show');
-
 
     //-->
+    </script>
+
+    <script>
+        // Faz com que apos refresh da pagina retorne para mesma aba
+        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+           localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        console.log(activeTab);
+
+        if (activeTab) {
+           $('a[href="' + activeTab + '"]').tab('show');
+        }
+
     </script>
 
 
