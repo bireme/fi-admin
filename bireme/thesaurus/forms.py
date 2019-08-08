@@ -39,16 +39,12 @@ class IdentifierQualifForm(forms.ModelForm):
         model = IdentifierQualif
         fields = '__all__'
 
-    # Verifica a quantidade de caracteres e formatacao adequada
     def clean_abbreviation(self):
         data = self.cleaned_data.get('abbreviation')
-        # print 'abbreviation---',data
-        # Força que seja maiusculo
+        # Force that is uppercase
         upper_data = data.upper()
-        # print 'M -->',upper_data
         data = upper_data
         return data
-
 
 
 class DescriptionQualifForm(forms.ModelForm):
@@ -67,44 +63,72 @@ class TreeNumbersListQualifForm(forms.ModelForm):
         model = TreeNumbersListQualif
         fields = '__all__'
 
-        # error_messages = {
-        #     NON_FIELD_ERRORS: {
-        #         'unique_together': "%(field_labels)s already exist.",
-        #     }
-        # }
+    class Meta:
+        model = TreeNumbersListQualif
+        fields = '__all__'
 
-    # Verifica a quantidade de caracteres e formatacao adequada
     def clean_tree_number(self):
-        data = self.cleaned_data.get('tree_number')
-        # print '---->',data
-        tam = len(data)
-        # print 'tam-->',tam
+        data = self.cleaned_data
+        exist_err=False
+        tree_number = data.get('tree_number')
+        identifier_id = data.get('identifier')
 
-        # Nunca podera ser de tamanho PAR
+        # Check if tree_number already exists
+        result_tree_number = TreeNumbersListQualif.objects.filter(tree_number=tree_number).exclude(identifier_id=identifier_id.id).values('identifier_id')
+        if result_tree_number:
+            for t in result_tree_number:
+                identifier_id_existent_tree_number = t.get('identifier_id')
+
+                # Checks if the record is for the thesaurus being worked on
+                res_existent_thesaurus_id = IdentifierQualif.objects.filter(id=identifier_id_existent_tree_number).values('thesaurus_id')
+                existent_thesaurus_id = res_existent_thesaurus_id[0].get('thesaurus_id')
+
+                # Brings id of thesaurus currently operating
+                res_environment_thesaurus_id = IdentifierQualif.objects.filter(id=identifier_id.id).values('thesaurus_id')
+                environment_thesaurus_id = res_environment_thesaurus_id[0].get('thesaurus_id')
+
+                # If tree_number exists in same thesaurus creates error
+                if environment_thesaurus_id == existent_thesaurus_id:
+                    message = _("already exists!!!")
+                    exist_err=True
+
+        # Checks for proper character and formatting
+        tam = len(tree_number)
+        # Can never be a even number size
         if int(tam) % 2 == 0:
             # print 'Par'
             message = _("Format")
-            self.add_error('tree_number', message)
+            exist_err=True
         else:
-            # Se for IMPAR será verificado a quantidade de pontos existentes
-            # print 'Impar'
+            # If it is ODD it will check the number of existing points
             qtd_pontos_esperado = ((tam + 1) / 4) - 1
-            # print 'Qtd pontos esperado',qtd_pontos_esperado
-
             tponto = 0
-            for letra in data:
-                # print 'letra -> ',letra
+            for letra in tree_number:
                 if letra == '.':
                     tponto = tponto + 1
 
-            # print 'Qtd pontos existentes', tponto
             if qtd_pontos_esperado != tponto:
                 message = _("Format")
-                self.add_error('tree_number', message)
+                exist_err=True
 
-        # Força que seja maiusculo
-        upper_data = data.upper()
-        # print 'M -->',upper_data
+        # Checks if the first character is a letter
+        position_1=tree_number[0:1]
+        if position_1.isdigit() is not False:
+                message = _("Format")
+                exist_err=True
+
+        # Checks if the third character is a digit
+        position_3=tree_number[2:3]
+        if position_3.isdigit() is False:
+                message = _("Format")
+                exist_err=True
+
+        # If any error returns message
+        if exist_err:
+            self.add_error('tree_number', message)            
+
+        # Force that is uppercase
+        upper_data = tree_number.upper()
         data = upper_data
 
         return data
@@ -187,41 +211,72 @@ class DescriptionDescForm(forms.ModelForm):
 
 class TreeNumbersListDescForm(forms.ModelForm):
 
-    # tree_number = forms.CharField(widget=widgets.TextInput(attrs={'required': True}))
-
     class Meta:
+        model = TreeNumbersListDesc
         fields = '__all__'
 
-    # Verifica a quantidade de caracteres e formatacao adequada
     def clean_tree_number(self):
-        data = self.cleaned_data.get('tree_number')
-        # print 'Data --->',data
-        tam = len(data)
-        # Nunca podera ser de tamanho PAR
+        data = self.cleaned_data
+        exist_err=False
+        tree_number = data.get('tree_number')
+        identifier_id = data.get('identifier')
+
+        # Check if tree_number already exists
+        result_tree_number = TreeNumbersListDesc.objects.filter(tree_number=tree_number).exclude(identifier_id=identifier_id.id).values('identifier_id')
+        if result_tree_number:
+            for t in result_tree_number:
+                identifier_id_existent_tree_number = t.get('identifier_id')
+
+                # Checks if the record is for the thesaurus being worked on
+                res_existent_thesaurus_id = IdentifierDesc.objects.filter(id=identifier_id_existent_tree_number).values('thesaurus_id')
+                existent_thesaurus_id = res_existent_thesaurus_id[0].get('thesaurus_id')
+
+                # Brings id of thesaurus currently operating
+                res_environment_thesaurus_id = IdentifierDesc.objects.filter(id=identifier_id.id).values('thesaurus_id')
+                environment_thesaurus_id = res_environment_thesaurus_id[0].get('thesaurus_id')
+
+                # If tree_number exists in same thesaurus creates error
+                if environment_thesaurus_id == existent_thesaurus_id:
+                    message = _("already exists!!!")
+                    exist_err=True
+
+        # Checks for proper character and formatting
+        tam = len(tree_number)
+        # Can never be a even number size
         if int(tam) % 2 == 0:
             # print 'Par'
             message = _("Format")
-            self.add_error('tree_number', message)
+            exist_err=True
         else:
-            # Se for IMPAR será verificado a quantidade de pontos existentes
-            # print 'Impar'
+            # If it is ODD it will check the number of existing points
             qtd_pontos_esperado = ((tam + 1) / 4) - 1
-            # print 'Qtd pontos esperado',qtd_pontos_esperado
-
             tponto = 0
-            for letra in data:
-                # print 'letra -> ',letra
+            for letra in tree_number:
                 if letra == '.':
                     tponto = tponto + 1
 
-            # print 'Qtd pontos existentes', tponto
             if qtd_pontos_esperado != tponto:
                 message = _("Format")
-                self.add_error('tree_number', message)
+                exist_err=True
 
-        # Força que seja maiusculo
-        upper_data = data.upper()
-        # print 'M -->',upper_data
+        # Checks if the first character is a letter
+        position_1=tree_number[0:1]
+        if position_1.isdigit() is not False:
+                message = _("Format")
+                exist_err=True
+
+        # Checks if the third character is a digit
+        position_3=tree_number[2:3]
+        if position_3.isdigit() is False:
+                message = _("Format")
+                exist_err=True
+
+        # If any error returns message
+        if exist_err:
+            self.add_error('tree_number', message)            
+
+        # Force that is uppercase
+        upper_data = tree_number.upper()
         data = upper_data
 
         return data
