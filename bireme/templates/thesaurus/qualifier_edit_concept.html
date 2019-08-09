@@ -76,7 +76,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td width="20%">{{ form.concept_relation_name.label }}:<br>{{ form.concept_relation_name }}</td>
+                                    <td width="20%">{% trans "Relationship with the first" %}:<br>{{ form.concept_relation_name }}</td>
                                     <td width="20%">{{ form.preferred_concept.label }}:<br>
                                         {% if request.GET.preferred_concept == 'N' %}
                                             <select id="id_preferred_concept" name="preferred_concept" readonly="True">

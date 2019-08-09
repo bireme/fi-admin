@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-01 15:57-0300\n"
-"PO-Revision-Date: 2019-08-01 15:58-0306\n"
+"POT-Creation-Date: 2019-08-09 12:26-0300\n"
+"PO-Revision-Date: 2019-08-09 12:31-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1251,26 +1251,6 @@ msgstr "Datos locales JSON"
 msgid "Other fields JSON"
 msgstr "Otros campos JSON"
 
-#: biremelogin/models.py:12
-msgid "profile"
-msgstr "perfis"
-
-#: biremelogin/models.py:13
-msgid "profiles"
-msgstr "perfis"
-
-#: biremelogin/models.py:16
-msgid "Basic"
-msgstr "Básico"
-
-#: biremelogin/models.py:17
-msgid "Advanced"
-msgstr "Avanzado"
-
-#: biremelogin/models.py:20
-msgid "data"
-msgstr "datos"
-
 #: classification/models.py:27 classification/models.py:66
 #: classification/models.py:82 leisref/models.py:449 multimedia/models.py:67
 #: multimedia/models.py:80 multimedia/models.py:102
@@ -1870,7 +1850,6 @@ msgid "Contact"
 msgstr "Contenido"
 
 #: institution/models.py:200 templates/institution/institution_form.html:30
-#| msgid "Contact phones"
 msgid "Contacts"
 msgstr "Contactos"
 
@@ -2510,8 +2489,9 @@ msgid "Technical resource type"
 msgstr "Tipo de recurso técnico"
 
 #: oer/models.py:179 oer/models.py:180 oer/models.py:209 oer/models.py:488
-#: thesaurus/forms.py:86 thesaurus/forms.py:102 thesaurus/forms.py:203
-#: thesaurus/forms.py:219
+#: thesaurus/forms.py:100 thesaurus/forms.py:111 thesaurus/forms.py:117
+#: thesaurus/forms.py:123 thesaurus/forms.py:248 thesaurus/forms.py:259
+#: thesaurus/forms.py:265 thesaurus/forms.py:271
 msgid "Format"
 msgstr "Formato"
 
@@ -4327,8 +4307,7 @@ msgstr "Sugerencias"
 
 #: templates/menu.html:77 templates/reports/index.html:5
 #: templates/reports/index.html.py:8 templates/reports/index.html:23
-#: templates/reports/index.html.py:177 templates/reports/select_report.html:6
-#: templates/reports/select_report.html:9
+#: templates/reports/index.html.py:177
 msgid "Reports"
 msgstr "Informes"
 
@@ -4550,10 +4529,6 @@ msgstr "No hay datos para estes criterios"
 #: templates/reports/index.html:200
 msgid "Combination (Source x Report / Filter) not available"
 msgstr "Combinación (Fuente x Informe / Filtro) no disponible"
-
-#: templates/reports/select_report.html:15
-msgid "Select report"
-msgstr "Seleccione el informe"
 
 #: templates/suggest/edit-suggested-event.html:5
 #: templates/suggest/edit-suggested-event.html:15
@@ -4787,7 +4762,8 @@ msgstr "Campo obrigatório"
 
 #: templates/thesaurus/confirm_create_register_qualif.html:78
 #: templates/thesaurus/descriptor_form_step0.html:67
-#: templates/thesaurus/qualifier_form_step0.html:67
+#: templates/thesaurus/qualifier_form_step0.html:67 thesaurus/forms.py:92
+#: thesaurus/forms.py:240
 msgid "already exists!!!"
 msgstr "ya existe!"
 
@@ -4832,6 +4808,11 @@ msgstr "Editar Informaciones del concepto"
 msgid "Identifier of Concept"
 msgstr "ID del concepto"
 
+#: templates/thesaurus/descriptor_edit_concept.html:78
+#: templates/thesaurus/qualifier_edit_concept.html:79
+msgid "Relationship with the first"
+msgstr "Relación con el primero"
+
 #: templates/thesaurus/descriptor_edit_concept.html:107
 #: templates/thesaurus/descriptor_form_step2.html:114
 #: templates/thesaurus/descriptor_new_concept.html:109
@@ -4839,7 +4820,7 @@ msgstr "ID del concepto"
 #: templates/thesaurus/qualifier_form_step2.html:114
 #: templates/thesaurus/qualifier_new_concept.html:107
 msgid "Description of Concept"
-msgstr "Descripción del concepto"
+msgstr "Definición del concepto"
 
 #: templates/thesaurus/descriptor_edit_concept.html:134
 #: templates/thesaurus/descriptor_edit_register.html:190
@@ -4946,7 +4927,7 @@ msgstr "ID de transporte"
 #: templates/thesaurus/qualifier_edit_register.html:126
 #: templates/thesaurus/qualifier_form_step1.html:135
 msgid "Tree Numbers List"
-msgstr "Lista de categorías"
+msgstr "Lista de códigos jerárquicos"
 
 #: templates/thesaurus/descriptor_edit_register.html:161
 #: templates/thesaurus/descriptor_form_step1.html:169
@@ -4963,6 +4944,9 @@ msgstr "Lista de acciones farmacológicas"
 
 #: templates/thesaurus/descriptor_edit_register.html:266
 #: templates/thesaurus/descriptor_edit_register.html:307
+#: templates/thesaurus/descriptor_edit_register.html:439
+#: templates/thesaurus/descriptor_edit_register.html:455
+#: templates/thesaurus/descriptor_edit_register.html:458
 #: templates/thesaurus/descriptor_form_step1.html:240
 #: templates/thesaurus/descriptor_form_step1.html:289
 #: thesaurus/models_descriptors.py:31 thesaurus/models_descriptors.py:136
@@ -4973,7 +4957,7 @@ msgstr "ID de transporte"
 #: templates/thesaurus/descriptor_edit_register.html:298
 #: templates/thesaurus/descriptor_form_step1.html:280
 msgid "Related List"
-msgstr "Lista relacionada"
+msgstr "Lista de descriptores relacionados"
 
 #: templates/thesaurus/descriptor_edit_register.html:339
 #: templates/thesaurus/descriptor_form_step1.html:322
@@ -4988,7 +4972,7 @@ msgstr "Indexación previa"
 #: templates/thesaurus/descriptor_edit_register.html:384
 #: templates/thesaurus/descriptor_form_step1.html:367
 msgid "Entry Combination List"
-msgstr "Lista de Precoord"
+msgstr "Lista de descriptores precoordinados (precoord)"
 
 #: templates/thesaurus/descriptor_edit_register.html:423
 #: templates/thesaurus/descriptor_form_step1.html:406
@@ -5943,7 +5927,7 @@ msgstr "Contenido"
 
 #: thesaurus/choices.py:24
 msgid "1 - Topical Descriptor"
-msgstr "1 - Descriptor tópico"
+msgstr "1 - Descriptor de asunto"
 
 #: thesaurus/choices.py:25
 msgid "2 - Publication Types, for example Review"
@@ -6006,25 +5990,25 @@ msgstr "NON - Ninguna"
 msgid "TRD - Trade name"
 msgstr "TRD - Nombre comercial"
 
-#: thesaurus/forms.py:32 thesaurus/forms.py:126 thesaurus/forms.py:141
-#: thesaurus/forms.py:163 thesaurus/forms.py:297 thesaurus/forms.py:315
+#: thesaurus/forms.py:32 thesaurus/forms.py:150 thesaurus/forms.py:165
+#: thesaurus/forms.py:187 thesaurus/forms.py:352 thesaurus/forms.py:370
 #: thesaurus/models_descriptors.py:44 thesaurus/models_descriptors.py:370
 #: thesaurus/models_qualifiers.py:40 thesaurus/models_qualifiers.py:272
 msgid "Date created"
 msgstr "Fecha de creacion"
 
-#: thesaurus/forms.py:34 thesaurus/forms.py:165
+#: thesaurus/forms.py:34 thesaurus/forms.py:189
 #: thesaurus/models_descriptors.py:47 thesaurus/models_qualifiers.py:43
 msgid "Date revised"
 msgstr "Fecha revisada"
 
-#: thesaurus/forms.py:36 thesaurus/forms.py:167
+#: thesaurus/forms.py:36 thesaurus/forms.py:191
 #: thesaurus/models_descriptors.py:50 thesaurus/models_qualifiers.py:46
 msgid "Date established"
 msgstr "Fecha establecida"
 
-#: thesaurus/forms.py:128 thesaurus/forms.py:143 thesaurus/forms.py:299
-#: thesaurus/forms.py:317 thesaurus/models_descriptors.py:374
+#: thesaurus/forms.py:152 thesaurus/forms.py:167 thesaurus/forms.py:354
+#: thesaurus/forms.py:372 thesaurus/models_descriptors.py:374
 #: thesaurus/models_qualifiers.py:275
 msgid "Date altered"
 msgstr "Fecha alterada"
@@ -6087,7 +6071,7 @@ msgstr "Lista de acciones farmacológicas"
 
 #: thesaurus/models_descriptors.py:154 thesaurus/models_descriptors.py:155
 msgid "See Related List"
-msgstr "Ver lista relacionada"
+msgstr "Ver lista de descriptores relacionados"
 
 #: thesaurus/models_descriptors.py:185
 msgid "Previous indexing"
@@ -6148,7 +6132,7 @@ msgstr "Geog DeCS"
 
 #: thesaurus/models_descriptors.py:250
 msgid "Entry combination List"
-msgstr "Lista de combinación de entrada"
+msgstr "Lista de descriptores precoordinados (precoord)"
 
 #: thesaurus/models_descriptors.py:251
 msgid "Entry combinations List"
@@ -6180,7 +6164,7 @@ msgstr "Concepto preferido"
 
 #: thesaurus/models_descriptors.py:293 thesaurus/models_qualifiers.py:197
 msgid "Chemical abstract"
-msgstr "Extracto quimico"
+msgstr "Nombre en Chemical Abstracts"
 
 #: thesaurus/models_descriptors.py:296 thesaurus/models_qualifiers.py:200
 msgid "Registry number from CAS"
@@ -6275,25 +6259,25 @@ msgstr "Control secuencial"
 msgid "Sequential number"
 msgstr "Numero secuencial"
 
-#: thesaurus/views.py:188 thesaurus/views.py:2612
+#: thesaurus/views.py:185 thesaurus/views.py:2943
 #, fuzzy
 #| msgid "Field required"
 msgid "Field Tree number is required!"
 msgstr "Campo obrigatório"
 
-#: thesaurus/views.py:827 thesaurus/views.py:1439 thesaurus/views.py:3203
-#: thesaurus/views.py:3859
+#: thesaurus/views.py:956 thesaurus/views.py:1636 thesaurus/views.py:3678
+#: thesaurus/views.py:4402
 msgid "This Concept already exist!"
 msgstr "¡Este concepto ya existe!"
 
-#: thesaurus/views.py:1585 thesaurus/views.py:1907 thesaurus/views.py:3996
-#: thesaurus/views.py:4298
+#: thesaurus/views.py:1851 thesaurus/views.py:2207 thesaurus/views.py:4607
+#: thesaurus/views.py:4942
 msgid "This configuration already exists for this concept!"
 msgstr "Esta configuración ya existe para este concepto!"
 
-#: thesaurus/views.py:1690 thesaurus/views.py:1794 thesaurus/views.py:1950
-#: thesaurus/views.py:2027 thesaurus/views.py:4095 thesaurus/views.py:4184
-#: thesaurus/views.py:4340 thesaurus/views.py:4410
+#: thesaurus/views.py:1956 thesaurus/views.py:2060 thesaurus/views.py:2250
+#: thesaurus/views.py:2327 thesaurus/views.py:4706 thesaurus/views.py:4795
+#: thesaurus/views.py:4984 thesaurus/views.py:5054
 msgid "This Term already exist!"
 msgstr "¡Este término ya existe!"
 
@@ -6847,6 +6831,24 @@ msgstr "Registro creado"
 #: utils/validators.py:12
 msgid "Year must be greater than 1900"
 msgstr "El año debe ser mayor que 1900"
+
+#~ msgid "profile"
+#~ msgstr "perfis"
+
+#~ msgid "profiles"
+#~ msgstr "perfis"
+
+#~ msgid "Basic"
+#~ msgstr "Básico"
+
+#~ msgid "Advanced"
+#~ msgstr "Avanzado"
+
+#~ msgid "data"
+#~ msgstr "datos"
+
+#~ msgid "Select report"
+#~ msgstr "Seleccione el informe"
 
 #~ msgid "Persons"
 #~ msgstr "Personas"
