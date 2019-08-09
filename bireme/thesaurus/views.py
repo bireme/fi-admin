@@ -1309,9 +1309,9 @@ def TermListDescModification(request,term_id, ths, term_ori):
 
     if len(exist_term) > 0:
         term_id_exist=exist_term[0].get('id')
-        historical_annotation_old=exist_term[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
         historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+
 
         # Atualiza o historico do destino
         TermListDesc.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -4033,7 +4033,6 @@ def TermListQualifModification(request,term_id, ths, term_ori):
 
     if len(exist_term) > 0:
         term_id_exist=exist_term[0].get('id')
-        historical_annotation_old=exist_term[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
         historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
 
