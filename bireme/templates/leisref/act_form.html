@@ -300,6 +300,7 @@
 
         <div class="control-panel form-submit">
             {% if user_can_edit %}
+                <a href="{% url 'list_legislation' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
                 {% if not object or object.status == -1 %}
                     <button class="btn btn-large btn-info">{% trans "Save Draft" %}</button>
                 {% else %}
