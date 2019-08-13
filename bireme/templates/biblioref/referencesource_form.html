@@ -154,9 +154,11 @@
         {{ formset_library.management_form }}
         -->
 
-
         <div class="control-panel form-submit">
             {% if user_can_edit %}
+
+                <a href="{% url 'list_biblioref' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+
                 {% if user_role == 'editor_llxp' %}
                     <button class="btn btn-large btn-info">{% trans "Save" %}</button>
                 {% elif not object or object.status == -1 %}
