@@ -2,7 +2,7 @@
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -121,11 +121,8 @@ class DescUpdate(LoginRequiredView):
 
             if content_tree_number:
 
-                # self.object = form.save()
-
                 # Bring the choiced language_code from the first form
                 registry_language = self.request.GET.get("language_code")
-
 
                 # Get sequential number to write to decs_code
                 self.object = form.save(commit=False)
@@ -246,20 +243,40 @@ class DescCreateView(DescUpdate, CreateView):
     Used as class view to create Descriptors
 
     """
-    # def get_success_url(self):
-    #     messages.success(self.request, 'is created')
-    #     return '/thesaurus/descriptors/edit/%s' % self.object.id
 
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
 
-# No use
-# class DescUpdateView(DescUpdate, UpdateView):
-#     """
-#     Used as class view to update Descriptors
-#     Extend DescUpdate that do all the work
-#     """
-#     # def get_success_url(self):
-#     #     messages.success(self.request, 'is updated')
-#     #     return '/thesaurus/descriptors/edit/%s' % self.object.id
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(DescCreateView, self).dispatch(*args, **kwargs)
 
 
 class DescDeleteView(DescUpdate, DeleteView):
@@ -283,6 +300,41 @@ class TermListDescChk(LoginRequiredView, ListView):
     """
     template_name = "thesaurus/descriptor_form_step0.html"
     context_object_name = "registers"
+
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(TermListDescChk, self).dispatch(*args, **kwargs)
 
 
     def get_queryset(self):
@@ -372,6 +424,41 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
     model = IdentifierDesc
     template_name = 'thesaurus/descriptor_edit_register.html'
     form_class = IdentifierDescForm
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(DescRegisterUpdateView, self).dispatch(*args, **kwargs)
+
 
     def get_success_url(self):
 
@@ -492,6 +579,48 @@ class DescListView(LoginRequiredView, ListView):
     template_name = "thesaurus/thesaurus_home.html"
     context_object_name = "registers"
     paginate_by = ITEMS_PER_PAGE
+
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            elif self.request.GET.get("ths"):
+                environment_thesaurus_id=self.request.GET.get("ths")
+            elif self.request.POST.get("choiced_thesaurus"):
+                environment_thesaurus_id=self.request.POST.get("choiced_thesaurus")
+            else:
+                self.actions = {}
+                for key in ACTIONS.keys():
+                    self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+                environment_thesaurus_id=self.actions['choiced_thesaurus']
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(DescListView, self).dispatch(*args, **kwargs)
+
 
     def get_queryset(self):
         lang_code = get_language()
@@ -858,6 +987,41 @@ class DescCreateView2(ConceptTermUpdate, CreateView):
     """
     Used as class view to create Descriptors
     """
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(DescCreateView2, self).dispatch(*args, **kwargs)
+
+
     def get_success_url(self):
         # messages.success(self.request, 'is created')
 
@@ -1145,9 +1309,9 @@ def TermListDescModification(request,term_id, ths, term_ori):
 
     if len(exist_term) > 0:
         term_id_exist=exist_term[0].get('id')
-        historical_annotation_old=exist_term[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
         historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+
 
         # Atualiza o historico do destino
         TermListDesc.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -1171,8 +1335,7 @@ def TermListDescModification(request,term_id, ths, term_ori):
                 identifier_concept_id=id_concept_destino,
                 )
 
-    # direciona para página origem na aba tab-concepts
-    url = '/thesaurus/descriptors/view/' + term_ori + '?ths=' + ths + '#tab-concepts'
+    url = '/thesaurus/descriptors/view/' + term_ori + '?ths=' + ths
 
     return HttpResponseRedirect(url)
 
@@ -1298,6 +1461,41 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
     template_name = 'thesaurus/descriptor_new_concept.html'
     form_class = IdentifierConceptListDescForm
 
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(ConceptListDescCreateView, self).dispatch(*args, **kwargs)
+
+
     def get_success_url(self):
 
         id_concept = self.object.id
@@ -1307,8 +1505,7 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-concepts'
-        return '/thesaurus/descriptors/view/%s%s%s' % ( id_term, ths, tab_position )
+        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
 
     def form_valid(self, form):
 
@@ -1465,10 +1662,44 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
     template_name = 'thesaurus/descriptor_edit_concept.html'
     form_class = IdentifierConceptListDescForm
 
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(ConceptListDescUpdateView, self).dispatch(*args, **kwargs)
+
+
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-concepts'
-        return '/thesaurus/descriptors/view/%s%s%s' % ( int(self.request.POST.get("termdesc__id")), ths, tab_position )
+        return '/thesaurus/descriptors/view/%s%s' % ( int(self.request.POST.get("termdesc__id")), ths )
 
     def form_valid(self, form):
 
@@ -1524,6 +1755,41 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
     # model = TermListDesc
     template_name = 'thesaurus/descriptor_new_term.html'
     form_class = TermListDescUniqueForm
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(TermListDescCreateView, self).dispatch(*args, **kwargs)
+
 
     def get_context_data(self, **kwargs):
         context = super(TermListDescCreateView, self).get_context_data(**kwargs)
@@ -1799,8 +2065,7 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                                                                         ))
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-concepts'
-        return '/thesaurus/descriptors/view/%s%s%s' % ( self.object.id, ths, tab_position )
+        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
 
 
 
@@ -1812,6 +2077,41 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
     model = TermListDesc
     template_name = 'thesaurus/descriptor_edit_term.html'
     form_class = TermListDescUniqueForm
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(TermListDescUpdateView, self).dispatch(*args, **kwargs)
+
 
     def form_valid(self, form):
 
@@ -2065,9 +2365,7 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        # Usado para direcionar para aba tab-concepts
-        tab_position='#tab-concepts'
-        return '/thesaurus/descriptors/view/%s%s%s' % ( self.object.id, ths, tab_position )
+        return '/thesaurus/descriptors/view/%s%s' % ( self.object.id, ths )
 
 
     def get_context_data(self, **kwargs):
@@ -2104,8 +2402,7 @@ class legacyInformationDescCreateView(LoginRequiredView, CreateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-legacy'
-        return '/thesaurus/descriptors/view/%s%s%s' % ( id_term, ths, tab_position )
+        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
 
     def form_valid(self, form):
 
@@ -2151,8 +2448,7 @@ class legacyInformationDescUpdateView(LoginRequiredView, UpdateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-legacy'
-        return '/thesaurus/descriptors/view/%s%s%s' % ( id_term, ths, tab_position )
+        return '/thesaurus/descriptors/view/%s%s' % ( id_term, ths )
 
     def form_valid(self, form):
 
@@ -2181,6 +2477,41 @@ class PageViewDesc(LoginRequiredView, DetailView):
     """
     model = TermListDesc
     template_name = 'thesaurus/page_view_desc.html'
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(PageViewDesc, self).dispatch(*args, **kwargs)
+
 
     def get_context_data(self, **kwargs):
         lang_code = get_language()
@@ -2651,6 +2982,40 @@ class QualifCreateView(QualifUpdate, CreateView):
     """
     Used as class view to create Qualifiers
     """
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(QualifCreateView, self).dispatch(*args, **kwargs)
+
 
 
 class QualifDeleteView(QualifUpdate, DeleteView):
@@ -2672,6 +3037,39 @@ class QualifListDescChk(LoginRequiredView, ListView):
     """
     template_name = "thesaurus/qualifier_form_step0.html"
     context_object_name = "registers"
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(QualifListDescChk, self).dispatch(*args, **kwargs)
 
 
     def get_queryset(self):
@@ -2760,6 +3158,41 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
     template_name = 'thesaurus/qualifier_edit_register.html'
     form_class = IdentifierQualifForm
 
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(QualifRegisterUpdateView, self).dispatch(*args, **kwargs)
+
+
     def get_success_url(self):
 
         id_register = self.object.id
@@ -2842,6 +3275,48 @@ class QualifListView(LoginRequiredView, ListView):
     template_name = "thesaurus/qualifier_list.html"
     context_object_name = "registers"
     paginate_by = ITEMS_PER_PAGE
+
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            elif self.request.GET.get("ths"):
+                environment_thesaurus_id=self.request.GET.get("ths")
+            elif self.request.POST.get("choiced_thesaurus"):
+                environment_thesaurus_id=self.request.POST.get("choiced_thesaurus")
+            else:
+                self.actions = {}
+                for key in ACTIONS.keys():
+                    self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+                environment_thesaurus_id=self.actions['choiced_thesaurus']
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(QualifListView, self).dispatch(*args, **kwargs)
+
 
     def get_queryset(self):
         lang_code = get_language()
@@ -3235,6 +3710,41 @@ class QualifCreateView2(QualifConceptTermUpdate, CreateView):
     """
     Used as class view to create qualifier
     """
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(QualifCreateView2, self).dispatch(*args, **kwargs)
+
+
     def get_success_url(self):
 
         id_concept = self.object.id
@@ -3523,7 +4033,6 @@ def TermListQualifModification(request,term_id, ths, term_ori):
 
     if len(exist_term) > 0:
         term_id_exist=exist_term[0].get('id')
-        historical_annotation_old=exist_term[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
         historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
 
@@ -3548,8 +4057,7 @@ def TermListQualifModification(request,term_id, ths, term_ori):
                 term_thesaurus=new_term[0].get('term_thesaurus'),
                 identifier_concept_id=id_concept_destino,
                 )
-    # direciona para página origem na aba tab-concepts
-    url = '/thesaurus/qualifiers/view/' + term_ori + '?ths=' + ths + '#tab-concepts'
+    url = '/thesaurus/qualifiers/view/' + term_ori + '?ths=' + ths
     return HttpResponseRedirect(url)
 
 
@@ -3719,6 +4227,41 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
     template_name = 'thesaurus/qualifier_new_concept.html'
     form_class = IdentifierConceptListQualifForm
 
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(ConceptListQualifCreateView, self).dispatch(*args, **kwargs)
+
+
     def get_success_url(self):
 
         id_concept = self.object.id
@@ -3728,8 +4271,8 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-concepts'
-        return '/thesaurus/qualifiers/view/%s%s%s' % ( id_term, ths, tab_position )
+        return '/thesaurus/qualifiers/view/%s%s' % ( id_term, ths )
+
 
     def form_valid(self, form):
 
@@ -3886,10 +4429,44 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
     template_name = 'thesaurus/qualifier_edit_concept.html'
     form_class = IdentifierConceptListQualifForm
 
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(ConceptListQualifUpdateView, self).dispatch(*args, **kwargs)
+
+
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-concepts'
-        return '/thesaurus/qualifiers/view/%s%s%s' % ( int(self.request.POST.get("termqualif__id")), ths, tab_position )
+        return '/thesaurus/qualifiers/view/%s%s' % ( int(self.request.POST.get("termqualif__id")), ths )
 
 
     def form_valid(self, form):
@@ -3947,10 +4524,44 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
     template_name = 'thesaurus/qualifier_new_term.html'
     form_class = TermListQualifUniqueForm
 
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(TermListQualifCreateView, self).dispatch(*args, **kwargs)
+
+
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-concepts'
-        return '/thesaurus/qualifiers/view/%s%s%s' % ( self.object.id, ths, tab_position )
+        return '/thesaurus/qualifiers/view/%s%s' % ( self.object.id, ths )
 
     def form_valid(self, form):
         
@@ -4203,9 +4814,42 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        # Usado para direcionar para aba tab-concepts
-        tab_position='#tab-concepts'
-        return '/thesaurus/qualifiers/view/%s%s%s' % ( self.object.id, ths, tab_position)
+        return '/thesaurus/qualifiers/view/%s%s' % ( self.object.id, ths )
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(TermListQualifUpdateView, self).dispatch(*args, **kwargs)
+
 
     def form_valid(self, form):
 
@@ -4470,8 +5114,7 @@ class legacyInformationQualifCreateView(LoginRequiredView, CreateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-legacy'
-        return '/thesaurus/qualifiers/view/%s%s%s' % ( id_term, ths, tab_position )
+        return '/thesaurus/qualifiers/view/%s%s%s' % ( id_term, ths )
 
     def form_valid(self, form):
 
@@ -4517,8 +5160,7 @@ class legacyInformationQualifUpdateView(LoginRequiredView, UpdateView):
         id_term = terms_of_concept[0].get('id')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        tab_position='#tab-legacy'
-        return '/thesaurus/qualifiers/view/%s%s%s' % ( id_term, ths, tab_position)
+        return '/thesaurus/qualifiers/view/%s%s%s' % ( id_term, ths )
 
     def form_valid(self, form):
 
@@ -4546,6 +5188,41 @@ class PageViewQualif(LoginRequiredView, DetailView):
     """
     model = TermListQualif
     template_name = 'thesaurus/page_view_qualif.html'
+
+    def dispatch(self, *args, **kwargs):
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        user_role = user_data['service_role']
+
+        if user_cc != 'BR1.1':
+            # Brings "ths" from the environment
+            if self.request.GET.get("thesaurus"):
+                environment_thesaurus_id=self.request.GET.get("thesaurus")
+            else:
+                if self.request.GET.get("ths"):
+                    environment_thesaurus_id=self.request.GET.get("ths")
+
+            access_status=False
+
+            # Create array with all registered thesaurus
+            ids_thesaurus = []
+            ids_thesaurus = Thesaurus.objects.all().values('id','thesaurus_scope')
+
+            # Run user_role array and compare the service registered to the user with the service registered in thesaurus.
+            # If the service exists bring the id of that service and compare with the id that is in the environment at the moment, if not exist generates the deny page
+            for role in user_role:
+                user_service=role
+                for elem in ids_thesaurus:
+                    id_thesaurus = elem.get('id')
+                    thesaurus_scope = elem.get('thesaurus_scope')
+                    if user_service == thesaurus_scope and int(id_thesaurus) == int(environment_thesaurus_id):
+                        access_status=True
+
+            if access_status==False:
+                return HttpResponseForbidden()
+
+        return super(PageViewQualif, self).dispatch(*args, **kwargs)
+
 
     def get_context_data(self, **kwargs):
         context = super(PageViewQualif, self).get_context_data(**kwargs)
