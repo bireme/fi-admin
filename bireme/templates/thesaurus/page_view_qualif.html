@@ -248,44 +248,6 @@
                     </tr>
 
                     <tr>
-                        <td valign="top" align="right" width="15%"><b>{% trans "Pharmacological Action" %}</b></td>
-                        <td>&nbsp;&nbsp;</td>
-                        <td valign="top">
-                            &nbsp;
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td valign="top" align="right" width="15%"><b>{% trans "Registry Number" %}</b></td>
-                        <td>&nbsp;&nbsp;</td>
-                        <td valign="top">
-                        {% for obj in identifierconceptlist_objects_preferred %}
-                            {% if obj.registry_number %}
-                                {% ifchanged %}
-                                    {{ obj.registry_number }}<br>
-                                {% endifchanged %}
-                            {% endif %}
-                        {% endfor %}
-                        </td>
-                    </tr>
-
-                    <!-- Related Numbers -->
-
-                    <tr>
-                        <td valign="top" align="right" width="15%"><b>{% trans "CAS Type 1 Name" %}</b></td>
-                        <td>&nbsp;&nbsp;</td>
-                        <td valign="top">
-                        {% for obj in identifierconceptlist_objects_preferred %}
-                            {% if obj.casn1_name %}
-                                {% ifchanged %}
-                                    {{ obj.casn1_name }}<br>
-                                {% endifchanged %}
-                            {% endif %}
-                        {% endfor %}
-                        </td>
-                    </tr>
-
-                    <tr>
                         <td valign="top" align="right" width="15%"><b>{% trans "Online Note" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
