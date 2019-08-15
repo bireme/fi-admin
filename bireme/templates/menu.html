@@ -47,7 +47,7 @@
                                 <li><a href="{% url 'list_descriptor' %}?ths=1" title=""><i class="icon-book"></i> {% trans "Thesaurus DeCS" %}</a></li>
                             {% endif %}
 
-                            {% if service_role.TesauroFUNASA or user_cc = 'BR1.1' %}
+                            {% if service_role.TesauroFUNASA == 'edi' %}
                                 <li><a href="{% url 'list_descriptor' %}?ths=2" title=""><i class="icon-book"></i> {% trans "Thesaurus FUNASA" %}</a></li>
                             {% endif %}
 

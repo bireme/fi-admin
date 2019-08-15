@@ -29,9 +29,15 @@ oer_resource = OERResource()
 collection_resource = CollectionResource()
 classification_resource = ClassificationResource()
 community_resource = CommunityResource()
+
+# used to render records in ID format
 thesaurus_resource_desc = ThesaurusResourceDesc()
 thesaurus_resource_qualif = ThesaurusResourceQualif()
-thesaurus_resource = ThesaurusResource()
+
+# used to render records in JSON format
+thesaurus_resource_desc_API = ThesaurusAPIDescResource()
+thesaurus_resource_qualif_API = ThesaurusAPIQualifResource()
+
 
 
 urlpatterns = patterns('',
@@ -159,12 +165,20 @@ urlpatterns = patterns('',
     (r'^api/', include(community_resource.urls)),
     (r'^api/', include(collection_resource.urls)),
     (r'^api/', include(classification_resource.urls)),
-    (r'^api/descriptors/', include(thesaurus_resource_desc.urls)),
-    (r'^api/qualifiers/', include(thesaurus_resource_qualif.urls)),
+
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
     (r'^api/users/get_user_id/(?P<username>[a-zA-z0-9\.\-]{0,30})/$', 'api.users.get_user_id'),
     (r'^api/thematic/get_thematic_id/(?P<thematic_acronym>[a-zA-z0-9\.\-]{0,40})/$', 'api.thematic.get_thematic_id'),
-    (r'^api/', include(thesaurus_resource.urls)),
+
+    # used to render records in ID format
+    (r'^api/descriptors/', include(thesaurus_resource_desc.urls)),
+    (r'^api/qualifiers/', include(thesaurus_resource_qualif.urls)),
+
+    # used to render records in JSON format
+    (r'^api/desc/', include(thesaurus_resource_desc_API.urls)),
+    (r'^api/qualif/', include(thesaurus_resource_qualif_API.urls)),
+
+
 
     # internationalization
     url(r'^i18n/', include('django.conf.urls.i18n')),

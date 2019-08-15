@@ -1,12 +1,5 @@
 # coding: utf-8
 
-'''
-DESCRIPTORS
-
-Chamada
-http://fi-admin.beta.bvsalud.org/api/thesaurus/?format=json&ths=1&decs_code=23
-
-'''
 
 from django.conf import settings
 from django.conf.urls import patterns, url, include
@@ -32,7 +25,8 @@ import json
 from django.db.models import Q
 
 
-class ThesaurusResource(CustomResource):
+
+class ThesaurusAPIDescResource(CustomResource):
     class Meta:
         queryset = IdentifierDesc.objects.all()
         allowed_methods = ['get']
@@ -47,10 +41,8 @@ class ThesaurusResource(CustomResource):
         }
         include_resource_uri = True
 
-
-
     def build_filters(self, filters=None):
-        orm_filters = super(ThesaurusResource, self).build_filters(filters)
+        orm_filters = super(ThesaurusAPIDescResource, self).build_filters(filters)
 
         # Escolhe obrigatoriamente o tesauro para uso. Caso não seja escolhido não renderiza
         if 'ths' in filters:
@@ -61,15 +53,11 @@ class ThesaurusResource(CustomResource):
 
         return orm_filters
 
-
-
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
         ]
-
-
 
     def get_search(self, request, **kwargs):
         self.method_check(request, allowed=['get'])
@@ -103,15 +91,12 @@ class ThesaurusResource(CustomResource):
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
 
-
-
     def dehydrate(self, bundle):
 
         id = IdentifierDesc.objects.filter(id=bundle.obj.id).values('id')
         for field in id:
             # bundle.data['id'] = str(bundle.obj.id)
             identifier_id = bundle.obj.id
-
 
         # IdentifierDesc
         array_fields = {}
@@ -228,16 +213,17 @@ class ThesaurusResource(CustomResource):
         results = PharmacologicalActionList.objects.filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
-            array_fields["id"] = field.id
-            array_fields["term_string"] = field.term_string
-            array_fields["descriptor_ui"] = field.descriptor_ui
-            array_fields["language_code"] = field.language_code
+            if field.term_string:
+                array_fields["id"] = field.id
+                array_fields["term_string"] = field.term_string
+                array_fields["descriptor_ui"] = field.descriptor_ui
+                array_fields["language_code"] = field.language_code
 
-            # Armazena array
-            array_fields_all.append(array_fields)
+                # Armazena array
+                array_fields_all.append(array_fields)
 
-            # Zera array pra próxima leitura
-            array_fields = {}
+                # Zera array pra próxima leitura
+                array_fields = {}
 
         bundle.data['PharmacologicalActionList'] = array_fields_all
 
@@ -326,16 +312,22 @@ class ThesaurusResource(CustomResource):
             array_fields["historical_annotation"] = field.historical_annotation
 
             # =========================================================================================================================================================================
-            # Faz pesquisa para trazer desxcrição dos conceitos
+            # Faz pesquisa para trazer descrição dos conceitos
             array_fields_ConceptListDesc = {}
+            array_fields_ConceptListDesc_all = []
             ConceptListDesc_results = ConceptListDesc.objects.filter(identifier_concept_id=identifier_concept_id)
             for field in ConceptListDesc_results:
-                # Armazena campos
-                array_fields_ConceptListDesc["id"] = field.id
-                array_fields_ConceptListDesc["language_code"] = field.language_code
-                array_fields_ConceptListDesc["scope_note"] = field.scope_note
 
-            array_fields["ConceptListDesc"] = array_fields_ConceptListDesc
+                if field.language_code and field.scope_note:
+                    # Armazena campos
+                    array_fields_ConceptListDesc["id"] = field.id
+                    array_fields_ConceptListDesc["language_code"] = field.language_code
+                    array_fields_ConceptListDesc["scope_note"] = field.scope_note
+
+                    array_fields_ConceptListDesc_all.append(array_fields_ConceptListDesc)
+                    array_fields_ConceptListDesc = {}
+
+            array_fields["ConceptListDesc"] = array_fields_ConceptListDesc_all
 
             # =========================================================================================================================================================================
             # Faz pesquisa para trazer os termos do conceito
@@ -393,22 +385,254 @@ class ThesaurusResource(CustomResource):
 
         bundle.data['IdentifierConceptListDesc'] = array_fields_all
 
+        return bundle
 
 
 
+class ThesaurusAPIQualifResource(CustomResource):
+    class Meta:
+        queryset = IdentifierQualif.objects.all()
+        allowed_methods = ['get']
+        serializer = ISISSerializer(formats=['json', 'xml', 'isis_id'], field_tag=field_tag_map)
+        resource_name = 'thesaurus'
+        filtering = {
+            'update_date': ('gte', 'lte'),
+            'status': 'exact',
+            'id': ALL,
+            'ths': ALL,
+            'decs_code': ALL,
+        }
+        include_resource_uri = True
+
+    def build_filters(self, filters=None):
+        orm_filters = super(ThesaurusAPIQualifResource, self).build_filters(filters)
+
+        # Escolhe obrigatoriamente o tesauro para uso. Caso não seja escolhido não renderiza
+        if 'ths' in filters:
+            filter_ths = filters['ths']
+            orm_filters['thesaurus_id__exact'] = filter_ths
+        else:
+            orm_filters['thesaurus_id__exact'] = ''
+
+        return orm_filters
+
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_search'), name="api_get_search"),
+        ]
+
+    def get_search(self, request, **kwargs):
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        q = request.GET.get('q', '')
+        fq = request.GET.get('fq', '')
+        start = request.GET.get('start', '')
+        count = request.GET.get('count', '')
+        lang = request.GET.get('lang', 'pt')
+        op = request.GET.get('op', 'search')
+        id = request.GET.get('id', '')
+        sort = request.GET.get('sort', 'created_date desc')
+        decs_code = request.GET.get('decs_code', '')
+
+        # filter result by approved resources (status=1)
+        if fq != '':
+            fq = '(status:1 AND django_ct:title.title*) AND %s' % fq
+        else:
+            fq = '(status:1 AND django_ct:title.title*)'
+
+        # url
+        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+
+        search_params = {'site': 'fi', 'col': 'main', 'op': op, 'output': 'site', 'lang': lang,
+                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort, 'decs_code': decs_code }
+
+        r = requests.post(search_url, data=search_params)
+
+        self.log_throttled_access(request)
+        return self.create_response(request, r.json())
+
+    def dehydrate(self, bundle):
+
+        id = IdentifierQualif.objects.filter(id=bundle.obj.id).values('id')
+        for field in id:
+            # bundle.data['id'] = str(bundle.obj.id)
+            identifier_id = bundle.obj.id
+
+        # IdentifierQualif
+        array_fields = {}
+        array_fields_all = []
+        abbreviation_arr = []
+
+        array_fields_abbreviation = {}
+        array_fields_abbreviation_all = []
+        results = IdentifierQualif.objects.filter(id=identifier_id)
+        for field in results:
+            # Armazena campos
+            array_fields["id"] = field.id
+            array_fields["thesaurus"] = field.thesaurus
+            array_fields["qualifier_ui"] = field.qualifier_ui
+            array_fields["decs_code"] = field.decs_code
+            array_fields["external_code"] = field.external_code
+            array_fields["date_created"] = field.date_created
+            array_fields["date_revised"] = field.date_revised
+            array_fields["date_established"] = field.date_established
+        
+            id_abbrev = IdentifierQualif.objects.filter(id=field.id).values('abbreviation')
+            allowed_qualifiers = IdentifierQualif.objects.filter(id__in=id_abbrev).order_by('abbreviation')
+            allowed_qualifiers_concat = ''
+            for field in allowed_qualifiers:
+                array_fields_abbreviation["id"] = field.id
+                array_fields_abbreviation["abbreviation"] = field.abbreviation
+
+                # Proporciona o campo term_string nos idiomas existentes
+                abbreviation_fields_language = {}
+                abbreviation_language_all = []
+                concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=field.id,preferred_concept='Y').values('id')
+                id_concept = concepts_of_register[0].get('id')
+                terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y')
+                for term in terms_of_concept:
+                    abbreviation_fields_language['term_string'] = term.term_string.encode('utf-8')
+                    abbreviation_fields_language['language_code'] = term.language_code
+
+                    # Armazena array
+                    abbreviation_language_all.append(abbreviation_fields_language)
+
+                    # Zera array pra próxima leitura
+                    abbreviation_fields_language = {}
+
+                array_fields_abbreviation["term_string_translations"] = abbreviation_language_all
+
+                # Armazena array
+                array_fields_abbreviation_all.append(array_fields_abbreviation)
+
+                # Zera array pra próxima leitura
+                array_fields_abbreviation = {}
+
+            # Cria array de abreviações
+            array_fields["Abbreviations"] = array_fields_abbreviation_all
 
 
+            # Armazena array
+            array_fields_all.append(array_fields)
+
+            # Zera array pra próxima leitura
+            array_fields = {}
+
+        bundle.data['IdentifierQualif'] = array_fields_all
+
+        # =========================================================================================================================================================================
+
+        # DescriptionQualif
+        array_fields = {}
+        array_fields_all = []
+        results = DescriptionQualif.objects.filter(identifier_id=identifier_id)
+        for field in results:
+            # Armazena campos
+            array_fields["id"] = field.id
+            array_fields["language_code"] = field.language_code
+            array_fields["annotation"] = field.annotation
+            array_fields["history_note"] = field.history_note
+            array_fields["online_note"] = field.online_note
+
+            # Armazena array
+            array_fields_all.append(array_fields)
+
+            # Zera array pra próxima leitura
+            array_fields = {}
+
+        bundle.data['DescriptionQualif'] = array_fields_all
+
+        # =========================================================================================================================================================================
+
+        # TreeNumbersListQualif
+        array_fields = {}
+        array_fields_all = []
+        results = TreeNumbersListQualif.objects.filter(identifier_id=identifier_id)
+        for field in results:
+            # Armazena campos
+            array_fields["id"] = field.id
+            array_fields["tree_number"] = field.tree_number
+
+            # Armazena array
+            array_fields_all.append(array_fields)
+
+            # Zera array pra próxima leitura
+            array_fields = {}
+
+        bundle.data['TreeNumbersListQualif'] = array_fields_all
+
+        # =========================================================================================================================================================================
+
+        # IdentifierConceptListQualif
+        array_fields = {}
+        array_fields_all = []
+        results = IdentifierConceptListQualif.objects.filter(identifier_id=identifier_id)
+        for field in results:
+            # Armazena campos
+            array_fields["id"] = field.id
+            identifier_concept_id = field.id
+            array_fields["concept_ui"] = field.concept_ui
+            array_fields["concept_relation_name"] = field.concept_relation_name
+            array_fields["preferred_concept"] = field.preferred_concept
+            array_fields["historical_annotation"] = field.historical_annotation
+
+            # =========================================================================================================================================================================
+            # Faz pesquisa para trazer descrição dos conceitos
+            array_fields_ConceptListQualif = {}
+            array_fields_ConceptListQualif_all = []
+            ConceptListQualif_results = ConceptListQualif.objects.filter(identifier_concept_id=identifier_concept_id)
+            for field in ConceptListQualif_results:
+
+                if field.language_code and field.scope_note:
+                    # Armazena campos
+                    array_fields_ConceptListQualif["id"] = field.id
+                    array_fields_ConceptListQualif["language_code"] = field.language_code
+                    array_fields_ConceptListQualif["scope_note"] = field.scope_note
+
+                    array_fields_ConceptListQualif_all.append(array_fields_ConceptListQualif)
+                    array_fields_ConceptListQualif = {}
+
+            array_fields["ConceptListQualif"] = array_fields_ConceptListQualif_all
+
+            # =========================================================================================================================================================================
+            # Faz pesquisa para trazer os termos do conceito
+            array_fields_TermListQualif = {}
+            array_fields_TermListQualif_all = []
+            TermListQualif_results = TermListQualif.objects.filter(identifier_concept_id=identifier_concept_id)
+            for field in TermListQualif_results:
+                # Armazena campos
+                if field.status == 1:
+                    array_fields_TermListQualif["id"] = field.id
+                    identifier_term_id = field.id
+                    array_fields_TermListQualif["status"] = field.status
+                    array_fields_TermListQualif["term_ui"] = field.term_ui
+                    array_fields_TermListQualif["language_code"] = field.language_code
+                    array_fields_TermListQualif["term_string"] = field.term_string
+                    array_fields_TermListQualif["concept_preferred_term"] = field.concept_preferred_term
+                    array_fields_TermListQualif["is_permuted_term"] = field.is_permuted_term
+                    array_fields_TermListQualif["lexical_tag"] = field.lexical_tag
+                    array_fields_TermListQualif["record_preferred_term"] = field.record_preferred_term
+                    array_fields_TermListQualif["entry_version"] = field.entry_version
+                    array_fields_TermListQualif["date_created"] = field.date_created
+                    array_fields_TermListQualif["date_altered"] = field.date_altered
+                    array_fields_TermListQualif["historical_annotation"] = field.historical_annotation
+                    array_fields_TermListQualif["term_thesaurus"] = field.term_thesaurus
+
+                    array_fields_TermListQualif_all.append(array_fields_TermListQualif)
+                    array_fields_TermListQualif = {}
+
+            array_fields["TermListQualif"] = array_fields_TermListQualif_all
 
 
+            # Armazena array
+            array_fields_all.append(array_fields)
 
+            # Zera array pra próxima leitura
+            array_fields = {}
 
-
-
-
-
-
-
-
-
+        bundle.data['IdentifierConceptListQualif'] = array_fields_all
 
         return bundle
