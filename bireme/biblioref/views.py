@@ -253,6 +253,11 @@ class BiblioRefUpdate(LoginRequiredView):
                 # update DeDup service
                 update_dedup_service(self.object)
 
+                # if record is a serial source update analytics auxiliary field reference_title
+                if self.object.literature_type == 'S' and not hasattr(self.object, 'source'):
+                    update_reference_tite(self.object)
+
+
                 return HttpResponseRedirect(self.get_success_url())
         else:
             # if not valid for publication return status to original (previous) value
@@ -668,3 +673,16 @@ def update_dedup_service(obj):
                 dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
             except:
                 pass
+
+
+# update auxiliary field reference_title
+def update_reference_tite(source):
+    analytic_list = ReferenceAnalytic.objects.filter(source=source.id)
+    for analytic in analytic_list:
+        # try update field on each analytic record
+        try:
+            analytic_title = analytic.title[0]['text']
+            analytic.reference_title = u"{0} | {1}".format(source.reference_title, analytic_title)
+            analytic.save()
+        except:
+            pass
