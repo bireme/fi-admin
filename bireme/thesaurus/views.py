@@ -2730,7 +2730,9 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                     'identifier_id',
                                                     'id',
                                                     'concept_ui',
+                                                    'concept_relation_name',
                                                     'preferred_concept',
+
 
                                                     'termdesc__id',
                                                     'termdesc__identifier_concept_id',
@@ -2800,6 +2802,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                     'identifier_id',
                                                     'id',
                                                     'concept_ui',
+                                                    'concept_relation_name',
                                                     'preferred_concept',
 
                                                     'termdesc__id',
@@ -5389,6 +5392,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                     'identifier_id',
                                                     'id',
                                                     'concept_ui',
+                                                    'concept_relation_name',
                                                     'preferred_concept',
 
                                                     'termqualif__id',
@@ -5458,6 +5462,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                     'identifier_id',
                                                     'id',
                                                     'concept_ui',
+                                                    'concept_relation_name',
                                                     'preferred_concept',
 
                                                     'termqualif__id',
