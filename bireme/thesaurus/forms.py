@@ -141,6 +141,10 @@ class IdentifierConceptListQualifForm(forms.ModelForm):
         fields = '__all__'
 
 class ConceptListQualifForm(forms.ModelForm):
+    scope_note =  forms.CharField(
+        max_length = 5000,
+        widget = forms.Textarea
+    )
     class Meta:
         model = ConceptListQualif
         fields = '__all__'
@@ -343,6 +347,10 @@ class IdentifierConceptListDescForm(forms.ModelForm):
         fields = '__all__'
 
 class ConceptListDescForm(forms.ModelForm):
+    scope_note =  forms.CharField(
+        max_length = 5000,
+        widget = forms.Textarea
+    )
     class Meta:
         Model = ConceptListDesc
         fields = '__all__'
