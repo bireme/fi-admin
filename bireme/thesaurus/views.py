@@ -52,6 +52,7 @@ ACTIONS = {
 
     'decs_code': '',
     'tree_number': '',
+    'concept_ui': '',
 
     'orderby': 'id',
     'order': '',
@@ -736,6 +737,14 @@ class DescListView(LoginRequiredView, ListView):
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+
+        # Concept UI
+        # AND performance for Concept UI --------------------------------------------------------------
+        if self.actions['filter_fields'] == 'concept_ui':
+            concept_identifier_id = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+            id_register = IdentifierDesc.objects.filter(id__in=concept_identifier_id,thesaurus_id=self.actions['choiced_thesaurus']).values('id')
+            concept_id = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,concept_ui=self.actions['s']).values('id')
+            object_list = TermListDesc.objects.filter(identifier_concept_id=concept_id).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -2730,7 +2739,9 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                     'identifier_id',
                                                     'id',
                                                     'concept_ui',
+                                                    'concept_relation_name',
                                                     'preferred_concept',
+
 
                                                     'termdesc__id',
                                                     'termdesc__identifier_concept_id',
@@ -2800,6 +2811,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                     'identifier_id',
                                                     'id',
                                                     'concept_ui',
+                                                    'concept_relation_name',
                                                     'preferred_concept',
 
                                                     'termdesc__id',
@@ -3450,6 +3462,15 @@ class QualifListView(LoginRequiredView, ListView):
             id_concept = IdentifierConceptListQualif.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+
+        # Concept UI
+        # AND performance for Concept UI --------------------------------------------------------------
+        if self.actions['filter_fields'] == 'concept_ui':
+            concept_identifier_id = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+            id_register = IdentifierQualif.objects.filter(id__in=concept_identifier_id,thesaurus_id=self.actions['choiced_thesaurus']).values('id')
+            concept_id = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,concept_ui=self.actions['s']).values('id')
+            object_list = TermListQualif.objects.filter(identifier_concept_id=concept_id).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+
 
         # status
         if self.actions['filter_status']:
@@ -5389,6 +5410,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                     'identifier_id',
                                                     'id',
                                                     'concept_ui',
+                                                    'concept_relation_name',
                                                     'preferred_concept',
 
                                                     'termqualif__id',
@@ -5458,6 +5480,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                     'identifier_id',
                                                     'id',
                                                     'concept_ui',
+                                                    'concept_relation_name',
                                                     'preferred_concept',
 
                                                     'termqualif__id',

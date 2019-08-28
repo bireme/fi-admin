@@ -453,7 +453,19 @@
                                             {{ obj.termqualif__term_string }}&nbsp;<font color="blue">({{ obj.termqualif__language_code }})</font>
                                             <b>[ {{ obj.concept_ui }} ]</b>
 
-                                            <font color="gray"><i>&nbsp;{% trans "Narrower" %}
+                                            <font color="gray"><i>&nbsp;
+                                                {% if obj.concept_relation_name == 'NRW' %}
+                                                    {% trans "Narrower" %}
+                                                {% endif %}
+
+                                                {% if obj.concept_relation_name == 'BRD' %}
+                                                    {% trans "BRD - Broader" %}
+                                                {% endif %}
+
+                                                {% if obj.concept_relation_name == 'REL' %}
+                                                    {% trans "REL - Related but not broader or narrower" %}
+                                                {% endif %}
+
                                                 {% if obj.termqualif__status == '3' %}
                                                     {{ obj.termqualif__status|display_status_label }}
                                                 {% endif %}
