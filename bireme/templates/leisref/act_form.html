@@ -135,10 +135,16 @@
                                                 <span>{{ field.label }}</span>
                                           {% else %}
                                                 <label for="{{ field.auto_id }}">
+                                                    {% if field.name in help_fields %}
+                                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/leisref/{{field.name}}/" class="field_with_help">
+                                                    {% endif %}
                                                     {% if field.field.required %}
                                                         <span class="required">{{ field.label }} <span class="mark">*</span></span>
                                                     {% else %}
                                                         {{ field.label }}
+                                                    {% endif %}
+                                                    {% if field.name in help_fields %}
+                                                        </a>
                                                     {% endif %}
                                                 </label>
                                           {% endif %}
@@ -233,10 +239,16 @@
                     {% for field in form.visible_fields %}
                         {% if field.name in indexing_fields %}
                             <label for="{{ field.auto_id }}">
+                                {% if field.name in help_fields %}
+                                    <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/leisref/{{field.name}}/" class="field_with_help">
+                                {% endif %}
                                 {% if field.field.required %}
                                     <span class="required">{{ field.label }} <span class="mark">*</span></span>
                                 {% else %}
                                     {{ field.label }}
+                                {% endif %}
+                                {% if field.name in help_fields %}
+                                    </a>
                                 {% endif %}
                             </label>
                             <p class="muted">{{ field.help_text }}</p>
@@ -321,6 +333,11 @@
 </div>
 
 {% include "modal_dedup.html" %}
+
+
+{% if help_fields %}
+    {% include "modal_help.html" %}
+{% endif %}
 
 {% endblock %}
 
