@@ -21,6 +21,7 @@ from thesaurus.field_definitions_thesaurus import field_tag_map
 import requests
 import urllib
 import json
+import operator
 
 from django.db.models import Q
 
@@ -95,7 +96,6 @@ class ThesaurusAPIDescResource(CustomResource):
 
         id = IdentifierDesc.objects.filter(id=bundle.obj.id).values('id')
         for field in id:
-            # bundle.data['id'] = str(bundle.obj.id)
             identifier_id = bundle.obj.id
 
         # IdentifierDesc
@@ -152,7 +152,6 @@ class ThesaurusAPIDescResource(CustomResource):
 
             # Cria array de abreviações
             array_fields["Abbreviations"] = array_fields_abbreviation_all
-
 
             # Armazena array
             array_fields_all.append(array_fields)
@@ -384,6 +383,245 @@ class ThesaurusAPIDescResource(CustomResource):
             array_fields = {}
 
         bundle.data['IdentifierConceptListDesc'] = array_fields_all
+
+
+        # =========================================================================================================================================================================
+        # Prepara insumo para geração da Árvore hierárquica
+        # HierarchicalTree
+        # ----------------
+
+        array_fields = {}
+        array_fields_all = []
+
+        thesaurus_choiced = IdentifierDesc.objects.filter(id=identifier_id).values('thesaurus_id')
+        thesarus_choiced_id=thesaurus_choiced[0]['thesaurus_id']
+
+        def SearchTermsforTreenumber(tree_number):
+
+            # Encontra o descritor desse tree_number
+            id_tree_number = TreeNumbersListDesc.objects.filter(tree_number=tree_number).values('identifier_id')
+            id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
+
+            # status = 1
+            q_status = Q(status=1)
+
+            # concept_preferred_term='Y'
+            q_concept_preferred_term = Q(concept_preferred_term='Y')
+
+            # record_preferred_term='Y'
+            q_record_preferred_term = Q(record_preferred_term='Y')
+
+            q_id_concept = Q(identifier_concept_id__in=id_concept)
+
+            terms_of_treenumber = TermListDesc.objects.filter( q_status & q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=thesarus_choiced_id)
+
+            # Proporciona o campo term_string nos idiomas existentes
+            treenumber_terms_language = {}
+            treenumber_terms_language_all = []
+            for term in terms_of_treenumber:
+
+                treenumber_terms_language['term_string'] = term.term_string.encode('utf-8')
+                treenumber_terms_language['language_code'] = term.language_code
+
+                # Armazena array
+                treenumber_terms_language_all.append(treenumber_terms_language)
+
+                # Zera array pra próxima leitura
+                treenumber_terms_language = {}
+
+            array_fields["term_string_translations"] = treenumber_terms_language_all
+
+            # Verifica se existem descendentes
+            leafs = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=tree_number).exclude(dtreenumbers__tree_number=tree_number)
+            if leafs:
+                array_fields['leaf'] = True
+
+            # Verifica o nivel que esta
+            tponto = 1
+            for letra in tree_number:
+                if letra == '.':
+                    tponto = tponto + 1
+
+            array_fields['level'] = tponto
+
+            # Descobre o decs_code do tree_number parent
+            decs_code_results = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number=tree_number).values('decs_code')
+            if decs_code_results:
+                for field in decs_code_results:
+                    array_fields["id"] = field.get('decs_code')
+
+
+
+        # results = TreeNumbersListDesc.objects.filter(identifier_id=identifier_id)
+        results = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__identifier_id=identifier_id).values('decs_code','dtreenumbers__tree_number')
+
+
+        for field in results:
+            # Armazena campos
+            tree_number = field.get('dtreenumbers__tree_number')
+            decs_code = field.get('decs_code')
+
+            # Armazena primeira ocorrência
+            array_fields["tipo"] = "primeira_ocorrencia"
+            array_fields["tree_number"] = tree_number
+            array_fields["tree_number_original"] = tree_number
+            array_fields["id"] = decs_code
+
+            # Armazena informação se é tree_number do registro
+            tree_number_registry = tree_number
+            if tree_number_registry:
+                array_fields["tree_number_registry"] = True
+
+            array_fields_all.append(array_fields)
+
+            # Armazena demais ocorrências se houverem
+            SearchTermsforTreenumber(tree_number)
+
+            array_fields = {}
+
+            # Armazena ancestrais
+            tam_tree_number = len(tree_number)
+            while ( tam_tree_number>4 ):
+                dif=tam_tree_number-4
+                ancestor_tree_number=tree_number[0:dif]
+
+                array_fields["tipo"] = "ancestral"
+                array_fields["tree_number"] = ancestor_tree_number
+                array_fields["tree_number_original"] = tree_number
+
+                SearchTermsforTreenumber(ancestor_tree_number)
+
+                array_fields_all.append(array_fields)
+
+                # Atualiza tamanho do tree_number
+                tam_tree_number=len(ancestor_tree_number)
+
+                # Zera array pra próxima leitura
+                array_fields = {}
+
+
+        # Armazena irmãos
+        array_fields = {}
+        array_fields_all_brothers = []
+        for field in results:
+            # Armazena campos
+            tree_number = field.get('dtreenumbers__tree_number')
+            decs_code = field.get('decs_code')
+
+            tam_tree_number=len(tree_number)
+
+            if tam_tree_number>4:
+                dif=tam_tree_number-4
+                ancestor_tree_number=tree_number[0:dif]
+
+                # Pesquisa somente tree_number que tem o mesmo radical
+                result_treenumbers_like = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=ancestor_tree_number).exclude(dtreenumbers__tree_number=tree_number).values('dtreenumbers__tree_number')
+
+                if result_treenumbers_like:
+                    for field in result_treenumbers_like:
+                        read_treenumber=len(field.get('dtreenumbers__tree_number'))
+                        if tam_tree_number == read_treenumber:
+                            # Armazena o tree_number que tem o mesmo tamanho do tree_number do registro
+                            array_fields["tipo"] = "irmão"
+                            array_fields["tree_number"] = field.get('dtreenumbers__tree_number')
+                            array_fields["tree_number_original"] = tree_number
+                        
+                            # Armazena demais ocorrências se houverem
+                            SearchTermsforTreenumber(field.get('dtreenumbers__tree_number'))
+
+                            array_fields_all_brothers.append(array_fields)
+
+                        # Zera array pra próxima leitura
+                        array_fields = {}
+
+        # Concatena array_fields_all_brothers
+        array_fields_all.extend(array_fields_all_brothers)
+
+        array_fields_all_brothers = []
+
+
+        # Armazena irmãos ancestrais
+        array_fields = {}
+        array_fields_all_brothers_ancestors = []
+        for field in results:
+            # Armazena campos
+            tree_number = field.get('dtreenumbers__tree_number')
+            decs_code = field.get('decs_code')
+
+            tam_tree_number=len(tree_number)
+
+            if tam_tree_number>8:
+                dif=tam_tree_number-8
+                ancestor_tree_number=tree_number[0:dif]
+
+                # tree_number que deverá ser desconsiderado
+                dif=tam_tree_number-4
+                ancestor_tree_number_exclude=tree_number[0:dif]
+
+                # Pesquisa somente tree_number que tem o mesmo radical
+                result_treenumbers_like = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=ancestor_tree_number).exclude(dtreenumbers__tree_number=ancestor_tree_number_exclude).values('dtreenumbers__tree_number')
+
+                if result_treenumbers_like:
+                    for field in result_treenumbers_like:
+                        read_treenumber=len(field.get('dtreenumbers__tree_number'))
+                        tree_number_ancestral = field.get('dtreenumbers__tree_number')
+                        if (tam_tree_number-4) == read_treenumber:
+                            # Armazena o tree_number que tem o mesmo tamanho do tree_number do registro
+                            array_fields["tipo"] = "irmão ancestral"
+                            array_fields["tree_number"] = tree_number_ancestral
+                            array_fields["tree_number_original"] = tree_number
+                        
+                            # Armazena demais ocorrências se houverem
+                            SearchTermsforTreenumber(tree_number_ancestral)
+
+                            array_fields_all_brothers_ancestors.append(array_fields)
+
+                        # Zera array pra próxima leitura
+                        array_fields = {}
+
+            # Concatena array_fields_all_brothers_ancestors
+            array_fields_all.extend(array_fields_all_brothers_ancestors)
+
+            array_fields_all_brothers_ancestors = []
+
+
+        # Armazena filhos
+        array_fields = {}
+        array_fields_all_children = []
+        for field in results:
+            # Armazena campos
+            tree_number = field.get('dtreenumbers__tree_number')
+            decs_code = field.get('decs_code')
+
+            tam_tree_number_children=len(tree_number)+4
+
+            # Pesquisa somente tree_number que tem o mesmo radical
+            result_treenumbers_like = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=tree_number).exclude(dtreenumbers__tree_number=tree_number).values('dtreenumbers__tree_number')
+
+            if result_treenumbers_like:
+                for field in result_treenumbers_like:
+                    read_treenumber=len(field.get('dtreenumbers__tree_number'))
+                    if tam_tree_number_children == read_treenumber:
+                        # Armazena o tree_number que tem o mesmo tamanho do tree_number do registro
+                        array_fields["tipo"] = "filho"
+                        array_fields["tree_number"] = field.get('dtreenumbers__tree_number')
+                        array_fields["tree_number_original"] = tree_number
+                    
+                        # Armazena demais ocorrências se houverem
+                        SearchTermsforTreenumber(field.get('dtreenumbers__tree_number'))
+
+                        array_fields_all_children.append(array_fields)
+
+                    # Zera array pra próxima leitura
+                    array_fields = {}
+
+        # Concatena array_fields_all_children
+        array_fields_all.extend(array_fields_all_children)
+
+        array_fields_all_children = []
+
+
+        bundle.data['HierarchicalTree'] = array_fields_all
 
         return bundle
 
