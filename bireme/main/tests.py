@@ -1,27 +1,28 @@
 # coding: utf-8
-from django.test.client import Client
 from django.contrib.contenttypes.models import ContentType
+from django.test.client import Client
 
+from main.forms import DescriptorFormSet
+from main.models import *
 from utils.models import Country
-
 from utils.tests import BaseTestCase
-from models import *
+
 
 def minimal_form_data():
     """
     Define a minimal fields for submit a form
     """
 
-    form_data = { 
+    form_data = {
         'status': '0',
         'title': 'Recurso de teste',
         'description': 'Recurso para testes',
         'abstract': 'Resumo',
-        
-        'main-descriptor-content_type-object_id-TOTAL_FORMS': '0', 
+
+        'main-descriptor-content_type-object_id-TOTAL_FORMS': '0',
         'main-descriptor-content_type-object_id-INITIAL_FORMS': '0',
 
-        'main-keyword-content_type-object_id-TOTAL_FORMS': '0', 
+        'main-keyword-content_type-object_id-TOTAL_FORMS': '0',
         'main-keyword-content_type-object_id-INITIAL_FORMS': '0',
 
         'main-resourcethematic-content_type-object_id-TOTAL_FORMS': '0',
@@ -30,9 +31,10 @@ def minimal_form_data():
 
     return form_data
 
+
 def complete_form_data():
     """
-    Define missing fields for a valid submission 
+    Define missing fields for a valid submission
     """
 
     missing_fields = {
@@ -66,16 +68,16 @@ def create_resource_object():
     """
 
     # Create two objects of different users and same center code
-    Resource.objects.create(status=0, title='Recurso de teste (BR1.1)', 
+    Resource.objects.create(status=0, title='Recurso de teste (BR1.1)',
                             link='http://bvsalud.org', originator='BIREME',
                             created_by_id=1, cooperative_center_code='BR1.1')
-    
-    Resource.objects.create(status=0, title='Recurso de teste (BR1.1)', 
+
+    Resource.objects.create(status=0, title='Recurso de teste (BR1.1)',
                             link='http://bvsalud.org', originator='BIREME',
                             created_by_id=2, cooperative_center_code='BR1.1')
 
     # Create one object of diffent center code
-    Resource.objects.create(status=0, title='Recurso de teste (PY3.1)', 
+    Resource.objects.create(status=0, title='Recurso de teste (PY3.1)',
                             link='http://bvsalud.org', originator='BIREME',
                             created_by_id=3, cooperative_center_code='PY3.1')
 
@@ -126,12 +128,12 @@ class ResourceTest(BaseTestCase):
         """
         Tests of create view
         """
-        self.login_editor()        
+        self.login_editor()
 
         # invalid submission with missing required fields
         form_data = minimal_form_data()
         response = self.client.post('/resource/new', form_data )
-        
+
         self.assertContains(response,'Por favor verifique os campos obrigatórios')
         self.assertContains(response,'Você precisa inserir pelo menos um descritor de assunto')
         self.assertContains(response,'Você precisa selecionar pelo menos uma área temática')
@@ -149,7 +151,7 @@ class ResourceTest(BaseTestCase):
 
         # check if is set cooperative center code of user (editor = BR1.1)
         self.assertEquals(Resource.objects.all()[0].cooperative_center_code, "BR1.1")
-        
+
 
     def test_edit_resource(self):
         """
@@ -174,7 +176,7 @@ class ResourceTest(BaseTestCase):
 
     def test_delete_resource(self):
         """
-        Tests delete resource 
+        Tests delete resource
         """
         self.login_editor()
         create_resource_object()
@@ -225,17 +227,17 @@ class ResourceTest(BaseTestCase):
         self.client.logout()
         self.login_admin()
 
-        form_data = { 
+        form_data = {
             'status': '0',
             'acronym': 'site',
             'name': 'Website',
             'language' : 'pt-br',
-            'sourcetypelocal_set-TOTAL_FORMS': '0', 
+            'sourcetypelocal_set-TOTAL_FORMS': '0',
             'sourcetypelocal_set-INITIAL_FORMS': '0',
         }
 
         response = self.client.post('/type/new', form_data, follow=True )
-       
+
         self.assertRedirects(response, '/types')
         self.assertContains(response, "Website")
 
@@ -272,16 +274,58 @@ class ResourceTest(BaseTestCase):
         self.client.logout()
         self.login_admin()
 
-        form_data = { 
+        form_data = {
             'status': '0',
             'acronym': 'en-us',
             'name': 'Inglês',
             'language' : 'pt-br',
-            'sourcelanguagelocal_set-TOTAL_FORMS': '0', 
+            'sourcelanguagelocal_set-TOTAL_FORMS': '0',
             'sourcelanguagelocal_set-INITIAL_FORMS': '0',
         }
 
         response = self.client.post('/language/new', form_data, follow=True )
-       
+
         self.assertRedirects(response, '/languages')
         self.assertContains(response, "Inglês")
+
+
+class DescriptorFormSetTest(BaseTestCase):
+    def test_formset_text_should_not_be_duplicated(self):
+        data = {
+            'main-descriptor-content_type-object_id-TOTAL_FORMS' : '2',
+            'main-descriptor-content_type-object_id-INITIAL_FORMS': '0',
+            'main-descriptor-content_type-object_id-MAX_NUM_FORMS': '',
+
+            'main-descriptor-content_type-object_id-0-id' : '',
+            'main-descriptor-content_type-object_id-0-text' : 'malaria',
+            'main-descriptor-content_type-object_id-0-code' : '^d8462',
+            'main-descriptor-content_type-object_id-0-status' : '0',
+
+            'main-descriptor-content_type-object_id-1-id' : '',
+            'main-descriptor-content_type-object_id-1-text' : 'malaria',
+            'main-descriptor-content_type-object_id-1-code' : '^d8462',
+            'main-descriptor-content_type-object_id-1-status' : '0',
+        }
+
+        formset = DescriptorFormSet(data)
+        self.assertFalse(formset.is_valid())
+
+    def test_unique_formset_texts_should_be_accepted(self):
+        data = {
+            'main-descriptor-content_type-object_id-TOTAL_FORMS' : '2',
+            'main-descriptor-content_type-object_id-INITIAL_FORMS': '0',
+            'main-descriptor-content_type-object_id-MAX_NUM_FORMS': '',
+
+            'main-descriptor-content_type-object_id-0-id' : '',
+            'main-descriptor-content_type-object_id-0-text' : 'malaria',
+            'main-descriptor-content_type-object_id-0-code' : '^d8462',
+            'main-descriptor-content_type-object_id-0-status' : '0',
+
+            'main-descriptor-content_type-object_id-1-id' : '',
+            'main-descriptor-content_type-object_id-1-text' : 'ANATOMY',
+            'main-descriptor-content_type-object_id-1-code' : '^d59005',
+            'main-descriptor-content_type-object_id-1-status' : '0',
+        }
+
+        formset = DescriptorFormSet(data)
+        self.assertTrue(formset.is_valid())
