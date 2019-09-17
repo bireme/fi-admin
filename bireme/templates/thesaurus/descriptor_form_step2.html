@@ -132,13 +132,13 @@
                                         {{ hidden }}
                                     {% endfor %}
 
-                                    <input type="hidden" class="id_conceptlistdesc_language_selected" name="conceptdesc-0-language_code">
-
-                                    <table class="conceptlistdesc">
+                                    <table class="descriptiondesc">
+                                        <input type="hidden" class="id_conceptlistdesc_language_selected" name="conceptlistdesc_set-0-language_code">
                                         <tr>
                                             <td>{{ form.scope_note.label }}:{{ form.scope_note }}<td>
                                         </tr>
                                     </table>
+
 
                                 {% endfor %}
                         </fieldset>

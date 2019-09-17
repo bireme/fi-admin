@@ -73,25 +73,6 @@ class TreeNumbersListQualifForm(forms.ModelForm):
         tree_number = data.get('tree_number')
         identifier_id = data.get('identifier')
 
-        # Check if tree_number already exists
-        result_tree_number = TreeNumbersListQualif.objects.filter(tree_number=tree_number).exclude(identifier_id=identifier_id.id).values('identifier_id')
-        if result_tree_number:
-            for t in result_tree_number:
-                identifier_id_existent_tree_number = t.get('identifier_id')
-
-                # Checks if the record is for the thesaurus being worked on
-                res_existent_thesaurus_id = IdentifierQualif.objects.filter(id=identifier_id_existent_tree_number).values('thesaurus_id')
-                existent_thesaurus_id = res_existent_thesaurus_id[0].get('thesaurus_id')
-
-                # Brings id of thesaurus currently operating
-                res_environment_thesaurus_id = IdentifierQualif.objects.filter(id=identifier_id.id).values('thesaurus_id')
-                environment_thesaurus_id = res_environment_thesaurus_id[0].get('thesaurus_id')
-
-                # If tree_number exists in same thesaurus creates error
-                if environment_thesaurus_id == existent_thesaurus_id:
-                    message = _("already exists!!!")
-                    exist_err=True
-
         # Checks for proper character and formatting
         tam = len(tree_number)
         # Can never be a even number size
@@ -224,25 +205,6 @@ class TreeNumbersListDescForm(forms.ModelForm):
         exist_err=False
         tree_number = data.get('tree_number')
         identifier_id = data.get('identifier')
-
-        # Check if tree_number already exists
-        result_tree_number = TreeNumbersListDesc.objects.filter(tree_number=tree_number).exclude(identifier_id=identifier_id.id).values('identifier_id')
-        if result_tree_number:
-            for t in result_tree_number:
-                identifier_id_existent_tree_number = t.get('identifier_id')
-
-                # Checks if the record is for the thesaurus being worked on
-                res_existent_thesaurus_id = IdentifierDesc.objects.filter(id=identifier_id_existent_tree_number).values('thesaurus_id')
-                existent_thesaurus_id = res_existent_thesaurus_id[0].get('thesaurus_id')
-
-                # Brings id of thesaurus currently operating
-                res_environment_thesaurus_id = IdentifierDesc.objects.filter(id=identifier_id.id).values('thesaurus_id')
-                environment_thesaurus_id = res_environment_thesaurus_id[0].get('thesaurus_id')
-
-                # If tree_number exists in same thesaurus creates error
-                if environment_thesaurus_id == existent_thesaurus_id:
-                    message = _("already exists!!!")
-                    exist_err=True
 
         # Checks for proper character and formatting
         tam = len(tree_number)

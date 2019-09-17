@@ -113,14 +113,40 @@ class DescUpdate(LoginRequiredView):
             ):
 
             # Verifica se foi passado algum valor para formset_treenumber
-            t_exist = 0
+            tree_number_existentes=''
+            exist_tree_numbers=0
             for f in formset_treenumber:
                 if f.cleaned_data is not None:
                     fields_t = f.cleaned_data
                     content_tree_number = fields_t.get('tree_number')
-                    t_exist = t_exist + 1
 
-            if content_tree_number:
+                    # Essa variável é do cleaned_data e diz se o registro foi apagado ou não no formulário
+                    # Se for True foi apagado
+                    status_preenchimento = fields_t.get('DELETE')
+
+                    if status_preenchimento == False:
+                        exist_tree_numbers = exist_tree_numbers + 1
+
+                        # Verifica se ja existe cadastrado o tree_number para este tesauro
+                        result_tree_number = TreeNumbersListDesc.objects.filter(tree_number=content_tree_number).values('identifier_id')
+
+                        if result_tree_number is not None:
+                            for t in result_tree_number:
+                                identifier_id_existent_tree_number = t.get('identifier_id')
+
+                                # Checks if the record is for the thesaurus being worked on
+                                res_existent_thesaurus_id = IdentifierDesc.objects.filter(id=identifier_id_existent_tree_number).values('thesaurus_id')
+                                existent_thesaurus_id=res_existent_thesaurus_id[0].get('thesaurus_id')
+
+                                # Brings id of thesaurus currently operating
+                                environment_thesaurus_id = self.request.GET.get("ths")
+
+                                # If tree_number exists in same thesaurus creates error
+                                if int(environment_thesaurus_id) == int(existent_thesaurus_id):
+                                    tree_number_existentes = tree_number_existentes + content_tree_number + '   '
+
+            # Condição para poder criar registro
+            if not tree_number_existentes and exist_tree_numbers > 0:
 
                 # Bring the choiced language_code from the first form
                 registry_language = self.request.GET.get("language_code")
@@ -183,7 +209,10 @@ class DescUpdate(LoginRequiredView):
                 else:
                     return redirect(reverse('create_concept_termdesc') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language + '&term=' + self.request.GET.get("term"))
             else:
-                msg_erro =  _("Field Tree number is required!")
+                if exist_tree_numbers == 0:
+                    msg_erro = _("Hierarchical level")
+                else:
+                    msg_erro = _("already exists!!!") + ' -----> ' + tree_number_existentes
                 return self.render_to_response(
                             self.get_context_data(
                                                 form=form,
@@ -501,33 +530,100 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
             ):
 
 
-            # Bring the choiced language_code from the first form
-            registry_language = formset_descriptor.cleaned_data[0].get('language_code')
+            # Verifica se foi passado algum valor para formset_treenumber
+            tree_number_existentes=''
+            # Utilizado para verificar se o form está totalmente vazio - o que não deve ocorrer
+            form_vazio=True
+            exist_tree_numbers=0
+            for f in formset_treenumber:
+                if f.cleaned_data is not None:
+                    fields_t = f.cleaned_data
+                    content_tree_number = fields_t.get('tree_number')
 
-            self.object = form.save()
+                    identifier_id = fields_t.get('identifier')
+                    # Onde identifier_id = 'identifier': <IdentifierDesc: 34244>
+                    # Exemplo
+                    # ---> {'identifier': <IdentifierDesc: 34244>, 'tree_number': u'SP4.026.307.808.100', u'id': <TreeNumbersListDesc: 68760>, u'DELETE': False}
+                    # Para utilizar referenciar identifier_id.id
 
-            formset_descriptor.instance = self.object
-            formset_descriptor.save()
+                    # Essa variável é do cleaned_data e diz se o registro foi apagado ou não no formulário
+                    # Se for True foi apagado
+                    status_preenchimento = fields_t.get('DELETE')
 
-            formset_treenumber.instance = self.object
-            formset_treenumber.save()
+                    if status_preenchimento == False:
+                        form_vazio=False
+                        exist_tree_numbers = exist_tree_numbers + 1
 
-            formset_pharmaco.instance = self.object
-            formset_pharmaco.save()
+                        # Verifica se ja existe cadastrado o tree_number para este tesauro
+                        result_tree_number = TreeNumbersListDesc.objects.filter(tree_number=content_tree_number).exclude(identifier_id=identifier_id.id).values('identifier_id')
 
-            formset_related.instance = self.object
-            formset_related.save()
+                        if result_tree_number is not None:
+                            for t in result_tree_number:
+                                identifier_id_existent_tree_number = t.get('identifier_id')
 
-            formset_previous.instance = self.object
-            formset_previous.save()
+                                # Checks if the record is for the thesaurus being worked on
+                                res_existent_thesaurus_id = IdentifierDesc.objects.filter(id=identifier_id_existent_tree_number).values('thesaurus_id')
+                                existent_thesaurus_id=res_existent_thesaurus_id[0].get('thesaurus_id')
 
-            formset_entrycombination.instance = self.object
-            formset_entrycombination.save()
+                                # Brings id of thesaurus currently operating
+                                environment_thesaurus_id = self.request.GET.get("ths")
 
-            form.save()
+                                # If tree_number exists in same thesaurus creates error
+                                if int(environment_thesaurus_id) == int(existent_thesaurus_id):
+                                    tree_number_existentes = tree_number_existentes + content_tree_number + '   '
 
-            return HttpResponseRedirect(self.get_success_url())
+            # Condição para poder criar registro
+            if not tree_number_existentes and exist_tree_numbers > 0 and form_vazio==False:
 
+                # Bring the choiced language_code from the first form
+                registry_language = formset_descriptor.cleaned_data[0].get('language_code')
+
+                self.object = form.save()
+
+                formset_descriptor.instance = self.object
+                formset_descriptor.save()
+
+                formset_treenumber.instance = self.object
+                formset_treenumber.save()
+
+                formset_pharmaco.instance = self.object
+                formset_pharmaco.save()
+
+                formset_related.instance = self.object
+                formset_related.save()
+
+                formset_previous.instance = self.object
+                formset_previous.save()
+
+                formset_entrycombination.instance = self.object
+                formset_entrycombination.save()
+
+                form.save()
+
+                return HttpResponseRedirect(self.get_success_url())
+
+            else:
+
+                if form_vazio == True:
+                    ths = self.request.GET.get("ths")
+                    return redirect('/thesaurus/descriptors?ths=' + ths)
+
+                elif exist_tree_numbers == 0:
+                    msg_erro = _("Hierarchical level")
+                else:
+                    msg_erro = _("already exists!!!") + ' -----> ' + tree_number_existentes
+                    return self.render_to_response(
+                                self.get_context_data(
+                                                    form=form,
+                                                    formset_descriptor=formset_descriptor,
+                                                    formset_treenumber=formset_treenumber,
+                                                    formset_pharmaco=formset_pharmaco,
+                                                    formset_related=formset_related,
+                                                    formset_previous=formset_previous,
+                                                    formset_entrycombination=formset_entrycombination,
+                                                    msg_erro=msg_erro,
+                                                    )
+                                                )
         else:
             return self.render_to_response(
                         self.get_context_data(
@@ -969,6 +1065,15 @@ class ConceptTermUpdate(LoginRequiredView):
                                                     formset_term=formset_term,
                                                     msg_erro=msg_erro,
                                                     ))
+
+        else:
+            return self.render_to_response(
+                        self.get_context_data(
+                                            form=form,
+                                            formset_concept=formset_concept,
+                                            formset_term=formset_term,
+                                            )
+                                        )
 
     def get_context_data(self, **kwargs):
         context = super(ConceptTermUpdate, self).get_context_data(**kwargs)
@@ -2892,13 +2997,40 @@ class QualifUpdate(LoginRequiredView):
             # self.object = form.save()
 
             # Verifica se foi passado algum valor para formset_treenumber
+            tree_number_existentes=''
+            exist_tree_numbers=0
             for f in formset_treenumber:
                 if f.cleaned_data is not None:
                     fields_t = f.cleaned_data
                     content_tree_number = fields_t.get('tree_number')
 
-            if content_tree_number:
+                    # Essa variável é do cleaned_data e diz se o registro foi apagado ou não no formulário
+                    # Se for True foi apagado
+                    status_preenchimento = fields_t.get('DELETE')
 
+                    if status_preenchimento == False:
+                        exist_tree_numbers = exist_tree_numbers + 1
+
+                        # Verifica se ja existe cadastrado o tree_number para este tesauro
+                        result_tree_number = TreeNumbersListQualif.objects.filter(tree_number=content_tree_number).values('identifier_id')
+
+                        if result_tree_number is not None:
+                            for t in result_tree_number:
+                                identifier_id_existent_tree_number = t.get('identifier_id')
+
+                                # Checks if the record is for the thesaurus being worked on
+                                res_existent_thesaurus_id = IdentifierQualif.objects.filter(id=identifier_id_existent_tree_number).values('thesaurus_id')
+                                existent_thesaurus_id=res_existent_thesaurus_id[0].get('thesaurus_id')
+
+                                # Brings id of thesaurus currently operating
+                                environment_thesaurus_id = self.request.GET.get("ths")
+
+                                # If tree_number exists in same thesaurus creates error
+                                if int(environment_thesaurus_id) == int(existent_thesaurus_id):
+                                    tree_number_existentes = tree_number_existentes + content_tree_number + '   '
+
+            # Condição para poder criar registro
+            if not tree_number_existentes and exist_tree_numbers > 0:
 
                 # Bring the choiced language_code from the first form
                 # registry_language = formset_descriptor.cleaned_data[0].get('language_code')
@@ -2952,7 +3084,10 @@ class QualifUpdate(LoginRequiredView):
                     return redirect(reverse('create_concept_termqualif') + '?ths=' + self.request.GET.get("ths") + '&' + 'registry_language=' + registry_language + '&term=' + self.request.GET.get("term"))
 
             else:
-                msg_erro =  _("Field Tree number is required!")
+                if exist_tree_numbers == 0:
+                    msg_erro = _("Hierarchical level")
+                else:
+                    msg_erro = _("already exists!!!") + ' -----> ' + tree_number_existentes
                 return self.render_to_response(
                             self.get_context_data(
                                                 form=form,
@@ -3236,20 +3371,84 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
             formset_treenumber_valid
             ):
 
-            # Bring the choiced language_code from the first form
-            registry_language = formset_descriptor.cleaned_data[0].get('language_code')
 
-            self.object = form.save()
+            # Verifica se foi passado algum valor para formset_treenumber
+            tree_number_existentes=''
+            # Utilizado para verificar se o form está totalmente vazio - o que não deve ocorrer
+            form_vazio=True
+            exist_tree_numbers=0
+            for f in formset_treenumber:
+                if f.cleaned_data is not None:
+                    fields_t = f.cleaned_data
+                    content_tree_number = fields_t.get('tree_number')
 
-            formset_descriptor.instance = self.object
-            formset_descriptor.save()
+                    identifier_id = fields_t.get('identifier')
+                    # Onde identifier_id = 'identifier': <IdentifierDesc: 34244>
+                    # Exemplo
+                    # ---> {'identifier': <IdentifierDesc: 34244>, 'tree_number': u'SP4.026.307.808.100', u'id': <TreeNumbersListDesc: 68760>, u'DELETE': False}
+                    # Para utilizar referenciar identifier_id.id
 
-            formset_treenumber.instance = self.object
-            formset_treenumber.save()
+                    # Essa variável é do cleaned_data e diz se o registro foi apagado ou não no formulário
+                    # Se for True foi apagado
+                    status_preenchimento = fields_t.get('DELETE')
 
-            form.save()
+                    if status_preenchimento == False:
+                        form_vazio=False
+                        exist_tree_numbers = exist_tree_numbers + 1
 
-            return HttpResponseRedirect(self.get_success_url())
+                        # Verifica se ja existe cadastrado o tree_number para este tesauro
+                        result_tree_number = TreeNumbersListQualif.objects.filter(tree_number=content_tree_number).exclude(identifier_id=identifier_id.id).values('identifier_id')
+
+                        if result_tree_number is not None:
+                            for t in result_tree_number:
+                                identifier_id_existent_tree_number = t.get('identifier_id')
+
+                                # Checks if the record is for the thesaurus being worked on
+                                res_existent_thesaurus_id = IdentifierQualif.objects.filter(id=identifier_id_existent_tree_number).values('thesaurus_id')
+                                existent_thesaurus_id=res_existent_thesaurus_id[0].get('thesaurus_id')
+
+                                # Brings id of thesaurus currently operating
+                                environment_thesaurus_id = self.request.GET.get("ths")
+
+                                # If tree_number exists in same thesaurus creates error
+                                if int(environment_thesaurus_id) == int(existent_thesaurus_id):
+                                    tree_number_existentes = tree_number_existentes + content_tree_number + '   '
+
+            # Condição para poder criar registro
+            if not tree_number_existentes and exist_tree_numbers > 0 and form_vazio==False:
+
+                # Bring the choiced language_code from the first form
+                registry_language = formset_descriptor.cleaned_data[0].get('language_code')
+
+                self.object = form.save()
+
+                formset_descriptor.instance = self.object
+                formset_descriptor.save()
+
+                formset_treenumber.instance = self.object
+                formset_treenumber.save()
+
+                form.save()
+
+                return HttpResponseRedirect(self.get_success_url())
+
+            else:
+                if form_vazio == True:
+                    ths = self.request.GET.get("ths")
+                    return redirect('/thesaurus/qualifiers?ths=' + ths)
+
+                elif exist_tree_numbers == 0:
+                    msg_erro = _("Hierarchical level")
+                else:
+                    msg_erro = _("already exists!!!") + ' -----> ' + tree_number_existentes
+                return self.render_to_response(
+                            self.get_context_data(
+                                                form=form,
+                                                formset_descriptor=formset_descriptor,
+                                                formset_treenumber=formset_treenumber,
+                                                msg_erro=msg_erro,
+                                                )
+                                            )
         else:
             return self.render_to_response(
                         self.get_context_data(
@@ -3703,7 +3902,14 @@ class QualifConceptTermUpdate(LoginRequiredView):
                                                     formset_term=formset_term,
                                                     msg_erro=msg_erro,
                                                     ))
-
+        else:
+            return self.render_to_response(
+                        self.get_context_data(
+                                            form=form,
+                                            formset_concept=formset_concept,
+                                            formset_term=formset_term,
+                                            )
+                                        )
 
     def get_context_data(self, **kwargs):
         context = super(QualifConceptTermUpdate, self).get_context_data(**kwargs)
