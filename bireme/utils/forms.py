@@ -113,32 +113,41 @@ class DisableableSelectWidget(forms.Select):
             conditional_escape(force_unicode(option_label)))
 
 
-class DescriptorRequired(BaseGenericInlineFormSet):
+class BaseDescriptorInlineFormSet(BaseGenericInlineFormSet):
+    def clean(self):
+        descriptors = []
+        for form in self.forms:
+            if self._should_delete_form(form):
+                continue
+
+            text = form.cleaned_data.get("text")
+            if text in descriptors:
+                raise forms.ValidationError(
+                    _("Duplicated descriptors are not allowed"), code="invalid"
+                )
+
+            if text is not None:
+                descriptors.append(text)
+
+
+class DescriptorRequired(BaseDescriptorInlineFormSet):
     class Meta:
         fields = '__all__'
 
     def clean(self):
+        super(DescriptorRequired, self).clean()
+
         # get forms that actually have valid data
         count = 0
-        descriptor_texts = []
         for form in self.forms:
             try:
                 if form.cleaned_data and form.cleaned_data.get('DELETE') == False:
                     count += 1
 
-                text = form.cleaned_data.get("text")
-                if text in descriptor_texts:
-                    raise forms.ValidationError(
-                        _("Duplicated descriptors are not allowed"), code="invalid"
-                    )
-
-                descriptor_texts.append(text)
-
             except AttributeError:
                 # annoyingly, if a subform is invalid Django explicity raises
                 # an AttributeError for cleaned_data
                 pass
-
 
         if count < 1:
             raise forms.ValidationError( _('You must have at least one descriptor'), code='invalid')

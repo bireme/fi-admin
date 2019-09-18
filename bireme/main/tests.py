@@ -2,7 +2,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.test.client import Client
 
-from main.forms import DescriptorFormSet
 from main.models import *
 from utils.models import Country
 from utils.tests import BaseTestCase
@@ -288,44 +287,3 @@ class ResourceTest(BaseTestCase):
         self.assertRedirects(response, '/languages')
         self.assertContains(response, "Inglês")
 
-
-class DescriptorFormSetTest(BaseTestCase):
-    def test_formset_text_should_not_be_duplicated(self):
-        data = {
-            'main-descriptor-content_type-object_id-TOTAL_FORMS' : '2',
-            'main-descriptor-content_type-object_id-INITIAL_FORMS': '0',
-            'main-descriptor-content_type-object_id-MAX_NUM_FORMS': '',
-
-            'main-descriptor-content_type-object_id-0-id' : '',
-            'main-descriptor-content_type-object_id-0-text' : 'malaria',
-            'main-descriptor-content_type-object_id-0-code' : '^d8462',
-            'main-descriptor-content_type-object_id-0-status' : '0',
-
-            'main-descriptor-content_type-object_id-1-id' : '',
-            'main-descriptor-content_type-object_id-1-text' : 'malaria',
-            'main-descriptor-content_type-object_id-1-code' : '^d8462',
-            'main-descriptor-content_type-object_id-1-status' : '0',
-        }
-
-        formset = DescriptorFormSet(data)
-        self.assertFalse(formset.is_valid())
-
-    def test_unique_formset_texts_should_be_accepted(self):
-        data = {
-            'main-descriptor-content_type-object_id-TOTAL_FORMS' : '2',
-            'main-descriptor-content_type-object_id-INITIAL_FORMS': '0',
-            'main-descriptor-content_type-object_id-MAX_NUM_FORMS': '',
-
-            'main-descriptor-content_type-object_id-0-id' : '',
-            'main-descriptor-content_type-object_id-0-text' : 'malaria',
-            'main-descriptor-content_type-object_id-0-code' : '^d8462',
-            'main-descriptor-content_type-object_id-0-status' : '0',
-
-            'main-descriptor-content_type-object_id-1-id' : '',
-            'main-descriptor-content_type-object_id-1-text' : 'ANATOMY',
-            'main-descriptor-content_type-object_id-1-code' : '^d59005',
-            'main-descriptor-content_type-object_id-1-status' : '0',
-        }
-
-        formset = DescriptorFormSet(data)
-        self.assertTrue(formset.is_valid())

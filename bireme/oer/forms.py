@@ -11,7 +11,7 @@ from django.template.defaultfilters import filesizeformat
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 
-from utils.forms import DescriptorRequired, ResourceThematicRequired
+from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
 from models import *
 
 import simplejson
@@ -109,8 +109,14 @@ class URLForm(forms.ModelForm):
 
 
 # definition of inline formsets
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,
-                                                  exclude=('status',), can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(
+    Descriptor,
+    form=DescriptorForm,
+    formset=BaseDescriptorInlineFormSet,
+    exclude=('status',),
+    can_delete=True,
+    extra=1
+)
 
 AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
                                                   exclude=('short_url',), can_delete=True, extra=1)
