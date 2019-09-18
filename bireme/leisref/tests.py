@@ -1,13 +1,12 @@
 from django.shortcuts import resolve_url as r
-from django.test import TestCase
 from model_mommy import mommy
 
+from utils.tests import BaseTestCase
 
-class LeisRefFormTest(TestCase):
+
+class LeisRefFormTest(BaseTestCase):
     def setUp(self):
-        credentials = {"username": "admin", "password": "admin"}
-        mommy.make("User", is_superuser=True, **credentials)
-        self.client.login(**credentials)
+        self.login_admin()
 
     def test_help_text_in_creation_form(self):
         mommy.make("Help", source="leisref", field="status", help_text="Help message")
