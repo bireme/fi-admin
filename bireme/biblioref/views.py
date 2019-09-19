@@ -683,6 +683,7 @@ def update_reference_tite(source):
         try:
             analytic_title = analytic.title[0]['text']
             analytic.reference_title = u"{0} | {1}".format(source.reference_title, analytic_title)
-            analytic.save(update_fields=['reference_title'])
+            # update only specific fields to avoid mess up json fields (escape)
+            analytic.save(update_fields=['reference_title', 'updated_time', 'updated_by'])
         except:
             pass
