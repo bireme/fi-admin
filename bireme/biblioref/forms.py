@@ -12,7 +12,7 @@ from form_utils.forms import BetterModelForm, FieldsetCollection
 from django.conf import settings
 
 from main.models import Descriptor
-from utils.forms import DescriptorRequired
+from utils.forms import BaseDescriptorInlineFormSet
 from utils.templatetags.app_filters import fieldtype
 from title.models import Title, IndexRange
 from utils.models import AuxCode
@@ -1027,8 +1027,14 @@ class DescriptorForm(forms.ModelForm):
         obj.save()
 
 # definition of inline formsets
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, form=DescriptorForm,
-                                                  exclude=('status',), can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(
+    Descriptor,
+    form=DescriptorForm,
+    formset=BaseDescriptorInlineFormSet,
+    exclude=('status',),
+    can_delete=True,
+    extra=1
+)
 
 AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
                                                   exclude=('short_url',), can_delete=True, extra=1)

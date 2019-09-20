@@ -11,3 +11,5 @@ biremelogin
 bireme/templates/version.txt
 fixtures/samples/
 uploads/
+**/*.db
+.DS_Store
