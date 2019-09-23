@@ -398,14 +398,16 @@ class BiblioRefListGet(BaseTestCase):
         response = self.client.get("/bibliographic/")
         self.assertTemplateUsed(response, "biblioref/reference_list.html")
 
-    @skip("Must understand how to mock a BiblioRef effectively")
     def test_search_by_status(self):
         """ Must return only references which have the selected status """
-        mommy.make("ReferenceSource")
-        mommy.make("Reference", reference_title="Test Migration", status=-3)
+        mommy.make("ReferenceSource", id=1)
+        mommy.make(
+            "Reference", id=1, reference_title="Test Migration", status=-3,
+            created_time="1970-01-01 00:00", literature_type="TEST"
+        )
 
         response = self.client.get(
-            "/bibliographic/?filter_status=-3"
+            "/bibliographic/", {"filter_status": "-3", "filter_owner": "*"}
         ) # MIGRATION
 
         self.assertContains(response, '<a href="/bibliographic/edit-source/1">1</a>')
