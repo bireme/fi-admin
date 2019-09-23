@@ -59,6 +59,11 @@ def list_resources(request):
 
     if actions['s'].isdigit():
         resources = Resource.objects.filter( pk=int(actions['s']) )
+    elif ":" in actions["s"]:
+        search_parts = actions["s"].split(":")
+        search_field = search_parts[0] + "__icontains"
+        search = search_parts[1]
+        resources = Resource.objects.filter(**{search_field: search})
     else:
         resources = Resource.objects.filter( Q(title__icontains=actions['s']) | Q(link__icontains=actions['s']) )
 

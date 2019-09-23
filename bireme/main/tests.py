@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.contrib.contenttypes.models import ContentType
 from django.test.client import Client
+from model_mommy import mommy
 
 from main.models import *
 from utils.models import Country
@@ -287,3 +288,15 @@ class ResourceTest(BaseTestCase):
         self.assertRedirects(response, '/languages')
         self.assertContains(response, "Inglês")
 
+
+    def test_search_by_id(self):
+        self.login_documentalist()
+        mommy.make(Resource, id=1)
+
+        response = self.client.get("/resources", {"s": "id:1", "filter_owner": "*"})
+
+        self.assertEqual(200, response.status_code)
+        self.assertContains(response, '<a href="/resource/edit/1">1</a')
+
+        response = self.client.get("/resources", {"s": "id:2", "filter_owner": "*"})
+        self.assertNotContains(response, '<a href="/resource/edit/1">1</a')
