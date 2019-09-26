@@ -1,12 +1,12 @@
-# coding: utf-8
-
-from django.test.client import Client
+#-*- coding: utf-8 -*-
 from django.contrib.contenttypes.models import ContentType
+from django.test.client import Client
+from model_mommy import mommy
 
+from .models import *
 from main.models import Descriptor, ResourceThematic, ThematicArea
-
 from utils.tests import BaseTestCase
-from models import *
+
 
 def minimal_form_data():
     '''
@@ -30,6 +30,7 @@ def minimal_form_data():
     }
 
     return form_data
+
 
 def complete_form_data():
     '''
@@ -276,3 +277,31 @@ class MultimediaTest(BaseTestCase):
 
         self.assertRedirects(response, '/multimedia/collections')
         self.assertContains(response, "Coleção nova")
+
+
+class MultimediaSearchTest(BaseTestCase):
+    def test_search_id(self):
+        self.login_editor()
+
+        mt = mommy.make("MediaType")
+        mommy.make("Media", media_type=mt, id=1)
+        mommy.make("Media", media_type=mt, id=2)
+        mommy.make("Media", media_type=mt, id=3)
+
+        resp1 = self.client.get("/multimedia/", {"s": "id:1", "filter_owner": "*"})
+        self.assertEqual(200, resp1.status_code)
+        self.assertContains(resp1, '<a href="/multimedia/edit/1">1</a')
+        self.assertNotContains(resp1, '<a href="/multimedia/edit/2">2</a')
+        self.assertNotContains(resp1, '<a href="/multimedia/edit/3">3</a')
+
+        resp2 = self.client.get("/multimedia/", {"s": "id:2", "filter_owner": "*"})
+        self.assertEqual(200, resp2.status_code)
+        self.assertContains(resp2, '<a href="/multimedia/edit/2">2</a')
+        self.assertNotContains(resp2, '<a href="/multimedia/edit/1">1</a')
+        self.assertNotContains(resp2, '<a href="/multimedia/edit/3">3</a')
+
+        resp3 = self.client.get("/multimedia/", {"s": "id:3", "filter_owner": "*"})
+        self.assertEqual(200, resp3.status_code)
+        self.assertContains(resp3, '<a href="/multimedia/edit/3">3</a')
+        self.assertNotContains(resp3, '<a href="/multimedia/edit/1">1</a')
+        self.assertNotContains(resp3, '<a href="/multimedia/edit/2">2</a')

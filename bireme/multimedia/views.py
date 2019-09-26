@@ -39,9 +39,15 @@ class MultimediaListView(LoginRequiredView, ListView):
         for key in ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, ACTIONS[key])
 
-        search_field = self.search_field + '__icontains'
+        if ":" in self.actions["s"]:
+            search_parts = self.actions["s"].split(":")
+            search_field = search_parts[0] + "__icontains"
+            search_value = search_parts[1]
+        else:
+            search_field = self.search_field + '__icontains'
+            search_value = self.actions["s"]
 
-        object_list = self.model.objects.filter(**{search_field: self.actions['s']})
+        object_list = self.model.objects.filter(**{search_field: search_value})
 
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
