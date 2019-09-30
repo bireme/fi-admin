@@ -475,6 +475,10 @@
             // load multiselect plugin (indexed database field)
             $('#multiselect').multiselect();
 
+            $(".reference-form").on("submit", function(e) {
+                $("button").attr("disabled", true);
+                $("button").addClass("disabled");
+            });
         })
 
         function decs_search(obj){
@@ -514,7 +518,6 @@
                 });
             {% endif %}
         });
-
 
         $("#id_status").change(function(){
             new_status_label = $(this).find("option:selected").text();
