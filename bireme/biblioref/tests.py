@@ -386,7 +386,7 @@ class BiblioRefTest(BaseTestCase):
 class BiblioRefListGet(BaseTestCase):
     def setUp(self):
         super(BiblioRefListGet, self).setUp()
-        self.login_editor_llxp()
+        self.login_documentalist()
 
     def test_get(self):
         """ Must return status code 200 """
@@ -411,3 +411,20 @@ class BiblioRefListGet(BaseTestCase):
         ) # MIGRATION
 
         self.assertContains(response, '<a href="/bibliographic/edit-source/1">1</a>')
+
+    def test_exclude_deleted_sources_from_results(self):
+        """ Must exclude from the result list source references with deleted status """
+        mommy.make(
+            "ReferenceSource", id=1, title_serial="Revista Test", reference_title="Test Source", status=3,
+            created_time="1970-01-01 00:00", literature_type="S"
+        )
+        mommy.make(
+            "ReferenceAnalytic", source_id=1, title=[{'text': 'Test Analytic'}], status=0,
+            created_time="1970-01-01 00:00", literature_type="S", treatment_level="as"
+        )
+
+        response = self.client.get(
+            "/bibliographic/", {"filter_owner": "*"}
+        )
+
+        self.assertContains(response, '<span class="badge badge-info">1</span>')
