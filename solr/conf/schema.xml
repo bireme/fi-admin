@@ -213,6 +213,22 @@
    <field name="license" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="aggregation_level" type="string" indexed="true" stored="true" multiValued="false"/>
 
+   <!-- thesaurus -->
+   <field name="ths_regid" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="ths_conceptui" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="ths_decs_code" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="ths_treenumber" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="ths_preferredterm" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_preferredterm_en" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_preferredterm_es" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_preferredterm_fr" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_preferredterm_pt" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall_en" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall_es" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall_fr" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall_pt" type="text" indexed="true" stored="true" multiValued="true"/>
+
    <!-- multiple sources -->
    <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="indexed_database" type="string" indexed="true" stored="true" multiValued="true"/>
