@@ -217,7 +217,7 @@
    <field name="ths_regid" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="ths_conceptui" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="ths_decs_code" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="ths_treenumber" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="ths_treenumber" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="ths_preferredterm" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="ths_preferredterm_en" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="ths_preferredterm_es" type="text" indexed="true" stored="true" multiValued="true"/>
