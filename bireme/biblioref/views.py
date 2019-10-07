@@ -7,6 +7,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.db.models.functions import Substr
 
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
@@ -26,6 +27,8 @@ from forms import *
 
 import json
 
+JOURNALS_FASCICLE = "S"
+
 
 class BiblioRefGenericListView(LoginRequiredView, ListView):
     """
@@ -39,7 +42,6 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         return super(BiblioRefGenericListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-
         source_id = self.request.GET.get('source', None)
         document_type = self.request.GET.get('document_type', None)
 
@@ -81,8 +83,24 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             object_list = object_list.filter(literature_type__startswith=literature_type,
                                              treatment_level=treatment_level)
 
+        if document_type == JOURNALS_FASCICLE:
+            object_list = object_list.annotate(
+                publication_year=Substr("publication_date_normalized", 4)
+            )
 
-        if self.actions['order'] == "-":
+            if self.model.__name__ == "Reference":
+                volume_serial_field = "referencesource__volume_serial"
+                issue_number_field = "referencesource__issue_number"
+            else:
+                volume_serial_field = "volume_serial"
+                issue_number_field = "issue_number"
+
+            object_list = object_list.order_by(
+                "-publication_year",
+                "-{}".format(volume_serial_field),
+                "-{}".format(issue_number_field)
+            )
+        elif self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
         # if not at main reference list and source or document_type remove filter by user
@@ -137,7 +155,6 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         # exclude from the list sources with deleted status (#914)
         if self.actions['filter_status'] == '':
             object_list = object_list.exclude(status='3', literature_type='S')
-
 
         return object_list
 
