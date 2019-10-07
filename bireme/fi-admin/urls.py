@@ -14,6 +14,7 @@ from api.classification_api import *
 from api.thesaurus_api_desc import *
 from api.thesaurus_api_qualif import *
 from api.thesaurus_api import *
+from api.thesaurus_solr_api import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -37,6 +38,10 @@ thesaurus_resource_qualif = ThesaurusResourceQualif()
 # used to render records in JSON format
 thesaurus_resource_desc_API = ThesaurusAPIDescResource()
 thesaurus_resource_qualif_API = ThesaurusAPIQualifResource()
+
+# used to render records in JSON format for solr index
+thesaurus_resource_desc_index_API = ThesaurusAPIDescResourceIndex()
+thesaurus_resource_qualif_index_API = ThesaurusAPIQualifResourceIndex()
 
 
 
@@ -178,6 +183,9 @@ urlpatterns = patterns('',
     (r'^api/desc/', include(thesaurus_resource_desc_API.urls)),
     (r'^api/qualif/', include(thesaurus_resource_qualif_API.urls)),
 
+    # used to render records in JSON format for solr index
+    (r'^api/desc/index/', include(thesaurus_resource_desc_index_API.urls)),
+    (r'^api/qualif/index/', include(thesaurus_resource_qualif_index_API.urls)),
 
 
     # internationalization
