@@ -85,7 +85,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         if document_type == JOURNALS_FASCICLE:
             object_list = object_list.annotate(
-                publication_year=Substr("publication_date_normalized", 4)
+                publication_year=Substr("publication_date_normalized", 1, 4)
             )
 
             if self.model.__name__ == "Reference":
