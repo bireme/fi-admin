@@ -291,9 +291,10 @@ class TitleDeleteView(LoginRequiredView, DeleteView):
 
     def get_object(self, queryset=None):
         obj = super(TitleDeleteView, self).get_object()
-        """ Hook to ensure object is owned by request.user. """
-        if not obj.created_by == self.request.user:
-            return HttpResponse('Unauthorized', status=401)
+
+        user_cc = self.request.user.profile.get_attribute('cc')
+        if not user_cc == "BR1.1":
+            raise Exception("Unauthorized")
 
         return obj
 
