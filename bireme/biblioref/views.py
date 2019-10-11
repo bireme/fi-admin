@@ -152,9 +152,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             else:
                 object_list = object_list.none()
 
-        # exclude from the list sources with deleted status (#914)
+        # exclude from the standard result list (filter status=all) sources with deleted status (#914)
         if self.actions['filter_status'] == '':
-            object_list = object_list.exclude(status='3', literature_type='S')
+            object_list = object_list.exclude(status='3', literature_type='S', treatment_level='')
 
         return object_list
 

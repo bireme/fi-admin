@@ -419,7 +419,7 @@ class BiblioRefListGet(BaseTestCase):
             created_time="1970-01-01 00:00", literature_type="S"
         )
         mommy.make(
-            "ReferenceAnalytic", source_id=1, title=[{'text': 'Test Analytic'}], status=0,
+            "ReferenceAnalytic", source_id=1, title=[{'text': 'Test Analytic'}], status=3,
             created_time="1970-01-01 00:00", literature_type="S", treatment_level="as"
         )
 
