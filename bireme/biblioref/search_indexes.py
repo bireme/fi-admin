@@ -193,6 +193,10 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     updated_date = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
 
+    thesis_dissertation_leader = indexes.CharField()
+    thesis_dissertation_institution = indexes.CharField(model_attr='thesis_dissertation_institution')
+    thesis_dissertation_academic_title = indexes.CharField(model_attr='thesis_dissertation_academic_title')
+
     def get_model(self):
         return ReferenceSource
 
@@ -304,6 +308,10 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_mh(self, obj):
         # used for search and record presentation / populate with all descriptors (mh)
         return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj))]
+
+    def prepare_thesis_dissertation_leader(self, obj):
+        if obj.thesis_dissertation_leader:
+            return self.get_field_values(obj.thesis_dissertation_leader)
 
     def prepare_created_date(self, obj):
         if obj.created_time:
