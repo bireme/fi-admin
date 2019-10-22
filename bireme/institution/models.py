@@ -130,7 +130,7 @@ class ContactPhone(models.Model, AuditLog):
     institution = models.ForeignKey(Institution, null=True)
     phone_type = models.CharField(_("Type"), max_length=75, choices=PHONE_CHOICES)
     phone_name = models.CharField(_("Name"), max_length=85)
-    country_code = models.CharField(_("Country code"), max_length=4)
+    country_area_code = models.CharField(_("Country/Area code"), max_length=20, blank=True)
     phone_number = models.CharField(_("Number"), max_length=255)
 
     def get_parent(self):
@@ -138,7 +138,7 @@ class ContactPhone(models.Model, AuditLog):
 
     def __unicode__(self):
         return u"{0} - {1} - ({2}) {3}".format(self.phone_type, self.phone_name,
-                                               self.country_code, self.phone_number)
+                                               self.country_area_code, self.phone_number)
 
 # Contact emails
 class ContactEmail(models.Model, AuditLog):
@@ -204,6 +204,7 @@ class Contact(models.Model, AuditLog):
     name = models.CharField(_("Name"), max_length=155, blank=True)
     job_title = models.CharField(_("Job title"), max_length=155, blank=True)
     email = models.EmailField(_("Email"), max_length=155, blank=True)
+    country_area_code = models.CharField(_("Country/Area code"), max_length=20, blank=True)
     phone_number = models.CharField(_("Phone"), max_length=255, blank=True)
 
     def get_parent(self):

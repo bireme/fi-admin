@@ -31,7 +31,10 @@ class URLForm(forms.ModelForm):
 
 class ContactForm(forms.ModelForm):
     # add class to field
-    name = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-xlarge'}), required=False)
+    name = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-large'}), required=False)
+    job_title = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-medium'}), required=False)
+    email = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-medium'}), required=False)
+    country_area_code = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-mini'}), required=False)
 
 
 class AdmForm(forms.ModelForm):
