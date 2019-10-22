@@ -248,7 +248,7 @@
         <div class="control-panel form-submit">
             {% if user_can_edit %}
 
-                <a href="javascript:window.close();" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+                <a href="{% url 'list_biblioref_analytics' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
 
                 {% if not object or object.status == -1 %}
                     <button class="btn btn-large btn-info">{% trans "Save Draft" %}</button>
@@ -272,7 +272,7 @@
                     {% endif %}
                 {% endif %}
             {% else %}
-                <a href="javascript:window.close();" class="btn btn-large">
+                <a href="{% url 'list_biblioref_analytics' %}?source={{reference_source.id}}" class="btn btn-large">
                     {% trans "Back" %}
                 </a>
             {% endif %}
@@ -476,31 +476,10 @@
             $('#multiselect').multiselect();
 
             $(".reference-form").on("submit", function(e) {
-                e.preventDefault();
                 $("button").attr("disabled", true);
                 $("button").addClass("disabled");
-
-                $.ajax({
-                    url: $(this).attr("action"),
-                    data: $(this).serialize(),
-                    dataType: "html",
-                    type: "POST",
-                    success: function() {
-                        console.log("Salvo com sucesso!");
-                        console.log("fechando a aba...");
-                        window.close();
-                    },
-                    error: function() {
-                        console.log("Falha na edição!");
-                        window.close();
-                    }
-                });
             });
-
-            $(".navbar, .breadcrumb").hide();
-        });
-
-
+        })
 
         function decs_search(obj){
             var row = $(obj).parent();
