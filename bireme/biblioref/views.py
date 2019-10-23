@@ -39,6 +39,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
     search_field = "reference_title"
 
     def dispatch(self, *args, **kwargs):
+        self.request.session["filtered_list"] = self.request.get_full_path()
         return super(BiblioRefGenericListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
@@ -431,10 +432,9 @@ class BiblioRefUpdate(LoginRequiredView):
         if user_role == 'editor_llxp':
             redirect_url = "%s?document_type=S" % reverse_lazy('list_biblioref_sources')
         else:
-            redirect_url = self.success_url
+            redirect_url = self.request.session.get("filtered_list", self.success_url)
 
         return redirect_url
-
 
 
 class BiblioRefSourceUpdateView(BiblioRefUpdate, UpdateView):
@@ -463,7 +463,11 @@ class BiblioRefAnaliticUpdateView(BiblioRefUpdate, UpdateView):
 
     # after creation of source present option for creation new analytic
     def get_success_url(self):
-        return '/bibliographic/analytics?source=%s' % self.object.source.id
+        success_url = self.request.session.get(
+            'filtered_list',
+            '/bibliographic/analytics?source=%s' % self.object.source.id
+        )
+        return success_url
 
 
 class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
@@ -483,6 +487,7 @@ class BiblioRefSourceCreateView(BiblioRefUpdate, CreateView):
             redirect_url = '/bibliographic/'
 
         return redirect_url
+
 
 class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):
     """
@@ -507,6 +512,7 @@ class BiblioRefAnalyticCreateView(BiblioRefUpdate, CreateView):
     def get_success_url(self):
         source_id = self.request.GET.get('source', None)
         return 'analytics?source=%s' % source_id
+
 
 class SelectDocumentTypeView(FormView):
     template_name = 'biblioref/select_document_type.html'
@@ -577,6 +583,7 @@ def view_duplicates(request, reference_id):
                                                                   'other': other,
                                                                   })
 
+
 def refs_changed_by_other_cc(current_user):
     """
     Return dictionary with id of reference and log object changed by other cooperative centers
@@ -614,6 +621,7 @@ def refs_changed_by_other_cc(current_user):
                 result_list[log.object_id] = log
 
     return result_list
+
 
 def refs_changed_by_other_user(current_user):
     """
