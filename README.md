@@ -68,6 +68,10 @@ a. Crear arquivo application.wsgi bajo el directorio inicial (ej. /home/fi-admin
 
 import os, sys
 
+#os.environ['http_proxy'] = "http://username:password@dominio:port/"
+#os.environ['https_proxy'] = "http://username:password@dominio:port/"
+#os.environ['NO_PROXY'] = 'dominio'
+
 PROJECT_NAME = 'fi-admin'
 
 INSTALL_BASE = '/home/fi-admin/'
