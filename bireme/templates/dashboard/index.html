@@ -19,6 +19,17 @@
         <h2><i class='icon-dashboard'></i> {% trans "Dashboard" %} <small>{{ user.username }} ({{ user_cc }}) {% if networks|length > 0 %} - {% trans 'Networks' %}: {{ networks|join:", " }}{% endif %} </small></h2>
     </div>
 
+    {% if user_cc == "BR1.1" and dedup_is_unavailable %}
+    <div class="row">
+        <div class="span12">
+            <div class="alert alert-error">
+                <strong>O serviço DeDup está indisponível!</strong>
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="row">
         <div class="span6">
             <div class="well sidebar-nav">
