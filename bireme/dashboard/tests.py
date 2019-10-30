@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 import requests_mock
 from django.contrib.auth import get_user_model
+from requests.exceptions import ConnectionError
 
 from utils.tests import BaseTestCase
 
@@ -28,6 +29,11 @@ class DashboardGet(BaseTestCase):
 
         with requests_mock.mock() as m:
             m.get(requests_mock.ANY, status_code=500)
+            resp = self.client.get("/")
+            self.assertContains(resp, "O serviço DeDup está indisponível!")
+
+        with requests_mock.mock() as m:
+            m.get(requests_mock.ANY, exc=ConnectionError)
             resp = self.client.get("/")
             self.assertContains(resp, "O serviço DeDup está indisponível!")
 
