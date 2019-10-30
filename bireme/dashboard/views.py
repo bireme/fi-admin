@@ -1,19 +1,21 @@
 #! coding: utf-8
 from collections import defaultdict
-from django.shortcuts import redirect, render_to_response, get_object_or_404
-from biblioref.views import refs_changed_by_other_cc, refs_changed_by_other_user, refs_llxp_for_indexing
-from django.template import RequestContext
 
-from utils.context_processors import additional_user_info
-from django.contrib.auth.decorators import login_required
-
-from django.contrib.contenttypes.models import ContentType
-
-from text_block.models import TextBlock
+import requests
+from django.conf import settings
 from django.contrib.admin.models import LogEntry
+from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Q
+from django.shortcuts import redirect, render_to_response, get_object_or_404
+from django.template import RequestContext
+from requests.exceptions import ConnectionError, HTTPError, SSLError, Timeout
+from text_block.models import TextBlock
+
 from biblioref.models import Reference
+from biblioref.views import refs_changed_by_other_cc, refs_changed_by_other_user, refs_llxp_for_indexing
 from institution.models import Institution
+from utils.context_processors import additional_user_info
 
 
 @login_required
@@ -32,8 +34,14 @@ def widgets(request):
     if 'DirIns' in user_data['service_role']:
         institution_id = Institution.objects.get(cc_code=user_data['user_cc']).id
 
-    output['text_blocks'] = text_blocks
+    try:
+        dedup_response = requests.get(settings.DEDUP_SERVICE_URL)
+        output['dedup_is_unavailable'] = (dedup_response.status_code >= 400)
+    except (ConnectionError, HTTPError, SSLError, Timeout):
+        output['dedup_is_unavailable'] = True
+
     output['institution_id'] = institution_id
+    output['text_blocks'] = text_blocks
 
     return render_to_response('dashboard/index.html', output,
                               context_instance=RequestContext(request))
