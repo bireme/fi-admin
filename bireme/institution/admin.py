@@ -22,6 +22,28 @@ class ServiceProductAdmin(admin.ModelAdmin):
     inlines = [ServiceProductLocalAdmin, ]
 
 
+class TypeLocalAdmin(admin.TabularInline):
+    model = TypeLocal
+    extra = 1
+
+
+class TypeAdmin(GenericAdmin):
+    model = Type
+    inlines = [TypeLocalAdmin,]
+
+
+class CategoryLocalAdmin(admin.TabularInline):
+    model = CategoryLocal
+    extra = 1
+
+
+class CategoryAdmin(GenericAdmin):
+    model = Category
+    inlines = [CategoryLocalAdmin,]
+
+
 # Django Admin models register
 admin.site.register(AdhesionTerm, AdhesionTermAdmin)
 admin.site.register(ServiceProduct, ServiceProductAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Type, TypeAdmin)

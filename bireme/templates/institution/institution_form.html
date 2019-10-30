@@ -75,7 +75,7 @@
 
                                   {% if field.name = 'name' %}
                                       {% for ul in object.get_units_level %}
-                                        <p><strong>{{ul.get_level_display}} - {{ul.unit.name}}</strong></p>
+                                        <p><strong>{{ul.get_level_display}} - {{ul.unit.name}} {{ul.unit.acronym}}</strong></p>
                                       {% endfor %}
                                   {% endif %}
                               </li>
