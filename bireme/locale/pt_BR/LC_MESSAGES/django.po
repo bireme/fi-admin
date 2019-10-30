@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-22 15:45-0300\n"
-"PO-Revision-Date: 2019-10-22 15:46-0306\n"
+"POT-Creation-Date: 2019-10-30 15:42-0300\n"
+"PO-Revision-Date: 2019-10-30 15:44-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,15 +28,16 @@ msgstr "Selecione o arquivo"
 #: biblioref/field_definitions.py:694 classification/models.py:31
 #: classification/models.py:67 events/models.py:21 help/models.py:26
 #: help/models.py:53 institution/models.py:25 institution/models.py:52
-#: institution/models.py:307 institution/models.py:349 leisref/models.py:29
-#: leisref/models.py:68 leisref/models.py:108 leisref/models.py:286
-#: leisref/models.py:325 leisref/models.py:365 leisref/models.py:475
-#: leisref/models.py:537 main/models.py:29 main/models.py:69 main/models.py:97
-#: main/models.py:108 main/models.py:135 multimedia/models.py:22
-#: multimedia/models.py:61 oer/models.py:28 oer/models.py:67 oer/models.py:105
-#: oer/models.py:144 oer/models.py:183 oer/models.py:221 oer/models.py:250
-#: oer/models.py:281 oer/models.py:310 oer/models.py:349 oer/models.py:388
-#: oer/models.py:427 oer/models.py:480 oer/models.py:535
+#: institution/models.py:64 institution/models.py:91 institution/models.py:275
+#: institution/models.py:317 leisref/models.py:29 leisref/models.py:68
+#: leisref/models.py:108 leisref/models.py:286 leisref/models.py:325
+#: leisref/models.py:365 leisref/models.py:475 leisref/models.py:537
+#: main/models.py:29 main/models.py:69 main/models.py:97 main/models.py:108
+#: main/models.py:135 multimedia/models.py:22 multimedia/models.py:61
+#: oer/models.py:28 oer/models.py:67 oer/models.py:105 oer/models.py:144
+#: oer/models.py:183 oer/models.py:221 oer/models.py:250 oer/models.py:281
+#: oer/models.py:310 oer/models.py:349 oer/models.py:388 oer/models.py:427
+#: oer/models.py:480 oer/models.py:535
 #: templates/biblioref/fieldset_fulltext.html:21
 #: templates/leisref/fieldset_fulltext.html:15
 #: templates/leisref/fieldset_fulltext.html:75
@@ -154,7 +155,7 @@ msgstr "-- América Latina e Caribe --"
 msgid "-- Others --"
 msgstr "-- Outros --"
 
-#: biblioref/field_definitions.py:519 institution/models.py:64
+#: biblioref/field_definitions.py:519 institution/models.py:102
 msgid "Center code"
 msgstr "Código Centro Cooperante"
 
@@ -371,8 +372,8 @@ msgstr "Base de dados"
 msgid "Record number"
 msgstr "Número do registro"
 
-#: biblioref/field_definitions.py:719 institution/models.py:224
-#: institution/models.py:229 leisref/models.py:536 oer/models.py:530
+#: biblioref/field_definitions.py:719 institution/models.py:192
+#: institution/models.py:197 leisref/models.py:536 oer/models.py:530
 #: oer/models.py:534 templates/institution/fieldset_url.html:15
 #: templates/leisref/fieldset_fulltext.html:14
 #: templates/main/resources.html:102 templates/oer/fieldset_fulltext.html:14
@@ -865,7 +866,7 @@ msgid "Bibliographic Records"
 msgstr "Registros bibliográficos"
 
 #: biblioref/models.py:31 error_reporting/models.py:35 events/models.py:67
-#: institution/models.py:63 leisref/models.py:433 log/models.py:58
+#: institution/models.py:101 leisref/models.py:433 log/models.py:58
 #: main/models.py:156 main/models.py:176 main/models.py:196 main/models.py:218
 #: multimedia/models.py:100 oer/models.py:464 suggest/models.py:23
 #: suggest/models.py:54 templates/biblioref/reference_form.html:136
@@ -911,7 +912,7 @@ msgid "Reviewed by BIREME?"
 msgstr "Revisado pela BIREME"
 
 #: biblioref/models.py:38 biblioref/models.py:348 biblioref/models.py:377
-#: events/models.py:89 institution/models.py:74 leisref/models.py:493
+#: events/models.py:89 institution/models.py:112 leisref/models.py:493
 #: main/models.py:240 multimedia/models.py:64 multimedia/models.py:120
 #: oer/models.py:518 templates/multimedia/media_list.html:86
 #: templates/reports/index.html:72 templates/title/title_list.html:105
@@ -1289,8 +1290,8 @@ msgstr "Coleções"
 msgid "Parent"
 msgstr "Pai"
 
-#: classification/models.py:32 events/models.py:78 institution/models.py:67
-#: institution/models.py:246 multimedia/models.py:60
+#: classification/models.py:32 events/models.py:78 institution/models.py:105
+#: institution/models.py:214 multimedia/models.py:60
 #: templates/institution/institution_list.html:78
 #: templates/institution/institution_list.html:98 title/models.py:86
 msgid "Country"
@@ -1298,19 +1299,18 @@ msgstr "País"
 
 #: classification/models.py:33 classification/models.py:68
 #: database/models.py:21 events/models.py:22 institution/models.py:24
-#: institution/models.py:53 institution/models.py:65 institution/models.py:132
-#: institution/models.py:156 institution/models.py:180
-#: institution/models.py:204 institution/models.py:244
-#: institution/models.py:330 institution/models.py:350 leisref/models.py:28
-#: leisref/models.py:67 leisref/models.py:107 leisref/models.py:147
-#: leisref/models.py:187 leisref/models.py:285 leisref/models.py:324
-#: leisref/models.py:364 leisref/models.py:405 main/models.py:30
-#: main/models.py:70 main/models.py:98 main/models.py:109 main/models.py:136
-#: multimedia/models.py:23 oer/field_definitions.py:40 oer/models.py:27
-#: oer/models.py:66 oer/models.py:104 oer/models.py:143 oer/models.py:182
-#: oer/models.py:220 oer/models.py:249 oer/models.py:280 oer/models.py:309
-#: oer/models.py:348 oer/models.py:387 oer/models.py:426
-#: templates/events/types.html:47
+#: institution/models.py:53 institution/models.py:63 institution/models.py:92
+#: institution/models.py:103 institution/models.py:172
+#: institution/models.py:212 institution/models.py:298
+#: institution/models.py:318 leisref/models.py:28 leisref/models.py:67
+#: leisref/models.py:107 leisref/models.py:147 leisref/models.py:187
+#: leisref/models.py:285 leisref/models.py:324 leisref/models.py:364
+#: leisref/models.py:405 main/models.py:30 main/models.py:70 main/models.py:98
+#: main/models.py:109 main/models.py:136 multimedia/models.py:23
+#: oer/field_definitions.py:40 oer/models.py:27 oer/models.py:66
+#: oer/models.py:104 oer/models.py:143 oer/models.py:182 oer/models.py:220
+#: oer/models.py:249 oer/models.py:280 oer/models.py:309 oer/models.py:348
+#: oer/models.py:387 oer/models.py:426 templates/events/types.html:47
 #: templates/institution/fieldset_contact.html:15
 #: templates/institution/fieldset_email.html:15
 #: templates/institution/fieldset_email.html:68
@@ -1353,8 +1353,8 @@ msgid "Image"
 msgstr "Imagem"
 
 #: classification/models.py:63 events/models.py:45 help/models.py:49
-#: institution/models.py:48 institution/models.py:303
-#: institution/models.py:345 leisref/models.py:52 leisref/models.py:92
+#: institution/models.py:48 institution/models.py:87 institution/models.py:271
+#: institution/models.py:313 leisref/models.py:52 leisref/models.py:92
 #: leisref/models.py:132 leisref/models.py:172 leisref/models.py:212
 #: leisref/models.py:269 leisref/models.py:310 leisref/models.py:349
 #: leisref/models.py:389 main/models.py:53 main/models.py:93
@@ -1367,8 +1367,8 @@ msgid "Translation"
 msgstr "Tradução"
 
 #: classification/models.py:64 events/models.py:46 help/models.py:50
-#: institution/models.py:49 institution/models.py:304
-#: institution/models.py:346 leisref/models.py:53 leisref/models.py:93
+#: institution/models.py:49 institution/models.py:88 institution/models.py:272
+#: institution/models.py:314 leisref/models.py:53 leisref/models.py:93
 #: leisref/models.py:133 leisref/models.py:173 leisref/models.py:213
 #: leisref/models.py:270 leisref/models.py:311 leisref/models.py:350
 #: leisref/models.py:390 main/models.py:54 main/models.py:94
@@ -1437,8 +1437,8 @@ msgstr "Português"
 msgid "Spanish"
 msgstr "Espanhol"
 
-#: database/models.py:20 events/models.py:20 institution/models.py:66
-#: institution/models.py:245 institution/models.py:331 leisref/models.py:404
+#: database/models.py:20 events/models.py:20 institution/models.py:104
+#: institution/models.py:213 institution/models.py:299 leisref/models.py:404
 #: main/models.py:28 main/models.py:68 main/models.py:107
 #: multimedia/models.py:21 templates/institution/institution_unit.html:84
 msgid "Acronym"
@@ -1539,8 +1539,7 @@ msgstr "Conteúdo inapropriado"
 msgid "Duplicated"
 msgstr "Duplicado"
 
-#: error_reporting/models.py:28 institution/models.py:147
-#: institution/models.py:220
+#: error_reporting/models.py:28 institution/models.py:188
 msgid "Other"
 msgstr "Outro"
 
@@ -1637,7 +1636,7 @@ msgstr "Link"
 msgid "Enter the link of event portal"
 msgstr "Inserir link do portal do evento"
 
-#: events/models.py:76 institution/models.py:68
+#: events/models.py:76 institution/models.py:106
 msgid "Address"
 msgstr "Endereço"
 
@@ -1648,7 +1647,7 @@ msgstr ""
 "Incluir endereço completo do local do evento para apresentar-lo no mapa do "
 "Google"
 
-#: events/models.py:77 institution/models.py:69 multimedia/models.py:59
+#: events/models.py:77 institution/models.py:107 multimedia/models.py:59
 #: suggest/models.py:62 title/models.py:118
 msgid "City"
 msgstr "Cidade"
@@ -1657,7 +1656,7 @@ msgstr "Cidade"
 msgid "Official languages"
 msgstr "Idiomas oficiais"
 
-#: events/models.py:83 institution/models.py:151
+#: events/models.py:83
 msgid "Contact email"
 msgstr "Email para contato"
 
@@ -1724,18 +1723,9 @@ msgstr "Ativa"
 msgid "Inactive"
 msgstr "Inativa"
 
-#: institution/models.py:21 institution/models.py:108
-msgid "Institution type"
-msgstr "Tipo de instituição"
-
-#: institution/models.py:22
-msgid "Institution types"
-msgstr "Tipo de instituições"
-
-#: institution/models.py:51 institution/models.py:131
-#: institution/models.py:155 institution/models.py:228 oer/models.py:24
-#: oer/models.py:55 oer/models.py:478
-#: templates/institution/fieldset_email.html:14
+#: institution/models.py:21 institution/models.py:51 institution/models.py:146
+#: institution/models.py:196 oer/models.py:24 oer/models.py:55
+#: oer/models.py:478 templates/institution/fieldset_email.html:14
 #: templates/institution/fieldset_email.html:67
 #: templates/institution/fieldset_url.html:14
 #: templates/title/form_preview.html:300 templates/title/form_preview.html:350
@@ -1744,7 +1734,20 @@ msgstr "Tipo de instituições"
 msgid "Type"
 msgstr "Tipo"
 
-#: institution/models.py:60
+#: institution/models.py:22 oer/models.py:25
+msgid "Types"
+msgstr "Tipos"
+
+#: institution/models.py:60 institution/models.py:90 institution/models.py:145
+msgid "Category"
+msgstr "Categoria"
+
+#: institution/models.py:61
+#| msgid "Category"
+msgid "Categories"
+msgstr "Categorias"
+
+#: institution/models.py:98
 #: templates/institution/institution_confirm_delete.html:8
 #: templates/institution/institution_form.html:9
 #: templates/institution/institution_list.html:5
@@ -1754,199 +1757,168 @@ msgstr "Tipo"
 msgid "Institution"
 msgstr "Instituição"
 
-#: institution/models.py:61 templates/menu.html:59
+#: institution/models.py:99 templates/menu.html:59
 msgid "Institutions"
 msgstr "Instituições"
 
-#: institution/models.py:70 title/models.py:88
+#: institution/models.py:108 title/models.py:88
 msgid "State"
 msgstr "Estado"
 
-#: institution/models.py:71
+#: institution/models.py:109
 msgid "Zip code"
 msgstr "CEP"
 
-#: institution/models.py:72
+#: institution/models.py:110
 msgid "Mailbox"
 msgstr "Caixa Postal"
 
-#: institution/models.py:103
+#: institution/models.py:141
 msgid "Administrative information"
 msgstr "Informação administrativa"
 
-#: institution/models.py:104
+#: institution/models.py:142
 msgid "Administrative informations"
 msgstr "Informações administrativas"
 
-#: institution/models.py:107
-msgid "Category"
-msgstr "Categoria"
+#: institution/models.py:147
+#| msgid "Changes history"
+msgid "Category (history)"
+msgstr "Categoria (histórico)"
 
-#: institution/models.py:109 leisref/models.py:485 title/models.py:122
+#: institution/models.py:148
+#| msgid "Act history"
+msgid "Type (history)"
+msgstr "Tipo (histórico)"
+
+#: institution/models.py:149 leisref/models.py:485 title/models.py:122
 msgid "Notes"
 msgstr "Notas"
 
-#: institution/models.py:121 institution/models.py:146
-#: institution/models.py:219
-msgid "Main"
-msgstr "Principal"
+#: institution/models.py:161
+msgid "Mr."
+msgstr "Sr."
 
-#: institution/models.py:122
-msgid "Extension"
-msgstr "Extensão"
+#: institution/models.py:162
+msgid "Mrs."
+msgstr "Sra."
 
-#: institution/models.py:123
-msgid "Fax"
-msgstr "Fax"
+#: institution/models.py:163
+msgid "Dr."
+msgstr "Dr."
 
-#: institution/models.py:127
-msgid "Contact phone"
-msgstr "Telefone de contato"
+#: institution/models.py:167
+msgid "Contact"
+msgstr "Contato"
 
-#: institution/models.py:128
-msgid "Contact phones"
-msgstr "Telefones de contato"
+#: institution/models.py:168 templates/institution/institution_form.html:30
+msgid "Contacts"
+msgstr "Contatos"
 
-#: institution/models.py:133 institution/models.py:207
-#| msgid "Country code"
-msgid "Country/Area code"
-msgstr "Código País/Área"
+#: institution/models.py:171 templates/institution/fieldset_contact.html:14
+#: templates/institution/fieldset_person.html:14
+msgid "Prefix"
+msgstr "Tratamento"
 
-#: institution/models.py:134
-msgid "Number"
-msgstr "Número"
+#: institution/models.py:173 templates/institution/fieldset_contact.html:16
+#: templates/institution/fieldset_person.html:16
+msgid "Job title"
+msgstr "Cargo"
 
-#: institution/models.py:152
-msgid "Contact emails"
-msgstr "Emails de contato"
-
-#: institution/models.py:157 institution/models.py:206
-#: templates/authentication/login.html:38
+#: institution/models.py:174 templates/authentication/login.html:38
 #: templates/institution/fieldset_contact.html:17
 #: templates/institution/fieldset_email.html:16
 msgid "Email"
 msgstr "Email"
 
-#: institution/models.py:169 institution/models.py:193
-msgid "Mr."
-msgstr "Sr."
-
-#: institution/models.py:170 institution/models.py:194
-msgid "Mrs."
-msgstr "Sra."
-
-#: institution/models.py:171 institution/models.py:195
-msgid "Dr."
-msgstr "Dr."
-
 #: institution/models.py:175
-msgid "Contact person"
-msgstr "Pessoa de contato"
+msgid "Country/Area code"
+msgstr "Código País/Área"
 
-#: institution/models.py:176
-msgid "Contact persons"
-msgstr "Pessoas de contato"
-
-#: institution/models.py:179 institution/models.py:203
-#: templates/institution/fieldset_contact.html:14
-#: templates/institution/fieldset_person.html:14
-msgid "Prefix"
-msgstr "Tratamento"
-
-#: institution/models.py:181 institution/models.py:205
-#: templates/institution/fieldset_contact.html:16
-#: templates/institution/fieldset_person.html:16
-msgid "Job title"
-msgstr "Cargo"
-
-#: institution/models.py:199
-msgid "Contact"
-msgstr "Contato"
-
-#: institution/models.py:200 templates/institution/institution_form.html:30
-msgid "Contacts"
-msgstr "Contatos"
-
-#: institution/models.py:208 templates/institution/fieldset_contact.html:19
+#: institution/models.py:176 templates/institution/fieldset_contact.html:19
 msgid "Phone"
 msgstr "Telefone"
 
-#: institution/models.py:225 oer/models.py:531
+#: institution/models.py:187
+msgid "Main"
+msgstr "Principal"
+
+#: institution/models.py:193 oer/models.py:531
 msgid "URLs"
 msgstr "Endereços eletrônicos"
 
-#: institution/models.py:241 institution/models.py:270
+#: institution/models.py:209 institution/models.py:238
 #: templates/institution/fieldset_unitlevel.html:16
 msgid "Unit"
 msgstr "Unidade"
 
-#: institution/models.py:242 templates/institution/institution_form.html:33
+#: institution/models.py:210 templates/institution/institution_form.html:33
 msgid "Units"
 msgstr "Unidades"
 
-#: institution/models.py:258
+#: institution/models.py:226
 msgid "First level"
 msgstr "Primeiro nível"
 
-#: institution/models.py:259
+#: institution/models.py:227
 msgid "Second level"
 msgstr "Segundo nível"
 
-#: institution/models.py:260
+#: institution/models.py:228
 msgid "Third level"
 msgstr "Terceiro nível"
 
-#: institution/models.py:264 thesaurus/views.py:213 thesaurus/views.py:612
+#: institution/models.py:232 thesaurus/views.py:213 thesaurus/views.py:612
 #: thesaurus/views.py:3088 thesaurus/views.py:3441
 msgid "Hierarchical level"
 msgstr "Nível hierárquico"
 
-#: institution/models.py:265
+#: institution/models.py:233
 msgid "Hierarchical levels"
 msgstr "Níveis hierárquicos"
 
-#: institution/models.py:269 templates/institution/fieldset_unitlevel.html:15
+#: institution/models.py:237 templates/institution/fieldset_unitlevel.html:15
 msgid "Level"
 msgstr "Nível"
 
-#: institution/models.py:282 institution/models.py:306
-#: institution/models.py:314 templates/institution/adhesionterm.html:8
+#: institution/models.py:250 institution/models.py:274
+#: institution/models.py:282 templates/institution/adhesionterm.html:8
 #: templates/institution/adhesionterm.html:86
 #: templates/institution/institution_form.html:100
 msgid "Adhesion term"
 msgstr "Termo de adesão"
 
-#: institution/models.py:283 institution/models.py:315
+#: institution/models.py:251 institution/models.py:283
 msgid "Adhesion terms"
 msgstr "Termos de adesão"
 
-#: institution/models.py:285 institution/models.py:308 main/models.py:195
+#: institution/models.py:253 institution/models.py:276 main/models.py:195
 msgid "Text"
 msgstr "Texto"
 
-#: institution/models.py:286
+#: institution/models.py:254
 msgid "Version"
 msgstr "Versão"
 
-#: institution/models.py:319
+#: institution/models.py:287
 msgid "Acepted"
 msgstr "Aceito"
 
-#: institution/models.py:327 institution/models.py:348
+#: institution/models.py:295 institution/models.py:316
 msgid "Service/Product"
 msgstr "Serviço/Produto"
 
-#: institution/models.py:328
+#: institution/models.py:296
 msgid "Services/Products"
 msgstr "Serviços/Produtos"
 
-#: institution/models.py:355
+#: institution/models.py:323
 #, fuzzy
 #| msgid "Institution as subject"
 msgid "Institution service product"
 msgstr "Instituição como tema"
 
-#: institution/models.py:356
+#: institution/models.py:324
 #, fuzzy
 #| msgid "Institution as subject"
 msgid "Instituion services products"
@@ -2466,10 +2438,6 @@ msgstr "Contribuidor"
 msgid "Required for publication"
 msgstr "Obrigatório para publicação"
 
-#: oer/models.py:25
-msgid "Types"
-msgstr "Tipos"
-
 #: oer/models.py:63 oer/models.py:92
 msgid "License"
 msgstr "Licença"
@@ -2930,8 +2898,8 @@ msgstr "Selecione pela pesquisa"
 
 #: templates/biblioref/fieldset_indexing.html:70
 #: templates/biblioref/reference_confirm_delete.html:29
-#: templates/biblioref/referenceanalytic_form.html:460
-#: templates/biblioref/referenceanalytic_form.html:516
+#: templates/biblioref/referenceanalytic_form.html:462
+#: templates/biblioref/referenceanalytic_form.html:518
 #: templates/biblioref/referencesource_form.html:389
 #: templates/delete_confirm.html:17
 #: templates/institution/institution_confirm_delete.html:29
@@ -2973,7 +2941,7 @@ msgid "Record"
 msgstr "Registro"
 
 #: templates/biblioref/reference_confirm_delete.html:27
-#: templates/biblioref/referenceanalytic_form.html:453
+#: templates/biblioref/referenceanalytic_form.html:455
 #: templates/delete_confirm.html:9
 #: templates/institution/institution_confirm_delete.html:27
 #: templates/leisref/act_confirm_delete.html:27
@@ -2988,8 +2956,8 @@ msgid "Are you sure you want to delete?"
 msgstr "Você tem certeza que deseja apagar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
-#: templates/biblioref/referenceanalytic_form.html:461
-#: templates/biblioref/referenceanalytic_form.html:517
+#: templates/biblioref/referenceanalytic_form.html:463
+#: templates/biblioref/referenceanalytic_form.html:519
 #: templates/biblioref/referencesource_form.html:390
 #: templates/delete_confirm.html:16
 #: templates/institution/institution_confirm_delete.html:28
@@ -3147,7 +3115,7 @@ msgid "Suggested"
 msgstr "Sugerido"
 
 #: templates/biblioref/reference_form.html:396
-#: templates/biblioref/referenceanalytic_form.html:383
+#: templates/biblioref/referenceanalytic_form.html:385
 #: templates/biblioref/referencesource_form.html:270
 #: templates/events/edit-event.html:416 templates/leisref/act_form.html:358
 #: templates/main/edit-resource.html:419
@@ -3159,8 +3127,8 @@ msgstr "Adicionar descritor"
 #: templates/biblioref/reference_form.html:397
 #: templates/biblioref/reference_form.html:407
 #: templates/biblioref/reference_form.html:417
-#: templates/biblioref/referenceanalytic_form.html:384
-#: templates/biblioref/referenceanalytic_form.html:394
+#: templates/biblioref/referenceanalytic_form.html:386
+#: templates/biblioref/referenceanalytic_form.html:396
 #: templates/biblioref/referencesource_form.html:271
 #: templates/biblioref/referencesource_form.html:281
 #: templates/biblioref/referencesource_form.html:291
@@ -3371,12 +3339,12 @@ msgid "Filter by"
 msgstr "Filtrar por"
 
 #: templates/biblioref/reference_list.html:155
-#: templates/dashboard/index.html:46
+#: templates/dashboard/index.html:57
 msgid "Changed by other cooperative center"
 msgstr "Modificados por outros centros cooperantes"
 
 #: templates/biblioref/reference_list.html:156
-#: templates/dashboard/index.html:31
+#: templates/dashboard/index.html:42
 msgid "Changed by other users"
 msgstr "Modificado por outros usuários"
 
@@ -3483,7 +3451,7 @@ msgstr "Código do centro indexador"
 #: templates/biblioref/referenceanalytic_form.html:222
 #: templates/biblioref/referencesource_form.html:128
 #: templates/institution/institution_form.html:97
-#: templates/main/edit-resource.html:124 templates/modal_log.html:6
+#: templates/main/edit-resource.html:124 templates/modal_log.html:7
 #: templates/multimedia/media_form.html:148
 #: templates/thesaurus/page_view_desc.html:438
 #: templates/thesaurus/page_view_qualif.html:317
@@ -3497,7 +3465,7 @@ msgstr "Histórico de mudanças"
 msgid "Duplicates"
 msgstr "Duplicados"
 
-#: templates/biblioref/referenceanalytic_form.html:251
+#: templates/biblioref/referenceanalytic_form.html:252
 #: templates/biblioref/referencesource_form.html:160
 #: templates/classification/classify.html:93
 #: templates/events/edit-event.html:346 templates/events/edit-event.html:389
@@ -3546,30 +3514,30 @@ msgstr "Duplicados"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: templates/biblioref/referenceanalytic_form.html:254
+#: templates/biblioref/referenceanalytic_form.html:256
 #: templates/biblioref/referencesource_form.html:165
 #: templates/institution/institution_form.html:123
 #: templates/leisref/act_form.html:318 templates/oer/oer_form.html:279
 msgid "Save Draft"
 msgstr "Gravar Rascunho"
 
-#: templates/biblioref/referenceanalytic_form.html:256
+#: templates/biblioref/referenceanalytic_form.html:258
 #: templates/biblioref/referencesource_form.html:167
 #: templates/institution/institution_form.html:125
 #: templates/leisref/act_form.html:320 templates/oer/oer_form.html:281
 msgid "Save as"
 msgstr "Gravar como"
 
-#: templates/biblioref/referenceanalytic_form.html:262
+#: templates/biblioref/referenceanalytic_form.html:264
 msgid "Save as LILACS-Express"
 msgstr "Salvar como LILACS-Express"
 
-#: templates/biblioref/referenceanalytic_form.html:264
+#: templates/biblioref/referenceanalytic_form.html:266
 msgid "Publish as LILACS-Express"
 msgstr "Publicar como LILACS-Express"
 
-#: templates/biblioref/referenceanalytic_form.html:267
-#: templates/biblioref/referenceanalytic_form.html:271
+#: templates/biblioref/referenceanalytic_form.html:269
+#: templates/biblioref/referenceanalytic_form.html:273
 #: templates/biblioref/referencesource_form.html:171
 #: templates/biblioref/referencesource_form.html:175
 #: templates/institution/institution_form.html:129
@@ -3577,7 +3545,7 @@ msgstr "Publicar como LILACS-Express"
 msgid "Publish"
 msgstr "Publicar"
 
-#: templates/biblioref/referenceanalytic_form.html:276
+#: templates/biblioref/referenceanalytic_form.html:278
 #: templates/biblioref/referencesource_form.html:179
 #: templates/institution/institution_form.html:133
 #: templates/leisref/act_form.html:328 templates/oer/oer_form.html:289
@@ -3585,12 +3553,12 @@ msgstr "Publicar"
 msgid "Back"
 msgstr "Voltar"
 
-#: templates/biblioref/referenceanalytic_form.html:393
+#: templates/biblioref/referenceanalytic_form.html:395
 #: templates/biblioref/referencesource_form.html:280
 msgid "Add file"
 msgstr "Adicionar arquivo"
 
-#: templates/biblioref/referenceanalytic_form.html:507
+#: templates/biblioref/referenceanalytic_form.html:509
 #: templates/biblioref/referencesource_form.html:380
 msgid ""
 "After publication the record can only be modified by a user with editor "
@@ -3666,23 +3634,23 @@ msgstr "Classificação atualizada"
 msgid "Success!"
 msgstr "Sucesso!"
 
-#: templates/dashboard/index.html:25
+#: templates/dashboard/index.html:36
 msgid "Recent actions"
 msgstr "Ações recentes"
 
-#: templates/dashboard/index.html:53
+#: templates/dashboard/index.html:64
 msgid "LILACS-Express records for indexing"
 msgstr "Registros LILACS-Express para indexação"
 
-#: templates/dashboard/index.html:61
+#: templates/dashboard/index.html:72
 msgid "Institutional"
 msgstr "Institucional"
 
-#: templates/dashboard/index.html:63
+#: templates/dashboard/index.html:74
 msgid "Update your institution information"
 msgstr "Atualize as informações da sua instituição"
 
-#: templates/dashboard/index.html:64
+#: templates/dashboard/index.html:75
 msgid "Review adhesion term"
 msgstr "Revisar o termo de adesão"
 
@@ -3821,7 +3789,6 @@ msgid "Adhesion term updated"
 msgstr "Termo de adesão atualizado"
 
 #: templates/institution/fieldset_contact.html:18
-#| msgid "Mask code"
 msgid "Area code"
 msgstr "Código Área"
 
@@ -4178,6 +4145,11 @@ msgstr "Usuário"
 msgid "Changes"
 msgstr "Alterações"
 
+#: templates/log/list.html:24
+#| msgid "No resources found"
+msgid "No changes found"
+msgstr "Nenhuma mudança encontrada"
+
 #: templates/log/review.html:5 templates/log/review.html.py:8
 #: templates/log/review.html:14 templates/log/review_notapproved.html:5
 #: templates/log/review_notapproved.html:8
@@ -4343,7 +4315,7 @@ msgid "Logout"
 msgstr "Sair do sistema"
 
 #: templates/modal_dedup.html:11 templates/modal_help.html:11
-#: templates/modal_log.html:11 templates/reports/index.html:182
+#: templates/modal_log.html:13 templates/reports/index.html:182
 msgid "Close"
 msgstr "Fechar"
 
@@ -6828,6 +6800,36 @@ msgstr "Recurso criado"
 msgid "Year must be greater than 1900"
 msgstr "Ano deve ser maior que 1900"
 
+#~ msgid "Institution type"
+#~ msgstr "Tipo de instituição"
+
+#~ msgid "Institution types"
+#~ msgstr "Tipo de instituições"
+
+#~ msgid "Extension"
+#~ msgstr "Extensão"
+
+#~ msgid "Fax"
+#~ msgstr "Fax"
+
+#~ msgid "Contact phone"
+#~ msgstr "Telefone de contato"
+
+#~ msgid "Contact phones"
+#~ msgstr "Telefones de contato"
+
+#~ msgid "Number"
+#~ msgstr "Número"
+
+#~ msgid "Contact emails"
+#~ msgstr "Emails de contato"
+
+#~ msgid "Contact person"
+#~ msgstr "Pessoa de contato"
+
+#~ msgid "Contact persons"
+#~ msgstr "Pessoas de contato"
+
 #~ msgid "Field Tree number is required!"
 #~ msgstr "Código hierárquico é obrigatório"
 
@@ -7019,9 +7021,6 @@ msgstr "Ano deve ser maior que 1900"
 
 #~ msgid "Act"
 #~ msgstr "Ato"
-
-#~ msgid "Act history"
-#~ msgstr "Histórico de mudanças"
 
 #~ msgid "Report not available"
 #~ msgstr "Relatório não disponível"
