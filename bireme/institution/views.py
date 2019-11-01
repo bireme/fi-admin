@@ -30,6 +30,8 @@ class InstGenericListView(LoginRequiredView, ListView):
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('DirIns')
         user_type = user_data.get('user_type')
+        # save current filter in session
+        self.request.session["filtered_list"] = self.request.get_full_path()
         # restrict institution module to advanced users with DirIns permission
         if user_type != 'advanced' or not user_role:
             return HttpResponseForbidden()
@@ -254,6 +256,13 @@ class InstUpdate(LoginRequiredView):
             context['formset_unitlevel'] = UnitLevelFormSet(instance=self.object)
 
         return context
+
+        # use last filtered_url saved in session
+    def get_success_url(self):
+        redirect_url = self.request.session.get("filtered_list", self.success_url)
+        print(redirect_url)
+
+        return redirect_url
 
 
 class InstUpdateView(InstUpdate, UpdateView):

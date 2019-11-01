@@ -100,8 +100,8 @@ if v6 = 'I' AND left(v607,3) <> 'BRI' AND left(v607,3) <> 'BRE' then,
 
         c4,'"fields": {',/
             c8,'"institution": ',f(mfn+val(v9995),1,0),','/
-            c8,'"category": "',(v603+|\r\n|), '",'/,
-            c8,'"type": "',(v604+|\r\n|),'",'/,
+            c8,'"category_history": "',(v603+|\r\n|), '",'/,
+            c8,'"type_history": "',(v604+|\r\n|),'",'/,
             c8,'"notes": "',(replace(v699,'^a', '\r\n\r\n^a'),'\r\n'),'"'/,
         c4,'}',/
     '},'/

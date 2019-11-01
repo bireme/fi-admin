@@ -15,13 +15,13 @@ STATUS_CHOICES = (
 )
 
 # Institution Type
-class Type(Generic):
+class Type(models.Model):
 
     class Meta:
-        verbose_name = _("Institution type")
-        verbose_name_plural = _("Institution types")
+        verbose_name = _("Type")
+        verbose_name_plural = _("Types")
 
-    name = models.CharField(_("Name"), max_length=155)
+    name = models.CharField(_("Name"), max_length=55)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
     def get_translations(self):
@@ -50,8 +50,46 @@ class TypeLocal(models.Model):
 
     type = models.ForeignKey(Type, verbose_name=_("Type"))
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
-    name = models.CharField(_("Name"), max_length=155)
+    name = models.CharField(_("Name"), max_length=55)
 
+
+# Institution Category
+class Category(models.Model):
+
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+
+    name = models.CharField(_("Name"), max_length=55)
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = CategoryLocal.objects.filter(category=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
+    def __unicode__(self):
+        lang_code = get_language()
+        translation = CategoryLocal.objects.filter(category=self.id, language=lang_code)
+        if translation:
+            return translation[0].name
+        else:
+            return self.name
+
+
+class CategoryLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    category = models.ForeignKey(Category, verbose_name=_("Category"))
+    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
+    name = models.CharField(_("Name"), max_length=55)
 
 
 # Institution
@@ -104,8 +142,10 @@ class Adm(models.Model, AuditLog):
         verbose_name_plural = _("Administrative informations")
 
     institution = models.ForeignKey(Institution, null=True)
-    category = models.TextField(_('Category'), blank=True)
-    type = models.TextField(_("Institution type"), blank=True)
+    category = models.ManyToManyField(Category, verbose_name=_("Category"), blank=True)
+    type = models.ManyToManyField(Type, verbose_name=_("Type"), blank=True)
+    category_history = models.TextField(_('Category (history)'), blank=True)
+    type_history = models.TextField(_("Type (history)"), blank=True)
     notes = models.TextField(_('Notes'), blank=True)
 
     def get_parent(self):
@@ -113,78 +153,6 @@ class Adm(models.Model, AuditLog):
 
     def __unicode__(self):
         return u"{0} | {1}".format(self.institution, self.type)
-
-
-# Contact phone
-class ContactPhone(models.Model, AuditLog):
-    PHONE_CHOICES = (
-        ('main', _('Main')),
-        ('extension', _('Extension')),
-        ('fax', _('Fax')),
-    )
-
-    class Meta:
-        verbose_name = _("Contact phone")
-        verbose_name_plural = _("Contact phones")
-
-    institution = models.ForeignKey(Institution, null=True)
-    phone_type = models.CharField(_("Type"), max_length=75, choices=PHONE_CHOICES)
-    phone_name = models.CharField(_("Name"), max_length=85)
-    country_area_code = models.CharField(_("Country/Area code"), max_length=20, blank=True)
-    phone_number = models.CharField(_("Number"), max_length=255)
-
-    def get_parent(self):
-        return self.institution
-
-    def __unicode__(self):
-        return u"{0} - {1} - ({2}) {3}".format(self.phone_type, self.phone_name,
-                                               self.country_area_code, self.phone_number)
-
-# Contact emails
-class ContactEmail(models.Model, AuditLog):
-    EMAIL_CHOICES = (
-        ('main', _('Main')),
-        ('other', _('Other')),
-    )
-
-    class Meta:
-        verbose_name = _("Contact email")
-        verbose_name_plural = _("Contact emails")
-
-    institution = models.ForeignKey(Institution, null=True)
-    email_type = models.CharField(_("Type"), max_length=75, choices=EMAIL_CHOICES)
-    email_name = models.CharField(_("Name"), max_length=85)
-    email = models.EmailField(_("Email"), max_length=155)
-
-    def get_parent(self):
-        return self.institution
-
-    def __unicode__(self):
-        return u"{0} - {1} - {2}".format(self.email_type, self.email_name, self.email)
-
-
-# Contact person
-class ContactPerson(models.Model, AuditLog):
-    PREFIX_CHOICES = (
-        ('Mr.', _('Mr.')),
-        ('Mrs.', _('Mrs.')),
-        ('Dr.', _('Dr.')),
-    )
-
-    class Meta:
-        verbose_name = _("Contact person")
-        verbose_name_plural = _("Contact persons")
-
-    institution = models.ForeignKey(Institution, null=True)
-    prefix = models.CharField(_("Prefix"), max_length=45, choices=PREFIX_CHOICES, blank=True)
-    name = models.CharField(_("Name"), max_length=155, blank=True)
-    job_title = models.CharField(_("Job title"), max_length=155, blank=True)
-
-    def get_parent(self):
-        return self.institution
-
-    def __unicode__(self):
-        return u"{0} {1} ({2})".format(self.prefix, self.name, self.job_title)
 
 
 # Institution contacts
