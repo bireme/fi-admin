@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Resource" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'main.views.list_resources' %}">{% trans "Resources" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'main.views.list_resources' %}">{% trans "Internet resources" %}</a> <span class="divider">/</span></li>
     {% if is_new %}<li>{% trans "New Resource" %}</li>
     {% else %}<li>{% trans "Edit Resource" %}</li>{% endif %}
 {% endblock %}
@@ -344,8 +344,9 @@
         </div>
 
         <div class="control-panel form-submit">
-            <a href="{% url 'main.views.list_resources' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
-
+            <a href="{%if request.session.filtered_list %} {{ request.session.filtered_list }} {% else %} {% url 'main.views.list_resources' %} {% endif %}" class="btn btn-large btn-danger">
+                {% trans "Cancel" %}
+            </a>
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
         </div>
 

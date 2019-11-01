@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-30 15:42-0300\n"
-"PO-Revision-Date: 2019-10-30 15:44-0306\n"
+"POT-Creation-Date: 2019-11-01 12:05-0300\n"
+"PO-Revision-Date: 2019-11-01 12:05-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1483,7 +1483,7 @@ msgid "name"
 msgstr "nome"
 
 #: error_reporting/models.py:14 templates/error_report/list.html:4
-#: templates/events/edit-event.html:356 templates/main/edit-resource.html:359
+#: templates/events/edit-event.html:356 templates/main/edit-resource.html:360
 msgid "Error report"
 msgstr "Informe de erro"
 
@@ -1690,11 +1690,11 @@ msgstr "Evento editado com sucesso."
 msgid "Event deleted."
 msgstr "Evento apagado."
 
-#: events/views.py:314 main/views.py:408
+#: events/views.py:314 main/views.py:412
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: events/views.py:338 main/views.py:432
+#: events/views.py:338 main/views.py:436
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
@@ -1743,7 +1743,6 @@ msgid "Category"
 msgstr "Categoria"
 
 #: institution/models.py:61
-#| msgid "Category"
 msgid "Categories"
 msgstr "Categorias"
 
@@ -1782,12 +1781,10 @@ msgid "Administrative informations"
 msgstr "Informações administrativas"
 
 #: institution/models.py:147
-#| msgid "Changes history"
 msgid "Category (history)"
 msgstr "Categoria (histórico)"
 
 #: institution/models.py:148
-#| msgid "Act history"
 msgid "Type (history)"
 msgstr "Tipo (histórico)"
 
@@ -2143,12 +2140,9 @@ msgid "French"
 msgstr "Francês"
 
 #: main/choices.py:13 main/models.py:208 templates/error_report/list.html:7
-#: templates/error_report/list.html.py:30 templates/main/edit-resource.html:8
-#: templates/main/resources.html:4 templates/main/resources.html.py:7
-#: templates/main/resources.html:22 templates/menu.html:23
-#: templates/oer/oer_form.html:9 templates/oer/oer_related.html:7
-#: templates/reports/index.html:36 templates/suggest/list.html:7
-#: templates/suggest/list.html.py:28
+#: templates/error_report/list.html.py:30 templates/oer/oer_form.html:9
+#: templates/oer/oer_related.html:7 templates/reports/index.html:36
+#: templates/suggest/list.html:7 templates/suggest/list.html.py:28
 msgid "Resources"
 msgstr "Recursos"
 
@@ -2331,27 +2325,27 @@ msgstr "Alcance temporal"
 msgid "Objective"
 msgstr "Objetivos"
 
-#: main/views.py:168 suggest/views.py:139
+#: main/views.py:170 suggest/views.py:139
 msgid "Resource successfully edited."
 msgstr "Recurso editado com sucesso."
 
-#: main/views.py:237
+#: main/views.py:241
 msgid "Resource deleted."
 msgstr "Recurso apagado."
 
-#: main/views.py:310
+#: main/views.py:314
 msgid "Thematic area successfully edited."
 msgstr "Área temática editada com sucesso."
 
-#: main/views.py:335
+#: main/views.py:339
 msgid "Thematic area deleted."
 msgstr "Área Temática apagada"
 
-#: main/views.py:504
+#: main/views.py:508
 msgid "Language successfully edited."
 msgstr "Idioma editado com sucesso."
 
-#: main/views.py:529
+#: main/views.py:533
 msgid "Language deleted."
 msgstr "Idioma apagado."
 
@@ -2625,7 +2619,7 @@ msgstr "Objeto relacionado"
 #: templates/leisref/actsource_form.html:58
 #: templates/leisref/actstate_form.html:58
 #: templates/leisref/acttype_form.html:72 templates/main/edit-language.html:56
-#: templates/main/edit-resource.html:350 templates/main/edit-resource.html:393
+#: templates/main/edit-resource.html:351 templates/main/edit-resource.html:394
 #: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
 #: templates/multimedia/media_form.html:393
 #: templates/multimedia/mediacollection_form.html:54
@@ -3118,7 +3112,7 @@ msgstr "Sugerido"
 #: templates/biblioref/referenceanalytic_form.html:385
 #: templates/biblioref/referencesource_form.html:270
 #: templates/events/edit-event.html:416 templates/leisref/act_form.html:358
-#: templates/main/edit-resource.html:419
+#: templates/main/edit-resource.html:420
 #: templates/multimedia/media_form.html:417 templates/oer/oer_form.html:374
 #: templates/title/title_form.html:519
 msgid "Add descriptor"
@@ -3148,7 +3142,7 @@ msgstr "Adicionar descritor"
 #: templates/leisref/actsource_form.html:74
 #: templates/leisref/actstate_form.html:74
 #: templates/leisref/acttype_form.html:88 templates/main/edit-language.html:72
-#: templates/main/edit-resource.html:420 templates/main/edit-resource.html:430
+#: templates/main/edit-resource.html:421 templates/main/edit-resource.html:431
 #: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
 #: templates/multimedia/media_form.html:418
 #: templates/multimedia/media_form.html:428
@@ -3191,7 +3185,7 @@ msgstr "apagar"
 
 #: templates/biblioref/reference_form.html:406
 #: templates/biblioref/referencesource_form.html:290
-#: templates/events/edit-event.html:426 templates/main/edit-resource.html:429
+#: templates/events/edit-event.html:426 templates/main/edit-resource.html:430
 #: templates/multimedia/media_form.html:427
 #: templates/title/title_form.html:528
 msgid "Add keyword"
@@ -3199,7 +3193,7 @@ msgstr "Adicionar palavra-chave"
 
 #: templates/biblioref/reference_form.html:416
 #: templates/events/edit-event.html:436 templates/leisref/act_form.html:398
-#: templates/main/edit-resource.html:439
+#: templates/main/edit-resource.html:440
 #: templates/multimedia/media_form.html:447 templates/oer/oer_form.html:414
 msgid "Add thematic area"
 msgstr "Adicionar área temática"
@@ -3479,7 +3473,7 @@ msgstr "Duplicados"
 #: templates/leisref/actsource_form.html:56
 #: templates/leisref/actstate_form.html:56
 #: templates/leisref/acttype_form.html:70
-#: templates/main/edit-resource.html:348 templates/main/edit-resource.html:392
+#: templates/main/edit-resource.html:349 templates/main/edit-resource.html:393
 #: templates/multimedia/media_form.html:392
 #: templates/thesaurus/confirm_create_desc.html:60
 #: templates/thesaurus/confirm_create_qualif.html:60
@@ -4146,7 +4140,6 @@ msgid "Changes"
 msgstr "Alterações"
 
 #: templates/log/list.html:24
-#| msgid "No resources found"
 msgid "No changes found"
 msgstr "Nenhuma mudança encontrada"
 
@@ -4195,6 +4188,13 @@ msgstr "Novo idioma"
 #: templates/suggest/edit-suggested-resource.html:9
 msgid "Edit Resource"
 msgstr "Editar Recurso"
+
+#: templates/main/edit-resource.html:8 templates/main/resources.html:4
+#: templates/main/resources.html.py:7 templates/main/resources.html:22
+#: templates/menu.html:23
+#| msgid "Online resources"
+msgid "Internet resources"
+msgstr "Recursos de Internet"
 
 #: templates/main/edit-resource.html:9 templates/main/edit-resource.html:16
 #: templates/main/resources.html:24 templates/oer/oer_form.html:10

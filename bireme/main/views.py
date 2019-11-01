@@ -41,6 +41,8 @@ def list_resources(request):
     user = request.user
     output = {}
     delete_id = request.POST.get('delete_id')
+    # save current url for preserve filters after edit
+    request.session["filtered_list"] = request.get_full_path()
 
     if delete_id:
         delete_resource(request, delete_id)
@@ -168,7 +170,9 @@ def create_edit_resource(request, **kwargs):
             output['alert'] = _("Resource successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('main.views.list_resources')
+            redirect_url = request.session.get("filtered_list", 'main.views.list_resources')
+
+            return redirect(redirect_url)
     # new/edit
     else:
         form = ResourceForm(instance=resource, user_data=user_data)
