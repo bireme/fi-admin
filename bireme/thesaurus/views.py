@@ -732,16 +732,16 @@ class DescListView(LoginRequiredView, ListView):
 
         # icontains X exact -------------------------------------------------------------------------------------
         if self.actions['exact']:
-            q_term_string = Q(term_string__exact=self.actions['s'])
+            q_term_string = Q(term_string__exact=self.actions['s'].strip())
         else:
-            q_term_string = Q(term_string__icontains=self.actions['s'])
+            q_term_string = Q(term_string__icontains=self.actions['s'].strip())
 
         # term_string
         if self.actions['filter_fields'] == 'term_string' and self.actions['exact']:
-            q_term_string = Q(term_string=self.actions['s'])
+            q_term_string = Q(term_string=self.actions['s'].strip())
         else:
             if not self.actions['filter_fields'] and not self.actions['exact']:
-                q_term_string = Q(term_string__icontains=self.actions['s'])
+                q_term_string = Q(term_string__icontains=self.actions['s'].strip())
 
         # concept_preferred_term='Y'
         q_concept_preferred_term = Q(concept_preferred_term='Y')
@@ -794,7 +794,7 @@ class DescListView(LoginRequiredView, ListView):
         # MESH Descriptor UI
         # AND performance for MESH Descriptor UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'descriptor_ui':
-            id_register = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s']).values('id')
+            id_register = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'].strip()).values('id')
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
@@ -812,7 +812,7 @@ class DescListView(LoginRequiredView, ListView):
         # DeCS Descriptor UI
         # AND performance for DeCS Descriptor UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'decs_code':
-            id_register = IdentifierDesc.objects.filter(decs_code=self.actions['s']).values('id')
+            id_register = IdentifierDesc.objects.filter(decs_code=self.actions['s'].strip()).values('id')
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
@@ -829,7 +829,11 @@ class DescListView(LoginRequiredView, ListView):
         # Tree Number
         # AND performance for Tree Number --------------------------------------------------------------
         if self.actions['filter_fields'] == 'tree_number':
-            id_tree_number = TreeNumbersListDesc.objects.filter(tree_number=self.actions['s']).values('identifier_id')
+            if self.actions['exact']:
+                id_tree_number = TreeNumbersListDesc.objects.filter(tree_number=self.actions['s'].strip()).values('identifier_id')
+            else:
+                id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__icontains=self.actions['s'].strip()).values('identifier_id')
+
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
@@ -837,9 +841,9 @@ class DescListView(LoginRequiredView, ListView):
         # Concept UI
         # AND performance for Concept UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'concept_ui':
-            concept_identifier_id = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+            concept_identifier_id = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
             id_register = IdentifierDesc.objects.filter(id__in=concept_identifier_id,thesaurus_id=self.actions['choiced_thesaurus']).values('id')
-            concept_id = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,concept_ui=self.actions['s']).values('id')
+            concept_id = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,concept_ui=self.actions['s'].strip()).values('id')
             object_list = TermListDesc.objects.filter(identifier_concept_id=concept_id).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
@@ -1172,7 +1176,7 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')
+                id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'].strip(),thesaurus=self.request.GET.get("ths")).values('id')
                 if len(id_registro)>0:
                     id_registro = id_registro[0].get('id')
                     # Força somente 1 resultado
@@ -1201,7 +1205,7 @@ class ConceptListDescView(LoginRequiredView, ListView):
         if self.actions['s']:
             try:
                 # Força somente 1 resultado
-                id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')[:1]
+                id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'].strip(),thesaurus=self.request.GET.get("ths")).values('id')[:1]
 
                 # IdentifierDesc
                 context['id_register_objects'] = IdentifierDesc.objects.filter(
@@ -1316,13 +1320,13 @@ class TermListDescView(LoginRequiredView, ListView):
         if self.actions['s']:
             try:
                 # Como o concept_ui pode existir em mais de um tesauro devemos descobrir qual o id em IdentifierDesc que é pertinente ao tesauro em questão
-                concepts = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+                concepts = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
                 for x in concepts:
                     id_identifier = x.get('identifier_id')
                     has_register = IdentifierDesc.objects.filter(id=id_identifier,thesaurus_id=self.request.GET.get("ths")).exists()
                     if has_register:
                         # Força somente 1 resultado
-                        object_list = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s'],identifier_id=id_identifier).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')[:1]
+                        object_list = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s'].strip(),identifier_id=id_identifier).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')[:1]
 
             except IdentifierConceptListDesc.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
@@ -1346,7 +1350,7 @@ class TermListDescView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                concepts = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+                concepts = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
                 for x in concepts:
                     id_identifier = x.get('identifier_id')
                     has_register = IdentifierDesc.objects.filter(id=id_identifier,thesaurus_id=self.request.GET.get("ths")).exists()
@@ -1355,7 +1359,7 @@ class TermListDescView(LoginRequiredView, ListView):
 
                         # IdentifierDesc
                         context['id_register_objects'] = IdentifierConceptListDesc.objects.filter(
-                                                        concept_ui=self.actions['s'],identifier_id=id_identifier
+                                                        concept_ui=self.actions['s'].strip(),identifier_id=id_identifier
                                                         ).values(
                                                             # IdentifierConceptListDesc
                                                             'id',
@@ -3542,16 +3546,16 @@ class QualifListView(LoginRequiredView, ListView):
 
         # icontains X exact -------------------------------------------------------------------------------------
         if self.actions['exact']:
-            q_term_string = Q(term_string=self.actions['s'])
+            q_term_string = Q(term_string=self.actions['s'].strip())
         else:
-            q_term_string = Q(term_string__icontains=self.actions['s'])
+            q_term_string = Q(term_string__icontains=self.actions['s'].strip())
 
         # term_string
         if self.actions['filter_fields'] == 'term_string' and self.actions['exact']:
-            q_term_string = Q(term_string=self.actions['s'])
+            q_term_string = Q(term_string=self.actions['s'].strip())
         else:
             if self.actions['filter_fields'] == 'term_string' and not self.actions['exact']:
-                q_term_string = Q(term_string__icontains=self.actions['s'])
+                q_term_string = Q(term_string__icontains=self.actions['s'].strip())
 
         # concept_preferred_term='Y'
         q_concept_preferred_term = Q(concept_preferred_term='Y')
@@ -3604,7 +3608,7 @@ class QualifListView(LoginRequiredView, ListView):
         # Abbreviation
         # AND performance for Abbreviation --------------------------------------------------------------
         if self.actions['filter_fields'] == 'abbreviation':
-            id_register = IdentifierQualif.objects.filter(abbreviation=self.actions['s']).values('id')
+            id_register = IdentifierQualif.objects.filter(abbreviation=self.actions['s'].strip()).values('id')
             id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
@@ -3622,7 +3626,7 @@ class QualifListView(LoginRequiredView, ListView):
         # MESH Qualifier UI
         # AND performance for MESH Qualifier UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'qualifier_ui':
-            id_register = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s']).values('id')
+            id_register = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s'].strip()).values('id')
             id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
@@ -3640,7 +3644,7 @@ class QualifListView(LoginRequiredView, ListView):
         # DeCS Qualifier UI
         # AND performance for DeCS Qualifier UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'decs_code':
-            id_register = IdentifierQualif.objects.filter(decs_code=self.actions['s']).values('id')
+            id_register = IdentifierQualif.objects.filter(decs_code=self.actions['s'].strip()).values('id')
             id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
@@ -3657,7 +3661,11 @@ class QualifListView(LoginRequiredView, ListView):
         # Tree Number
         # AND performance for Tree Number --------------------------------------------------------------
         if self.actions['filter_fields'] == 'tree_number':
-            id_tree_number = TreeNumbersListQualif.objects.filter(tree_number=self.actions['s']).values('identifier_id')
+            if self.actions['exact']:
+                id_tree_number = TreeNumbersListQualif.objects.filter(tree_number=self.actions['s'].strip()).values('identifier_id')
+            else:
+                id_tree_number = TreeNumbersListQualif.objects.filter(tree_number__icontains=self.actions['s'].strip()).values('identifier_id')
+
             id_concept = IdentifierConceptListQualif.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
@@ -3665,9 +3673,9 @@ class QualifListView(LoginRequiredView, ListView):
         # Concept UI
         # AND performance for Concept UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'concept_ui':
-            concept_identifier_id = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+            concept_identifier_id = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
             id_register = IdentifierQualif.objects.filter(id__in=concept_identifier_id,thesaurus_id=self.actions['choiced_thesaurus']).values('id')
-            concept_id = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,concept_ui=self.actions['s']).values('id')
+            concept_id = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,concept_ui=self.actions['s'].strip()).values('id')
             object_list = TermListQualif.objects.filter(identifier_concept_id=concept_id).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
 
@@ -4009,7 +4017,7 @@ class ConceptListQualifView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s'],thesaurus=self.request.GET.get("ths")).values('id')
+                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s'].strip(),thesaurus=self.request.GET.get("ths")).values('id')
                 if len(id_registro)>0:
                     id_registro = id_registro[0].get('id')
                     # Força somente 1 resultado
@@ -4038,7 +4046,7 @@ class ConceptListQualifView(LoginRequiredView, ListView):
         if self.actions['s']:
             try:
                 # Força somente 1 resultado
-                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s']).values('id')[:1]
+                id_registro = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s'].strip()).values('id')[:1]
                 if len(id_registro)>0:
                     id_registro = id_registro[0].get('id')
 
@@ -4153,13 +4161,13 @@ class TermListQualifView(LoginRequiredView, ListView):
         if self.actions['s']:
             try:
                 # Como o concept_ui pode existir em mais de um tesauro devemos descobrir qual o id em IdentifierQualif que é pertinente ao tesauro em questão
-                concepts = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+                concepts = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
                 for x in concepts:
                     id_identifier = x.get('identifier_id')
                     has_register = IdentifierQualif.objects.filter(id=id_identifier,thesaurus_id=self.request.GET.get("ths")).exists()
                     if has_register:
                         # Força somente 1 resultado
-                        object_list = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s'],identifier_id=id_identifier).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')[:1]
+                        object_list = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s'].strip(),identifier_id=id_identifier).values('identifier_id','termqualif__term_string','termqualif__language_code','termqualif__id')[:1]
 
             except IdentifierConceptListQualif.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
@@ -4183,7 +4191,7 @@ class TermListQualifView(LoginRequiredView, ListView):
 
         if self.actions['s']:
             try:
-                concepts = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s']).values('identifier_id')
+                concepts = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
                 for x in concepts:
                     id_identifier = x.get('identifier_id')
                     # print 'IDs --->',id_identifier
@@ -4193,7 +4201,7 @@ class TermListQualifView(LoginRequiredView, ListView):
 
                         # IdentifierQualif
                         context['id_register_objects'] = IdentifierConceptListQualif.objects.filter(
-                                                        concept_ui=self.actions['s'],identifier_id=id_identifier
+                                                        concept_ui=self.actions['s'].strip(),identifier_id=id_identifier
                                                         ).values(
                                                             # IdentifierConceptListDesc
                                                             'id',

@@ -22,6 +22,7 @@ def get_status_info(code):
         {'code': 3, 'label': _('Deleted'), 'icons': 'icon-minus-sign status-del', 'label_color': 'important'},
         # Thesaurus
         {'code': 5, 'label': _('Historical'), 'icons': 'icon-upload status-migration', 'label_color': 'important'},
+        {'code': 10, 'label': _('Awaiting translation'), 'icons': 'icon-upload status-migration', 'label_color': 'warning'},
 
     )
     status_info = [status for status in STATUS if status['code'] == int(code)]
