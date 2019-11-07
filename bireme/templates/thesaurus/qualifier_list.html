@@ -95,6 +95,7 @@
                     <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Published" %}</option>
                     <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
                     <option value="5" {% if actions.filter_status == '5' %}selected="true"{% endif %}>{% trans "Historical" %}</option>
+                    <option value="10" {% if actions.filter_status == '10' %}selected="true"{% endif %}>{% trans "Awaiting translation" %}</option>
                 </select>
 
                 {% trans "Language" %}:
@@ -125,7 +126,7 @@
                 {% if actions.visited %}
 
                     <thead>
-                        <th width="90%">
+                        <th width="80%">
                             <a href="javascript:orderby('term_string');" id="id_term_string">
                             {% if not actions.filter_fields == 'term_string' %}
                                 {% trans "Qualifier Name" %}
@@ -138,7 +139,7 @@
                         <!-- <th><a href="javascript:orderby('abbreviation');" id="id_abbreviation">{% trans "Abbreviation" %}</a></th> -->
                         <!-- <th><a href="javascript:orderby('qualifier_ui');" id="id_qualifier_ui">{% trans "MESH Qualifier UI" %}</a></th> -->
                         <!-- <th><a href="javascript:orderby('decs_code');" id="id_decs_code">{% trans "DeCS Qualifer UI" %}</a></th> -->
-                        <th width="10%"><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
+                        <th width="20%"><a href="javascript:orderby('status');" id="id_status">{% trans "Status" %}</a></th>
                     </thead>
                     <tbody>
                         {% for obj in registers %}

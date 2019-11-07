@@ -54,5 +54,6 @@ STATUS_CHOICES=(
     (1, _('Published')),
     (3, _('Deleted')),
     (5, _('Historical')),
+    (10, _('Awaiting translation')),
 )
 

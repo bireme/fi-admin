@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-30 15:42-0300\n"
-"PO-Revision-Date: 2019-10-30 15:44-0306\n"
+"POT-Creation-Date: 2019-11-01 14:06-0300\n"
+"PO-Revision-Date: 2019-11-01 15:18-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,8 +47,8 @@ msgstr "Selecione o arquivo"
 #: templates/oer/fieldset_fulltext.html:75
 #: templates/thesaurus/descriptor_edit_register.html:267
 #: templates/thesaurus/descriptor_edit_register.html:348
-#: templates/thesaurus/qualifier_list.html:100
-#: templates/thesaurus/thesaurus_home.html:99 text_block/models.py:16
+#: templates/thesaurus/qualifier_list.html:101
+#: templates/thesaurus/thesaurus_home.html:100 text_block/models.py:16
 #: text_block/models.py:52 utils/models.py:116 utils/models.py:150
 msgid "Language"
 msgstr "Idioma"
@@ -895,10 +895,10 @@ msgstr "Registros bibliográficos"
 #: templates/suggest/list.html:123 templates/suggest/list.html.py:167
 #: templates/thesaurus/descriptor_new_concept.html:174
 #: templates/thesaurus/qualifier_list.html:91
-#: templates/thesaurus/qualifier_list.html:141
+#: templates/thesaurus/qualifier_list.html:142
 #: templates/thesaurus/qualifier_new_concept.html:171
 #: templates/thesaurus/thesaurus_home.html:90
-#: templates/thesaurus/thesaurus_home.html:136
+#: templates/thesaurus/thesaurus_home.html:137
 #: thesaurus/models_descriptors.py:344 thesaurus/models_qualifiers.py:246
 msgid "Status"
 msgstr "Status"
@@ -1251,26 +1251,6 @@ msgstr "Dados locais JSON"
 msgid "Other fields JSON"
 msgstr "Outros campos JSON"
 
-#: biremelogin/models.py:12
-msgid "profile"
-msgstr "perfis"
-
-#: biremelogin/models.py:13
-msgid "profiles"
-msgstr "perfis"
-
-#: biremelogin/models.py:16
-msgid "Basic"
-msgstr "Básico"
-
-#: biremelogin/models.py:17
-msgid "Advanced"
-msgstr "Avançado"
-
-#: biremelogin/models.py:20
-msgid "data"
-msgstr "dados"
-
 #: classification/models.py:27 classification/models.py:66
 #: classification/models.py:82 leisref/models.py:449 multimedia/models.py:67
 #: multimedia/models.py:80 multimedia/models.py:102
@@ -1406,10 +1386,10 @@ msgstr "Traduções"
 #: templates/thesaurus/qualifier_edit_term.html:106
 #: templates/thesaurus/qualifier_form_step0.html:81
 #: templates/thesaurus/qualifier_form_step2.html:201
-#: templates/thesaurus/qualifier_list.html:103
+#: templates/thesaurus/qualifier_list.html:104
 #: templates/thesaurus/qualifier_new_concept.html:74
 #: templates/thesaurus/qualifier_new_term.html:93
-#: templates/thesaurus/thesaurus_home.html:102 thesaurus/choices.py:10
+#: templates/thesaurus/thesaurus_home.html:103 thesaurus/choices.py:10
 msgid "English"
 msgstr "Inglês"
 
@@ -1426,10 +1406,10 @@ msgstr "Inglês"
 #: templates/thesaurus/qualifier_edit_term.html:108
 #: templates/thesaurus/qualifier_form_step0.html:83
 #: templates/thesaurus/qualifier_form_step2.html:203
-#: templates/thesaurus/qualifier_list.html:105
+#: templates/thesaurus/qualifier_list.html:106
 #: templates/thesaurus/qualifier_new_concept.html:76
 #: templates/thesaurus/qualifier_new_term.html:95
-#: templates/thesaurus/thesaurus_home.html:104 thesaurus/choices.py:12
+#: templates/thesaurus/thesaurus_home.html:105 thesaurus/choices.py:12
 msgid "Portuguese"
 msgstr "Português"
 
@@ -1743,7 +1723,6 @@ msgid "Category"
 msgstr "Categoria"
 
 #: institution/models.py:61
-#| msgid "Category"
 msgid "Categories"
 msgstr "Categorias"
 
@@ -1782,12 +1761,10 @@ msgid "Administrative informations"
 msgstr "Informações administrativas"
 
 #: institution/models.py:147
-#| msgid "Changes history"
 msgid "Category (history)"
 msgstr "Categoria (histórico)"
 
 #: institution/models.py:148
-#| msgid "Act history"
 msgid "Type (history)"
 msgstr "Tipo (histórico)"
 
@@ -2135,10 +2112,10 @@ msgstr "Aprovado"
 #: templates/thesaurus/qualifier_edit_term.html:110
 #: templates/thesaurus/qualifier_form_step0.html:85
 #: templates/thesaurus/qualifier_form_step2.html:205
-#: templates/thesaurus/qualifier_list.html:107
+#: templates/thesaurus/qualifier_list.html:108
 #: templates/thesaurus/qualifier_new_concept.html:78
 #: templates/thesaurus/qualifier_new_term.html:97
-#: templates/thesaurus/thesaurus_home.html:106 thesaurus/choices.py:14
+#: templates/thesaurus/thesaurus_home.html:107 thesaurus/choices.py:14
 msgid "French"
 msgstr "Francês"
 
@@ -3295,9 +3272,9 @@ msgstr "Pesquisa"
 #: templates/thesaurus/descriptor_form_step0.html:80
 #: templates/thesaurus/qualifier_form_step0.html:80
 #: templates/thesaurus/qualifier_list.html:93
-#: templates/thesaurus/qualifier_list.html:102
+#: templates/thesaurus/qualifier_list.html:103
 #: templates/thesaurus/thesaurus_home.html:92
-#: templates/thesaurus/thesaurus_home.html:101
+#: templates/thesaurus/thesaurus_home.html:102
 msgid "All"
 msgstr "Todos"
 
@@ -4146,7 +4123,6 @@ msgid "Changes"
 msgstr "Alterações"
 
 #: templates/log/list.html:24
-#| msgid "No resources found"
 msgid "No changes found"
 msgstr "Nenhuma mudança encontrada"
 
@@ -4293,8 +4269,7 @@ msgstr "Sugestões"
 
 #: templates/menu.html:77 templates/reports/index.html:5
 #: templates/reports/index.html.py:8 templates/reports/index.html:23
-#: templates/reports/index.html.py:177 templates/reports/select_report.html:6
-#: templates/reports/select_report.html:9
+#: templates/reports/index.html.py:177
 msgid "Reports"
 msgstr "Relatórios"
 
@@ -4517,10 +4492,6 @@ msgstr "Nenhum dado para estes critérios"
 msgid "Combination (Source x Report / Filter) not available"
 msgstr "Combinação (Fonte x Relatório / Filtro) não disponível"
 
-#: templates/reports/select_report.html:15
-msgid "Select report"
-msgstr "Selecione o relatório"
-
 #: templates/suggest/edit-suggested-event.html:5
 #: templates/suggest/edit-suggested-event.html:15
 msgid "Edit Suggested Event"
@@ -4695,12 +4666,12 @@ msgstr "Linguagem utilizada para descrição"
 #: templates/thesaurus/qualifier_edit_term.html:107
 #: templates/thesaurus/qualifier_form_step0.html:82
 #: templates/thesaurus/qualifier_form_step2.html:202
-#: templates/thesaurus/qualifier_list.html:104
+#: templates/thesaurus/qualifier_list.html:105
 #: templates/thesaurus/qualifier_new_concept.html:75
 #: templates/thesaurus/qualifier_new_term.html:94
-#: templates/thesaurus/thesaurus_home.html:103 thesaurus/choices.py:11
+#: templates/thesaurus/thesaurus_home.html:104 thesaurus/choices.py:11
 msgid "Spanish Latin America"
-msgstr "Espanhol América Latina"
+msgstr "Espanhol da América Latina"
 
 #: templates/thesaurus/confirm_create_desc.html:50
 #: templates/thesaurus/confirm_create_qualif.html:50
@@ -4714,10 +4685,10 @@ msgstr "Espanhol América Latina"
 #: templates/thesaurus/qualifier_edit_term.html:109
 #: templates/thesaurus/qualifier_form_step0.html:84
 #: templates/thesaurus/qualifier_form_step2.html:204
-#: templates/thesaurus/qualifier_list.html:106
+#: templates/thesaurus/qualifier_list.html:107
 #: templates/thesaurus/qualifier_new_concept.html:77
 #: templates/thesaurus/qualifier_new_term.html:96
-#: templates/thesaurus/thesaurus_home.html:105 thesaurus/choices.py:13
+#: templates/thesaurus/thesaurus_home.html:106 thesaurus/choices.py:13
 msgid "Spanish Spain"
 msgstr "Espanhol da  Espanha"
 
@@ -5416,8 +5387,8 @@ msgstr "Criar estas configurações"
 
 #: templates/thesaurus/page_view_desc.html:966
 #: templates/thesaurus/page_view_qualif.html:801
-#: templates/thesaurus/qualifier_list.html:162
-#: templates/thesaurus/thesaurus_home.html:160
+#: templates/thesaurus/qualifier_list.html:163
+#: templates/thesaurus/thesaurus_home.html:161
 msgid "No results found"
 msgstr "Nenhum resultado foi encontrado"
 
@@ -5439,7 +5410,7 @@ msgstr ""
 
 #: templates/thesaurus/page_view_qualif.html:206
 #: templates/thesaurus/qualifier_list.html:84
-#: templates/thesaurus/qualifier_list.html:138
+#: templates/thesaurus/qualifier_list.html:139
 #: thesaurus/models_qualifiers.py:37
 msgid "Abbreviation"
 msgstr "Abreviação"
@@ -5467,7 +5438,7 @@ msgstr "Apagar qualificador"
 
 #: templates/thesaurus/qualifier_confirm_delete.html:34
 #: templates/thesaurus/qualifier_list.html:85
-#: templates/thesaurus/qualifier_list.html:139
+#: templates/thesaurus/qualifier_list.html:140
 msgid "MESH Qualifier UI"
 msgstr "ID de transporte"
 
@@ -5532,30 +5503,37 @@ msgstr "ID do conceito"
 msgid "Historical"
 msgstr "Histórico"
 
-#: templates/thesaurus/qualifier_list.html:112
-#: templates/thesaurus/thesaurus_home.html:111
+#: templates/thesaurus/qualifier_list.html:98
+#: templates/thesaurus/thesaurus_home.html:97 thesaurus/choices.py:57
+#: utils/templatetags/app_filters.py:25
+#| msgid "Add translation"
+msgid "Awaiting translation"
+msgstr "Aguardando tradução"
+
+#: templates/thesaurus/qualifier_list.html:113
+#: templates/thesaurus/thesaurus_home.html:112
 msgid "Exact Match"
 msgstr "Pesquisa exata"
 
-#: templates/thesaurus/qualifier_list.html:131
+#: templates/thesaurus/qualifier_list.html:132
 msgid "Qualifier Name"
 msgstr "Nome do qualificador"
 
-#: templates/thesaurus/qualifier_list.html:133
+#: templates/thesaurus/qualifier_list.html:134
 msgid "Term Name"
 msgstr "Nome do termo"
 
-#: templates/thesaurus/qualifier_list.html:140
+#: templates/thesaurus/qualifier_list.html:141
 msgid "DeCS Qualifer UI"
 msgstr "ID no tesauro"
 
-#: templates/thesaurus/qualifier_list.html:172
-#: templates/thesaurus/thesaurus_home.html:170
+#: templates/thesaurus/qualifier_list.html:173
+#: templates/thesaurus/thesaurus_home.html:171
 msgid "Last additions"
 msgstr "Últimas inserções"
 
-#: templates/thesaurus/qualifier_list.html:188
-#: templates/thesaurus/thesaurus_home.html:185
+#: templates/thesaurus/qualifier_list.html:189
+#: templates/thesaurus/thesaurus_home.html:186
 msgid "Last modified"
 msgstr "Últimas alterações"
 
@@ -5664,11 +5642,11 @@ msgstr "Adiciona novo registro de descritor"
 msgid "All descriptor concepts"
 msgstr "Todos os termos"
 
-#: templates/thesaurus/thesaurus_home.html:129
+#: templates/thesaurus/thesaurus_home.html:130
 msgid "Term name"
 msgstr "Nome no termo"
 
-#: templates/thesaurus/thesaurus_home.html:131
+#: templates/thesaurus/thesaurus_home.html:132
 msgid "Concept name"
 msgstr "Nome do conceito"
 
@@ -6784,21 +6762,39 @@ msgstr "Códigos auxiliares"
 msgid "Label"
 msgstr "Rótulo"
 
-#: utils/templatetags/app_filters.py:33
+#: utils/templatetags/app_filters.py:34
 msgid "new"
 msgstr "novo"
 
-#: utils/templatetags/app_filters.py:34
+#: utils/templatetags/app_filters.py:35
 msgid "deleted"
 msgstr "apagado"
 
-#: utils/templatetags/app_filters.py:202
+#: utils/templatetags/app_filters.py:203
 msgid "Record created"
 msgstr "Recurso criado"
 
 #: utils/validators.py:12
 msgid "Year must be greater than 1900"
 msgstr "Ano deve ser maior que 1900"
+
+#~ msgid "profile"
+#~ msgstr "perfis"
+
+#~ msgid "profiles"
+#~ msgstr "perfis"
+
+#~ msgid "Basic"
+#~ msgstr "Básico"
+
+#~ msgid "Advanced"
+#~ msgstr "Avançado"
+
+#~ msgid "data"
+#~ msgstr "dados"
+
+#~ msgid "Select report"
+#~ msgstr "Selecione o relatório"
 
 #~ msgid "Institution type"
 #~ msgstr "Tipo de instituição"
