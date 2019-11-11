@@ -8,6 +8,7 @@
 
 {% block extrahead %}
 <link href="{% static "css/animate.min.css" %}" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.1/dist/multiple-select.min.css">
 {% endblock %}
 
 {% block title %}{% trans "Edit Analytic" %}{% endblock %}
@@ -305,6 +306,7 @@
    <script src="{% static 'js/record_type.js' %}"></script>
    <script src="{% static 'js/biblioref.js' %}"></script>
    <script src="{% static 'js/classification.js' %}"></script>
+   <script src="https://unpkg.com/multiple-select@1.5.1/dist/multiple-select.min.js"></script>
 
    <script id="itensTemplate" type="text/x-jsrender">
         <li>
@@ -481,7 +483,9 @@
                 $("button").attr("disabled", true);
                 $("button").addClass("disabled");
             });
-        })
+
+            $('#id_publication_type').multipleSelect();
+        });
 
         function decs_search(obj){
             var row = $(obj).parent();
