@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -442,7 +442,7 @@ msgstr "Autor personal o Autor Institucional obligatorio"
 #: biblioref/forms.py:246
 #, python-format
 msgid "The % simbol don't separete occurences"
-msgstr "El símbolo % no separa ocurrencias"
+msgstr "El símbolo %s no separa ocurrencias"
 
 #: biblioref/forms.py:250 biblioref/forms.py:389
 msgid "Point at end of field is not allowed"
@@ -7088,3 +7088,7 @@ msgstr "El año debe ser mayor que 1900"
 
 #~ msgid "Django Admin"
 #~ msgstr "Django admin"
+
+#:templates/main/resources.html:67
+msgid "Go to page"
+msgstr "Ir a la página"

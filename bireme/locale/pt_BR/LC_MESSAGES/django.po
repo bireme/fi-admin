@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -442,7 +442,7 @@ msgstr "Autor Pessoal ou Autor Institucional obrigatório"
 #: biblioref/forms.py:246
 #, python-format
 msgid "The % simbol don't separete occurences"
-msgstr "O símbolo % não separa ocorrências"
+msgstr "O símbolo %s não separa ocorrências"
 
 #: biblioref/forms.py:250 biblioref/forms.py:389
 msgid "Point at end of field is not allowed"
@@ -7203,3 +7203,7 @@ msgstr "Ano deve ser maior que 1900"
 
 #~ msgid "Thematic Area"
 #~ msgstr "Área Temática"
+
+#:templates/main/resources.html:67
+msgid "Go to page"
+msgstr "Ir para a página"
