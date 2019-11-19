@@ -72,7 +72,9 @@
                 <h3>{% trans "Institutional" %}</h3>
                 <ul>
                     <li><a href="{% url 'list_institution' %}">{% trans "Update your institution information" %}</a></li>
-                    <li><a href="#" onclick="javascript:open_adhesionterm('{{institution_id}}')">{% trans "Review adhesion term" %}</a></li>
+                    {% if institution_id %}
+                        <li><a href="#" onclick="javascript:open_adhesionterm('{{institution_id}}')">{% trans "Review adhesion term" %}</a></li>
+                    {% endif %}
                 </ul>
             </div>
             {% endif %}

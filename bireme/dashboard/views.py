@@ -32,7 +32,10 @@ def widgets(request):
     text_blocks = TextBlock.objects.filter(slot='dashboard', user_profile__in=user_roles).order_by('order')
 
     if 'DirIns' in user_data['service_role']:
-        institution_id = Institution.objects.get(cc_code=user_data['user_cc']).id
+        try:
+            institution_id = Institution.objects.get(cc_code=user_data['user_cc']).id
+        except Institution.DoesNotExist:
+            institution_id = None
 
     try:
         dedup_response = requests.get(settings.DEDUP_SERVICE_URL)
