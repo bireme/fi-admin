@@ -44,31 +44,6 @@
                {% endif %}
             </a>
         </li>
-
-        {% if paginator.num_pages > 1 %}
-        <li class="pull-right input-append">
-            <form name="search" style="margin: 0;">
-                {% if actions.filter_owner == '*' %}
-                    <input type="hidden" name="filter_owner" value="*"/>
-                {% elif actions.filter_owner == 'network' %}
-                    <input type="hidden" name="filter_owner" value="network"/>
-                {% endif %}
-                <input type="hidden" name="s"  value="{{ actions.s }}">
-                <input type="hidden" name="filter_status" value="{{ actions.filter_status }}">
-                <input type="hidden" name="results_per_page" value="{{ actions.results_per_page }}">
-
-                {% if show_advaced_filters %}
-                    <input type="hidden" name="filter_act_type" value="{{ actions.filter_act_type }}">
-                    <input type="hidden" name="filter_country" value="{{ actions.filter_country }}">
-                    <input type="hidden" name="filter_indexed_database" value="{{ actions.filter_indexed_database }}">
-                {% endif %}
-
-                {% trans "Go to page" %}:&nbsp;
-                <input type="text" name="page" value="{{ actions.page }}"" class="span1">
-                <button class="btn" type="submit"><i class='icon-ok'></i></button>
-            </form>
-        </li>
-        {% endif %}
     </ul>
 
     <div class="tab-content">
@@ -170,6 +145,31 @@
             </table>
 
             {% include "pagination_generic.html" %}
+
+            {% if paginator.num_pages > 1 %}
+            <div class="pagination input-append">
+                <form>
+                    {% if actions.filter_owner == '*' %}
+                        <input type="hidden" name="filter_owner" value="*"/>
+                    {% elif actions.filter_owner == 'network' %}
+                        <input type="hidden" name="filter_owner" value="network"/>
+                    {% endif %}
+                    <input type="hidden" name="filter_status" value="{{ actions.filter_status }}">
+                    <input type="hidden" name="results_per_page" value="{{ actions.results_per_page }}">
+                    <input type="hidden" name="s" value="{{ actions.s }}">
+
+                    {% if show_advaced_filters %}
+                        <input type="hidden" name="filter_act_type" value="{{ actions.filter_act_type }}">
+                        <input type="hidden" name="filter_country" value="{{ actions.filter_country }}">
+                        <input type="hidden" name="filter_indexed_database" value="{{ actions.filter_indexed_database }}">
+                    {% endif %}
+
+                    {% trans "Go to page" %}:&nbsp;
+                    <input type="text" name="page" value="{{ actions.page }}" class="span1">
+                    <button class="btn btn-primary" type="submit"><i class='icon-ok'></i></button>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </div>
 
