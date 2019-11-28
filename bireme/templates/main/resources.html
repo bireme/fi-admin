@@ -87,6 +87,7 @@
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
                         </form>
                     </div>
+
                 </div>
                 {% if actions.filter_owner == 'network' and user_data.networks %}
                     <div class="span-4">
@@ -136,6 +137,25 @@
             </table>
 
             {% include "pagination.html" %}
+
+            {% if pagination.paginator.num_pages > 1 %}
+            <div class="pagination input-append">
+                <form>
+                    {% if actions.filter_owner == '*' %}
+                        <input type="hidden" name="filter_owner" value="*"/>
+                    {% elif actions.filter_owner == 'network' %}
+                        <input type="hidden" name="filter_owner" value="network"/>
+                    {% endif %}
+                    <input type="hidden" name="filter_status" value="{{ actions.filter_status }}">
+                    <input type="hidden" name="filter_thematic" value="{{ actions.filter_thematic }}">
+                    <input type="hidden" name="s" value="{{ actions.s }}">
+
+                    {% trans "Go to page" %}:&nbsp;
+                    <input type="text" name="page" value="{{ actions.page }}" class="span1">
+                    <button class="btn btn-primary" type="submit"><i class='icon-ok'></i></button>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </div>
 

@@ -1,7 +1,7 @@
 #! coding: utf-8
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import forms as auth_forms
@@ -98,7 +98,13 @@ def list_events(request):
     pagination = {}
     paginator = Paginator(events, settings.ITEMS_PER_PAGE)
     pagination['paginator'] = paginator
-    pagination['page'] = paginator.page(page)
+
+    try:
+        pagination['page'] = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages if int(page) > 1 else 1
+        pagination['page'] = paginator.page(page)
+
     events = pagination['page'].object_list
 
     output['events'] = events

@@ -40,7 +40,7 @@
                 <strong>{% trans "Events of my network" %}</strong>
                {% if  actions.filter_owner == 'network' %}
                    <span class="badge badge-info">{{ pagination.paginator.count }}</span>
-               {% endif %}                
+               {% endif %}
             </a>
         </li>
         <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
@@ -48,9 +48,9 @@
                 <strong>{% trans "All events" %}</strong>
                {% if  actions.filter_owner == '*' %}
                    <span class="badge badge-info">{{ pagination.paginator.count }}</span>
-               {% endif %}                
+               {% endif %}
             </a>
-        </li>        
+        </li>
     </ul>
 
     <div class="tab-content">
@@ -67,8 +67,8 @@
                                 <input type="hidden" name="filter_owner" value="network"/>
                             {% endif %}
                             <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
-                         
-                            {% trans "Status" %}: 
+
+                            {% trans "Status" %}:
                             <select name="filter_status">
                                 <option value="">{% trans "All" %}</option>
                                 <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "Pending" %}</option>
@@ -76,7 +76,7 @@
                                 <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
                                 <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
                             </select>
-                            {% trans "Thematic area" %}: 
+                            {% trans "Thematic area" %}:
                             <select name="filter_thematic">
                                 <option value="">{% trans "All" %}</option>
                                 {% for thematic in thematic_list %}
@@ -137,6 +137,25 @@
             </table>
 
             {% include "pagination.html" %}
+
+            {% if pagination.paginator.num_pages > 1 %}
+            <div class="pagination input-append">
+                <form>
+                    {% if actions.filter_owner == '*' %}
+                        <input type="hidden" name="filter_owner" value="*"/>
+                    {% elif actions.filter_owner == 'network' %}
+                        <input type="hidden" name="filter_owner" value="network"/>
+                    {% endif %}
+                    <input type="hidden" name="filter_status" value="{{ actions.filter_status }}">
+                    <input type="hidden" name="filter_thematic" value="{{ actions.filter_thematic }}">
+                    <input type="hidden" name="s" value="{{ actions.s }}">
+
+                    {% trans "Go to page" %}:&nbsp;
+                    <input type="text" name="page" value="{{ actions.page }}" class="span1">
+                    <button class="btn btn-primary" type="submit"><i class='icon-ok'></i></button>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </div>
 

@@ -125,6 +125,24 @@
             </table>
 
             {% include "pagination_generic.html" %}
+
+            {% if paginator.num_pages > 1 %}
+            <div class="pagination input-append">
+                <form>
+                    <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+                    <input type="hidden" name="filter_status" value="{{ actions.filter_status }}">
+                    <input type="hidden" name="s" value="{{ actions.s }}">
+
+                    {% if show_advanced_filters %}
+                        <input type="hidden" name="filter_country" value="{{ actions.filter_country }}">
+                    {% endif %}
+
+                    {% trans "Go to page" %}:&nbsp;
+                    <input type="text" name="page" value="{{ actions.page }}" class="span1">
+                    <button class="btn btn-primary" type="submit"><i class="icon-ok"></i></button>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </div>
 
