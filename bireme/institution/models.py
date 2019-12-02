@@ -120,7 +120,7 @@ class Institution(Generic, AuditLog):
         return has_unit
 
     def get_units_names(self):
-        units = [unit_level.unit.name for unit_level in UnitLevel.objects.filter(institution=self.pk).order_by('level')]
+        units = [unit_level.unit for unit_level in UnitLevel.objects.filter(institution=self.pk).order_by('level')]
 
         return units
 
@@ -214,7 +214,7 @@ class Unit(models.Model, AuditLog):
     country = models.ForeignKey(Country, verbose_name=_("Country"), blank=True, null=True)
 
     def __unicode__(self):
-        unit_name = self.name
+        unit_name = unicode(self.name)
         if self.acronym:
             unit_name = u"{0} - {1}".format(self.name, self.acronym)
 

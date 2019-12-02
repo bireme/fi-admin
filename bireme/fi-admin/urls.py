@@ -15,6 +15,7 @@ from api.thesaurus_api_desc import *
 from api.thesaurus_api_qualif import *
 from api.thesaurus_api import *
 from api.thesaurus_solr_api import *
+from api.institution_api import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -30,6 +31,7 @@ oer_resource = OERResource()
 collection_resource = CollectionResource()
 classification_resource = ClassificationResource()
 community_resource = CommunityResource()
+institution_resource = InstitutionResource()
 
 # used to render records in ID format
 thesaurus_resource_desc = ThesaurusResourceDesc()
@@ -42,8 +44,6 @@ thesaurus_resource_qualif_API = ThesaurusAPIQualifResource()
 # used to render records in JSON format for solr index
 thesaurus_resource_desc_index_API = ThesaurusAPIDescResourceIndex()
 thesaurus_resource_qualif_index_API = ThesaurusAPIQualifResourceIndex()
-
-
 
 urlpatterns = patterns('',
     # Examples:
@@ -170,6 +170,7 @@ urlpatterns = patterns('',
     (r'^api/', include(community_resource.urls)),
     (r'^api/', include(collection_resource.urls)),
     (r'^api/', include(classification_resource.urls)),
+    (r'^api/', include(institution_resource.urls)),
 
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
     (r'^api/users/get_user_id/(?P<username>[a-zA-z0-9\.\-]{0,30})/$', 'api.users.get_user_id'),

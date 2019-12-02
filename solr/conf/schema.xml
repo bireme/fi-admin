@@ -174,7 +174,7 @@
    <field name="start_date" type="date" indexed="true" stored="true" multiValued="false"/>
    <field name="end_date" type="date" indexed="true" stored="true" multiValued="false"/>
    <field name="city" type="text" indexed="true" stored="true"/>
-   <field name="country" type="text" indexed="true" stored="true"/>
+   <field name="country" type="string" indexed="true" stored="true"/>
    <field name="contact_email" type="string" indexed="false" stored="true"/>
    <field name="contact_info" type="text" indexed="true" stored="true"/>
    <field name="event_type" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -232,6 +232,11 @@
    <!-- multiple sources -->
    <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="indexed_database" type="string" indexed="true" stored="true" multiValued="true"/>
+
+   <!-- institution -->
+   <field name="unit" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="institution_type" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="institution_thematic" type="string" indexed="true" stored="true" multiValued="true"/>
 
    <!-- Compatibility with portal-org indexes -->
    <field name="ti" type="text" indexed="true" stored="false" multiValued="true" />

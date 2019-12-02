@@ -94,8 +94,11 @@
          <str name="facet.field">media_collection_filter</str>
          <str name="facet.field">media_type_filter</str>
          <str name="facet.field">event_type</str>
+         <str name="facet.field">institution_type</str>
+         <str name="facet.field">institution_thematic</str>
          <str name="facet.field">type</str>
          <str name="facet.field">format</str>
+         <str name="facet.field">country</str>
          <str name="facet.field">publication_type</str>
          <str name="facet.field">publication_language</str>
          <str name="facet.field">publication_country</str>
