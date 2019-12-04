@@ -51,9 +51,20 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         # search filter
         search = self.actions['s']
-        search_filter = Q(name__icontains=search) | Q(cc_code__icontains=search) | Q(acronym__icontains=search)
+        if ':' in search:
+            search_parts = search.split(':')
+            search_field = search_parts[0]
+            if search_field == 'user':
+                search_field = 'adm__type_history'
+            elif search_field == 'cat':
+                search_field = 'adm__category_history'
 
-        object_list = self.model.objects.filter(search_filter)
+            search_field, search = "%s%s" % (search_field,'__icontains'), search_parts[1]
+            object_list = self.model.objects.filter(**{search_field: search})
+        else:
+            query_search = Q(name__icontains=search) | Q(cc_code__icontains=search) | Q(acronym__icontains=search)
+            object_list = self.model.objects.filter(query_search)
+
 
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
