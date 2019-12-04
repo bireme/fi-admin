@@ -60,8 +60,8 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         search = self.actions['s']
         if ':' in search:
             search_parts = search.split(':')
-            search_field = search_parts[0] + '__icontains'
-            search = search_parts[1]
+            lookup_expr = '__exact' if search_parts[0] == "LILACS_original_id" else '__icontains'
+            search_field, search = "%s%s" % (search_parts[0], lookup_expr), search_parts[1]
 
         if search:
             object_list = self.model.objects.filter(**{search_field: search})

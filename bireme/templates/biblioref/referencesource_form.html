@@ -123,6 +123,12 @@
                             {% if object.updated_by %}
                                 <p>{% trans "Last edit in" %} <strong>{{ object.updated_time }}</strong> {% trans "by user" %}  <strong>{{ object.updated_by.username }}</strong></p>
                             {% endif %}
+
+                        {% if object.LILACS_original_id and user_cc == "BR1.1" %}
+                            <p>
+                                LILACS Original ID: <strong>{{ object.LILACS_original_id }}</strong>
+                            </p>
+                        {% endif %}
                         </div>
                         <div class="btn-group pull-right">
                             <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
