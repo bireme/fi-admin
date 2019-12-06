@@ -8,10 +8,9 @@ from utils.models import Generic, Country
 from log.models import AuditLog
 
 STATUS_CHOICES = (
-    (-1, _('Draft')),
     (1, _('Active')),
     (2, _('Inactive')),
-    (3, _('Deleted')),
+    (3, _('Closed')),
 )
 
 # Institution Type

@@ -60,9 +60,9 @@ class InstitutionResource(CustomResource):
 
         # filter result by approved resources (status=1)
         if fq != '':
-            fq = '(status:1 AND django_ct:institution.institution) AND %s' % fq
+            fq = '(django_ct:institution.institution) AND %s' % fq
         else:
-            fq = '(status:1 AND django_ct:institution.institution)'
+            fq = '(django_ct:institution.institution)'
 
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL

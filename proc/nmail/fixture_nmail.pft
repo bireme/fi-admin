@@ -10,7 +10,9 @@ if v6 = 'I' AND left(v607,3) <> 'BRI' AND left(v607,3) <> 'BRE' then,
        c4,'"model": ','"institution.institution",',/
 
        c4,'"fields": {',/
-            c8,'"status": 1,',/
+            c8,'"status": ',
+            if v604:'FECHADO' then '3' else, if v604:'INATIVO' then '2' else '1' fi,fi,','/
+
             if p(v607) then c8,'"cc_code": "',v607,'",'/, fi,
 
             if p(v611) then,
