@@ -8,6 +8,7 @@
 
 {% block extrahead %}
 <link href="{% static "css/animate.min.css" %}" rel="stylesheet">
+<link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}{% trans "Edit Analytic" %}{% endblock %}
@@ -310,6 +311,7 @@
    <script src="{% static 'js/record_type.js' %}"></script>
    <script src="{% static 'js/biblioref.js' %}"></script>
    <script src="{% static 'js/classification.js' %}"></script>
+   <script src="{% static 'js/multiple-select.min.js' %}"></script>
 
    <script id="itensTemplate" type="text/x-jsrender">
         <li>
@@ -486,7 +488,9 @@
                 $("button").attr("disabled", true);
                 $("button").addClass("disabled");
             });
-        })
+
+            $('#id_publication_type, #id_check_tags').multipleSelect({selectAll: false});
+        });
 
         function decs_search(obj){
             var row = $(obj).parent();
