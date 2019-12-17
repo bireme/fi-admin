@@ -96,6 +96,10 @@ if v6 = 'I' AND left(v607,3) <> 'BRI' AND left(v607,3) <> 'BRE' then,
     fi,
 
     /* ADM */
+    /* gera variaveis com IDs das tabelas controladas de categoria e tipos */
+    proc('d6603',(ref(['nmail_cat_list']l(['nmail_cat_list']v603),'a6603|',v2,'|')),),
+    proc('d6604',(ref(['nmail_user_list']l(['nmail_user_list']v604),'a6604|',v2,'|')),),
+
     '{',/
         c4,'"pk": null,'/
         c4,'"model": ','"institution.adm",'/
@@ -103,7 +107,9 @@ if v6 = 'I' AND left(v607,3) <> 'BRI' AND left(v607,3) <> 'BRE' then,
         c4,'"fields": {',/
             c8,'"institution": ',f(mfn+val(v9995),1,0),','/
             c8,'"category_history": "',(v603+|\r\n|), '",'/,
+            c8,'"category": [',(if val(v6603) > 0 then, if iocc > 1 then ', ' fi, v6603 fi),'],',/, 
             c8,'"type_history": "',(v604+|\r\n|),'",'/,
+            c8,'"type": [',(if val(v6604) > 0 then, if iocc > 1 then ', ' fi, v6604 fi),'],',/, 
             c8,'"notes": "',(replace(v699,'^a', '\r\n\r\n^a'),'\r\n'),'"'/,
         c4,'}',/
     '},'/

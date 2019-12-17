@@ -1,0 +1,15 @@
+if mfn=1 then '['/ fi,
+
+if p(v2) then,
+ '{',/
+    c4,'"pk": ',v2,','/
+    c4,'"model": ','"institution.category",'/
+
+    c4,'"fields": {',/
+        c8,'"name": "',v1,'",'/,
+        c8,'"language": "pt-br"'/,
+    c4,'}',/
+ '},'/
+fi,
+
+if mfn=MAXMFN-1 then ']'/ fi,
