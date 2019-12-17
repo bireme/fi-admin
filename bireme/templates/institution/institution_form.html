@@ -3,6 +3,10 @@
 {% load static %}
 {% load app_filters %}
 
+{% block extrahead %}
+    <link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block title %}{% trans "Edit Institution" %}{% endblock %}
 
 {% block breadcrumb %}
@@ -148,6 +152,7 @@
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/adhesionterm.js' %}"></script>
+   <script src="{% static 'js/multiple-select.min.js' %}"></script>
 
    <script type="text/javascript">
         var decs_field;
@@ -187,8 +192,8 @@
             var eventer = window[eventMethod];
             var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
-            // load multiselect plugin (indexed database field)
-            $('#multiselect').multiselect();
+            // load multiselect plugin
+            $('#id_adm_set-0-category, #id_adm_set-0-type').multipleSelect({selectAll: false, width: '60%'});
 
         })
 
