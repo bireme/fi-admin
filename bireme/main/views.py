@@ -1,4 +1,7 @@
 #! coding: utf-8
+import json
+
+from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage
@@ -539,3 +542,10 @@ def delete_language(request, language_id):
     output['alerttype'] = "alert-success"
 
     return render_to_response('main/languages.html', output, context_instance=RequestContext(request))
+
+
+def search_resources(request):
+    term = request.GET.get('term')
+    qs = Resource.objects.filter(title__icontains=term).values_list("title", flat=True)
+    titles = json.dumps(list(qs), cls=DjangoJSONEncoder)
+    return HttpResponse(titles, content_type="application/json")

@@ -64,6 +64,7 @@ urlpatterns = patterns('',
     (r'^resources/?$', 'main.views.list_resources'),
     (r'^resource/new/?$', 'main.views.create_edit_resource'),
     (r'^resource/edit/(?P<resource_id>\d+)/?$', 'main.views.create_edit_resource'),
+    (r'^resources/ajax/search/$', 'main.views.search_resources'),
 
     # Events
     (r'^events/?$', 'events.views.list_events'),

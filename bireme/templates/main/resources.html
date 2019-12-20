@@ -1,5 +1,10 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% load i18n %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static "css/jquery-ui.css" %}">
+{% endblock %}
 
 {% block title %}{% trans "Internet resources" %} | {{ block.super }}{% endblock %}
 
@@ -66,7 +71,7 @@
                             {% elif actions.filter_owner == 'network' %}
                                 <input type="hidden" name="filter_owner" value="network"/>
                             {% endif %}
-                            <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
+                            <input type='text' name="s" id="search-field" value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
 
                             {% trans "Status" %}:
                             <select name="filter_status">
@@ -163,4 +168,16 @@
 
 {% include "delete_confirm.html" %}
 
+{% endblock %}
+
+{% block extrajs %}
+<script src="{% static "js/jquery-ui.js" %}"></script>
+<script>
+    $( function() {
+        $( "#search-field" ).autocomplete( {
+            source: "/resources/ajax/search/",
+        } );
+    } );
+</script>
+</div>
 {% endblock %}
