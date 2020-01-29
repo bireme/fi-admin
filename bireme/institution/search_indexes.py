@@ -41,7 +41,7 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
         inst_list = Adm.objects.filter(institution=obj.id)
         for inst in inst_list:
             for type in inst.type.all():
-                type_translated = inst.type.get_translations()
+                type_translated = type.get_translations()
                 output_list.append(type_translated)
 
         return output_list
@@ -55,7 +55,7 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
 
         if adm:
             for category in adm.category.all():
-                category_translated = adm.category.get_translations()
+                category_translated = category.get_translations()
                 output_list.append(category_translated)
 
         return output_list
