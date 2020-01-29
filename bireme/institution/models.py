@@ -151,7 +151,7 @@ class Adm(models.Model, AuditLog):
         return self.institution
 
     def __unicode__(self):
-        return u"{0} | {1}".format(self.institution, self.type)
+        return u"{0}".format(self.institution.name)
 
 
 # Institution contacts
