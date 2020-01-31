@@ -24,7 +24,7 @@ class InstGenericListView(LoginRequiredView, ListView):
     Handle list view for legislation records objects
     """
     paginate_by = settings.ITEMS_PER_PAGE
-    search_field = "name"
+    search_field = 'unitlevel__unit_name'
 
     def dispatch(self, *args, **kwargs):
         user_data = additional_user_info(self.request)
@@ -62,8 +62,8 @@ class InstGenericListView(LoginRequiredView, ListView):
             search_field, search = "%s%s" % (search_field,'__icontains'), search_parts[1]
             object_list = self.model.objects.filter(**{search_field: search})
         else:
-            query_search = Q(name__icontains=search) | Q(cc_code__icontains=search) | Q(acronym__icontains=search)
-            object_list = self.model.objects.filter(query_search)
+            query_search = Q(unitlevel__unit__name__icontains=search) | Q(unitlevel__unit__acronym__icontains=search) | Q(name__icontains=search) | Q(cc_code__icontains=search) | Q(acronym__icontains=search)
+            object_list = self.model.objects.filter(query_search).distinct()
 
 
         if self.actions['filter_status'] != '':
