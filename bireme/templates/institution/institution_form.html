@@ -44,7 +44,7 @@
         <strong><i class="icon icon-warning-sign"></i> {% trans "Possible duplication" %} <a href="#" data-toggle="modal" data-target="#dedup_result">({% trans "check" %})</a></strong>
     </div>
 
-    <form method="POST" enctype="multipart/form-data" class="inst-form">
+    <form method="POST" enctype="multipart/form-data" class="inst-form" novalidate>
         {% csrf_token %}
 
         <div class="tab-content">
@@ -145,8 +145,6 @@
     {% include "modal_log.html" %}
 {% endif %}
 
-{% include "modal_dedup.html" %}
-
 {% endblock %}
 
 {% block extrajs %}
@@ -155,8 +153,6 @@
    <script src="{% static 'js/multiple-select.min.js' %}"></script>
 
    <script type="text/javascript">
-        var decs_field;
-
         $(function() {
             $('.contact-row').formset({
                     addText : '{% trans "Add Contact" %}',
