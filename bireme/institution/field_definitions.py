@@ -5,7 +5,9 @@ import colander
 import deform
 import json
 
-field_tag_map = {'cc_code': '607', 'name': '611', 'acronym': '611',
-                 'address': '615', 'mailbox': '616', 'zipcode': '616',
-                 'city': '617', 'state': '618', 'country': '620'
+field_tag_map = {'cc_code': '607', 'name': '611', 'category': '603', 'type': '604',
+                 'address': '615', 'mailbox': '616', 'zipcode': '616', 'contact_person': '610',
+                 'contact_person': '610', 'contact_email': '624', 'contact_phone': '621',
+                 'city': '617', 'state': '618', 'country': '620', 'country_area_code': '625',
+                 'url':  '694'
                 }

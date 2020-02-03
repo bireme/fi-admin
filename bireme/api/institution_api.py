@@ -76,9 +76,61 @@ class InstitutionResource(CustomResource):
         return self.create_response(request, r.json())
 
     def dehydrate(self, bundle):
+        try:
+            adm = Adm.objects.get(institution=bundle.obj.id)
+        except Adm.DoesNotExist:
+            adm = None
+
+        if adm:
+            category_list = []
+            type_list = []
+            for category in adm.category.all():
+                category_list.append(category.name)
+
+            for type in adm.type.all():
+                type_list.append(type.name)
+
+        contact_list = Contact.objects.filter(institution=bundle.obj.id)
+        if contact_list:
+            contact_person_list = []
+            contact_email_list = []
+            contact_phone_list = []
+
+            for contact in contact_list:
+                if contact.name:
+                    contact_person_list.append("^a%s^b%s^c%s" % (contact.name, contact.prefix, contact.job_title))
+                if contact.email:
+                    contact_email_list.append(contact.email)
+                if contact.phone_number:
+                    bundle.data['country_area_code'] = contact.country_area_code
+                    contact_phone_list.append(contact.phone_number)
+
+        url_list = URL.objects.filter(institution=bundle.obj.id)
 
         # add fields to output
         bundle.data['MFN'] = bundle.obj.id
+        if bundle.obj.acronym:
+            bundle.data['name'] = "^a%s^b%s" % (bundle.obj.name, bundle.obj.acronym)
+        else:
+            bundle.data['name'] = "^a%s" % bundle.obj.name
 
+        bundle.data['category'] = category_list
+        bundle.data['type'] = type_list
+        if bundle.obj.city:
+            bundle.data['city'] = "^a%s" % bundle.obj.city
+        if bundle.obj.state:
+            bundle.data['state'] = "^a%s" % bundle.obj.state
+        if bundle.obj.country:
+            bundle.data['country'] = "^a%s" % bundle.obj.country
+        if bundle.obj.zipcode:
+            bundle.data['zipcode'] = "^b%s" % bundle.obj.zipcode
+        if contact_person_list:
+            bundle.data['contact_person'] = contact_person_list
+        if contact_email_list:
+            bundle.data['contact_email'] = contact_email_list
+        if contact_phone_list:
+            bundle.data['contact_phone'] = contact_phone_list
+        if url_list:
+            bundle.data['url'] = [u.url for u in url_list]
 
         return bundle
