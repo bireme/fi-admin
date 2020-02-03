@@ -191,14 +191,16 @@ class ReferenceResource(CustomResource):
         bundle.data['descriptors_secondary'] = descriptors_secundary
         bundle.data['thematic_areas'] = [{'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
-        bundle.data['indexed_database'] = [database.acronym for database in bundle.obj.indexed_database.all()]
+        indexed_database_list = bundle.obj.indexed_database.all()
+        bundle.data['indexed_database'] = [database.acronym for database in indexed_database_list]
 
         # check if object has classification (relationship model)
         if bundle.obj.collection.count():
             community_list = []
             collection_list = []
 
-            for rel in bundle.obj.collection.all():
+            collection_all = bundle.obj.collection.all()
+            for rel in collection_all:
                 collection_labels = "|".join(rel.collection.get_translations())
                 collection_item = u"{}|{}".format(rel.collection.id, collection_labels)
                 collection_list.append(collection_item)
