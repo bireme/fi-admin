@@ -103,6 +103,12 @@ class InstitutionResource(CustomResource):
                     bundle.data['country_area_code'] = contact.country_area_code
                     contact_phone_list.append(contact.phone_number)
 
+        unitlevel_list = UnitLevel.objects.filter(institution=bundle.obj.id).order_by('level')
+        if unitlevel_list:
+            for unitlevel in unitlevel_list:
+                field_name = "unit_%s" % unitlevel.level
+                bundle.data[field_name] = "^a%s^b%s" % (unitlevel.unit.name, unitlevel.unit.acronym)
+
         url_list = URL.objects.filter(institution=bundle.obj.id)
 
         # add fields to output
@@ -119,7 +125,7 @@ class InstitutionResource(CustomResource):
         if bundle.obj.state:
             bundle.data['state'] = "^a%s" % bundle.obj.state
         if bundle.obj.country:
-            bundle.data['country'] = "^a%s" % bundle.obj.country
+            bundle.data['country'] = "^a%s" % bundle.obj.country.code
         if bundle.obj.zipcode:
             bundle.data['zipcode'] = "^b%s" % bundle.obj.zipcode
         if contact_person_list:
