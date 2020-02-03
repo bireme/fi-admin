@@ -24,7 +24,7 @@ class InstGenericListView(LoginRequiredView, ListView):
     Handle list view for legislation records objects
     """
     paginate_by = settings.ITEMS_PER_PAGE
-    search_field = 'unitlevel__unit_name'
+    search_field = 'name'
 
     def dispatch(self, *args, **kwargs):
         user_data = additional_user_info(self.request)
@@ -51,19 +51,22 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         # search filter
         search = self.actions['s']
-        if ':' in search:
-            search_parts = search.split(':')
-            search_field = search_parts[0]
-            if search_field == 'user':
-                search_field = 'adm__type_history'
-            elif search_field == 'cat':
-                search_field = 'adm__category_history'
+        if search:
+            if ':' in search:
+                search_parts = search.split(':')
+                search_field = search_parts[0]
+                if search_field == 'user':
+                    search_field = 'adm__type_history'
+                elif search_field == 'cat':
+                    search_field = 'adm__category_history'
 
-            search_field, search = "%s%s" % (search_field,'__icontains'), search_parts[1]
-            object_list = self.model.objects.filter(**{search_field: search})
+                search_field, search = "%s%s" % (search_field,'__icontains'), search_parts[1]
+                object_list = self.model.objects.filter(**{search_field: search})
+            else:
+                query_search = Q(unitlevel__unit__name__icontains=search) | Q(unitlevel__unit__acronym__icontains=search) | Q(name__icontains=search) | Q(cc_code__icontains=search) | Q(acronym__icontains=search)
+                object_list = self.model.objects.filter(query_search).distinct()
         else:
-            query_search = Q(unitlevel__unit__name__icontains=search) | Q(unitlevel__unit__acronym__icontains=search) | Q(name__icontains=search) | Q(cc_code__icontains=search) | Q(acronym__icontains=search)
-            object_list = self.model.objects.filter(query_search).distinct()
+            object_list = self.model.objects.all()
 
 
         if self.actions['filter_status'] != '':
