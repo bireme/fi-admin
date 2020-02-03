@@ -40,8 +40,6 @@ class InstitutionResource(CustomResource):
         return [
             url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
-            url(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('get_last_id'), name="api_get_last_id"),
         ]
 
     def get_search(self, request, **kwargs):
@@ -76,14 +74,18 @@ class InstitutionResource(CustomResource):
         return self.create_response(request, r.json())
 
     def dehydrate(self, bundle):
+        contact_person_list = []
+        contact_email_list = []
+        contact_phone_list = []
+        category_list = []
+        type_list = []
+
         try:
             adm = Adm.objects.get(institution=bundle.obj.id)
         except Adm.DoesNotExist:
             adm = None
 
         if adm:
-            category_list = []
-            type_list = []
             for category in adm.category.all():
                 category_list.append(category.name)
 
@@ -92,10 +94,6 @@ class InstitutionResource(CustomResource):
 
         contact_list = Contact.objects.filter(institution=bundle.obj.id)
         if contact_list:
-            contact_person_list = []
-            contact_email_list = []
-            contact_phone_list = []
-
             for contact in contact_list:
                 if contact.name:
                     contact_person_list.append("^a%s^b%s^c%s" % (contact.name, contact.prefix, contact.job_title))
