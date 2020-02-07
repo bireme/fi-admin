@@ -74,6 +74,22 @@
                                 <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Closed" %}</option>
                             </select>
 
+                            {% trans "Type" %}:
+                            <select name="filter_type">
+                                <option value="">{% trans "All" %}</option>
+                                {% for type in type_list %}
+                                    <option value="{{type.id}}" {% if actions.filter_type == type.id|slugify %}selected="true"{% endif %}>{{type}}</option>
+                                {% endfor %}
+                            </select>
+
+                            {% trans "Category" %}:
+                            <select name="filter_category">
+                                <option value="">{% trans "All" %}</option>
+                                {% for category in category_list %}
+                                    <option value="{{category.id}}" {% if actions.filter_category == category.id|slugify %}selected="true"{% endif %}>{{category}}</option>
+                                {% endfor %}
+                            </select>
+
                             {% trans "Country" %}:
                             <select name="filter_country">
                                 <option value="">{% trans "All" %}</option>

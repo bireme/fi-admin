@@ -35,6 +35,8 @@ ACTIONS = {
     'filter_created_by_cc': "",
     'filter_indexed_database': "",
     'filter_act_type': "",
+    'filter_type': "",
+    'filter_category': "",
     'filter_country': "",
     'document_type': "",
     'review_type': "",

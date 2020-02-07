@@ -72,6 +72,12 @@ class InstGenericListView(LoginRequiredView, ListView):
         if self.actions['filter_status'] != '':
             object_list = object_list.filter(status=self.actions['filter_status'])
 
+        if self.actions['filter_type'] != '':
+            object_list = object_list.filter(adm__type=self.actions['filter_type'])
+
+        if self.actions['filter_category'] != '':
+            object_list = object_list.filter(adm__category=self.actions['filter_category'])
+
         if self.actions['filter_country'] != '':
             object_list = object_list.filter(country=self.actions['filter_country'])
 
@@ -89,6 +95,9 @@ class InstGenericListView(LoginRequiredView, ListView):
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('DirIns')
 
+        type_list = Type.objects.all()
+        category_list = Category.objects.all()
+
         country_list = Institution.objects.values('country').distinct().annotate(total=Count('pk')).order_by('-total')
         for country in country_list:
             country_id = country['country']
@@ -100,6 +109,8 @@ class InstGenericListView(LoginRequiredView, ListView):
         context['user_role'] = user_role
         context['user_cc'] = user_data.get('user_cc')
         context['country_list'] = country_list
+        context['type_list'] = type_list
+        context['category_list'] = category_list
 
         return context
 
