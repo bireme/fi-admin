@@ -114,7 +114,7 @@
                             <td>{{ institution.status_label }}</a></td>
                             <td>
                                 <a href="{% url 'edit_institution' institution.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if institution.created_by_id = user.id %}
+                                {% if user_cc = 'BR1.1' %}
                                     <a href="{% url 'delete_institution' institution.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>

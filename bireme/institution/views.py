@@ -314,16 +314,8 @@ class InstDeleteView(LoginRequiredView, DeleteView):
         if user_cc != 'BR1.1':
             return HttpResponseForbidden()
 
-        return super(InstCreateView, self).dispatch(*args, **kwargs)
+        return super(InstDeleteView, self).dispatch(*args, **kwargs)
 
-
-    def get_object(self, queryset=None):
-        obj = super(InstDeleteView, self).get_object()
-        """ Hook to ensure object is owned by request.user. """
-        if not obj.created_by == self.request.user:
-            return HttpResponse('Unauthorized', status=401)
-
-        return obj
 
     def delete(self, request, *args, **kwargs):
         obj = super(InstDeleteView, self).get_object()
@@ -332,6 +324,8 @@ class InstDeleteView(LoginRequiredView, DeleteView):
         # delete associated data
         Contact.objects.filter(institution_id=obj.id).delete()
         URL.objects.filter(institution_id=obj.id).delete()
+        Adm.objects.filter(institution_id=obj.id).delete()
+        InstitutionAdhesion.objects.filter(institution_id=obj.id).delete()
 
         return super(InstDeleteView, self).delete(request, *args, **kwargs)
 
