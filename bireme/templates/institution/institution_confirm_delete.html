@@ -18,7 +18,7 @@
 <div class='body'>
     <form method="POST" class="delete-form">
         <blockquote>
-            <h3>{{ object }}</h3>
+            <h3>{{object.cc_code}} - {{object.name}} {{object.acronym}}</h3>
         </blockquote>
 
         {% csrf_token %}
