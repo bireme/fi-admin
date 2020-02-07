@@ -81,12 +81,14 @@ class InstGenericListView(LoginRequiredView, ListView):
         if self.actions['filter_country'] != '':
             object_list = object_list.filter(country=self.actions['filter_country'])
 
-        if self.actions['order'] == "-":
-            object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
-
-        # filter by institution of user
+        # filter by user institution
         if self.actions['filter_owner'] != "*" or user_cc != 'BR1.1':
             object_list = object_list.filter(cc_code=user_cc)
+
+        # order for created_time for BR1.1 users (administrative)
+        if user_cc == 'BR1.1':
+            object_list = object_list.order_by("-created_time")
+
 
         return object_list
 
