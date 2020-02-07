@@ -42,8 +42,15 @@ class CategoryAdmin(GenericAdmin):
     inlines = [CategoryLocalAdmin,]
 
 
+class UnitAdmin(GenericAdmin):
+    model = Unit
+    search_fields = ['name', 'acronym']
+    list_filter = ('country',)
+
+
 # Django Admin models register
 admin.site.register(AdhesionTerm, AdhesionTermAdmin)
 admin.site.register(ServiceProduct, ServiceProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Type, TypeAdmin)
+admin.site.register(Unit, UnitAdmin)
