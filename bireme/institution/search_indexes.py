@@ -12,6 +12,7 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
     state = indexes.CharField(model_attr='state', null=True)
     zipcode = indexes.CharField(model_attr='zipcode', null=True)
     country = indexes.CharField()
+    country_code = indexes.CharField()
     type = indexes.MultiValueField()
     institution_type = indexes.MultiValueField()
     institution_thematic = indexes.MultiValueField()
@@ -77,6 +78,10 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.country:
             translations = obj.country.get_translations()
             return "|".join(translations)
+
+    def prepare_country_code(self, obj):
+        if obj.country:
+            return obj.country.code
 
     def prepare_user(self, obj):
         user_list = []
