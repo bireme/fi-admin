@@ -1,4 +1,4 @@
-Django==1.8.11
+Django==1.11.28
 django-rosetta==0.7.1
 django-tastypie==0.12.2
 django-haystack==2.6.1
