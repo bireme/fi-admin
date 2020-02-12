@@ -34,6 +34,7 @@
         </ul>
     {% endif %}
 
+    {{ formset_issues.non_form_errors }}
     {{ formset_audit.non_form_errors }}
     {{ formset_indexrange.non_form_errors }}
     {{ formset_specialty.non_form_errors }}
@@ -426,6 +427,57 @@
                             {% endif %}
                         {% endif %}
                     {% endfor %}
+                </fieldset>
+            </div>
+
+            <div id='tab-issues' class="tab-pane">
+                <fieldset id="issues">
+                    <span class="table-header">{% trans "Issues" %}</span>
+                    <table class="table table-condensed">
+                        <thead>
+                            <th>{% trans "Year" %}</th>
+                            <th>{% trans "Volume" %}</th>
+                            <th>{% trans "Number" %}</th>
+                            <th>{% trans "Copies" %}</th>
+                            <th>{% trans "Mask" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Publication Type" %}</th>
+                            <th>{% trans "Notes" %}</th>
+                            <th>{% trans "URLs" %}</th>
+                        </thead>
+                        <tbody>
+
+                        {{ formset_issues.management_form }}
+
+                        {% for form in formset_issues %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            {% if form.cleaned_data|length %}
+                                {% if form.DELETE.value %}
+                                    <input type="hidden" name="{{ formset_issues.prefix }}-{{ forloop.counter0 }}-DELETE" id="id_{{ formset_issues.prefix }}-{{ forloop.counter0 }}-DELETE" value="on">
+                                {% else %}
+                                    <tr id="issue-{{ forloop.counter0 }}" class="issue-row {% if form.errors %}error{% endif %} formset-row">
+                                        {% for field in form.visible_fields %}
+                                            {% if field.name != 'DELETE' %}
+                                                <td>
+                                                    {{ field }}
+                                                    {% if field.field|fieldtype != 'CharField' %}
+                                                        {% get_field_display form.instance field %}
+                                                    {% else %}
+                                                        {{ field.value|linebreaks }}
+                                                    {% endif %}
+                                                </td>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                    </tr>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <p class="muted"></p>
                 </fieldset>
             </div>
         </div>

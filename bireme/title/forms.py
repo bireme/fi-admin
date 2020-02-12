@@ -156,6 +156,31 @@ class AuditForm(forms.ModelForm):
         return data
 
 
+class IssueForm(forms.ModelForm):
+    def save(self, *args, **kwargs):
+        obj = super(IssueForm, self).save(commit=False)
+
+        # save modifications
+        if not obj.creation_date:
+            obj.creation_date = time.strftime('%Y%m%d')
+
+        obj.treatment_level = 'f'
+        obj.last_change_date = time.strftime('%Y%m%d')
+
+        obj.save()
+
+        return obj
+
+    class Meta:
+        model = Issue
+        exclude = ( 'treatment_level', 'cooperative_center_code', 'creation_date', 'last_change_date', )
+        widgets = {
+            'classification': forms.HiddenInput(),
+            'urls':  forms.Textarea(attrs={'rows':4, 'cols':40}),
+            'notes': forms.Textarea(attrs={'rows':4, 'cols':40}),
+        }
+
+
 # Definition of inline formsets
 
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1, exclude=('primary', ))
@@ -165,3 +190,4 @@ AuditFormSet = inlineformset_factory(Title, Audit, form=AuditForm, fields = '__a
 TitleVarianceFormSet = inlineformset_factory(Title, TitleVariance, form=TitleVarianceForm, fields='__all__', can_delete=True, extra=1)
 BVSSpecialtyFormSet = inlineformset_factory(Title, BVSSpecialty, fields='__all__', can_delete=True, extra=1)
 IndexRangeFormSet = inlineformset_factory(Title, IndexRange, fields='__all__', can_delete=True, extra=1)
+IssueFormSet = inlineformset_factory(Title, Issue, form=IssueForm, fields='__all__', can_delete=True, extra=1)

@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% if is_paginated %}
+{% if page_obj.has_previous or page_obj.has_next %}
     <div class="pagination">
         <ul>
             {% if page_obj.has_previous %}
