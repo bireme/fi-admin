@@ -6,7 +6,7 @@ from django.conf import settings
 from api.resources_api import LinkResource
 from api.events_api import EventResource
 from api.multimedia_api import MediaResource
-from api.title_api import TitleResource
+from api.title_api import TitleResource, IssueResource
 from api.bibliographic import ReferenceResource
 from api.legislation import LeisrefResource
 from api.oer_api import OERResource
@@ -25,6 +25,7 @@ link_resource = LinkResource()
 event_resource = EventResource()
 media_resource = MediaResource()
 title_resource = TitleResource()
+issue_resource = IssueResource()
 reference_resource = ReferenceResource()
 leisref_resource = LeisrefResource()
 oer_resource = OERResource()
@@ -164,6 +165,7 @@ urlpatterns = patterns('',
     (r'^api/', include(event_resource.urls)),
     (r'^api/', include(media_resource.urls)),
     (r'^api/', include(title_resource.urls)),
+    (r'^api/', include(issue_resource.urls)),
     (r'^api/', include(reference_resource.urls)),
     (r'^api/', include(leisref_resource.urls)),
     (r'^api/', include(oer_resource.urls)),
