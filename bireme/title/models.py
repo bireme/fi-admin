@@ -265,3 +265,73 @@ class Audit(models.Model, AuditLog):
 
     def __unicode__(self):
         return self.label
+
+class Mask(Generic):
+
+    class Meta:
+        ordering = ['mask']
+        verbose_name = _("Mask")
+        verbose_name_plural = _("Masks")
+
+    mask = models.CharField(_('Mask code'), max_length=55, blank=True)
+    frequency = models.CharField(_('Frequency'), max_length=55, choices=FREQUENCY_CHOICES, blank=True)
+    volumes = models.CharField(_('Volumes'), max_length=55, blank=True)
+    issues = models.CharField(_('Issues'), max_length=55, blank=True)
+    ascending = models.BooleanField(_('Ascending'), default=False)
+    dummy = models.BooleanField(_('Dummy'), default=False)
+
+    def save(self):
+        self.mask = ''
+
+        if self.frequency:
+            self.mask += self.frequency
+        if self.volumes:
+            self.mask +=  self.volumes + 'V'
+        if self.issues:
+            self.mask += self.issues + 'F'
+        if self.ascending:
+            self.mask += '+'
+
+        if self.dummy:
+            self.mask = 'DUMMY'
+
+        super(Mask, self).save()
+
+    def __unicode__(self):
+        return u"%s" % (self.mask if self.mask else _('(empty)'))
+
+class Issue(Generic):
+
+    class Meta:
+        ordering = ['-classification']
+        verbose_name = _("Issue")
+        verbose_name_plural = _("Issues")
+
+    STATUS_CHOICES = (
+        ('P', _('Present')),
+        ('A', _('Absent')),
+    )
+
+    TYPE_CHOICES = (
+        ('S', _('Supplement')),
+        ('NE', _('Special number')),
+    )
+
+    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True)
+    treatment_level = models.CharField(_('Treatment level'), max_length=55, blank=True)
+    cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
+    year = models.CharField(_('Year'), max_length=255, blank=False)
+    volume = models.CharField(_('Volume'), max_length=255, blank=True)
+    number = models.CharField(_('Number'), max_length=55, blank=True)
+    copies = models.CharField(_('Number of copies'), max_length=55, blank=True)
+    mask = models.ForeignKey(Mask, related_name="+", verbose_name=_("Mask code"), blank=True, null=True)
+    status = models.CharField(_('Status (P/A)'), max_length=55, choices=STATUS_CHOICES, blank=False)
+    publication_type = models.CharField(_('Publication type'), max_length=55, choices=TYPE_CHOICES, blank=True)
+    notes = models.TextField(_("Notes"), blank=True, help_text=_("Enter one per line"))
+    urls = models.TextField(_("URLs"), blank=True, help_text=_("Enter one per line"))
+    classification = models.CharField(_('Classification'), max_length=55, blank=True)
+    creation_date = models.CharField(_('Creation date'), help_text='Format: YYYYMMDD', max_length=55, blank=True)
+    last_change_date = models.CharField(_('Last change date'), help_text='Format: YYYYMMDD', max_length=55, blank=True)
+
+    def __unicode__(self):
+        return self.title.title + ' - ' + str(self.id)

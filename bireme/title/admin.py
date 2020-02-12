@@ -3,6 +3,10 @@ from django.contrib import admin
 
 from models import *
 
-models = [Title, TitleVariance, BVSSpecialty, IndexRange, Audit, OnlineResources, OwnerList, IndexCode, Users]
+@admin.register(Mask)
+class MaskAdmin(admin.ModelAdmin):
+    readonly_fields = ["mask"]
+
+models = [Title, TitleVariance, BVSSpecialty, IndexRange, Audit, OnlineResources, OwnerList, IndexCode, Users, Issue]
 
 admin.site.register(models)
