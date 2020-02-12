@@ -736,6 +736,52 @@
                 }
             });
 
+            $(document).on("blur", ".issue-row input:text, .issue-row select, .issue-row textarea", function(){
+                var _this = $(this).parent().siblings('input:hidden[id $= "-classification"]');
+
+                if ( $(this).val() && ! _this.val() ) {
+                    var classification, _prev, _next,
+                        prev = $(this).parents('.issue-row').prev('.issue-row.active:visible'),
+                        next = $(this).parents('.issue-row').next('.issue-row.active:visible'),
+                        rows = $('.issue-row:visible');
+
+                    if ( prev.length ) {
+                        _prev = parseInt(prev.find('input:hidden[id $= "-classification"]').val());
+                    } else {
+                        _prev = parseInt($('#prev_page_obj').val());
+                    }
+
+                    if ( next.length ) {
+                        _next = parseInt(next.find('input:hidden[id $= "-classification"]').val());
+                    } else {
+                        _next = parseInt($('#next_page_obj').val());
+                    }
+
+                    $(this).parents('.issue-row').addClass("active");
+
+                    if ( ! _next && ! _prev && rows.length == 1 ) {
+                        _this.val(1000);
+                    } else {
+                        if ( ! _next ) {
+                            classification = 1000;
+                        } else if ( ! _prev ) {
+                            var a = _next,
+                                b = 1000,
+                                x = a % b,
+                                y = a - x,
+                                z = y + b;
+
+                            classification = z;
+                        } else {
+                            var c = (_prev - _next) / 2;
+                            classification = c + _next;
+                        }
+
+                        _this.val(classification);
+                    }
+                }
+            });
+
             if ( $('.issue-row').length > 1 ) {
                 var $wrapper = $('#issues table tbody');
                 $wrapper.find('tr').sort(function (a, b) {
