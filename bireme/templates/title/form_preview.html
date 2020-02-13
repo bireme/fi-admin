@@ -34,6 +34,7 @@
         </ul>
     {% endif %}
 
+    {{ formset_collection.non_form_errors }}
     {{ formset_issues.non_form_errors }}
     {{ formset_audit.non_form_errors }}
     {{ formset_indexrange.non_form_errors }}
@@ -168,9 +169,35 @@
                                     {{ field.as_hidden }}
                                 {% elif field.name == 'user_recomendation' %}
                                     {{ field.as_hidden }}
-                                {% elif field.name != 'DELETE' and field.name != 'status' %}
+                                {% elif field.name != 'DELETE' %}
                                     {{ field.value }}{% if field.value %},{% else %}{% endif %}
                                     {{ field }}
+                                {% endif %}
+                            {% endfor %}
+                            {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <p class="muted"></p>
+                </fieldset>
+
+                <fieldset id="collection">
+                    <span>{% trans "Collection" %}:</span>
+
+                    {{ formset_collection.management_form }}
+
+                    {% for form in formset_collection %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {% if form.DELETE.value %}
+                            <input type="hidden" name="{{ formset_collection.prefix }}-{{ forloop.counter0 }}-DELETE" id="id_{{ formset_collection.prefix }}-{{ forloop.counter0 }}-DELETE" value="on">
+                        {% else %}
+                            {% for field in form.visible_fields %}
+                                {{ field }}
+                                {% if field.field|widgetfieldtype = 'Textarea' %}
+                                    <span class="textarea">{{ field.value|linebreaks }}</span>
+                                {% else %}
+                                    {{ field.value }}
                                 {% endif %}
                             {% endfor %}
                             {% if form.instance.pk %}{{ form.DELETE }}{% endif %}

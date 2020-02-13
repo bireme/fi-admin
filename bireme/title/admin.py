@@ -7,6 +7,6 @@ from models import *
 class MaskAdmin(admin.ModelAdmin):
     readonly_fields = ["mask"]
 
-models = [Title, TitleVariance, BVSSpecialty, IndexRange, Audit, OnlineResources, OwnerList, IndexCode, Users, Issue]
+models = [Title, TitleVariance, BVSSpecialty, IndexRange, Audit, OnlineResources, OwnerList, IndexCode, Users, Issue, Collection]
 
 admin.site.register(models)

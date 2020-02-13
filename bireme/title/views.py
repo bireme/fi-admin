@@ -115,6 +115,7 @@ class TitleUpdate(LoginRequiredView):
         formset_variance = TitleVarianceFormSet(self.request.POST, instance=self.object)
         formset_indexrange = IndexRangeFormSet(self.request.POST, instance=self.object)
         formset_audit = AuditFormSet(self.request.POST, instance=self.object)
+        formset_collection = CollectionFormSet(self.request.POST, instance=self.object)
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
         formset_keyword = KeywordFormSet(self.request.POST, instance=self.object)
 
@@ -127,13 +128,14 @@ class TitleUpdate(LoginRequiredView):
         formset_variance_valid = formset_variance.is_valid()
         formset_indexrange_valid = formset_indexrange.is_valid()
         formset_audit_valid = formset_audit.is_valid()
+        formset_collection_valid = formset_collection.is_valid()
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_keyword_valid = formset_keyword.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
-        valid_for_publication = is_valid_for_publication(form, [formset_issues, formset_links, formset_specialty, formset_variance, formset_indexrange, formset_audit, formset_descriptor, formset_keyword])
+        valid_for_publication = is_valid_for_publication(form, [formset_issues, formset_links, formset_specialty, formset_variance, formset_indexrange, formset_audit, formset_collection, formset_descriptor, formset_keyword])
 
-        if (form_valid and formset_issues_valid and formset_links_valid and formset_specialty_valid and formset_variance_valid and formset_indexrange_valid and formset_audit_valid and formset_descriptor_valid and formset_keyword_valid and valid_for_publication):
+        if (form_valid and formset_issues_valid and formset_links_valid and formset_specialty_valid and formset_variance_valid and formset_indexrange_valid and formset_audit_valid and formset_collection_valid and formset_descriptor_valid and formset_keyword_valid and valid_for_publication):
 
             action = self.request.POST['action']
 
@@ -150,6 +152,7 @@ class TitleUpdate(LoginRequiredView):
                                     formset_variance=formset_variance,
                                     formset_indexrange=formset_indexrange,
                                     formset_audit=formset_audit,
+                                    formset_collection=formset_collection,
                                     formset_descriptor=formset_descriptor,
                                     formset_keyword=formset_keyword,
                                     valid_for_publication=valid_for_publication))
@@ -174,6 +177,9 @@ class TitleUpdate(LoginRequiredView):
                 formset_audit.instance = self.object
                 formset_audit.save()
 
+                formset_collection.instance = self.object
+                formset_collection.save()
+
                 formset_descriptor.instance = self.object
                 formset_descriptor.save()
 
@@ -193,6 +199,7 @@ class TitleUpdate(LoginRequiredView):
                                 formset_variance=formset_variance,
                                 formset_indexrange=formset_indexrange,
                                 formset_audit=formset_audit,
+                                formset_collection=formset_collection,
                                 formset_descriptor=formset_descriptor,
                                 formset_keyword=formset_keyword,
                                 valid_for_publication=valid_for_publication))
@@ -262,6 +269,7 @@ class TitleUpdate(LoginRequiredView):
                 context['formset_variance'] = TitleVarianceFormSet(instance=self.object)
                 context['formset_indexrange'] = IndexRangeFormSet(instance=self.object)
                 context['formset_audit'] = AuditFormSet(instance=self.object)
+                context['formset_collection'] = CollectionFormSet(instance=self.object)
                 # context['formset_issues'] = IssueFormSet(instance=self.object)
             else:
                 context['formset_links'] = OnlineResourcesFormSet(instance=self.object)
@@ -269,6 +277,7 @@ class TitleUpdate(LoginRequiredView):
                 context['formset_variance'] = TitleVarianceFormSet(instance=self.object)
                 context['formset_indexrange'] = IndexRangeFormSet(instance=self.object)
                 context['formset_audit'] = AuditFormSet(instance=self.object)
+                context['formset_collection'] = CollectionFormSet(instance=self.object)
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
                 context['formset_keyword'] = KeywordFormSet(instance=self.object)
                 # context['formset_issues'] = IssueFormSet(instance=self.object)
@@ -291,8 +300,7 @@ class TitleUpdate(LoginRequiredView):
         else:
             query = query.filter(cooperative_center_code=user_cc)
 
-        #paginator = Paginator(query, settings.ITEMS_PER_PAGE)
-        paginator = Paginator(query, 2)
+        paginator = Paginator(query, settings.ITEMS_PER_PAGE)
         page = self.request.GET.get('page')
 
         try:

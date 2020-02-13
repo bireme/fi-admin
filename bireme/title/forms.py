@@ -181,6 +181,14 @@ class IssueForm(forms.ModelForm):
         }
 
 
+class CollectionForm(forms.ModelForm):
+    class Meta:
+        model = Collection
+        fields = '__all__'
+        widgets = {
+            'collection': forms.Textarea(attrs={'rows':20, 'cols':90}),
+        }
+
 # Definition of inline formsets
 
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1, exclude=('primary', ))
@@ -191,3 +199,4 @@ TitleVarianceFormSet = inlineformset_factory(Title, TitleVariance, form=TitleVar
 BVSSpecialtyFormSet = inlineformset_factory(Title, BVSSpecialty, fields='__all__', can_delete=True, extra=1)
 IndexRangeFormSet = inlineformset_factory(Title, IndexRange, fields='__all__', can_delete=True, extra=1)
 IssueFormSet = inlineformset_factory(Title, Issue, form=IssueForm, fields='__all__', can_delete=True, extra=1)
+CollectionFormSet = inlineformset_factory(Title, Collection, form=CollectionForm, fields='__all__', can_delete=False, extra=1, max_num=1)

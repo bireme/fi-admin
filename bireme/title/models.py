@@ -335,3 +335,15 @@ class Issue(Generic):
 
     def __unicode__(self):
         return self.title.title + ' - ' + str(self.id)
+
+class Collection(Generic):
+
+    class Meta:
+        verbose_name = _("Collection")
+        verbose_name_plural = _("Collections")
+
+    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True)
+    collection = models.TextField(_("Collection"), blank=True, help_text=_("Enter one per line"))
+
+    def __unicode__(self):
+        return self.collection

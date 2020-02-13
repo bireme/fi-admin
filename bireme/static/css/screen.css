@@ -498,6 +498,10 @@ div.onlineresource div.check {
     text-align: left;
 }
 
+#collection textarea {
+    width: auto;
+}
+
 .icon-m {
     font-size: 24px;
 }

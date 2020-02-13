@@ -38,6 +38,7 @@
         </ul>
     {% endif %}
 
+    {{ formset_collection.non_form_errors }}
     {{ formset_issues.non_form_errors }}
     {{ formset_audit.non_form_errors }}
     {{ formset_indexrange.non_form_errors }}
@@ -56,6 +57,7 @@
         <li><a href="#tab-audit" class="{% if formset_audit.errors and not formset_audit.is_valid %}alert-error{% endif %}" data-toggle="tab"><i class="icon-tags"></i> {% trans "Audit" %}</a></li>
         <li><a href="#tab-onlineresource" data-toggle="tab"><i class="icon-link"></i> {% trans "Online resources" %}</a></li>
         <li class="{% if request.GET.tab == 'issues' %}active{% endif %}"><a href="#tab-issues" data-toggle="tab"><i class="icon-book"></i> {% trans "Issues" %}</a></li>
+        <li><a href="#tab-collection" data-toggle="tab"><i class="icon-link"></i> {% trans "Collection" %}</a></li>
     </ul>
 
     <div id="filter-cc" class="row" {% if request.GET.tab != 'issues' %}style="display: none;"{% endif %}>
@@ -120,9 +122,7 @@
                                 </blockquote>
                             {% endfor %}
                         </div>
-
                     {% else %}
-
                         <fieldset id="metadata">
                             {% for hidden in form.hidden_fields %}
                                 {{ hidden }}
@@ -580,6 +580,32 @@
 
                     {% include "pagination_generic.html" %}
 
+                </fieldset>
+            </div>
+
+            <div id='tab-collection' class="tab-pane">
+                <fieldset id="collection">
+
+                    {{ formset_collection.management_form }}
+
+                    {% for form in formset_collection %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {{ form.non_field_errors }}
+                        {% for field in form.visible_fields %}
+                            <label for="{{ field.auto_id }}">
+                                {% if field.field.required %}
+                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                {% else %}
+                                    {{ field.label }}
+                                {% endif %}
+                            </label>
+                            <p class="muted">{{ field.help_text }}</p>
+                            {{ field.errors }}
+                            {{ field }}
+                        {% endfor %}
+                    {% endfor %}
                 </fieldset>
             </div>
         </div>
