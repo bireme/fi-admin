@@ -57,7 +57,7 @@
         <li><a href="#tab-audit" class="{% if formset_audit.errors and not formset_audit.is_valid %}alert-error{% endif %}" data-toggle="tab"><i class="icon-tags"></i> {% trans "Audit" %}</a></li>
         <li><a href="#tab-onlineresource" data-toggle="tab"><i class="icon-link"></i> {% trans "Online resources" %}</a></li>
         <li class="{% if request.GET.tab == 'issues' %}active{% endif %}"><a href="#tab-issues" data-toggle="tab"><i class="icon-book"></i> {% trans "Issues" %}</a></li>
-        <li><a href="#tab-collection" data-toggle="tab"><i class="icon-link"></i> {% trans "Collection" %}</a></li>
+        <li><a href="#tab-collection" data-toggle="tab"><i class="icon-book"></i> {% trans "Collection" %}</a></li>
     </ul>
 
     <div id="filter-cc" class="row" {% if request.GET.tab != 'issues' %}style="display: none;"{% endif %}>

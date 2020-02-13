@@ -108,6 +108,7 @@ class TitleResource(CustomResource):
         index_range = IndexRange.objects.filter(title=bundle.obj.id)
         audits = Audit.objects.filter(title=bundle.obj.id)
         new_url = OnlineResources.objects.filter(title=bundle.obj.id)
+        collections = Collection.objects.filter(title=bundle.obj.id)
 
         # m2m fields
         country = bundle.obj.country.all()
@@ -122,6 +123,7 @@ class TitleResource(CustomResource):
         bundle.data['abstract_language'] = [al.acronym for al in abstract_language] # field tag 360
         bundle.data['descriptors'] = [descriptor.text for descriptor in descriptors] # field tag 440
         bundle.data['users'] = [user.code for user in users] # field tag 445
+        bundle.data['collection'] = [collection.collection for collection in collections] # field tag 440
 
         # field tags 230 and 240
         if title_variance:
