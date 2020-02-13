@@ -272,9 +272,9 @@ class ReferenceResource(CustomResource):
                             else:
                                 bundle.data[field.name].append(field_value)
 
-        # mark records that has status INPROCESS as LILACSEXPRESS
+        # mark records that has status INPROCESS as LILACSEXPRESS #859
         if bundle.obj.status == 0:
-            if bundle.data['database']:
+            if 'database' in bundle.data:
                 bundle.data['database'].extend('LILACSEXPRESS')
             else:
                 bundle.data['database'] = 'LILACSEXPRESS'
