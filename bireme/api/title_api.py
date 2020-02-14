@@ -123,7 +123,6 @@ class TitleResource(CustomResource):
         bundle.data['abstract_language'] = [al.acronym for al in abstract_language] # field tag 360
         bundle.data['descriptors'] = [descriptor.text for descriptor in descriptors] # field tag 440
         bundle.data['users'] = [user.code for user in users] # field tag 445
-        bundle.data['collection'] = [collection.collection for collection in collections] # field tag 440
 
         # field tags 230 and 240
         if title_variance:
@@ -207,6 +206,17 @@ class TitleResource(CustomResource):
 
                 bundle.data['online'] += [text+index] if text else ''
 
+        # field tag 998
+        if collections:
+            format = bundle.request.GET.get('format', None)
+            if format == 'isis_id':
+                bundle.data['collection'] = []
+                for collection in collections:
+                    for line in collection.collection.split('\r\n'):
+                        bundle.data['collection'] += [line]
+            else:
+                bundle.data['collection'] = [collection.collection for collection in collections]
+                
         return bundle
 
 class IssueResource(CustomResource):

@@ -31,7 +31,7 @@ field_tag_map = {'local_code': '03', 'record_type': '05', 'treatment_level': '06
                  'absorbed_in_part_by': '760', 'subdivided': '770', 'merged': '780',
                  'to_form': '790', 'online_notes': '880', 'notes': '900',
                  'bireme_notes': '910', 'indexer_cc_code': '920', 'editor_cc_code': '930',
-                 'creation_date': '940', 'last_change_date': '941', 'online': '999'
+                 'creation_date': '940', 'last_change_date': '941', 'collection': '998', 'online': '999'
                 }
 
 issue_field_tag_map = {
