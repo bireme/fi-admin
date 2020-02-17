@@ -13,6 +13,14 @@
 
 {% block content %}
 
+<form name="actions">
+    <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="id"  value="{{ actions.id }}">
+</form>
+
 <div class='header'>
     <h2><i class='icon-book'></i>{% if not object %}{% trans "New Title" %}{% if next_id %} - ID: {{ next_id }}{% endif %}{% else %}{% trans "Edit Title" %}{% if object.id %} - ID: {{ object.id_number }}{% endif %}{% endif %}</h2>
 </div>
@@ -30,6 +38,8 @@
         </ul>
     {% endif %}
 
+    {{ formset_collection.non_form_errors }}
+    {{ formset_issues.non_form_errors }}
     {{ formset_audit.non_form_errors }}
     {{ formset_indexrange.non_form_errors }}
     {{ formset_specialty.non_form_errors }}
@@ -39,14 +49,43 @@
     {{ formset_keyword.non_form_errors }}
 
     <ul class="nav nav-tabs" id='tab'>
-        <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
+        <li class="{% if not request.GET.tab %}active{% endif %}"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         <li><a href="#tab-descriptors" data-toggle="tab"><i class="icon-list"></i> {% trans "Descriptors" %}</a></li>
         <li><a href="#tab-indexrange" data-toggle="tab"><i class="icon-tags"></i> {% trans "Index range" %}</a></li>
         <li><a href="#tab-specialty" data-toggle="tab"><i class="icon-tags"></i> {% trans "BVS Specialties" %}</a></li>
         <li><a href="#tab-variance" class="{% if formset_variance.errors and not formset_variance.is_valid %}alert-error{% endif %}" data-toggle="tab"><i class="icon-tags"></i> {% trans "Title variances" %}</a></li>
         <li><a href="#tab-audit" class="{% if formset_audit.errors and not formset_audit.is_valid %}alert-error{% endif %}" data-toggle="tab"><i class="icon-tags"></i> {% trans "Audit" %}</a></li>
         <li><a href="#tab-onlineresource" data-toggle="tab"><i class="icon-link"></i> {% trans "Online resources" %}</a></li>
+        <li class="{% if request.GET.tab == 'issues' %}active{% endif %}"><a href="#tab-issues" data-toggle="tab"><i class="icon-book"></i> {% trans "Issues" %}</a></li>
+        <li><a href="#tab-collection" data-toggle="tab"><i class="icon-book"></i> {% trans "Collection" %}</a></li>
     </ul>
+
+    <div id="filter-cc" class="row" {% if request.GET.tab != 'issues' %}style="display: none;"{% endif %}>
+        <div class="span-4">
+            <div class="input-append" style="margin-left: 10px">
+                <form name="search">
+                    <input type="hidden" name="page" value="">
+                    <input type="hidden" name="tab" value="issues">
+
+                    <!-- filter by cooperative center -->
+                    <span style="margin-right: 5px">{% trans "Cooperative center" %}:</span>
+                    <select name="filter_owner">
+                        <option value="">----------</option>
+                        {% for cc in cooperative_centers %}
+                            <option value="{{ cc }}" {% if cc == filter_owner %}selected{% endif %}>{{ cc }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button class="btn" type="submit"><i class='icon-search'></i></button>
+                </form>
+            </div>
+        </div>
+        {% if actions.filter_owner == 'network' and user_data.networks %}
+            <div class="span-4">
+                {% trans "Networks" %} : {{ user_data.networks|join:", " }}
+            </div>
+        {% endif %}
+    </div>
 
     <form method="POST" class="title-form">
         {% csrf_token %}
@@ -54,7 +93,7 @@
         <input type="hidden" name="action" value="preview" />
 
         <div class="tab-content">
-            <div id="tab-data" class="tab-pane active">
+            <div id="tab-data" class="tab-pane {% if not request.GET.tab %}active{% endif %}">
                     {% if role == 'doc' and not user_data.is_owner and title %}
                         <div class="well">
                             <blockquote>
@@ -83,9 +122,7 @@
                                 </blockquote>
                             {% endfor %}
                         </div>
-
                     {% else %}
-
                         <fieldset id="metadata">
                             {% for hidden in form.hidden_fields %}
                                 {{ hidden }}
@@ -492,6 +529,85 @@
                     {% endfor %}
                 </fieldset>
             </div>
+
+            <div id='tab-issues' class="tab-pane {% if request.GET.tab == 'issues' %}active{% endif %}">
+                <fieldset id="issues">
+                    <table class="table table-condensed table-striped">
+                        <thead>
+                            <th>{% trans "Year" %}</th>
+                            <th>{% trans "Volume" %}</th>
+                            <th>{% trans "Number" %}</th>
+                            <th>{% trans "Copies" %}</th>
+                            <th>{% trans "Mask" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Publication Type" %}</th>
+                            <th>{% trans "Notes" %}</th>
+                            <th>{% trans "URLs" %}</th>
+                            <th {% if filter_owner != user_cc %}style="display: none;"{% endif %}>{% trans "Actions" %}</th>
+                        </thead>
+                        <tbody>
+
+                        {{ formset_issues.management_form }}
+
+                        {% if prev_page_obj %}
+                            <input id="prev_page_obj" type="hidden" name="prev_page_obj" value="{{ prev_page_obj.classification }}">
+                        {% endif %}
+
+                        {% if next_page_obj %}
+                            <input id="next_page_obj" type="hidden" name="next_page_obj" value="{{ next_page_obj.classification }}">
+                        {% endif %}
+
+                        {% for form in formset_issues %}
+                            <tr id="issue-{{ forloop.counter0 }}" class="issue-row {% if form.errors %}error{% endif %} formset-row {% if form.classification.value %}active{% endif %}" data-order="{% if form.classification.value %}{{ form.classification.value }}{% endif %}">
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                {% for field in form.visible_fields %}
+                                    {% if field.name != 'DELETE' %}
+                                        <td>
+                                            {{ field }}
+                                            {{ field.errors }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td {% if filter_owner != user_cc %}style="display: none;"{% endif %}>
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% include "pagination_generic.html" %}
+
+                </fieldset>
+            </div>
+
+            <div id='tab-collection' class="tab-pane">
+                <fieldset id="collection">
+
+                    {{ formset_collection.management_form }}
+
+                    {% for form in formset_collection %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {{ form.non_field_errors }}
+                        {% for field in form.visible_fields %}
+                            <label for="{{ field.auto_id }}">
+                                {% if field.field.required %}
+                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                {% else %}
+                                    {{ field.label }}
+                                {% endif %}
+                            </label>
+                            <p class="muted">{{ field.help_text }}</p>
+                            {{ field.errors }}
+                            {{ field }}
+                        {% endfor %}
+                    {% endfor %}
+                </fieldset>
+            </div>
         </div>
 
         <div class="control-panel form-submit">
@@ -509,6 +625,7 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/jquery.inlineformset.js' %}"></script>
 
    <script type="text/javascript">
         var decs_field;
@@ -577,6 +694,17 @@
                     formCssClass: 'onlineresource_formset',
                     prefix: '{{ formset_links.prefix }}'
             });
+            $('.issue-row').inlineformset({
+                    addText : '<i class="icon-plus-sign icon-blue icon-m"></i>',
+                    deleteText: '<i class="icon-remove-sign icon-red icon-m"></i>',
+                    addCssClass : 'add-btn btn',
+                    deleteCssClass : 'delete-btn btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'issues_formset',
+                    prefix: '{{ formset_issues.prefix }}',
+                    added: normalize_form,
+                    removed: toggle_add_button
+            });
 
             var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
             var eventer = window[eventMethod];
@@ -622,12 +750,99 @@
                     }
                 });
             });
+
+            /********** Issues Scripts **********/
+            $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+                var target = $(e.target).attr("href");
+
+                if ( target == '#tab-issues' ) {
+                    $('#filter-cc').show();
+                } else {
+                    $('#filter-cc').hide();
+                }
+            });
+
+            $(document).on("blur", ".issue-row input:text, .issue-row select, .issue-row textarea", function(){
+                var _this = $(this).parent().siblings('input:hidden[id $= "-classification"]');
+
+                if ( $(this).val() && ! _this.val() ) {
+                    var classification, _prev, _next,
+                        prev = $(this).parents('.issue-row').prev('.issue-row.active:visible'),
+                        next = $(this).parents('.issue-row').next('.issue-row.active:visible'),
+                        rows = $('.issue-row:visible');
+
+                    if ( prev.length ) {
+                        _prev = parseInt(prev.find('input:hidden[id $= "-classification"]').val());
+                    } else {
+                        _prev = parseInt($('#prev_page_obj').val());
+                    }
+
+                    if ( next.length ) {
+                        _next = parseInt(next.find('input:hidden[id $= "-classification"]').val());
+                    } else {
+                        _next = parseInt($('#next_page_obj').val());
+                    }
+
+                    $(this).parents('.issue-row').addClass("active");
+
+                    if ( ! _next && ! _prev && rows.length == 1 ) {
+                        _this.val(1000);
+                    } else {
+                        if ( ! _next ) {
+                            classification = 1000;
+                        } else if ( ! _prev ) {
+                            var a = _next,
+                                b = 1000,
+                                x = a % b,
+                                y = a - x,
+                                z = y + b;
+
+                            classification = z;
+                        } else {
+                            var c = (_prev - _next) / 2;
+                            classification = c + _next;
+                        }
+
+                        _this.val(classification);
+                    }
+                }
+            });
+
+            if ( $('.issue-row').length > 1 ) {
+                var $wrapper = $('#issues table tbody');
+                $wrapper.find('tr').sort(function (a, b) {
+                    return -a.dataset.order - -b.dataset.order;
+                })
+                .appendTo( $wrapper );
+
+                $('#issues table tbody tr:last').not('.active').remove();
+            }
         });
 
         function decs_search(obj){
             var row = $(obj).parent();
             decs_field = row.find('input').attr('name');
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
+        }
+
+        /********** Issues Functions **********/
+        function normalize_form(row){
+            var el = $('.issue-row:visible').not('.active');
+
+            if ( el.length > 1 ) {
+                row.clone(true).insertAfter(row);
+                el.remove();
+            }
+
+            toggle_add_button();
+        }
+
+        function toggle_add_button(row){
+            if ( $('.issue-row:visible').length ) {
+                $('#issues .add-button').hide();
+            } else {
+                $('#issues .add-button').show();
+            }
         }
    </script>
 {% endblock %}

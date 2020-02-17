@@ -1,4 +1,5 @@
 #! coding: utf-8
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
@@ -6,6 +7,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
+
+from django.template import RequestContext
+
+from django.db.models import Avg, Max, Min, Sum
 
 from django.conf import settings
 
@@ -104,29 +109,33 @@ class TitleUpdate(LoginRequiredView):
     form_class = TitleForm
 
     def form_valid(self, form):
+        formset_issues = IssueFormSet(self.request.POST, instance=self.object)
         formset_links = OnlineResourcesFormSet(self.request.POST, instance=self.object)
         formset_specialty = BVSSpecialtyFormSet(self.request.POST, instance=self.object)
         formset_variance = TitleVarianceFormSet(self.request.POST, instance=self.object)
         formset_indexrange = IndexRangeFormSet(self.request.POST, instance=self.object)
         formset_audit = AuditFormSet(self.request.POST, instance=self.object)
+        formset_collection = CollectionFormSet(self.request.POST, instance=self.object)
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
         formset_keyword = KeywordFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
 
+        formset_issues_valid = formset_issues.is_valid()
         formset_links_valid = formset_links.is_valid()
         formset_specialty_valid = formset_specialty.is_valid()
         formset_variance_valid = formset_variance.is_valid()
         formset_indexrange_valid = formset_indexrange.is_valid()
         formset_audit_valid = formset_audit.is_valid()
+        formset_collection_valid = formset_collection.is_valid()
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_keyword_valid = formset_keyword.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
-        valid_for_publication = is_valid_for_publication(form, [formset_links, formset_specialty, formset_variance, formset_indexrange, formset_audit, formset_descriptor, formset_keyword])
+        valid_for_publication = is_valid_for_publication(form, [formset_issues, formset_links, formset_specialty, formset_variance, formset_indexrange, formset_audit, formset_collection, formset_descriptor, formset_keyword])
 
-        if (form_valid and formset_links_valid and formset_specialty_valid and formset_variance_valid and formset_indexrange_valid and formset_audit_valid and formset_descriptor_valid and formset_keyword_valid and valid_for_publication):
+        if (form_valid and formset_issues_valid and formset_links_valid and formset_specialty_valid and formset_variance_valid and formset_indexrange_valid and formset_audit_valid and formset_collection_valid and formset_descriptor_valid and formset_keyword_valid and valid_for_publication):
 
             action = self.request.POST['action']
 
@@ -137,16 +146,21 @@ class TitleUpdate(LoginRequiredView):
                             self.request,
                             view,
                             self.get_context_data(form=form,
+                                    formset_issues=formset_issues,
                                     formset_links=formset_links,
                                     formset_specialty=formset_specialty,
                                     formset_variance=formset_variance,
                                     formset_indexrange=formset_indexrange,
                                     formset_audit=formset_audit,
+                                    formset_collection=formset_collection,
                                     formset_descriptor=formset_descriptor,
                                     formset_keyword=formset_keyword,
                                     valid_for_publication=valid_for_publication))
             else:
                 self.object = form.save()
+
+                formset_issues.instance = self.object
+                formset_issues.save()
 
                 formset_links.instance = self.object
                 formset_links.save()
@@ -163,6 +177,9 @@ class TitleUpdate(LoginRequiredView):
                 formset_audit.instance = self.object
                 formset_audit.save()
 
+                formset_collection.instance = self.object
+                formset_collection.save()
+
                 formset_descriptor.instance = self.object
                 formset_descriptor.save()
 
@@ -176,11 +193,13 @@ class TitleUpdate(LoginRequiredView):
         else:
             return self.render_to_response(
                             self.get_context_data(form=form,
+                                formset_issues=formset_issues,
                                 formset_links=formset_links,
                                 formset_specialty=formset_specialty,
                                 formset_variance=formset_variance,
                                 formset_indexrange=formset_indexrange,
                                 formset_audit=formset_audit,
+                                formset_collection=formset_collection,
                                 formset_descriptor=formset_descriptor,
                                 formset_keyword=formset_keyword,
                                 valid_for_publication=valid_for_publication))
@@ -218,6 +237,7 @@ class TitleUpdate(LoginRequiredView):
         else:
             context['next_id'] = 1
 
+        keep_context = True
 
         if self.request.method == 'GET':
             # special treatment for user of type documentalist is edit title from other user
@@ -249,14 +269,64 @@ class TitleUpdate(LoginRequiredView):
                 context['formset_variance'] = TitleVarianceFormSet(instance=self.object)
                 context['formset_indexrange'] = IndexRangeFormSet(instance=self.object)
                 context['formset_audit'] = AuditFormSet(instance=self.object)
+                context['formset_collection'] = CollectionFormSet(instance=self.object)
+                # context['formset_issues'] = IssueFormSet(instance=self.object)
             else:
                 context['formset_links'] = OnlineResourcesFormSet(instance=self.object)
                 context['formset_specialty'] = BVSSpecialtyFormSet(instance=self.object)
                 context['formset_variance'] = TitleVarianceFormSet(instance=self.object)
                 context['formset_indexrange'] = IndexRangeFormSet(instance=self.object)
                 context['formset_audit'] = AuditFormSet(instance=self.object)
+                context['formset_collection'] = CollectionFormSet(instance=self.object)
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
                 context['formset_keyword'] = KeywordFormSet(instance=self.object)
+                # context['formset_issues'] = IssueFormSet(instance=self.object)
+        else:
+            keep_context = False
+
+        # getting action parameter
+        self.actions = {}
+        for key in ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+        context['actions'] = self.actions
+
+        # Issues pagination
+        FormSet = IssueFormSet(instance=self.object)
+        query = Issue.objects.all().filter(title=self.object.id)
+
+        user_cc = self.request.user.profile.get_attribute('cc')
+        if self.actions['filter_owner'] != "" and user_cc == 'BR1.1':
+            query = query.filter(cooperative_center_code=self.actions['filter_owner'])
+        else:
+            query = query.filter(cooperative_center_code=user_cc)
+
+        paginator = Paginator(query, settings.ITEMS_PER_PAGE)
+        page = self.request.GET.get('page')
+
+        try:
+            objects = paginator.page(page)
+        except PageNotAnInteger:
+            objects = paginator.page(1)
+        except EmptyPage:
+            objects = paginator.page(paginator.num_pages)
+
+        page_query = query.filter(id__in=[object.id for object in objects])
+        FormSet.queryset = page_query
+
+        if objects.has_next():
+            next_objects = paginator.page(objects.next_page_number())
+            context['next_page_obj'] = next_objects[0]
+
+        if objects.has_previous():
+            prev_objects = paginator.page(objects.previous_page_number())
+            context['prev_page_obj'] = prev_objects[-1]
+
+        context['page_obj'] = objects
+        context['filter_owner'] = user_cc if self.actions['filter_owner'] == "" else self.actions['filter_owner']
+        context['cooperative_centers'] = Issue.objects.order_by('cooperative_center_code').values_list('cooperative_center_code', flat=True).distinct()
+
+        if keep_context:
+            context['formset_issues'] = FormSet
 
         return context
 

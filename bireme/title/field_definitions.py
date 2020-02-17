@@ -31,5 +31,25 @@ field_tag_map = {'local_code': '03', 'record_type': '05', 'treatment_level': '06
                  'absorbed_in_part_by': '760', 'subdivided': '770', 'merged': '780',
                  'to_form': '790', 'online_notes': '880', 'notes': '900',
                  'bireme_notes': '910', 'indexer_cc_code': '920', 'editor_cc_code': '930',
-                 'creation_date': '940', 'last_change_date': '941', 'online': '999'
+                 'creation_date': '940', 'last_change_date': '941', 'collection': '998', 'online': '999'
                 }
+
+issue_field_tag_map = {
+                        'id': '01',
+                        'record_type': '05',
+                        'treatment_level': '06',
+                        'cooperative_center_code': '10',
+                        'title': '30',
+                        'notes': '900',
+                        'mask': '910',
+                        'year': '911',
+                        'volume': '912',
+                        'number': '913',
+                        'status': '914',
+                        'copies': '915',
+                        'publication_type': '916',
+                        'classification': '920',
+                        'urls': '999',
+                        'creation_date': '940',
+                        'last_change_date': '941'
+                      }

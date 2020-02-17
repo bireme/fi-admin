@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
 from title.models import *
@@ -14,7 +15,7 @@ from isis_serializer import ISISSerializer
 from tastypie_custom import CustomResource
 
 from main.models import Descriptor
-from title.field_definitions import field_tag_map
+from title.field_definitions import field_tag_map, issue_field_tag_map
 
 import requests
 import urllib
@@ -107,6 +108,7 @@ class TitleResource(CustomResource):
         index_range = IndexRange.objects.filter(title=bundle.obj.id)
         audits = Audit.objects.filter(title=bundle.obj.id)
         new_url = OnlineResources.objects.filter(title=bundle.obj.id)
+        collections = Collection.objects.filter(title=bundle.obj.id)
 
         # m2m fields
         country = bundle.obj.country.all()
@@ -203,5 +205,59 @@ class TitleResource(CustomResource):
                     bundle.data['online_notes'] += ['^xempty'+index]
 
                 bundle.data['online'] += [text+index] if text else ''
+
+        # field tag 998
+        if collections:
+            format = bundle.request.GET.get('format', None)
+            if format == 'isis_id':
+                bundle.data['collection'] = []
+                for collection in collections:
+                    for line in collection.collection.split('\r\n'):
+                        bundle.data['collection'] += [line]
+            else:
+                bundle.data['collection'] = [collection.collection for collection in collections]
+                
+        return bundle
+
+class IssueResource(CustomResource):
+    title = fields.CharField(attribute='title__id', null=True)
+    mask = fields.CharField(attribute='mask__mask', null=True)
+    class Meta:
+        queryset = Issue.objects.all()
+        allowed_methods = ['get']
+        serializer = ISISSerializer(formats=['json', 'xml', 'isis_id'], field_tag=issue_field_tag_map)
+        resource_name = 'issues'
+        include_resource_uri = False
+        filtering = {
+            'title': ALL,
+            'cc': 'exact',
+        }
+
+    def build_filters(self, filters=None):
+        orm_filters = super(IssueResource, self).build_filters(filters)
+
+        if 'title' in filters:
+            filter_title = filters['title']
+            orm_filters['title__exact'] = filter_title
+
+        if 'cc' in filters:
+            orm_filters['cooperative_center_code__exact'] = filters['cc']
+
+        return orm_filters
+
+    def dehydrate(self, bundle):
+        bundle.data['notes'] = []
+        bundle.data['record_type'] = bundle.obj.title.record_type
+
+        if bundle.obj.notes:
+            if isinstance(bundle.obj.notes, basestring) and "\r\n" in bundle.obj.notes:
+                lines = ''
+                for line in bundle.obj.notes.split('\r\n'):
+                    if line:
+                        lines += line + ' ' if line[-1] == '.' else line + '. '
+                if lines:
+                    bundle.data['notes'] += [lines]
+            else:
+                bundle.data['notes'] += [bundle.obj.notes]
 
         return bundle
