@@ -90,7 +90,7 @@ class InstGenericListView(LoginRequiredView, ListView):
                 # when user sort by country order the result by a numeric value of center code
                 object_list = object_list.annotate(center_code=Func(Substr('cc_code',3),
                                             template='%(function)s(%(expressions)s AS %(type)s)',
-                                            function='Cast', type='float')).annotate(n_code=F('center_code')).order_by('-n_code')
+                                            function='Cast', type='decimal')).annotate(n_code=F('center_code')).order_by('-n_code')
 
             else:
                 # by default order by reverse order of id's
