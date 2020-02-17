@@ -10,12 +10,15 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from django.db.models import Q, Count
+from django.db.models import F, Q, Func, Count
+from django.db.models.functions import Substr
 
 from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
 from help.models import get_help_fields
 from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
+
+from operator import itemgetter, attrgetter
 from datetime import datetime
 from forms import *
 
@@ -68,27 +71,30 @@ class InstGenericListView(LoginRequiredView, ListView):
         else:
             object_list = self.model.objects.all()
 
-
-        if self.actions['filter_status'] != '':
-            object_list = object_list.filter(status=self.actions['filter_status'])
-
-        if self.actions['filter_type'] != '':
-            object_list = object_list.filter(adm__type=self.actions['filter_type'])
-
-        if self.actions['filter_category'] != '':
-            object_list = object_list.filter(adm__category=self.actions['filter_category'])
-
-        if self.actions['filter_country'] != '':
-            object_list = object_list.filter(country=self.actions['filter_country'])
-
         # filter by user institution
         if self.actions['filter_owner'] != "*" or user_cc != 'BR1.1':
             object_list = object_list.filter(cc_code=user_cc)
+        else:
+            if self.actions['filter_status'] != '':
+                object_list = object_list.filter(status=self.actions['filter_status'])
 
-        # order for created_time for BR1.1 users (administrative)
-        if user_cc == 'BR1.1':
-            object_list = object_list.order_by("-created_time")
+            if self.actions['filter_type'] != '':
+                object_list = object_list.filter(adm__type=self.actions['filter_type'])
 
+            if self.actions['filter_category'] != '':
+                object_list = object_list.filter(adm__category=self.actions['filter_category'])
+
+            if self.actions['filter_country'] != '':
+                object_list = object_list.filter(country=self.actions['filter_country'])
+
+                # when user sort by country order the result by a numeric value of center code
+                object_list = object_list.annotate(center_code=Func(Substr('cc_code',3),
+                                            template='%(function)s(%(expressions)s AS %(type)s)',
+                                            function='Cast', type='float')).annotate(n_code=F('center_code')).order_by('-n_code')
+
+            else:
+                # by default order by reverse order of id's
+                object_list = object_list.order_by('-id')
 
         return object_list
 
