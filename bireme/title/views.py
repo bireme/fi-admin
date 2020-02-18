@@ -291,8 +291,13 @@ class TitleUpdate(LoginRequiredView):
         context['actions'] = self.actions
 
         # Issues pagination
+        if hasattr(self.object, 'id'):
+            obj_id = self.object.id
+        else:
+            obj_id = None
+
         FormSet = IssueFormSet(instance=self.object)
-        query = Issue.objects.all().filter(title=self.object.id)
+        query = Issue.objects.all().filter(title=obj_id)
 
         user_cc = self.request.user.profile.get_attribute('cc')
         if self.actions['filter_owner'] != "" and user_cc == 'BR1.1':
