@@ -1,1 +1,9 @@
+{{ object.cc_code }}
 {{ object.name }}
+{{ object.address }}
+{{ object.city }}
+{{ object.state }}
+{{ object.get_units_names }}
+{% for contact in object.contact_set.all %}
+    {{contact.name}} {{contact.email}}
+{% endfor %}
