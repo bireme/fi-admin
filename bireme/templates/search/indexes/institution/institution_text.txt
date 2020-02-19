@@ -3,7 +3,9 @@
 {{ object.address }}
 {{ object.city }}
 {{ object.state }}
-{{ object.get_units_names }}
+{% for unitlevel in object.unitlevel_set.all %}
+    {{unitlevel.unit.name}} {{unitlevel.unit.acronym}}
+{% endfor %}
 {% for contact in object.contact_set.all %}
     {{contact.name}} {{contact.email}}
 {% endfor %}
