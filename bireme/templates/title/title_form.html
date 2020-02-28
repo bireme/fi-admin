@@ -783,28 +783,26 @@
                         _next = parseInt($('#next_page_obj').val());
                     }
 
-                    $(this).parents('.issue-row').addClass("active");
-
                     if ( ! _next && ! _prev && rows.length == 1 ) {
-                        _this.val(1000);
+                        classification = 1000;
+                    } else if ( ! _next ) {
+                        classification = 1000;
+                    } else if ( ! _prev ) {
+                        var a = _next,
+                            b = 1000,
+                            x = a % b,
+                            y = a - x,
+                            z = y + b;
+
+                        classification = z;
                     } else {
-                        if ( ! _next ) {
-                            classification = 1000;
-                        } else if ( ! _prev ) {
-                            var a = _next,
-                                b = 1000,
-                                x = a % b,
-                                y = a - x,
-                                z = y + b;
-
-                            classification = z;
-                        } else {
-                            var c = (_prev - _next) / 2;
-                            classification = c + _next;
-                        }
-
-                        _this.val(classification);
+                        var c = (_prev - _next) / 2;
+                        classification = c + _next;
                     }
+
+                    $(this).parents('.issue-row').addClass("active");
+                    _this.val(classification);
+                    $(this).parents('.issue-row').attr('data-order', classification);
                 }
             });
 
@@ -817,6 +815,8 @@
 
                 $('#issues table tbody tr:last').not('.active').remove();
             }
+
+            force_selected_option();
         });
 
         function decs_search(obj){
@@ -834,7 +834,15 @@
                 el.remove();
             }
 
-            toggle_add_button();
+            force_selected_option(row)
+            add_classification(row);
+            toggle_add_button(row);
+        }
+
+        function force_selected_option(row){
+            $('.issue-row select').on("change", function(){
+                $(this).children("option:selected").attr('selected', true);
+            });
         }
 
         function toggle_add_button(row){
@@ -843,6 +851,47 @@
             } else {
                 $('#issues .add-button').show();
             }
+        }
+
+        function add_classification(row){
+            var classification, _prev, _next,
+                _this = row.find('input:hidden[id $= "-classification"]'),
+                prev = row.prev('.issue-row.active:visible'),
+                next = row.next('.issue-row.active:visible'),
+                rows = $('.issue-row:visible');
+
+            if ( prev.length ) {
+                _prev = parseInt(prev.find('input:hidden[id $= "-classification"]').val());
+            } else {
+                _prev = parseInt($('#prev_page_obj').val());
+            }
+
+            if ( next.length ) {
+                _next = parseInt(next.find('input:hidden[id $= "-classification"]').val());
+            } else {
+                _next = parseInt($('#next_page_obj').val());
+            }
+
+            if ( ! _next && ! _prev && rows.length == 1 ) {
+                classification = 1000;
+            } else if ( ! _next ) {
+                classification = 1000;
+            } else if ( ! _prev ) {
+                var a = _next,
+                    b = 1000,
+                    x = a % b,
+                    y = a - x,
+                    z = y + b;
+
+                classification = z;
+            } else {
+                var c = (_prev - _next) / 2;
+                classification = c + _next;
+            }
+
+            row.addClass("active");
+            _this.val(classification);
+            row.attr('data-order', classification);
         }
    </script>
 {% endblock %}

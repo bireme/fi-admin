@@ -100,22 +100,16 @@
                 row.children(':last').children('.' + options.addCssClass.replace(' ', '.')).click(function() {
                     var formCount = parseInt(totalForms.val()),
                         _this = '.' + $$.attr('class').replace(/\s\s+/g, ' ').replace(/\ /g, '.'),
-                        row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
+                        // row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
+                        row = $(this).parents('tr').clone(true).removeAttr('id'),
                         buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this);
+                    row.find('input:hidden[id $= "-DELETE"]').remove();
+                    row.find('input:hidden[id $= "-id"]').remove();
                     applyExtraClasses(row, formCount);
                     row.insertBefore($(this).parents('tr')).show();
                     row.find(childElementSelector).each(function() {
                         updateElementIndex($(this), options.prefix, formCount);
                     });
-                    // row.find('input:hidden').remove();
-                    // $('.' + options.formCssClass).each(function(i) {
-                    //     var _row = $(this);
-                    //     if (hasChildElements(_row)) {
-                    //         _row.find(childElementSelector).each(function() {
-                    //             updateElementIndex($(this), options.prefix, i);
-                    //         });
-                    //     }
-                    // });
                     totalForms.val(formCount + 1);
                     // Check if we've exceeded the maximum allowed number of forms:
                     if (!showAddButton()) buttonRow.hide();
