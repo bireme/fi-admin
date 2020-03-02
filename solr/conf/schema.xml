@@ -243,6 +243,11 @@
    <field name="ths_permuted_pt" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="ths_permuted_fr" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="ths_permuted_eses" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall_en" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall_es" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall_fr" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_termall_pt" type="text" indexed="true" stored="true" multiValued="true"/>
 
    <!-- multiple sources -->
    <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
