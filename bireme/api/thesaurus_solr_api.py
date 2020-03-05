@@ -132,6 +132,7 @@ class ThesaurusAPIDescResourceIndex(CustomResource):
             # Armazena campos
             identifier_concept_id = field.id
             array_fields["concept_ui"] = field.concept_ui
+            array_fields["preferred_concept"] = field.preferred_concept
 
             # =========================================================================================================================================================================
             # Faz pesquisa para trazer os termos do conceito
@@ -145,6 +146,7 @@ class ThesaurusAPIDescResourceIndex(CustomResource):
                     array_fields_TermListDesc["language_code"] = field.language_code
                     array_fields_TermListDesc["term_string"] = field.term_string
                     array_fields_TermListDesc["concept_preferred_term"] = field.concept_preferred_term
+                    array_fields_TermListDesc["is_permuted_term"] = field.is_permuted_term
                     array_fields_TermListDesc["record_preferred_term"] = field.record_preferred_term
 
                     # Armazena array
@@ -266,6 +268,7 @@ class ThesaurusAPIQualifResourceIndex(CustomResource):
             # Armazena campos
             identifier_concept_id = field.id
             array_fields["concept_ui"] = field.concept_ui
+            array_fields["preferred_concept"] = field.preferred_concept
 
             # =========================================================================================================================================================================
             # Faz pesquisa para trazer os termos do conceito
@@ -279,6 +282,7 @@ class ThesaurusAPIQualifResourceIndex(CustomResource):
                     array_fields_TermListQualif["language_code"] = field.language_code
                     array_fields_TermListQualif["term_string"] = field.term_string
                     array_fields_TermListQualif["concept_preferred_term"] = field.concept_preferred_term
+                    array_fields_TermListQualif["is_permuted_term"] = field.is_permuted_term
                     array_fields_TermListQualif["record_preferred_term"] = field.record_preferred_term
 
                     # Armazena array
