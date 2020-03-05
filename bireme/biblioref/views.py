@@ -71,11 +71,17 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if source_id:
             object_list = object_list.filter(source_id=source_id)
 
-        if self.actions['filter_status'] != '':
-            object_list = object_list.filter(status=self.actions['filter_status'])
+        # get user filter values
+        filter_status = self.actions.get('filter_status')
+        filter_indexed_database = self.actions.get('filter_indexed_database')
+        filter_owner = self.actions.get('filter_owner')
 
-        if self.actions['filter_indexed_database'] != '':
-            object_list = object_list.filter(indexed_database=self.actions['filter_indexed_database'])
+        # default value for filter status (ALL)
+        if filter_status == '':
+            filter_status = '*'
+
+        if filter_indexed_database != '':
+            object_list = object_list.filter(indexed_database=filter_indexed_database)
 
         # filter by specific document type and remove filter by user (filter_owner)
         if document_type:
@@ -83,6 +89,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             treatment_level = re.sub('[A-Z]', '', document_type)  # get only lowercase chars
             object_list = object_list.filter(literature_type__startswith=literature_type,
                                              treatment_level=treatment_level)
+
 
         if document_type == JOURNALS_FASCICLE:
             object_list = object_list.annotate(
@@ -106,41 +113,48 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # if not at main reference list and source or document_type remove filter by user
         if self.model.__name__ != 'Reference' and (source_id or document_type):
-            self.actions['filter_owner'] = '*'
+            filter_owner = '*'
 
         # profile lilacs express editor - restrict by CC code when list sources
         if document_type and user_role == 'editor_llxp':
-            self.actions['filter_owner'] = 'center'
+            filter_owner = 'center'
 
         # filter by user
-        if not self.actions['filter_owner'] or self.actions['filter_owner'] == 'user':
+        if not filter_owner or filter_owner == 'user':
             object_list = object_list.filter(created_by=self.request.user)
         # filter by cooperative center
-        elif self.actions['filter_owner'] == 'center':
+        elif filter_owner == 'center':
             user_cc = self.request.user.profile.get_attribute('cc')
             object_list = object_list.filter(cooperative_center_code=user_cc)
         # filter by titles of responsibility of current user CC
-        elif self.actions['filter_owner'] == 'indexed':
+        elif filter_owner == 'indexed':
             user_cc = self.request.user.profile.get_attribute('cc')
             titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
             if titles_indexed:
+                # by default filter by LILACS express status (status = 0)
+                if filter_status == '*':
+                    filter_status = 0
+
+                # by default filter by articles (exclude sources of list)
+                if not document_type:
+                    object_list = object_list.filter(literature_type__startswith='S', treatment_level='as')
+
+                # filter by serial list indexed by center
                 filter_title_qs = Q()
                 for title in titles_indexed:
-                    filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title) | Q(referencesource__title_serial=title)
+                    if not document_type or document_type == 'Sas':
+                        filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title)
+                    else:
+                        filter_title_qs = filter_title_qs | Q(referencesource__title_serial=title)
 
                 object_list = object_list.filter(filter_title_qs)
-                # by default filter by LILACS express status
-                if self.actions['filter_status'] == '':
-                    object_list = object_list.filter(status=0)
-                # by default filter by articles (exclude sources of list)
-                if self.actions['document_type'] == '':
-                    object_list = object_list.filter(treatment_level='as')
+
             else:
                 # if no indexed journals are found return a empty list
                 object_list = self.model.objects.none()
 
         # filter by records changed by others
-        elif self.actions['filter_owner'] == 'review':
+        elif filter_owner == 'review':
             if self.actions['review_type'] == 'user':
                 ref_list = refs_changed_by_other_user(self.request.user)
             else:
@@ -153,9 +167,14 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             else:
                 object_list = object_list.none()
 
+
+        # apply filter status
+        if filter_status != '*':
+            object_list = object_list.filter(status=filter_status)
+
         # exclude from the standard result list (filter status=all) sources with deleted status (#914)
-        if self.actions['filter_status'] == '':
-            object_list = object_list.exclude(status='3', literature_type='S', treatment_level='')
+        if filter_owner == '*' and filter_status == '*':
+            object_list = object_list.exclude(status=3, literature_type='S', treatment_level='')
 
         return object_list
 
@@ -167,10 +186,10 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # change defaults filter for indexed tab
         if self.actions['filter_owner'] == 'indexed':
-            if self.actions['filter_status'] == '':
+            filter_status = self.actions.get('filter_status')
+            self.actions['document_type'] = self.actions.get('document_type') or 'Sas'
+            if not filter_status:
                 self.actions['filter_status'] = '0'
-            if self.actions['document_type'] == '':
-                self.actions['document_type'] = 'Sas'
 
         context['actions'] = self.actions
         context['document_type'] = self.request.GET.get('document_type')
