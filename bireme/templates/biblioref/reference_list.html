@@ -92,7 +92,7 @@
                                 <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
                                 <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
 
-                                {% trans "Record type" %}: =={{actions.document_type}}
+                                {% trans "Record type" %}:
                                 <select name="document_type">
                                     {% if actions.filter_owner == 'indexed' %}
                                         <option value="S" {% if actions.document_type == 'S' %}selected="true"{% endif %}>{% trans "Journals - Fascicle" %}</option>
@@ -111,7 +111,7 @@
                                     {% endif %}
                                 </select>
 
-                                {% trans "Status" %}: =={{actions.filter_status}}
+                                {% trans "Status" %}:
                                 <select name="filter_status">
                                     <option value="*">{% trans "All" %}</option>
                                     <option value="-3" {% if actions.filter_status == '-3' %}selected="true"{% endif %}>{% trans "Migration" %}</option>
