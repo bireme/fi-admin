@@ -172,10 +172,6 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if filter_status != '*':
             object_list = object_list.filter(status=filter_status)
 
-        # exclude from the standard result list (filter status=all) sources with deleted status (#914)
-        if filter_owner == '*' and filter_status == '*':
-            object_list = object_list.exclude(status=3, literature_type='S', treatment_level='')
-
         return object_list
 
     def get_context_data(self, **kwargs):
