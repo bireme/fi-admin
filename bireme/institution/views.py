@@ -22,6 +22,8 @@ from operator import itemgetter, attrgetter
 from datetime import datetime
 from forms import *
 
+import re
+
 class InstGenericListView(LoginRequiredView, ListView):
     """
     Handle list view for legislation records objects
@@ -65,8 +67,18 @@ class InstGenericListView(LoginRequiredView, ListView):
 
                 search_field, search = "%s%s" % (search_field,'__icontains'), search_parts[1]
                 object_list = self.model.objects.filter(**{search_field: search})
+
+            # search by cc code
+            elif bool(re.match(r"^[A-Za-z]{2}[0-9]+", search)):
+                object_list = self.model.objects.filter(cc_code=search)
+
+            # search by name or acronym
             else:
-                query_search = Q(unitlevel__unit__name__icontains=search) | Q(unitlevel__unit__acronym__icontains=search) | Q(name__icontains=search) | Q(cc_code__icontains=search) | Q(acronym__icontains=search)
+                if settings.FULLTEXT_SEARCH:
+                    query_search = Q(unitlevel__unit__name__search=search) | Q(unitlevel__unit__acronym__search=search) | Q(name__search=search) | Q(acronym__search=search)
+                else:
+                    query_search = Q(unitlevel__unit__name__icontains=search) | Q(unitlevel__unit__acronym__icontains=search) | Q(name__icontains=search) | Q(acronym__icontains=search)
+
                 object_list = self.model.objects.filter(query_search).distinct()
         else:
             object_list = self.model.objects.all()
@@ -105,13 +117,7 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         type_list = Type.objects.all()
         category_list = Category.objects.all()
-
-        country_list = Institution.objects.values('country').distinct().annotate(total=Count('pk')).order_by('-total')
-        for country in country_list:
-            country_id = country['country']
-            if country_id > 0:
-                country['country_name'] = unicode(Country.objects.get(pk=country_id))
-
+        country_list = Institution.objects.values('country_id', 'country__name').distinct()
 
         context['actions'] = self.actions
         context['user_role'] = user_role

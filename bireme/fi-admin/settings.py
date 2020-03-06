@@ -134,7 +134,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     # Uncomment for Debug Toolbar
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'fi-admin.settings.NonHtmlDebugToolbarMiddleware',
+
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -235,6 +237,13 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
 # Haystack signal for automatic update of Solr index when the model is saved/updated
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
@@ -297,6 +306,9 @@ MAX_UPLOAD_SIZE = "73400320" #70MB
 DEBUG_TOOLBAR = False
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 INTERNAL_IPS = ('127.0.0.1',)
+
+# Enable/disable MySQL fulltext search
+FULLTEXT_SEARCH=False
 
 try:
     from settings_local import *
