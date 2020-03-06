@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load app_filters %}
 {% load i18n %}
+{% load cache %}
 
 {% block title %}{% trans "Bibliographic Records" %} | {{ block.super }}{% endblock %}
 
@@ -124,7 +125,7 @@
                                 <button class="btn" type="submit"><i class='icon-search'></i></button>
 
                                 <a href="javascript:void()" id="show_advaced_filters">+ {% trans "Filters" %}</a>
-
+                                {% cache 43200 indexed_database_filter LANGUAGE_CODE %}
                                 <div class="advanced_filters {% if not  actions.filter_indexed_database %}hide{% endif %}">
                                     {% trans "Indexed in" %}:
                                     <select name="filter_indexed_database">
@@ -136,6 +137,7 @@
 
                                     <button class="btn" type="submit" name="apply_filters" value="true">{% trans "Apply" %}</button>
                                 </div>
+                                {% endcache %}
 
                             </form>
                         </div>
@@ -178,7 +180,7 @@
                     {% for reference in references %}
                         <tr>
                             <td><a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}">{{ reference.id }}</a></td>
-                            <td><span title="{{ reference }}">{{ reference }}</span></td>
+                            <td><span title="{{ reference.reference_title }}">{{ reference.reference_title }}</span></td>
                             <td>
                                 {% if reference.literature_type == 'S' and not 'a' in reference.treatment_level %}<span class="label label-success">{% trans "Series source" %}</span>{% else %}{{ reference.status|display_status_label }}{% endif %}
                             </td>
