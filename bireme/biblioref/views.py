@@ -65,6 +65,15 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             search_parts = search.split(':')
             lookup_expr = '__exact' if search_parts[0] == "LILACS_original_id" else '__icontains'
             search_field, search = "%s%s" % (search_parts[0], lookup_expr), search_parts[1]
+        elif settings.FULLTEXT_SEARCH:
+            # check if user is searching by serial. Ex. Mem. Inst. Oswaldo Cruz; 14 (41)
+            exp_serial = re.compile('[\.\;\(\)\|]')
+            if bool(re.search(exp_serial, search)):
+                # search using quotes
+                search = '"{}"'.format(search)
+            else:
+                # search using boolean AND
+                search = '+{}'.format(search.replace(' ', ' +'))
 
         if search:
             object_list = self.model.objects.filter(**{search_field: search})
