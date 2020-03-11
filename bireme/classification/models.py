@@ -50,6 +50,22 @@ class Collection(models.Model, AuditLog):
 
         return children
 
+    def get_parents(self):
+        parent_list = None
+        if self.parent:
+            parent_list = Collection.objects.filter(pk=self.parent.pk) | self.parent.get_parents()
+        else:
+            parent_list = Collection.objects.none()
+
+        return parent_list
+
+    def collection(self):
+        parent_list = [parent.name for parent in self.get_parents()]
+        full_list = parent_list + [self.name]
+        parent_path = ' / '.join(full_list)
+
+        return parent_path
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Collection, self).save(*args, **kwargs)
