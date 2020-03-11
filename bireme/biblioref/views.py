@@ -48,6 +48,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         user_data = additional_user_info(self.request)
         user_role = user_data['service_role'].get('LILDBI')
+        # identify view and model in use
+        view_name = self.view_name
+        model_name = self.model.__name__
 
         # getting action parameter
         self.actions = {}
@@ -59,29 +62,31 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         else:
             search_field = self.search_field + '__icontains'
 
-        # search by field
-        search = self.actions['s']
-        if ':' in search:
-            search_parts = search.split(':')
-            lookup_expr = '__exact' if search_parts[0] == "LILACS_original_id" else '__icontains'
-            search_field, search = "%s%s" % (search_parts[0], lookup_expr), search_parts[1]
-        elif settings.FULLTEXT_SEARCH:
-            # check if user is searching by serial. Ex. Mem. Inst. Oswaldo Cruz; 14 (41)
-            exp_serial = re.compile('[\.\;\(\)\|]')
-            if bool(re.search(exp_serial, search)):
-                # search using quotes
-                search = '"{}"'.format(search)
-            else:
-                # search using boolean AND
-                search = '+{}'.format(search.replace(' ', ' +'))
-
-        if search:
-            object_list = self.model.objects.filter(**{search_field: search})
-        else:
-            object_list = self.model.objects.all()
-
+        # list analytics from source
         if source_id:
             object_list = object_list.filter(source_id=source_id)
+        else:
+            # search by field
+            search = self.actions['s']
+            if search:
+                if ':' in search:
+                    search_parts = search.split(':')
+                    lookup_expr = '__exact' if search_parts[0] == "LILACS_original_id" else '__icontains'
+                    search_field, search = "%s%s" % (search_parts[0], lookup_expr), search_parts[1]
+                elif settings.FULLTEXT_SEARCH:
+                    # check if user is searching by serial. Ex. Mem. Inst. Oswaldo Cruz; 14 (41)
+                    exp_serial = re.compile('[\.\;\(\)\|]')
+                    if bool(re.search(exp_serial, search)):
+                        # search using quotes
+                        search = u'"{}"'.format(search)
+                    else:
+                        # search using boolean AND
+                        search = u"+{}".format(search.replace(' ', ' +'))
+
+                object_list = self.model.objects.filter(**{search_field: search})
+            else:
+                object_list = self.model.objects.all()
+
 
         # get user filter values
         filter_status = self.actions.get('filter_status')
@@ -102,13 +107,13 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             object_list = object_list.filter(literature_type__startswith=literature_type,
                                              treatment_level=treatment_level)
 
-
+        # apply custom order if user filter by journals fascicle in reference list
         if document_type == JOURNALS_FASCICLE:
             object_list = object_list.annotate(
                 publication_year=Substr("publication_date_normalized", 1, 4)
             )
 
-            if self.model.__name__ == "Reference":
+            if model_name == "Reference":
                 volume_serial_field = "referencesource__volume_serial"
                 issue_number_field = "referencesource__issue_number"
             else:
@@ -124,7 +129,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
         # if not at main reference list and source or document_type remove filter by user
-        if self.model.__name__ != 'Reference' and (source_id or document_type):
+        if model_name != 'Reference' and (source_id or document_type):
             filter_owner = '*'
 
         # profile lilacs express editor - restrict by CC code when list sources
@@ -139,7 +144,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             user_cc = self.request.user.profile.get_attribute('cc')
             object_list = object_list.filter(cooperative_center_code=user_cc)
         # filter by titles of responsibility of current user CC
-        elif filter_owner == 'indexed':
+        elif filter_owner == 'indexed' or (view_name == 'list_biblioref_sources' and document_type == 'S'):
             user_cc = self.request.user.profile.get_attribute('cc')
             titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
             if titles_indexed:
@@ -154,10 +159,13 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
                 # filter by serial list indexed by center
                 filter_title_qs = Q()
                 for title in titles_indexed:
-                    if not document_type or document_type == 'Sas':
-                        filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title)
-                    else:
-                        filter_title_qs = filter_title_qs | Q(referencesource__title_serial=title)
+                        if not document_type or document_type == 'Sas':
+                            filter_title_qs = filter_title_qs | Q(referenceanalytic__source__title_serial=title)
+                        else:
+                            if model_name == 'Reference':
+                                filter_title_qs = filter_title_qs | Q(referencesource__title_serial=title)
+                            else:
+                                filter_title_qs = filter_title_qs | Q(title_serial=title)
 
                 object_list = object_list.filter(filter_title_qs)
 
@@ -217,6 +225,7 @@ class BiblioRefListView(BiblioRefGenericListView, ListView):
     Extend BiblioRefGenericListView to list bibliographic records
     """
     model = Reference
+    view_name = 'list_biblioref'
 
 
 class BiblioRefListSourceView(BiblioRefGenericListView, ListView):
@@ -224,6 +233,7 @@ class BiblioRefListSourceView(BiblioRefGenericListView, ListView):
     Extend BiblioRefGenericListView to list bibliographic records
     """
     model = ReferenceSource
+    view_name = 'list_biblioref_sources'
 
 
 class BiblioRefListAnalyticView(BiblioRefGenericListView, ListView):
@@ -231,6 +241,7 @@ class BiblioRefListAnalyticView(BiblioRefGenericListView, ListView):
     Extend BiblioRefGenericListView to list bibliographic records
     """
     model = ReferenceAnalytic
+    view_name = 'list_biblioref_analytics'
 
 
 class BiblioRefUpdate(LoginRequiredView):

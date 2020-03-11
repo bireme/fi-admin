@@ -66,7 +66,7 @@
             </li>
             <li class="{% if actions.filter_owner == 'indexed' %}active{% endif %}">
                 <a href="#tab-network" onclick="filter_owner('indexed')" data-toggle="tab">
-                    <strong>{% trans "Indexed by my center" %}</strong>
+                    <strong>{% trans "Journals indexed by my center" %}</strong>
                    {% if actions.filter_owner == 'indexed' %}
                        <span class="badge badge-info">{{ paginator.count }}</span>
                    {% endif %}
