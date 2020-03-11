@@ -62,28 +62,29 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         else:
             search_field = self.search_field + '__icontains'
 
-        # list analytics from source
-        if source_id:
-            object_list = object_list.filter(source_id=source_id)
-        else:
-            # search by field
-            search = self.actions['s']
-            if search:
-                if ':' in search:
-                    search_parts = search.split(':')
-                    lookup_expr = '__exact' if search_parts[0] == "LILACS_original_id" else '__icontains'
-                    search_field, search = "%s%s" % (search_parts[0], lookup_expr), search_parts[1]
-                elif settings.FULLTEXT_SEARCH:
-                    # check if user is searching by serial. Ex. Mem. Inst. Oswaldo Cruz; 14 (41)
-                    exp_serial = re.compile('[\.\;\(\)\|]')
-                    if bool(re.search(exp_serial, search)):
-                        # search using quotes
-                        search = u'"{}"'.format(search)
-                    else:
-                        # search using boolean AND
-                        search = u"+{}".format(search.replace(' ', ' +'))
 
-                object_list = self.model.objects.filter(**{search_field: search})
+        # check if user has perform a search
+        search = self.actions['s']
+        if search:
+            if ':' in search:
+                search_parts = search.split(':')
+                lookup_expr = '__exact' if search_parts[0] == "LILACS_original_id" else '__icontains'
+                search_field, search = "%s%s" % (search_parts[0], lookup_expr), search_parts[1]
+            elif settings.FULLTEXT_SEARCH:
+                # check if user is searching by serial. Ex. Mem. Inst. Oswaldo Cruz; 14 (41)
+                exp_serial = re.compile('[\.\;\(\)\|]')
+                if bool(re.search(exp_serial, search)):
+                    # search using quotes
+                    search = u'"{}"'.format(search)
+                else:
+                    # search using boolean AND
+                    search = u"+{}".format(search.replace(' ', ' +'))
+
+            object_list = self.model.objects.filter(**{search_field: search})
+        else:
+            # check if user are list analytics from source
+            if source_id:
+                object_list = self.model.objects.filter(source_id=source_id)
             else:
                 object_list = self.model.objects.all()
 
