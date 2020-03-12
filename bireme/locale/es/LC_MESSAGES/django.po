@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-11 11:42-0300\n"
-"PO-Revision-Date: 2020-03-11 11:44-0306\n"
+"POT-Creation-Date: 2020-03-12 11:19-0300\n"
+"PO-Revision-Date: 2020-03-12 11:51-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "Seleccione el archivo"
 #: attachments/models.py:46 biblioref/field_definitions.py:545
 #: biblioref/field_definitions.py:568 biblioref/field_definitions.py:683
 #: biblioref/field_definitions.py:694 classification/models.py:31
-#: classification/models.py:67 events/models.py:21 help/models.py:26
+#: classification/models.py:83 events/models.py:21 help/models.py:26
 #: help/models.py:53 institution/models.py:24 institution/models.py:51
 #: institution/models.py:63 institution/models.py:90 institution/models.py:274
 #: institution/models.py:316 leisref/models.py:29 leisref/models.py:68
@@ -1275,8 +1275,8 @@ msgstr "Avanzado"
 msgid "data"
 msgstr "datos"
 
-#: classification/models.py:27 classification/models.py:66
-#: classification/models.py:82 leisref/models.py:449 multimedia/models.py:67
+#: classification/models.py:27 classification/models.py:82
+#: classification/models.py:98 leisref/models.py:449 multimedia/models.py:67
 #: multimedia/models.py:80 multimedia/models.py:102
 #: templates/biblioref/referenceanalytic_form.html:230
 #: templates/biblioref/referencesource_form.html:140
@@ -1302,7 +1302,7 @@ msgstr "Padre"
 msgid "Country"
 msgstr "Pais"
 
-#: classification/models.py:33 classification/models.py:68
+#: classification/models.py:33 classification/models.py:84
 #: database/models.py:21 events/models.py:22 institution/models.py:23
 #: institution/models.py:52 institution/models.py:62 institution/models.py:91
 #: institution/models.py:102 institution/models.py:171
@@ -1316,10 +1316,10 @@ msgstr "Pais"
 #: oer/models.py:104 oer/models.py:143 oer/models.py:182 oer/models.py:220
 #: oer/models.py:249 oer/models.py:280 oer/models.py:309 oer/models.py:348
 #: oer/models.py:387 oer/models.py:426 templates/events/types.html:47
-#: templates/institution/fieldset_contact.html:15
+#: templates/institution/fieldset_contact.html:14
 #: templates/institution/fieldset_email.html:15
 #: templates/institution/fieldset_email.html:68
-#: templates/institution/fieldset_person.html:15
+#: templates/institution/fieldset_person.html:14
 #: templates/institution/institution_list.html:115
 #: templates/institution/institution_unit.html:31
 #: templates/institution/institution_unit.html:44
@@ -1345,7 +1345,7 @@ msgstr "Nombre"
 msgid "Slug"
 msgstr ""
 
-#: classification/models.py:35 classification/models.py:69
+#: classification/models.py:35 classification/models.py:85
 #: error_reporting/models.py:37 multimedia/models.py:57
 #: multimedia/models.py:83 multimedia/models.py:106 oer/models.py:472
 #: templates/error_report/list.html:73 templates/error_report/list.html:134
@@ -1353,11 +1353,11 @@ msgstr ""
 msgid "Description"
 msgstr "Descripción"
 
-#: classification/models.py:36 classification/models.py:70
+#: classification/models.py:36 classification/models.py:86
 msgid "Image"
 msgstr "Imagen"
 
-#: classification/models.py:63 events/models.py:45 help/models.py:49
+#: classification/models.py:79 events/models.py:45 help/models.py:49
 #: institution/models.py:47 institution/models.py:86 institution/models.py:270
 #: institution/models.py:312 leisref/models.py:52 leisref/models.py:92
 #: leisref/models.py:132 leisref/models.py:172 leisref/models.py:212
@@ -1371,7 +1371,7 @@ msgstr "Imagen"
 msgid "Translation"
 msgstr "Traducción"
 
-#: classification/models.py:64 events/models.py:46 help/models.py:50
+#: classification/models.py:80 events/models.py:46 help/models.py:50
 #: institution/models.py:48 institution/models.py:87 institution/models.py:271
 #: institution/models.py:313 leisref/models.py:53 leisref/models.py:93
 #: leisref/models.py:133 leisref/models.py:173 leisref/models.py:213
@@ -1716,7 +1716,7 @@ msgstr "Ayudas"
 msgid "Field name"
 msgstr "Nombre del campo"
 
-#: institution/forms.py:59
+#: institution/forms.py:62
 msgid "This unit already exist"
 msgstr "Esta unidad ya existe"
 
@@ -1825,18 +1825,17 @@ msgstr "Contacto"
 msgid "Contacts"
 msgstr "Contactos"
 
-#: institution/models.py:170 templates/institution/fieldset_contact.html:14
-#: templates/institution/fieldset_person.html:14
+#: institution/models.py:170
 msgid "Prefix"
 msgstr "Tratamiento"
 
-#: institution/models.py:172 templates/institution/fieldset_contact.html:16
-#: templates/institution/fieldset_person.html:16
+#: institution/models.py:172 templates/institution/fieldset_contact.html:15
+#: templates/institution/fieldset_person.html:15
 msgid "Job title"
 msgstr "Título profesional"
 
 #: institution/models.py:173 templates/authentication/login.html:38
-#: templates/institution/fieldset_contact.html:17
+#: templates/institution/fieldset_contact.html:16
 #: templates/institution/fieldset_email.html:16
 msgid "Email"
 msgstr "Email"
@@ -1845,7 +1844,7 @@ msgstr "Email"
 msgid "Country/Area code"
 msgstr "Código de país/área"
 
-#: institution/models.py:175 templates/institution/fieldset_contact.html:19
+#: institution/models.py:175 templates/institution/fieldset_contact.html:18
 msgid "Phone"
 msgstr "Teléfono"
 
@@ -2838,10 +2837,10 @@ msgstr "Archivo"
 #: templates/biblioref/reference_form.html:138
 #: templates/biblioref/reference_form.html:211
 #: templates/biblioref/reference_form.html:282
-#: templates/institution/fieldset_contact.html:21
+#: templates/institution/fieldset_contact.html:20
 #: templates/institution/fieldset_email.html:18
 #: templates/institution/fieldset_email.html:72
-#: templates/institution/fieldset_person.html:18
+#: templates/institution/fieldset_person.html:17
 #: templates/institution/fieldset_unitlevel.html:17
 #: templates/institution/fieldset_url.html:17
 #: templates/leisref/act_form.html:275
@@ -2939,8 +2938,9 @@ msgid "Yes"
 msgstr "Sí"
 
 #: templates/biblioref/fieldset_indexing.html:83
-msgid "descriptores from abstract"
-msgstr "descriptores del resumen"
+#| msgid "see descriptores suggestions"
+msgid "Descriptors suggestions"
+msgstr "Sugerencias de descriptores"
 
 #: templates/biblioref/reference_confirm_delete.html:5
 #: templates/biblioref/reference_confirm_delete.html:9
@@ -3233,7 +3233,6 @@ msgid "All records"
 msgstr "Todos los registros"
 
 #: templates/biblioref/reference_list.html:69
-#| msgid "Indexed by my center"
 msgid "Journals indexed by my center"
 msgstr "Revistas indizadas por mi centro"
 
@@ -3652,7 +3651,6 @@ msgid "Select the community"
 msgstr "Seleccione la comunidad"
 
 #: templates/classification/classify.html:83
-#: templates/utils/decs_suggestion.html:69
 msgid "Classification updated"
 msgstr "Clasificación actualizada"
 
@@ -3814,7 +3812,7 @@ msgstr "Productos y servicios"
 msgid "Adhesion term updated"
 msgstr "Término de adhesión actualizada"
 
-#: templates/institution/fieldset_contact.html:18
+#: templates/institution/fieldset_contact.html:17
 msgid "Area code"
 msgstr "Código de área"
 
@@ -3897,7 +3895,7 @@ msgstr "Crear nueva unidad"
 
 #: templates/institution/institution_unit.html:91
 #: templates/leisref/act_related.html:106
-#: templates/utils/decs_suggestion.html:47
+#: templates/utils/decs_suggestion.html:48
 msgid "Add"
 msgstr "Añadir"
 
@@ -5954,16 +5952,31 @@ msgid "Abstract DeCS subjects"
 msgstr "Asuntos DeCS del resumen"
 
 #: templates/utils/decs_suggestion.html:37
-msgid "List of descriptors identified in the abstract"
-msgstr "Listado de descriptores identificados en el resumen"
+#| msgid "List of descriptors identified in the abstract"
+msgid "Suggested descriptors identified in the title and abstract"
+msgstr "Sugerencia de descriptores identificados en el título y resumen"
 
-#: templates/utils/decs_suggestion.html:55
-msgid "No descriptor identified"
-msgstr "No se encontraron descriptores"
+#: templates/utils/decs_suggestion.html:59
+#| msgid "No descriptor identified"
+msgid "No descriptor was identified"
+msgstr "No se ha identificado descriptores"
 
-#: templates/utils/decs_suggestion.html:56
-msgid "Check if the abstract is filled in"
-msgstr "Verifique si el campo de resumen fue llenado"
+#: templates/utils/decs_suggestion.html:59
+#| msgid "Check if the abstract is filled in"
+msgid "Check if the title and abstract are filled in"
+msgstr "Verifique si el título y el resumen están llenos"
+
+#: templates/utils/decs_suggestion.html:68
+msgid "Disclaimer"
+msgstr "Aviso"
+
+#: templates/utils/decs_suggestion.html:68
+msgid ""
+"This service use a computer program to analyze and identify DeCS/MeSH "
+"descriptors from words of title and abstract"
+msgstr ""
+"Este servicio utiliza un programa de computadora para analizar e identificar"
+" descriptores DeCS/MeSH de palabras de título y resumen"
 
 #: templates/utils/field_assist.html:7 templates/utils/field_assist.html:41
 msgid "Field assist"
@@ -6948,6 +6961,9 @@ msgstr "Registro creado"
 msgid "Year must be greater than 1900"
 msgstr "El año debe ser mayor que 1900"
 
+#~ msgid "descriptores from abstract"
+#~ msgstr "descriptores del resumen"
+
 #~ msgid "Institution type"
 #~ msgstr "Tipo de institucion"
 
@@ -7001,9 +7017,6 @@ msgstr "El año debe ser mayor que 1900"
 
 #~ msgid "DeCS"
 #~ msgstr "Geog DeCS"
-
-#~ msgid "see descriptores suggestions"
-#~ msgstr "Descriptores"
 
 #~ msgid "New Descriptor"
 #~ msgstr "Nuevo descriptor"

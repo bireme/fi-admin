@@ -23,53 +23,59 @@
     </style>
 {% endblock %}
 
-{% block title %}{% trans "Abstract DeCS subjects" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Descriptors suggestions" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb_wrap %}{% endblock %}
 
 {% block content %}
 <div class="body box">
-
     {% if decs_list %}
         <form id="" action="" method="POST">
             {% csrf_token %}
-            <h3>
-                {% trans "List of descriptors identified in the abstract" %}
-            </h3>
-
-            <table class="table table-condensed table-striped span8">
-                {% for decs in decs_list %}
-                <tr>
-                    <td>
-                        <strong>{{ decs.descriptor|title }}</strong>
-                    <td>
-                    <td style="text-align: right">
-                        <a href="#" id="{{ decs.id }}" value="{{ decs.id }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.id|add:"0" }}|ADD');" class="btn"><i class="icon-plus"></i>{% trans "Add" %}</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+            <div class="row">
+                <div class="page-header">
+                    <h2>{% trans "Suggested descriptors identified in the title and abstract" %}</h2>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-condensed table-striped span12">
+                    {% for decs in decs_list %}
+                    <tr>
+                        <td>
+                            <strong>{{ decs.descriptor|title }}</strong>
+                        <td>
+                        <td style="text-align: right">
+                            <a href="#" id="{{ decs.id }}" value="{{ decs.id }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.id|add:"0" }}|ADD');" class="btn"><i class="icon-plus"></i>{% trans "Add" %}</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </form>
+
     {% else %}
         <div class="jumbotron" style="margin-top: 50px">
-          <h1>{% trans 'No descriptor identified' %}!</h1>
-          <div class="alert alert-danger" role="alert">{% trans 'Check if the abstract is filled in' %}</div>
-          <br/>
-          <p><a class="btn btn-primary btn-lg" href="javascript:this.close()" role="button">Fechar</a></p>
+            <div class="page-header">
+                <h2>{% trans 'No descriptor was identified' %} <br/><small>{% trans 'Check if the title and abstract are filled in' %}</small></h2>
+            </div>
+            <br/>
+            <p><a class="btn btn-primary btn-lg" href="javascript:this.close()" role="button">{% trans 'Close' %}</a></p>
         </div>
     {% endif %}
+
+    <div style="margin-top: 30px; ">
+        <div class="alert alert-warning">
+            <strong>{% trans 'Disclaimer' %}:</strong> {% trans 'This service use a computer program to analyze and identify DeCS/MeSH descriptors from words of title and abstract' %}
+        </div>
+    </div>
+
 </div>
+
 
 {% endblock %}
 
 {% block extrajs %}
 <script type="text/javascript">
-     function updateAndClose(){
-         $.post($("form").attr('action'), $("form").serializeArray());
-         alert("{% trans 'Classification updated' %}");
-         window.close();
-     }
-
      function postMsg(descriptor) {
           window.opener.postMessage(descriptor, '*');
           window.close();
