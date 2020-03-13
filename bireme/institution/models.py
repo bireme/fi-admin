@@ -118,10 +118,14 @@ class Institution(Generic, AuditLog):
         has_unit = UnitLevel.objects.filter(institution=self.pk).exists()
         return has_unit
 
-    def get_units_names(self):
-        units = [unit_level.unit for unit_level in UnitLevel.objects.filter(institution=self.pk).order_by('level')]
+    def display_name_with_units(self):
+        units_names = [unit_level.unit.name for unit_level in UnitLevel.objects.filter(institution=self.pk).order_by('level')]
+        name_plus_units = [self.name] + units_names
 
-        return units
+        full_name = ' / '.join(name_plus_units)
+
+        return full_name
+
 
     def get_units_level(self):
         units = [unit_level for unit_level in UnitLevel.objects.filter(institution=self.pk).order_by('level')]

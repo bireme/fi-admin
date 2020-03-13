@@ -28,8 +28,7 @@
 <div class="row">
     <div class="span12">
         <form name="search">
-            {% trans "Name" %}:
-            <input type="text" name="s" class="input-xlarge" value="{{ actions.s }}">
+            <input type="text" name="s" class="input-xlarge" value="{{ actions.s }}" placeholder="{% trans 'Search' %}">
             <input type="hidden" name="page" value="{{ actions.page }}">
             <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
         </form>
@@ -38,7 +37,7 @@
 
 <div>
     {% if object_list|length > 0 %}
-        <h4>{% trans "Select the unity" %}</h4>
+        <h4>{% trans "Select the institution" %}</h4>
         <table class='table'>
             <thead>
                 <th><a href="javascript:orderby('name');" id="id_title">{% trans "Name" %}</a></th>

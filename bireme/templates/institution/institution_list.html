@@ -124,11 +124,9 @@
                             <td>{{ institution.cc_code }}</a></td>
                             <td>
                                 <span title="{{ institution }}">
-                                    {{ institution|slice:"90" }}
-                                    {% if institution.has_unit %}
-                                        - {{ institution.get_units_names|join:" - " }}
-                                    {% endif %}
-                                    {% if institution|length > 90 %}...{% endif %}</span></td>
+                                    {{ institution.display_name_with_units }}
+                                </span>
+                            </td>
                             <td>{{ institution.country }}</a></td>
                             <td>{{ institution.status_label }}</a></td>
                             <td>
