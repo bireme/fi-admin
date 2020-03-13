@@ -66,7 +66,7 @@
                             {% elif actions.filter_owner == 'network' %}
                                 <input type="hidden" name="filter_owner" value="network"/>
                             {% endif %}
-                            <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
+                            <input class="searchbox" type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
 
                             {% trans "Status" %}:
                             <select name="filter_status">
@@ -109,8 +109,8 @@
                     {% for resource in resources %}
                         <tr>
                             <td><a href="{% url 'main.views.create_edit_resource' resource.id %}">{{ resource.id }}</a></td>
-                            <td><span title="{{ resource.title }}">{{ resource.title|slice:"50" }}{% if resource.title|length > 50 %}...{% endif %}</span></td>
-                            <td><span title="{{ resource.link }}">{{ resource.link|slice:"50" }}{% if resource.link|length > 50 %}...{% endif %}</span></td>
+                            <td><span title="{{ resource.title }}">{{ resource.title|slice:"130" }}{% if resource.title|length > 130 %}...{% endif %}</span></td>
+                            <td><span title="{{ resource.link }}">{{ resource.link|slice:"80" }}{% if resource.link|length > 80 %}...{% endif %}</span></td>
                             <td>
                                 {{ resource.updated_time|date:"d/m/y" }}
                             </td>

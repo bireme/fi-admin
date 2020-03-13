@@ -59,15 +59,32 @@ def list_resources(request):
     if actions['page'] and actions['page'] != '':
         page = actions['page']
 
-    if actions['s'].isdigit():
-        resources = Resource.objects.filter( pk=int(actions['s']) )
-    elif ":" in actions["s"]:
-        search_parts = actions["s"].split(":")
-        search_field = search_parts[0] + "__icontains"
-        search = search_parts[1]
-        resources = Resource.objects.filter(**{search_field: search})
+    # check if user has perform a search
+    search = actions['s']
+    if search:
+        # search by id
+        if search.isdigit():
+            resources = Resource.objects.filter(pk=int(search))
+        # search by field
+        elif ":" in search:
+            search_parts = actions["s"].split(":")
+            search_field = search_parts[0] + "__icontains"
+            search = search_parts[1]
+            resources = Resource.objects.filter(**{search_field: search})
+        # free search
+        else:
+            search_method = 'search' if settings.FULLTEXT_SEARCH else 'icontains'
+            search_field1 = 'title__' + search_method
+            search_field2 = 'link__' + search_method
+
+            if settings.FULLTEXT_SEARCH:
+                # search using boolean AND
+                search = u"+{}".format(search.replace(' ', ' +'))
+
+            resources = Resource.objects.filter( Q(**{search_field1: search}) | Q(**{search_field2: search}))
     else:
-        resources = Resource.objects.filter( Q(title__icontains=actions['s']) | Q(link__icontains=actions['s']) )
+        resources = Resource.objects.all()
+
 
     if actions['filter_status'] != '':
         resources = resources.filter(status=actions['filter_status'])

@@ -815,3 +815,7 @@ tr.relation-row td input, tr.relation-row td select{
     color: #ffff;
     padding: 7px 10px 7px;
 }
+
+.searchbox{
+    width: 350px;
+}
