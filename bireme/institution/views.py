@@ -152,12 +152,16 @@ class UnitListView(ListView):
         param_country = self.request.GET.get('country')
 
         search = self.actions['s']
-        search_filter = Q(name__icontains=search) | Q(acronym__icontains=search)
-
-        object_list = []
-
         if search:
-            object_list = self.model.objects.filter(search_filter)
+            search_method = 'search' if settings.FULLTEXT_SEARCH else 'icontains'
+            search_field1 = 'name__' + search_method
+            search_field2 = 'acronym__' + search_method
+
+            if settings.FULLTEXT_SEARCH:
+                # search using boolean AND
+                search = u"+{}".format(search.replace(' ', ' +'))
+
+            object_list = self.model.objects.filter(Q(**{search_field1: search}) | Q(**{search_field2: search}))
         else:
             object_list = self.model.objects.all()
 
