@@ -104,6 +104,9 @@
                                 <p class="muted">{{ field.help_text }}</p>
                                 {{ field.errors }}
                                 {{ field }}
+                                {% if field.name == 'title' %}
+                                    <span><a href="javascript:consult_VHL('{{field.auto_id}}', 'LIS', '{{LANGUAGE_CODE|slice:":2"}}')">{%trans 'Search for duplicates in the VHL' %}</a></span>
+                                {% endif %}
                             {% endfor %}
                         </fieldset>
 
@@ -410,6 +413,7 @@
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/classification.js' %}"></script>
+   <script src="{% static 'js/functions.js' %}"></script>
 
    <script type="text/javascript">
         var decs_field;

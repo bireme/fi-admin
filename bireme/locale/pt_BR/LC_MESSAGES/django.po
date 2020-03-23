@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-13 18:17-0300\n"
-"PO-Revision-Date: 2020-03-13 18:21-0306\n"
+"POT-Creation-Date: 2020-03-23 12:13-0300\n"
+"PO-Revision-Date: 2020-03-23 12:14-0306\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -807,8 +807,8 @@ msgstr "Publicado"
 #: templates/biblioref/reference_list.html:122
 #: templates/events/edit-event.html:177 templates/events/edit-event.html:248
 #: templates/events/events.html:76 templates/events/events.html.py:123
-#: templates/leisref/act_list.html:70 templates/main/edit-resource.html:168
-#: templates/main/edit-resource.html:239 templates/main/edit-resource.html:309
+#: templates/leisref/act_list.html:70 templates/main/edit-resource.html:171
+#: templates/main/edit-resource.html:242 templates/main/edit-resource.html:312
 #: templates/main/resources.html:76 templates/main/resources.html.py:123
 #: templates/multimedia/media_form.html:173
 #: templates/multimedia/media_form.html:246
@@ -830,8 +830,8 @@ msgstr "Recusado"
 #: templates/biblioref/reference_list.html:123
 #: templates/events/edit-event.html:179 templates/events/edit-event.html:250
 #: templates/events/events.html:77 templates/events/events.html.py:125
-#: templates/leisref/act_list.html:71 templates/main/edit-resource.html:170
-#: templates/main/edit-resource.html:241 templates/main/edit-resource.html:311
+#: templates/leisref/act_list.html:71 templates/main/edit-resource.html:173
+#: templates/main/edit-resource.html:244 templates/main/edit-resource.html:314
 #: templates/main/resources.html:77 templates/main/resources.html.py:125
 #: templates/multimedia/media_form.html:175
 #: templates/multimedia/media_form.html:248
@@ -881,8 +881,8 @@ msgstr "Registros bibliográficos"
 #: templates/institution/institution_list.html:70
 #: templates/institution/institution_list.html:117
 #: templates/leisref/act_list.html:64 templates/leisref/act_list.html.py:126
-#: templates/main/edit-resource.html:153 templates/main/edit-resource.html:223
-#: templates/main/edit-resource.html:295 templates/main/resources.html:71
+#: templates/main/edit-resource.html:156 templates/main/edit-resource.html:226
+#: templates/main/edit-resource.html:298 templates/main/resources.html:71
 #: templates/main/resources.html.py:105
 #: templates/multimedia/media_form.html:158
 #: templates/multimedia/media_form.html:230
@@ -1279,7 +1279,7 @@ msgstr "dados"
 #: templates/biblioref/referenceanalytic_form.html:230
 #: templates/biblioref/referencesource_form.html:140
 #: templates/classification/classify.html:26
-#: templates/main/edit-resource.html:126 templates/title/form_preview.html:184
+#: templates/main/edit-resource.html:129 templates/title/form_preview.html:184
 #: templates/title/title_form.html:60 title/models.py:342 title/models.py:346
 msgid "Collection"
 msgstr "Coleção"
@@ -1484,12 +1484,12 @@ msgid "name"
 msgstr "nome"
 
 #: error_reporting/models.py:14 templates/error_report/list.html:4
-#: templates/events/edit-event.html:356 templates/main/edit-resource.html:360
+#: templates/events/edit-event.html:356 templates/main/edit-resource.html:363
 msgid "Error report"
 msgstr "Informe de erro"
 
 #: error_reporting/models.py:15 templates/error_report/list.html:22
-#: templates/events/edit-event.html:141 templates/main/edit-resource.html:131
+#: templates/events/edit-event.html:141 templates/main/edit-resource.html:134
 #: templates/menu.html:76
 msgid "Error reports"
 msgstr "Informes de erro"
@@ -1502,8 +1502,8 @@ msgstr "Informes de erro"
 #: templates/error_report/list.html:90 templates/error_report/list.html:149
 #: templates/events/edit-event.html:173 templates/events/edit-event.html:244
 #: templates/events/events.html:74 templates/events/events.html.py:119
-#: templates/main/edit-resource.html:164 templates/main/edit-resource.html:235
-#: templates/main/edit-resource.html:305 templates/main/resources.html:74
+#: templates/main/edit-resource.html:167 templates/main/edit-resource.html:238
+#: templates/main/edit-resource.html:308 templates/main/resources.html:74
 #: templates/main/resources.html.py:119
 #: templates/multimedia/media_form.html:169
 #: templates/multimedia/media_form.html:242
@@ -1600,8 +1600,8 @@ msgstr "Eventos"
 #: templates/biblioref/reference_form.html:223
 #: templates/error_report/list.html:151 templates/events/edit-event.html:175
 #: templates/events/edit-event.html:246 templates/events/events.html:75
-#: templates/events/events.html.py:121 templates/main/edit-resource.html:166
-#: templates/main/edit-resource.html:237 templates/main/edit-resource.html:307
+#: templates/events/events.html.py:121 templates/main/edit-resource.html:169
+#: templates/main/edit-resource.html:240 templates/main/edit-resource.html:310
 #: templates/main/resources.html:75 templates/main/resources.html.py:121
 #: templates/multimedia/media_form.html:171
 #: templates/multimedia/media_form.html:244
@@ -2204,7 +2204,7 @@ msgstr "DeCS: Descritores em Ciências da Saúde"
 
 #: main/choices.py:41 suggest/models.py:31
 #: templates/biblioref/reference_form.html:208
-#: templates/events/edit-event.html:231 templates/main/edit-resource.html:222
+#: templates/events/edit-event.html:231 templates/main/edit-resource.html:225
 #: templates/multimedia/media_form.html:229 templates/suggest/list.html:34
 #: templates/title/form_preview.html:150 templates/title/title_form.html:251
 msgid "Keywords"
@@ -2236,7 +2236,7 @@ msgstr "Idiomas da fonte"
 #: templates/biblioref/fieldset_thematic.html:9
 #: templates/biblioref/reference_form.html:280
 #: templates/events/edit-event.html:303 templates/events/events.html:79
-#: templates/leisref/act_form.html:274 templates/main/edit-resource.html:294
+#: templates/leisref/act_form.html:274 templates/main/edit-resource.html:297
 #: templates/main/edit-thematic.html:8 templates/main/resources.html:79
 #: templates/multimedia/media_form.html:301
 #: templates/multimedia/media_list.html:94 templates/oer/oer_form.html:228
@@ -2630,7 +2630,7 @@ msgstr "Objeto relacionado"
 #: templates/leisref/actsource_form.html:58
 #: templates/leisref/actstate_form.html:58
 #: templates/leisref/acttype_form.html:72 templates/main/edit-language.html:56
-#: templates/main/edit-resource.html:351 templates/main/edit-resource.html:394
+#: templates/main/edit-resource.html:354 templates/main/edit-resource.html:397
 #: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
 #: templates/multimedia/media_form.html:393
 #: templates/multimedia/mediacollection_form.html:54
@@ -2877,7 +2877,7 @@ msgstr "Consultar definição no DeCS"
 #: templates/biblioref/fieldset_indexing.html:9
 #: templates/biblioref/reference_form.html:135
 #: templates/events/edit-event.html:161 templates/leisref/act_form.html:184
-#: templates/main/edit-resource.html:152
+#: templates/main/edit-resource.html:155
 #: templates/multimedia/media_form.html:157 templates/oer/oer_form.html:137
 #: templates/thesaurus/page_view_desc.html:61
 #: templates/thesaurus/qualifier_list.html:60
@@ -2894,7 +2894,7 @@ msgstr "Descritores"
 #: templates/institution/fieldset_unitlevel.html:37
 #: templates/leisref/act_form.html:216
 #: templates/leisref/fieldset_relationship.html:62
-#: templates/main/edit-resource.html:196
+#: templates/main/edit-resource.html:199
 #: templates/multimedia/media_form.html:103
 #: templates/multimedia/media_form.html:202 templates/oer/oer_form.html:161
 #: templates/title/title_form.html:224
@@ -3075,7 +3075,7 @@ msgstr "Mídia criada em"
 #: templates/institution/institution_form.html:95
 #: templates/institution/institution_form.html:97
 #: templates/leisref/act_form.html:169 templates/leisref/act_form.html:172
-#: templates/main/edit-resource.html:117 templates/main/edit-resource.html:120
+#: templates/main/edit-resource.html:120 templates/main/edit-resource.html:123
 #: templates/multimedia/media_form.html:141
 #: templates/multimedia/media_form.html:144 templates/oer/oer_form.html:119
 #: templates/oer/oer_form.html.py:125 templates/title/title_form.html:160
@@ -3087,7 +3087,7 @@ msgstr "pelo usuário"
 #: templates/biblioref/referenceanalytic_form.html:213
 #: templates/biblioref/referencesource_form.html:126
 #: templates/events/edit-event.html:134 templates/leisref/act_form.html:170
-#: templates/main/edit-resource.html:118
+#: templates/main/edit-resource.html:121
 #: templates/multimedia/media_form.html:142 templates/oer/oer_form.html:121
 #: templates/title/title_form.html:161
 msgid "Cooperative center code"
@@ -3098,14 +3098,14 @@ msgstr "Código Centro Cooperante"
 #: templates/biblioref/referencesource_form.html:128
 #: templates/events/edit-event.html:136
 #: templates/institution/institution_form.html:97
-#: templates/leisref/act_form.html:172 templates/main/edit-resource.html:120
+#: templates/leisref/act_form.html:172 templates/main/edit-resource.html:123
 #: templates/multimedia/media_form.html:144 templates/oer/oer_form.html:125
 #: templates/title/title_form.html:163
 msgid "Last edit in"
 msgstr "Última edição realizada em"
 
 #: templates/biblioref/reference_form.html:210
-#: templates/events/edit-event.html:233 templates/main/edit-resource.html:224
+#: templates/events/edit-event.html:233 templates/main/edit-resource.html:227
 #: templates/multimedia/media_form.html:231
 msgid "Suggestion"
 msgstr "Sugestão"
@@ -3113,7 +3113,7 @@ msgstr "Sugestão"
 #: templates/biblioref/reference_form.html:232
 #: templates/biblioref/reference_form.html:255
 #: templates/events/edit-event.html:255 templates/events/edit-event.html:278
-#: templates/main/edit-resource.html:246 templates/main/edit-resource.html:269
+#: templates/main/edit-resource.html:249 templates/main/edit-resource.html:272
 #: templates/multimedia/media_form.html:253
 #: templates/multimedia/media_form.html:276
 #: templates/title/title_form.html:274
@@ -3124,7 +3124,7 @@ msgstr "Sugerido"
 #: templates/biblioref/referenceanalytic_form.html:392
 #: templates/biblioref/referencesource_form.html:281
 #: templates/events/edit-event.html:416 templates/leisref/act_form.html:358
-#: templates/main/edit-resource.html:420
+#: templates/main/edit-resource.html:424
 #: templates/multimedia/media_form.html:417 templates/oer/oer_form.html:374
 #: templates/title/title_form.html:636
 msgid "Add descriptor"
@@ -3154,7 +3154,7 @@ msgstr "Adicionar descritor"
 #: templates/leisref/actsource_form.html:74
 #: templates/leisref/actstate_form.html:74
 #: templates/leisref/acttype_form.html:88 templates/main/edit-language.html:72
-#: templates/main/edit-resource.html:421 templates/main/edit-resource.html:431
+#: templates/main/edit-resource.html:425 templates/main/edit-resource.html:435
 #: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
 #: templates/multimedia/media_form.html:418
 #: templates/multimedia/media_form.html:428
@@ -3197,7 +3197,7 @@ msgstr "apagar"
 
 #: templates/biblioref/reference_form.html:406
 #: templates/biblioref/referencesource_form.html:301
-#: templates/events/edit-event.html:426 templates/main/edit-resource.html:430
+#: templates/events/edit-event.html:426 templates/main/edit-resource.html:434
 #: templates/multimedia/media_form.html:427
 #: templates/title/title_form.html:645
 msgid "Add keyword"
@@ -3205,7 +3205,7 @@ msgstr "Adicionar palavra-chave"
 
 #: templates/biblioref/reference_form.html:416
 #: templates/events/edit-event.html:436 templates/leisref/act_form.html:398
-#: templates/main/edit-resource.html:440
+#: templates/main/edit-resource.html:444
 #: templates/multimedia/media_form.html:447 templates/oer/oer_form.html:414
 msgid "Add thematic area"
 msgstr "Adicionar área temática"
@@ -3375,7 +3375,7 @@ msgstr "Modificado por outros usuários"
 #: templates/leisref/actsource_list.html:51
 #: templates/leisref/actstate_list.html:51
 #: templates/leisref/acttype_list.html:50
-#: templates/main/edit-resource.html:296 templates/main/languages.html:48
+#: templates/main/edit-resource.html:299 templates/main/languages.html:48
 #: templates/main/resources.html:106 templates/main/thematics.html:48
 #: templates/main/types.html:48 templates/multimedia/media_list.html:121
 #: templates/multimedia/mediacollection_list.html:41
@@ -3470,7 +3470,7 @@ msgstr "Código do centro indexador"
 #: templates/biblioref/referenceanalytic_form.html:228
 #: templates/biblioref/referencesource_form.html:138
 #: templates/institution/institution_form.html:101
-#: templates/main/edit-resource.html:124 templates/modal_log.html:7
+#: templates/main/edit-resource.html:127 templates/modal_log.html:7
 #: templates/multimedia/media_form.html:148
 #: templates/thesaurus/page_view_desc.html:438
 #: templates/thesaurus/page_view_qualif.html:317
@@ -3498,7 +3498,7 @@ msgstr "Duplicados"
 #: templates/leisref/actsource_form.html:56
 #: templates/leisref/actstate_form.html:56
 #: templates/leisref/acttype_form.html:70
-#: templates/main/edit-resource.html:349 templates/main/edit-resource.html:393
+#: templates/main/edit-resource.html:352 templates/main/edit-resource.html:396
 #: templates/multimedia/media_form.html:392
 #: templates/thesaurus/confirm_create_desc.html:60
 #: templates/thesaurus/confirm_create_qualif.html:60
@@ -3753,7 +3753,7 @@ msgstr "Novo evento"
 msgid "Event created in"
 msgstr "Evento criado em"
 
-#: templates/events/edit-event.html:151 templates/main/edit-resource.html:141
+#: templates/events/edit-event.html:151 templates/main/edit-resource.html:144
 msgid "Add new error report"
 msgstr "Informar um erro"
 
@@ -3858,7 +3858,6 @@ msgid "Add Site"
 msgstr "Adicionar Site"
 
 #: templates/institution/institution_form.html:179
-#| msgid "Institution"
 msgid "Add Institution"
 msgstr "Adicionar Instituição"
 
@@ -3875,7 +3874,6 @@ msgid "CC"
 msgstr ""
 
 #: templates/institution/institution_unit.html:40
-#| msgid "Delete institution"
 msgid "Select the institution"
 msgstr "Selecione a instituição"
 
@@ -4222,7 +4220,11 @@ msgstr "Recursos de Internet"
 msgid "New Resource"
 msgstr "Novo Recurso"
 
-#: templates/main/edit-resource.html:117
+#: templates/main/edit-resource.html:108
+msgid "Search for duplicates in the VHL"
+msgstr "Pesquisar por duplicados na BVS"
+
+#: templates/main/edit-resource.html:120
 msgid "Resource created in"
 msgstr "Recurso criado em"
 
