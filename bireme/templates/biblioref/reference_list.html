@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load app_filters %}
 {% load i18n %}
-{% load cache %}
 
 {% block title %}{% trans "Bibliographic Records" %} | {{ block.super }}{% endblock %}
 
@@ -125,7 +124,7 @@
                                 <button class="btn" type="submit"><i class='icon-search'></i></button>
 
                                 <a href="javascript:void()" id="show_advaced_filters">+ {% trans "Filters" %}</a>
-                                {% cache 43200 indexed_database_filter LANGUAGE_CODE %}
+
                                 <div class="advanced_filters {% if not  actions.filter_indexed_database %}hide{% endif %}">
                                     {% trans "Indexed in" %}:
                                     <select name="filter_indexed_database">
@@ -137,7 +136,7 @@
 
                                     <button class="btn" type="submit" name="apply_filters" value="true">{% trans "Apply" %}</button>
                                 </div>
-                                {% endcache %}
+
 
                             </form>
                         </div>

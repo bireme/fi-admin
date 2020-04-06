@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load app_filters %}
 {% load i18n %}
-{% load cache %}
 
 {% block title %}{% trans "Institution" %} | {{ block.super }}{% endblock %}
 
@@ -75,7 +74,6 @@
                                 <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Closed" %}</option>
                             </select>
 
-                            {% cache 43200 institution_filters LANGUAGE_CODE %}
                             {% trans "Type" %}:
                             <select name="filter_type">
                                 <option value="">{% trans "All" %}</option>
@@ -99,7 +97,6 @@
                                     <option value="{{country.country_id}}" {% if actions.filter_country == country|slugify %}selected="true"{% endif %}>{{ country.country__name }}</option>
                                 {% endfor %}
                             </select>
-                            {% endcache %}
 
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
                         </form>
