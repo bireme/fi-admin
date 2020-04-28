@@ -1,0 +1,13 @@
+if v6 = 'I' AND left(v607,3) <> 'BRI' AND left(v607,3) <> 'BRE' then,
+    if p(v611) and p(v612) then,
+        v612^a,'|',v612^b,'|',f(val(v620^a),1,0),'|1|',mfn(0),/
+    fi,
+
+    if p(v613) then,
+        v613^a,'|',v613^b,'|',f(val(v620^a),1,0),'|2|',mfn(0),/
+    fi,
+
+    if p(v614) then,
+        v614^a,'|',v614^b,'|',f(val(v620^a),1,0),'|3|',mfn(0),/
+    fi,
+fi,
