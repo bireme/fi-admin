@@ -29,7 +29,7 @@ from django.db.models import Q
 
 class ThesaurusAPIDescResource(CustomResource):
     class Meta:
-        queryset = IdentifierDesc.objects.all()
+        queryset = IdentifierDesc.objects.using('decs_portal').all()
         allowed_methods = ['get']
         serializer = ISISSerializer(formats=['json', 'xml', 'isis_id'], field_tag=field_tag_map)
         resource_name = 'thesaurus'
@@ -98,7 +98,7 @@ class ThesaurusAPIDescResource(CustomResource):
 
     def dehydrate(self, bundle):
 
-        id = IdentifierDesc.objects.filter(id=bundle.obj.id).values('id')
+        id = IdentifierDesc.objects.using('decs_portal').filter(id=bundle.obj.id).values('id')
         for field in id:
             identifier_id = bundle.obj.id
 
@@ -109,7 +109,7 @@ class ThesaurusAPIDescResource(CustomResource):
 
         array_fields_abbreviation = {}
         array_fields_abbreviation_all = []
-        results = IdentifierDesc.objects.filter(id=identifier_id)
+        results = IdentifierDesc.objects.using('decs_portal').filter(id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -123,19 +123,20 @@ class ThesaurusAPIDescResource(CustomResource):
             array_fields["date_revised"] = field.date_revised
             array_fields["date_established"] = field.date_established
         
-            id_abbrev = IdentifierDesc.objects.filter(id=field.id).values('abbreviation')
-            allowed_qualifiers = IdentifierQualif.objects.filter(id__in=id_abbrev).order_by('abbreviation')
+            id_abbrev = IdentifierDesc.objects.using('decs_portal').filter(id=field.id).values('abbreviation')
+            allowed_qualifiers = IdentifierQualif.objects.using('decs_portal').filter(id__in=id_abbrev).order_by('abbreviation')
             allowed_qualifiers_concat = ''
             for field in allowed_qualifiers:
                 array_fields_abbreviation["id"] = field.id
+                array_fields_abbreviation["decs_code"] = field.decs_code
                 array_fields_abbreviation["abbreviation"] = field.abbreviation
 
                 # Proporciona o campo term_string nos idiomas existentes
                 abbreviation_fields_language = {}
                 abbreviation_language_all = []
-                concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=field.id,preferred_concept='Y').values('id')
+                concepts_of_register = IdentifierConceptListQualif.objects.using('decs_portal').filter(identifier_id=field.id,preferred_concept='Y').values('id')
                 id_concept = concepts_of_register[0].get('id')
-                terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y')
+                terms_of_concept = TermListQualif.objects.using('decs_portal').filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y')
                 for term in terms_of_concept:
                     abbreviation_fields_language['term_string'] = term.term_string.encode('utf-8')
                     abbreviation_fields_language['language_code'] = term.language_code
@@ -170,7 +171,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # DescriptionDesc
         array_fields = {}
         array_fields_all = []
-        results = DescriptionDesc.objects.filter(identifier_id=identifier_id)
+        results = DescriptionDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -194,7 +195,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # TreeNumbersListDesc
         array_fields = {}
         array_fields_all = []
-        results = TreeNumbersListDesc.objects.filter(identifier_id=identifier_id)
+        results = TreeNumbersListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -213,7 +214,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # PharmacologicalActionList
         array_fields = {}
         array_fields_all = []
-        results = PharmacologicalActionList.objects.filter(identifier_id=identifier_id)
+        results = PharmacologicalActionList.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             if field.term_string:
@@ -237,7 +238,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # SeeRelatedListDesc
         array_fields = {}
         array_fields_all = []
-        results = SeeRelatedListDesc.objects.filter(identifier_id=identifier_id)
+        results = SeeRelatedListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -257,7 +258,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # PreviousIndexingListDesc
         array_fields = {}
         array_fields_all = []
-        results = PreviousIndexingListDesc.objects.filter(identifier_id=identifier_id)
+        results = PreviousIndexingListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -277,7 +278,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # EntryCombinationListDesc
         array_fields = {}
         array_fields_all = []
-        results = EntryCombinationListDesc.objects.filter(identifier_id=identifier_id)
+        results = EntryCombinationListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -302,7 +303,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # IdentifierConceptListDesc
         array_fields = {}
         array_fields_all = []
-        results = IdentifierConceptListDesc.objects.filter(identifier_id=identifier_id)
+        results = IdentifierConceptListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -318,7 +319,7 @@ class ThesaurusAPIDescResource(CustomResource):
             # Faz pesquisa para trazer descrição dos conceitos
             array_fields_ConceptListDesc = {}
             array_fields_ConceptListDesc_all = []
-            ConceptListDesc_results = ConceptListDesc.objects.filter(identifier_concept_id=identifier_concept_id)
+            ConceptListDesc_results = ConceptListDesc.objects.using('decs_portal').filter(identifier_concept_id=identifier_concept_id)
             for field in ConceptListDesc_results:
 
                 if field.language_code and field.scope_note:
@@ -336,7 +337,7 @@ class ThesaurusAPIDescResource(CustomResource):
             # Faz pesquisa para trazer os termos do conceito
             array_fields_TermListDesc = {}
             array_fields_TermListDesc_all = []
-            TermListDesc_results = TermListDesc.objects.filter(identifier_concept_id=identifier_concept_id)
+            TermListDesc_results = TermListDesc.objects.using('decs_portal').filter(identifier_concept_id=identifier_concept_id)
             for field in TermListDesc_results:
                 # Armazena campos
                 if field.status == 1:
@@ -360,7 +361,7 @@ class ThesaurusAPIDescResource(CustomResource):
                     # Faz pesquisa para trazer tesauro que ocorre
                     array_fields_TheraurusOccurrenceListDesc = {}
                     array_fields_TheraurusOccurrenceListDesc_all = []
-                    TheraurusOccurrenceListDesc_results = TheraurusOccurrenceListDesc.objects.filter(identifier_term_id=identifier_term_id)
+                    TheraurusOccurrenceListDesc_results = TheraurusOccurrenceListDesc.objects.using('decs_portal').filter(identifier_term_id=identifier_term_id)
                     for field in TheraurusOccurrenceListDesc_results:
                         # Armazena campos
                         array_fields_TheraurusOccurrenceListDesc["id"] = field.id
@@ -397,14 +398,14 @@ class ThesaurusAPIDescResource(CustomResource):
         array_fields = {}
         array_fields_all = []
 
-        thesaurus_choiced = IdentifierDesc.objects.filter(id=identifier_id).values('thesaurus_id')
+        thesaurus_choiced = IdentifierDesc.objects.using('decs_portal').filter(id=identifier_id).values('thesaurus_id')
         thesarus_choiced_id=thesaurus_choiced[0]['thesaurus_id']
 
         def SearchTermsforTreenumber(tree_number,leaf):
 
             # Encontra o descritor desse tree_number
-            id_tree_number = TreeNumbersListDesc.objects.filter(tree_number=tree_number).values('identifier_id')
-            id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
+            id_tree_number = TreeNumbersListDesc.objects.using('decs_portal').filter(tree_number=tree_number).values('identifier_id')
+            id_concept = IdentifierConceptListDesc.objects.using('decs_portal').filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
 
             # status = 1
             q_status = Q(status=1)
@@ -417,7 +418,7 @@ class ThesaurusAPIDescResource(CustomResource):
 
             q_id_concept = Q(identifier_concept_id__in=id_concept)
 
-            terms_of_treenumber = TermListDesc.objects.filter( q_status & q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=thesarus_choiced_id)
+            terms_of_treenumber = TermListDesc.objects.using('decs_portal').filter( q_status & q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=thesarus_choiced_id)
 
             # Proporciona o campo term_string nos idiomas existentes
             treenumber_terms_language = {}
@@ -437,7 +438,7 @@ class ThesaurusAPIDescResource(CustomResource):
 
             # Verifica se existem descendentes
             if leaf == True:
-                leafs = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=tree_number).exclude(dtreenumbers__tree_number=tree_number)
+                leafs = IdentifierDesc.objects.using('decs_portal').filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=tree_number).exclude(dtreenumbers__tree_number=tree_number)
                 if leafs:
                     array_fields['leaf'] = True
 
@@ -450,15 +451,15 @@ class ThesaurusAPIDescResource(CustomResource):
             array_fields['level'] = tponto
 
             # Descobre o decs_code do tree_number parent
-            decs_code_results = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number=tree_number).values('decs_code')
+            decs_code_results = IdentifierDesc.objects.using('decs_portal').filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number=tree_number).values('decs_code')
             if decs_code_results:
                 for field in decs_code_results:
                     array_fields["id"] = field.get('decs_code')
 
 
 
-        # results = TreeNumbersListDesc.objects.filter(identifier_id=identifier_id)
-        results = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__identifier_id=identifier_id).values('decs_code','dtreenumbers__tree_number')
+        # results = TreeNumbersListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
+        results = IdentifierDesc.objects.using('decs_portal').filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__identifier_id=identifier_id).values('decs_code','dtreenumbers__tree_number')
 
 
         for field in results:
@@ -522,7 +523,7 @@ class ThesaurusAPIDescResource(CustomResource):
                 ancestor_tree_number=tree_number[0:dif]
 
                 # Pesquisa somente tree_number que tem o mesmo radical
-                result_treenumbers_like = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=ancestor_tree_number).exclude(dtreenumbers__tree_number=tree_number).values('dtreenumbers__tree_number')
+                result_treenumbers_like = IdentifierDesc.objects.using('decs_portal').filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=ancestor_tree_number).exclude(dtreenumbers__tree_number=tree_number).values('dtreenumbers__tree_number')
 
                 if result_treenumbers_like:
                     for field in result_treenumbers_like:
@@ -567,7 +568,7 @@ class ThesaurusAPIDescResource(CustomResource):
         #         ancestor_tree_number_exclude=tree_number[0:dif]
 
         #         # Pesquisa somente tree_number que tem o mesmo radical
-        #         result_treenumbers_like = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=ancestor_tree_number).exclude(dtreenumbers__tree_number=ancestor_tree_number_exclude).values('dtreenumbers__tree_number')
+        #         result_treenumbers_like = IdentifierDesc.objects.using('decs_portal').filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=ancestor_tree_number).exclude(dtreenumbers__tree_number=ancestor_tree_number_exclude).values('dtreenumbers__tree_number')
 
         #         if result_treenumbers_like:
         #             for field in result_treenumbers_like:
@@ -604,7 +605,7 @@ class ThesaurusAPIDescResource(CustomResource):
             tam_tree_number_children=len(tree_number)+4
 
             # Pesquisa somente tree_number que tem o mesmo radical
-            result_treenumbers_like = IdentifierDesc.objects.filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=tree_number).exclude(dtreenumbers__tree_number=tree_number).values('dtreenumbers__tree_number')
+            result_treenumbers_like = IdentifierDesc.objects.using('decs_portal').filter(thesaurus_id=thesarus_choiced_id,dtreenumbers__tree_number__contains=tree_number).exclude(dtreenumbers__tree_number=tree_number).values('dtreenumbers__tree_number')
 
             if result_treenumbers_like:
                 for field in result_treenumbers_like:
@@ -638,7 +639,7 @@ class ThesaurusAPIDescResource(CustomResource):
 
 class ThesaurusAPIQualifResource(CustomResource):
     class Meta:
-        queryset = IdentifierQualif.objects.all()
+        queryset = IdentifierQualif.objects.using('decs_portal').all()
         allowed_methods = ['get']
         serializer = ISISSerializer(formats=['json', 'xml', 'isis_id'], field_tag=field_tag_map)
         resource_name = 'thesaurus'
@@ -703,7 +704,7 @@ class ThesaurusAPIQualifResource(CustomResource):
 
     def dehydrate(self, bundle):
 
-        id = IdentifierQualif.objects.filter(id=bundle.obj.id).values('id')
+        id = IdentifierQualif.objects.using('decs_portal').filter(id=bundle.obj.id).values('id')
         for field in id:
             # bundle.data['id'] = str(bundle.obj.id)
             identifier_id = bundle.obj.id
@@ -715,7 +716,7 @@ class ThesaurusAPIQualifResource(CustomResource):
 
         array_fields_abbreviation = {}
         array_fields_abbreviation_all = []
-        results = IdentifierQualif.objects.filter(id=identifier_id)
+        results = IdentifierQualif.objects.using('decs_portal').filter(id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -727,8 +728,8 @@ class ThesaurusAPIQualifResource(CustomResource):
             array_fields["date_revised"] = field.date_revised
             array_fields["date_established"] = field.date_established
         
-            id_abbrev = IdentifierQualif.objects.filter(id=field.id).values('abbreviation')
-            allowed_qualifiers = IdentifierQualif.objects.filter(id__in=id_abbrev).order_by('abbreviation')
+            id_abbrev = IdentifierQualif.objects.using('decs_portal').filter(id=field.id).values('abbreviation')
+            allowed_qualifiers = IdentifierQualif.objects.using('decs_portal').filter(id__in=id_abbrev).order_by('abbreviation')
             allowed_qualifiers_concat = ''
             for field in allowed_qualifiers:
                 array_fields_abbreviation["id"] = field.id
@@ -737,9 +738,9 @@ class ThesaurusAPIQualifResource(CustomResource):
                 # Proporciona o campo term_string nos idiomas existentes
                 abbreviation_fields_language = {}
                 abbreviation_language_all = []
-                concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=field.id,preferred_concept='Y').values('id')
+                concepts_of_register = IdentifierConceptListQualif.objects.using('decs_portal').filter(identifier_id=field.id,preferred_concept='Y').values('id')
                 id_concept = concepts_of_register[0].get('id')
-                terms_of_concept = TermListQualif.objects.filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y')
+                terms_of_concept = TermListQualif.objects.using('decs_portal').filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y')
                 for term in terms_of_concept:
                     abbreviation_fields_language['term_string'] = term.term_string.encode('utf-8')
                     abbreviation_fields_language['language_code'] = term.language_code
@@ -775,7 +776,7 @@ class ThesaurusAPIQualifResource(CustomResource):
         # DescriptionQualif
         array_fields = {}
         array_fields_all = []
-        results = DescriptionQualif.objects.filter(identifier_id=identifier_id)
+        results = DescriptionQualif.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -797,7 +798,7 @@ class ThesaurusAPIQualifResource(CustomResource):
         # TreeNumbersListQualif
         array_fields = {}
         array_fields_all = []
-        results = TreeNumbersListQualif.objects.filter(identifier_id=identifier_id)
+        results = TreeNumbersListQualif.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -816,7 +817,7 @@ class ThesaurusAPIQualifResource(CustomResource):
         # IdentifierConceptListQualif
         array_fields = {}
         array_fields_all = []
-        results = IdentifierConceptListQualif.objects.filter(identifier_id=identifier_id)
+        results = IdentifierConceptListQualif.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             # Armazena campos
             array_fields["id"] = field.id
@@ -830,7 +831,7 @@ class ThesaurusAPIQualifResource(CustomResource):
             # Faz pesquisa para trazer descrição dos conceitos
             array_fields_ConceptListQualif = {}
             array_fields_ConceptListQualif_all = []
-            ConceptListQualif_results = ConceptListQualif.objects.filter(identifier_concept_id=identifier_concept_id)
+            ConceptListQualif_results = ConceptListQualif.objects.using('decs_portal').filter(identifier_concept_id=identifier_concept_id)
             for field in ConceptListQualif_results:
 
                 if field.language_code and field.scope_note:
@@ -848,7 +849,7 @@ class ThesaurusAPIQualifResource(CustomResource):
             # Faz pesquisa para trazer os termos do conceito
             array_fields_TermListQualif = {}
             array_fields_TermListQualif_all = []
-            TermListQualif_results = TermListQualif.objects.filter(identifier_concept_id=identifier_concept_id)
+            TermListQualif_results = TermListQualif.objects.using('decs_portal').filter(identifier_concept_id=identifier_concept_id)
             for field in TermListQualif_results:
                 # Armazena campos
                 if field.status == 1:
