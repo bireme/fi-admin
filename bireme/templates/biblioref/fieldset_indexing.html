@@ -79,8 +79,8 @@
 
         {% if settings.DECS_HIGHLIGHTER_URL %}
             <div class="decs_suggestion">
-                <a href="#" onclick="javascript:open_decs_suggestions('abstract', '{{LANGUAGE_CODE}}')" class="btn btn-inverse">
-                    <i class="icon icon-eye-open"></i> {% trans "descriptores from abstract" %}
+                <a href="#" onclick="javascript:open_decs_suggestions('{{LANGUAGE_CODE}}')" class="btn btn-inverse">
+                    <i class="icon icon-eye-open"></i> {% trans "Descriptors suggestions" %}
                 </a>
             </div>
         {% endif %}

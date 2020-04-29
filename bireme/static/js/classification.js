@@ -26,10 +26,9 @@ function open_classification(c_type, object){
     return false;
 }
 
-function get_json_text_by_language(field_name, language){
+function get_json_text_by_language(field_name, lang){
     field = $('#id_' + field_name).val();
     field_text = '';
-    console.log(field);
     if (field != null && field != ''){
         field_json = jQuery.parseJSON(field);
 
@@ -49,14 +48,14 @@ function open_decs_suggestions(language){
     if (lang == 'en'){
         field_title = $('#id_english_translated_title').val();
     }else{
-        field_title = get_json_text_by_language('title', lang);
+        field_title = $('#id_title').val();
     }
-    field_abstract = get_json_text_by_language('abstract', lang);
+    field_abstract = $('#id_abstract').val();
 
-    field_value = field_title + ' ' + field_abstract;
+    text_to_analyze = field_title + ' ' + field_abstract;
 
     decs_suggestion_url = '/utils/decs_suggestion/';
-    post_params = {'field_value' : field_value};
+    post_params = {'text_to_analyze': text_to_analyze, 'output_lang': lang};
 
     open_window_with_post('POST', decs_suggestion_url, post_params, 'decs_suggestions');
     return false;
