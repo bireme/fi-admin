@@ -245,7 +245,7 @@ def decs_suggestion(request):
     decs_list = []
 
     service_url = settings.DECS_HIGHLIGHTER_URL
-    service_params = {'document': text_to_analyze, 'outLang': output_lang}
+    service_params = {'document': text_to_analyze, 'outLang': output_lang, 'pubType': 'h'}
 
     headers = {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"}
 
