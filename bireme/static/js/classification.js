@@ -26,24 +26,36 @@ function open_classification(c_type, object){
     return false;
 }
 
-function open_decs_suggestions(field_name, language){
-    lang = language.substring(0,2);
+function get_json_text_by_language(field_name, lang){
     field = $('#id_' + field_name).val();
-    field_value = '';
-    if (field != ''){
+    field_text = '';
+    if (field != null && field != ''){
         field_json = jQuery.parseJSON(field);
-        field_value = field_json[0]['text'];
 
         var count;
         for (count = 0; count < field_json.length; count++ ){
             if (field_json[count]['_i'] == lang){
-                field_value = field_json[count]['text'];
+                field_text = field_json[count]['text'];
             }
-        }    
+        }
     }
+    return field_text;
+
+}
+
+function open_decs_suggestions(language){
+    lang = language.substring(0,2);
+    if (lang == 'en'){
+        field_title = $('#id_english_translated_title').val();
+    }else{
+        field_title = $('#id_title').val();
+    }
+    field_abstract = $('#id_abstract').val();
+
+    text_to_analyze = field_title + ' ' + field_abstract;
 
     decs_suggestion_url = '/utils/decs_suggestion/';
-    post_params = {'field_value' : field_value, 'field_name': field_name};
+    post_params = {'text_to_analyze': text_to_analyze, 'output_lang': lang};
 
     open_window_with_post('POST', decs_suggestion_url, post_params, 'decs_suggestions');
     return false;

@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.models import User
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.contrib.contenttypes.models import ContentType
+from django.core.cache import cache
 
 from main import choices
 
@@ -88,11 +89,18 @@ class Country(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = CountryLocal.objects.filter(country=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "country-{}-{}".format(lang_code, self.id)
+        country_name_local = cache.get(cache_id)
+        if not country_name_local:
+            translation = CountryLocal.objects.filter(country=self.id, language=lang_code)
+            if translation:
+                country_name_local = translation[0].name
+            else:
+                country_name_local = self.name
+
+            cache.set(cache_id, country_name_local, None)
+
+        return country_name_local
 
 class CountryLocal(models.Model):
 

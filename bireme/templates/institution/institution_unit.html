@@ -28,8 +28,7 @@
 <div class="row">
     <div class="span12">
         <form name="search">
-            {% trans "Name" %}:
-            <input type="text" name="s" class="input-xlarge" value="{{ actions.s }}">
+            <input type="text" name="s" class="input-xlarge" value="{{ actions.s }}" placeholder="{% trans 'Search' %}">
             <input type="hidden" name="page" value="{{ actions.page }}">
             <button class="btn btn-primary" type="submit" style="margin-top: -10px"><i class="icon-search"></i></button>
         </form>
@@ -38,7 +37,7 @@
 
 <div>
     {% if object_list|length > 0 %}
-        <h4>{% trans "Select the unity" %}</h4>
+        <h4>{% trans "Select the institution" %}</h4>
         <table class='table'>
             <thead>
                 <th><a href="javascript:orderby('name');" id="id_title">{% trans "Name" %}</a></th>
@@ -59,40 +58,6 @@
         </div>
     {% endif %}
 
-    <a href="#" onclick="$('#create_new').toggle()" class="btn btn-success"><i class="icon-plus"></i> {% trans "Create new unity" %}</a>
-
-    <div class="{% if not form.errors %}hide{% endif %}" id="create_new">
-        {% if form.non_field_errors %}
-            <div class="alert alert-error">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}
-
-        <form method="POST" class="new_unit" action="{% url 'add_unit' %}">
-            {% csrf_token %}
-            <input type="hidden" name="country" value="{{param_country}}" />
-
-            <div class="row-fluid">
-                <div class="span7">
-                    {% trans "Name" %}:<br/>
-                    {{ form.name.errors }}
-                    {{ form.name}}
-                </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span5">
-                    {% trans "Acronym" %}:<br/>
-                    {{ form.acronym.errors }}
-                    {{ form.acronym}}
-                </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span5">
-                    <button class="btn btn-primary btn-large" type="submit">{% trans 'Add' %}</button>
-                </div>
-            </div>
-        </form>
-    </div>
 </div>
 {% endblock %}
 

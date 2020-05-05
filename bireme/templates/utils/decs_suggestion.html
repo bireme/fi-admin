@@ -23,56 +23,82 @@
     </style>
 {% endblock %}
 
-{% block title %}{% trans "Abstract DeCS subjects" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Descriptors suggestions" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb_wrap %}{% endblock %}
 
 {% block content %}
 <div class="body box">
-
     {% if decs_list %}
         <form id="" action="" method="POST">
             {% csrf_token %}
-            <h3>
-                {% trans "List of descriptors identified in the abstract" %}
-            </h3>
-
-            <table class="table table-condensed table-striped span8">
-                {% for decs in decs_list %}
-                <tr>
-                    <td>
-                        <strong>{{ decs.descriptor|title }}</strong>
-                    <td>
-                    <td style="text-align: right">
-                        <a href="#" id="{{ decs.id }}" value="{{ decs.id }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.id|add:"0" }}|ADD');" class="btn"><i class="icon-plus"></i>{% trans "Add" %}</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+            <div class="row">
+                <div class="page-header">
+                    <h2>{% trans "Suggested descriptors identified in the title and abstract" %}</h2>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-condensed table-striped span12">
+                    {% for decs in decs_list %}
+                    <tr>
+                        <td>
+                            <strong>{{ decs.descriptor|title }}</strong>
+                        <td>
+                        <td>
+                            <div class="btn-group disabled">
+                                <button class="btn btn-info" id="btn_{{ decs.id }}" data-toggle="dropdown"><i class="icon-plus"></i>{% trans "Add" %}</button>
+                                <button class="btn btn-info dropdown-toggle" id="btn_icon_{{ decs.id }}" data-toggle="dropdown">
+                                  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#" id="btn_{{ decs.id }}_primary" value="{{ decs.id }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.id|add:"0" }}|ADD|PRIMARY', '{{ decs.id }}'); return false">{% trans "Primary descriptor" %}</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="btn_{{ decs.id }}_secundary" value="{{ decs.id }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.id|add:"0" }}|ADD', '{{ decs.id }}'); return false">{% trans "Secundary descriptor" %}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </form>
+
     {% else %}
         <div class="jumbotron" style="margin-top: 50px">
-          <h1>{% trans 'No descriptor identified' %}!</h1>
-          <div class="alert alert-danger" role="alert">{% trans 'Check if the abstract is filled in' %}</div>
-          <br/>
-          <p><a class="btn btn-primary btn-lg" href="javascript:this.close()" role="button">Fechar</a></p>
+            <div class="page-header">
+                <h2>{% trans 'No descriptor was identified' %} <br/><small>{% trans 'Check if the title and abstract are filled in' %}</small></h2>
+            </div>
+            <br/>
+            <p><a class="btn btn-primary btn-lg" href="javascript:this.close()" role="button">{% trans 'Close' %}</a></p>
         </div>
     {% endif %}
+
+    <div style="margin-top: 30px; text-align: center; ">
+        <div class="alert alert-warning">
+            <strong>{% trans 'Disclaimer' %}:</strong> {% trans 'This service use a computer program to analyze and identify DeCS/MeSH descriptors from words of title and abstract' %}
+        </div>
+        <a href="javascript:this.close()" class="btn btn-large btn-inverse" role="button">{% trans "Close" %}</a>
+    </div>
+
 </div>
+
 
 {% endblock %}
 
 {% block extrajs %}
 <script type="text/javascript">
-     function updateAndClose(){
-         $.post($("form").attr('action'), $("form").serializeArray());
-         alert("{% trans 'Classification updated' %}");
-         window.close();
-     }
+     function postMsg(descriptor, decs_id) {
+        // add descriptor using function on opener window
+        window.opener.postMessage(descriptor, '*');
+        $("#btn_" + decs_id).attr("disabled", true);
+        $("#btn_" + decs_id).addClass("disabled");
+        $("#btn_icon_" + decs_id).attr("disabled", true);
+        $("#btn_icon_" + decs_id).addClass("disabled");
 
-     function postMsg(descriptor) {
-          window.opener.postMessage(descriptor, '*');
-          window.close();
+        alert("{% trans 'Descriptor was added' %}");
       }
 </script>
 {% endblock %}

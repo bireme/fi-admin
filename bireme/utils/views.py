@@ -240,12 +240,12 @@ def field_assist(request, **kwargs):
 
 @csrf_exempt
 def decs_suggestion(request):
-    field_name_param = request.POST.get('field_name')
-    field_value_param = request.POST.get('field_value')
+    text_to_analyze = request.POST.get('text_to_analyze')
+    output_lang = request.POST.get('output_lang')
     decs_list = []
 
     service_url = settings.DECS_HIGHLIGHTER_URL
-    service_params = {'document': field_value_param}
+    service_params = {'document': text_to_analyze, 'outLang': output_lang, 'pubType': 'h'}
 
     headers = {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"}
 
@@ -253,6 +253,7 @@ def decs_suggestion(request):
     if r.status_code == 200:
         response_json = r.json()
         decs_list_response = response_json['positions']
+
         decs_list_unique = []
         decs_ids = []
         for decs_term in decs_list_response:
@@ -265,4 +266,4 @@ def decs_suggestion(request):
 
 
     return render_to_response('utils/decs_suggestion.html',
-                              {'decs_list': decs_list, 'field_name': field_name_param})
+                              {'decs_list': decs_list})

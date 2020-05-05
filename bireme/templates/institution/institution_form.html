@@ -34,7 +34,7 @@
         <li><a href="#tab-contact" data-toggle="tab"><i class="icon-user"></i> {% trans "Contacts" %}{% if formset_person.errors and not formset_person.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li-->
         <li><a href="#tab-url" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Sites" %}{% if formset_url.errors and not formset_url.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         {% if user_cc = 'BR1.1' %}
-            <li><a href="#tab-unitlevel" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Units" %}{% if formset_unitlevel.errors and not formset_unitlevel.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+            <li><a href="#tab-unitlevel" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Institution" %}{% if formset_unitlevel.errors and not formset_unitlevel.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             <li><a href="#tab-adm" data-toggle="tab"><i class="icon-folder-open"></i>  {% trans "Administrative" %}{% if formset_adm.errors and not formset_adm.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         {% endif %}
     </ul>
@@ -175,7 +175,7 @@
             });
 
             $('.unit-row').formset({
-                    addText : '{% trans "Add Unit" %}',
+                    addText : '{% trans "Add Institution" %}',
                     deleteText: '{% trans "delete" %}',
                     addCssClass : 'icon-plus-sign btn',
                     deleteCssClass : 'btn',

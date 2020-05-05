@@ -10,14 +10,19 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from django.db.models import Q, Count
+from django.db.models import F, Q, Func, Count
+from django.db.models.functions import Substr
 
 from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
 from help.models import get_help_fields
 from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
+
+from operator import itemgetter, attrgetter
 from datetime import datetime
 from forms import *
+
+import re
 
 class InstGenericListView(LoginRequiredView, ListView):
     """
@@ -62,33 +67,46 @@ class InstGenericListView(LoginRequiredView, ListView):
 
                 search_field, search = "%s%s" % (search_field,'__icontains'), search_parts[1]
                 object_list = self.model.objects.filter(**{search_field: search})
+
+            # search by cc code
+            elif bool(re.match(r"^[A-Za-z]{2}[0-9]+", search)):
+                object_list = self.model.objects.filter(cc_code=search)
+
+            # search by name or acronym
             else:
-                query_search = Q(unitlevel__unit__name__icontains=search) | Q(unitlevel__unit__acronym__icontains=search) | Q(name__icontains=search) | Q(cc_code__icontains=search) | Q(acronym__icontains=search)
+                if settings.FULLTEXT_SEARCH:
+                    query_search = Q(unitlevel__unit__name__search=search) | Q(unitlevel__unit__acronym__search=search) | Q(name__search=search) | Q(acronym__search=search)
+                else:
+                    query_search = Q(unitlevel__unit__name__icontains=search) | Q(unitlevel__unit__acronym__icontains=search) | Q(name__icontains=search) | Q(acronym__icontains=search)
+
                 object_list = self.model.objects.filter(query_search).distinct()
         else:
             object_list = self.model.objects.all()
 
-
-        if self.actions['filter_status'] != '':
-            object_list = object_list.filter(status=self.actions['filter_status'])
-
-        if self.actions['filter_type'] != '':
-            object_list = object_list.filter(adm__type=self.actions['filter_type'])
-
-        if self.actions['filter_category'] != '':
-            object_list = object_list.filter(adm__category=self.actions['filter_category'])
-
-        if self.actions['filter_country'] != '':
-            object_list = object_list.filter(country=self.actions['filter_country'])
-
         # filter by user institution
         if self.actions['filter_owner'] != "*" or user_cc != 'BR1.1':
             object_list = object_list.filter(cc_code=user_cc)
+        else:
+            if self.actions['filter_status'] != '':
+                object_list = object_list.filter(status=self.actions['filter_status'])
 
-        # order for created_time for BR1.1 users (administrative)
-        if user_cc == 'BR1.1':
-            object_list = object_list.order_by("-created_time")
+            if self.actions['filter_type'] != '':
+                object_list = object_list.filter(adm__type=self.actions['filter_type'])
 
+            if self.actions['filter_category'] != '':
+                object_list = object_list.filter(adm__category=self.actions['filter_category'])
+
+            if self.actions['filter_country'] != '':
+                object_list = object_list.filter(country=self.actions['filter_country'])
+
+                # when user sort by country order the result by a numeric value of center code
+                object_list = object_list.annotate(center_code=Func(Substr('cc_code',3),
+                                            template='%(function)s(%(expressions)s AS %(type)s)',
+                                            function='Cast', type='decimal')).annotate(n_code=F('center_code')).order_by('-n_code')
+
+            else:
+                # by default order by reverse order of id's
+                object_list = object_list.order_by('-id')
 
         return object_list
 
@@ -99,13 +117,7 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         type_list = Type.objects.all()
         category_list = Category.objects.all()
-
-        country_list = Institution.objects.values('country').distinct().annotate(total=Count('pk')).order_by('-total')
-        for country in country_list:
-            country_id = country['country']
-            if country_id > 0:
-                country['country_name'] = unicode(Country.objects.get(pk=country_id))
-
+        country_list = Institution.objects.values('country_id', 'country__name').distinct()
 
         context['actions'] = self.actions
         context['user_role'] = user_role
@@ -140,12 +152,16 @@ class UnitListView(ListView):
         param_country = self.request.GET.get('country')
 
         search = self.actions['s']
-        search_filter = Q(name__icontains=search) | Q(acronym__icontains=search)
-
-        object_list = []
-
         if search:
-            object_list = self.model.objects.filter(search_filter)
+            search_method = 'search' if settings.FULLTEXT_SEARCH else 'icontains'
+            search_field1 = 'name__' + search_method
+            search_field2 = 'acronym__' + search_method
+
+            if settings.FULLTEXT_SEARCH:
+                # search using boolean AND
+                search = u"+{}".format(search.replace(' ', ' +'))
+
+            object_list = self.model.objects.filter(Q(**{search_field1: search}) | Q(**{search_field2: search}))
         else:
             object_list = self.model.objects.all()
 

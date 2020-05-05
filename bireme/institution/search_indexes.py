@@ -1,5 +1,5 @@
 import datetime
-from institution.models import Institution,Type, Adm, UnitLevel, Contact
+from institution.models import Institution,Type, Adm, URL, UnitLevel, Contact
 from django.contrib.contenttypes.models import ContentType
 from haystack import indexes
 
@@ -18,6 +18,7 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
     institution_thematic = indexes.MultiValueField()
     category = indexes.MultiValueField()
     contact = indexes.MultiValueField()
+    link = indexes.MultiValueField()
     user = indexes.MultiValueField()
     cat = indexes.MultiValueField()
 
@@ -66,13 +67,22 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
 
         contact_list = Contact.objects.filter(institution=obj.id)
         for contact in contact_list:
-            job_title =  u" ({0})".format(contact.job_title) if contact.job_title else ''
-            contact_details = [contact.prefix, contact.name, job_title, contact.email, contact.country_area_code, contact.phone_number]
+            contact_details = [contact.name, contact.email, contact.country_area_code, contact.phone_number]
             contact_item = " ".join(contact_details)
 
             output_list.append(contact_item)
 
         return output_list
+
+    def prepare_link(self, obj):
+        output_list = []
+
+        link_list = URL.objects.filter(institution=obj.id)
+        for link in link_list:
+            output_list.append(link.url)
+
+        return output_list
+
 
     def prepare_country(self, obj):
         if obj.country:

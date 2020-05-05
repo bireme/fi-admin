@@ -30,6 +30,9 @@ class URLForm(forms.ModelForm):
     url = forms.URLField(widget=widgets.URLInput(attrs={'class': 'input-xlarge'}))
 
 class ContactForm(forms.ModelForm):
+    class Meta:
+        exclude = ('prefix', )
+
     # add class to field
     name = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-large'}), required=False)
     job_title = forms.CharField(widget=widgets.TextInput(attrs={'class': 'input-medium'}), required=False)

@@ -37,16 +37,6 @@
                                 {% if not field.is_hidden or field.field|fieldtype == 'JSONFormField' %}
                                     {% if field.field|fieldtype == 'BooleanField' %}
                                         <span>{{ field.label }}</span>
-                                    {% elif field.name == 'indexed_database' %}
-                                        <div class="row">
-                                            <div class="span3">
-                                                {% trans "Indexed in" %}
-                                            </div>
-                                            <div class="multiselect_buttons">&nbsp;</div>
-                                            <div class="span3">
-                                                <span class="multiselect_label">{% trans "Selected" %}</span>
-                                            </div>
-                                        </div>
                                     {% else %}
                                         <label for="{{ field.auto_id }}">
                                             {% if field.name in help_fields %}
@@ -118,42 +108,6 @@
                                 <p>
                                     {% trans 'Academic title' %}: <strong>{{ reference_source.thesis_dissertation_academic_title }}</strong>
                                 </p>
-                            {% elif field.name == 'indexed_database' %}
-                                <div class="row">
-                                    <div class="span3">
-                                        <select multiple="multiple" name="indexed_databases_available" id="multiselect">
-                                            {% for value,label in form.indexed_database.field.choices %}
-                                                {% if form.indexed_database.value %}
-                                                    {% if not value|inintvalues:form.indexed_database.value %}
-                                                        <option value="{{ value }}">{{ label }}</option>
-                                                    {% endif %}
-                                                {% else %}
-                                                    <option value="{{ value }}">{{ label }}</option>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    <div class="multiselect_buttons">
-                                        <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="icon-chevron-right"></i></button>
-                                        <br/><br/>
-                                        <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="icon-chevron-left"></i></button>
-                                    </div>
-                                    <div class="span3">
-                                       <select name="{{ field.name }}"  id="multiselect_to" class="form-control" multiple="multiple">
-                                           {% for value,label in form.indexed_database.field.choices %}
-                                                {% if form.indexed_database.value %}
-                                                    {% if value|inintvalues:form.indexed_database.value  %}
-                                                        <option value="{{ value }}">{{ label }}</option>
-                                                    {% endif %}
-                                                {% else %}
-                                                    {% if value in field.value %}
-                                                        <option value="{{ value }}">{{ label }}</option>
-                                                    {% endif %}
-                                                {% endif %}
-                                           {% endfor %}
-                                       </select>
-                                    </div>
-                                </div>
                             {% else %}
                                 {{ field }}
                             {% endif %}

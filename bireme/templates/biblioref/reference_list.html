@@ -65,7 +65,7 @@
             </li>
             <li class="{% if actions.filter_owner == 'indexed' %}active{% endif %}">
                 <a href="#tab-network" onclick="filter_owner('indexed')" data-toggle="tab">
-                    <strong>{% trans "Indexed by my center" %}</strong>
+                    <strong>{% trans "Journals indexed by my center" %}</strong>
                    {% if actions.filter_owner == 'indexed' %}
                        <span class="badge badge-info">{{ paginator.count }}</span>
                    {% endif %}
@@ -94,21 +94,26 @@
 
                                 {% trans "Record type" %}:
                                 <select name="document_type">
-                                    <option value="">{% trans "All" %}</option>
-                                    <option value="S" {% if actions.document_type == 'S' %}selected="true"{% endif %}>{% trans "Journals - Fascicle" %}</option>
-                                    <option value="Sas" {% if actions.document_type == 'Sas' %}selected="true"{% endif %}>{% trans "Journals - Article" %}</option>
-                                    <option value="Mm" {% if actions.document_type == 'Mm' %}selected="true"{% endif %}>{% trans "Monograph" %}</option>
-                                    <option value="Tm" {% if actions.document_type == 'Tm' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation" %}</option>
-                                    <option value="Mmc" {% if actions.document_type == 'Mmc' %}selected="true"{% endif %}>{% trans "Monograph in a Collection" %}</option>
-                                    <option value="Mc" {% if actions.document_type == 'Mc' %}selected="true"{% endif %}>{% trans "Collection of Monographs" %}</option>
-                                    <option value="MSms" {% if actions.document_type == 'MSms' %}selected="true"{% endif %}>{% trans "Monograph Series" %}</option>
-                                    <option value="Nm" {% if actions.document_type == 'Nm' %}selected="true"{% endif %}>{% trans "Non conventional" %}</option>
-                                    <option value="TSms" {% if actions.document_type == 'TSms' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation appearing as a Monograph Series" %}</option>
+                                    {% if actions.filter_owner == 'indexed' %}
+                                        <option value="S" {% if actions.document_type == 'S' %}selected="true"{% endif %}>{% trans "Journals - Fascicle" %}</option>
+                                        <option value="Sas" {% if actions.document_type == 'Sas' %}selected="true"{% endif %}>{% trans "Journals - Article" %}</option>
+                                    {% else %}
+                                        <option value="">{% trans "All" %}</option>
+                                        <option value="S" {% if actions.document_type == 'S' %}selected="true"{% endif %}>{% trans "Journals - Fascicle" %}</option>
+                                        <option value="Sas" {% if actions.document_type == 'Sas' %}selected="true"{% endif %}>{% trans "Journals - Article" %}</option>
+                                        <option value="Mm" {% if actions.document_type == 'Mm' %}selected="true"{% endif %}>{% trans "Monograph" %}</option>
+                                        <option value="Tm" {% if actions.document_type == 'Tm' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation" %}</option>
+                                        <option value="Mmc" {% if actions.document_type == 'Mmc' %}selected="true"{% endif %}>{% trans "Monograph in a Collection" %}</option>
+                                        <option value="Mc" {% if actions.document_type == 'Mc' %}selected="true"{% endif %}>{% trans "Collection of Monographs" %}</option>
+                                        <option value="MSms" {% if actions.document_type == 'MSms' %}selected="true"{% endif %}>{% trans "Monograph Series" %}</option>
+                                        <option value="Nm" {% if actions.document_type == 'Nm' %}selected="true"{% endif %}>{% trans "Non conventional" %}</option>
+                                        <option value="TSms" {% if actions.document_type == 'TSms' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation appearing as a Monograph Series" %}</option>
+                                    {% endif %}
                                 </select>
 
                                 {% trans "Status" %}:
                                 <select name="filter_status">
-                                    <option value="">{% trans "All" %}</option>
+                                    <option value="*">{% trans "All" %}</option>
                                     <option value="-3" {% if actions.filter_status == '-3' %}selected="true"{% endif %}>{% trans "Migration" %}</option>
                                     <option value="-1" {% if actions.filter_status == '-1' %}selected="true"{% endif %}>{% trans "Draft" %}</option>
                                     <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "LILACS-Express" %}</option>
@@ -131,6 +136,7 @@
 
                                     <button class="btn" type="submit" name="apply_filters" value="true">{% trans "Apply" %}</button>
                                 </div>
+
 
                             </form>
                         </div>
@@ -173,7 +179,7 @@
                     {% for reference in references %}
                         <tr>
                             <td><a href="{% if 'a' in reference.treatment_level %}{% url 'edit_biblioref_analytic' reference.id %}{% else %}{% url 'edit_biblioref_source' reference.id %}{% endif %}">{{ reference.id }}</a></td>
-                            <td><span title="{{ reference }}">{{ reference }}</span></td>
+                            <td><span title="{{ reference.reference_title }}">{{ reference.reference_title }}</span></td>
                             <td>
                                 {% if reference.literature_type == 'S' and not 'a' in reference.treatment_level %}<span class="label label-success">{% trans "Series source" %}</span>{% else %}{{ reference.status|display_status_label }}{% endif %}
                             </td>

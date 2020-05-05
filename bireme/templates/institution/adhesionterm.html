@@ -99,8 +99,8 @@ input:checked + .slider:before {
         </div>
         <hr>
 
-        <h3>{% trans "Products and services" %}</h3>
         {% if serviceproduct_list %}
+            <h3>{% trans "Products and services" %}</h3>
             <table class="table table-hover">
                 {% for serviceproduct in serviceproduct_list %}
                     <tr>
