@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import TemplateView
 from django.conf import settings
 
@@ -47,14 +48,6 @@ thesaurus_resource_desc_index_API = ThesaurusAPIDescResourceIndex()
 thesaurus_resource_qualif_index_API = ThesaurusAPIQualifResourceIndex()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'fi-admin.views.home', name='home'),
-    # url(r'^fi-admin/', include('fi-admin.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
@@ -160,7 +153,22 @@ urlpatterns = patterns('',
     url(r'^login/$', auth_views.login, {'template_name': 'authentication/login.html', 'extra_context':{'BIREMELOGIN_BASE_URL': settings.BIREMELOGIN_BASE_URL}}, name='auth_login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'authentication/logout.html', 'next_page': '/'}, name='auth_logout'),
 
+     # internationalization
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+    (r'^cookie-lang/?$', 'utils.views.cookie_lang'),
+
+    (r'^maintenance/', TemplateView.as_view(template_name="maintenance.html")),
+
+    url(r'^$', 'dashboard.views.widgets', name='dashboard'),
+    (r'^dashboard/', include('dashboard.urls')),
+
+    # tinymce wysiwyg editor
+    (r'^tinymce/', include('tinymce.urls')),
+)
+
+api_patterns = patterns('',
     # API's
+    (r'^$|^api/$', TemplateView.as_view(template_name="api_doc.html")),
     (r'^api/', include(link_resource.urls)),
     (r'^api/', include(event_resource.urls)),
     (r'^api/', include(media_resource.urls)),
@@ -189,27 +197,21 @@ urlpatterns = patterns('',
     # used to render records in JSON format for solr index
     (r'^api/desc/index/', include(thesaurus_resource_desc_index_API.urls)),
     (r'^api/qualif/index/', include(thesaurus_resource_qualif_index_API.urls)),
-
-
-    # internationalization
-    url(r'^i18n/', include('django.conf.urls.i18n')),
-    (r'^cookie-lang/?$', 'utils.views.cookie_lang'),
-
-    (r'^maintenance/', TemplateView.as_view(template_name="maintenance.html")),
-
-    url(r'^$', 'dashboard.views.widgets', name='dashboard'),
-    (r'^dashboard/', include('dashboard.urls')),
-
-    # tinymce wysiwyg editor
-    (r'^tinymce/', include('tinymce.urls')),
 )
 
+if settings.EXPOSE_API_ONLY:
+    urlpatterns = api_patterns
+else:
+    urlpatterns += api_patterns
 
 # messages translation
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += patterns('',
         url(r'^rosetta/', include('rosetta.urls')),
     )
+
+if settings.DEBUG or settings.EXPOSE_API_ONLY:
+    urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG_TOOLBAR:
     import debug_toolbar

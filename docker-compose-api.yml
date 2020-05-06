@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+    app:
+        build:
+            context: .
+            target: prod
+        ports:
+            - 8000
+        volumes:
+            - ./bireme/:/app/
+            - static_volume:/app/static_files
+        env_file:
+            - ./.env.api
+        container_name: fi-admin-api
+        command: gunicorn --workers 4 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000 
+
+    nginx:
+        image: nginx:1.18-alpine
+        ports:
+            - 80:80
+        volumes:
+            - ./etc/nginx:/etc/nginx/conf.d
+            - static_volume:/app/static_files
+        depends_on:
+            - app
+        container_name: fi-admin-api-nginx
+volumes:
+    static_volume:

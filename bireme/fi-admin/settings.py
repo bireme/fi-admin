@@ -1,9 +1,12 @@
 # coding: utf-8
 # Django settings for fi-admin project.
-import os, re
+import os
+import sys
+import re
+import logging
 
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
+DEBUG = int(os.environ.get("DEBUG", 0))
+DEBUG_TOOLBAR = int(os.environ.get("DEBUG_TOOLBAR", 0))
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -14,16 +17,24 @@ MANAGERS = ADMINS
 PROJECT_ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_ROOT_PATH, 'database.db'),                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
-    }
-}
+     'default': {
+         'ENGINE': os.environ.get("DATABASE_ENGINE", 'django.db.backends.sqlite3'),
+         'NAME': os.environ.get("DATABASE_NAME", 'database.db'),
+         'USER': os.environ.get("DATABASE_USER"),
+         'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
+         'HOST': os.environ.get("DATABASE_HOST"),
+         'PORT': os.environ.get("DATABASE_PORT"),
+     },
+    'decs_portal': {
+        'ENGINE': os.environ.get("DATABASE_DECS_ENGINE"),
+        'NAME': os.environ.get("DATABASE_DECS_NAME"),
+        'USER': os.environ.get("DATABASE_DECS_USER"),
+        'PASSWORD': os.environ.get("DATABASE_DECS_PASSWORD"),
+        'HOST': os.environ.get("DATABASE_DECS_HOST"),
+        'PORT': os.environ.get("DATABASE_DECS_PORT"),
+    },
+ }
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -75,7 +86,7 @@ MEDIA_URL = '/uploads/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(PROJECT_ROOT_PATH, 'static_files')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -87,7 +98,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_ROOT_PATH, 'static'),
-    os.path.join(PROJECT_ROOT_PATH, 'uploads'),
+    #os.path.join(PROJECT_ROOT_PATH, 'uploads'),
 )
 
 # List of finder classes that know how to find static files in
@@ -99,7 +110,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '*3434mncic=m$-439jwsjll2327e+!_aq7xl)=cp9f@uedtjq'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y')
 
@@ -125,7 +136,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -133,13 +144,9 @@ MIDDLEWARE_CLASSES = (
     'log.middleware.WhodidMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    # Uncomment for Debug Toolbar
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
-    #'fi-admin.settings.NonHtmlDebugToolbarMiddleware',
-
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+]
 
 ROOT_URLCONF = 'fi-admin.urls'
 
@@ -153,20 +160,15 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT_PATH, 'templates'),
 )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
+    # Django admin
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-
-    #'django_extensions',
-    #'debug_toolbar',
 
     'haystack',
     'tastypie',
@@ -197,8 +199,7 @@ INSTALLED_APPS = (
     'database',
     'classification',
     'thesaurus',
-
-)
+]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -232,45 +233,25 @@ LOGGING = {
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://localhost:8080/solr/fi'
+        'ENGINE': os.environ.get("HAYSTACK_CONNECTION_ENGINE"),
+        'URL': os.environ.get("HAYSTACK_CONNECTION_URL"),
     },
 }
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
+        'BACKEND': os.environ.get("CACHE_BACKEND"),
+        'LOCATION': os.environ.get("CACHE_LOCATION"),
     }
 }
 
-# Haystack signal for automatic update of Solr index when the model is saved/updated
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-
-SEARCH_SERVICE_URL = 'http://srv.bvsalud.org/'
-
-DECS_LOOKUP_SERVICE = 'http://search.bvsalud.org/portal/decs-locator/?mode=dataentry'
-
-RECAPTCHA_PRIVATE_KEY = ''
-
-ITEMS_PER_PAGE = 20
-LOGIN_URL = '/login/'
-
-DEFAULT_COOPERATIVE_CENTER = 'BR1.1'
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+)
 
 AUTHENTICATION_BACKENDS = (
     'biremelogin.authenticate.EmailModelBackend',
 )
-
-BIREMELOGIN_BASE_URL = "https://accounts.bireme.org"
-SITE_URL = ""
-BIREMELOGIN_SERVICE = ""
-GOOGLE_ANALYTICS_ID = ""
-VIEW_DOCUMENTS_BASE_URL = ""
-DEDUP_SERVICE_URL = ""
-VIEW_DEDUP_ARTICLE_DETAIL = ""
-DEDUP_PUT_URL = ""
-GOOGLE_MAPS_APIKEY = ""
 
 TINYMCE_JS_URL = "/static/js/tinymce/tinymce.min.js"
 
@@ -287,6 +268,7 @@ TINYMCE_DEFAULT_CONFIG = {
 # for settings_context_processor
 TEMPLATE_VISIBLE_SETTINGS = (
     'GOOGLE_ANALYTICS_ID',
+    'SITE_URL'
 )
 
 # don't registry changes at specific fields on audit log (ex. control fields)
@@ -302,15 +284,69 @@ FILE_UPLOAD_PERMISSIONS = 0444
 # 10MB - 10485760
 MAX_UPLOAD_SIZE = "73400320" #70MB
 
-# Debug toolbar settings
-DEBUG_TOOLBAR = False
-DEBUG_TOOLBAR_PATCH_SETTINGS = False
-INTERNAL_IPS = ('127.0.0.1',)
+##### FI-ADMIN SETTINGS ####
 
-# Enable/disable MySQL fulltext search
-FULLTEXT_SEARCH=False
+ITEMS_PER_PAGE = 20
+LOGIN_URL = '/login/'
+DEFAULT_COOPERATIVE_CENTER = 'BR1.1'
+BIREMELOGIN_SERVICE = ''
 
-try:
-    from settings_local import *
-except ImportError:
-    pass
+EXPOSE_API_ONLY = int(os.environ.get("EXPOSE_API_ONLY"), 0)
+
+HAYSTACK_SIGNAL_PROCESSOR = os.environ.get("HAYSTACK_SIGNAL_PROCESSOR")
+
+SITE_URL = os.environ.get("SITE_URL")
+BIREMELOGIN_BASE_URL = os.environ.get("BIREMELOGIN_BASE_URL")
+VIEW_DOCUMENTS_BASE_URL = os.environ.get("VIEW_DOCUMENTS_BASE_URL")
+
+SEARCH_SERVICE_URL = os.environ.get("SEARCH_SERVICE_URL")
+DECS_LOOKUP_SERVICE = os.environ.get("DECS_LOOKUP_SERVICE")
+GOOGLE_ANALYTICS_ID = os.environ.get("GOOGLE_ANALYTICS_ID")
+DEDUP_SERVICE_URL = os.environ.get("DEDUP_SERVICE_URL")
+DEDUP_ARTICLE_DETAIL = os.environ.get("DEDUP_ARTICLE_DETAIL")
+DEDUP_PUT_URL = os.environ.get("DEDUP_PUT_URL")
+DECS_HIGHLIGHTER_URL = os.environ.get("DECS_HIGHLIGHTER_URL")
+
+RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY")
+GOOGLE_MAPS_APIKEY = os.environ.get("GOOGLE_MAPS_APIKEY")
+
+FULLTEXT_SEARCH = os.environ.get("FULLTEXT_SEARCH")
+
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS")
+
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_FROM = os.environ.get("EMAIL_FROM")
+
+
+# Enable debug_toolbar bypass INTERNAL_IPS parameter
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG_TOOLBAR
+}
+
+
+if DEBUG_TOOLBAR:
+    INSTALLED_APPS.append('debug_toolbar')
+
+    debug_toolbar_middleware = ['debug_toolbar.middleware.DebugToolbarMiddleware', 'fi-admin.utils.NonHtmlDebugToolbarMiddleware']
+    MIDDLEWARE_CLASSES.extend(debug_toolbar_middleware)
+
+if 'test' in sys.argv:
+    logging.disable(logging.CRITICAL)
+    DEBUG = False
+    TEMPLATE_DEBUG = False
+    TESTS_IN_PROGRESS = True
+    MIGRATION_MODULES = DisableMigrations()
+    HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.BaseSignalProcessor'
+
+
+class DisableMigrations(object):
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return "notmigrations"
+
+
