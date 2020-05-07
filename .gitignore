@@ -9,7 +9,6 @@ manage-dev.py
 database.db
 database.old
 fabric/environment.py
-biremelogin
 bireme/templates/version.txt
 fixtures/
 static_files/
