@@ -210,7 +210,7 @@ if 'rosetta' in settings.INSTALLED_APPS:
         url(r'^rosetta/', include('rosetta.urls')),
     )
 
-if settings.DEBUG or settings.EXPOSE_API_ONLY:
+if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG_TOOLBAR:

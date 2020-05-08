@@ -1,5 +1,3 @@
-default: test
-
 COMPOSE_FILE_DEV = docker-compose-dev.yml
 COMPOSE_FILE_API = docker-compose-api.yml
 
@@ -27,7 +25,7 @@ dev_compose_ps:
 dev_compose_rm:
 	@docker-compose -f $(COMPOSE_FILE_DEV) rm -f
 
-dev_compose_exec_shell_webapp:
+dev_compose_exec_shell:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec app sh
 
 dev_compose_make_test:
