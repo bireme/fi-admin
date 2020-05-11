@@ -70,7 +70,7 @@ class InstGenericListView(LoginRequiredView, ListView):
 
             # search by cc code
             elif bool(re.match(r"^[A-Za-z]{2}[0-9]+", search)):
-                object_list = self.model.objects.filter(cc_code=search)
+                object_list = self.model.objects.filter(cc_code__istartswith=search)
 
             # search by name or acronym
             else:
