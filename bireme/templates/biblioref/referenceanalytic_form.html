@@ -59,11 +59,6 @@
         {% endif %}
     </ul>
 
-    <div class="dedup-alert well fixed-alert" style="display: none">
-        <button type="button" class="close" data-dismiss="alert">&nbsp;&nbsp;&nbsp;&times;</button>
-        <strong><i class="icon icon-warning-sign"></i> {% trans "Possible duplication" %} <a href="#" data-toggle="modal" data-target="#dedup_result">({% trans "check" %})</a></strong>
-    </div>
-
     <form method="POST" enctype="multipart/form-data" class="reference-form">
         {% csrf_token %}
         <!-- METADATA FORMSET -->
@@ -420,7 +415,7 @@
                 var decs_op = decs_data[2];
                 var decs_primary = decs_data[3];
 
-                console.log(decs_data);
+                //console.log(decs_data);
                 if (decs_op == 'ADD'){
                     decs_field = null;
                     total_lines = $('#id_main-descriptor-content_type-object_id-TOTAL_FORMS').val();
@@ -539,67 +534,98 @@
         $("#id_title").bind("change", check_duplication);
 
         function check_duplication() {
-            status = $('#id_status').val();
-            title_val = $("#id_title").val();
+          $( '#dedup-alert' ).remove();
 
-            if (status < 1 && title_val){
-                obj = jQuery.parseJSON(title_val);
-                journal = "{{ reference_source.title_serial }}"
-                title = obj[0].text;
-                publication_year = "{{ reference_source.publication_date_normalized|slice:":4" }}";
-                $.ajax({
-                  method: "get",
-                  url: "{{ settings.DEDUP_SERVICE_URL }}",
-                  data: { database: "lilacs_Sas", schema: "LILACS_Sas_Three",
-                          "ano_publicacao": publication_year, "titulo_artigo": title, "titulo_revista": journal},
-                  dataType: "json",
-                  success: function(data){
-                      articles = data.result;
-                      duplicates_total = 0;
-                      {% if object.pk %}
-                          ref_id = '{{ object.pk }}';
-                          for (i = 0; i < articles.length; i++){
-                              article = articles[i];
-                              article_id = article['id'].split('-')[1]; // get only id number. ex. fiadmin-9999-pt
-                              if (article_id != ref_id){
-                                  duplicates_total++;
-                              }
-                          }
-                      {% else %}
-                          duplicates_total = data.total;
-                      {% endif %}
+          var status = $( '#id_status' ).val();
+          var title_val = $( '#id_title' ).val();
+          var isUnpublishedTitle = status < 1 && title_val;
 
-                      if (duplicates_total > 0) {
-                          $('.dedup-alert').show();
-                          $('.dedup-alert').addClass('animated shake');
+          if ( !isUnpublishedTitle ) {
+            return ;
+          }
 
-                          $('#dedup_result .modal-body').empty();
-                          for (i = 0; i < articles.length; i++){
-                              pos = i+1;
-                              article = articles[i];
-                              article_id = article['id'];
-                              detail_url = '';
-                              if (article_id.startsWith('fiadmin')){
-                                article_id = article['id'].split('-')[1];
-                                if (article_id != ref_id){
-                                    detail_url = '{% url "list_biblioref" %}edit-analytic/' + article_id;
-                                }
-                              }else{
-                                detail_url = '{{settings.DEDUP_ARTICLE_DETAIL}}lil-' + article_id;
-                              }
-                              if (detail_url != ''){
-                                  $('#dedup_result .modal-body').append($('<div>', {
-                                        html: pos + '. <a href="' + detail_url + '" target="_dedup">' + article['titulo_artigo']
-                                          + '</a> - ' + article['titulo_revista'] + ' (' + article['ano_publicacao'] + ')'
-                                  }));
-                             }
-                          }
-                      }else{
-                        $('.dedup-alert').hide();
-                      }
+          var obj = jQuery.parseJSON(title_val);
+          var journal = "{{ reference_source.title_serial }}";
+          var title = obj[0].text;
+          var publication_year = '{{ reference_source.publication_date_normalized|slice:":4" }}';
+
+          $.ajax(
+            {
+              method: "get",
+              url: "{{ settings.DEDUP_SERVICE_URL }}",
+              data: {
+                database: "lilacs_Sas",
+                schema: "LILACS_Sas_Three",
+                ano_publicacao: publication_year,
+                titulo_artigo: title,
+                titulo_revista: journal
+              },
+              dataType: "json",
+              success: function(data) {
+                //console.log(data);
+                var articles = data.result;
+                var duplicates_total = 0;
+                var ref_id = '';
+
+                {% if object.pk %}
+                ref_id = '{{ object.pk }}';
+
+                for (var i = 0; i < articles.length; i++) {
+                  var article = articles[i];
+                  var article_id = article['id'].split('-')[1]; // get only id number. ex. fiadmin-9999-pt
+
+                  if (article_id != ref_id) {
+                    duplicates_total++;
                   }
-               });
-           }
+                }
+                {% else %}
+                duplicates_total = data.total;
+                {% endif %}
+
+                if (duplicates_total == 0) {
+                  return ;
+                }
+
+                var duplicationPanelTitle = '{% trans "Possible duplication" %}';
+                var duplicationDiv = `
+                  <div class="row" id="dedup-alert"">
+                    <div class="span12"><h3>${duplicationPanelTitle}</h3></div>
+                    <div class="span12 alert alert-block" id="dedup-results"></div>
+                  </div>`;
+
+                $( '#id_title' ).parent( 'li' ).append( duplicationDiv );
+
+                var hasDuplicatesToShow = false;
+                for (var i = 0; i < articles.length; i++) {
+                  var pos = i + 1;
+                  var article = articles[i];
+                  var article_id = article['id'];
+                  var detail_url = '';
+
+                  if (article_id.startsWith('fiadmin')) {
+                    article_id = article['id'].split('-')[1];
+
+                    if (article_id != ref_id) {
+                      detail_url = `{% url "list_biblioref" %}edit-analytic/${article_id}`;
+                    }
+                  } else {
+                    detail_url = `{{ settings.DEDUP_ARTICLE_DETAIL }}lil-${article_id}`;
+                  }
+
+                  var duplicationLink = `
+                    ${pos}
+                    <a href="${detail_url}" target="_blank">${article['titulo_artigo']}</a>
+                    - ${article['titulo_revista']} (${article['ano_publicacao']})`;
+
+                  $( '#dedup-results' ).append(
+                    $( '<div>', { html: duplicationLink } )
+                  );
+                }
+
+                $( '#dedup-alert' ).addClass( 'animated shake' );
+              }
+            }
+          );
         };
 
         // open all fieldsets when form erros
