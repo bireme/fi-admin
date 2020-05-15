@@ -70,7 +70,7 @@ class InstGenericListView(LoginRequiredView, ListView):
 
             # search by cc code
             elif bool(re.match(r"^[A-Za-z]{2}[0-9]+", search)):
-                object_list = self.model.objects.filter(cc_code=search)
+                object_list = self.model.objects.filter(cc_code__istartswith=search)
 
             # search by name or acronym
             else:
@@ -117,7 +117,12 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         type_list = Type.objects.all()
         category_list = Category.objects.all()
-        country_list = Institution.objects.values('country_id', 'country__name').distinct()
+        country_id_list  = Institution.objects.values('country_id').distinct()
+        country_objects = Country.objects.filter(id__in=country_id_list)
+
+        # get countries and sort by name
+        country_list = [(c.pk, unicode(c)) for c in country_objects]
+        country_list.sort(key=lambda c: c[1])
 
         context['actions'] = self.actions
         context['user_role'] = user_role

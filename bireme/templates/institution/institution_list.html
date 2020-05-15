@@ -94,7 +94,7 @@
                             <select name="filter_country">
                                 <option value="">{% trans "All" %}</option>
                                 {% for country in country_list %}
-                                    <option value="{{country.country_id}}" {% if actions.filter_country == country.country_id|slugify %}selected="true"{% endif %}>{{ country.country__name }}</option>
+                                    <option value="{{country.0}}" {% if actions.filter_country == country.0|slugify %}selected="true"{% endif %}>{{ country.1 }}</option>
                                 {% endfor %}
                             </select>
 
