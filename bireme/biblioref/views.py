@@ -26,6 +26,7 @@ from utils.views import LoginRequiredView
 from forms import *
 
 import json
+import requests
 
 JOURNALS_FASCICLE = "S"
 
