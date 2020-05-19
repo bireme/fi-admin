@@ -32,6 +32,8 @@ from main.models import ThematicArea
 import mimetypes
 
 import os
+import json
+import requests
 
 @login_required
 def list_events(request):
@@ -175,9 +177,8 @@ def create_edit_event(request, **kwargs):
             form.save()
             # save many-to-many relation fields
             form.save_m2m()
-
-            output['alert'] = _("Event successfully edited.")
-            output['alerttype'] = "alert-success"
+            # update DeDup service
+            update_dedup_service(event)
 
             return redirect('events.views.list_events')
     # new/edit
@@ -345,3 +346,24 @@ def delete_type(request, type):
     output['alerttype'] = "alert-success"
 
     return render_to_response('events/types.html', output, context_instance=RequestContext(request))
+
+
+# update DeDup service
+def update_dedup_service(obj):
+    if obj.status < 2:
+        dedup_schema = 'Direv_Three'
+        start_date = obj.start_date.strftime('%Y-%m-%d')
+        dedup_params = {"titulo": obj.title, "data_inicio": start_date, "url": obj.link}
+
+        json_data = json.dumps(dedup_params, ensure_ascii=True)
+        dedup_headers = {'Content-Type': 'application/json'}
+
+        ref_id = obj.id
+
+        dedup_url = "{0}/{1}/{2}/{3}".format(settings.DEDUP_PUT_URL, 'Direv', dedup_schema, ref_id)
+
+        try:
+            dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
+            print(dedup_request)
+        except:
+            pass

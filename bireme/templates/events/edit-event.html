@@ -98,30 +98,33 @@
                                 {{ hidden }}
                             {% endfor %}
                             {{ form.non_field_errors }}
+                            <ul>
                             {% for field in form.visible_fields %}
                                 {% if field.field|fieldtype == 'BooleanField' %}
                                     <span>{{ field.label }}</span>
                                     {{ field }}
                                 {% else %}
-                                    <label for="{{ field.auto_id }}">
-                                        {% if field.name in help_fields %}
-                                            <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/events/{{field.name}}/" class="field_with_help">
-                                        {% endif %}
-                                        {% if field.field.required %}
-                                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                        {% else %}
-                                            {{ field.label }}
-                                        {% endif %}
-                                        {% if field.name in help_fields %}
-                                            </a>
-                                        {% endif %}
-                                    </label>
-                                    <p class="muted">{{ field.help_text }}</p>
-                                    {{ field }}
+                                    <li>
+                                        <label for="{{ field.auto_id }}">
+                                            {% if field.name in help_fields %}
+                                                <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/events/{{field.name}}/" class="field_with_help">
+                                            {% endif %}
+                                            {% if field.field.required %}
+                                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                            {% else %}
+                                                {{ field.label }}
+                                            {% endif %}
+                                            {% if field.name in help_fields %}
+                                                </a>
+                                            {% endif %}
+                                        </label>
+                                        <p class="muted">{{ field.help_text }}</p>
+                                        {{ field }}
+                                    </li>
                                 {% endif %}
                                 {{ field.errors }}
-                                <br/>
                             {% endfor %}
+                            </ul>
                         </fieldset>
                     {% endif %}
 
@@ -367,22 +370,26 @@
                         {{ hidden }}
                     {% endfor %}
                     {{ form_error_report.non_field_errors }}
+                    <ul>
                     {% for field in form_error_report.visible_fields %}
                         {% if field.name == 'status' %}
                             <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0"/>
                         {% else %}
-                            <label for="{{ field.auto_id }}">
-                                {% if field.field.required %}
-                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                {% else %}
-                                    {{ field.label }}
-                                {% endif %}
-                            </label>
-                            <p class="muted">{{ field.help_text }}</p>
-                            {{ field.errors }}
-                            {{ field }}
+                            <li>
+                                <label for="{{ field.auto_id }}">
+                                    {% if field.field.required %}
+                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                    {% else %}
+                                        {{ field.label }}
+                                    {% endif %}
+                                </label>
+                                <p class="muted">{{ field.help_text }}</p>
+                                {{ field.errors }}
+                                {{ field }}
+                            </li>
                         {% endif %}
                     {% endfor %}
+                    </ul>
                 </fieldset>
 
                 <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'Cancel' %}</button>
@@ -530,6 +537,95 @@
 
         }
         // [END region_fillform]
+
+        // watch for change at specific fields for duplicated dectection
+        $("#id_start_date, #id_title").bind("change", check_duplication);
+
+        function check_duplication() {
+          $( '#dedup-alert' ).remove();
+
+          var status = $( '#id_status' ).val();
+          var title = $( '#id_title' ).val();
+          var start_date_val = $( '#id_start_date' ).val();
+
+          var minimumFieldsToCheck = title && start_date_val;
+
+          if ( !minimumFieldsToCheck ) {
+            return ;
+          }
+          var start_date = start_date_val.substring(6,10) + '-' + start_date_val.substring(3,5) + '-' + start_date_val.substring(0,2);
+
+          $.ajax(
+            {
+              method: "get",
+              url: "{{ settings.DEDUP_SERVICE_URL }}",
+              data: {
+                database: "Direv",
+                schema: "Direv_Three",
+                titulo: title,
+                data_inicio: start_date
+              },
+              dataType: "json",
+              success: function(data) {
+                //console.log(data);
+                var events = data.result;
+                var duplicates_total = 0;
+                var ref_id = '';
+
+                {% if event.pk %}
+                ref_id = '{{ event.pk }}';
+
+                for (var i = 0; i < events.length; i++) {
+                  var event = events[i];
+                  var event_id = event['id'];
+
+                  if (event_id != ref_id) {
+                    duplicates_total++;
+                  }
+                }
+                {% else %}
+                duplicates_total = data.total;
+                {% endif %}
+
+                if (duplicates_total == 0) {
+                  return ;
+                }
+
+                var duplicationPanelTitle = '{% trans "Possible duplication" %}';
+                var duplicationDiv = `
+                  <div class="row" id="dedup-alert"">
+                    <div class="span12"><h3>${duplicationPanelTitle}</h3></div>
+                    <div class="span12 alert alert-block" id="dedup-results"></div>
+                  </div>`;
+
+                $('#id_start_date').parent('li').append( duplicationDiv );
+
+                var hasDuplicatesToShow = false;
+                for (var i = 0; i < events.length; i++) {
+                  var pos = i + 1;
+                  var event = events[i];
+                  var event_id = event['id'];
+                  var data_inicio_val = event['data_inicio'];
+                  var data_inicio = data_inicio_val.substring(8,10) + '/' + data_inicio_val.substring(5,7) + '/' + data_inicio_val.substring(0,4);
+                  var detail_url = '';
+
+                  detail_url = `/event/edit/${event_id}`;
+
+                  var duplicationLink = `
+                    <a href="${detail_url}" target="_blank">${event['titulo']}</a>
+                    - ${data_inicio} (${event['url']})`;
+
+                  $( '#dedup-results' ).append(
+                    $( '<div>', { html: duplicationLink } )
+                  );
+                }
+
+                $( '#dedup-alert' ).addClass( 'animated shake' );
+              }
+            }
+          );
+        };
+
 
    </script>
 {% endblock %}
