@@ -5,8 +5,10 @@ services:
         build:
             context: .
             target: dev
-        ports:
-            - "8000:8000"
+        #ports:
+        #    - "8000:8000"
+        expose:
+            - 8000
         volumes:
             - ./bireme/:/app/
         env_file:
@@ -14,3 +16,8 @@ services:
         container_name: fi-admin
 
         command: gunicorn --workers 3 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000 --log-level DEBUG
+        networks:
+            - nginx-proxy
+networks:
+    nginx-proxy:
+        external: true

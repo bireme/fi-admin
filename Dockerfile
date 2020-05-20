@@ -1,4 +1,4 @@
-# BASE STAGE
+########### BASE STAGE ###########
 FROM python:2.7.13-alpine AS base
 
 # set environment variables
@@ -25,7 +25,7 @@ EXPOSE 8000
 WORKDIR /app
 
 
-# DEV STAGE
+########### DEV STAGE ###########
 FROM base AS dev
 
 # copy dev requirements
@@ -35,10 +35,14 @@ COPY ./requirements-dev.txt /app/
 RUN pip install --no-cache-dir -r /app/requirements-dev.txt
 
 
-# PRODUCTION STAGE
+########### PRODUCTION STAGE ###########
 FROM base AS prod
 
+# create directory for collectstatic command
 RUN mkdir /app/static_files
 
+# set local user
+USER appuser
+
 # copy aplication files to image
-#COPY ./bireme/ /app/
+COPY ./bireme/ /app/

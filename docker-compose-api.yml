@@ -13,6 +13,7 @@ services:
         env_file:
             - ./.env.api
         container_name: fi-admin-api
+        user: appuser
         command: gunicorn --workers 4 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000 
 
     nginx:
