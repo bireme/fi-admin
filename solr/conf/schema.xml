@@ -75,13 +75,13 @@
       <analyzer type="index">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
         <filter class="solr.ISOLatin1AccentFilterFactory"/>
-        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0"/>
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="1"/>
         <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
         <filter class="solr.ISOLatin1AccentFilterFactory"/>
-        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0"/>
+        <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="1"/>
         <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
     </fieldType>
@@ -96,9 +96,10 @@
     </fieldType>
 
     <!-- lowercases the entire field value, keeping it as a single token.  -->
-    <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
+    <fieldType name="string_lowercase" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.ISOLatin1AccentFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory" />
       </analyzer>
     </fieldType>
@@ -217,8 +218,8 @@
    <field name="ths_regid" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="ths_conceptui" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="ths_decs_code" type="string" indexed="true" stored="true" multiValued="false"/>
-   <field name="ths_treenumber" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="ths_exact_term" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="ths_treenumber" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="ths_exact_term" type="string_lowercase" indexed="true" stored="false" multiValued="true"/>
    <field name="ths_termall" type="text" indexed="true" stored="false" multiValued="true"/>
 
    <!-- multiple sources -->
