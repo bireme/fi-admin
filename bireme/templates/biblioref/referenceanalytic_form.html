@@ -601,6 +601,7 @@
                   var article = articles[i];
                   var article_id = article['id'];
                   var detail_url = '';
+                  var article_title = article['titulo_artigo'];
 
                   if (article_id.startsWith('fiadmin')) {
                     article_id = article['id'].split('-')[1];
@@ -611,14 +612,17 @@
                   } else {
                     detail_url = `{{ settings.DEDUP_ARTICLE_DETAIL }}lil-${article_id}`;
                   }
+                  // remove language info of article title. ex. (es)
+                  if (article_title.substring(0,1) == '('){
+                      article_title = article_title.substr(4);
+                  }
 
-                  var duplicationLink = `
-                    ${pos}
-                    <a href="${detail_url}" target="_blank">${article['titulo_artigo']}</a>
-                    - ${article['titulo_revista']} (${article['ano_publicacao']})`;
+                  var duplicationLink = `                    
+                    <a href="${detail_url}" target="_blank">${article_title}</a>
+                    - ${article['titulo_revista']} - ${article['ano_publicacao']}`;
 
                   $( '#dedup-results' ).append(
-                    $( '<div>', { html: duplicationLink } )
+                    $( '<p>', { html: duplicationLink }, '</p>' )
                   );
                 }
 
