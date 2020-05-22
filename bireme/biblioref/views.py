@@ -743,6 +743,24 @@ def update_dedup_service(obj):
             except:
                 pass
 
+    elif obj.document_type() == 'S':
+            dedup_schema = 'LILACS_Sas_Source'
+            dedup_params = {"data_iso": obj.publication_date_normalized[:4], "ISSN": obj.issn,
+                            "numero_fasciculo": obj.issue_number, "volume_fasciculo": obj.volume_serial,
+                            "titulo_revista": obj.title_serial}
+
+            json_data = json.dumps(dedup_params, ensure_ascii=True)
+            dedup_headers = {'Content-Type': 'application/json'}
+            ref_id = "fiadmin-{0}".format(obj.id)
+
+            dedup_url = "{0}/{1}/{2}/{3}".format(settings.DEDUP_PUT_URL, 'lilacs_Sas_Source', dedup_schema, ref_id)
+
+            try:
+                dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
+            except:
+                pass
+
+
 
 # update auxiliary field reference_title
 def update_reference_tite(source):
