@@ -364,6 +364,5 @@ def update_dedup_service(obj):
 
         try:
             dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
-            print(dedup_request)
         except:
             pass

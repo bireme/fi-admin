@@ -87,27 +87,31 @@
                                 {{ hidden }}
                             {% endfor %}
                             {{ form.non_field_errors }}
+                            <ul>
                             {% for field in form.visible_fields %}
-                                <label for="{{ field.auto_id }}">
-                                    {% if field.name in help_fields %}
-                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/resources/{{field.name}}/" class="field_with_help">
+                                <li>
+                                    <label for="{{ field.auto_id }}">
+                                        {% if field.name in help_fields %}
+                                            <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/resources/{{field.name}}/" class="field_with_help">
+                                        {% endif %}
+                                        {% if field.field.required %}
+                                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                        {% else %}
+                                            {{ field.label }}
+                                        {% endif %}
+                                        {% if field.name in help_fields %}
+                                            </a>
+                                        {% endif %}
+                                    </label>
+                                    <p class="muted">{{ field.help_text }}</p>
+                                    {{ field.errors }}
+                                    {{ field }}
+                                    {% if field.name == 'title' %}
+                                        <span><a href="javascript:consult_VHL('{{field.auto_id}}', 'LIS', '{{LANGUAGE_CODE|slice:":2"}}')">{%trans 'Search for duplicates in the VHL' %}</a></span>
                                     {% endif %}
-                                    {% if field.field.required %}
-                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                    {% else %}
-                                        {{ field.label }}
-                                    {% endif %}
-                                    {% if field.name in help_fields %}
-                                        </a>
-                                    {% endif %}
-                                </label>
-                                <p class="muted">{{ field.help_text }}</p>
-                                {{ field.errors }}
-                                {{ field }}
-                                {% if field.name == 'title' %}
-                                    <span><a href="javascript:consult_VHL('{{field.auto_id}}', 'LIS', '{{LANGUAGE_CODE|slice:":2"}}')">{%trans 'Search for duplicates in the VHL' %}</a></span>
-                                {% endif %}
+                                </li>
                             {% endfor %}
+                            </ul>
                         </fieldset>
 
                     {% endif %}
@@ -481,5 +485,85 @@
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
         }
 
+        // watch for change at specific fields for duplicated dectection
+        $("#id_title ,#id_link").bind("change", check_duplication);
+
+        function check_duplication() {
+          $( '#dedup-alert' ).remove();
+
+          var title = $('#id_title').val();
+          var link = $('#id_link').val();
+
+          if ( !title ) {
+            return ;
+          }
+
+          $.ajax(
+            {
+              method: "get",
+              url: "{{ settings.DEDUP_SERVICE_URL }}",
+              data: {
+                database: "LIS",
+                schema: "LIS_Two",
+                titulo: title,
+                url: link
+              },
+              dataType: "json",
+              success: function(data) {
+                //console.log(data);
+                var resources = data.result;
+                var duplicates_total = 0;
+                var ref_id = '';
+
+                {% if resource.pk %}
+                ref_id = '{{ resource.pk }}';
+
+                for (var i = 0; i < resources.length; i++) {
+                  var resource = resources[i];
+                  var resource_id = resource['id'];
+
+                  if (resource_id != ref_id) {
+                    duplicates_total++;
+                  }
+                }
+                {% else %}
+                duplicates_total = data.total;
+                {% endif %}
+
+                if (duplicates_total == 0) {
+                  return ;
+                }
+
+                var duplicationPanelTitle = '{% trans "Possible duplication" %}';
+                var duplicationDiv = `
+                  <div class="row" id="dedup-alert"">
+                    <div class="span12"><h3>${duplicationPanelTitle}</h3></div>
+                    <div class="span12 alert alert-block" id="dedup-results"></div>
+                  </div>`;
+
+                $('#id_title').parent('li').append( duplicationDiv );
+
+                var hasDuplicatesToShow = false;
+                for (var i = 0; i < resources.length; i++) {
+                  var pos = i + 1;
+                  var resource = resources[i];
+                  var resource_id = resource['id'];
+
+                  detail_url = `/resource/edit/${resource_id}`;
+
+                  var duplicationLink = `
+                    <a href="${detail_url}" target="_blank">${resource['titulo']}</a>
+                    - (${resource['url']})`;
+
+                  $( '#dedup-results' ).append(
+                    $( '<div>', { html: duplicationLink } )
+                  );
+                }
+
+                $('#dedup-alert').addClass('animated shake');
+              }
+            }
+          );
+        };
    </script>
 {% endblock %}

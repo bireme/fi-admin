@@ -26,12 +26,13 @@ from suggest.models import *
 from help.models import get_help_fields
 from forms import *
 from error_reporting.forms import ErrorReportForm
+from decorators import *
 
 import mimetypes
 
 import os
-
-from decorators import *
+import json
+import requests
 
 ############ Resources (LIS) #############
 
@@ -188,9 +189,8 @@ def create_edit_resource(request, **kwargs):
             # update solr index
             form.save()
             form.save_m2m()
-
-            output['alert'] = _("Resource successfully edited.")
-            output['alerttype'] = "alert-success"
+            # update DeDup service
+            update_dedup_service(resource)
 
             redirect_url = request.session.get("filtered_list", 'main.views.list_resources')
 
@@ -556,3 +556,23 @@ def delete_language(request, language_id):
     output['alerttype'] = "alert-success"
 
     return render_to_response('main/languages.html', output, context_instance=RequestContext(request))
+
+
+# update DeDup service
+def update_dedup_service(obj):
+
+    if obj.status < 2:
+        print("***update***")
+        dedup_schema = 'LIS_Two'
+        dedup_params = {"titulo": obj.title, "url": obj.link}
+
+        json_data = json.dumps(dedup_params, ensure_ascii=True)
+        dedup_headers = {'Content-Type': 'application/json'}
+
+        ref_id = obj.id
+        dedup_url = "{0}/{1}/{2}/{3}".format(settings.DEDUP_PUT_URL, 'LIS', dedup_schema, ref_id)
+
+        try:
+            dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
+        except:
+            pass
