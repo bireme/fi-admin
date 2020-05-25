@@ -53,16 +53,16 @@
                    <span class="badge badge-info">{{ paginator.count }}</span>
                {% endif %}
             </a>
+        </li>        
+        <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
+            <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
+                <strong>{% trans "All records" %}</strong>
+                {% if  actions.filter_owner == '*' %}
+                    <span class="badge badge-info">{{ paginator.count }}</span>
+                {% endif %}
+            </a>
         </li>
         {% if user_role != 'editor_llxp' %}
-            <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
-                <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
-                    <strong>{% trans "All records" %}</strong>
-                   {% if  actions.filter_owner == '*' %}
-                       <span class="badge badge-info">{{ paginator.count }}</span>
-                   {% endif %}
-                </a>
-            </li>
             <li class="{% if actions.filter_owner == 'indexed' %}active{% endif %}">
                 <a href="#tab-network" onclick="filter_owner('indexed')" data-toggle="tab">
                     <strong>{% trans "Journals indexed by my center" %}</strong>
