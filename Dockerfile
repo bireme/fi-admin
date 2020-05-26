@@ -18,7 +18,7 @@ RUN apk add --no-cache --virtual .build-deps \
     python-dev \
     && apk add --no-cache py-lxml mariadb-dev \
     && pip install --upgrade pip setuptools && pip install --no-cache-dir -r /app/requirements.txt \
-    && apk del .build-deps 
+    && apk del .build-deps
 
 EXPOSE 8000
 
@@ -38,11 +38,17 @@ RUN pip install --no-cache-dir -r /app/requirements-dev.txt
 ########### PRODUCTION STAGE ###########
 FROM base AS prod
 
+# create a app user
+RUN addgroup -S appuser && adduser -S appuser -G appuser
+
 # create directory for collectstatic command
 RUN mkdir /app/static_files
 
-# set local user
-USER appuser
-
-# copy aplication files to image
+# copy project
 COPY ./bireme/ /app/
+
+# chown all the files to the app user
+RUN chown -R appuser:appuser /app/
+
+# change to the app user
+USER appuser
