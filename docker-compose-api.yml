@@ -9,10 +9,11 @@ services:
         expose:
             - 8000
         volumes:
+            - ${PATH_APP_LOG}:/logs
             - fiadmin_static_files:/app/static_files
         env_file:
             - ./.env.api
-        command: gunicorn --workers 4 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000
+        command: gunicorn --bind 0.0.0.0:8000 fi-admin.wsgi ${GUNICORN_PARAMS}
         restart: unless-stopped
         networks:
             - nginx-proxy
@@ -20,6 +21,9 @@ services:
             resources:
                 limits:
                     memory: ${MEMORY_APP_LIMIT}
+                reservations:
+                    memory: ${MEMORY_APP_RESERVATION}
+
 
     webserver:
         image: nginx:1.18-alpine
@@ -40,6 +44,9 @@ services:
             resources:
                 limits:
                     memory: ${MEMORY_WEBSERVER_LIMIT}
+                reservations:
+                    memory: ${MEMORY_WEBSERVER_RESERVATION}
+
 
 networks:
     nginx-proxy:
