@@ -5,26 +5,45 @@ services:
         build:
             context: .
             target: prod
-        ports:
+        container_name: fi-admin-api
+        expose:
             - 8000
         volumes:
-            - ./bireme/:/app/
-            - static_volume:/app/static_files
+            - fiadmin_static_files:/app/static_files
         env_file:
             - ./.env.api
-        container_name: fi-admin-api
-        user: appuser
-        command: gunicorn --workers 4 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000 
+        command: gunicorn --workers 4 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000
+        restart: unless-stopped
+        networks:
+            - nginx-proxy
+        deploy:
+            resources:
+                limits:
+                    memory: ${MEMORY_APP_LIMIT}
 
-    nginx:
+    webserver:
         image: nginx:1.18-alpine
-        ports:
-            - 80:80
+        container_name: fi-admin-api-webserver
+        expose:
+            - 80
         volumes:
             - ./etc/nginx:/etc/nginx/conf.d
-            - static_volume:/app/static_files
+            - fiadmin_static_files:/app/static_files
         depends_on:
             - app
-        container_name: fi-admin-api-nginx
+        environment:
+            - VIRTUAL_HOST=${VIRTUAL_HOST}
+        networks:
+            - nginx-proxy
+        restart: unless-stopped
+        deploy:
+            resources:
+                limits:
+                    memory: ${MEMORY_WEBSERVER_LIMIT}
+
+networks:
+    nginx-proxy:
+        external: true
+
 volumes:
-    static_volume:
+    fiadmin_static_files:
