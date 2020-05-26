@@ -1,56 +1,55 @@
 version: '3.4'
 
 services:
-    app:
-        build:
-            context: .
-            target: prod
-        container_name: fi-admin-api
-        expose:
-            - 8000
-        volumes:
-            - ${PATH_APP_LOG}:/logs
-            - fiadmin_static_files:/app/static_files
-        env_file:
-            - ./.env.api
-        command: gunicorn --bind 0.0.0.0:8000 fi-admin.wsgi ${GUNICORN_PARAMS}
-        restart: unless-stopped
-        networks:
-            - nginx-proxy
-        deploy:
-            resources:
-                limits:
-                    memory: ${MEMORY_APP_LIMIT}
-                reservations:
-                    memory: ${MEMORY_APP_RESERVATION}
+  app:
+    container_name: fi-admin-api
+    restart: unless-stopped
+    build:
+      context: .
+      target: prod
+    expose:
+      - 8000
+    volumes:
+      - ${PATH_APP_LOG}:/logs
+      - fiadmin_static_files:/app/static_files
+    env_file:
+      - ./.env.api
+    command: gunicorn --bind 0.0.0.0:8000 fi-admin.wsgi ${GUNICORN_PARAMS}
+    networks:
+      - nginx-proxy
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_APP_LIMIT}
+        reservations:
+          memory: ${MEMORY_APP_RESERVATION}
 
-
-    webserver:
-        image: nginx:1.18-alpine
-        container_name: fi-admin-api-webserver
-        expose:
-            - 80
-        volumes:
-            - ./etc/nginx:/etc/nginx/conf.d
-            - fiadmin_static_files:/app/static_files
-        depends_on:
-            - app
-        environment:
-            - VIRTUAL_HOST=${VIRTUAL_HOST}
-        networks:
-            - nginx-proxy
-        restart: unless-stopped
-        deploy:
-            resources:
-                limits:
-                    memory: ${MEMORY_WEBSERVER_LIMIT}
-                reservations:
-                    memory: ${MEMORY_WEBSERVER_RESERVATION}
-
+  webserver:
+    container_name: fi-admin-api-webserver
+    restart: unless-stopped
+    image: nginx:1.18-alpine
+    expose:
+      - 80
+    volumes:
+      - ./etc/nginx:/etc/nginx/conf.d
+      - fiadmin_static_files:/app/static_files
+    depends_on:
+      - app
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+    networks:
+      - nginx-proxy
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_WEBSERVER_LIMIT}
+        reservations:
+          memory: ${MEMORY_WEBSERVER_RESERVATION}
 
 networks:
-    nginx-proxy:
-        external: true
+  nginx-proxy:
+    external: true
 
 volumes:
-    fiadmin_static_files:
+  fiadmin_static_files:
