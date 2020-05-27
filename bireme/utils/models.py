@@ -141,11 +141,18 @@ class AuxCode(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = AuxCodeLocal.objects.filter(auxcode_id=self.id, language=lang_code)
-        if translation:
-            return translation[0].label
-        else:
-            return self.label
+        cache_id = "auxcode-{}-{}".format(lang_code, self.id)
+        auxcode_name_local = cache.get(cache_id)
+        if not auxcode_name_local:
+            translation = AuxCodeLocal.objects.filter(auxcode_id=self.id, language=lang_code)
+            if translation:
+                auxcode_name_local = translation[0].label
+            else:
+                auxcode_name_local = self.label
+
+            cache.set(cache_id, auxcode_name_local, None)
+
+        return auxcode_name_local
 
 
 class AuxCodeLocal(models.Model):
