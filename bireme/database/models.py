@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, get_language
+from django.core.cache import cache
 
 from utils.models import Generic
 from utils.fields import MultipleAuxiliaryChoiceField
@@ -25,11 +26,18 @@ class Database(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = DatabaseLocal.objects.filter(database=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "database-{}-{}".format(lang_code, self.id)
+        database_name_local = cache.get(cache_id)
+        if not database_name_local:
+            translation = DatabaseLocal.objects.filter(database=self.id, language=lang_code)
+            if translation:
+                database_name_local = translation[0].name
+            else:
+                database_name_local = self.name
+
+            cache.set(cache_id, database_name_local, None)
+
+        return database_name_local
 
 
 class DatabaseLocal(models.Model):
