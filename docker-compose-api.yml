@@ -11,7 +11,7 @@ services:
       - 8000
     volumes:
       - ${PATH_APP_LOG}:/logs
-      - fiadmin_static_files:/app/static_files
+      - static_files:/app/static_files
     env_file:
       - ./.env.api
     command: gunicorn --bind 0.0.0.0:8000 fi-admin.wsgi ${GUNICORN_PARAMS}
@@ -32,7 +32,7 @@ services:
       - 80
     volumes:
       - ./etc/nginx:/etc/nginx/conf.d
-      - fiadmin_static_files:/app/static_files
+      - static_files:/app/static_files
     depends_on:
       - app
     environment:
@@ -52,4 +52,4 @@ networks:
     external: true
 
 volumes:
-  fiadmin_static_files:
+  static_files:
