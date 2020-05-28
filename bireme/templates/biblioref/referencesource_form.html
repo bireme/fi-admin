@@ -319,7 +319,6 @@
                 var decs_op = decs_data[2];
                 var decs_primary = decs_data[3];
 
-                console.log(decs_data);
                 if (decs_op == 'ADD'){
                     decs_field = null;
                     total_lines = $('#id_main-descriptor-content_type-object_id-TOTAL_FORMS').val();
@@ -439,13 +438,15 @@
 
         function check_duplication() {
           $( '#dedup-alert' ).remove();
+          // enable save buttons
+          $("button").attr("disabled", false);
+          $("button").removeClass("disabled");
 
           var title_serial = $('#id_title_serial').val() || $('#id_title_serial_other').val();
           var volume = $('#id_volume_serial').val();
           var issue_number = $('#id_issue_number').val();
 
           var minimumFieldsToCheck = title_serial && volume && issue_number;
-          console.log(minimumFieldsToCheck);
 
           if ( !minimumFieldsToCheck ) {
             return ;
@@ -513,6 +514,12 @@
                     $( '#dedup-results' ).append(
                         $( '<div>', { html: duplicationLink }, '</div>' )
                     );
+                    // if all fields match disable save buttons
+                    if ( title_serial == source['titulo_revista'] && volume == source['volume_fasciculo'] && issue_number == source['numero_fasciculo'] ){
+                        $("button").attr("disabled", true);
+                        $("button").addClass("disabled");
+                    }
+
                   }
                 }
 
