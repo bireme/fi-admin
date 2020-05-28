@@ -289,6 +289,9 @@ class InstitutionAdhesion(models.Model, AuditLog):
     adhesionterm = models.ForeignKey(AdhesionTerm, null=True)
     acepted = models.BooleanField(_("Acepted"), default=False)
 
+    def get_parent(self):
+        return self.institution
+
     def __unicode__(self):
         return u'Adhesion term - {0}'.format(self.institution)
 
