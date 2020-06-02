@@ -7,13 +7,14 @@ services:
     build:
       context: .
       target: prod
+    image: ${IMAGE_TAG}
     expose:
       - 8000
     volumes:
-      - ${PATH_APP_LOG}:/logs
+      - ${LOG_PATH}:/logs
       - static_files:/app/static_files
     env_file:
-      - ./.env.api
+      - ./conf/app-env-api
     command: gunicorn --bind 0.0.0.0:8000 fi-admin.wsgi ${GUNICORN_PARAMS}
     networks:
       - nginx-proxy
@@ -31,7 +32,7 @@ services:
     expose:
       - 80
     volumes:
-      - ./etc/nginx:/etc/nginx/conf.d
+      - ./conf/nginx:/etc/nginx/conf.d
       - static_files:/app/static_files
     depends_on:
       - app

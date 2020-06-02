@@ -17,3 +17,4 @@ uploads/
 .DS_Store
 .vscode/
 .env*
+conf/app-env*
