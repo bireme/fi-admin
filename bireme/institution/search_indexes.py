@@ -118,7 +118,6 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
         return cat_list
 
     def prepare_institution_type(self, obj):
-        cat_list = []
         type_list = []
         try:
             adm = Adm.objects.get(institution=obj.id)
@@ -126,27 +125,27 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
             adm = None
 
         if adm:
-            cat_list = [line.strip() for line in adm.type_history.split('\r\n') if line.strip()]
-            if 'CCR' in cat_list:
+            #adm_type_list = [line.strip() for line in adm.type_history.split('\r\n') if line.strip()]
+            adm_type_list = [type.name for type in adm.type.all()]
+            if 'CCR' in adm_type_list:
                 type_list.append('CoordinatingCentersRg')
-            if 'CCN' in cat_list:
+            if 'CCN' in adm_type_list:
                 type_list.append('CoordinatingCentersNc')
-            if 'REDEBR/CC' or 'REDEAL/CC' or 'MEDCARIB/CC' in cat_list:
+            if 'REDEBR/CC' or 'REDEAL/CC' or 'MEDCARIB/CC' in adm_type_list:
                 type_list.append('CooperatingCenters')
-            if 'LILACS' in cat_list:
+            if 'LILACS' in adm_type_list:
                 type_list.append('CooperatingCentersLILACS')
-            if 'LEYES' in cat_list:
+            if 'LEYES' in adm_type_list:
                 type_list.append('CooperatingCentersLEYES')
-            if  'REDEBR/UP' or 'REDEAL/UP' or 'MEDCARIB/UP' in cat_list:
+            if  'REDEBR/UP' or 'REDEAL/UP' or 'MEDCARIB/UP' in adm_type_list:
                 type_list.append('ParticipantsUnits')
-            if  'REDEAL' or 'REDEBR' or 'EPORT' or 'MEDCARIB' in cat_list:
+            if  'REDEAL' or 'REDEBR' or 'EPORT' or 'MEDCARIB' in adm_type_list:
                 type_list.append('VHLNetwork')
 
         return type_list
 
 
     def prepare_institution_thematic(self, obj):
-        cat_list = []
         type_list = []
         try:
             adm = Adm.objects.get(institution=obj.id)
@@ -154,18 +153,19 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
             adm = None
 
         if adm:
-            cat_list = [line.strip() for line in adm.type_history.split('\r\n') if line.strip()]
-            if 'MEDCARIB' in cat_list:
+            #type_list = [line.strip() for line in adm.type_history.split('\r\n') if line.strip()]
+            adm_type_list = [type.name for type in adm.type.all()]
+            if 'MEDCARIB' in adm_type_list:
                 type_list.append('MedCarib')
-            if 'ENFERMAGEM' in cat_list:
+            if 'ENFERMAGEM' in adm_type_list:
                 type_list.append('Nursing')
-            if 'FRONTERIZA' in cat_list:
+            if 'FRONTERIZA' in adm_type_list:
                 type_list.append('Border')
-            if 'DESASTRES' in cat_list:
+            if 'DESASTRES' in adm_type_list:
                 type_list.append('Disastres')
-            if 'PSICOLOGIA' in cat_list:
+            if 'PSICOLOGIA' in adm_type_list:
                 type_list.append('Psychology')
-            if 'MTCI' in cat_list:
+            if 'MTCI' in adm_type_list:
                 type_list.append('MTCI')
 
         return type_list
