@@ -67,7 +67,15 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
 
         contact_list = Contact.objects.filter(institution=obj.id)
         for contact in contact_list:
-            contact_details = [contact.name, contact.email, contact.country_area_code, contact.phone_number]
+            if contact.country_area_code:
+                contact_phone = "+" + contact.country_area_code + " " + contact.phone_number
+            else:
+                contact_phone = contact.phone_number
+
+            contact_details = [contact.name, contact.email, contact_phone]
+            # remove empty data
+            contact_details = filter(None, contact_details)
+
             contact_item = " | ".join(contact_details)
 
             output_list.append(contact_item)
