@@ -13,10 +13,10 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
     zipcode = indexes.CharField(model_attr='zipcode', null=True)
     country = indexes.CharField()
     country_code = indexes.CharField()
-    type = indexes.MultiValueField()
+    #type = indexes.MultiValueField()
     institution_type = indexes.MultiValueField()
     institution_thematic = indexes.MultiValueField()
-    category = indexes.MultiValueField()
+    #category = indexes.MultiValueField()
     contact = indexes.MultiValueField()
     link = indexes.MultiValueField()
     user = indexes.MultiValueField()
@@ -68,7 +68,7 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
         contact_list = Contact.objects.filter(institution=obj.id)
         for contact in contact_list:
             contact_details = [contact.name, contact.email, contact.country_area_code, contact.phone_number]
-            contact_item = " ".join(contact_details)
+            contact_item = " | ".join(contact_details)
 
             output_list.append(contact_item)
 
