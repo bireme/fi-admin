@@ -72,7 +72,12 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
             else:
                 contact_phone = contact.phone_number
 
-            contact_details = [contact.name, contact.email, contact_phone]
+            if contact.job_title:
+                contact_name = u"{0} ({1})".format(contact.name, contact.job_title)
+            else:
+                contact_name = contact.name
+
+            contact_details = [contact_name, contact.email, contact_phone]
             # remove empty data
             contact_details = filter(None, contact_details)
 
