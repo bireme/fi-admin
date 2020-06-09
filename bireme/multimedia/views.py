@@ -82,11 +82,12 @@ class MultimediaListView(LoginRequiredView, ListView):
         thematic_list = ThematicArea.objects.all().order_by('name')
         user_list = User.objects.filter(is_superuser=False).order_by('username')
         # mantain in user filter list only users from the same CCS (CC's in the network) as request.user
+        '''
         for user in user_list:
             user_cc = user.profile.get_attribute('cc')
             if user_cc == user_data['user_cc'] or user_cc in user_data['ccs']:
                 user_filter_list.append(user)
-
+        '''
         cc_filter_list = user_data['ccs']
         # remove duplications from list
         cc_filter_list = list(set(cc_filter_list))

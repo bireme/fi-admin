@@ -29,7 +29,7 @@ import json
 
 class ReferenceResource(CustomResource):
     class Meta:
-        queryset = Reference.objects.all()
+        queryset = Reference.objects.prefetch_related('indexed_database', 'created_by', 'updated_by').all()
         allowed_methods = ['get']
         serializer = ISISSerializer(formats=['json', 'xml', 'isis_id'], field_tag=field_tag_map)
         resource_name = 'bibliographic'
