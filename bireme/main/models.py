@@ -41,11 +41,18 @@ class SourceType(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = SourceTypeLocal.objects.filter(source_type=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "main_sourcetype-{}-{}".format(lang_code, self.id)
+        sourcetype_local = cache.get(cache_id)
+        if not sourcetype_local:
+            translation = SourceTypeLocal.objects.filter(source_type=self.id, language=lang_code)
+            if translation:
+                sourcetype_local = translation[0].name
+            else:
+                sourcetype_local = self.name
+
+            cache.set(cache_id, sourcetype_local, None)
+
+        return sourcetype_local
 
 
 class SourceTypeLocal(models.Model):
@@ -81,12 +88,18 @@ class SourceLanguage(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = SourceLanguageLocal.objects.filter(source_language=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "main_sourcelanguage-{}-{}".format(lang_code, self.id)
+        sourcelanguage_local = cache.get(cache_id)
+        if not sourcelanguage_local:
+            translation = SourceLanguageLocal.objects.filter(source_language=self.id, language=lang_code)
+            if translation:
+                sourcelanguage_local = translation[0].name
+            else:
+                sourcelanguage_local = self.name
 
+            cache.set(cache_id, sourcelanguage_local, None)
+
+        return sourcelanguage_local
 
 class SourceLanguageLocal(models.Model):
 
