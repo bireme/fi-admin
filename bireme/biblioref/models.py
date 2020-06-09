@@ -112,7 +112,6 @@ class Reference(Generic, AuditLog):
     indexer_cc_code = models.CharField(_('Indexed by'), max_length=55, blank=True)
 
     # relations
-    logs = GenericRelation(LogEntry)
     collection = GenericRelation(Relationship)
 
     def __init__(self, *args, **kwargs):
