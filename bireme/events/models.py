@@ -2,6 +2,7 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 from django.utils import timezone
+from django.core.cache import cache
 
 from utils.models import Generic, Country
 from main.choices import LANGUAGES_CHOICES
@@ -32,12 +33,18 @@ class EventType(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = EventTypeLocal.objects.filter(event_type=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "events_eventtype-{}-{}".format(lang_code, self.id)
+        eventtype_local = cache.get(cache_id)
+        if not eventtype_local:
+            translation = EventTypeLocal.objects.filter(event_type=self.id, language=lang_code)
+            if translation:
+                eventtype_local = translation[0].name
+            else:
+                eventtype_local = self.name
 
+            cache.set(cache_id, eventtype_local, None)
+
+        return eventtype_local
 
 class EventTypeLocal(models.Model):
 
