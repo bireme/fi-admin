@@ -55,6 +55,11 @@ comp_info_section = ('comp_info', {'fields': ['descriptive_information', 'text_l
                                    'legend': _('Complementary Information'),
                                    'classes': ['collapse']})
 
+comp_info_section_doi = ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi_number'],
+                                       'legend': _('Complementary Information'),
+                                       'classes': ['collapse']})
+
+
 subject_section = ('content_data', {'fields': ['author_keyword'],
                                     'legend': _('Subject'),
                                     'classes': ['collapse']})
@@ -154,7 +159,7 @@ FIELDS_BY_DOCUMENT_TYPE['Mm'] = [indexed_databases,
 
                                  monographic_section,
 
-                                 comp_info_section,
+                                 comp_info_section_doi,
 
                                  other_notes_section,
 
@@ -181,7 +186,7 @@ FIELDS_BY_DOCUMENT_TYPE['Mam'] = [indexed_databases,
                                                                  'english_translated_title', 'pages'],
                                                       'legend': _('Analytic Level')}),
 
-                                  comp_info_section,
+                                  comp_info_section_doi,
 
                                   other_notes_section,
 
@@ -290,7 +295,7 @@ FIELDS_BY_DOCUMENT_TYPE['Nm'] = [indexed_databases,
 
                                  monographic_section,
 
-                                 comp_info_section,
+                                 comp_info_section_doi,
 
                                  other_notes_section,
 
@@ -317,7 +322,7 @@ FIELDS_BY_DOCUMENT_TYPE['Nam'] = [indexed_databases,
                                                                  'english_translated_title', 'pages'],
                                                       'legend': _('Analytic Level')}),
 
-                                  comp_info_section,
+                                  comp_info_section_doi,
 
                                   other_notes_section,
 
