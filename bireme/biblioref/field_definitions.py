@@ -596,6 +596,11 @@ class IndividualAuthorAttributes(colander.MappingSchema):
                 raise exc
 
 
+    def validate_not_url(form, value):
+        if value.startswith('http'):
+            exc = colander.Invalid(form, _("Do not inform URL for this field"))
+            raise exc
+
     degree_choices = [('', '')]
     degree_choices.extend([(aux.code, aux) for aux in
                           AuxCode.objects.filter(field='degree_of_responsibility')])
@@ -613,6 +618,12 @@ class IndividualAuthorAttributes(colander.MappingSchema):
     _r = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation degree of responsibility'),
                              widget=deform.widget.SelectWidget(values=degree_choices),
                              missing=unicode(''),)
+
+    _k = colander.SchemaNode(colander.String('utf-8'), title=_('ORCID'), validator=validate_not_url, missing=unicode(''),
+                               description=_('Format: 0000-0000-0000-0000'))
+
+    _s = colander.SchemaNode(colander.String('utf-8'), title=_('Web of Science ResearcherID'), validator=validate_not_url,
+                               missing=unicode(''), description=_('Format: D-0000-0000'))
 
 
 class IndividualAuthor(colander.SequenceSchema):
