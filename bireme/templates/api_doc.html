@@ -296,7 +296,7 @@
         <h3>
           Exportação registro descritor
        </h3>
-        <p><strong>endpoint:</strong> <a href="https://fi-admin.api.bvsalud.org/api/desc/thesaurus/" rel="nofollow">https://fi-admin.api.bvsalud.org/api/desc/thesaurus/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/desc/thesaurus/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/desc/thesaurus/</a></p>
         <p>parâmetros</p>
         <ul>
             <li>
@@ -310,11 +310,11 @@
             </li>
         </ul>
         <p>Ex.:</p>
-        <p><a href="https://fi-admin.bvsalud.org/api/desc/thesaurus/?format=json&amp;ths=1&amp;decs_code=2" rel="nofollow">https://fi-admin.bvsalud.org/api/desc/thesaurus/?format=json&amp;ths=1&amp;decs_code=2</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/desc/thesaurus/?format=json&ths=1&decs_code=2" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/desc/thesaurus/?format=json&amp;ths=1&amp;decs_code=2</a></p>
         <h3>
           Exportação registro qualificador
        </h3>
-        <p><strong>endpoint:</strong> <a href="https://fi-admin.api.bvsalud.org/api/qualif/thesaurus/" rel="nofollow">https://fi-admin.api.bvsalud.org/api/qualif/thesaurus/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/qualif/thesaurus/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/qualif/thesaurus/</a></p>
         <p>parâmetros</p>
         <ul>
             <li>
@@ -328,6 +328,6 @@
             </li>
         </ul>
         <p>Ex.:</p>
-        <p><a href="https://fi-admin.bvsalud.org/api/qualif/thesaurus/?format=json&amp;ths=1&amp;decs_code=22004" rel="nofollow">https://fi-admin.bvsalud.org/api/qualif/thesaurus/?format=json&amp;ths=1&amp;decs_code=22004</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/qualif/thesaurus/?format=json&ths=1&decs_code=22004" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/qualif/thesaurus/?format=json&amp;ths=1&amp;decs_code=22004</a></p>
     </div>
 {% endblock %}
