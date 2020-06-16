@@ -17,7 +17,7 @@
         <h3>
           Exportação
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}bibliographic/" rel="nofollow">{{request.build_absolute_uri}}bibliographic/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -49,17 +49,17 @@
             </li>
         </ul>
         <p>Exs:</p>
-        <p><a href="{{request.build_absolute_uri}}bibliographic/?status=0&amp;format=isis_id&amp;limit=10" rel="nofollow">{{request.build_absolute_uri}}bibliographic/?status=0&amp;format=isis_id&amp;limit=10</a></p>
-        <p><a href="{{request.build_absolute_uri}}bibliographic/?status=1&amp;format=isis_id&amp;limit=10&amp;updated_time__gte=2016-01-01" rel="nofollow">{{request.build_absolute_uri}}bibliographic/?status=1&amp;format=isis_id&amp;limit=10&amp;updated_time__gte=2016-01-01</a></p>
-        <p><a href="{{request.build_absolute_uri}}bibliographic/?format=isis_id&amp;id=831835" rel="nofollow">{{request.build_absolute_uri}}bibliographic/?format=isis_id&amp;id=831835</a></p>
-        <p><a href="{{request.build_absolute_uri}}bibliographic/?format=isis_id&amp;indexed_database=LILACS" rel="nofollow">{{request.build_absolute_uri}}bibliographic/?format=isis_id&amp;indexed_database=LILACS</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=0&amp;format=isis_id&amp;limit=10" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=0&amp;format=isis_id&amp;limit=10</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=1&amp;format=isis_id&amp;limit=10&amp;updated_time__gte=2016-01-01" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=1&amp;format=isis_id&amp;limit=10&amp;updated_time__gte=2016-01-01</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;id=831835" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;id=831835</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;indexed_database=LILACS" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;indexed_database=LILACS</a></p>
         <h2>
           Revistas
        </h2>
         <h3>
           Exportação
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}title/" rel="nofollow">{{request.build_absolute_uri}}title/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/title/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/title/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -73,14 +73,14 @@
             </li>
         </ul>
         <p>Ex:</p>
-        <p><a href="{{request.build_absolute_uri}}title/?format=isis_id&amp;limit=10" rel="nofollow">{{request.build_absolute_uri}}title/?format=isis_id&amp;limit=10</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/title/?format=isis_id&amp;limit=10" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/title/?format=isis_id&amp;limit=10</a></p>
         <h2>
           Recursos de Internet
        </h2>
         <h3>
           Exportação
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}resource/" rel="nofollow">{{request.build_absolute_uri}}resource/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/resource/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/resource/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -96,7 +96,7 @@
         <h3>
           Pesquisa
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}resource/search/" rel="nofollow">{{request.build_absolute_uri}}resource/search/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/resource/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/resource/search/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -118,7 +118,7 @@
         <h3>
           Exportação
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}event/" rel="nofollow">{{request.build_absolute_uri}}event/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/event/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/event/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -134,7 +134,7 @@
         <h3>
           Pesquisa
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}event/search/" rel="nofollow">{{request.build_absolute_uri}}event/search/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/event/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/event/search/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -153,7 +153,7 @@
         <h3>
           Próximos eventos
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}event/next/" rel="nofollow">{{request.build_absolute_uri}}event/next/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/event/next/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/event/next/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -169,7 +169,7 @@
         <h3>
           Exportação
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}multimedia/" rel="nofollow">{{request.build_absolute_uri}}multimedia/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/multimedia/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/multimedia/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -185,7 +185,7 @@
         <h3>
           Pesquisa
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}multimedia/search/" rel="nofollow">{{request.build_absolute_uri}}multimedia/search/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/multimedia/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/multimedia/search/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -207,7 +207,7 @@
         <h3>
           Exportação
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}oer/" rel="nofollow">{{request.build_absolute_uri}}oer/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/oer/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/oer/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -232,7 +232,7 @@
         <h3>
           Pesquisa
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}oer/search/" rel="nofollow">{{request.build_absolute_uri}}oer/search/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/oer/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/oer/search/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -254,7 +254,7 @@
         <h3>
           Listar comunidades (coleção nível 0)
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}community/" rel="nofollow">{{request.build_absolute_uri}}community/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/community/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/community/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -270,7 +270,7 @@
         <h3>
           Listar coleções
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}collection/" rel="nofollow">{{request.build_absolute_uri}}collection/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/collection/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/collection/</a></p>
         <p>parâmetros:</p>
         <ul>
             <li>
@@ -289,7 +289,7 @@
         <h3>
           Listar países que possuem uma ou mais comunidades
        </h3>
-        <p><strong>endpoint:</strong> <a href="{{request.build_absolute_uri}}community/get_country_list/" rel="nofollow">{{request.build_absolute_uri}}community/get_country_list/</a></p>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/community/get_country_list/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/community/get_country_list/</a></p>
         <h2>
           Tesauro
        </h2>
