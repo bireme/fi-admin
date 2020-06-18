@@ -6,4 +6,5 @@ from views import *
 
 urlpatterns = patterns('',
     url(r'^classify/(?P<ctype_id>\d+)/(?P<obj_id>\d+)/?$', classify, name="classify"),
+    url(r'^get-children-list/(?P<parent_id>\d+)/?$', get_children_list, name='get_children_list'),
 )

@@ -10,9 +10,10 @@ class CollectionLocalAdmin(admin.TabularInline):
 
 class CollectionAdmin(admin.ModelAdmin):
     model = Collection
-    list_display = ('collection', 'country')
+    list_display = ('community_collection_path', 'country')
     inlines = [CollectionLocalAdmin, ]
     ordering = ('parent',)
 
 
 admin.site.register(Collection, CollectionAdmin)
+admin.site.register(Relationship)
