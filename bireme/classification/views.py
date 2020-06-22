@@ -28,7 +28,7 @@ def classify(request, ctype_id, obj_id):
 
     relationships = Relationship.objects.filter(content_type_id=ctype_id, object_id=obj_id)
     relation_list = [rel.collection  for rel in relationships]
-    relation_list_ids = [rel.collection_id  for rel in relationships]
+    relation_list_ids = [int(rel.collection_id)  for rel in relationships]
 
     return render_to_response('classification/classify.html',
                               {'relation_list': relation_list, 'community_list': community_list, 'c_type': ctype_id,
@@ -42,7 +42,7 @@ def get_children_list(request, parent_id):
     children_list = []
     children_type = ''
 
-    children_list = [dict({'value': col.id, 'name': unicode(col)}) for col in Collection.objects.filter(parent=parent_id, community=True)]
+    children_list = [dict({'value': col.id, 'name': unicode(col)}) for col in Collection.objects.filter(parent=parent_id, community_flag=True)]
     if children_list:
         children_type = 'community'
     else:
