@@ -16,7 +16,7 @@ import urllib
 
 class CommunityResource(ModelResource):
     class Meta:
-        queryset = Collection.objects.filter(parent__isnull=True)
+        queryset = Collection.objects.filter(community_flag=True)
         allowed_methods = ['get']
         serializer = Serializer(formats=['json', 'xml'])
         resource_name = 'community'
@@ -53,7 +53,7 @@ class CommunityResource(ModelResource):
 
     def get_country_list(self, request, **kwargs):
         self.method_check(request, allowed=['get'])
-        community_list = Collection.objects.filter(parent__isnull=True)
+        community_list = Collection.objects.filter(community_flag=True, country__isnull=False)
         country_list = [community.country for community in community_list]
         country_list_unique = set(country_list)
         country_list_detail = [{'name': c.get_translations(), 'id': c.id} for c in country_list_unique]
