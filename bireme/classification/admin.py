@@ -12,6 +12,7 @@ class CollectionAdmin(admin.ModelAdmin):
     model = Collection
     list_display = ('community_collection_path', 'country')
     inlines = [CollectionLocalAdmin, ]
+    list_filter = (('country', admin.RelatedOnlyFieldListFilter),'community_flag',)
     ordering = ('parent',)
 
 
