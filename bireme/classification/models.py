@@ -40,7 +40,7 @@ class Collection(models.Model, AuditLog):
     slug = models.SlugField(_("Slug"), max_length=155, blank=True)
     description = models.TextField(_("Description"), blank=True)
     image = models.FileField(_("Image"), upload_to=attachment_upload, blank=True)
-    community = models.BooleanField(_('Community?'), default=False)
+    community_flag = models.BooleanField(_('Community?'), default=False)
     type = models.SmallIntegerField(_('Collection type'), choices=TYPE_CHOICES, null=True, default=0)
     updated_time = models.DateTimeField(_("Last update"), auto_now=True, editable=False, null=True, blank=True)
 
