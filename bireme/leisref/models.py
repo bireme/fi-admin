@@ -1,11 +1,13 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
+from django.contrib.contenttypes.generic import GenericRelation
 from django.db import models
 
 from utils.models import Generic
 from main.choices import LANGUAGES_CHOICES
 from main.models import SourceLanguage
 from log.models import AuditLog
+from classification.models import Relationship
 from django.template.defaultfilters import date as _date
 from utils.validators import valid_min_year
 
@@ -491,6 +493,10 @@ class Act(Generic, AuditLog):
     local_geo_descriptors = models.TextField(_("Local geographic descriptors"), blank=True)
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
+
+    # classification
+    collection = GenericRelation(Relationship)
+
 
     def status_label(self):
         status_dict = dict(STATUS_CHOICES)
