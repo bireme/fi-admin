@@ -171,7 +171,12 @@
                                 <p>{% trans "Last edit in" %} <strong>{{ act.updated_time }}</strong> {% trans "by user" %}  <strong>{{ act.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
-
+                        <div class="btn-group pull-right">
+                            <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                            {% if service_role.TAG %}
+                                <a href="#" onclick="javascript:open_classification('{{c_type.id}}', '{{object.id}}')" class="btn"><i class="icon icon-tags"></i> {% trans "Collection" %}</a>
+                            {% endif %}
+                        </div>
                     {% endif %}
             </div>
 
@@ -332,11 +337,12 @@
     </form>
 </div>
 
-{% include "modal_dedup.html" %}
-
-
 {% if help_fields %}
     {% include "modal_help.html" %}
+{% endif %}
+
+{% if object.id %}
+    {% include "modal_log.html" %}
 {% endif %}
 
 {% endblock %}
@@ -345,6 +351,7 @@
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
    <script src="{% static 'js/multiselect.min.js' %}"></script>
+   <script src="{% static 'js/classification.js' %}"></script>
    {% if LANGUAGE_CODE != 'en' %}
        <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
    {% endif %}

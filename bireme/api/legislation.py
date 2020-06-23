@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
+from tastypie.constants import ALL
 from tastypie import fields
 
 from main.models import Descriptor, ResourceThematic
@@ -26,8 +27,19 @@ class LeisrefResource(ModelResource):
         filtering = {
             'update_date': ('gte', 'lte'),
             'status': 'exact',
+            'collection': ALL,
         }
         include_resource_uri = False
+
+    def build_filters(self, filters=None):
+        orm_filters = super(LeisrefResource, self).build_filters(filters)
+
+        if 'collection' in filters:
+            filter_col_id = filters['collection']
+            orm_filters['collection__collection_id'] = filter_col_id
+
+        return orm_filters
+
 
     def prepend_urls(self):
         return [
@@ -74,5 +86,23 @@ class LeisrefResource(ModelResource):
         # add fields to output
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
+
+        # check if object has classification (relationship model)
+        if bundle.obj.collection.exists():
+            community_list = []
+            collection_list = []
+
+            collection_all = bundle.obj.collection.all()
+            for rel in collection_all:
+                collection_labels = "|".join(rel.collection.get_translations())
+                collection_item = u"{}|{}".format(rel.collection.id, collection_labels)
+                collection_list.append(collection_item)
+                if rel.collection.parent:
+                    community_labels = "|".join(rel.collection.parent.get_translations())
+                    community_item = u"{}|{}".format(rel.collection.parent.id, community_labels)
+                    community_list.append(community_item)
+
+            bundle.data['community'] = community_list
+            bundle.data['collection'] = collection_list
 
         return bundle

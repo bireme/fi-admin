@@ -6,7 +6,7 @@
 {% block extrahead %}
     <style>
         .cancel_btn {
-            width: 45%; margin-left: 5px; float: left; background: rgba(169, 68, 66, 0.78) !important; color: #fff; padding: 10px; text-align: center; margin-right: 5px
+            width: 90%; margin: 10px 15px 0px 15px; float: left; background: #cccccc !important; color: #000; padding: 10px; text-align: center; margin-right: 5px; border: 1px solid #ccc;
         }
         .save_btn{
             width: 45%; float: left; background: rgba(0, 163, 54, 0.64) !important; color: #fff; padding: 10px; text-align: center;
@@ -29,54 +29,153 @@
 
 {% block content %}
 <div class="body box">
-
     <form id="setUnsetForm" action="{% url 'classify' ctype_id=c_type obj_id=object_id %}" method="POST">
         {% csrf_token %}
+
+        {% if relation_list %}
+            <strong>{% trans "Classifications" %}</strong>
+            <div class="row">
+                {% for relation in relation_list %}
+                    {{ relation.community_collection_path }}<br/>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div style="margin:10px 0 10px 0;">
+            <strong>{% trans "New classification" %}</strong>
+        </div>
         <div class="row">
             <strong>{% trans "Community" %}</strong>
         </div>
         <div class="row">
-            <select name="collection" onchange="this.form.submit()">
+            <select id="community_1" data-level="1" class="community">
                 <option value="">{% trans 'Select the community' %}</option>
-                {% for col in collection_list %}
-                    <option value="{{col.id}}" {% if col.id = collection_param|add:0 %}selected=1{% endif %}>{{col.name}} - {{col.country}}</option>
+                {% for c in community_list %}
+                    <option value="{{c.id}}" {% if c.id = community_param|add:0 %}selected=1{% endif %}>{{c}}</option>
                 {% endfor %}
             </select>
         </div>
 
-        {% for col in collection_list %}
-            {%if col.id = collection_param|add:0 %}
-                <div class="row">
-                    <strong>{% trans "Collections" %}</strong>
-                </div>
-                <ul>
-                    {% for subcol in col.get_children %}
-                        <li>
-                            <input type="checkbox" id="{{ subcol.id }}" class="set_unset" {% if subcol.id in relation_list %}checked="true"{% endif %} value="{{subcol.id}}">
-                            <label for="{{ subcol.id }}">{{subcol.name}}</label>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endfor %}
+        <div class="row hide" id="div_community_2">
+            <strong>{% trans "Sub-community" %}</strong><br/>
+            <select id="community_2" data-level="2" class="community">
+                <option value="">{% trans 'Select the sub-community' %}</option>
+            </select>
+        </div>
+
+        <div class="row hide" id="div_community_3">
+            <strong>{% trans "Sub-community" %}</strong><br/>
+            <select id="community_3" data-level="3" class="community">
+                <option value="">{% trans 'Select the sub-community' %}</option>
+            </select>
+        </div>
+
+        <div class="row hide" id="div_collection">
+            <strong>{% trans "Collections" %}</strong><br/>
+            <ul id="collection_list">
+            </ul>
+        </div>
     </form>
+    {% if updated %}
+    <div class="alert alert-info" role="alert">
+        {% trans "Classification updated" %}
+    </div>
+    {% endif %}
+
 </div>
 
 {% endblock %}
 
+{% block footer %}
+<div class="row">
+    <a href="#" onclick="javascript:window.close();" >
+        <div class="cancel_btn">
+            {% trans 'Close' %}
+        </div>
+    </a>
+</div>
+{% endblock %}
+
+
 {% block extrajs %}
 <script type="text/javascript">
+    const MAX_LEVEL = 3;
+    var relation_list_ids = {{relation_list_ids}};
+
     $(document).ready(function() {
-        $(".set_unset").change(function() {
-            op = 'set';  // default operation set
-            checked = $(this).is(':checked');
-            col_id = $(this).val();
-            if (!checked) {
-                op = 'unset';
+
+        // hide update alert
+        $('.alert').fadeOut(5000);
+
+        // control update of sub-community lists
+        $(".community").change(function(){
+            community_id = $(this).find("option:selected").val();
+            level = $(this).data('level');
+            next_level = level + 1;
+
+            hide_next_levels(next_level);
+
+            if (community_id > 0){
+
+                $.ajax({
+                    method: "get",
+                    url: "/classification/get-children-list/" + community_id,
+                    dataType: "json",
+                    success: function(result){
+                        type = result.type;
+                        if (type == 'community'){
+                            replace_list_options('community_' + next_level, result.list);
+                            $('#div_community_' + next_level).show();
+                        }else{
+                            collection_ul = $('#collection_list');
+                            collection_ul.empty();
+                            $.each(result.list, function(index, item) {
+                                checked_status = '';
+                                if (relation_list_ids.includes(item.value)){
+                                    checked_status = "checked='true'";
+                                }
+                                checkbox_item = "<li><input type='checkbox' class='set_unset' id='check_" + item.value + "' value='" + item.value + "' " + checked_status + ">";
+                                checkbox_item+= "<label for='check_" + item.value + "'>" + item.name + "</label></li>";
+                                collection_ul.append(checkbox_item);
+                            });
+                            $('#div_collection').show();
+                        }
+                    }
+                });
             }
-            $('<input>').attr({type: 'hidden', name: op, value: col_id}).appendTo('#setUnsetForm');
         });
+
      });
+
+     $(document).on('change', '.set_unset', function() {
+        op = 'set';  // default operation set
+        checked = $(this).is(':checked');
+        col_id = $(this).val();
+        if (!checked) {
+            op = 'unset';
+        }
+        $('<input>').attr({type: 'hidden', name: op, value: col_id}).appendTo('#setUnsetForm');
+
+        $("#setUnsetForm").submit();
+     });
+
+
+     function hide_next_levels(next_level){
+        for (var i = next_level; i <= MAX_LEVEL; i++) {
+            $('#div_community_' + i).hide();
+        }
+        $('#div_collection').hide();
+     }
+
+     function replace_list_options(list_id, option_list){
+            list_selector = '#' + list_id
+            $(list_selector + ' option').remove();
+            $('<option>').val('').text('----------').appendTo(list_selector);
+            for (o = 0; o < option_list.length; o++){
+                option = option_list[o];
+                $('<option>').val(option.value).text(option.name).appendTo(list_selector);
+            }
+      }
 
      function updateAndClose(){
          $.post($("form").attr('action'), $("form").serializeArray());
@@ -84,19 +183,4 @@
          window.close();
      }
 </script>
-{% endblock %}
-
-{% block footer %}
-<div class="row">
-    <a href="#" onclick="javascript:window.close();">
-        <div class="cancel_btn">
-            {% trans 'Cancel' as cancel %}{{ cancel|lower }}
-        </div>
-    </a>
-    <a href="#" onclick="javascript:updateAndClose();">
-        <div class="save_btn">
-            {% trans 'Save' as save %}{{ save|lower }}
-        </div>
-    </a>
-</div>
 {% endblock %}
