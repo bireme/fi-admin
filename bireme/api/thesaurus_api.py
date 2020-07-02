@@ -240,10 +240,27 @@ class ThesaurusAPIDescResource(CustomResource):
         array_fields_all = []
         results = SeeRelatedListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
-            # Armazena campos
-            array_fields["id"] = field.id
-            array_fields["term_string"] = field.term_string
-            array_fields["descriptor_ui"] = field.descriptor_ui
+            descriptor_ui = field.descriptor_ui
+            # print 'descriptor_ui',descriptor_ui
+            id_register = IdentifierDesc.objects.using('decs_portal').filter(descriptor_ui=descriptor_ui).values('id')
+            # print '--->',id_register
+
+            array_fields['descriptor_ui'] = field.descriptor_ui
+
+            concepts_of_register = IdentifierConceptListDesc.objects.using('decs_portal').filter(identifier_id=id_register,preferred_concept='Y').values('id')
+            id_concept = concepts_of_register[0].get('id')
+            terms_of_concept = TermListDesc.objects.using('decs_portal').filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y',status=1)
+
+            array_terms = {}
+            array_terms_all = []
+            for term in terms_of_concept:
+                array_terms['term_string'] = term.term_string.encode('utf-8')
+                array_terms['language_code'] = term.language_code
+                # Armazena array
+                array_terms_all.append(array_terms)
+                array_terms = {}
+
+            array_fields['terms'] = array_terms_all
 
             # Armazena array
             array_fields_all.append(array_fields)
