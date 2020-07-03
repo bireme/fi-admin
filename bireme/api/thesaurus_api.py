@@ -241,11 +241,12 @@ class ThesaurusAPIDescResource(CustomResource):
         results = SeeRelatedListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
             descriptor_ui = field.descriptor_ui
-            # print 'descriptor_ui',descriptor_ui
             id_register = IdentifierDesc.objects.using('decs_portal').filter(descriptor_ui=descriptor_ui).values('id')
-            # print '--->',id_register
 
             array_fields['descriptor_ui'] = field.descriptor_ui
+
+            IdentifierDesc_decs_code = IdentifierDesc.objects.using('decs_portal').filter(descriptor_ui=field.descriptor_ui).values('decs_code')
+            array_fields['decs_code'] = IdentifierDesc_decs_code[0].get('decs_code')
 
             concepts_of_register = IdentifierConceptListDesc.objects.using('decs_portal').filter(identifier_id=id_register,preferred_concept='Y').values('id')
             id_concept = concepts_of_register[0].get('id')
