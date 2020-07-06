@@ -11,12 +11,13 @@
         <h1>
           FI-ADMIN API
        </h1>
+       <!-- REGISTROS BIBLIOGRÁFICOS -->
         <h2>
           Registros bibliográficos
-       </h2>
+        </h2>
         <h3>
           Exportação
-       </h3>
+        </h3>
         <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/</a></p>
         <p>parâmetros:</p>
         <ul>
@@ -53,6 +54,8 @@
         <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=1&amp;format=isis_id&amp;limit=10&amp;updated_time__gte=2016-01-01" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=1&amp;format=isis_id&amp;limit=10&amp;updated_time__gte=2016-01-01</a></p>
         <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;id=831835" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;id=831835</a></p>
         <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;indexed_database=LILACS" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;indexed_database=LILACS</a></p>
+
+        <!-- TITLE -->
         <h2>
           Revistas
        </h2>
@@ -74,6 +77,8 @@
         </ul>
         <p>Ex:</p>
         <p><a href="{{request.scheme}}://{{request.get_host}}/api/title/?format=isis_id&amp;limit=10" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/title/?format=isis_id&amp;limit=10</a></p>
+
+        <!-- RECURSOS DE INTERNET -->
         <h2>
           Recursos de Internet
        </h2>
@@ -112,6 +117,8 @@
                 <strong>lang</strong> = idioma
             </li>
         </ul>
+
+        <!-- EVENTOS -->
         <h2>
           Eventos em Saúde
        </h2>
@@ -163,6 +170,8 @@
                 <strong>lang</strong> = idioma
             </li>
         </ul>
+
+        <!-- MULTIMIDIA -->
         <h2>
           Multimidia
        </h2>
@@ -201,6 +210,8 @@
                 <strong>lang</strong> = idioma
             </li>
         </ul>
+
+        <!-- RECURSOS EDUCACIONAIS -->
         <h2>
           Recursos Educacionais Abertos
        </h2>
@@ -248,8 +259,53 @@
                 <strong>lang</strong> = idioma
             </li>
         </ul>
+
+        <!-- LEGISLAÇÃO -->
         <h2>
-          Coleções
+            Legislação
+         </h2>
+          <h3>
+            Exportação
+         </h3>
+          <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/leisref/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/leisref/</a></p>
+          <p>parâmetros:</p>
+          <ul>
+              <li>
+                  <strong>format</strong> = (xml / json)
+              </li>
+              <li>
+                  <strong>limit</strong> = quantidade de registros (0 para todos)
+              </li>
+              <li>
+                  <strong>offset</strong> = registro inicial
+              </li>
+          </ul>
+          <h3>
+            Pesquisa
+         </h3>
+          <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/resource/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/leisref/search/</a></p>
+          <p>parâmetros:</p>
+          <ul>
+              <li>
+                  <strong>q</strong> = busca
+              </li>
+              <li>
+                  <strong>fq</strong> = filtro
+              </li>
+              <li>
+                  <strong>start</strong> = hit inicial
+              </li>
+              <li>
+                <strong>collection</strong> = identificador da coleção onde o registro foi classificado
+              </li>
+              <li>
+                  <strong>lang</strong> = idioma
+              </li>
+          </ul>
+
+        <!-- COMUNIDADES/COLEÇÕES -->
+        <h2>
+          Comunidades/Coleções
        </h2>
         <h3>
           Listar comunidades (coleção nível 0)
@@ -288,8 +344,10 @@
         </ul>
         <h3>
           Listar países que possuem uma ou mais comunidades
-       </h3>
+        </h3>
         <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/community/get_country_list/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/community/get_country_list/</a></p>
+
+        <!-- TESAURO -->
         <h2>
           Tesauro
        </h2>
