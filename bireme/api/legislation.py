@@ -11,7 +11,8 @@ from tastypie.constants import ALL
 from tastypie import fields
 
 from main.models import Descriptor, ResourceThematic
-from leisref.models import Act
+from attachments.models import Attachment
+from leisref.models import Act, ActURL
 
 import requests
 import urllib
@@ -82,6 +83,8 @@ class LeisrefResource(ModelResource):
 
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+        attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        urls = ActURL.objects.filter(act_id=bundle.obj.id)
 
         # add fields to output
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
@@ -104,5 +107,27 @@ class LeisrefResource(ModelResource):
 
             bundle.data['community'] = community_list
             bundle.data['collection'] = collection_list
+
+        # add eletronic_address
+        electronic_address = []
+        for attach in attachments:
+            file_name = attach.attachment_file.name
+            file_extension = file_name.split(".")[-1].lower()
+
+            if file_extension == 'pdf':
+                file_type = 'PDF'
+            else:
+                file_type = 'TEXTO'
+
+            view_url = "%sdocument/view/%s" % (settings.SITE_URL,  attach.short_url)
+
+            electronic_address.append({'_u': view_url, '_i': attach.language[:2],
+                                       '_y': file_type, '_q': file_extension})
+        for url in urls:
+            electronic_address.append({'_u': url.url, '_i': url.language[:2]})
+
+        if electronic_address:
+            bundle.data['electronic_address'] = electronic_address
+
 
         return bundle
