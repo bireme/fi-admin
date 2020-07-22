@@ -20,7 +20,7 @@
 <div class='header'>
     <h2><i class='icon-flag'></i> {% trans "Source languages" %}</h2>
         <div class='pull-right'>
-            <a href="{% url 'main.views.create_edit_language' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Source language" %}</a>
+            <a href="{% url 'main:create_language' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Source language" %}</a>
         </div>
 </div>
 
@@ -28,7 +28,7 @@
     {% if actions.s %}
         <div>
             {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-            <a href="{% url 'main.views.list_languages' %}">[{% trans "clear" %}]</a>
+            <a href="{% url 'main:list_languages' %}">[{% trans "clear" %}]</a>
         </div>
     {% endif %}
 
@@ -50,10 +50,10 @@
         <tbody>
             {% for language in languages %}
                 <tr>
-                    <td><a href="{% url 'main.views.create_edit_language' language.id %}">{{ language.id }}</a></td>
+                    <td><a href="{% url 'main:edit_language' language.id %}">{{ language.id }}</a></td>
                     <td>{{ language.name }}</td>
                     <td>
-                        <a href="{% url 'main.views.create_edit_language' language.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                        <a href="{% url 'main:edit_language' language.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                         <a href="#" id="{{ language.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                     </td>
                 </tr>
