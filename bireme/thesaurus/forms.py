@@ -2,7 +2,6 @@
 
 from django.shortcuts import get_object_or_404
 from django.forms.models import inlineformset_factory
-from django.contrib.contenttypes.generic import generic_inlineformset_factory
 
 from thesaurus.models_thesaurus import Thesaurus
 from thesaurus.models_qualifiers import *
@@ -106,7 +105,7 @@ class TreeNumbersListQualifForm(forms.ModelForm):
 
         # If any error returns message
         if exist_err:
-            self.add_error('tree_number', message)            
+            self.add_error('tree_number', message)
 
         # Force that is uppercase
         upper_data = tree_number.upper()
@@ -239,7 +238,7 @@ class TreeNumbersListDescForm(forms.ModelForm):
 
         # If any error returns message
         if exist_err:
-            self.add_error('tree_number', message)            
+            self.add_error('tree_number', message)
 
         # Force that is uppercase
         upper_data = tree_number.upper()
@@ -504,4 +503,3 @@ TermListQualifFormSet = inlineformset_factory(
     can_delete=True,
     extra=1
     )
-

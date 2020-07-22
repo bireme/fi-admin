@@ -1,6 +1,5 @@
 #! coding: utf-8
-
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 
@@ -18,8 +17,8 @@ from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 
 from django.conf import settings
 
-from models import *
-from forms import *
+from thesaurus.models import *
+from thesaurus.forms import *
 
 from django.db.models import Prefetch
 from django.db.models import Q
@@ -82,7 +81,7 @@ class DescUpdate(LoginRequiredView):
     """
     model = IdentifierDesc
     success_url = reverse_lazy('create_concept_termdesc')
-    
+
     form_class = IdentifierDescForm
     template_name = "thesaurus/descriptor_form_step1.html"
 
@@ -103,9 +102,9 @@ class DescUpdate(LoginRequiredView):
         formset_previous_valid = formset_previous.is_valid()
         formset_entrycombination_valid = formset_entrycombination.is_valid()
 
-        if (form_valid and 
-            formset_descriptor_valid and 
-            formset_treenumber_valid and 
+        if (form_valid and
+            formset_descriptor_valid and
+            formset_treenumber_valid and
             formset_pharmaco_valid and
             formset_related_valid and
             formset_previous_valid and
@@ -177,7 +176,7 @@ class DescUpdate(LoginRequiredView):
                     self.object.descriptor_ui = 'D' + acronym + zseq
                 except Thesaurus.DoesNotExist:
                     id_thesaurus = str(self.object.id)
-                    print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
+                    print('Warning! - No thesaurus_acronym for id -->',id_thesaurus)
                 self.object = form.save(commit=True)
 
                 formset_descriptor.instance = self.object
@@ -199,7 +198,7 @@ class DescUpdate(LoginRequiredView):
                 formset_entrycombination.save()
 
                 form.save()
-                
+
                 # Essas variaveis dizem respeito a criação de novo registro a partir de um termo existente
                 # Quando existirem serão repassadas para a faze de criação de conceito
                 if self.request.GET.get("term_ui") and self.request.GET.get("term_id"):
@@ -320,7 +319,7 @@ class DescDeleteView(DescUpdate, DeleteView):
         # messages.success(self.request, 'is deleted')
 
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/descriptors/%s' % ths 
+        return '/thesaurus/descriptors/%s' % ths
 
 
 
@@ -435,8 +434,8 @@ class TermListDescChk(LoginRequiredView, ListView):
             for term in has_term:
                 t=term.get('term_string').encode('utf-8')
                 if t == term_choiced.encode('utf-8'):
-                    # print 'Igual-->',t,'   -   ',term_choiced.encode('utf-8')
-                    has_equal=t            
+                    # print('Igual-->',t,'   -   ',term_choiced.encode('utf-8'))
+                    has_equal=t
 
             if not has_equal:
                 return redirect('/thesaurus/descriptors/new/?ths=' + self.request.GET.get("thesaurus") + '&term=' + self.actions['term_string'] + '&language_code=' + self.actions['filter_language'])
@@ -520,9 +519,9 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
         formset_previous_valid = formset_previous.is_valid()
         formset_entrycombination_valid = formset_entrycombination.is_valid()
 
-        if (form_valid and 
-            formset_descriptor_valid and 
-            formset_treenumber_valid and 
+        if (form_valid and
+            formset_descriptor_valid and
+            formset_treenumber_valid and
             formset_related_valid and
             formset_pharmaco_valid and
             formset_previous_valid and
@@ -908,7 +907,7 @@ class ConceptTermUpdate(LoginRequiredView):
             language_code = self.request.POST.get("termdesc-0-language_code")
             term_thesaurus = self.request.GET.get("ths")
 
-            # Se existirem essas variaveis não deverá ser realizado a verificação de existência pois nesse caso 
+            # Se existirem essas variaveis não deverá ser realizado a verificação de existência pois nesse caso
             # será forçado a criação de novo registro, e o registro antigo será alterado seu status
             if self.request.GET.get("term_ui_alter") and self.request.GET.get("term_id_alter"):
 
@@ -958,7 +957,7 @@ class ConceptTermUpdate(LoginRequiredView):
                     update_field.save()
 
                 except TermListDesc.DoesNotExist:
-                    print 'Warning! Does not exist id to this Term'
+                    print('Warning! Does not exist id to this Term')
 
                 # Update old term register, status and historical_annotation - term_id_alter
                 try:
@@ -971,7 +970,7 @@ class ConceptTermUpdate(LoginRequiredView):
 
                     # descobre concept_ui
                     concept_ui_destino = IdentifierConceptListDesc.objects.filter(id=identifier_concept_id).values('concept_ui')
-                    concept_ui_destino = concept_ui_destino[0].get('concept_ui')                    
+                    concept_ui_destino = concept_ui_destino[0].get('concept_ui')
 
                     # coleta informação do histórico do term antigo
                     historical_annotation_old=TermListDesc.objects.filter(id=self.request.GET.get("term_id_alter")).values('historical_annotation')
@@ -989,13 +988,13 @@ class ConceptTermUpdate(LoginRequiredView):
 
                     update_field.save()
                 except TermListDesc.DoesNotExist:
-                    print 'Warning! Does not exist id to this Term'
+                    print('Warning! Does not exist id to this Term')
 
                 form.save()
 
                 return HttpResponseRedirect(self.get_success_url())
 
-            else:           
+            else:
                 has_term = TermListDesc.objects.filter(
                     term_string__exact=term_string,
                     language_code=language_code,
@@ -1056,7 +1055,7 @@ class ConceptTermUpdate(LoginRequiredView):
                         update_field.term_ui = language_3letters + 'd' + zseq
                         update_field.save()
                     except TermListDesc.DoesNotExist:
-                        print 'Warning! Does not exist id to this Term'
+                        print('Warning! Does not exist id to this Term')
 
                     form.save()
 
@@ -1355,7 +1354,7 @@ class TermListDescView(LoginRequiredView, ListView):
                     id_identifier = x.get('identifier_id')
                     has_register = IdentifierDesc.objects.filter(id=id_identifier,thesaurus_id=self.request.GET.get("ths")).exists()
                     if has_register:
-                        # print 'ID pertinente',id_identifier
+                        # print('ID pertinente',id_identifier)
 
                         # IdentifierDesc
                         context['id_register_objects'] = IdentifierConceptListDesc.objects.filter(
@@ -1422,7 +1421,7 @@ def TermListDescModification(request,term_id, ths, term_ori):
     new_term=TermListDesc.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
     term_ui_ori=new_term[0].get('term_ui')
     term_string_ori=new_term[0].get('term_string').encode('utf-8')
-    
+
     exist_term=TermListDesc.objects.filter(status=-3, term_ui=term_ui_ori, term_string=term_string_ori, identifier_concept_id=id_concept_destino).values('id','historical_annotation')
 
     if len(exist_term) > 0:
@@ -1542,14 +1541,14 @@ def ConceptCreateDescDo(request, ths):
         descriptor_ui = 'D' + acronym + zseq
     except Thesaurus.DoesNotExist:
         id_thesaurus = str(self.object.id)
-        print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
+        print('Warning! - No thesaurus_acronym for id -->',id_thesaurus)
 
     add_reg = IdentifierDesc(descriptor_class='', descriptor_ui=descriptor_ui, decs_code=decs_code, external_code='', nlm_class_number='', date_created=created_time, created_by_id=created_by, thesaurus_id=ths)
     add_reg.save()
 
     # Descobrindo último ID inserido
     last_id = IdentifierDesc.objects.filter(thesaurus_id=ths).order_by('id').last()
-    # print '[last_id - ' ,last_id,' ]'
+    # print([last_id - ' ,last_id,' ]')
 
     # Atualiza identifier_id antigo para novo id, apaga concept_relation_name, atualiza preferred_concept como preferido e atualiza hsitórico
     update_field = IdentifierConceptListDesc.objects.get(id=concept_id)
@@ -1561,10 +1560,10 @@ def ConceptCreateDescDo(request, ths):
 
     # Atualiza record_preferred_term dos Termos que foram elegidos como preferidos no registro novo
     update_registers = TermListDesc.objects.filter(identifier_concept_id=concept_id, concept_preferred_term='Y', record_preferred_term='N')
-    # print '[ DEBUG]', update_registers
+    # print('[ DEBUG]', update_registers)
     if update_registers:
         for upd in update_registers:
-            # print '---> ',upd
+            # print('---> ',upd)
             TermListDesc.objects.filter(id=str(upd)).update(record_preferred_term='Y')
 
     return redirect('/thesaurus/descriptors/view/' + term_id + '?ths=' + ths)
@@ -1671,7 +1670,7 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
             for term in has_term:
                 t=term.get('term_string').encode('utf-8')
                 if t == term_string.encode('utf-8'):
-                    # print 'Igual-->',t
+                    # print('Igual-->',t)
                     has_equal=t
 
             if not has_equal:
@@ -1702,7 +1701,7 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
                     update_concept_field.concept_ui = 'FD' + zseq
                     update_concept_field.save()
                 except IdentifierConceptListDesc.DoesNotExist:
-                    print 'Warning! Does not exist id to this Concept'
+                    print('Warning! Does not exist id to this Concept')
 
                 # Update term_ui with a new format
                 try:
@@ -1738,7 +1737,7 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
                     update_field.term_ui = language_3letters + 'd' + zseq
                     update_field.save()
                 except TermListDesc.DoesNotExist:
-                    print 'Warning! Does not exist id to this Term'
+                    print('Warning! Does not exist id to this Term')
 
                 # Update created_date
                 try:
@@ -1747,7 +1746,7 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
                     update_date_created.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
                     update_date_created.save()
                 except TermListDesc.DoesNotExist:
-                    print 'Warning! Does not exist id to this Term'
+                    print('Warning! Does not exist id to this Term')
 
                 return HttpResponseRedirect(self.get_success_url())
             else:
@@ -1830,16 +1829,16 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
 
             self.object = form.save(commit=False)
             self.object.identifier_id = int(self.request.POST.get("identifier_id"))
-    
+
             formset_concept.instance = self.object
             formset_concept.save()
 
             form.save()
 
             # Necessário atualizar também os termos que são preferidos no conceito para também preferidos do registro
-            # print 'id ----->',self.object.id
+            # print('id ----->',self.object.id)
             check_preferred_concept = self.request.POST.get("preferred_concept")
-            # print 'check_preferred_concept ---->',check_preferred_concept
+            # print('check_preferred_concept ---->',check_preferred_concept)
 
             if check_preferred_concept == 'Y':
                 TermListDesc.objects.filter(identifier_concept_id=self.object.id, concept_preferred_term='Y').update(record_preferred_term='Y')
@@ -1921,7 +1920,7 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
         return context
 
     def form_valid(self, form):
-        
+
         formset_toccurrence = TheraurusOccurrenceListDescFormSet(self.request.POST, instance=self.object)
 
         form_valid = form.is_valid()
@@ -2011,7 +2010,7 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                     for term in has_term:
                         t=term.get('term_string').encode('utf-8')
                         if t == term_string.encode('utf-8'):
-                            # print 'Igual-->',t
+                            # print('Igual-->',t)
                             has_equal=t
 
                     if not has_equal:
@@ -2066,7 +2065,7 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                             update_field.term_ui = language_3letters + 'd' + zseq
                             update_field.save()
                         except TermListDesc.DoesNotExist:
-                            print 'Warning! Does not exist id to this Term'
+                            print('Warning! Does not exist id to this Term')
 
                         return HttpResponseRedirect(self.get_success_url())
                     else:
@@ -2117,7 +2116,7 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                 for term in has_term:
                     t=term.get('term_string').encode('utf-8')
                     if t == term_string.encode('utf-8'):
-                        # print 'Igual-->',t
+                        # print('Igual-->',t)
                         has_equal=t
 
                 if not has_equal:
@@ -2171,7 +2170,7 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                         update_field.term_ui = language_3letters + 'd' + zseq
                         update_field.save()
                     except TermListDesc.DoesNotExist:
-                        print 'Warning! Does not exist id to this Term'
+                        print('Warning! Does not exist id to this Term')
 
                     return HttpResponseRedirect(self.get_success_url())
                 else:
@@ -2242,8 +2241,8 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
             concept_preferred_term_old=y.get('concept_preferred_term')
             record_preferred_term_old=y.get('record_preferred_term')
             historical_annotation_old=y.get('historical_annotation')
-            # print 'Current - TERM ----->',term_string_old
-            # print 'Current - Historico --->',historical_annotation_old
+            # print('Current - TERM ----->',term_string_old)
+            # print('Current - Historico --->',historical_annotation_old)
 
         # Brings form variables to check if it already exists
         term_string = self.request.POST.get("term_string")
@@ -2361,7 +2360,7 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
                 for term in has_term:
                     t=term.get('term_string').encode('utf-8')
                     if t == term_string.encode('utf-8'):
-                        # print 'Igual-->',t
+                        # print('Igual-->',t)
                         has_equal=t
 
                 if has_equal:
@@ -2404,7 +2403,7 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
                                                                             formset_toccurrence=formset_toccurrence,
                                                                             ))
         else:
-        
+
             # Avalia conceito NÃO PREFERIDO
 
             # Search by draft record
@@ -2438,7 +2437,7 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
             for term in has_term:
                 t=term.get('term_string').encode('utf-8')
                 if t == term_string.encode('utf-8'):
-                    # print 'Igual-->',t
+                    # print('Igual-->',t)
                     has_equal=t
 
             if has_equal:
@@ -2869,7 +2868,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                             ).distinct()
 
 
-            # Usado para mostrar informações de conceitos e termos Não Preferidos 
+            # Usado para mostrar informações de conceitos e termos Não Preferidos
             context['identifierconceptlist_objects'] = IdentifierConceptListDesc.objects.filter(
                                             identifier=id_concept,preferred_concept='N',
                                             ).order_by('identifier_id',
@@ -2945,7 +2944,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
             # Traz abbreviation e term_string do idioma da interface no momento
             id_abbrev = IdentifierDesc.objects.filter(id=id_concept).values('abbreviation')
             translation = IdentifierQualif.objects.filter(id__in=id_abbrev).order_by('abbreviation') # Usado __in pois pode haver mais que um resultado
-            
+
             context['allowable_qualifiers_objects'] = translation
 
             # Informacoes para log
@@ -2980,7 +2979,7 @@ class QualifUpdate(LoginRequiredView):
     # success_url = reverse_lazy('list_descriptor')
     success_url = reverse_lazy('create_concept_termqualif')
 
-    
+
     form_class = IdentifierQualifForm
     template_name = "thesaurus/qualifier_form_step1.html"
 
@@ -2994,8 +2993,8 @@ class QualifUpdate(LoginRequiredView):
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_treenumber_valid = formset_treenumber.is_valid()
 
-        if (form_valid and 
-            formset_descriptor_valid and 
+        if (form_valid and
+            formset_descriptor_valid and
             formset_treenumber_valid
             ):
             # self.object = form.save()
@@ -3066,7 +3065,7 @@ class QualifUpdate(LoginRequiredView):
                     self.object.qualifier_ui = 'Q' + acronym + zseq
                 except Thesaurus.DoesNotExist:
                     id_thesaurus = str(self.object.id)
-                    print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
+                    print('Warning! - No thesaurus_acronym for id -->',id_thesaurus)
                 self.object = form.save(commit=True)
 
                 formset_descriptor.instance = self.object
@@ -3125,7 +3124,7 @@ class QualifUpdate(LoginRequiredView):
 
             context['formset_descriptor'] = DescriptionQualifFormSet(instance=self.object)
             context['formset_treenumber'] = TreeNumbersListQualifFormSet(instance=self.object)
-      
+
         return context
 
 
@@ -3178,7 +3177,7 @@ class QualifDeleteView(QualifUpdate, DeleteView):
 
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
-        return '/thesaurus/qualifiers/%s' % ths 
+        return '/thesaurus/qualifiers/%s' % ths
 
 
 
@@ -3291,8 +3290,8 @@ class QualifListDescChk(LoginRequiredView, ListView):
             for term in has_term:
                 t=term.get('term_string').encode('utf-8')
                 if t == term_choiced.encode('utf-8'):
-                    # print 'Igual-->',t,'   -   ',term_choiced.encode('utf-8')
-                    has_equal=t            
+                    # print('Igual-->',t,'   -   ',term_choiced.encode('utf-8'))
+                    has_equal=t
 
             if not has_equal:
                 return redirect('/thesaurus/qualifiers/new/?ths=' + self.request.GET.get("thesaurus") + '&term=' + self.actions['term_string'] + '&language_code=' + self.actions['filter_language'])
@@ -3370,8 +3369,8 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_treenumber_valid = formset_treenumber.is_valid()
 
-        if (form_valid and 
-            formset_descriptor_valid and 
+        if (form_valid and
+            formset_descriptor_valid and
             formset_treenumber_valid
             ):
 
@@ -3478,7 +3477,7 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
 
             context['formset_descriptor'] = DescriptionQualifFormSet(instance=self.object)
             context['formset_treenumber'] = TreeNumbersListQualifFormSet(instance=self.object)
-      
+
         return context
 
 
@@ -3741,7 +3740,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
             language_code = self.request.POST.get("termqualif-0-language_code")
             term_thesaurus = self.request.GET.get("ths")
 
-            # Se existirem essas variaveis não deverá ser realizado a verificação de existência pois nesse caso 
+            # Se existirem essas variaveis não deverá ser realizado a verificação de existência pois nesse caso
             # será forçado a criação de novo registro, e o registro antigo será alterado seu status
             if self.request.GET.get("term_ui_alter") and self.request.GET.get("term_id_alter"):
 
@@ -3791,7 +3790,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
                     update_field.save()
 
                 except TermListQualif.DoesNotExist:
-                    print 'Warning! Does not exist id to this Term'
+                    print('Warning! Does not exist id to this Term')
 
                 # Update old term register, status and historical_annotation - term_id_alter
                 try:
@@ -3822,7 +3821,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
 
                     update_field.save()
                 except TermListQualif.DoesNotExist:
-                    print 'Warning! Does not exist id to this Term'
+                    print('Warning! Does not exist id to this Term')
 
                 form.save()
 
@@ -3860,7 +3859,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
                         acronym = acronym[0].get('thesaurus_acronym')
                     except Thesaurus.DoesNotExist:
                         id_thesaurus = str(self.object.id)
-                        print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
+                        print('Warning! - No thesaurus_acronym for id -->',id_thesaurus)
                         acronym = ''
 
                     # Update term_ui with a new format
@@ -3897,7 +3896,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
                         update_field.term_ui = language_3letters + 'q' + zseq
                         update_field.save()
                     except TermListQualif.DoesNotExist:
-                        print 'Warning! Does not exist id to this Term'
+                        print('Warning! Does not exist id to this Term')
 
                     form.save()
 
@@ -4194,10 +4193,10 @@ class TermListQualifView(LoginRequiredView, ListView):
                 concepts = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
                 for x in concepts:
                     id_identifier = x.get('identifier_id')
-                    # print 'IDs --->',id_identifier
+                    # print('IDs --->',id_identifier)
                     has_register = IdentifierQualif.objects.filter(id=id_identifier,thesaurus_id=self.request.GET.get("ths")).exists()
                     if has_register:
-                        # print 'ID pertinente',id_identifier
+                        # print('ID pertinente',id_identifier)
 
                         # IdentifierQualif
                         context['id_register_objects'] = IdentifierConceptListQualif.objects.filter(
@@ -4366,20 +4365,20 @@ class ConceptCreateQualifConfirm(LoginRequiredView, ListView):
             created_by = self.request.GET.get("created_by")
             abbreviation = self.request.GET.get("abbreviation").upper()
 
-            # print 'Abbreviation--->',abbreviation
-            
+            # print('Abbreviation--->',abbreviation)
+
             thesaurus_name = self.request.GET.get("choiced_thesaurus_name")
 
-            # print 'DEBUG'
-            # print '[ths - ' ,ths,' ]'
-            # print '[term_string - ' ,term_string,' ]'
-            # print '[language_code - ' ,language_code,' ]'
-            # print '[concept_id - ' ,concept_id,' ]'
-            # print '[term_id - ' ,term_id,' ]'
-            # print '[created_by - ' ,created_by,' ]'
-            # print '[abbreviation - ' ,abbreviation,' ]'
-            # print '[thesaurus_name - ' ,thesaurus_name,' ]'
-            # print 'DEBUG'
+            # print('DEBUG')
+            # print('[ths - ' ,ths,' ]')
+            # print('[term_string - ' ,term_string,' ]')
+            # print('[language_code - ' ,language_code,' ]')
+            # print('[concept_id - ' ,concept_id,' ]')
+            # print('[term_id - ' ,term_id,' ]')
+            # print('[created_by - ' ,created_by,' ]')
+            # print('[abbreviation - ' ,abbreviation,' ]')
+            # print('[thesaurus_name - ' ,thesaurus_name,' ]')
+            # print('DEBUG')
 
             # Verifica a existencia da combinação de abbreviation e thesaurus, se existir não deverá ser permitido
             has_abbreviation = IdentifierQualif.objects.filter(abbreviation=abbreviation,thesaurus=ths).exists()
@@ -4423,7 +4422,7 @@ class ConceptCreateQualifConfirm(LoginRequiredView, ListView):
                     qualifier_ui = 'Q' + acronym + zseq
                 except Thesaurus.DoesNotExist:
                     id_thesaurus = str(self.object.id)
-                    print 'Warning! - No thesaurus_acronym for id -->',id_thesaurus
+                    print('Warning! - No thesaurus_acronym for id -->',id_thesaurus)
 
                 add_reg = IdentifierQualif(qualifier_ui=qualifier_ui, decs_code=decs_code, abbreviation=abbreviation, date_created=created_time, created_by_id=created_by, thesaurus_id=ths)
                 add_reg.save()
@@ -4555,7 +4554,7 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
             for term in has_term:
                 t=term.get('term_string').encode('utf-8')
                 if t == term_string.encode('utf-8'):
-                    # print 'Igual-->',t
+                    # print('Igual-->',t)
                     has_equal=t
 
             if not has_equal:
@@ -4585,7 +4584,7 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
                     update_concept_field.concept_ui = 'FQ' + zseq
                     update_concept_field.save()
                 except IdentifierConceptListQualif.DoesNotExist:
-                    print 'Warning! Does not exist id to this Concept'
+                    print('Warning! Does not exist id to this Concept')
 
                 # Update term_ui with a new format
                 try:
@@ -4621,7 +4620,7 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
                     update_field.term_ui = language_3letters + 'q' + zseq
                     update_field.save()
                 except TermListQualif.DoesNotExist:
-                    print 'Warning! Does not exist id to this Term'
+                    print('Warning! Does not exist id to this Term')
 
                 # Update created_date
                 try:
@@ -4630,7 +4629,7 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
                     update_date_created.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
                     update_date_created.save()
                 except TermListQualif.DoesNotExist:
-                    print 'Warning! Does not exist id to this Term'
+                    print('Warning! Does not exist id to this Term')
 
                 return HttpResponseRedirect(self.get_success_url())
             else:
@@ -4722,9 +4721,9 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
             form.save()
 
             # Necessário atualizar também os termos que são preferidos no conceito para também preferidos do registro
-            # print 'id ----->',self.object.id
+            # print('id ----->',self.object.id)
             check_preferred_concept = self.request.POST.get("preferred_concept")
-            # print 'check_preferred_concept ---->',check_preferred_concept
+            # print('check_preferred_concept ---->',check_preferred_concept)
 
             if check_preferred_concept == 'Y':
                 TermListQualif.objects.filter(identifier_concept_id=self.object.id, concept_preferred_term='Y').update(record_preferred_term='Y')
@@ -4799,7 +4798,7 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
         return '/thesaurus/qualifiers/view/%s%s' % ( self.object.id, ths )
 
     def form_valid(self, form):
-        
+
         if form.is_valid():
             # Brings form variables to check if it already exists
             term_string = self.request.POST.get("term_string")
@@ -4884,7 +4883,7 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
                     for term in has_term:
                         t=term.get('term_string').encode('utf-8')
                         if t == term_string.encode('utf-8'):
-                            # print 'Igual-->',t
+                            # print('Igual-->',t)
                             has_equal=t
 
                     if not has_equal:
@@ -4934,7 +4933,7 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
                             update_field.term_ui = language_3letters + 'q' + zseq
                             update_field.save()
                         except TermListQualif.DoesNotExist:
-                            print 'Warning! Does not exist id to this Term'
+                            print('Warning! Does not exist id to this Term')
 
                         return HttpResponseRedirect(self.get_success_url())
                     else:
@@ -4973,7 +4972,7 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
                 for term in has_term:
                     t=term.get('term_string').encode('utf-8')
                     if t == term_string.encode('utf-8'):
-                        # print 'Igual-->',t
+                        # print('Igual-->',t)
                         has_equal=t
 
                 if not has_equal:
@@ -5023,7 +5022,7 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
                         update_field.term_ui = language_3letters + 'q' + zseq
                         update_field.save()
                     except TermListQualif.DoesNotExist:
-                        print 'Warning! Does not exist id to this Term'
+                        print('Warning! Does not exist id to this Term')
 
                     return HttpResponseRedirect(self.get_success_url())
                 else:
@@ -5095,8 +5094,8 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
             concept_preferred_term_old=y.get('concept_preferred_term')
             record_preferred_term_old=y.get('record_preferred_term')
             historical_annotation_old=y.get('historical_annotation')
-            # print 'Current - TERM ----->',term_string_old
-            # print 'Current - Historico --->',historical_annotation_old
+            # print('Current - TERM ----->',term_string_old)
+            # print('Current - Historico --->',historical_annotation_old)
 
         # Brings form variables to check if it already exists
         term_string = self.request.POST.get("term_string")
@@ -5212,7 +5211,7 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
                 for term in has_term:
                     t=term.get('term_string').encode('utf-8')
                     if t == term_string.encode('utf-8'):
-                        # print 'Igual-->',t
+                        # print('Igual-->',t)
                         has_equal=t
 
                 if has_equal:
@@ -5282,7 +5281,7 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
             for term in has_term:
                 t=term.get('term_string').encode('utf-8')
                 if t == term_string.encode('utf-8'):
-                    # print 'Igual-->',t
+                    # print('Igual-->',t)
                     has_equal=t
 
             if has_equal:
@@ -5412,7 +5411,7 @@ class legacyInformationQualifUpdateView(LoginRequiredView, UpdateView):
         context = super(legacyInformationQualifUpdateView, self).get_context_data(**kwargs)
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
-        
+
         return context
 
 
@@ -5725,5 +5724,3 @@ class PageViewQualif(LoginRequiredView, DetailView):
             context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
             return context
-
-

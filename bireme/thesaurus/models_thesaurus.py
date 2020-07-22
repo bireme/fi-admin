@@ -2,8 +2,7 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 from django.utils import timezone
-# from utils.models import Generic, Country
-from django.contrib.contenttypes.generic import GenericRelation
+
 from main.models import SourceLanguage
 
 # thesaurus fields
