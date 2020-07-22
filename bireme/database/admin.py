@@ -1,7 +1,7 @@
 from django.contrib import admin
 from utils.admin import GenericAdmin
 
-from models import *
+from database.models import *
 
 class DatabaseLocalAdmin(admin.TabularInline):
     model = DatabaseLocal

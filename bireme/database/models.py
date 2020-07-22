@@ -24,7 +24,7 @@ class Database(Generic):
     network_index = MultipleAuxiliaryChoiceField(_('Network index'), blank=True)
     cc_index = models.CharField(_('Cooperative Center index'), max_length=55, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         cache_id = "database-{}-{}".format(lang_code, self.id)
         database_name_local = cache.get(cache_id)
@@ -46,6 +46,6 @@ class DatabaseLocal(models.Model):
         verbose_name = "Translation"
         verbose_name_plural = "Translations"
 
-    database = models.ForeignKey(Database, verbose_name=_("Database"))
+    database = models.ForeignKey(Database, verbose_name=_("Database"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
     name = models.CharField(_("name"), max_length=255)
