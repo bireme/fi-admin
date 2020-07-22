@@ -18,7 +18,7 @@ class Profile(models.Model):
     )
 
     data = models.TextField(_("data"), null=True, blank=True)
-    user = models.OneToOneField(User, verbose_name="user") # allow extension of default django User
+    user = models.OneToOneField(User, verbose_name="user", on_delete=models.PROTECT) # allow extension of default django User
 
     def get_attribute(self, attr):
         data_attribute = ''

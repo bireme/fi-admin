@@ -1,13 +1,15 @@
 #! coding: utf-8
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
+from django.contrib.sessions.backends.db import SessionStore
+
 import requests
 import json
-from django.contrib.sessions.backends.db import SessionStore, Session
 
 class EmailModelBackend(object):
 
-    def authenticate(self, username=None, password=None):
+    def authenticate(self, request, username=None, password=None):
 
         # caso seja superuser, ele loga com o login padrão do django
         try:
