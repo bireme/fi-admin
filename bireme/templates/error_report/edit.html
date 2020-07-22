@@ -14,7 +14,7 @@
 <div class='header'>
     <h2><i class='icon-warning-sign'></i>{% trans "Edit error report" %}</h2>
     <div class="pull-right">
-        <a href="{% url 'main.views.create_edit_resource' error_report.object_id %}" target="_blank"><button class="btn btn-info btn-large">{% trans "Edit resource of this report" %}</button></a>
+        <a href="{% url 'main:edit_resource' error_report.object_id %}" target="_blank"><button class="btn btn-info btn-large">{% trans "Edit resource of this report" %}</button></a>
     </div>
 </div>
 
@@ -55,7 +55,7 @@
 
             </div>
 
-            <div class="control-panel form-submit">                
+            <div class="control-panel form-submit">
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             </div>
         </div>
@@ -63,4 +63,3 @@
 </div>
 
 {% endblock %}
-

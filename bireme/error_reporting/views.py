@@ -1,6 +1,5 @@
 #! coding: utf-8
-from django.shortcuts import redirect, render_to_response, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.shortcuts import redirect, render, reverse, get_object_or_404
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
@@ -11,20 +10,19 @@ from django.contrib.admin.models import LogEntry
 
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import escape
-from recaptcha.client import captcha
 
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 
-from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
 
 from django.conf import settings
 from datetime import datetime
-from models import *
+
 from main.models import Resource, Keyword
 from events.models import Event
-from forms import *
+from error_reporting.models import *
+from error_reporting.forms import *
 
 import os
 import json
@@ -42,11 +40,11 @@ def list_error_report(request):
 
     # getting action parameters
     actions = {}
-    for key in ACTIONS.keys():
-        if request.REQUEST.get(key):
-            actions[key] = request.REQUEST.get(key)
+    for key in settings.ACTIONS.keys():
+        if request.GET.get(key):
+            actions[key] = request.GET.get(key)
         else:
-            actions[key] = ACTIONS[key]
+            actions[key] = settings.ACTIONS[key]
 
     page = 1
     if actions['page'] and actions['page'] != '':
@@ -76,7 +74,7 @@ def list_error_report(request):
     output['actions'] = actions
     output['pagination'] = pagination
 
-    return render_to_response('error_report/list.html', output, context_instance=RequestContext(request))
+    return render(request, 'error_report/list.html', output)
 
 
 @login_required
@@ -89,7 +87,7 @@ def create_error_report(request, **kwargs):
     content_type = escape(request.POST.get('content_type'))
     return_url = request.POST.get('return_url')
 
-    error_report = ErrorReport(object_id=object_id, content_type_id=content_type)   
+    error_report = ErrorReport(object_id=object_id, content_type_id=content_type)
     form = ErrorReportForm(request.POST, instance=error_report)
     error_report = form.save()
 
@@ -129,7 +127,7 @@ def edit_error_report(request, **kwargs):
     output['error_report'] = error_report
     output['settings'] = settings
 
-    return render_to_response('error_report/edit.html', output, context_instance=RequestContext(request))
+    return render(request, 'error_report/edit.html', output)
 
 
 @csrf_exempt
@@ -140,11 +138,11 @@ def external_error_report(request, **kwargs):
     sucess = True
 
     resource_id = escape(request.POST.get('resource_id'))
-    resource_type = escape(request.POST.get('resource_type', 'resource')) 
+    resource_type = escape(request.POST.get('resource_type', 'resource'))
 
     content_type = ContentType.objects.get(model=resource_type)
 
-    error_report = ErrorReport(object_id=resource_id, content_type=content_type, status=0)   
+    error_report = ErrorReport(object_id=resource_id, content_type=content_type, status=0)
     form = ExternalErrorReportForm(request.POST, instance=error_report)
 
     if form.is_valid():
@@ -153,11 +151,11 @@ def external_error_report(request, **kwargs):
     else:
         sucess = False
 
-    response = HttpResponse(sucess)  
+    response = HttpResponse(sucess)
     response["Access-Control-Allow-Origin"] = "*"
     response["Access-Control-Allow-Methods"] = "POST"
-    response["Access-Control-Allow-Headers"] = "*" 
-    
+    response["Access-Control-Allow-Headers"] = "*"
+
     return response
 
 
@@ -178,5 +176,4 @@ def delete_error_report(request, error_report_id):
     output['alert'] = _("Report deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('error_reporting/list.html', output, context_instance=RequestContext(request))
-
+    return render(request, 'error_reporting/list.html', output)

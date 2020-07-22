@@ -1,7 +1,7 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db import models
 from django.utils import timezone
 
@@ -29,14 +29,13 @@ class ErrorReport(Generic):
     )
 
     object_id = models.PositiveIntegerField()
-    content_type = models.ForeignKey(ContentType, related_name='error_reporting')
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_type = models.ForeignKey(ContentType, related_name='error_reporting', on_delete=models.PROTECT)
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=0)
     code = models.SmallIntegerField(_('Error type'), choices=ERROR_CHOICES, default=3)
-    description = models.TextField(_('Description'), blank=True)    
+    description = models.TextField(_('Description'), blank=True)
     new_link = models.URLField(_('New link'), blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.description
-

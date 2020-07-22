@@ -139,7 +139,7 @@
                 <tbody>
                     {% for report in error_reports %}
                         <tr>
-                            <td><a href="{% url 'events.views.create_edit_event' report.object_id %}">{{ report.object_id }}</a></td>
+                            <td><a href="{% url 'events:edit_event' report.object_id %}">{{ report.object_id }}</a></td>
                             <td><span title="{{ report.description }}">{{ report.description|slice:"100" }}{% if report.descriptione|length > 100 %}...{% endif %}</span></td>
                             <td>
                                 {{ resource.created_time|date:"d/m/y@f" }}
@@ -152,7 +152,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'events.views.create_edit_event' report.object_id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                <a href="{% url 'events:edit_event' report.object_id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                             </td>
                         </tr>
                     {% endfor %}
