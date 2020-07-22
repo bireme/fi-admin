@@ -3,10 +3,9 @@ from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 from django.utils import timezone
 from utils.models import Generic, Country
-from django.contrib.contenttypes.generic import GenericRelation
 from main.models import SourceLanguage
 from log.models import AuditLog
-from choices import *
+from title.choices import *
 
 
 class Users(Generic):
@@ -151,9 +150,9 @@ class OnlineResources(models.Model, AuditLog):
         verbose_name = _("Online resource")
         verbose_name_plural = _("Online resources")
 
-    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True, null=True)
+    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True, null=True, on_delete=models.PROTECT)
     url = models.URLField(_('URL'), max_length=255, blank=True)
-    owner = models.ForeignKey(OwnerList, verbose_name=_("Owner"), blank=True, null=True)
+    owner = models.ForeignKey(OwnerList, verbose_name=_("Owner"), blank=True, null=True, on_delete=models.PROTECT)
     issn_online = models.CharField(_('ISSN online'), max_length=55, blank=True)
     tco = models.BooleanField(_('ONLINE full text'), default=False)
     ndb = models.BooleanField(_('Unavailable for libraries'), default=False)
@@ -177,7 +176,7 @@ class TitleVariance(models.Model, AuditLog):
         verbose_name = _("Title variance")
         verbose_name_plural = _("Title variances")
 
-    title = models.ForeignKey(Title, verbose_name=_("Original title"), blank=True)
+    title = models.ForeignKey(Title, verbose_name=_("Original title"), blank=True, on_delete=models.PROTECT)
     type = models.CharField(_('Type'), max_length=55, choices=TITLE_VARIANCE_CHOICES, blank=True)
     label = models.CharField(_('Title'), max_length=455, blank=True)
     issn = models.CharField(_('ISSN'), max_length=55, blank=True)
@@ -197,7 +196,7 @@ class BVSSpecialty(models.Model, AuditLog):
         verbose_name = _("BVS Specialty")
         verbose_name_plural = _("BVS Specialties")
 
-    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True)
+    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True, on_delete=models.PROTECT)
     bvs = models.CharField(_('BVS'), max_length=455, blank=True)
     thematic_area = models.CharField(_('Thematic area'), max_length=55, blank=True)
 
@@ -230,8 +229,8 @@ class IndexRange(models.Model, AuditLog):
         ( 'MR', _('MEDLINE Record')),
     )
 
-    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True)
-    index_code = models.ForeignKey(IndexCode, verbose_name=_("Index source code"), blank=True, null=True)
+    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True, on_delete=models.PROTECT)
+    index_code = models.ForeignKey(IndexCode, verbose_name=_("Index source code"), blank=True, null=True, on_delete=models.PROTECT)
     initial_date = models.CharField(_('Initial date'), max_length=255, blank=True)
     initial_volume = models.CharField(_('Initial volume'), max_length=55, blank=True)
     initial_number = models.CharField(_('Initial number'), max_length=55, blank=True)
@@ -255,7 +254,7 @@ class Audit(models.Model, AuditLog):
         verbose_name = _("Audit")
         verbose_name_plural = _("Audit")
 
-    title = models.ForeignKey(Title, verbose_name=_("Original title"), blank=True)
+    title = models.ForeignKey(Title, verbose_name=_("Original title"), blank=True, on_delete=models.PROTECT)
     type = models.CharField(_('Type'), max_length=55, choices=AUDIT_CHOICES, blank=True)
     label = models.CharField(_('Title'), max_length=455, blank=True)
     issn = models.CharField(_('ISSN'), max_length=55, blank=True)
@@ -317,14 +316,14 @@ class Issue(Generic):
         ('NE', _('Special number')),
     )
 
-    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True)
+    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True, on_delete=models.PROTECT)
     treatment_level = models.CharField(_('Treatment level'), max_length=55, blank=True)
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
     year = models.CharField(_('Year'), max_length=255, blank=False)
     volume = models.CharField(_('Volume'), max_length=255, blank=True)
     number = models.CharField(_('Number'), max_length=55, blank=True)
     copies = models.CharField(_('Number of copies'), max_length=55, blank=True)
-    mask = models.ForeignKey(Mask, related_name="+", verbose_name=_("Mask code"), blank=True, null=True)
+    mask = models.ForeignKey(Mask, related_name="+", verbose_name=_("Mask code"), blank=True, null=True, on_delete=models.PROTECT)
     status = models.CharField(_('Status (P/A)'), max_length=55, choices=STATUS_CHOICES, blank=False)
     publication_type = models.CharField(_('Publication type'), max_length=55, choices=TYPE_CHOICES, blank=True)
     notes = models.TextField(_("Notes"), blank=True, help_text=_("Enter one per line"))
@@ -342,7 +341,7 @@ class Collection(Generic):
         verbose_name = _("Collection")
         verbose_name_plural = _("Collections")
 
-    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True)
+    title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True, on_delete=models.PROTECT)
     collection = models.TextField(_("Collection"), blank=True, help_text=_("Enter one per line"))
 
     def __unicode__(self):
