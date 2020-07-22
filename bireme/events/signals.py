@@ -16,9 +16,6 @@ def register_action(sender, instance, signal, created, **kwargs):
             user_id = instance.created_by_id if created else instance.updated_by_id ,
             content_type_id = ContentType.objects.get_for_model(instance).pk,
             object_id = instance.pk,
-            object_repr = unicode(instance.title),
+            object_repr = str(instance.title),
             #change_message = instance.changed_fields,
             action_flag = ADDITION if created else CHANGE)
-
-
-

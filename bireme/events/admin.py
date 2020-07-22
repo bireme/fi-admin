@@ -1,24 +1,24 @@
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.contrib import admin
-from django.contrib.contenttypes import generic
 
-from models import *
 from main.models import Descriptor, Keyword, ThematicArea
 from error_reporting.models import ErrorReport
 from utils.admin import GenericAdmin
 
+from events.models import *
 
-class DescriptorAdmin(generic.GenericTabularInline):
+class DescriptorAdmin(GenericTabularInline):
     model = Descriptor
     extra = 1
 
 
-class KeywordAdmin(generic.GenericTabularInline):
+class KeywordAdmin(GenericTabularInline):
     model = Keyword
     extra = 1
 
 
-class ThematicAreaAdmin(generic.GenericTabularInline):
+class ThematicAreaAdmin(GenericTabularInline):
     model = ResourceThematic
     extra = 1
 

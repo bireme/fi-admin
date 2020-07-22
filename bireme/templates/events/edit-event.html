@@ -15,7 +15,7 @@
 
 
 {% block breadcrumb %}
-    <li><a href="{% url 'events.views.list_events' %}">{% trans "Events" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'events:list_events' %}">{% trans "Events" %}</a> <span class="divider">/</span></li>
     {% if is_new %}<li>{% trans "New Event" %}</li>
     {% else %}<li>{% trans "Edit Event" %}</li>{% endif %}
 {% endblock %}
@@ -66,21 +66,21 @@
                                 {{ field.errors }}
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
+                                    {% if field.name == 'status' %}
                                         <p>{{ event.get_status_display }}</p>
-                                    {% elif field.name = 'link' %}
+                                    {% elif field.name == 'link' %}
                                         {% for link in field.value.splitlines %}
                                             <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
                                         {% endfor %}
-                                    {% elif field.name = 'source_language' %}
+                                    {% elif field.name == 'source_language' %}
                                         {% for sl in event.source_language.all %}
                                             <p>{{ sl }}</p>
                                         {% endfor %}
-                                    {% elif field.name = 'source_type' %}
+                                    {% elif field.name == 'source_type' %}
                                         {% for st in event.source_type.all %}
                                             <p>{{ st }}</p>
                                         {% endfor %}
-                                    {% elif field.name = 'originator_location' %}
+                                    {% elif field.name == 'originator_location' %}
                                         {% for ol in event.originator_location.all %}
                                             <p>{{ ol }}</p>
                                         {% endfor %}
@@ -345,7 +345,7 @@
         </div>
 
         <div class="control-panel form-submit">
-            <a href="{% url 'events.views.list_events' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
+            <a href="{% url 'events:list_events' %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
         </div>
 
@@ -359,11 +359,11 @@
         </div>
 
         <div class="modal-header">
-            <form method="POST" action="{% url 'error_reporting.views.create_error_report' %}">
+            <form method="POST" action="{% url 'error_reporting:create_error_report' %}">
                 {% csrf_token %}
                 <input type="hidden" name="object_id" value="{{ event.id }}"/>
                 <input type="hidden" name="content_type" value="{{ content_type }}"/>
-                <input type="hidden" name="return_url" value="{% url 'events.views.create_edit_event' event.id %}"/>
+                <input type="hidden" name="return_url" value="{% url 'events:edit_event' event.id %}"/>
 
                 <fieldset id="metadata">
                     {% for hidden in form_error_report.hidden_fields %}

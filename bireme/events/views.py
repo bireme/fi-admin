@@ -1,11 +1,8 @@
 #! coding: utf-8
-from django.shortcuts import redirect, render_to_response, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.shortcuts import redirect, reverse, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import forms as auth_forms
-from django.contrib.auth.views import logout
 
 from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
@@ -16,18 +13,18 @@ from django.utils.functional import curry
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 
-from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
 from utils.forms import is_valid_for_publication
 from help.models import get_help_fields
 from django.conf import settings
 from datetime import datetime
-from models import *
-from forms import *
 from error_reporting.forms import ErrorReportForm
 
 from main.decorators import *
 from main.models import ThematicArea
+
+from events.models import *
+from events.forms import *
 
 import mimetypes
 
@@ -47,11 +44,11 @@ def list_events(request):
 
     # getting action parameters
     actions = {}
-    for key in ACTIONS.keys():
-        if request.REQUEST.get(key):
-            actions[key] = request.REQUEST.get(key)
+    for key in settings.ACTIONS.keys():
+        if request.GET.get(key):
+            actions[key] = request.GET.get(key)
         else:
-            actions[key] = ACTIONS[key]
+            actions[key] = settings.ACTIONS[key]
 
     page = 1
     if actions['page'] and actions['page'] != '':
@@ -115,7 +112,7 @@ def list_events(request):
     output['pagination'] = pagination
     output['user_data'] = user_data
 
-    return render_to_response('events/events.html', output, context_instance=RequestContext(request))
+    return render(request, 'events/events.html', output)
 
 
 @login_required
@@ -180,7 +177,7 @@ def create_edit_event(request, **kwargs):
             # update DeDup service
             update_dedup_service(event)
 
-            return redirect('events.views.list_events')
+            return redirect('events:list_events')
     # new/edit
     else:
         form = EventForm(instance=event, user_data=user_data)
@@ -222,7 +219,7 @@ def create_edit_event(request, **kwargs):
     output['content_type'] = ct.id
     output['help_fields'] = get_help_fields('events')
 
-    return render_to_response('events/edit-event.html', output, context_instance=RequestContext(request))
+    return render(request, 'events/edit-event.html', output)
 
 
 @login_required
@@ -248,7 +245,7 @@ def delete_event(request, event_id):
     output['alert'] = _("Event deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('events/events.html', output, context_instance=RequestContext(request))
+    return render(request, 'events/events.html', output)
 
 
 ########## Auxiliary table event type ###########
@@ -266,11 +263,11 @@ def list_types(request):
 
     # getting action parameters
     actions = {}
-    for key in ACTIONS.keys():
-        if request.REQUEST.get(key):
-            actions[key] = request.REQUEST.get(key)
+    for key in settings.ACTIONS.keys():
+        if request.GET.get(key):
+            actions[key] = request.GET.get(key)
         else:
-            actions[key] = ACTIONS[key]
+            actions[key] = settings.ACTIONS[key]
 
     page = 1
     if actions['page'] and actions['page'] != '':
@@ -294,7 +291,7 @@ def list_types(request):
     output['actions'] = actions
     output['pagination'] = pagination
 
-    return render_to_response('events/types.html', output, context_instance=RequestContext(request))
+    return render(request, 'events/types.html', output)
 
 @login_required
 @superuser_permission
@@ -321,7 +318,7 @@ def create_edit_type(request, **kwargs):
             output['alert'] = _("Type successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('events.views.list_types')
+            return redirect('events:list_types')
     # new
     else:
         form = TypeForm(instance=type)
@@ -331,7 +328,7 @@ def create_edit_type(request, **kwargs):
     output['formset'] = formset
     output['type'] = type
 
-    return render_to_response('events/edit-type.html', output, context_instance=RequestContext(request))
+    return render(request, 'events/edit-type.html', output)
 
 
 @login_required
@@ -345,7 +342,7 @@ def delete_type(request, type):
     output['alert'] = _("Type deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('events/types.html', output, context_instance=RequestContext(request))
+    return render(request, 'events/types.html', output)
 
 
 # update DeDup service
