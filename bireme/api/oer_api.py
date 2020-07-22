@@ -1,7 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.resources import ModelResource
@@ -11,10 +10,10 @@ from tastypie.authorization import Authorization
 from tastypie.utils import trailing_slash
 from tastypie import fields
 
-from oer.models import *
 from attachments.models import Attachment
+from main.models import Descriptor, ResourceThematic
+from oer.models import *
 
-from  main.models import Descriptor, ResourceThematic
 import requests
 import urllib
 
@@ -51,7 +50,7 @@ class OERResource(ModelResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
         ]
 
 
@@ -90,7 +89,6 @@ class OERResource(ModelResource):
         search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': lang,
                     'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
 
-        print search_params
 
         r = requests.post(search_url, data=search_params)
 

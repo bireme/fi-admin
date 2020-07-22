@@ -1,7 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
@@ -39,7 +38,7 @@ class CommunityResource(ModelResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/get_country_list%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/get_country_list%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_country_list'), name="api_get_country_list"),
         ]
 

@@ -1,21 +1,20 @@
 # coding: utf-8
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-from django.conf import settings
-from copy import copy
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 from tastypie.constants import ALL
 from tastypie import fields
-from tastypie_custom import CustomResource
 
-from institution.models import *
-from isis_serializer import ISISSerializer
+from api.isis_serializer import ISISSerializer
+from api.tastypie_custom import CustomResource
 
 from institution.field_definitions import field_tag_map
+from institution.models import *
+
+from copy import copy
 
 import os
 import requests
@@ -38,7 +37,7 @@ class InstitutionResource(CustomResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
         ]
 

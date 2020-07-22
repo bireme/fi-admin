@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.conf.urls import patterns, url, include
+from django.urls import re_path
 
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
@@ -31,9 +31,9 @@ class EventResource(ModelResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
-            url(r"^(?P<resource_name>%s)/next%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_next'), name="api_get_next"),
-            url(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_last_id'), name="api_get_last_id"),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
+            re_path(r"^(?P<resource_name>%s)/next%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_next'), name="api_get_next"),
+            re_path(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_last_id'), name="api_get_last_id"),
         ]
 
 

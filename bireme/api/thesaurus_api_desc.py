@@ -5,8 +5,7 @@ DESCRIPTORS
 '''
 
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
@@ -14,12 +13,11 @@ from tastypie.utils import trailing_slash
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
-from thesaurus.models import *
-from isis_serializer import ISISSerializer
-
-from tastypie_custom import CustomResource
+from api.isis_serializer import ISISSerializer
+from api.tastypie_custom import CustomResource
 
 from thesaurus.field_definitions_desc import field_tag_map
+from thesaurus.models import *
 
 import requests
 import urllib
@@ -60,7 +58,7 @@ class ThesaurusResourceDesc(CustomResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
         ]
 
@@ -368,7 +366,7 @@ class ThesaurusResourceDesc(CustomResource):
             # 'descriptor_type_exploded': '106',
             if field.exploded:
                 bundle.data['descriptor_type_exploded'] = field.exploded
-            
+
             # z
             # geog_decs
             # 'descriptor_type_geog_decs': '106',
@@ -377,7 +375,7 @@ class ThesaurusResourceDesc(CustomResource):
 
 
 
-        # 'annotation_en': '110', 
+        # 'annotation_en': '110',
         annotation_en = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='en')
         for field in annotation_en:
             if field.annotation:
@@ -448,7 +446,7 @@ class ThesaurusResourceDesc(CustomResource):
         bundle.data['pharmacologicalaction_en'] = pharmacologicalaction_en_list
 
 
-        # 'annotation_es': '210', 
+        # 'annotation_es': '210',
         annotation_es = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='es')
         for field in annotation_es:
             if field.annotation:
