@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.conf import settings
 from short_url import decode_url
 
-from models import Attachment
+from attachments.models import Attachment
 
 def view_document(request, short_id):
     """
