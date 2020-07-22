@@ -174,9 +174,9 @@ def log_json_changes(obj):
                     continue
 
                 try:
-                    field_name = model._meta.get_field(change['field_name']).verbose_name.encode('utf-8')
+                    field_name = model._meta.get_field(change['field_name']).verbose_name
                 except:
-                    field_name = change['field_name'].encode('utf-8')
+                    field_name = change['field_name']
 
                 if field_name == 'Status':
                     previous_str = display_status(change['previous_value'])
@@ -214,10 +214,10 @@ def format_field(data, truncate=False):
                 if type(data_occ) == dict:
                     for (key, value) in data_occ.items():
                         if value:
-                            key = key.encode('utf-8')
+                            key = key
                             if not isinstance(value, basestring):
                                 value = str(value)
-                            value = value.encode('utf-8')
+                            value = value
                             if truncate and len(value) > 100:
                                 value = value[0:100] + "..."
 
@@ -229,11 +229,11 @@ def format_field(data, truncate=False):
                     out = out + "<br/>"
                 else:
                     # encode list items to utf-8
-                    data_utf8 = [value.encode('utf-8') if isinstance(value, basestring) else str(value) for value in data]
+                    data_utf8 = [value if isinstance(value, basestring) else str(value) for value in data]
                     out = ", ".join(data_utf8)
 
-        elif type(data) == unicode:
-            out = data.encode('utf-8')
+        elif type(data) == str:
+            out = data
         elif data is not None:
             out = data
 

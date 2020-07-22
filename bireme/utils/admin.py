@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
-from models import *
+from utils.models import *
 
 class GenericAdmin(admin.ModelAdmin):
     exclude = ()

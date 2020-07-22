@@ -38,8 +38,6 @@ class JSONField(jsonfield.JSONField):
 class AuxiliaryChoiceField(models.Field):
     """ Custom model field that present in select widget the values of AuxCode table for the current field """
 
-    __metaclass__ = models.SubfieldBase
-
     def get_internal_type(self):
         return "CharField"
 
@@ -57,8 +55,6 @@ class AuxiliaryChoiceField(models.Field):
 
 class MultipleAuxiliaryChoiceField(models.Field):
     """ Custom model field that present in select multiple widget the values of AuxCode table for the current field """
-
-    __metaclass__ = models.SubfieldBase
 
     def get_internal_type(self):
         return "TextField"

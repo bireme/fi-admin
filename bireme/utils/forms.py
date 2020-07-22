@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.forms.utils import ErrorList
 
-from django.contrib.contenttypes.generic import BaseGenericInlineFormSet
+from django.contrib.contenttypes.forms import BaseGenericInlineFormSet
 
 class SpanWidget(forms.Widget):
     '''Renders a value wrapped in a <span> tag.
