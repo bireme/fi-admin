@@ -1,20 +1,20 @@
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.admin import GenericTabularInline
 
-from models import *
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 from utils.admin import GenericAdmin
 
+from leisref.models import *
 
-class DescriptorAdmin(generic.GenericTabularInline):
+class DescriptorAdmin(GenericTabularInline):
     model = Descriptor
     exclude = ('status', 'code')
     extra = 1
 
 
-class ThematicAreaAdmin(generic.GenericTabularInline):
+class ThematicAreaAdmin(GenericTabularInline):
     model = ResourceThematic
     exclude = ('status',)
     extra = 1
@@ -26,7 +26,7 @@ class ActRelationshipAdmin(admin.TabularInline):
     extra = 1
 
 
-class AttachmentAdmin(generic.GenericTabularInline):
+class AttachmentAdmin(GenericTabularInline):
     model = Attachment
     exclude = ('short_url',)
     extra = 1

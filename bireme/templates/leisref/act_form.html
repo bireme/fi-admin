@@ -62,7 +62,7 @@
                                 {{ field.errors }}
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
+                                    {% if field.name == 'status' %}
                                         <p>{{ act.get_status_display }}</p>
                                     {% else %}
                                         <p>{{ field.value|linebreaks }}<p>
