@@ -77,7 +77,7 @@
                                         {% if field.value or field.name == 'status' %}
                                             <blockquote>
                                                 <p><strong>{{ field.label }}</strong><p>
-                                                {% if field.name = 'status' %}
+                                                {% if field.name == 'status' %}
                                                     <p>{{ object.get_status_display_label }}</p>
                                                 {% else %}
                                                     <p>{% display_field field %}<p>
@@ -617,7 +617,7 @@
                       article_title = article_title.substr(4);
                   }
 
-                  var duplicationLink = `                    
+                  var duplicationLink = `
                     <a href="${detail_url}" target="_blank">${article_title}</a>
                     - ${article['titulo_revista']} - ${article['ano_publicacao']}`;
 

@@ -72,7 +72,7 @@
                                         <select id="{{ field.auto_id }}" name="{{ field.name }}" onchange="fill_issn()" size="8">
                                             <option value="" data-issn=""></option>
                                         {% for value, label in form.fields.title_serial.choices %}
-                                            <option value="{{ value }}"{% if field.value == value %} selected{% endif %} data-issn="{{ label|substring_after:'|' }}" {% if not value and label %}disabled{% endif %}>
+                                            <option value="{{ value }}" {% if field.value == value %} selected{% endif %} data-issn="{{ label|substring_after:'|' }}" {% if not value and label %}disabled{% endif %}>
                                                 {% if value %}&nbsp;&nbsp;{% endif %}{{ label|substring_before:'|' }}
                                             </option>
                                         {% endfor %}

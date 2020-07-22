@@ -1,6 +1,6 @@
 #! coding: utf-8
 from collections import defaultdict
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
@@ -9,13 +9,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.db.models.functions import Substr
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from field_definitions import FIELDS_BY_DOCUMENT_TYPE
-
-from utils.views import ACTIONS
-from cross_validation import check_for_publication
 from utils.context_processors import additional_user_info
 from attachments.models import Attachment
 from main.models import Descriptor
@@ -23,7 +19,10 @@ from title.models import Title
 from database.models import Database
 from help.models import get_help_fields
 from utils.views import LoginRequiredView
-from forms import *
+
+from biblioref.field_definitions import FIELDS_BY_DOCUMENT_TYPE
+from biblioref.cross_validation import check_for_publication
+from biblioref.forms import *
 
 import json
 import requests
@@ -55,8 +54,8 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # getting action parameter
         self.actions = {}
-        for key in ACTIONS.keys():
-            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+        for key in settings.ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
         if settings.FULLTEXT_SEARCH:
             search_field = self.search_field + '__search'
@@ -330,7 +329,7 @@ class BiblioRefUpdate(LoginRequiredView):
             else:
                 form.data['status'] = '-1'
 
-            return self.render_to_response(
+            return self.render(request, self.template_name,
                            self.get_context_data(form=form,
                                                  formset_descriptor=formset_descriptor,
                                                  formset_attachment=formset_attachment,
@@ -614,7 +613,7 @@ def view_duplicates(request, reference_id):
             # ignore possible errors at json load at field (eg. empty field)
             pass
 
-    return render_to_response('biblioref/duplicate_detail.html', {'duplicate_list': duplicate_list,
+    return render(request, 'biblioref/duplicate_detail.html', {'duplicate_list': duplicate_list,
                                                                   'duplicate': duplicate,
                                                                   'metadata': metadata,
                                                                   'indexing': indexing,
@@ -636,7 +635,7 @@ def refs_changed_by_other_cc(current_user):
 
     for reference in refs_from_cc:
         # get correct class (source our analytic)
-        c_type = reference.get_content_type_id
+        c_type = reference.get_content_type_id()
         # filter by logs of current reference, change type and made by other users
         log_list = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
                                    .exclude(user=current_user).order_by('-id')
@@ -674,7 +673,7 @@ def refs_changed_by_other_user(current_user):
     refs_from_user = Reference.objects.filter(created_by=current_user)
     for reference in refs_from_user:
         # get correct class (source our analytic)
-        c_type = reference.get_content_type_id
+        c_type = reference.get_content_type_id()
         # filter by logs of current reference, change type and made by other users
         changed_by_other_user = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
                                                 .exclude(user=current_user).order_by('-id')

@@ -90,7 +90,7 @@
                                         {% if field.value or field.name == 'status' %}
                                             <blockquote>
                                                 <p><strong>{{ field.label }}</strong><p>
-                                                {% if field.name = 'status' %}
+                                                {% if field.name == 'status' %}
                                                     {% if form.document_type.0 == 'S' %}
                                                         <span class="label label-success">{% trans "Series source" %}</span>
                                                     {% else %}

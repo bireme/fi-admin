@@ -1,7 +1,7 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
-from django.contrib.contenttypes.generic import GenericRelation
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
 from utils.fields import JSONField, AuxiliaryChoiceField, MultipleAuxiliaryChoiceField
@@ -124,7 +124,7 @@ class Reference(Generic, AuditLog):
         orig = '__original_%s' % field
         return getattr(self, orig)
 
-    def __unicode__(self):
+    def __str__(self):
         if 'a' in self.treatment_level:
             try:
                 ref_child = ReferenceAnalytic.objects.get(id=self.pk)
@@ -142,7 +142,7 @@ class Reference(Generic, AuditLog):
                 ref_title = self.reference_title
         else:
             ref_child = ReferenceSource.objects.get(id=self.pk)
-            ref_title = ref_child.__unicode__()
+            ref_title = ref_child.__str__()
 
         return ref_title
 
@@ -223,13 +223,13 @@ class ReferenceSource(Reference):
     # field tag 66
     publication_city = models.CharField(_('City of publication'), max_length=100, blank=True)
     # field tag 67
-    publication_country = models.ForeignKey(Country, verbose_name=_('Publication country'), blank=True, null=True)
+    publication_country = models.ForeignKey(Country, verbose_name=_('Publication country'), blank=True, null=True, on_delete=models.PROTECT)
     # field tag 68
     symbol = models.TextField(_('Symbol'), blank=True)
     # field tag 69
     isbn = models.CharField(_('ISBN'), max_length=60, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         source_title = ''
         if self.literature_type[0] == 'S':
             source_title = u"{0}; {1} ({2}), {3}".format(self.title_serial,
@@ -261,7 +261,7 @@ class ReferenceAnalytic(Reference):
         verbose_name = _("Bibliographic Record Analytic")
         verbose_name_plural = _("Bibliographic Records Analytic")
 
-    source = models.ForeignKey(ReferenceSource, verbose_name=_("Source"), blank=False)
+    source = models.ForeignKey(ReferenceSource, verbose_name=_("Source"), blank=False, on_delete=models.PROTECT)
     # field tags 10
     individual_author = JSONField(_('Individual author'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 11
@@ -279,7 +279,7 @@ class ReferenceAnalytic(Reference):
     # field tag 724
     doi_number = models.CharField(_('DOI number'), max_length=150, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         if 'a' in self.treatment_level:
             if self.literature_type[0] == 'S':
                 ref_title = u"{0}; {1} ({2}), {3} | {4}".format(self.source.title_serial,
@@ -303,7 +303,7 @@ class ReferenceComplement(models.Model):
         verbose_name = _("Bibliographic Record Complement")
         verbose_name_plural = _("Bibliographic Records Complement")
 
-    source = models.ForeignKey(Reference, verbose_name=_("Source"), blank=False)
+    source = models.ForeignKey(Reference, verbose_name=_("Source"), blank=False, on_delete=models.PROTECT)
 
     # field tag 53
     conference_name = models.TextField(_('Conference name'), blank=True)
@@ -316,7 +316,7 @@ class ReferenceComplement(models.Model):
     # field tag 56
     conference_city = models.CharField(_('Conference city'), max_length=100, blank=True)
     # field tag 57
-    conference_country = models.ForeignKey(Country, verbose_name=_('Conference country'), blank=True, null=True)
+    conference_country = models.ForeignKey(Country, verbose_name=_('Conference country'), blank=True, null=True, on_delete=models.PROTECT)
     # field tag 59
     project_name = models.CharField(_('Project name'), max_length=500, blank=True)
     # field tag 60
@@ -332,7 +332,7 @@ class ReferenceLocal(models.Model):
         verbose_name = _("Bibliographic Record Local")
         verbose_name_plural = _("Bibliographic Records Local")
 
-    source = models.ForeignKey(Reference, verbose_name=_("Source"), blank=False)
+    source = models.ForeignKey(Reference, verbose_name=_("Source"), blank=False, on_delete=models.PROTECT)
     # field tag 03
     call_number = JSONField(_('Call number'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 04
@@ -346,7 +346,7 @@ class ReferenceLocal(models.Model):
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"[%s] | %s" % (self.cooperative_center_code, self.source)
 
 
@@ -357,7 +357,7 @@ class ReferenceAlternateID(models.Model):
         verbose_name = _("Bibliographic Record Alternate ID")
         verbose_name_plural = _("Bibliographic Alternate ID's")
 
-    reference = models.ForeignKey(Reference, verbose_name=_("Reference"), blank=False)
+    reference = models.ForeignKey(Reference, verbose_name=_("Reference"), blank=False, on_delete=models.PROTECT)
     alternate_id = models.CharField(_('Alternate id'), max_length=55, blank=False)
 
 
@@ -367,7 +367,7 @@ class ReferenceDuplicate(models.Model):
         verbose_name = _("Duplicate Bibliographic Record" )
         verbose_name_plural = _("Duplicate Bibliographic Records")
 
-    reference = models.ForeignKey(Reference, verbose_name=_("Reference"), blank=False)
+    reference = models.ForeignKey(Reference, verbose_name=_("Reference"), blank=False, on_delete=models.PROTECT)
     metadata_json = models.TextField(_('Metadata JSON'), blank=True)
     indexing_json = models.TextField(_('Indexing JSON'), blank=True)
     complement_json = models.TextField(_('Event/Project JSON'), blank=True)

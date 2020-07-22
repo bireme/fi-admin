@@ -2,9 +2,9 @@
 from collections import OrderedDict
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.utils.translation import ugettext as __
-from django.utils.translation import string_concat
-from django.forms.models import inlineformset_factory
-from django.contrib.contenttypes.generic import generic_inlineformset_factory
+from django.utils.text import format_lazy
+from django.forms import inlineformset_factory
+from  django.contrib.contenttypes.forms import generic_inlineformset_factory
 
 from django.forms import widgets
 from django import forms
@@ -19,7 +19,8 @@ from utils.models import AuxCode
 from attachments.models import Attachment
 from database.models import Database
 
-from models import *
+from biblioref.models import *
+
 import json
 import simplejson
 import requests
@@ -131,8 +132,8 @@ class BiblioRefForm(BetterModelForm):
         if 'publication_country' in self.fields:
             # divide list of countries in Latin America & Caribbean and Others
             country_list = [('', '')]
-            country_list_latin_caribbean = [(c.pk, unicode(c)) for c in Country.objects.filter(LA_Caribbean=True)]
-            country_list_other = [(c.pk, unicode(c)) for c in Country.objects.filter(LA_Caribbean=False)]
+            country_list_latin_caribbean = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=True)]
+            country_list_other = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=False)]
 
             # sort list by translation name
             country_list_latin_caribbean.sort(key=lambda c: c[1])
@@ -152,7 +153,7 @@ class BiblioRefForm(BetterModelForm):
         if 'indexed_database' in self.fields:
             regional_indexes = Database.objects.filter(regional_index=True)
             # populate field option with all regional indexes
-            self.fields['indexed_database'].choices = [(db.pk, unicode(db)) for db in regional_indexes]
+            self.fields['indexed_database'].choices = [(db.pk, str(db)) for db in regional_indexes]
 
             # if is a new article search in Title for indexes (databases) that index the article journal
             if self.document_type == 'Sas' and not self.instance.pk:
@@ -210,11 +211,11 @@ class BiblioRefForm(BetterModelForm):
         if pontuation in value:
             if not pontuation_with_space_after in value:
                 message = _("Insert space after %s") % pontuation
-                message = string_concat(message_item, message)
+                message = format_lazy('{}{}', message_item, message)
                 self.add_error(field, message)
             if pontuation_with_space_before in value:
                 message = _("Delete space before %s") % pontuation
-                message = string_concat(message_item, message)
+                message = format_lazy('{}{}', message_item, message)
                 self.add_error(field, message)
 
     def check_all_pontuation(self, value, field, message_item=''):
@@ -294,7 +295,7 @@ class BiblioRefForm(BetterModelForm):
                 message_item = _("Author %s: ") % occ
                 if author_resp and not author_resp in resp_list:
                     message = _("Degree of responsibility incompatible with LILACS")
-                    message = string_concat(message_item, message)
+                    message = format_lazy('{}{}', message_item, message)
                     self.add_error(field, message)
 
         return data
@@ -322,19 +323,19 @@ class BiblioRefForm(BetterModelForm):
                     message_item = _("Author %s: ") % occ
                     if author_name == 'Anon':
                         message = _("Thesis's author anonymous")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
                     if not ',' in author_name:
                         message = _("Comma abscent")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
                     elif not ', ' in author_name:
                         message = _("Insert space after comma")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
                     if author.get('_1') or author.get('_2') or author.get('_3') or author.get('_c') or author.get('_r'):
                         message = _("Affiliation information in Thesis/Dissertation must be provide at 'Institution to which it is submitted' field")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
         elif data:
@@ -346,42 +347,42 @@ class BiblioRefForm(BetterModelForm):
                 if author_name != 'Anon':
                     if not ',' in author_name and self.is_LILACS:
                         message = _("Comma absense or error in the word Anon")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
                     else:
                         if ',' in author_name and not ', ' in author_name:
                             message = _("Insert space after comma")
-                            message = string_concat(message_item, message)
+                            message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
                         if '.' in author_name and not '. ' in author_name:
                             message = _("Insert space after point")
-                            message = string_concat(message_item, message)
+                            message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
                         if any(abbreviation.decode('utf-8') in author_name for abbreviation in abbreviation_list):
                             message = _("Invalid abbreviation input Junior and/or Filho")
-                            message = string_concat(message_item, message)
+                            message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
 
                     if status == 1 and literature_type == 'S' and self.is_LILACS and type_of_journal == 'p' and not author.get('_1'):
                         message = _("Affiliation institution level 1 mandatory")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
                     if status == 1 and not author.get('_p') and author.get('_1') and author.get('_1').lower() != 's.af':
                         message = _("Affiliation country mandatory")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
                     if status == 1 and (not author.get('_1') or author.get('_1').lower() == 's.af'):
                         if author.get('_2') or author.get('_3') or author.get('_p') or author.get('_c'):
                             message = _("For absent or s.af affiliation do not describe the others affiliation atributes")
-                            message = string_concat(message_item, message)
+                            message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
 
                     if status == 1 and self.is_LILACS and author.get('_r'):
                         if not author.get('_r') in resp_list:
                             message = _("Degree of responsibility incompatible with LILACS")
-                            message = string_concat(message_item, message)
+                            message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
 
                     for key, value in author.iteritems():
@@ -421,24 +422,24 @@ class BiblioRefForm(BetterModelForm):
                 if self.is_LILACS:
                     if electronic_address.get('_q', '') == '':
                         message = _("File extension attribute is mandatory")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
                     if electronic_address.get('_y', '') == '':
                         message = _("File type attribute is mandatory")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
                     if electronic_address.get('_i', '') not in LILACS_compatible_languages:
                         message = _("Language incompatible with LILACS")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
                     if url not in url_list:
                         url_list.append(url)
                     else:
                         message = _("URL duplicated")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
         return data
@@ -558,7 +559,7 @@ class BiblioRefForm(BetterModelForm):
                     if self.is_LILACS:
                         if title.get('_i', '') not in LILACS_compatible_languages:
                             message = _("Language incompatible with LILACS")
-                            message = string_concat(message_item, message)
+                            message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
                     # check pontuation errors
                     self.check_all_pontuation(title.get('text'), field, message_item)
@@ -581,7 +582,7 @@ class BiblioRefForm(BetterModelForm):
                     if self.is_LILACS:
                         if title.get('_i', '') not in LILACS_compatible_languages:
                             message = _("Language incompatible with LILACS")
-                            message = string_concat(message_item, message)
+                            message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
                     # check pontuation errors
                     self.check_all_pontuation(title.get('text'), field, message_item)
@@ -647,7 +648,7 @@ class BiblioRefForm(BetterModelForm):
                     if self.is_LILACS:
                         if title.get('_i', '') not in LILACS_compatible_languages:
                             message = _("Language incompatible with LILACS")
-                            message = string_concat(message_item, message)
+                            message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
                     # check pontuation errors
                     self.check_all_pontuation(title.get('text'), field, message_item)
@@ -731,27 +732,27 @@ class BiblioRefForm(BetterModelForm):
 
                     if first == 'passim' and last != '':
                         message = _("If the attribute first is passim, the attribute last should be empty")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
                     if first != '' and first != 'passim' and not last:
                         message = _("Attribute last is missing")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
                     if last != '' and not first:
                         message = _("Attribute first is missing")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
                     if text and (text[0] != '[' or text[-1] != ']'):
                         message = _("Square brackets are missing [ ]")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
                     if elocation != '' and (first or last or text):
                         message = _("When the electronic location attribute is informed the others attributes should be empty")
-                        message = string_concat(message_item, message)
+                        message = format_lazy('{}{}', message_item, message)
                         self.add_error(field, message)
 
 
