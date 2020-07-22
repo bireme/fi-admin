@@ -1,6 +1,6 @@
 #! coding: utf-8
-from django.shortcuts import redirect, render_to_response, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.shortcuts import redirect, render, get_object_or_404
+from django.urls import reverse
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
@@ -15,19 +15,19 @@ from django.utils.html import escape
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 
-from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
 
 from django.conf import settings
 from datetime import datetime
-from models import *
 from main.models import Resource, Keyword
 from events.models import Event
-from forms import *
+
+from suggest.models import *
+from suggest.forms import *
 
 import os
 import json
-import urllib2, urllib
+import urllib
 
 @csrf_exempt
 def suggest_resource(request, **kwargs):
@@ -62,7 +62,7 @@ def suggest_resource(request, **kwargs):
         output['form'] = form
         output['captcha_error'] = captcha_error
 
-    return render_to_response(template, output, context_instance=RequestContext(request))
+    return render(request, template, output)
 
 @login_required
 def list_suggestions(request):
@@ -77,11 +77,11 @@ def list_suggestions(request):
 
     # getting action parameters
     actions = {}
-    for key in ACTIONS.keys():
-        if request.REQUEST.get(key):
-            actions[key] = request.REQUEST.get(key)
+    for key in settings.ACTIONS.keys():
+        if request.GET.get(key):
+            actions[key] = request.GET.get(key)
         else:
-            actions[key] = ACTIONS[key]
+            actions[key] = settings.ACTIONS[key]
 
     page = 1
     if actions['page'] and actions['page'] != '':
@@ -117,7 +117,7 @@ def list_suggestions(request):
     output['actions'] = actions
     output['pagination'] = pagination
 
-    return render_to_response('suggest/list.html', output, context_instance=RequestContext(request))
+    return render(request, 'suggest/list.html', output)
 
 @login_required
 def edit_suggested_resource(request, **kwargs):
@@ -148,7 +148,7 @@ def edit_suggested_resource(request, **kwargs):
     output['resource'] = resource
     output['settings'] = settings
 
-    return render_to_response('suggest/edit-suggested-resource.html', output, context_instance=RequestContext(request))
+    return render(request, 'suggest/edit-suggested-resource.html', output)
 
 
 @login_required
@@ -174,7 +174,7 @@ def create_resource_from_suggestion(request, suggestion_id):
     output['alert'] = _("Resource created.")
     output['alerttype'] = "alert-success"
 
-    return redirect('main.views.create_edit_resource', resource_id=resource.id)
+    return redirect('main:edit_resource', resource_id=resource.id)
 
 
 @login_required
@@ -196,7 +196,7 @@ def create_event_from_suggestion(request, suggestion_id):
     output['alert'] = _("Event created.")
     output['alerttype'] = "alert-success"
 
-    return redirect('events.views.create_edit_event', event_id=event.id)
+    return redirect('events:edit_event', event_id=event.id)
 
 
 @csrf_exempt
@@ -268,7 +268,7 @@ def suggest_event(request, **kwargs):
         output['form'] = form
         output['captcha_error'] = captcha_error
 
-    return render_to_response(template, output, context_instance=RequestContext(request))
+    return render(request, template, output)
 
 
 @login_required
@@ -300,7 +300,7 @@ def edit_suggested_event(request, **kwargs):
     output['suggest'] = suggest
     output['settings'] = settings
 
-    return render_to_response('suggest/edit-suggested-event.html', output, context_instance=RequestContext(request))
+    return render(request, 'suggest/edit-suggested-event.html', output)
 
 
 def validate_recaptcha (private_key, recaptcha_response, remoteip):
@@ -328,7 +328,7 @@ def validate_recaptcha (private_key, recaptcha_response, remoteip):
                 'response' : encode_if_necessary(recaptcha_response)
             })
 
-    request = urllib2.Request (
+    request = urllib.Request (
         url = "https://www.google.com/recaptcha/api/siteverify",
         data = params,
         headers = {
@@ -337,7 +337,7 @@ def validate_recaptcha (private_key, recaptcha_response, remoteip):
           }
         )
 
-    httpresp = urllib2.urlopen(request)
+    httpresp = urllib.urlopen(request)
     try:
         res = httpresp.read()
         return_values = json.loads(res)

@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Suggested Resource" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'suggest.views.list_suggestions' %}">{% trans "Suggested resources" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'list_suggestions' %}">{% trans "Suggested resources" %}</a> <span class="divider">/</span></li>
     <li>{% trans "Edit Resource" %}</li>
 {% endblock %}
 
@@ -51,8 +51,8 @@
 
             </div>
 
-            <div class="control-panel form-submit">                
-                <a href="{% url 'suggest.views.create_resource_from_suggestion' resource.id %}">
+            <div class="control-panel form-submit">
+                <a href="{% url 'create_resource_from_suggestion' resource.id %}">
                     <button class="btn btn-warning btn-large" type="button">{% trans "Create a new Resource using this suggestion" %}</button>
                 </a>
                 <button class="btn btn-primary btn-large" type="submit">{% trans "Save" %}</button>
@@ -62,4 +62,3 @@
 </div>
 
 {% endblock %}
-

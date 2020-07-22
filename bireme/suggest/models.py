@@ -34,7 +34,7 @@ class SuggestResource(models.Model):
 
     created_time = models.DateTimeField(_("created at"), auto_now_add=True, editable=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 # Event suggest table
@@ -50,7 +50,7 @@ class SuggestEvent(models.Model):
         (2, _('Refused')),
         (3, _('Deleted')),
     )
- 
+
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
 
     title = models.CharField(_('Title'), max_length=455, blank=False)
@@ -58,12 +58,12 @@ class SuggestEvent(models.Model):
     end_date = models.DateField(_('End date'), help_text=_('day/month/year'))
 
     link = models.URLField(_('Link'), blank=True)
-   
+
     city = models.CharField(_('City'), max_length=125, blank=True)
 
     administrative_comments = models.TextField(_('Administrative comments'), blank=True)
 
     created_time = models.DateTimeField(_("created at"), auto_now_add=True, editable=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
