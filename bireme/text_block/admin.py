@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import *
+from text_block.models import *
 
 
 class TextBlockLocalAdmin(admin.TabularInline):

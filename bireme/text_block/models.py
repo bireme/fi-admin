@@ -38,7 +38,7 @@ class TextBlock(models.Model):
             else:
                 return self.content
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
@@ -48,7 +48,7 @@ class TextBlockLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    text_block = models.ForeignKey(TextBlock, verbose_name=_("Text block"))
+    text_block = models.ForeignKey(TextBlock, verbose_name=_("Text block"), on_delete=models.CASCADE)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     title = models.CharField(_("Title"), max_length=155)
     content = HTMLField(_("Content"))
