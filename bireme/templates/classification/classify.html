@@ -51,7 +51,7 @@
             <select id="community_1" data-level="1" class="community">
                 <option value="">{% trans 'Select the community' %}</option>
                 {% for c in community_list %}
-                    <option value="{{c.id}}" {% if c.id = community_param|add:0 %}selected=1{% endif %}>{{c}}</option>
+                    <option value="{{c.id}}" {% if c.id == community_param|add:0 %}selected=1{% endif %}>{{c}}</option>
                 {% endfor %}
             </select>
         </div>

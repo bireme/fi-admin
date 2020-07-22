@@ -1,7 +1,7 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 
@@ -33,9 +33,9 @@ class Collection(models.Model, AuditLog):
         verbose_name = _("Collection")
         verbose_name_plural = _("Collections")
 
-    parent = models.ForeignKey('self', verbose_name=_("Parent"), null=True, blank=True, related_name='children')
+    parent = models.ForeignKey('self', verbose_name=_("Parent"), null=True, blank=True, related_name='children', on_delete=models.PROTECT)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
-    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True, on_delete=models.PROTECT)
     name = models.CharField(_("Name"), max_length=155, blank=True)
     slug = models.SlugField(_("Slug"), max_length=155, blank=True)
     description = models.TextField(_("Description"), blank=True)
@@ -77,7 +77,7 @@ class Collection(models.Model, AuditLog):
         return parent_list
 
     def community_collection_path(self):
-        parent_list = [unicode(parent) for parent in self.get_parents()]
+        parent_list = [str(parent) for parent in self.get_parents()]
         full_list = parent_list + [self.name]
         parent_path = ' / '.join(full_list)
 
@@ -87,7 +87,7 @@ class Collection(models.Model, AuditLog):
         self.slug = slugify(self.name)
         super(Collection, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         col_name = self.name
         if self.country:
             col_name = u"{} ({})".format(self.name, self.country)
@@ -100,7 +100,7 @@ class CollectionLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    collection = models.ForeignKey(Collection, verbose_name=_("Collection"))
+    collection = models.ForeignKey(Collection, verbose_name=_("Collection"), on_delete=models.CASCADE)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=155)
     description = models.TextField(_("Description"), blank=True)
@@ -114,12 +114,12 @@ class Relationship(models.Model, AuditLog):
         unique_together = (('object_id', 'content_type', 'collection'),)
 
     object_id = models.PositiveIntegerField()
-    content_type = models.ForeignKey(ContentType, related_name='relationship')
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
-    collection = models.ForeignKey(Collection, verbose_name=_("Collection"))
+    content_type = models.ForeignKey(ContentType, related_name='relationship', on_delete=models.PROTECT)
+    content_object = GenericForeignKey('content_type', 'object_id')
+    collection = models.ForeignKey(Collection, verbose_name=_("Collection"), on_delete=models.PROTECT)
 
     updated_time = models.DateTimeField(_("updated"), auto_now=True, editable=False, null=True, blank=True)
-    updated_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
+    updated_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False, on_delete=models.PROTECT)
 
     def save(self, *args, **kwargs):
         super(Relationship, self).save(*args, **kwargs)
@@ -130,5 +130,5 @@ class Relationship(models.Model, AuditLog):
             parent.save()
 
 
-    def __unicode__(self):
-        return unicode(self.collection)
+    def __str__(self):
+        return str(self.collection)
