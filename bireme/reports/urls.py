@@ -1,8 +1,10 @@
-from django.conf.urls import url
+from django.urls import re_path
 
-from views import *
+from reports.views import *
+
+app_name = 'reports'
 
 urlpatterns = [
     # Reports
-    url(r'^/?$', ReportsListView.as_view(), name='list_reports'),
+    re_path(r'^/?$', ReportsListView.as_view(), name='list_reports'),
 ]

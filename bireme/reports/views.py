@@ -1,5 +1,5 @@
 #! coding: utf-8
-from django.core.urlresolvers import reverse, reverse_lazy
+from  django.urls import reverse, reverse_lazy
 
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -11,7 +11,6 @@ from django.db import connection
 
 from django.conf import settings
 
-from utils.views import ACTIONS
 from utils.views import LoginRequiredView, SuperUserRequiredView
 from utils.context_processors import additional_user_info
 
