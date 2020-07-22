@@ -53,14 +53,14 @@ class WhodidMiddleware(object):
         if action == 'pre_clear':
             # before django clear the relation save as local thread variable the list of values of many to may field
             previous_ref = getattr(instance, field_name)
-            previous_values = [unicode(i) for i in previous_ref.all()]
+            previous_values = [str(i) for i in previous_ref.all()]
 
             setattr(_m2mfield, field_name, previous_values)
 
         if action == 'post_add':
             # compare list of pre-value with current values
             new_ref = getattr(instance, field_name)
-            new_values = [unicode(i) for i in new_ref.all()]
+            new_values = [str(i) for i in new_ref.all()]
             previous_values = getattr(_m2mfield, field_name)
 
             if new_values != previous_values:
@@ -109,15 +109,15 @@ class WhodidMiddleware(object):
                 if inline_model:
                     log_object_ct_id = instance.content_type.pk
                     log_object_id = instance.content_object.pk
-                    log_repr = unicode(instance.content_object)
+                    log_repr = str(instance.content_object)
                 elif related_model:
                     log_object_ct_id = ContentType.objects.get_for_model(instance.get_parent()).pk
                     log_object_id = instance.get_parent().pk
-                    log_repr = unicode(instance.get_parent())
+                    log_repr = str(instance.get_parent())
                 else:
                     log_object_ct_id = ContentType.objects.get_for_model(instance).pk
                     log_object_id = instance.pk
-                    log_repr = unicode(instance)
+                    log_repr = str(instance)
 
                 # set default change type to CHANGE
                 log_change_type = CHANGE
@@ -163,10 +163,10 @@ class WhodidMiddleware(object):
 
         if new_object:
             field_change.append({'label': 'new', 'field_name': obj_name, 'previous_value': '',
-                                 'new_value': unicode(instance)})
+                                 'new_value': str(instance)})
         elif was_deleted:
             field_change.append({'label': 'deleted', 'field_name': obj_name,
-                                 'previous_value': unicode(instance), 'new_value': ''})
+                                 'previous_value': str(instance), 'new_value': ''})
         else:
             # get previous attributes values of object
             obj = obj_model.objects.get(pk=instance.id)
@@ -176,7 +176,7 @@ class WhodidMiddleware(object):
 
                 if instance.id:
                     if field_type == 'ForeignKey':
-                        previous_value = unicode(getattr(obj, field_name))
+                        previous_value = str(getattr(obj, field_name))
                     elif field_type == 'FileField':
                         # filename
                         previous_value = obj.__dict__.get(field_name).name
@@ -187,7 +187,7 @@ class WhodidMiddleware(object):
 
 
                 if field_type == 'ForeignKey':
-                    new_value = unicode(getattr(instance, field_name))
+                    new_value = str(getattr(instance, field_name))
                 elif field_type == 'FileField':
                     # filename
                     new_value = obj.__dict__.get(field_name).name
