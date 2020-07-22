@@ -10,6 +10,6 @@
 {% block nav-global %}{% endblock %}
 
 {% block userlinks %}
-    <a href="{% url 'rosetta-home' %}">{% trans "Translations" %}</a> /
+    <a href="{% url 'rosetta-file-list' po_filter='project' %}">{% trans "Translations" %}</a> /
     {{ block.super }}
 {% endblock %}

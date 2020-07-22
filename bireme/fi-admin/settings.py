@@ -14,7 +14,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-PROJECT_ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATABASES = {
      'default': {
@@ -57,7 +57,7 @@ LANGUAGES = (
 )
 
 LOCALE_PATHS =(
-    os.path.join(PROJECT_ROOT_PATH, 'locale'),
+    os.path.join(BASE_DIR, 'locale'),
 )
 
 SITE_ID = 1
@@ -75,7 +75,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT_PATH, 'uploads')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -86,7 +86,7 @@ MEDIA_URL = '/uploads/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_ROOT_PATH, 'static_files')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -97,8 +97,8 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT_PATH, 'static'),
-    #os.path.join(PROJECT_ROOT_PATH, 'uploads'),
+    os.path.join(BASE_DIR, 'static'),
+    #os.path.join(BASE_DIR, 'uploads'),
 )
 
 # List of finder classes that know how to find static files in
@@ -114,51 +114,45 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y')
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.tz',
-    'django.core.context_processors.request',
-    'django.contrib.messages.context_processors.messages',
-
-    'utils.context_processors.additional_user_info',
-    'utils.context_processors.django_settings',
-)
-
-
-MIDDLEWARE_CLASSES = [
-    'django.middleware.common.CommonMiddleware',
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'log.middleware.WhodidMiddleware',
+    # custom middleware for log user actions
+    #'log.middleware.WhodidMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'fi-admin.urls'
 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                #  custom context_processors
+                'utils.context_processors.additional_user_info',
+                'utils.context_processors.django_settings',
+            ],
+        },
+    },
+]
+
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'fi-admin.wsgi.application'
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT_PATH, 'templates'),
-)
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -167,7 +161,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Django admin
     'django.contrib.admin',
 
     'haystack',
@@ -249,9 +242,9 @@ PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
 )
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
     'biremelogin.authenticate.EmailModelBackend',
-)
+]
 
 TINYMCE_JS_URL = "/static/js/tinymce/tinymce.min.js"
 
@@ -268,7 +261,8 @@ TINYMCE_DEFAULT_CONFIG = {
 # for settings_context_processor
 TEMPLATE_VISIBLE_SETTINGS = (
     'GOOGLE_ANALYTICS_ID',
-    'SITE_URL'
+    'SITE_URL',
+    'LANGUAGE_CODE'
 )
 
 # don't registry changes at specific fields on audit log (ex. control fields)
@@ -278,7 +272,7 @@ EXCLUDE_AUDITLOG_FIELDS = ('content_type', 'object_id', 'reference_title',
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # set permissions after file upload (444 read only file for security reasons)
-FILE_UPLOAD_PERMISSIONS = 0444
+FILE_UPLOAD_PERMISSIONS = 0o444
 
 # set max upload size
 # 10MB - 10485760
@@ -320,18 +314,39 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_FROM = os.environ.get("EMAIL_FROM")
 
-
-# Enable debug_toolbar bypass INTERNAL_IPS parameter
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG_TOOLBAR
+# form actions
+ACTIONS = {
+    'orderby': 'id',
+    'order': '-',
+    'page': 1,
+    'type': "",
+    's': "",
+    'filter_owner': "",
+    'filter_status': "",
+    'filter_thematic': "",
+    'filter_created_by_user': "",
+    'filter_created_by_cc': "",
+    'filter_indexed_database': "",
+    'filter_act_type': "",
+    'filter_type': "",
+    'filter_category': "",
+    'filter_country': "",
+    'document_type': "",
+    'review_type': "",
+    'results_per_page': "",
 }
-
 
 if DEBUG_TOOLBAR:
     INSTALLED_APPS.append('debug_toolbar')
 
-    debug_toolbar_middleware = ['debug_toolbar.middleware.DebugToolbarMiddleware', 'fi-admin.utils.NonHtmlDebugToolbarMiddleware']
+    debug_toolbar_middleware = ['debug_toolbar.middleware.DebugToolbarMiddleware', 'utils.NonHtmlDebugToolbarMiddleware']
     MIDDLEWARE_CLASSES.extend(debug_toolbar_middleware)
+
+    # Enable debug_toolbar bypass INTERNAL_IPS parameter
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG_TOOLBAR
+    }
+
 
 if 'test' in sys.argv:
     logging.disable(logging.CRITICAL)
@@ -348,5 +363,3 @@ class DisableMigrations(object):
 
     def __getitem__(self, item):
         return "notmigrations"
-
-
