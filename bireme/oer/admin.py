@@ -1,10 +1,9 @@
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
-from django.contrib.contenttypes import generic
 
-from models import *
 from utils.admin import GenericAdmin
 
+from oer.models import *
 
 class TypeLocalAdmin(admin.TabularInline):
     model = TypeLocal

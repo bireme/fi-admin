@@ -12,8 +12,8 @@ language_choices = [('', '')] + [(aux.code, aux) for aux in AuxCode.objects.filt
 
 def get_aux_country_list():
     country_list = [('', '')]
-    country_list_latin_caribbean = [(c.code, unicode(c)) for c in Country.objects.filter(LA_Caribbean=True)]
-    country_list_other = [(c.code, unicode(c)) for c in Country.objects.filter(LA_Caribbean=False)]
+    country_list_latin_caribbean = [(c.code, str(c)) for c in Country.objects.filter(LA_Caribbean=True)]
+    country_list_other = [(c.code, str(c)) for c in Country.objects.filter(LA_Caribbean=False)]
 
     # sort list by translation name
     country_list_latin_caribbean.sort(key=lambda c: c[1])
@@ -39,15 +39,15 @@ class AuthorAttributes(colander.MappingSchema):
 
     text = colander.SchemaNode(colander.String('utf-8'), title=_('Name'),
                                description=_('Inform individual or institutional name'))
-    _1 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 1'), missing=unicode(''),)
-    _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=unicode(''),)
-    _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=unicode(''),)
-    _c = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation city'), missing=unicode(''),)
+    _1 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 1'), missing=str(''),)
+    _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=str(''),)
+    _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=str(''),)
+    _c = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation city'), missing=str(''),)
     _p = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation country'),
-                             widget=deform.widget.SelectWidget(values=countries_choices), missing=unicode(''),)
+                             widget=deform.widget.SelectWidget(values=countries_choices), missing=str(''),)
     _r = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation degree of responsibility'),
                              widget=deform.widget.SelectWidget(values=degree_choices),
-                             missing=unicode(''),)
+                             missing=str(''),)
 
 
 class Creator(colander.SequenceSchema):

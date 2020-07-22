@@ -37,7 +37,7 @@ class Type(Generic):
         return translation_list
 
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = TypeLocal.objects.filter(oer_type=self.id, language=lang_code)
         if translation:
@@ -52,7 +52,7 @@ class TypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    oer_type = models.ForeignKey(Type, verbose_name=_("Type"))
+    oer_type = models.ForeignKey(Type, verbose_name=_("Type"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -75,7 +75,7 @@ class License(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = LicenseLocal.objects.filter(license=self.id, language=lang_code)
         if translation:
@@ -89,7 +89,7 @@ class LicenseLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    license = models.ForeignKey(License, verbose_name=_("License"))
+    license = models.ForeignKey(License, verbose_name=_("License"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -113,7 +113,7 @@ class CourseType(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = CourseTypeLocal.objects.filter(coursetype=self.id, language=lang_code)
         if translation:
@@ -128,7 +128,7 @@ class CourseTypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    coursetype = models.ForeignKey(CourseType, verbose_name=_("Course type"))
+    coursetype = models.ForeignKey(CourseType, verbose_name=_("Course type"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -152,7 +152,7 @@ class TecResourceType(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = TecResourceTypeLocal.objects.filter(tecresourcetype=self.id, language=lang_code)
         if translation:
@@ -167,7 +167,7 @@ class TecResourceTypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    tecresourcetype = models.ForeignKey(TecResourceType, verbose_name=_("Technical resource type"))
+    tecresourcetype = models.ForeignKey(TecResourceType, verbose_name=_("Technical resource type"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -191,7 +191,7 @@ class Format(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = FormatLocal.objects.filter(format=self.id, language=lang_code)
         if translation:
@@ -206,7 +206,7 @@ class FormatLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    format = models.ForeignKey(Format, verbose_name=_("Format"))
+    format = models.ForeignKey(Format, verbose_name=_("Format"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -220,7 +220,7 @@ class InteractivityType(Generic):
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = InteractivityTypeLocal.objects.filter(interatype=self.id, language=lang_code)
         if translation:
@@ -235,7 +235,7 @@ class InteractivityTypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    interatype = models.ForeignKey(InteractivityType, verbose_name=_("Interactivity type"))
+    interatype = models.ForeignKey(InteractivityType, verbose_name=_("Interactivity type"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -249,7 +249,7 @@ class InteractivityLevel(Generic):
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = InteractivityLevelLocal.objects.filter(interactivitylevel=self.id, language=lang_code)
         if translation:
@@ -264,7 +264,7 @@ class InteractivityLevelLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    interactivitylevel = models.ForeignKey(InteractivityLevel, verbose_name=_("Interactivity level"))
+    interactivitylevel = models.ForeignKey(InteractivityLevel, verbose_name=_("Interactivity level"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -280,7 +280,7 @@ class Difficulty(Generic):
     name = models.CharField(_("Name"), max_length=115)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = DifficultyLocal.objects.filter(difficulty=self.id, language=lang_code)
         if translation:
@@ -295,7 +295,7 @@ class DifficultyLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    difficulty = models.ForeignKey(Difficulty, verbose_name=_("Difficulty"))
+    difficulty = models.ForeignKey(Difficulty, verbose_name=_("Difficulty"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -318,7 +318,7 @@ class Audience(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = AudienceLocal.objects.filter(audience=self.id, language=lang_code)
         if translation:
@@ -333,7 +333,7 @@ class AudienceLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    audience = models.ForeignKey(Audience, verbose_name=_("Audience"))
+    audience = models.ForeignKey(Audience, verbose_name=_("Audience"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -357,7 +357,7 @@ class LearningResourceType(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = LearningResourceTypeLocal.objects.filter(coursetype=self.id, language=lang_code)
         if translation:
@@ -372,7 +372,7 @@ class LearningResourceTypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    coursetype = models.ForeignKey(LearningResourceType, verbose_name=_("Learning resource type"))
+    coursetype = models.ForeignKey(LearningResourceType, verbose_name=_("Learning resource type"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -396,7 +396,7 @@ class LearningContext(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = LearningContextLocal.objects.filter(learningcontext=self.id, language=lang_code)
         if translation:
@@ -411,7 +411,7 @@ class LearningContextLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    learningcontext = models.ForeignKey(LearningContext, verbose_name=_("Learning context"))
+    learningcontext = models.ForeignKey(LearningContext, verbose_name=_("Learning context"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -435,7 +435,7 @@ class Structure(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = StructureLocal.objects.filter(structure=self.id, language=lang_code)
         if translation:
@@ -450,7 +450,7 @@ class StructureLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    structure = models.ForeignKey(Structure, verbose_name=_("Structure"))
+    structure = models.ForeignKey(Structure, verbose_name=_("Structure"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=115)
 
@@ -475,33 +475,33 @@ class OER(Generic, AuditLog):
     # contribuidores
     contributor = JSONField(_('Contributor'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # tipo do recurso
-    type = models.ForeignKey(Type, verbose_name=_("Type"), blank=True, null=True)
+    type = models.ForeignKey(Type, verbose_name=_("Type"), blank=True, null=True, on_delete=models.PROTECT)
     # idioma do recurso
-    language = models.ForeignKey(SourceLanguage, verbose_name=_("Language"), blank=True, null=True)
+    language = models.ForeignKey(SourceLanguage, verbose_name=_("Language"), blank=True, null=True, on_delete=models.PROTECT)
     # tipo do curso
     course_type = models.ManyToManyField(CourseType, verbose_name=_("Course type"), blank=True)
     # estrutura
-    structure = models.ForeignKey(Structure, verbose_name=_("Structure"), blank=True, null=True)
+    structure = models.ForeignKey(Structure, verbose_name=_("Structure"), blank=True, null=True, on_delete=models.PROTECT)
     # tipo de recurso técnico
     tec_resource_type = models.ManyToManyField(TecResourceType, verbose_name=_("Technical resource type"), blank=True)
     # formato
     format = models.ManyToManyField(Format, verbose_name=_("Format"), blank=True)
     # tipo de interatividade
-    interactivity_type = models.ForeignKey(InteractivityType, verbose_name=_("Interactivity type"), blank=True, null=True)
+    interactivity_type = models.ForeignKey(InteractivityType, verbose_name=_("Interactivity type"), blank=True, null=True, on_delete=models.PROTECT)
     # tipo de recurso de aprendizagem
-    learning_resource_type = models.ForeignKey(LearningResourceType, verbose_name=_("Learning resource type"), blank=True, null=True)
+    learning_resource_type = models.ForeignKey(LearningResourceType, verbose_name=_("Learning resource type"), blank=True, null=True, on_delete=models.PROTECT)
     # nivel de interatividade
-    interactivity_level = models.ForeignKey(InteractivityLevel, verbose_name=_("Interactivity level"), blank=True, null=True)
+    interactivity_level = models.ForeignKey(InteractivityLevel, verbose_name=_("Interactivity level"), blank=True, null=True, on_delete=models.PROTECT)
     # contexto de aprendizagem
-    learning_context = models.ForeignKey(LearningContext, verbose_name=_("Learning context"), blank=True, null=True)
+    learning_context = models.ForeignKey(LearningContext, verbose_name=_("Learning context"), blank=True, null=True, on_delete=models.PROTECT)
     # dificuldade
-    difficulty = models.ForeignKey(Difficulty, verbose_name=_("Difficulty"), blank=True, null=True)
+    difficulty = models.ForeignKey(Difficulty, verbose_name=_("Difficulty"), blank=True, null=True, on_delete=models.PROTECT)
     # nível de agregação
     aggregation_level = models.CharField(_("Aggregation Level"), max_length=55, choices=STATUS_AGGREGATION, blank=True)
     # audiência
     audience = models.ManyToManyField(Audience, verbose_name=_("Audience"), blank=True)
     # licença de uso
-    license = models.ForeignKey(License, verbose_name=_("Rights license"), blank=True, null=True)
+    license = models.ForeignKey(License, verbose_name=_("Rights license"), blank=True, null=True, on_delete=models.PROTECT)
     # publicador
     publisher = models.CharField(_("Publisher"), max_length=155, blank=True)
     # palavras-chave livres
@@ -519,7 +519,7 @@ class OER(Generic, AuditLog):
     # identificação do nó CVSP
     cvsp_node = models.CharField(_('CVSP node'), max_length=55, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
@@ -530,7 +530,7 @@ class OERURL(Generic):
         verbose_name = _("URL")
         verbose_name_plural = _("URLs")
 
-    oer = models.ForeignKey(OER, null=True)
+    oer = models.ForeignKey(OER, null=True, on_delete=models.PROTECT)
     url = models.URLField(_("URL"))
     language = models.CharField(_("Language"), max_length=10, blank=True, choices=LANGUAGES_CHOICES)
 
@@ -577,7 +577,7 @@ class RelationType(Generic):
     def get_label_passive(self):
         return self.get_label('label_passive')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.get_label('label_active')
 
 class RelationTypeLocal(models.Model):
@@ -586,7 +586,7 @@ class RelationTypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    relation_type = models.ForeignKey(RelationType, verbose_name=_("Relation type"))
+    relation_type = models.ForeignKey(RelationType, verbose_name=_("Relation type"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     label_active = models.CharField(_("Active form"), max_length=155)
     label_passive = models.CharField(_("Passive form"), max_length=155)
@@ -600,8 +600,8 @@ class Relationship(Generic):
         verbose_name_plural = _("Relationships")
 
     # field used in django one to one relationship
-    oer_related = models.ForeignKey(OER, related_name='related', null=True)
+    oer_related = models.ForeignKey(OER, related_name='related', null=True, on_delete=models.PROTECT)
     # relatonship type
-    relation_type = models.ForeignKey(RelationType, blank=False)
+    relation_type = models.ForeignKey(RelationType, blank=False, on_delete=models.PROTECT)
     # field to inform a act already present in database
-    oer_referred = models.ForeignKey(OER, verbose_name=_("OER related"), related_name="referred", null=True)
+    oer_referred = models.ForeignKey(OER, verbose_name=_("OER related"), related_name="referred", null=True, on_delete=models.PROTECT)
