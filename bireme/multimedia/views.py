@@ -1,5 +1,5 @@
 #! coding: utf-8
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -10,7 +10,6 @@ from django.contrib.auth.models import User
 
 from django.conf import settings
 
-from utils.views import ACTIONS
 from utils.views import LoginRequiredView, SuperUserRequiredView, GenericUpdateWithOneFormset
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
@@ -19,8 +18,8 @@ from main.models import ThematicArea
 from attachments.models import Attachment
 from help.models import get_help_fields
 
-from models import *
-from forms import *
+from multimedia.models import *
+from multimedia.forms import *
 
 
 class MultimediaListView(LoginRequiredView, ListView):
@@ -36,8 +35,8 @@ class MultimediaListView(LoginRequiredView, ListView):
     def get_queryset(self):
         # getting action parameter
         self.actions = {}
-        for key in ACTIONS.keys():
-            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+        for key in settings.ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
         if ":" in self.actions["s"]:
             search_parts = self.actions["s"].split(":")

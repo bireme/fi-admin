@@ -1,17 +1,18 @@
 from django.shortcuts import get_object_or_404
 from django.forms.models import inlineformset_factory
-from django.contrib.contenttypes.generic import generic_inlineformset_factory
+from  django.contrib.contenttypes.forms import generic_inlineformset_factory
 
 from django.forms import widgets
 from django.conf import settings
 from django import forms
 
 from django.utils.translation import ugettext_lazy as _
-from models import *
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 
 from utils.forms import DescriptorRequired, ResourceThematicRequired
+
+from multimedia.models import *
 
 import simplejson
 
