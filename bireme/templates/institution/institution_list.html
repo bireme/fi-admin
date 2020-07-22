@@ -23,7 +23,7 @@
     <h2><i class='icon-file'></i> {% trans "Institution" %}</h2>
     {% if user_cc == 'BR1.1' %}
         <div class='pull-right'>
-            <a href="{% url 'create_institution' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Institution" %}</a>
+            <a href="{% url 'institution:create_institution' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Institution" %}</a>
         </div>
     {% endif %}
 </div>
@@ -117,7 +117,7 @@
                 <tbody>
                     {% for institution in object_list %}
                         <tr>
-                            <td><a href="{% url 'edit_institution' institution.id %}">{{ institution.id }}</a></td>
+                            <td><a href="{% url 'institution:edit_institution' institution.id %}">{{ institution.id }}</a></td>
                             <td>{{ institution.cc_code }}</a></td>
                             <td>
                                 <span title="{{ institution }}">
@@ -127,9 +127,9 @@
                             <td>{{ institution.country }}</a></td>
                             <td>{{ institution.status_label }}</a></td>
                             <td>
-                                <a href="{% url 'edit_institution' institution.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if user_cc = 'BR1.1' %}
-                                    <a href="{% url 'delete_institution' institution.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
+                                <a href="{% url 'institution:edit_institution' institution.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                {% if user_cc == 'BR1.1' %}
+                                    <a href="{% url 'institution:delete_institution' institution.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>
                         </tr>

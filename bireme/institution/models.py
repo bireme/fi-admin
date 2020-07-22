@@ -32,7 +32,7 @@ class Type(models.Model):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = TypeLocal.objects.filter(type=self.id, language=lang_code)
         if translation:
@@ -47,7 +47,7 @@ class TypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    type = models.ForeignKey(Type, verbose_name=_("Type"))
+    type = models.ForeignKey(Type, verbose_name=_("Type"), on_delete=models.CASCADE)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=55)
 
@@ -71,7 +71,7 @@ class Category(models.Model):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = CategoryLocal.objects.filter(category=self.id, language=lang_code)
         if translation:
@@ -86,7 +86,7 @@ class CategoryLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    category = models.ForeignKey(Category, verbose_name=_("Category"))
+    category = models.ForeignKey(Category, verbose_name=_("Category"), on_delete=models.CASCADE)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=55)
 
@@ -101,7 +101,7 @@ class Institution(Generic, AuditLog):
     cc_code = models.CharField(_('Center code'), max_length=55, blank=False, unique=True)
     name = models.CharField(_("Name"), max_length=254, blank=True)
     acronym = models.CharField(_("Acronym"), max_length=55, blank=True)
-    country = models.ForeignKey(Country, verbose_name=_("Country"), blank=True, null=True)
+    country = models.ForeignKey(Country, verbose_name=_("Country"), blank=True, null=True, on_delete=models.PROTECT)
     address = models.CharField(_("Address"), max_length=255, blank=True)
     city = models.CharField(_("City"), max_length=155, blank=True)
     state = models.CharField(_("State"), max_length=155, blank=True)
@@ -110,7 +110,7 @@ class Institution(Generic, AuditLog):
     # responsible cooperative center
     cooperative_center_code = models.CharField(_('Cooperative center'), max_length=55, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{acronym}{name}".format(acronym=self.acronym + ' - ' if self.acronym else '',
                                          name=self.name)
 
@@ -144,7 +144,7 @@ class Adm(models.Model, AuditLog):
         verbose_name = _("Administrative information")
         verbose_name_plural = _("Administrative informations")
 
-    institution = models.ForeignKey(Institution, null=True)
+    institution = models.ForeignKey(Institution, null=True, on_delete=models.PROTECT)
     category = models.ManyToManyField(Category, verbose_name=_("Category"), blank=True)
     type = models.ManyToManyField(Type, verbose_name=_("Type"), blank=True)
     category_history = models.TextField(_('Category (history)'), blank=True)
@@ -154,7 +154,7 @@ class Adm(models.Model, AuditLog):
     def get_parent(self):
         return self.institution
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{0}".format(self.institution.name)
 
 
@@ -170,7 +170,7 @@ class Contact(models.Model, AuditLog):
         verbose_name = _("Contact")
         verbose_name_plural = _("Contacts")
 
-    institution = models.ForeignKey(Institution, null=True)
+    institution = models.ForeignKey(Institution, null=True, on_delete=models.PROTECT)
     prefix = models.CharField(_("Prefix"), max_length=45, choices=PREFIX_CHOICES, blank=True)
     name = models.CharField(_("Name"), max_length=155, blank=True)
     job_title = models.CharField(_("Job title"), max_length=155, blank=True)
@@ -181,7 +181,7 @@ class Contact(models.Model, AuditLog):
     def get_parent(self):
         return self.institution
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{0} {1} ({2})".format(self.prefix, self.name, self.job_title)
 
 # Institution URL
@@ -195,14 +195,14 @@ class URL(models.Model, AuditLog):
         verbose_name = _("URL")
         verbose_name_plural = _("URLs")
 
-    institution = models.ForeignKey(Institution, null=True)
+    institution = models.ForeignKey(Institution, null=True, on_delete=models.PROTECT)
     url_type = models.CharField(_("Type"), max_length=75, choices=URL_CHOICES)
     url = models.URLField(_("URL"), max_length=300)
 
     def get_parent(self):
         return self.institution
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{0} - {1}".format(self.url_type, self.url)
 
 
@@ -214,10 +214,10 @@ class Unit(models.Model, AuditLog):
 
     name = models.CharField(_("Name"), max_length=254, blank=True)
     acronym = models.CharField(_("Acronym"), max_length=55, blank=True)
-    country = models.ForeignKey(Country, verbose_name=_("Country"), blank=True, null=True)
+    country = models.ForeignKey(Country, verbose_name=_("Country"), blank=True, null=True, on_delete=models.PROTECT)
 
-    def __unicode__(self):
-        unit_name = unicode(self.name)
+    def __str__(self):
+        unit_name = str(self.name)
         if self.acronym:
             unit_name = u"{0} - {1}".format(self.name, self.acronym)
 
@@ -235,15 +235,15 @@ class UnitLevel(models.Model, AuditLog):
         verbose_name = _("Hierarchical level")
         verbose_name_plural = _("Hierarchical levels")
 
-    institution = models.ForeignKey(Institution, null=True)
+    institution = models.ForeignKey(Institution, null=True, on_delete=models.PROTECT)
     # hierarchical level
     level = models.PositiveSmallIntegerField(_("Level"), choices=LEVEL_CHOICES)
-    unit = models.ForeignKey(Unit, verbose_name=_("Unit"), null=True)
+    unit = models.ForeignKey(Unit, verbose_name=_("Unit"), null=True, on_delete=models.PROTECT)
 
     def get_parent(self):
         return self.institution
 
-    def __unicode__(self):
+    def __str__(self):
         return u'{0} - {1}'.format(UnitLevel.LEVEL_CHOICES[self.level-1][1], self.unit)
 
 
@@ -256,7 +256,7 @@ class AdhesionTerm(models.Model, AuditLog):
     text = HTMLField(_("Text"), blank=False)
     version = models.CharField(_("Version"), max_length=25, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'{0}'.format(self.version)
 
     def get_term(self):
@@ -274,7 +274,7 @@ class AdhesionTermLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    adhesionterm = models.ForeignKey(AdhesionTerm, verbose_name=_("Adhesion term"))
+    adhesionterm = models.ForeignKey(AdhesionTerm, verbose_name=_("Adhesion term"), on_delete=models.PROTECT)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
     text = HTMLField(_("Text"), blank=False)
 
@@ -285,14 +285,14 @@ class InstitutionAdhesion(models.Model, AuditLog):
         verbose_name = _("Adhesion term" )
         verbose_name_plural = _("Adhesion terms")
 
-    institution = models.ForeignKey(Institution, null=True)
-    adhesionterm = models.ForeignKey(AdhesionTerm, null=True)
+    institution = models.ForeignKey(Institution, null=True, on_delete=models.PROTECT)
+    adhesionterm = models.ForeignKey(AdhesionTerm, null=True, on_delete=models.PROTECT)
     acepted = models.BooleanField(_("Acepted"), default=False)
 
     def get_parent(self):
         return self.institution
 
-    def __unicode__(self):
+    def __str__(self):
         return u'Adhesion term - {0}'.format(self.institution)
 
 
@@ -304,7 +304,7 @@ class ServiceProduct(models.Model):
     name = models.CharField(_("Name"), max_length=155, blank=True)
     acronym = models.CharField(_("Acronym"), max_length=35, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         translation = ServiceProductLocal.objects.filter(serviceproduct=self.id, language=lang_code)
         if translation:
@@ -319,7 +319,7 @@ class ServiceProductLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    serviceproduct = models.ForeignKey(ServiceProduct, verbose_name=_("Service/Product"))
+    serviceproduct = models.ForeignKey(ServiceProduct, verbose_name=_("Service/Product"), on_delete=models.CASCADE)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES[1:])
     name = models.CharField(_("Name"), max_length=155, blank=True)
 
@@ -329,8 +329,8 @@ class InstitutionServiceProduct(models.Model, AuditLog):
         verbose_name = _("Institution service product")
         verbose_name_plural = _("Instituion services products")
 
-    institution = models.ForeignKey(Institution, null=True)
-    serviceproduct = models.ForeignKey(ServiceProduct, null=True)
+    institution = models.ForeignKey(Institution, null=True, on_delete=models.PROTECT)
+    serviceproduct = models.ForeignKey(ServiceProduct, null=True, on_delete=models.PROTECT)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'InstitutionServiceProduct: {0} - {1}'.format(self.institution, self.serviceproduct)

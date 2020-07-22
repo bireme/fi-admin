@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms import widgets
 from django import forms
 
-from models import *
+from institution.models import *
 
 class InstitutionForm(forms.ModelForm):
 

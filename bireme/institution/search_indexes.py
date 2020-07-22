@@ -31,7 +31,7 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
         return Institution
 
     def prepare_title(self, obj):
-        return unicode(obj)
+        return str(obj)
 
     def prepare_unit(self, obj):
         units = [unit_level.unit for unit_level in UnitLevel.objects.filter(institution=obj.id).order_by('level')]

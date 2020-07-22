@@ -10,7 +10,7 @@
 {% block title %}{% trans "Edit Institution" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'list_institution' %}">{% trans "Institution" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'institution:list_institution' %}">{% trans "Institution" %}</a> <span class="divider">/</span></li>
     {% if not object %}<li>{% trans "New Institution" %}</li>
     {% else %}<li>{% trans "Edit Institution" %}</li>{% endif %}
 {% endblock %}
@@ -33,7 +33,7 @@
         <li class="active"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
         <li><a href="#tab-contact" data-toggle="tab"><i class="icon-user"></i> {% trans "Contacts" %}{% if formset_person.errors and not formset_person.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li-->
         <li><a href="#tab-url" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Sites" %}{% if formset_url.errors and not formset_url.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
-        {% if user_cc = 'BR1.1' %}
+        {% if user_cc == 'BR1.1' %}
             <li><a href="#tab-unitlevel" data-toggle="tab"><i class="icon-retweet"></i>  {% trans "Institution" %}{% if formset_unitlevel.errors and not formset_unitlevel.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             <li><a href="#tab-adm" data-toggle="tab"><i class="icon-folder-open"></i>  {% trans "Administrative" %}{% if formset_adm.errors and not formset_adm.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         {% endif %}
@@ -77,7 +77,7 @@
                                   {{ field.errors }}
                                   {{ field }}
 
-                                  {% if field.name = 'name' %}
+                                  {% if field.name == 'name' %}
                                       {% for ul in object.get_units_level %}
                                         <p><strong>{{ul.get_level_display}} - {{ul.unit.name}} {{ul.unit.acronym}}</strong></p>
                                       {% endfor %}
@@ -132,7 +132,7 @@
                     <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
                 {% endif %}
             {% else %}
-                <a href="{% url 'list_institution' %}" class="btn btn-large">
+                <a href="{% url 'institution:list_institution' %}" class="btn btn-large">
                     {% trans "Back" %}
                 </a>
             {% endif %}
@@ -210,7 +210,7 @@
             inst_unit_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
 
             country_id = $('#id_country').find("option:selected").val();
-            inst_win = window.open('{% url "list_unit" %}?country=' + country_id, 'inst_related', 'scrollbars=1,width=785,height=590');
+            inst_win = window.open('{% url "institution:list_unit" %}?country=' + country_id, 'inst_related', 'scrollbars=1,width=785,height=590');
         }
 
         $("#save-published").click(function() {

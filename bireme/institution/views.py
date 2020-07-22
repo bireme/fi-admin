@@ -1,5 +1,5 @@
 #! coding: utf-8
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.utils.translation import ugettext as _
@@ -8,19 +8,18 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.db.models import F, Q, Func, Count
 from django.db.models.functions import Substr
 
-from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
 from help.models import get_help_fields
 from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 
 from operator import itemgetter, attrgetter
 from datetime import datetime
-from forms import *
+from institution.forms import *
 
 import re
 
@@ -51,8 +50,8 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         # getting action parameter
         self.actions = {}
-        for key in ACTIONS.keys():
-            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+        for key in settings.ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
         # search filter
         search = self.actions['s']
@@ -121,7 +120,7 @@ class InstGenericListView(LoginRequiredView, ListView):
         country_objects = Country.objects.filter(id__in=country_id_list)
 
         # get countries and sort by name
-        country_list = [(c.pk, unicode(c)) for c in country_objects]
+        country_list = [(c.pk, str(c)) for c in country_objects]
         country_list.sort(key=lambda c: c[1])
 
         context['actions'] = self.actions
@@ -151,8 +150,8 @@ class UnitListView(ListView):
 
         # getting action parameter
         self.actions = {}
-        for key in ACTIONS.keys():
-            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+        for key in settings.ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
         param_country = self.request.GET.get('country')
 
@@ -245,7 +244,7 @@ class InstUpdate(LoginRequiredView):
 
                 return HttpResponseRedirect(self.get_success_url())
         else:
-            return self.render_to_response(
+            return self.render(request, self.template_name,
                            self.get_context_data(form=form,
                                                  formset_contact=formset_contact,
                                                  formset_url=formset_url,
@@ -372,7 +371,6 @@ def add_unit(request):
     success_url = ''
     if request.method == 'POST':
         form = UnitForm(request.POST)
-        print form.errors
         if form.is_valid():
             new_unit = form.save()
             success_url = "{0}/?s={1}&country={2}".format(reverse_lazy('list_unit'),
@@ -449,7 +447,7 @@ def adhesionterm(request, institution_id):
 
 
 
-    return render_to_response('institution/adhesionterm.html',
+    return render(request, 'institution/adhesionterm.html',
                               {'institution_id': institution_id, 'adhesionterm': adhesionterm,
                                'acepted_status': acepted_status, 'serviceproduct_list': serviceproduct_list,
                                'inst_servproduct_list': inst_servproduct_list},
