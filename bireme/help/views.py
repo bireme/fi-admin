@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.conf import settings
 
-from models import Help
+from help.models import Help
 
 def view_help(request, source_param, fieldname_param):
     """

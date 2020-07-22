@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import *
+from help.models import Help, HelpLocal
 
 
 class HelpLocalAdmin(admin.TabularInline):

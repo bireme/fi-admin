@@ -39,7 +39,7 @@ class Help(models.Model):
 
 
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s | %s" % (self.source, self.field)
 
 
@@ -49,6 +49,6 @@ class HelpLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    help = models.ForeignKey(Help, verbose_name=_("Help"))
+    help = models.ForeignKey(Help, verbose_name=_("Help"), on_delete=models.CASCADE)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     help_text = HTMLField(_("Help"))
