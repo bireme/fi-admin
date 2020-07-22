@@ -7,7 +7,7 @@
                 <div class="container-fluid">
                     <div class="row-fluid top">
 
-                        <a href="{% url 'dashboard.views.widgets' %}" title="{% trans "Dashboard" %}" class="brand">FI-ADMIN</a>
+                        <a href="{% url 'dashboard:widgets' %}" title="{% trans "Dashboard" %}" class="brand">FI-ADMIN</a>
 
                         <ul class="nav pull-left">
                             {% if service_list|length > 3 %}
@@ -20,11 +20,11 @@
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu_sources">
                             {% endif %}
                             {% if service_role.LIS %}
-                                <li><a href="{% url 'main.views.list_resources' %}" title=""><i class="icon-star"></i> {% trans "Internet resources" %}</a></li>
+                                <li><a href="{% url 'main:list_resources' %}" title=""><i class="icon-star"></i> {% trans "Internet resources" %}</a></li>
                             {% endif %}
 
                             {% if service_role.DirEve %}
-                                <li><a href="{% url 'events.views.list_events' %}" title=""><i class="icon-calendar"></i> {% trans "Events" %}</a></li>
+                                <li><a href="{% url 'events:list_events' %}" title=""><i class="icon-calendar"></i> {% trans "Events" %}</a></li>
                             {% endif %}
 
                             {% if service_role.Multimedia %}
@@ -35,11 +35,11 @@
                                 <li><a href="{% url 'list_biblioref' %}" title=""><i class="icon-book"></i> {% trans "Bibliographic records" %}</a></li>
                             {% endif %}
 
-                            {% if service_role.TITLE and user_cc = 'BR1.1' %}
+                            {% if service_role.TITLE and user_cc == 'BR1.1' %}
                                 <li><a href="{% url 'list_title' %}" title=""><i class="icon-book"></i> {% trans "Journals" %}</a></li>
                             {% endif %}
 
-                            {% if service_role.TesauroDeCS and user_cc = 'BR1.1' %}
+                            {% if service_role.TesauroDeCS and user_cc == 'BR1.1' %}
                                 <li><a href="{% url 'list_descriptor' %}?ths=1" title=""><i class="icon-book"></i> {% trans "Thesaurus DeCS" %}</a></li>
                             {% endif %}
 
@@ -51,7 +51,7 @@
                                 <li><a href="{% url 'list_legislation' %}" title=""><i class="icon-book"></i> {% trans "Legislation" %}</a></li>
                             {% endif %}
 
-                            {% if user_type = 'advanced' and service_role.DirIns %}
+                            {% if user_type == 'advanced' and service_role.DirIns %}
                                 <li><a href="{% url 'list_institution' %}" title=""><i class="icon-home"></i> {% trans "Institutions" %}</a></li>
                             {% endif %}
 
@@ -65,12 +65,12 @@
                             {% endif %}
 
                             {% if service_role.DirEve or service_role.LIS %}
-                                <li><a href="{% url 'suggest.views.list_suggestions' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggestions" %}</a></li>
+                                <li><a href="{% url 'list_suggestions' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggestions" %}</a></li>
                             {% endif %}
 
-                            {% if service_role.DirEve = 'edi' or service_role.LIS == 'edi' or service_role.LILDBI = 'edi' %}
-                                <li><a href="{% url 'error_reporting.views.list_error_report' %}" title=""><i class="icon-warning-sign"></i> {% trans "Error reports" %}</a></li>
-                                <li><a href="{% url 'list_reports' %}" title=""><i class="icon-file"></i> {% trans "Reports" %}</a></li>
+                            {% if service_role.DirEve == 'edi' or service_role.LIS == 'edi' or service_role.LILDBI == 'edi' %}
+                                <li><a href="{% url 'error_reporting:list_error_report' %}" title=""><i class="icon-warning-sign"></i> {% trans "Error reports" %}</a></li>
+                                <li><a href="{% url 'reports:list_reports' %}" title=""><i class="icon-file"></i> {% trans "Reports" %}</a></li>
                             {% endif %}
 
                             {% if user.is_superuser %}
@@ -81,10 +81,10 @@
                                         <i class="icon-caret-down"></i>
                                     </a>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu_control_tables">
-                                        <li><a href="{% url 'main.views.list_thematics' %}" title=""><i class="icon-tag"></i> {% trans "Thematic areas" %}</a></li>
-                                        <li><a href="{% url 'main.views.list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Source types" %}</a></li>
-                                        <li><a href="{% url 'events.views.list_types' %}" title=""><i class="icon-calendar"></i> {% trans "Event types" %}</a></li>
-                                        <li><a href="{% url 'main.views.list_languages' %}" title=""><i class="icon-flag"></i> {% trans "Languages" %}</a></li>
+                                        <li><a href="{% url 'main:list_thematics' %}" title=""><i class="icon-tag"></i> {% trans "Thematic areas" %}</a></li>
+                                        <li><a href="{% url 'main:list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Source types" %}</a></li>
+                                        <li><a href="{% url 'events:list_types' %}" title=""><i class="icon-calendar"></i> {% trans "Event types" %}</a></li>
+                                        <li><a href="{% url 'main:list_languages' %}" title=""><i class="icon-flag"></i> {% trans "Languages" %}</a></li>
                                         <li><a href="{% url 'list_mediatypes' %}" title=""><i class="icon-camera"></i> {% trans "Media types" %}</a></li>
 
                                         <li><a href="{% url 'list_country_region' %}" title=""><i class="icon-globe"></i> {% trans "Act Country/Region" %}</a></li>
@@ -125,7 +125,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_user"><i class="icon-user icon-white"></i>{{ user_name|truncatechars:20 }} ({{ user_cc }})
                                 </a>
                                 <ul class="dropdown-menu" role="user_menu" aria-labelledby="menu_user">
-                                    <li><a href="{% url 'django.contrib.auth.views.logout' %}" title="Logout">
+                                    <li><a href="{% url 'auth_logout' %}" title="Logout">
                                     {% trans 'Logout' %}</a></li>
                                 </ul>
                             </li>

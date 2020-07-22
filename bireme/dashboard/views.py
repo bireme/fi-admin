@@ -7,7 +7,7 @@ from django.contrib.admin.models import LogEntry
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Q
-from django.shortcuts import redirect, render_to_response, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.template import RequestContext
 from requests.exceptions import ConnectionError, HTTPError, SSLError, Timeout
 from text_block.models import TextBlock
@@ -46,8 +46,8 @@ def widgets(request):
     output['institution_id'] = institution_id
     output['text_blocks'] = text_blocks
 
-    return render_to_response('dashboard/index.html', output,
-                              context_instance=RequestContext(request))
+    return render(request, 'dashboard/index.html', output)
+
 
 
 def last_actions(request):
@@ -57,7 +57,7 @@ def last_actions(request):
     recent_actions = LogEntry.objects.filter(user=current_user)
     output['recent_actions'] = recent_actions[:10]
 
-    return render_to_response('dashboard/widget_action.html', output)
+    return render(request, 'dashboard/widget_action.html', output)
 
 
 def changed_by_others(request, review_type):
@@ -75,7 +75,7 @@ def changed_by_others(request, review_type):
     output['reference_list'] = ref_list
     output['review_type'] = review_type
 
-    return render_to_response('dashboard/widget_log_review.html', output)
+    return render(request, 'dashboard/widget_log_review.html', output)
 
 
 def llxp_indexed_by_cc(request):
@@ -86,4 +86,4 @@ def llxp_indexed_by_cc(request):
 
     output['reference_list'] = ref_list[:10]
 
-    return render_to_response('dashboard/widget_edit_reference.html', output)
+    return render(request, 'dashboard/widget_edit_reference.html', output)

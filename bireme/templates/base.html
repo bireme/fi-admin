@@ -37,7 +37,7 @@
 
                 {% block breadcrumb_wrap %}
                 <ul class="breadcrumb">
-                    <li><a href="{% url 'dashboard.views.widgets' %}">{% trans 'Home' %}</a> <span class="divider">/</span></li>
+                    {% comment %}<li><a href="{% url 'dashboard:widgets' %}">{% trans 'Home' %}</a> <span class="divider">/</span></li>{% endcomment %}
                     {% block breadcrumb %}{% endblock %}
                 </ul>
                 {% endblock %}
