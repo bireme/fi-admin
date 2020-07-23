@@ -118,7 +118,7 @@ def edit_error_report(request, **kwargs):
             output['alert'] = _("Report successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('error_reporting.views.list_error_report')
+            return redirect('error_reporting:list_error_report')
     # new/edit
     else:
         form = ErrorReportForm(instance=error_report)
