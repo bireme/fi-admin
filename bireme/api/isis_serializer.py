@@ -48,7 +48,7 @@ class ISISSerializer(Serializer):
                                     if not value:
                                         continue
 
-                                    if not isinstance(value, basestring):
+                                    if not isinstance(value, str):
                                         value = str(value)
 
                                     subfield = u''.join((subfield_id, value)).encode('utf-8').strip()
@@ -62,7 +62,7 @@ class ISISSerializer(Serializer):
 
                     else:
                         # check for fields with multiples lines as occurrences
-                        if isinstance(field, basestring) and "\n" in field:
+                        if isinstance(field, str) and "\n" in field:
                             for field_line in field.split('\n'):
                                 id_field = self.id_field(field_name, field_line)
                                 record_lines.append(id_field)

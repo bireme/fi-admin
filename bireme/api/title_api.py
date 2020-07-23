@@ -248,7 +248,7 @@ class IssueResource(CustomResource):
         bundle.data['record_type'] = bundle.obj.title.record_type
 
         if bundle.obj.notes:
-            if isinstance(bundle.obj.notes, basestring) and "\r\n" in bundle.obj.notes:
+            if isinstance(bundle.obj.notes, str) and "\r\n" in bundle.obj.notes:
                 lines = ''
                 for line in bundle.obj.notes.split('\r\n'):
                     if line:

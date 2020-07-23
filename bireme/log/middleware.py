@@ -195,7 +195,7 @@ class WhodidMiddleware(object):
                     new_value = instance.__dict__.get(field_name)
 
                 # convert JSON to compare properly
-                if isinstance(previous_value, basestring) and previous_value[0:2] == '[{':
+                if isinstance(previous_value, str) and previous_value[0:2] == '[{':
                     try:
                         previous_value = json.loads(previous_value)
                     except ValueError:

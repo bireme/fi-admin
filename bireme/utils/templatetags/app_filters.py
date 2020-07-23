@@ -119,7 +119,7 @@ def display_field(context, field):
 
 @register.filter
 def display_json_value(value):
-    if not isinstance(value, basestring):
+    if not isinstance(value, str):
         value = str(value)
         value = value.replace("'", '\"')
         field_value = value
@@ -215,7 +215,7 @@ def format_field(data, truncate=False):
                     for (key, value) in data_occ.items():
                         if value:
                             key = key
-                            if not isinstance(value, basestring):
+                            if not isinstance(value, str):
                                 value = str(value)
                             value = value
                             if truncate and len(value) > 100:
@@ -229,7 +229,7 @@ def format_field(data, truncate=False):
                     out = out + "<br/>"
                 else:
                     # encode list items to utf-8
-                    data_utf8 = [value if isinstance(value, basestring) else str(value) for value in data]
+                    data_utf8 = [value if isinstance(value, str) else str(value) for value in data]
                     out = ", ".join(data_utf8)
 
         elif type(data) == str:

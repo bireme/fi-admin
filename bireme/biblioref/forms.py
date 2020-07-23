@@ -246,7 +246,7 @@ class BiblioRefForm(BetterModelForm):
                     if '%' in field_check:
                         self.add_error(field_name, _("The % simbol don't separete occurences"))
 
-                if isinstance(field_check, basestring):
+                if isinstance(field_check, str):
                     if field_check.strip().endswith('.'):
                         self.add_error(field_name, _("Point at end of field is not allowed"))
 
