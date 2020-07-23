@@ -34,7 +34,7 @@
                             {{ field.as_hidden }}
                         {% else %}
                             {% if field.label %}
-                                {% if not field.is_hidden or field.field|fieldtype == 'JSONFormField' %}
+                                {% if not field.is_hidden or field.field|fieldtype == 'JSONField' %}
                                     {% if field.field|fieldtype == 'BooleanField' %}
                                         <span>{{ field.label }}</span>
                                     {% else %}
@@ -54,7 +54,7 @@
 
                             {{ field.errors }}
 
-                            {% if field.field|fieldtype == 'JSONFormField' %}
+                            {% if field.field|fieldtype == 'JSONField' %}
                                 <div class="row">
                                     <a onclick="javascript:field_assist('{{field.html_name}}')" href="javascript:void(0);">
                                         <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
@@ -87,7 +87,7 @@
                                         <input id="id_title_serial" maxlength="80" name="title_serial" type="text" value="{{ form.fields.title_serial.choices.0.0 }}" readonly="True">
                                     {% endif %}
                                 </div>
-                            {% elif field.name == 'issn' and user_role == 'editor_llxp' and form.fields.title_serial.choices|length = 1 %}
+                            {% elif field.name == 'issn' and user_role == 'editor_llxp' and form.fields.title_serial.choices|length == 1 %}
                                 <input type="hidden" name="issn" id="id_issn" value="{{ form.fields.title_serial.choices.0.1|substring_after:'|' }}">
                             {% elif field.name == 'thesis_dissertation_academic_title' %}
                                 {{ field }}

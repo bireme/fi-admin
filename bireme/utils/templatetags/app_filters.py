@@ -104,7 +104,7 @@ def display_field(context, field):
 
     field_value = getattr(object, field.name)
     # force convertion to list for values in JSON fields to proper format the value
-    if fieldtype(field.field) == 'JSONFormField' and type(field_value) != list:
+    if fieldtype(field.field) == 'JSONField' and type(field_value) != list:
         field_value = json.loads(field_value)
 
     # check if field has multiples values (ex. ManyToManyField)

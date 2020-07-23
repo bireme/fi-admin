@@ -199,7 +199,7 @@ class BiblioRefForm(BetterModelForm):
         if is_visible:
             field = self.fields[fieldname]
             # check if field is not hidden
-            if field.widget.is_hidden and not fieldtype(field) == 'JSONFormField':
+            if field.widget.is_hidden and not fieldtype(field) == 'JSONField':
                 is_visible = False
 
         return is_visible

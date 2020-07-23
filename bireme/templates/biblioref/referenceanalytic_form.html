@@ -324,7 +324,7 @@
         var document_type = "{{form.document_type}}";
         var literature_type = "{{form.document_type|slice:'0:1'}}";
         var treatment_level = "{{form.document_type|slice:'-2:'}}";
-        var new_reference = {% if not object %}true{% else %}false{% endif%}
+        var new_reference = {% if not object %}true{% else %}false{% endif%};
 
         function format_attrlabel(value) {
             if ( value != 'text'){
