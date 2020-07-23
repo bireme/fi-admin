@@ -12,7 +12,7 @@ services:
       - ./bireme/:/app/
     env_file:
       - ./conf/app-env-dev
-    command: gunicorn --workers 3 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000 --log-level DEBUG
+    command: gunicorn --workers 2 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000 --log-level DEBUG
     networks:
       - nginx-proxy
 

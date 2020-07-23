@@ -18,7 +18,6 @@ else:
         path('', include('dashboard.urls')),
         path('', include('main.urls')),
         path('', include('events.urls')),
-        path('', include('utils.urls')),
         path('', include('suggest.urls')),
         path('', include('biremelogin.urls')),
         path('', include('error_reporting.urls')),
@@ -73,6 +72,9 @@ else:
 
         # Internationalization
         re_path(r'^i18n/', include('django.conf.urls.i18n')),
+
+        # Utils
+        re_path(r'^utils/', include('utils.urls')),
 
         # Tinymce wysiwyg editor
         re_path(r'^tinymce/', include('tinymce.urls')),
