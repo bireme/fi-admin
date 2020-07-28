@@ -1,9 +1,9 @@
-from django.urls import re_path
+from django.urls import path, re_path
 
 from biblioref.views import *
 
 urlpatterns = [
-    re_path(r'^/?$', BiblioRefListView.as_view(), name='list_biblioref'),
+    path('', BiblioRefListView.as_view(), name='list_biblioref'),
     re_path(r'^type/?$', SelectDocumentTypeView.as_view(), name='select_biblioref_type'),
     re_path(r'^sources?$', BiblioRefListSourceView.as_view(), name='list_biblioref_sources'),
     re_path(r'^analytics?$', BiblioRefListAnalyticView.as_view(), name='list_biblioref_analytics'),

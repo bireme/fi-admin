@@ -1,10 +1,10 @@
-from django.urls import re_path
+from django.urls import path, re_path
 
 from leisref.views import *
 
 urlpatterns = [
     # LeisRef
-    re_path(r'^/?$', LeisRefListView.as_view(), name='list_legislation'),
+    path('', LeisRefListView.as_view(), name='list_legislation'),
     re_path(r'^act-related/?$', LeisRefActListView.as_view(), name='act_related'),
     re_path(r'^new/?$', ActCreateView.as_view(), name='create_legislation'),
     re_path(r'^edit/(?P<pk>\d+)/?$', ActUpdateView.as_view(), name='edit_legislation'),

@@ -1,11 +1,11 @@
-from django.urls import re_path
+from django.urls import path, re_path
 
 from multimedia.views import *
 
 urlpatterns = [
 
     # Multimedia
-    re_path(r'^/?$', MediaListView.as_view(), name='list_media'),
+    path('', MediaListView.as_view(), name='list_media'),
     re_path(r'^new/?$', MediaCreateView.as_view(), name='create_media'),
     re_path(r'^edit/(?P<pk>\d+)/?$', MediaUpdateView.as_view(), name='edit_media'),
     re_path(r'^delete/(?P<pk>\d+)/?$', MediaDeleteView.as_view(), name='delete_media'),

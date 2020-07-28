@@ -10,7 +10,7 @@
 {% block title %}{% trans "Edit Institution" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'institution:list_institution' %}">{% trans "Institution" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'list_institution' %}">{% trans "Institution" %}</a> <span class="divider">/</span></li>
     {% if not object %}<li>{% trans "New Institution" %}</li>
     {% else %}<li>{% trans "Edit Institution" %}</li>{% endif %}
 {% endblock %}
@@ -132,7 +132,7 @@
                     <button class="btn btn-primary btn-large" id="save-published">{% trans "Publish" %}</button>
                 {% endif %}
             {% else %}
-                <a href="{% url 'institution:list_institution' %}" class="btn btn-large">
+                <a href="{% url 'list_institution' %}" class="btn btn-large">
                     {% trans "Back" %}
                 </a>
             {% endif %}
@@ -210,7 +210,7 @@
             inst_unit_row_id = this_name.replace( /[A-Za-z_$-]/g, '');
 
             country_id = $('#id_country').find("option:selected").val();
-            inst_win = window.open('{% url "institution:list_unit" %}?country=' + country_id, 'inst_related', 'scrollbars=1,width=785,height=590');
+            inst_win = window.open('{% url "list_unit" %}?country=' + country_id, 'inst_related', 'scrollbars=1,width=785,height=590');
         }
 
         $("#save-published").click(function() {
