@@ -63,8 +63,8 @@
         {% endblock %}
 
 
+        {% block basejs %}
         <!-- javascript files -->
-
         <script src="{% static "js/jquery.min.js" %}"></script>
         <script src="{% static "bootstrap/js/bootstrap-dropdown.js" %}"></script>
         <script src="{% static "bootstrap/js/bootstrap-modal.js" %}"></script>
@@ -79,6 +79,7 @@
                 $(".errorlist").addClass('alert alert-error');
             });
         </script>
+        {% endblock %}
 
         {% include "lang.html" %}
         {% include "alert.html" %}

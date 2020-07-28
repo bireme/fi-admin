@@ -38,7 +38,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS")
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -122,7 +122,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     # custom middleware for log user actions
-    #'log.middleware.WhodidMiddleware',
+    'log.middleware.WhodidMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -142,7 +142,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                #  custom context_processors
+                # custom context_processors
                 'utils.context_processors.additional_user_info',
                 'utils.context_processors.django_settings',
             ],
@@ -265,10 +265,6 @@ TEMPLATE_VISIBLE_SETTINGS = (
     'LANGUAGE_CODE'
 )
 
-# don't registry changes at specific fields on audit log (ex. control fields)
-EXCLUDE_AUDITLOG_FIELDS = ('content_type', 'object_id', 'reference_title',
-                           'literature_type', 'code', 'short_url')
-
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # set permissions after file upload (444 read only file for security reasons)
@@ -306,7 +302,10 @@ GOOGLE_MAPS_APIKEY = os.environ.get("GOOGLE_MAPS_APIKEY")
 
 FULLTEXT_SEARCH = os.environ.get("FULLTEXT_SEARCH")
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS")
+# don't registry changes at specific fields on audit log (ex. control fields)
+EXCLUDE_AUDITLOG_FIELDS = ('content_type', 'object_id', 'reference_title',
+                           'literature_type', 'code', 'short_url')
+
 
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
