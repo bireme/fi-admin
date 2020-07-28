@@ -57,7 +57,7 @@ def update_review(request):
 
     not_approved_list = []
     # iterate for all params in the form
-    for param, value in request.POST.iteritems():
+    for param, value in request.POST.items():
         # check for review params (review_ID-OF-LOGENTRY)
         if 'review_' in param and value != '':
             # extract logentry id from param name

@@ -239,7 +239,7 @@ class BiblioRefForm(BetterModelForm):
 
         # only apply checks when status is published
         if status == 1:
-            for field_name, field_value in self.fields.iteritems():
+            for field_name, field_value in self.fields.items():
                 field_check = data.get(field_name)
 
                 if isinstance(self.fields[field_name].widget, forms.widgets.Textarea):
@@ -358,7 +358,7 @@ class BiblioRefForm(BetterModelForm):
                             message = _("Insert space after point")
                             message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
-                        if any(abbreviation.decode('utf-8') in author_name for abbreviation in abbreviation_list):
+                        if any(abbreviation in author_name for abbreviation in abbreviation_list):
                             message = _("Invalid abbreviation input Junior and/or Filho")
                             message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
@@ -385,7 +385,8 @@ class BiblioRefForm(BetterModelForm):
                             message = format_lazy('{}{}', message_item, message)
                             self.add_error(field, message)
 
-                    for key, value in author.iteritems():
+
+                    for key, value in author.items():
                         if value.strip().endswith('.'):
                             message = _("Point at end of field is not allowed")
                             subfield = _(" at subfield %s ") % key[1:]

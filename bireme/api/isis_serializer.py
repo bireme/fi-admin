@@ -39,7 +39,7 @@ class ISISSerializer(Serializer):
                         for field_occ in field:
                             field_value = ''
                             if isinstance(field_occ, dict):
-                                for key, value in field_occ.iteritems():
+                                for key, value in field_occ.items():
                                     subfield_id = "^{0}".format(key[1]) if key.startswith('_') else ''
                                     # skip subfields with False values. ex. ^g of electronic_address
                                     if isinstance(value, bool) and value is False:
