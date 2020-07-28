@@ -6,7 +6,9 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from django.utils.deprecation import MiddlewareMixin
 from log.models import AuditLog
+from itertools import chain
 
 import threading
 import json
@@ -18,11 +20,11 @@ _m2mfield = threading.local()
 
 # FIX https://djangosnippets.org/snippets/2179/
 # http://stackoverflow.com/questions/862522/django-populate-user-id-when-saving-a-model/862870
-class WhodidMiddleware(object):
+class WhodidMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         if not request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
-            if hasattr(request, 'user') and request.user.is_authenticated():
+            if hasattr(request, 'user') and request.user.is_authenticated:
                 _user.value = request.user
             else:
                 _user.value = None
@@ -38,6 +40,17 @@ class WhodidMiddleware(object):
         signals.m2m_changed.disconnect(dispatch_uid=(self.__class__, request,))
         signals.post_save.disconnect(dispatch_uid=(self.__class__, request,))
         return response
+
+    # backwards compatibility with _meta.get_all_field_names()
+    def get_all_field_names(self, instance):
+        return list(set(chain.from_iterable(
+            (field.name, field.attname) if hasattr(field, 'attname') else (field.name,)
+            for field in instance._meta.get_fields()
+            # For complete backwards compatibility, you may want to exclude
+            # GenericForeignKey from the results.
+            if not (field.many_to_one and field.related_model is None)
+        )))
+
 
     def mark_whodel(self, sender, instance, **kwargs):
         user = self.get_current_user()
@@ -82,16 +95,17 @@ class WhodidMiddleware(object):
 
     def mark_whodid(self, sender, instance, **kwargs):
         user = self.get_current_user()
-        if 'created_by' in instance._meta.get_all_field_names() and not instance.created_by:
+        instance_field_names = self.get_all_field_names(instance)
+        if 'created_by' in instance_field_names and not instance.created_by:
             instance.created_by = user
             instance.created_time = timezone.now()
         else:
-            if 'updated_by' in instance._meta.get_all_field_names():
+            if 'updated_by' in instance_field_names:
                 instance.updated_by = user
                 instance.updated_time = timezone.now()
 
         # automatically add user cooperative center if present at field names and is not set
-        if 'cooperative_center_code' in instance._meta.get_all_field_names() and not instance.cooperative_center_code:
+        if 'cooperative_center_code' in instance_field_names and not instance.cooperative_center_code:
             instance.cooperative_center_code = user.profile.get_attribute('cc')
 
         # trace and log changes
@@ -212,7 +226,7 @@ class WhodidMiddleware(object):
                                          'new_value': new_value})
 
         if field_change:
-            field_change_json = json.dumps(field_change, encoding="utf-8", ensure_ascii=False)
+            field_change_json = json.dumps(field_change, ensure_ascii=False)
 
         return field_change_json
 
