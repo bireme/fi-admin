@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from deform.exception import ValidationFailure
 
 from main.decorators import *
@@ -168,7 +168,7 @@ def field_assist(request, **kwargs):
 
     # check if is a submit of deform form
     if request.method == 'POST' and formid == 'deform':
-        controls = urllib.parse.parse_qsl(request.body, keep_blank_values=True)
+        controls = urllib.parse.parse_qsl(str(request.body), keep_blank_values=True)
         try:
             # If all goes well, deform returns a simple python structure of
             # the data. You use this same structure to populate a form with
@@ -206,13 +206,17 @@ def field_assist(request, **kwargs):
             # new reference
             rendered = form.render()
 
-    return render_to_response('utils/field_assist.html', {
+    deform_dependencies = form.get_widget_resources()
+    deform_dependencies['js'] = [file.replace('deform:static','deform') for file in deform_dependencies['js']]
+    deform_dependencies['css'] = [file.replace('deform:static','deform') for file in deform_dependencies['css']]
+
+    return render(request, 'utils/field_assist.html', {
         'form': rendered,
         'field_json': field_json,
         'field_name': field_name,
         'field_id': field_id,
         'module_name': module_name,
-        'deform_dependencies': form.get_widget_resources()
+        'deform_dependencies': deform_dependencies
     })
 
 @csrf_exempt

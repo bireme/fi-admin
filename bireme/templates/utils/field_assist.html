@@ -8,26 +8,49 @@
 
 {% block extrahead %}
     <!-- include deform dependencies -->
+    <link rel="stylesheet" href="{% static 'deform/css/bootstrap.min.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'deform/css/form.css' %}" type="text/css"/>
     {% for css in deform_dependencies.css %}
         <link rel="stylesheet" href="{% static css %}" type="text/css"/>
     {% endfor %}
+    <script type="text/javascript" src="{% static 'deform/scripts/jquery-2.0.3.min.js' %}"></script>
     {% for js in deform_dependencies.js %}
         <script type="text/javascript" src="{% static js %}"></script>
     {% endfor %}
+
     <style>
-        #item-deformField1 > label.desc{
+        .panel-heading{
             display: none !important;
         }
-        #deformField1-addtext{
-            color:#ffffff!important;
-            display:inline-block;
-            font-size:14px;
-            margin:5px 5px 12px 0;
-            padding:7px 18px;
-            text-decoration:none;
-            border-radius:3px;
-            vertical-align:top;
-            background-color:#4dcba9!important
+        ul{
+            list-style: none;
+            margin: 0;
+        }
+        input[type="text"]{
+            height: initial;
+            line-height: initial;
+        }
+        li.error{
+            color: #b94a48;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
+        .desc[for="deformField1"]{
+            display: none;
+        }
+        .panel{
+            border: 0px;
+        }
+        .panel-footer{
+            border: 0;
+            padding: 0;
+            background-color: initial;
+        }
+        .deform-seq-add{
+            background-color: #ffffff;
+        }
+        .req{
+            color: red;
         }
     </style>
 {% endblock %}
@@ -66,7 +89,11 @@
 
 {% endblock %}
 
-{% block footer %}
+{% block footer %}{% endblock %}
+
+{% block basejs %}{% endblock %}
+
+{% block extrajs %}
 <script type="text/javascript">
     $(document).ready(function() {
         var warn_on_unload="";
