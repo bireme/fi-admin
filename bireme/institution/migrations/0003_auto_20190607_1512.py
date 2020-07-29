@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
                 ('text', models.TextField(verbose_name='Text')),
-                ('adhesionterm', models.ForeignKey(verbose_name='Adhesion term', to='institution.AdhesionTerm')),
+                ('adhesionterm', models.ForeignKey(verbose_name='Adhesion term', to='institution.AdhesionTerm', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('acepted', models.BooleanField(default=False, verbose_name='Acepted')),
-                ('adhesionterm', models.ForeignKey(to='institution.AdhesionTerm', null=True)),
+                ('adhesionterm', models.ForeignKey(to='institution.AdhesionTerm', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Adhesion term level',
@@ -80,7 +80,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
                 ('name', models.CharField(max_length=155, verbose_name='Name', blank=True)),
-                ('serviceproduct', models.ForeignKey(verbose_name='Service/Product', to='institution.ServiceProduct')),
+                ('serviceproduct', models.ForeignKey(verbose_name='Service/Product', to='institution.ServiceProduct', on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -95,16 +95,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='institutionserviceproduct',
             name='institution',
-            field=models.ForeignKey(to='institution.Institution', null=True),
+            field=models.ForeignKey(to='institution.Institution', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='institutionserviceproduct',
             name='serviceproduct',
-            field=models.ForeignKey(to='institution.ServiceProduct', null=True),
+            field=models.ForeignKey(to='institution.ServiceProduct', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='institutionadhesion',
             name='institution',
-            field=models.ForeignKey(to='institution.Institution', null=True),
+            field=models.ForeignKey(to='institution.Institution', null=True, on_delete=models.PROTECT),
         ),
     ]

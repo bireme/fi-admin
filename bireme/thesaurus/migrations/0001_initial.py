@@ -145,7 +145,7 @@ class Migration(migrations.Migration):
                 ('date_created', models.DateField(help_text=b'DD/MM/YYYY', null=True, verbose_name='Date created', blank=True)),
                 ('date_revised', models.DateField(help_text=b'DD/MM/YYYY', null=True, verbose_name='Date revised', blank=True)),
                 ('date_established', models.DateField(help_text=b'DD/MM/YYYY', null=True, verbose_name='Date established', blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Qualifier',
@@ -169,7 +169,7 @@ class Migration(migrations.Migration):
                 ('saude_publica', models.CharField(max_length=1, verbose_name='Saude Publica', blank=True)),
                 ('exploded', models.CharField(max_length=1, verbose_name='Exploded', blank=True)),
                 ('geog_decs', models.CharField(max_length=1, verbose_name='Geog DeCS', blank=True)),
-                ('identifier', models.ForeignKey(related_name='legacyinformationdesc', blank=True, to='thesaurus.IdentifierDesc', null=True)),
+                ('identifier', models.ForeignKey(related_name='legacyinformationdesc', blank=True, to='thesaurus.IdentifierDesc', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Legacy information',
@@ -192,7 +192,7 @@ class Migration(migrations.Migration):
                 ('saude_publica', models.CharField(max_length=1, verbose_name='Saude Publica', blank=True)),
                 ('exploded', models.CharField(max_length=1, verbose_name='Exploded', blank=True)),
                 ('geog_decs', models.CharField(max_length=1, verbose_name='Geog DeCS', blank=True)),
-                ('identifier', models.ForeignKey(related_name='legacyinformationqualif', blank=True, to='thesaurus.IdentifierQualif', null=True)),
+                ('identifier', models.ForeignKey(related_name='legacyinformationqualif', blank=True, to='thesaurus.IdentifierQualif', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Legacy information',
@@ -206,7 +206,7 @@ class Migration(migrations.Migration):
                 ('term_string', models.CharField(max_length=250, verbose_name='String', blank=True)),
                 ('descriptor_ui', models.CharField(max_length=250, verbose_name='MESH Descriptor UI', blank=True)),
                 ('language_code', models.CharField(blank=True, max_length=10, verbose_name='Language used for description', choices=[(b'en', 'English'), (b'es', 'Spanish Latin America'), (b'pt-br', 'Portuguese'), (b'es-es', 'Spanish Spain'), (b'fr', 'French')])),
-                ('identifier', models.ForeignKey(related_name='pharmacodesc', blank=True, to='thesaurus.IdentifierDesc', null=True)),
+                ('identifier', models.ForeignKey(related_name='pharmacodesc', blank=True, to='thesaurus.IdentifierDesc', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Pharmacological Action List',
@@ -220,7 +220,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('previous_indexing', models.CharField(max_length=1000, verbose_name='Previous indexing', blank=True)),
                 ('language_code', models.CharField(blank=True, max_length=10, verbose_name='Language used for description', choices=[(b'en', 'English'), (b'es', 'Spanish Latin America'), (b'pt-br', 'Portuguese'), (b'es-es', 'Spanish Spain'), (b'fr', 'French')])),
-                ('identifier', models.ForeignKey(related_name='previousdesc', blank=True, to='thesaurus.IdentifierDesc', null=True)),
+                ('identifier', models.ForeignKey(related_name='previousdesc', blank=True, to='thesaurus.IdentifierDesc', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Previous Indexing',
@@ -234,7 +234,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('term_string', models.CharField(max_length=250, verbose_name='String', blank=True)),
                 ('descriptor_ui', models.CharField(max_length=250, verbose_name='MESH Descriptor UI', blank=True)),
-                ('identifier', models.ForeignKey(related_name='relateddesc', blank=True, to='thesaurus.IdentifierDesc', null=True)),
+                ('identifier', models.ForeignKey(related_name='relateddesc', blank=True, to='thesaurus.IdentifierDesc', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'See Related List',
@@ -259,7 +259,7 @@ class Migration(migrations.Migration):
                 ('date_altered', models.DateField(help_text=b'DD/MM/YYYY', null=True, verbose_name='Date altered', blank=True)),
                 ('historical_annotation', models.TextField(max_length=1500, verbose_name='Historical annotation', blank=True)),
                 ('term_thesaurus', models.CharField(max_length=50, verbose_name='Thesaurus', blank=True)),
-                ('identifier_concept', models.ForeignKey(related_name='termdesc', blank=True, to='thesaurus.IdentifierConceptListDesc', null=True)),
+                ('identifier_concept', models.ForeignKey(related_name='termdesc', blank=True, to='thesaurus.IdentifierConceptListDesc', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Term',
@@ -283,7 +283,7 @@ class Migration(migrations.Migration):
                 ('date_altered', models.DateField(help_text=b'DD/MM/YYYY', null=True, verbose_name='Date altered', blank=True)),
                 ('historical_annotation', models.TextField(max_length=1500, verbose_name='Historical annotation', blank=True)),
                 ('term_thesaurus', models.CharField(max_length=50, verbose_name='Thesaurus', blank=True)),
-                ('identifier_concept', models.ForeignKey(related_name='termqualif', blank=True, to='thesaurus.IdentifierConceptListQualif', null=True)),
+                ('identifier_concept', models.ForeignKey(related_name='termqualif', blank=True, to='thesaurus.IdentifierConceptListQualif', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ('language_code', 'term_string', 'concept_preferred_term'),
@@ -309,7 +309,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('tree_number', models.CharField(max_length=250, verbose_name='Tree number', blank=True)),
-                ('identifier', models.ForeignKey(related_name='dtreenumbers', to='thesaurus.IdentifierDesc', null=True)),
+                ('identifier', models.ForeignKey(related_name='dtreenumbers', to='thesaurus.IdentifierDesc', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ('tree_number',),
@@ -323,7 +323,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('tree_number', models.CharField(max_length=250, verbose_name='Tree number', blank=True)),
-                ('identifier', models.ForeignKey(related_name='qtreenumbers', to='thesaurus.IdentifierQualif', null=True)),
+                ('identifier', models.ForeignKey(related_name='qtreenumbers', to='thesaurus.IdentifierQualif', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ('tree_number',),
@@ -335,12 +335,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='identifierqualif',
             name='thesaurus',
-            field=models.ForeignKey(default=None, to='thesaurus.Thesaurus', null=True),
+            field=models.ForeignKey(default=None, to='thesaurus.Thesaurus', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='identifierqualif',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='identifierdesc',
@@ -350,47 +350,47 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='identifierdesc',
             name='created_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='identifierdesc',
             name='thesaurus',
-            field=models.ForeignKey(default=None, to='thesaurus.Thesaurus', null=True),
+            field=models.ForeignKey(default=None, to='thesaurus.Thesaurus', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='identifierdesc',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='identifierconceptlistqualif',
             name='identifier',
-            field=models.ForeignKey(blank=True, to='thesaurus.IdentifierQualif', null=True),
+            field=models.ForeignKey(blank=True, to='thesaurus.IdentifierQualif', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='identifierconceptlistdesc',
             name='identifier',
-            field=models.ForeignKey(blank=True, to='thesaurus.IdentifierDesc', null=True),
+            field=models.ForeignKey(blank=True, to='thesaurus.IdentifierDesc', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='descriptionqualif',
             name='identifier',
-            field=models.ForeignKey(related_name='descriptionqualif', to='thesaurus.IdentifierQualif', null=True),
+            field=models.ForeignKey(related_name='descriptionqualif', to='thesaurus.IdentifierQualif', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='descriptiondesc',
             name='identifier',
-            field=models.ForeignKey(related_name='descriptiondesc', to='thesaurus.IdentifierDesc', null=True),
+            field=models.ForeignKey(related_name='descriptiondesc', to='thesaurus.IdentifierDesc', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='conceptlistqualif',
             name='identifier_concept',
-            field=models.ForeignKey(related_name='conceptqualif', blank=True, to='thesaurus.IdentifierConceptListQualif', null=True),
+            field=models.ForeignKey(related_name='conceptqualif', blank=True, to='thesaurus.IdentifierConceptListQualif', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='conceptlistdesc',
             name='identifier_concept',
-            field=models.ForeignKey(related_name='conceptdesc', blank=True, to='thesaurus.IdentifierConceptListDesc', null=True),
+            field=models.ForeignKey(related_name='conceptdesc', blank=True, to='thesaurus.IdentifierConceptListDesc', null=True, on_delete=models.PROTECT),
         ),
         migrations.AlterUniqueTogether(
             name='treenumberslistqualif',

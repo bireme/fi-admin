@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('publisher', models.CharField(max_length=255, verbose_name='Publisher', blank=True)),
                 ('publication_date', models.DateField(help_text=b'Format: DD/MM/YYYY', null=True, verbose_name='Publication date', blank=True)),
                 ('cooperative_center_code', models.CharField(max_length=55, verbose_name='Cooperative center', blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
                 ('language', models.ManyToManyField(to='main.SourceLanguage', verbose_name='language', blank=True)),
             ],
             options={
@@ -57,9 +57,9 @@ class Migration(migrations.Migration):
                 ('city', models.CharField(max_length=255, verbose_name='City', blank=True)),
                 ('language', models.CharField(blank=True, max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('cooperative_center_code', models.CharField(max_length=55, verbose_name='Cooperative center', blank=True)),
-                ('country', models.ForeignKey(verbose_name='Country', blank=True, to='utils.Country', null=True)),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('country', models.ForeignKey(verbose_name='Country', blank=True, to='utils.Country', null=True, on_delete=models.PROTECT)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Collection',
@@ -74,7 +74,7 @@ class Migration(migrations.Migration):
                 ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
                 ('description', models.TextField(verbose_name='Description', blank=True)),
-                ('media_collection', models.ForeignKey(verbose_name='Collection', to='multimedia.MediaCollection')),
+                ('media_collection', models.ForeignKey(verbose_name='Collection', to='multimedia.MediaCollection', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -91,8 +91,8 @@ class Migration(migrations.Migration):
                 ('acronym', models.CharField(max_length=25, verbose_name='Acronym', blank=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Media type',
@@ -106,7 +106,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
-                ('media_type', models.ForeignKey(verbose_name='Media type', to='multimedia.MediaType')),
+                ('media_type', models.ForeignKey(verbose_name='Media type', to='multimedia.MediaType', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -117,19 +117,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='media',
             name='media_collection',
-            field=models.ForeignKey(verbose_name='Collection', blank=True, to='multimedia.MediaCollection', null=True),
+            field=models.ForeignKey(verbose_name='Collection', blank=True, to='multimedia.MediaCollection', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='media',
             name='media_type',
-            field=models.ForeignKey(verbose_name='Media type', to='multimedia.MediaType'),
+            field=models.ForeignKey(verbose_name='Media type', to='multimedia.MediaType', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='media',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
     ]

@@ -24,9 +24,9 @@ class Migration(migrations.Migration):
                 ('text', models.CharField(max_length=255, verbose_name='Text', blank=True)),
                 ('code', models.CharField(max_length=50, verbose_name='Code', blank=True)),
                 ('status', models.SmallIntegerField(default=0, verbose_name='Status', choices=[(0, 'Pending'), (1, 'Admitted'), (2, 'Refused')])),
-                ('content_type', models.ForeignKey(related_name='descriptors', to='contenttypes.ContentType')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('content_type', models.ForeignKey(related_name='descriptors', to='contenttypes.ContentType', on_delete=models.PROTECT),),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'abstract': False,
@@ -43,9 +43,9 @@ class Migration(migrations.Migration):
                 ('text', models.CharField(max_length=255, verbose_name='Text', blank=True)),
                 ('status', models.SmallIntegerField(default=0, verbose_name='Status', choices=[(0, 'Pending'), (1, 'Admitted'), (2, 'Refused')])),
                 ('user_recomendation', models.BooleanField(verbose_name='User recomendation?')),
-                ('content_type', models.ForeignKey(related_name='keywords', to='contenttypes.ContentType')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('content_type', models.ForeignKey(related_name='keywords', to='contenttypes.ContentType', on_delete=models.PROTECT)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'abstract': False,
@@ -67,7 +67,7 @@ class Migration(migrations.Migration):
                 ('time_period_textual', models.CharField(max_length=255, verbose_name='Temporal range', blank=True)),
                 ('objective', models.TextField(verbose_name='Objective', blank=True)),
                 ('cooperative_center_code', models.CharField(max_length=55, verbose_name='Cooperative center', blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
                 ('originator_location', models.ManyToManyField(to='utils.Country', verbose_name='Originator location')),
             ],
             options={
@@ -84,8 +84,8 @@ class Migration(migrations.Migration):
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('object_id', models.PositiveIntegerField()),
                 ('status', models.SmallIntegerField(default=0, blank=True, verbose_name='Status', choices=[(0, 'Pending'), (1, 'Admitted'), (2, 'Refused')])),
-                ('content_type', models.ForeignKey(related_name='thematics', to='contenttypes.ContentType')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('content_type', models.ForeignKey(related_name='thematics', to='contenttypes.ContentType', on_delete=models.PROTECT)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Thematic area',
@@ -102,8 +102,8 @@ class Migration(migrations.Migration):
                 ('acronym', models.CharField(max_length=25, verbose_name='Acronym', blank=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Source language',
@@ -117,7 +117,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('source_language', models.ForeignKey(verbose_name='Source language', to='main.SourceLanguage')),
+                ('source_language', models.ForeignKey(verbose_name='Source language', to='main.SourceLanguage', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -134,8 +134,8 @@ class Migration(migrations.Migration):
                 ('acronym', models.CharField(max_length=25, verbose_name='Acronym', blank=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'source type',
@@ -149,7 +149,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
-                ('source_type', models.ForeignKey(verbose_name='Source type', to='main.SourceType')),
+                ('source_type', models.ForeignKey(verbose_name='Source type', to='main.SourceType', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -166,8 +166,8 @@ class Migration(migrations.Migration):
                 ('acronym', models.CharField(max_length=25, verbose_name='Acronym', blank=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Thematic area',
@@ -181,7 +181,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('thematic_area', models.ForeignKey(verbose_name='Thematic area', to='main.ThematicArea')),
+                ('thematic_area', models.ForeignKey(verbose_name='Thematic area', to='main.ThematicArea', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -192,13 +192,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='resourcethematic',
             name='thematic_area',
-            field=models.ForeignKey(related_name='+', to='main.ThematicArea'),
+            field=models.ForeignKey(related_name='+', to='main.ThematicArea', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='resourcethematic',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -216,7 +216,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='resource',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
     ]

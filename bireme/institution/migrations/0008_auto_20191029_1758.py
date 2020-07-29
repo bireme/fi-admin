@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
                 ('name', models.CharField(max_length=55, verbose_name='Name')),
-                ('category', models.ForeignKey(verbose_name='Category', to='institution.Category')),
+                ('category', models.ForeignKey(verbose_name='Category', to='institution.Category', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',

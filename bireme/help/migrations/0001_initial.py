@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('help_text', models.TextField(verbose_name='Help')),
-                ('help', models.ForeignKey(verbose_name='Help', to='help.Help')),
+                ('help', models.ForeignKey(verbose_name='Help', to='help.Help', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',

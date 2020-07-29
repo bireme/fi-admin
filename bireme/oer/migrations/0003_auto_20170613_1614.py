@@ -21,8 +21,8 @@ class Migration(migrations.Migration):
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('name', models.CharField(max_length=115, verbose_name='Name')),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Structure',
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=115, verbose_name='name')),
-                ('structure', models.ForeignKey(verbose_name='Structure', to='oer.Structure')),
+                ('structure', models.ForeignKey(verbose_name='Structure', to='oer.Structure', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -50,6 +50,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='oer',
             name='structure',
-            field=models.ForeignKey(verbose_name='Structure', blank=True, to='oer.Structure', null=True),
+            field=models.ForeignKey(verbose_name='Structure', blank=True, to='oer.Structure', null=True, on_delete=models.PROTECT),
         ),
     ]

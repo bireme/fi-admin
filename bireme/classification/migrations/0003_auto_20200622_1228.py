@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='relationship',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='relationship',
@@ -41,6 +41,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='collection',
             name='parent',
-            field=models.ForeignKey(related_name='children', verbose_name='Parent', blank=True, to='classification.Collection', null=True),
+            field=models.ForeignKey(related_name='children', verbose_name='Parent', blank=True, to='classification.Collection', null=True, on_delete=models.PROTECT),
         ),
     ]

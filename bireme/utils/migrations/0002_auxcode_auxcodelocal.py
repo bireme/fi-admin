@@ -23,8 +23,8 @@ class Migration(migrations.Migration):
                 ('field', models.CharField(max_length=35, verbose_name='Field name')),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('label', models.CharField(max_length=255, verbose_name='Name')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'auxiliary code',
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('label', models.CharField(max_length=255, verbose_name='name')),
-                ('auxcode', models.ForeignKey(verbose_name='Source type', to='utils.AuxCode')),
+                ('auxcode', models.ForeignKey(verbose_name='Source type', to='utils.AuxCode', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',

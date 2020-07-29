@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('internal_note', models.TextField(verbose_name='Internal note', blank=True)),
                 ('local_descriptors', models.TextField(verbose_name='Local descriptors', blank=True)),
                 ('cooperative_center_code', models.CharField(max_length=55, verbose_name='Cooperative center', blank=True)),
-                ('source', models.ForeignKey(verbose_name='Source', to='biblioref.Reference')),
+                ('source', models.ForeignKey(verbose_name='Source', to='biblioref.Reference', on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Bibliographic Reference Local',

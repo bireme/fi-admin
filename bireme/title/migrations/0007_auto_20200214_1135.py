@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('collection', models.TextField(help_text='Enter one per line', verbose_name='Collection', blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Collection',
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 ('classification', models.CharField(max_length=55, verbose_name='Classification', blank=True)),
                 ('creation_date', models.CharField(help_text=b'Format: YYYYMMDD', max_length=55, verbose_name='Creation date', blank=True)),
                 ('last_change_date', models.CharField(help_text=b'Format: YYYYMMDD', max_length=55, verbose_name='Last change date', blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ['-classification'],
@@ -66,8 +66,8 @@ class Migration(migrations.Migration):
                 ('issues', models.CharField(max_length=55, verbose_name='Issues', blank=True)),
                 ('ascending', models.BooleanField(default=False, verbose_name='Ascending')),
                 ('dummy', models.BooleanField(default=False, verbose_name='Dummy')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ['mask'],
@@ -97,26 +97,26 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='issue',
             name='mask',
-            field=models.ForeignKey(related_name='+', verbose_name='Mask code', blank=True, to='title.Mask', null=True),
+            field=models.ForeignKey(related_name='+', verbose_name='Mask code', blank=True, to='title.Mask', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='issue',
             name='title',
-            field=models.ForeignKey(verbose_name='Title', blank=True, to='title.Title'),
+            field=models.ForeignKey(verbose_name='Title', blank=True, to='title.Title', on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='issue',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='collection',
             name='title',
-            field=models.ForeignKey(verbose_name='Title', blank=True, to='title.Title'),
+            field=models.ForeignKey(verbose_name='Title', blank=True, to='title.Title', on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='collection',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
         ),
     ]

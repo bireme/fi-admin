@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('job_title', models.CharField(max_length=155, verbose_name='Job title', blank=True)),
                 ('email', models.EmailField(max_length=155, verbose_name='Email')),
                 ('phone_number', models.CharField(max_length=255, verbose_name='Phone')),
-                ('institution', models.ForeignKey(to='institution.Institution', null=True)),
+                ('institution', models.ForeignKey(to='institution.Institution', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Contact person',
