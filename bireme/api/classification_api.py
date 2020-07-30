@@ -56,7 +56,7 @@ class CommunityResource(ModelResource):
         community_list = Collection.objects.filter(community_flag=True, country__isnull=False)
         country_list = [community.country for community in community_list]
         country_list_unique = set(country_list)
-        country_list_detail = [{'name': c.get_translations(), 'id': c.id} for c in country_list_unique]
+        country_list_detail = [{'name': c.get_translations(), 'id': c.id, 'code': c.code} for c in country_list_unique]
 
         return self.create_response(request, country_list_detail)
 
