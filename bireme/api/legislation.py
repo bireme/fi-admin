@@ -90,6 +90,15 @@ class LeisrefResource(ModelResource):
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
 
+        # add fields to output
+        if bundle.obj.act_type:
+            bundle.data['act_type'] = "|".join(bundle.obj.act_type.get_translations())
+        if bundle.obj.organ_issuer:
+            bundle.data['organ_issuer'] = "|".join(bundle.obj.organ_issuer.get_translations())
+        if bundle.obj.source_name:
+            bundle.data['source_name'] = "|".join(bundle.obj.source_name.get_translations())
+
+
         # check if object has classification (relationship model)
         if bundle.obj.collection.exists():
             community_list = []
