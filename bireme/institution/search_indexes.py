@@ -13,14 +13,12 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
     zipcode = indexes.CharField(model_attr='zipcode', null=True)
     country = indexes.CharField()
     country_code = indexes.CharField()
-    #type = indexes.MultiValueField()
     institution_type = indexes.MultiValueField()
     institution_thematic = indexes.MultiValueField()
-    #category = indexes.MultiValueField()
     contact = indexes.MultiValueField()
     link = indexes.MultiValueField()
-    user = indexes.MultiValueField()
-    cat = indexes.MultiValueField()
+    user = indexes.MultiValueField() # used for search by type field
+    cat = indexes.MultiValueField()  # used for by category field
 
     cooperative_center_code = indexes.CharField(model_attr='cc_code', null=False)
     created_date = indexes.CharField()
@@ -37,30 +35,6 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
         units = [unit_level.unit for unit_level in UnitLevel.objects.filter(institution=obj.id).order_by('level')]
 
         return units
-
-    def prepare_type(self, obj):
-        output_list = []
-        inst_list = Adm.objects.filter(institution=obj.id)
-        for inst in inst_list:
-            for type in inst.type.all():
-                type_translated = type.get_translations()
-                output_list.append(type_translated)
-
-        return output_list
-
-    def prepare_category(self, obj):
-        output_list = []
-        try:
-            adm = Adm.objects.get(institution=obj.id)
-        except Adm.DoesNotExist:
-            adm = None
-
-        if adm:
-            for category in adm.category.all():
-                category_translated = category.get_translations()
-                output_list.append(category_translated)
-
-        return output_list
 
     def prepare_contact(self, obj):
         output_list = []
@@ -107,28 +81,28 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
             return obj.country.code
 
     def prepare_user(self, obj):
-        user_list = []
-        try:
-            adm = Adm.objects.get(institution=obj.id)
-        except Adm.DoesNotExist:
-            adm = None
+        output_list = []
+        inst_list = Adm.objects.filter(institution=obj.id)
+        for inst in inst_list:
+            for type in inst.type.all():
+                type_translated = type.get_translations()
+                output_list.append(type_translated)
 
-        if adm:
-            user_list = [line.strip() for line in adm.type_history.split('\r\n') if line.strip()]
-
-        return user_list
+        return output_list
 
     def prepare_cat(self, obj):
-        cat_list = []
+        output_list = []
         try:
             adm = Adm.objects.get(institution=obj.id)
         except Adm.DoesNotExist:
             adm = None
 
         if adm:
-            cat_list = [line.strip() for line in adm.category_history.split('\r\n') if line.strip()]
+            for category in adm.category.all():
+                category_translated = category.get_translations()
+                output_list.append(category_translated)
 
-        return cat_list
+        return output_list
 
     def prepare_institution_type(self, obj):
         type_list = []
