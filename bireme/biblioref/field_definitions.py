@@ -55,6 +55,11 @@ comp_info_section = ('comp_info', {'fields': ['descriptive_information', 'text_l
                                    'legend': _('Complementary Information'),
                                    'classes': ['collapse']})
 
+comp_info_section_doi = ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi_number'],
+                                       'legend': _('Complementary Information'),
+                                       'classes': ['collapse']})
+
+
 subject_section = ('content_data', {'fields': ['author_keyword'],
                                     'legend': _('Subject'),
                                     'classes': ['collapse']})
@@ -154,7 +159,7 @@ FIELDS_BY_DOCUMENT_TYPE['Mm'] = [indexed_databases,
 
                                  monographic_section,
 
-                                 comp_info_section,
+                                 comp_info_section_doi,
 
                                  other_notes_section,
 
@@ -181,7 +186,7 @@ FIELDS_BY_DOCUMENT_TYPE['Mam'] = [indexed_databases,
                                                                  'english_translated_title', 'pages'],
                                                       'legend': _('Analytic Level')}),
 
-                                  comp_info_section,
+                                  comp_info_section_doi,
 
                                   other_notes_section,
 
@@ -290,7 +295,7 @@ FIELDS_BY_DOCUMENT_TYPE['Nm'] = [indexed_databases,
 
                                  monographic_section,
 
-                                 comp_info_section,
+                                 comp_info_section_doi,
 
                                  other_notes_section,
 
@@ -317,7 +322,7 @@ FIELDS_BY_DOCUMENT_TYPE['Nam'] = [indexed_databases,
                                                                  'english_translated_title', 'pages'],
                                                       'legend': _('Analytic Level')}),
 
-                                  comp_info_section,
+                                  comp_info_section_doi,
 
                                   other_notes_section,
 
@@ -591,6 +596,11 @@ class IndividualAuthorAttributes(colander.MappingSchema):
                 raise exc
 
 
+    def validate_not_url(form, value):
+        if value.startswith('http'):
+            exc = colander.Invalid(form, _("Do not inform URL for this field"))
+            raise exc
+
     degree_choices = [('', '')]
     degree_choices.extend([(aux.code, aux) for aux in
                           AuxCode.objects.filter(field='degree_of_responsibility')])
@@ -608,6 +618,12 @@ class IndividualAuthorAttributes(colander.MappingSchema):
     _r = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation degree of responsibility'),
                              widget=deform.widget.SelectWidget(values=degree_choices),
                              missing=unicode(''),)
+
+    _k = colander.SchemaNode(colander.String('utf-8'), title=_('ORCID'), validator=validate_not_url, missing=unicode(''),
+                               description=_('Format: 0000-0000-0000-0000'))
+
+    _s = colander.SchemaNode(colander.String('utf-8'), title=_('Web of Science ResearcherID'), validator=validate_not_url,
+                               missing=unicode(''), description=_('Format: D-0000-0000'))
 
 
 class IndividualAuthor(colander.SequenceSchema):
