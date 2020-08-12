@@ -859,6 +859,17 @@ class BiblioRefForm(BetterModelForm):
 
         return data
 
+    def clean_doi_number(self):
+        field = 'doi_number'
+        data = self.cleaned_data.get(field)
+
+        if data and self.is_visiblefield(field):
+            if not data[0].isdigit():
+                self.add_error(field, _('Please inform a valid DOI number. Ex. 10.1000/xyz123'))
+
+        return data
+
+
     def save(self, *args, **kwargs):
         obj = super(BiblioRefForm, self).save(commit=False)
 
