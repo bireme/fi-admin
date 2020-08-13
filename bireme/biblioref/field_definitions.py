@@ -622,7 +622,7 @@ class IndividualAuthorAttributes(colander.MappingSchema):
     _k = colander.SchemaNode(colander.String('utf-8'), title=_('ORCID'), validator=validate_not_url, missing=unicode(''),
                                description=_('Format: 0000-0000-0000-0000'))
 
-    _s = colander.SchemaNode(colander.String('utf-8'), title=_('Web of Science ResearcherID'), validator=validate_not_url,
+    _w = colander.SchemaNode(colander.String('utf-8'), title=_('Web of Science ResearcherID'), validator=validate_not_url,
                                missing=unicode(''), description=_('Format: D-0000-0000'))
 
 
