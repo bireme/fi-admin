@@ -64,13 +64,13 @@ api_exec_shell:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec app_fi_admin sh
 
 api_exec_collectstatic:
-	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec app_fi_admin python manage.py collectstatic --noinput
+	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec -T app_fi_admin python manage.py collectstatic --noinput
 
 api_exec_webserver:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec webserver sh
 
 api_make_test:
-	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec app_fi_admin make test
+	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec -T app_fi_admin make test
 
 ## docker-compose prod
 prod_build:
@@ -96,10 +96,10 @@ prod_exec_shell:
 	@docker-compose --compatibility exec app_fi_admin sh
 
 prod_exec_collectstatic:
-	@docker-compose --compatibility exec app_fi_admin python manage.py collectstatic --noinput
+	@docker-compose --compatibility exec -T app_fi_admin python manage.py collectstatic --noinput
 
 prod_exec_webserver:
 	@docker-compose --compatibility exec webserver sh
 
 prod_make_test:
-	@docker-compose --compatibility exec app_fi_admin make test
+	@docker-compose --compatibility exec -T app_fi_admin make test
