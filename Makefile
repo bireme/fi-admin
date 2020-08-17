@@ -34,10 +34,10 @@ dev_rm:
 	@docker-compose -f $(COMPOSE_FILE_DEV) rm -f
 
 dev_exec_shell:
-	@docker-compose -f $(COMPOSE_FILE_DEV) exec app sh
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec app_fi_admin sh
 
 dev_make_test:
-	@docker-compose -f $(COMPOSE_FILE_DEV) exec app make test
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec app_fi_admin make test
 
 
 ## docker-compose API
@@ -61,13 +61,45 @@ api_rm:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility rm -f
 
 api_exec_shell:
-	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec app sh
+	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec app_fi_admin sh
 
 api_exec_collectstatic:
-	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec app python manage.py collectstatic --noinput
+	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec app_fi_admin python manage.py collectstatic --noinput
 
 api_exec_webserver:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec webserver sh
 
 api_make_test:
-	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec app make test
+	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec app_fi_admin make test
+
+## docker-compose prod
+prod_build:
+	@docker-compose --compatibility build
+	@docker tag $(IMAGE_TAG) $(TAG_LATEST)
+
+prod_up:
+	@docker-compose --compatibility up -d
+
+prod_logs:
+	@docker-compose --compatibility logs -f
+
+prot_stop:
+	@docker-compose --compatibility stop
+
+prod_ps:
+	@docker-compose --compatibility ps
+
+prod_rm:
+	@docker-compose --compatibility rm -f
+
+prod_exec_shell:
+	@docker-compose --compatibility exec app_fi_admin sh
+
+prod_exec_collectstatic:
+	@docker-compose --compatibility exec app_fi_admin python manage.py collectstatic --noinput
+
+prod_exec_webserver:
+	@docker-compose --compatibility exec webserver sh
+
+prod_make_test:
+	@docker-compose --compatibility exec app_fi_admin make test
