@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  app:
+  fi_admin_api:
     container_name: fi-admin-api
     restart: unless-stopped
     build:
@@ -32,10 +32,10 @@ services:
     expose:
       - 80
     volumes:
-      - ./conf/nginx:/etc/nginx/conf.d
+      - ./conf/nginx/api:/etc/nginx/conf.d
       - static_files:/app/static_files
     depends_on:
-      - app
+      - fi_admin_api
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
       - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
