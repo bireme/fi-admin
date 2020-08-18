@@ -346,6 +346,13 @@ if DEBUG_TOOLBAR:
         'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG_TOOLBAR
     }
 
+class DisableMigrations(object):
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return None
+
 
 if 'test' in sys.argv:
     logging.disable(logging.CRITICAL)
@@ -354,11 +361,4 @@ if 'test' in sys.argv:
     TESTS_IN_PROGRESS = True
     MIGRATION_MODULES = DisableMigrations()
     HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.BaseSignalProcessor'
-
-
-class DisableMigrations(object):
-    def __contains__(self, item):
-        return True
-
-    def __getitem__(self, item):
-        return "notmigrations"
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'

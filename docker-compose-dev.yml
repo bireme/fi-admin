@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  app:
+  fi_admin:
     container_name: fi-admin
     build:
       context: .
