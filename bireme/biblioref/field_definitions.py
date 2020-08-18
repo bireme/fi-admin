@@ -619,11 +619,11 @@ class IndividualAuthorAttributes(colander.MappingSchema):
                              widget=deform.widget.SelectWidget(values=degree_choices),
                              missing=str(''),)
 
-    _k = colander.SchemaNode(colander.String('utf-8'), title=_('ORCID'), validator=validate_not_url, missing=unicode(''),
+    _k = colander.SchemaNode(colander.String('utf-8'), title=_('ORCID'), validator=validate_not_url, missing=str(''),
                                description=_('Format: 0000-0000-0000-0000'))
 
     _w = colander.SchemaNode(colander.String('utf-8'), title=_('Web of Science ResearcherID'), validator=validate_not_url,
-                               missing=unicode(''), description=_('Format: D-0000-0000'))
+                               missing=str(''), description=_('Format: D-0000-0000'))
 
 
 class IndividualAuthor(colander.SequenceSchema):
