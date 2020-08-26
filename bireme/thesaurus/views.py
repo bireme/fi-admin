@@ -2953,6 +2953,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
             id_ctype_identifierdesc = ContentType.objects.filter(model='identifierdesc').values('id')
             context['id_ctype_identifierdesc'] = id_ctype_identifierdesc[0].get('id')
             # ID do registro
+            # BUG
             id_identifierdesc = IdentifierDesc.objects.filter(id=id_concept).values('id')
             context['id_identifierdesc'] = id_identifierdesc[0].get('id')
 
