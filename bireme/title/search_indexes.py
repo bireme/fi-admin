@@ -2,7 +2,7 @@ import datetime
 from haystack import indexes
 from haystack.exceptions import SkipDocument
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
-from models import Title
+from title.models import Title
 
 from django.contrib.contenttypes.models import ContentType
 

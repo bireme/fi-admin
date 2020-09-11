@@ -6,22 +6,22 @@ from utils.models import Country
 from main.models import ThematicArea, Descriptor, Keyword, ResourceThematic
 
 from utils.tests import BaseTestCase
-from models import *
+from events.models import *
 
 def minimal_form_data():
     """
     Define a minimal fields for submit a form
     """
 
-    form_data = { 
+    form_data = {
         'status': '0',
         'title': 'Evento de teste',
         'event_type': 1,
-        
-        'main-descriptor-content_type-object_id-TOTAL_FORMS': '0', 
+
+        'main-descriptor-content_type-object_id-TOTAL_FORMS': '0',
         'main-descriptor-content_type-object_id-INITIAL_FORMS': '0',
 
-        'main-keyword-content_type-object_id-TOTAL_FORMS': '0', 
+        'main-keyword-content_type-object_id-TOTAL_FORMS': '0',
         'main-keyword-content_type-object_id-INITIAL_FORMS': '0',
 
         'main-resourcethematic-content_type-object_id-TOTAL_FORMS': '0',
@@ -66,7 +66,7 @@ def create_test_objects():
     event_1 = Event.objects.create(status=0, title='Evento de teste (BR1.1)',
                             start_date='2014-01-01', end_date='2014-01-05',
                             created_by_id=1, cooperative_center_code='BR1.1')
-    
+
     Event.objects.create(status=0, title='Evento de teste (BR1.1)',
                             start_date='2014-01-01', end_date='2014-01-05',
                             created_by_id=2, cooperative_center_code='BR1.1')
@@ -121,12 +121,12 @@ class EventTest(BaseTestCase):
         """
         Test create view
         """
-        self.login_editor()        
+        self.login_editor()
 
         # invalid submission with missing required fields
         form_data = minimal_form_data()
         response = self.client.post('/event/new', form_data )
-        
+
         self.assertContains(response,'Por favor verifique os campos obrigatórios')
         self.assertContains(response,'Você precisa inserir pelo menos um descritor de assunto')
         self.assertContains(response,'Você precisa selecionar pelo menos uma área temática')
@@ -144,7 +144,7 @@ class EventTest(BaseTestCase):
 
         # check if is set cooperative center code of user (editor = BR1.1)
         self.assertEquals(Event.objects.all()[0].cooperative_center_code, "BR1.1")
-        
+
 
     def test_edit_event(self):
         """
@@ -179,7 +179,7 @@ class EventTest(BaseTestCase):
         response = self.client.post('/events', form_data, follow=True)
         self.assertTrue(Event.objects.filter(id=1).count() == 0)
 
-        
+
         # check delete of related objects (descriptors, thematic_area, keywords)
         object_ct = ContentType.objects.get_for_model(Event)
 
@@ -221,16 +221,16 @@ class EventTest(BaseTestCase):
         self.client.logout()
         self.login_admin()
 
-        form_data = { 
+        form_data = {
             'status': '0',
             'acronym': 'course',
             'name': 'Curso',
             'language' : 'pt-br',
-            'eventtypelocal_set-TOTAL_FORMS': '0', 
+            'eventtypelocal_set-TOTAL_FORMS': '0',
             'eventtypelocal_set-INITIAL_FORMS': '0',
         }
 
         response = self.client.post('/event-type/new', form_data, follow=True )
-       
+
         self.assertRedirects(response, '/event-types')
         self.assertContains(response, "Curso")
