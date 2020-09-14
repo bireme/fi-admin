@@ -83,7 +83,7 @@ prod_up:
 prod_logs:
 	@docker-compose --compatibility logs -f
 
-prot_stop:
+prod_stop:
 	@docker-compose --compatibility stop
 
 prod_ps:
