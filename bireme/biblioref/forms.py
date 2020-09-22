@@ -390,7 +390,7 @@ class BiblioRefForm(BetterModelForm):
                         if value.strip().endswith('.'):
                             message = _("Point at end of field is not allowed")
                             subfield = _(" at subfield %s ") % key[1:]
-                            message = string_concat(message_item, message, subfield)
+                            message = format_lazy('{}{}{}', message_item, message, subfield)
                             self.add_error(field, message)
 
         return data
