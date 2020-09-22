@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.db.models.functions import Substr
 
-from django.shortcuts import render
+from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
 from utils.context_processors import additional_user_info
@@ -322,6 +322,7 @@ class BiblioRefUpdate(LoginRequiredView):
                 return HttpResponseRedirect(self.get_success_url())
         else:
             # if not valid for publication return status to original (previous) value
+            form.data._mutable = True
             if self.object:
                 previous_status = self.object.previous_value('status')
                 self.object.status = previous_status
@@ -329,8 +330,8 @@ class BiblioRefUpdate(LoginRequiredView):
             else:
                 form.data['status'] = '-1'
 
-            return self.render(request, self.template_name,
-                           self.get_context_data(form=form,
+            return self.render_to_response(
+                                        self.get_context_data(form=form,
                                                  formset_descriptor=formset_descriptor,
                                                  formset_attachment=formset_attachment,
                                                  formset_library=formset_library,
