@@ -13,6 +13,7 @@ services:
     volumes:
       - ${LOG_PATH}:/logs
       - ${UPLOAD_PATH}:/app/uploads
+      - ./bireme/fixtures/import/:/app/fixtures/import
       - static_files:/app/static_files
     env_file:
       - ./conf/app-env
