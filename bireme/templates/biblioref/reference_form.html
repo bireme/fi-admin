@@ -57,13 +57,13 @@
                                 {{ field.errors }}
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
+                                    {% if field.name == 'status' %}
                                         <p>{{ media.get_status_display }}</p>
-                                    {% elif field.name = 'link' %}
+                                    {% elif field.name == 'link' %}
                                         {% for link in field.value.splitlines %}
                                             <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
                                         {% endfor %}
-                                    {% elif field.name = 'source_type' %}
+                                    {% elif field.name == 'source_type' %}
                                         {% for st in media.source_type.all %}
                                             <p>{{ st }}</p>
                                         {% endfor %}
@@ -329,9 +329,9 @@
 
 {% block extrajs %}
 
-   <script src="{% static 'js/jquery.formset.js' %}"></script>
-
+   <script src="{% static 'js/jquery.formset.min.js' %}"></script>
    <script src="{% static 'js/jsrender.min.js' %}"></script>
+   <script src="{% static 'js/field_assist.js' %}"></script>
 
    <script id="itensTemplate" type="text/x-jsrender">
         <li>
@@ -471,18 +471,6 @@
                 assist_win.focus();
             }
         }
-
-        function field_assist(field_name){
-
-            field_assist_url = '/bibliographic/field_assist/' + field_name + '/',
-            field_value = $('#id_' + field_name).val();
-
-            post_params = {'field_value' : field_value };
-
-            open_window_with_post('POST', field_assist_url, post_params, 'field_assist');
-            return false;
-        }
-
 
         function update_field_from_assist(field_name, json_string) {
 
