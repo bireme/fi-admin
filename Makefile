@@ -86,6 +86,9 @@ prod_build:
 prod_up:
 	@docker-compose --compatibility up -d
 
+prod_run:
+	@docker-compose --compatibility up
+
 prod_logs:
 	@docker-compose --compatibility logs -f
 
