@@ -25,6 +25,7 @@ class CommunityResource(ModelResource):
             'country': 'exact',
         }
         include_resource_uri = False
+        max_limit = settings.MAX_EXPORT_API_LIMIT
 
     def build_filters(self, filters=None):
         orm_filters = super(CommunityResource, self).build_filters(filters)

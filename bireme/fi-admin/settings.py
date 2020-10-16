@@ -310,6 +310,9 @@ INTERNAL_IPS = ('127.0.0.1',)
 # Enable/disable MySQL fulltext search
 FULLTEXT_SEARCH=False
 
+# Control max of records to be return by APIs for request
+MAX_EXPORT_API_LIMIT = 100
+
 try:
     from settings_local import *
 except ImportError:

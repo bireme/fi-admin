@@ -41,6 +41,7 @@ class OERResource(ModelResource):
             'CVSP_resource': 'exact'
         }
         include_resource_uri = False
+        max_limit = settings.MAX_EXPORT_API_LIMIT
 
     def build_filters(self, filters=None):
         orm_filters = super(OERResource, self).build_filters(filters)

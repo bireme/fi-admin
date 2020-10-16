@@ -42,6 +42,7 @@ class ReferenceResource(CustomResource):
             'id': ALL
         }
         include_resource_uri = True
+        max_limit = settings.MAX_EXPORT_API_LIMIT
 
 
     def build_filters(self, filters=None):
