@@ -121,11 +121,12 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # custom middleware for log user actions
-    'log.middleware.WhodidMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    # middlewares for log user actions
+    'crum.CurrentRequestUserMiddleware',
+    'log.middleware.WhodidMiddleware',
 ]
 
 
