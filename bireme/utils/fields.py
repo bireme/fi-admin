@@ -72,6 +72,9 @@ class MultipleAuxiliaryChoiceField(models.Field):
 
         return value
 
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
+
     def get_db_prep_value(self, value, connection, prepared=False):
         """Convert JSON object to a string"""
         if self.null and value is None:
