@@ -521,11 +521,11 @@ def get_aux_country_list():
 
 
 class CallNumberAttributes(colander.MappingSchema):
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Center code'), missing=str(''))
-    _a = colander.SchemaNode(colander.String('utf-8'), title=_('Classification number'), missing=str(''))
-    _b = colander.SchemaNode(colander.String('utf-8'), title=_('Author number'), missing=str(''),)
-    _c = colander.SchemaNode(colander.String('utf-8'), title=_('Volumen, inventory number, part'), missing=str(''),)
-    _t = colander.SchemaNode(colander.String('utf-8'), title=_('Lending system'), missing=str(''),)
+    text = colander.SchemaNode(colander.String(), title=_('Center code'), missing=str(''))
+    _a = colander.SchemaNode(colander.String(), title=_('Classification number'), missing=str(''))
+    _b = colander.SchemaNode(colander.String(), title=_('Author number'), missing=str(''),)
+    _c = colander.SchemaNode(colander.String(), title=_('Volumen, inventory number, part'), missing=str(''),)
+    _t = colander.SchemaNode(colander.String(), title=_('Lending system'), missing=str(''),)
 
 
 class CallNumber(colander.SequenceSchema):
@@ -534,32 +534,32 @@ class CallNumber(colander.SequenceSchema):
 
 class ElectronicAddressAttributes(colander.MappingSchema):
     file_type_choices = [('', '')]
-    file_type_choices.extend([(aux.code.encode('utf-8'), aux) for aux in
+    file_type_choices.extend([(aux.code, aux) for aux in
                              AuxCode.objects.filter(field='electronic_address_y')])
 
     file_extension_choices = [('', '')]
     file_extension_choices.extend([(aux.code, aux) for aux in
                                   AuxCode.objects.filter(field='electronic_address_q')])
 
-    _u = colander.SchemaNode(colander.String('utf-8'), title=_('Electronic address'))
+    _u = colander.SchemaNode(colander.String(), title=_('Electronic address'))
     _g = colander.SchemaNode(colander.Boolean(),
                              widget=deform.widget.CheckboxWidget(),
                              label=_('Fulltext'), missing=str(''), title='')
-    _i = colander.SchemaNode(colander.String('utf-8'),
+    _i = colander.SchemaNode(colander.String(),
                              widget=deform.widget.SelectWidget(values=language_choices),
                              title=_('Language'))
-    _y = colander.SchemaNode(colander.String('utf-8'),
+    _y = colander.SchemaNode(colander.String(),
                              widget=deform.widget.SelectWidget(values=file_type_choices),
                              title=_('File type'))
-    _q = colander.SchemaNode(colander.String('utf-8'),
+    _q = colander.SchemaNode(colander.String(),
                              widget=deform.widget.SelectWidget(values=file_extension_choices),
                              title=_('File extension'))
 
-    _k = colander.SchemaNode(colander.String('utf-8'), title=_('Password'), missing=str(''),)
-    _l = colander.SchemaNode(colander.String('utf-8'), title=_('Logon'), missing=str(''),)
-    _s = colander.SchemaNode(colander.String('utf-8'), title=_('File length'), missing=str(''),)
-    _x = colander.SchemaNode(colander.String('utf-8'), title=_('No public note'), missing=str(''),)
-    _z = colander.SchemaNode(colander.String('utf-8'), title=_('Public note'), missing=str(''),)
+    _k = colander.SchemaNode(colander.String(), title=_('Password'), missing=str(''),)
+    _l = colander.SchemaNode(colander.String(), title=_('Logon'), missing=str(''),)
+    _s = colander.SchemaNode(colander.String(), title=_('File length'), missing=str(''),)
+    _x = colander.SchemaNode(colander.String(), title=_('No public note'), missing=str(''),)
+    _z = colander.SchemaNode(colander.String(), title=_('Public note'), missing=str(''),)
 
 
 class ElectronicAddress(colander.SequenceSchema):
@@ -567,8 +567,8 @@ class ElectronicAddress(colander.SequenceSchema):
 
 
 class TitleAttributes(colander.MappingSchema):
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Title'))
-    _i = colander.SchemaNode(colander.String('utf-8'),
+    text = colander.SchemaNode(colander.String(), title=_('Title'))
+    _i = colander.SchemaNode(colander.String(),
                              widget=deform.widget.SelectWidget(values=language_choices),
                              title=_('Language'))
 
@@ -607,22 +607,22 @@ class IndividualAuthorAttributes(colander.MappingSchema):
 
     countries_choices = get_aux_country_list()
 
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Personal author'), validator=validate_author,
+    text = colander.SchemaNode(colander.String(), title=_('Personal author'), validator=validate_author,
                                description=_('Format: Lastname, Name'))
-    _1 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 1'), missing=str(''),)
-    _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=str(''),)
-    _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=str(''),)
-    _c = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation city'), missing=str(''),)
-    _p = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation country'),
+    _1 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 1'), missing=str(''),)
+    _2 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 2'), missing=str(''),)
+    _3 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 3'), missing=str(''),)
+    _c = colander.SchemaNode(colander.String(), title=_('Affiliation city'), missing=str(''),)
+    _p = colander.SchemaNode(colander.String(), title=_('Affiliation country'),
                              widget=deform.widget.SelectWidget(values=countries_choices), missing=str(''),)
-    _r = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation degree of responsibility'),
+    _r = colander.SchemaNode(colander.String(), title=_('Affiliation degree of responsibility'),
                              widget=deform.widget.SelectWidget(values=degree_choices),
                              missing=str(''),)
 
-    _k = colander.SchemaNode(colander.String('utf-8'), title=_('ORCID'), validator=validate_not_url, missing=str(''),
+    _k = colander.SchemaNode(colander.String(), title=_('ORCID'), validator=validate_not_url, missing=str(''),
                                description=_('Format: 0000-0000-0000-0000'))
 
-    _w = colander.SchemaNode(colander.String('utf-8'), title=_('Web of Science ResearcherID'), validator=validate_not_url,
+    _w = colander.SchemaNode(colander.String(), title=_('Web of Science ResearcherID'), validator=validate_not_url,
                                missing=str(''), description=_('Format: D-0000-0000'))
 
 
@@ -643,8 +643,8 @@ class CorporateAuthorAttributes(colander.MappingSchema):
     degree_choices.extend([(aux.code, aux) for aux in
                           AuxCode.objects.filter(field='degree_of_responsibility')])
 
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Corporate author'))
-    _r = colander.SchemaNode(colander.String('utf-8'),
+    text = colander.SchemaNode(colander.String(), title=_('Corporate author'))
+    _r = colander.SchemaNode(colander.String(),
                              title=_('Degree of responsibility'),
                              widget=deform.widget.SelectWidget(values=degree_choices),
                              missing=str(''),)
@@ -663,10 +663,10 @@ class CorporateAuthorCollection(colander.SequenceSchema):
 
 
 class DescriptiveInformationAttributes(colander.MappingSchema):
-    _b = colander.SchemaNode(colander.String('utf-8'), title=_('Other physical details'), missing=str(''),)
-    _a = colander.SchemaNode(colander.String('utf-8'), title=_('Item extension'), missing=str(''),)
-    _c = colander.SchemaNode(colander.String('utf-8'), title=_('Dimension'), missing=str(''),)
-    _e = colander.SchemaNode(colander.String('utf-8'), title=_('Accompanying material'), missing=str(''),)
+    _b = colander.SchemaNode(colander.String(), title=_('Other physical details'), missing=str(''),)
+    _a = colander.SchemaNode(colander.String(), title=_('Item extension'), missing=str(''),)
+    _c = colander.SchemaNode(colander.String(), title=_('Dimension'), missing=str(''),)
+    _e = colander.SchemaNode(colander.String(), title=_('Accompanying material'), missing=str(''),)
 
 
 class DescriptiveInformation(colander.SequenceSchema):
@@ -676,12 +676,12 @@ class DescriptiveInformation(colander.SequenceSchema):
 class ThesisDissertationLeaderAttributes(colander.MappingSchema):
     countries_choices = get_aux_country_list()
 
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Leader'))
-    _1 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 1'), missing=str(''),)
-    _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=str(''),)
-    _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=str(''),)
-    _c = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation city'), missing=str(''),)
-    _p = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation country'),
+    text = colander.SchemaNode(colander.String(), title=_('Leader'))
+    _1 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 1'), missing=str(''),)
+    _2 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 2'), missing=str(''),)
+    _3 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 3'), missing=str(''),)
+    _c = colander.SchemaNode(colander.String(), title=_('Affiliation city'), missing=str(''),)
+    _p = colander.SchemaNode(colander.String(), title=_('Affiliation country'),
                              widget=deform.widget.SelectWidget(values=countries_choices), missing=str(''),)
 
 
@@ -693,9 +693,9 @@ class ThesisDissertationAnalyticLeader(colander.SequenceSchema):
 
 
 class AbstractAttributes(colander.MappingSchema):
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Abstract'),
+    text = colander.SchemaNode(colander.String(), title=_('Abstract'),
                                widget=deform.widget.TextAreaWidget(rows=15, cols=120))
-    _i = colander.SchemaNode(colander.String('utf-8'), widget=deform.widget.SelectWidget(values=language_choices),
+    _i = colander.SchemaNode(colander.String(), widget=deform.widget.SelectWidget(values=language_choices),
                              title=_('Language'))
 
 
@@ -704,9 +704,9 @@ class Abstract(colander.SequenceSchema):
 
 
 class AuthorKeywordAttributes(colander.MappingSchema):
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Keyword'))
-    _s = colander.SchemaNode(colander.String('utf-8'), title=_('Qualifier'), missing=str(''),)
-    _i = colander.SchemaNode(colander.String('utf-8'), widget=deform.widget.SelectWidget(values=language_choices),
+    text = colander.SchemaNode(colander.String(), title=_('Keyword'))
+    _s = colander.SchemaNode(colander.String(), title=_('Qualifier'), missing=str(''),)
+    _i = colander.SchemaNode(colander.String(), widget=deform.widget.SelectWidget(values=language_choices),
                              title=_('Language'))
 
 
@@ -715,10 +715,10 @@ class AuthorKeyword(colander.SequenceSchema):
 
 
 class PagesAttributes(colander.MappingSchema):
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Pages'), missing=str(''),)
-    _f = colander.SchemaNode(colander.String('utf-8'), title=_('Initial number'), missing=str(''),)
-    _l = colander.SchemaNode(colander.String('utf-8'), title=_('End number'), missing=str(''),)
-    _e = colander.SchemaNode(colander.String('utf-8'), title=_('Electronic location identifier'), missing=str(''),)
+    text = colander.SchemaNode(colander.String(), title=_('Pages'), missing=str(''),)
+    _f = colander.SchemaNode(colander.String(), title=_('Initial number'), missing=str(''),)
+    _l = colander.SchemaNode(colander.String(), title=_('End number'), missing=str(''),)
+    _e = colander.SchemaNode(colander.String(), title=_('Electronic location identifier'), missing=str(''),)
 
 
 class Pages(colander.SequenceSchema):
@@ -729,10 +729,10 @@ class ClinicalTrialRegistryNameAttributes(colander.MappingSchema):
     db_choices = [(aux.code, aux) for aux in
                   AuxCode.objects.filter(field='clinical_trial_database')]
 
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Database'),
+    text = colander.SchemaNode(colander.String(), title=_('Database'),
                                widget=deform.widget.SelectWidget(values=db_choices))
-    _a = colander.SchemaNode(colander.String('utf-8'), title=_('Record number'))
-    _u = colander.SchemaNode(colander.String('utf-8'), title=_('URL'), missing=str(''),)
+    _a = colander.SchemaNode(colander.String(), title=_('Record number'))
+    _u = colander.SchemaNode(colander.String(), title=_('URL'), missing=str(''),)
 
 class ClinicalTrialRegistryName(colander.SequenceSchema):
     item = ClinicalTrialRegistryNameAttributes(title=_('Clinical Trial'))
