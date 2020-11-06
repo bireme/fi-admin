@@ -19,7 +19,11 @@ class JSONField(jsonfield.JSONField):
         defaults = {'widget': forms.HiddenInput(attrs={'class': "jsonfield"})}
         defaults.update(kwargs)
 
-        return super(JSONField, self).formfield(**defaults)
+        field = super(JSONField, self).formfield(**defaults)
+        field.dump_kwargs['indent'] = None                  # disable indentation and newlines at JSON
+
+        return field
+
 
     def dumps_for_display(self, value):
         """ Overwrite to avoid problem when saving/retrieving JSON field at parent level of model """
