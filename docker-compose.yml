@@ -12,6 +12,8 @@ services:
       - 8000
     volumes:
       - ${LOG_PATH}:/logs
+      - ${UPLOAD_PATH}:/app/uploads
+      - ./bireme/fixtures/import/:/app/fixtures/import
       - static_files:/app/static_files
     env_file:
       - ./conf/app-env
@@ -25,8 +27,8 @@ services:
         reservations:
           memory: ${MEMORY_APP_RESERVATION}
 
-  webserver:
-    container_name: fi-admin-webserver
+  www-static:
+    container_name: fi-admin-www-static
     restart: unless-stopped
     image: nginx:1.18-alpine
     expose:
@@ -39,6 +41,29 @@ services:
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
       - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+    networks:
+      - nginx-proxy
+    deploy:
+      resources:
+        limits:
+          memory: ${MEMORY_WEBSERVER_LIMIT}
+        reservations:
+          memory: ${MEMORY_WEBSERVER_RESERVATION}
+
+  www-docs:
+    container_name: fi-admin-www-docs
+    restart: unless-stopped
+    image: nginx:1.18-alpine
+    expose:
+      - 80
+    volumes:
+      - ./conf/nginx/docs:/etc/nginx/conf.d
+      - ${UPLOAD_PATH}:/app/uploads
+    depends_on:
+      - fi_admin
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST_DOCS}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST_DOCS}
     networks:
       - nginx-proxy
     deploy:

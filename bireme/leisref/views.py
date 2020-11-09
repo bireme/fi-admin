@@ -380,9 +380,8 @@ def context_lists(request, region_id):
     collection_list = dict({'collection_list': collection_list})
 
     # join all lists
-    context_lists = dict(type_list.items() + scope_list.items() + source_list.items() +
-                         organ_issuer_list.items() + relation_list.items() + state_list.items() +
-                         city_list.items() + collection_list.items() )
+    context_lists = {**type_list, **scope_list, **source_list, **organ_issuer_list,
+                    **relation_list, **state_list, **city_list, **collection_list}
 
     data = simplejson.dumps(context_lists)
 

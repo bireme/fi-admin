@@ -11,7 +11,7 @@ defusedxml==0.6.0
 cssselect==1.1.0
 simplejson==3.17.0
 recaptcha-client==1.0.6
-deform==2.0.10
+deform==2.0.14
 jsonfield==3.1.0
 django-form-utils==1.0.3
 short-url==1.2.2
@@ -19,3 +19,4 @@ django-tinymce==3.0.2
 colander==1.7.0
 django-multiselectfield==0.1.12
 python-memcached==1.59
+django-crum==0.7.8

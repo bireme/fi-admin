@@ -39,6 +39,9 @@ dev_exec_shell:
 dev_make_test:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin make test
 
+dev_import:
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py loaddata $(import_file)
+
 
 ## docker-compose API
 api_build:
@@ -47,6 +50,9 @@ api_build:
 
 api_up:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility up -d
+
+api_run:
+	@docker-compose -f $(COMPOSE_FILE_API) --compatibility up
 
 api_logs:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility logs -f
@@ -80,10 +86,13 @@ prod_build:
 prod_up:
 	@docker-compose --compatibility up -d
 
+prod_run:
+	@docker-compose --compatibility up
+
 prod_logs:
 	@docker-compose --compatibility logs -f
 
-prot_stop:
+prod_stop:
 	@docker-compose --compatibility stop
 
 prod_ps:
@@ -97,6 +106,9 @@ prod_exec_shell:
 
 prod_exec_collectstatic:
 	@docker-compose --compatibility exec -T fi_admin python manage.py collectstatic --noinput
+
+prod_import:
+	@docker-compose --compatibility exec -T fi_admin python manage.py loaddata $(import_file)
 
 prod_exec_webserver:
 	@docker-compose --compatibility exec webserver sh

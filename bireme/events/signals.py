@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-from models import Event
+from events.models import Event
 
 # Add entry to default django log table (logentry) the create/update of a event via FI-Admin interface
 @receiver(post_save, sender=Event)

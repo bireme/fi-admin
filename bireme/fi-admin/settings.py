@@ -38,7 +38,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -121,11 +121,12 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # custom middleware for log user actions
-    'log.middleware.WhodidMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    # middlewares for log user actions
+    'crum.CurrentRequestUserMiddleware',
+    'log.middleware.WhodidMiddleware',
 ]
 
 
@@ -282,6 +283,7 @@ DEFAULT_COOPERATIVE_CENTER = 'BR1.1'
 BIREMELOGIN_SERVICE = ''
 
 EXPOSE_API_ONLY = int(os.environ.get("EXPOSE_API_ONLY"), 0)
+MAX_EXPORT_API_LIMIT = os.environ.get("MAX_EXPORT_API_LIMIT", 100)
 
 HAYSTACK_SIGNAL_PROCESSOR = os.environ.get("HAYSTACK_SIGNAL_PROCESSOR")
 

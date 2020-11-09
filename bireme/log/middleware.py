@@ -7,14 +7,14 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.utils.deprecation import MiddlewareMixin
+from crum import get_current_request, get_current_user
 from log.models import AuditLog
 from itertools import chain
 
 import threading
 import json
 
-# create a thread local variable to save user
-_user = threading.local()
+# create a thread local variable to save m2mfields
 _m2mfield = threading.local()
 
 
@@ -24,11 +24,6 @@ class WhodidMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         if not request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
-            if hasattr(request, 'user') and request.user.is_authenticated:
-                _user.value = request.user
-            else:
-                _user.value = None
-
             signals.pre_save.connect(self.mark_whodid,  dispatch_uid=(self.__class__, request,), weak=False)
             signals.m2m_changed.connect(self.tracking_m2m, dispatch_uid=(self.__class__, request,), weak=False)
             signals.pre_delete.connect(self.mark_whodel,  dispatch_uid=(self.__class__, request,), weak=False)
@@ -53,7 +48,7 @@ class WhodidMiddleware(MiddlewareMixin):
 
 
     def mark_whodel(self, sender, instance, **kwargs):
-        user = self.get_current_user()
+        user = get_current_user()
         # mark instance as deleted and call mark_whodid function
         instance.was_deleted = True
         self.mark_whodid(sender, instance, **kwargs)
@@ -74,17 +69,17 @@ class WhodidMiddleware(MiddlewareMixin):
             # compare list of pre-value with current values
             new_ref = getattr(instance, field_name)
             new_values = [str(i) for i in new_ref.all()]
-            previous_values = getattr(_m2mfield, field_name)
+            previous_values = getattr(_m2mfield, field_name, None)
 
             if new_values != previous_values:
-                user = self.get_current_user()
+                user = get_current_user()
                 log_object_ct_id = ContentType.objects.get_for_model(instance).pk
                 log_object_id = instance.pk
                 log_repr = str(instance)
 
                 field_change = [{'field_name': field_name, 'previous_value': previous_values,
                                 'new_value': new_values}]
-                field_change_json = json.dumps(field_change, encoding="utf-8", ensure_ascii=False)
+                field_change_json = json.dumps(field_change, ensure_ascii=False)
 
                 LogEntry.objects.log_action(user_id=user.id,
                                             content_type_id=log_object_ct_id,
@@ -94,7 +89,7 @@ class WhodidMiddleware(MiddlewareMixin):
                                             action_flag=CHANGE)
 
     def mark_whodid(self, sender, instance, **kwargs):
-        user = self.get_current_user()
+        user = get_current_user()
         instance_field_names = self.get_all_field_names(instance)
         if 'created_by' in instance_field_names and not instance.created_by:
             instance.created_by = user
@@ -155,7 +150,7 @@ class WhodidMiddleware(MiddlewareMixin):
         '''
         Update log record after save instance to add missing object_id
         '''
-        user = self.get_current_user()
+        user = get_current_user()
         if isinstance(instance, AuditLog) and created:
             # filter by log without object_id from the current user and action_flag = ADDITION
             log = LogEntry.objects.filter(object_id='None', object_repr=str(instance), action_flag=1,
@@ -229,9 +224,3 @@ class WhodidMiddleware(MiddlewareMixin):
             field_change_json = json.dumps(field_change, ensure_ascii=False)
 
         return field_change_json
-
-    def get_current_user(self):
-        if hasattr(_user, 'value'):
-            return _user.value
-        else:
-            return None

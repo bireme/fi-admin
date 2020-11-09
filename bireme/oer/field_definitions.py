@@ -37,15 +37,15 @@ class AuthorAttributes(colander.MappingSchema):
 
     countries_choices = get_aux_country_list()
 
-    text = colander.SchemaNode(colander.String('utf-8'), title=_('Name'),
+    text = colander.SchemaNode(colander.String(), title=_('Name'),
                                description=_('Inform individual or institutional name'))
-    _1 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 1'), missing=str(''),)
-    _2 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 2'), missing=str(''),)
-    _3 = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation institution level 3'), missing=str(''),)
-    _c = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation city'), missing=str(''),)
-    _p = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation country'),
+    _1 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 1'), missing=str(''),)
+    _2 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 2'), missing=str(''),)
+    _3 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 3'), missing=str(''),)
+    _c = colander.SchemaNode(colander.String(), title=_('Affiliation city'), missing=str(''),)
+    _p = colander.SchemaNode(colander.String(), title=_('Affiliation country'),
                              widget=deform.widget.SelectWidget(values=countries_choices), missing=str(''),)
-    _r = colander.SchemaNode(colander.String('utf-8'), title=_('Affiliation degree of responsibility'),
+    _r = colander.SchemaNode(colander.String(), title=_('Affiliation degree of responsibility'),
                              widget=deform.widget.SelectWidget(values=degree_choices),
                              missing=str(''),)
 

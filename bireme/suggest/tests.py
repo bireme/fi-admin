@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from utils.tests import BaseTestCase
 from main.models import Resource, Keyword
-from models import *
+from suggest.models import *
 
 
 def create_test_objects():
@@ -16,7 +16,7 @@ def create_test_objects():
     # Create resource suggestion
     SuggestResource.objects.create(status=0, title='Sugestão de recurso',
                             link='http://bvsalud.org')
-    
+
     # Create event suggestion
     SuggestEvent.objects.create(status=0, title='Sugestão de evento',
                             start_date='2014-01-01', end_date='2014-01-05',
@@ -45,7 +45,7 @@ class SuggestTest(BaseTestCase):
 
 
     # Turn off ReCaptcha validation for tests
-    @override_settings(RECAPTCHA_PRIVATE_KEY='')   
+    @override_settings(RECAPTCHA_PRIVATE_KEY='')
     def test_add_resource_suggest(self):
         """
         Test suggest_resource view
@@ -67,7 +67,7 @@ class SuggestTest(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response,'Obrigado')
 
-      
+
     def test_edit_resource_suggest(self):
         """
         Test edit_suggested_resource view
@@ -108,7 +108,7 @@ class SuggestTest(BaseTestCase):
 
 
     # Turn off ReCaptcha validation for tests
-    @override_settings(RECAPTCHA_PRIVATE_KEY='')   
+    @override_settings(RECAPTCHA_PRIVATE_KEY='')
     def test_add_event_suggest(self):
         """
         Test suggest_event view
@@ -121,12 +121,12 @@ class SuggestTest(BaseTestCase):
         # test a submition of invalid date
         response = self.client.post('/suggest-event', {'title': 'Sugestão de evento',
                                 'start_date': 'XXXX', 'end_date': 'XXXX'})
-        
+
         self.assertContains(response,'Informe uma data válida')
 
         # test a valid suggestion submition
         response = self.client.post('/suggest-event', {'title': 'Sugestão de evento',
-                            'link': 'http://bvsalud.org','start_date': '21/01/2014', 
+                            'link': 'http://bvsalud.org','start_date': '21/01/2014',
                             'end_date': '27/01/2014'})
 
         self.assertEqual(response.status_code, 200)
@@ -152,7 +152,7 @@ class SuggestTest(BaseTestCase):
                         'status': 0,
                         'title': 'Sugestão de evento alterado',
                         'link': 'http://bvsalud.org',
-                        'start_date': '21/01/2014', 
+                        'start_date': '21/01/2014',
                         'end_date': '27/01/2014',
                     }
 
@@ -168,7 +168,7 @@ class SuggestTest(BaseTestCase):
         Test edit_suggested_event view
         """
         self.login_editor()
-        resource = Resource.objects.create(status=0, title='Recurso de teste (BR1.1)', 
+        resource = Resource.objects.create(status=0, title='Recurso de teste (BR1.1)',
                             link='http://bvsalud.org', originator='BIREME',
                             created_by_id=1, cooperative_center_code='BR1.1')
 
@@ -181,5 +181,3 @@ class SuggestTest(BaseTestCase):
         response = self.client.post('/suggest-tag', form_data, follow=True)
         # check if present at keyword model 3 tags (tag1, tag2 and tag3)
         self.assertEqual(Keyword.objects.all().count(), 3)
-        
-
