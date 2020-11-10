@@ -541,3 +541,13 @@ class ActURL(Generic):
     act = models.ForeignKey(Act, null=True, on_delete=models.PROTECT)
     url = models.URLField(_("URL"), max_length=300)
     language = models.CharField(_("Language"), max_length=10, blank=True, choices=LANGUAGES_CHOICES)
+
+# Act Alternative ID
+class ActAlternateID(models.Model):
+
+    class Meta:
+        verbose_name = _("Act Alternate ID")
+        verbose_name_plural = _("Act Alternate ID's")
+
+    act = models.ForeignKey(Act, verbose_name=_("Act"), blank=False, on_delete=models.PROTECT)
+    alternate_id = models.CharField(_('Alternate id'), max_length=55, blank=False)
