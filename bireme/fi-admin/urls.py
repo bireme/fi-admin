@@ -34,9 +34,6 @@ else:
         # Issues
         # (r'^issues/', include('issues.urls')),
 
-        # Reports
-        re_path(r'^reports/', include('reports.urls')),
-
         # Institution
         re_path(r'^institution/', include('institution.urls')),
 
