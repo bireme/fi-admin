@@ -126,6 +126,8 @@ class ActCountryRegionAdmin(GenericAdmin):
     model = ActCountryRegion
     inlines = [ActCountryRegionLocalAdmin, ]
 
+class ActAlternateIDAdmin(admin.ModelAdmin):
+    raw_id_fields = ("act",)
 
 admin.site.register(Act, ActAdmin)
 admin.site.register(ActType, ActTypeAdmin)
@@ -137,3 +139,4 @@ admin.site.register(ActCollection, ActCollectionAdmin)
 admin.site.register(ActRelationship)
 admin.site.register(ActSource, ActSourceAdmin)
 admin.site.register(Database, DatabaseAdmin)
+admin.site.register(ActAlternateID, ActAlternateIDAdmin)
