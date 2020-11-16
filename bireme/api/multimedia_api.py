@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
+from tastypie.constants import ALL
 from tastypie import fields
 
 from multimedia.models import Media
@@ -24,6 +25,7 @@ class MediaResource(ModelResource):
         resource_name = 'multimedia'
         filtering = {
             'thematic_area_id': 'exact',
+            'collection': ALL,
         }
         include_resource_uri = False
         max_limit = settings.MAX_EXPORT_API_LIMIT
@@ -33,6 +35,12 @@ class MediaResource(ModelResource):
 
         if 'thematic_area_id' in filters:
             orm_filters['thematics__thematic_area__exact'] = filters['thematic_area_id']
+
+        if 'collection' in filters:
+            filter_col_id = filters['collection']
+            orm_filters['collection__collection_id'] = filter_col_id
+
+
         return orm_filters
 
     def prepend_urls(self):
@@ -84,5 +92,24 @@ class MediaResource(ModelResource):
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['authors'] = [line.strip() for line in bundle.obj.authors.split('\n') if line.strip()]
         bundle.data['contributors'] = [line.strip() for line in bundle.obj.contributors.split('\n') if line.strip()]
+
+        # check if object has classification (relationship model)
+        if bundle.obj.collection.exists():
+            community_list = []
+            collection_list = []
+
+            collection_all = bundle.obj.collection.all()
+            for rel in collection_all:
+                collection_labels = "|".join(rel.collection.get_translations())
+                collection_item = u"{}|{}".format(rel.collection.id, collection_labels)
+                collection_list.append(collection_item)
+                if rel.collection.parent:
+                    community_labels = "|".join(rel.collection.parent.get_translations())
+                    community_item = u"{}|{}".format(rel.collection.parent.id, community_labels)
+                    community_list.append(community_item)
+
+            bundle.data['community'] = community_list
+            bundle.data['collection'] = collection_list
+
 
         return bundle
