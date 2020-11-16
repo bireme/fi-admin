@@ -1,5 +1,6 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
+from django.contrib.contenttypes.generic import GenericRelation
 from django.db import models
 from django.utils import timezone
 from django.core.cache import cache
@@ -11,6 +12,7 @@ from django.contrib.contenttypes.generic import GenericRelation
 from log.models import AuditLog
 
 from main.models import SourceLanguage, ResourceThematic
+from classification.models import Relationship
 
 # Media Type model
 class MediaType(Generic):
@@ -128,6 +130,9 @@ class Media(Generic, AuditLog):
 
     # relations
     thematics = GenericRelation(ResourceThematic)
+
+    # classification
+    collection = GenericRelation(Relationship)
 
     def __unicode__(self):
         return self.title

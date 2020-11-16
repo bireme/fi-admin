@@ -145,6 +145,9 @@
                         </div>
                         <div class="btn-group pull-right">
                             <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{media.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                            {% if service_role.TAG %}
+                                <a href="#" onclick="javascript:open_classification('{{c_type.id}}', '{{object.id}}')" class="btn"><i class="icon icon-tags"></i> {% trans "Collection" %}</a>
+                            {% endif %}
                         </div>
                     {% endif %}
             </div>
@@ -407,6 +410,7 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/classification.js' %}"></script>
 
    <script type="text/javascript">
         var decs_field;
