@@ -11,6 +11,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from log.models import AuditLog
 
 from main.models import SourceLanguage, ResourceThematic
+from classification.models import Relationship
 
 # Media Type model
 class MediaType(Generic):
@@ -128,6 +129,9 @@ class Media(Generic, AuditLog):
 
     # relations
     thematics = GenericRelation(ResourceThematic)
+
+    # classification
+    collection = GenericRelation(Relationship)
 
     def __str__(self):
         return self.title
