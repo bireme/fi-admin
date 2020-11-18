@@ -177,7 +177,7 @@ class IdentifierDescForm(forms.ModelForm):
     # Utilizado para pre filtrar abbreviation com registros especificos do tesauro escolhido
     def __init__(self, *args, **kwargs):
         self.ths = kwargs.pop('ths', None)
-        # print self.ths
+        
         super(IdentifierDescForm, self).__init__(*args, **kwargs)
         self.fields['abbreviation'].queryset = IdentifierQualif.objects.filter(thesaurus=self.ths)
 

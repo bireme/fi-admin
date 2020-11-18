@@ -51,10 +51,10 @@ class IdentifierDesc(Generic, AuditLog):
 
     abbreviation = models.ManyToManyField(IdentifierQualif, verbose_name='Abbreviation', blank=True)
 
-    # def __unicode__(self):
+    # def __str__(self):
     #     return self.descriptor_ui
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -91,7 +91,7 @@ class DescriptionDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -115,7 +115,7 @@ class TreeNumbersListDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -140,7 +140,7 @@ class PharmacologicalActionList(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -165,7 +165,7 @@ class SeeRelatedListDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -189,7 +189,7 @@ class PreviousIndexingListDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -239,7 +239,7 @@ class legacyInformationDesc(models.Model):
     # z
     geog_decs = models.CharField(_("Geog DeCS"), max_length=1, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -264,7 +264,7 @@ class EntryCombinationListDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -298,7 +298,7 @@ class IdentifierConceptListDesc(models.Model):
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -323,7 +323,7 @@ class ConceptListDesc(models.Model):
     # def get_parent(self):
     #     return self.identifier_concept
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -382,7 +382,7 @@ class TermListDesc(models.Model):
     # def get_parent(self):
     #     return self.identifier_concept
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -398,5 +398,5 @@ class TheraurusOccurrenceListDesc(models.Model):
     # ThesaurusID
     thesaurus_occurrence = models.CharField(_("Name of a thesaurus where terms occur"), max_length=250, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)

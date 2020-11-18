@@ -696,6 +696,9 @@ tr.relation-row td input, tr.relation-row td select{
     padding: 2px;
 }
 
+.abbreviation select {
+    width: 885px;
+}
 
 .identifierqualif, th td {
     text-align: left;

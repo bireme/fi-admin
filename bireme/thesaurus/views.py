@@ -599,6 +599,8 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
 
                 form.save()
 
+
+
                 return HttpResponseRedirect(self.get_success_url())
 
             else:
@@ -794,9 +796,13 @@ class DescListView(LoginRequiredView, ListView):
         # AND performance for MESH Descriptor UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'descriptor_ui':
             id_register = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'].strip()).values('id')
-            id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
-            q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            if not id_register:
+                object_list = object_list.none()
+            else:
+                id_register = id_register[0].get('id')
+                id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
+                q_id_concept = Q(identifier_concept_id__in=id_concept)
+                object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -807,14 +813,18 @@ class DescListView(LoginRequiredView, ListView):
             object_list = object_list.filter(language_code=self.actions['filter_language'])
 
 
-
-        # DeCS Descriptor UI
+        # DeCS Descriptor UI - decs_code
         # AND performance for DeCS Descriptor UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'decs_code':
-            id_register = IdentifierDesc.objects.filter(decs_code=self.actions['s'].strip()).values('id')
-            id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
-            q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            id_register = IdentifierDesc.objects.filter(decs_code=self.actions['s'].strip(),thesaurus_id=self.actions['choiced_thesaurus']).values('id')
+            if not id_register:
+                object_list = object_list.none()
+            else:
+                id_register = id_register[0].get('id')
+                id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
+                id_concept = id_concept[0].get('id')
+                q_id_concept = Q(identifier_concept_id=id_concept)
+                object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -837,13 +847,24 @@ class DescListView(LoginRequiredView, ListView):
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
+
         # Concept UI
         # AND performance for Concept UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'concept_ui':
             concept_identifier_id = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
-            id_register = IdentifierDesc.objects.filter(id__in=concept_identifier_id,thesaurus_id=self.actions['choiced_thesaurus']).values('id')
-            concept_id = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,concept_ui=self.actions['s'].strip()).values('id')
-            object_list = TermListDesc.objects.filter(identifier_concept_id=concept_id).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            if not concept_identifier_id:
+                object_list = object_list.none()
+            else:
+                for i in concept_identifier_id:
+                    # concept_identifier_id pode vir com mesmo ConceptUI para outro tesauro, então quando encontra o primeiro sai do loop
+                    id_register = IdentifierDesc.objects.filter(id=i.get('identifier_id'),thesaurus_id=self.actions['choiced_thesaurus']).values('id')
+                    if id_register:
+                        id_register = id_register[0].get('id')
+                        break
+                concept_id = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,concept_ui=self.actions['s'].strip()).values('id')
+                concept_id = concept_id[0].get('id')
+                object_list = TermListDesc.objects.filter(identifier_concept_id=concept_id).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+
 
         # status
         if self.actions['filter_status']:
@@ -947,7 +968,7 @@ class ConceptTermUpdate(LoginRequiredView):
                     if len(historical_annotation_old) > 0:
                         historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + concept_ui_origem
-                        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+                        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
                     else:
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + concept_ui_origem
                         historical_annotation_new=historical_annotation_now.encode('utf-8')
@@ -977,7 +998,7 @@ class ConceptTermUpdate(LoginRequiredView):
                     if len(historical_annotation_old) > 0:
                         historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - sent to ' + concept_ui_destino
-                        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+                        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
                     else:
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - sent to ' + concept_ui_origem
                         historical_annotation_new=historical_annotation_now.encode('utf-8')
@@ -1260,6 +1281,7 @@ def ConceptListDescModification(request,term_id, ths, concept_ori):
         if len(check_concept_id_origem) > 1:
 
             # Descobre qual o id do primeiro registro nao preferido
+            check_concept_id_origem = check_concept_id_origem[0].get('identifier_id')
             check_concept_id_not_preferred = IdentifierConceptListDesc.objects.filter(identifier_id=check_concept_id_origem,preferred_concept='N').values('id')
             check_concept_id_not_preferred = check_concept_id_not_preferred[0].get('id')
 
@@ -1268,7 +1290,6 @@ def ConceptListDescModification(request,term_id, ths, concept_ori):
 
             # Necessário atualizar também os termos que são preferidos no conceito para também preferidos do registro
             TermListDesc.objects.filter(identifier_concept_id=check_concept_id_not_preferred, concept_preferred_term='Y').update(record_preferred_term='Y')
-
 
     # Atualiza o identifier_id do conceito antigo para novo numero identifier_id_destino
     # Atualiza o campo de histórico gravando informação de que registro foi originado
@@ -1282,7 +1303,7 @@ def ConceptListDescModification(request,term_id, ths, concept_ori):
     if len(has_hist)>0:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
     else:
         historical_annotation_new=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
 
@@ -1377,11 +1398,11 @@ def TermListDescModification(request,term_id, ths, term_ori):
 
     # Descobre qual é o identifier_concept_id do termo destino
     id_concept_destino = TermListDesc.objects.filter(id=term_id).values('identifier_concept_id')
+    id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
 
     # Descobre qual é o identifier_id do conceito
     identifier_id_destino = IdentifierConceptListDesc.objects.filter(id=id_concept_destino).values('identifier_id')
     identifier_id_destino = identifier_id_destino[0].get('identifier_id')
-    id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
 
     # Descobre qual é o identifier_concept_id do termo origem
     term_origem_values = TermListDesc.objects.filter(id=term_ori).values('identifier_concept_id','term_ui')
@@ -1411,7 +1432,7 @@ def TermListDescModification(request,term_id, ths, term_ori):
     concept_ui_destino = IdentifierConceptListDesc.objects.filter(id=id_concept_destino).values('concept_ui')
     concept_ui_destino = concept_ui_destino[0].get('concept_ui')
     historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
-    historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+    historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
 
     # Atualiza historico da origem
     TermListDesc.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -1427,7 +1448,7 @@ def TermListDescModification(request,term_id, ths, term_ori):
     if len(exist_term) > 0:
         term_id_exist=exist_term[0].get('id')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
 
 
         # Atualiza o historico do destino
@@ -1514,7 +1535,7 @@ def ConceptCreateDescDo(request, ths):
     if has_hist:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(descriptor_ui_ori)
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
 
     created_time=datetime.datetime.now().strftime('%Y-%m-%d')
     created_time = created_time.encode('utf-8')
@@ -2256,7 +2277,7 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
         # Username
         user_data = additional_user_info(self.request)
         for user_name in user_data:
-            username=user_data.get('user_name').encode('utf-8')
+            username=user_data.get('user_name')
             break
 
         v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^u' + username + '^t'
@@ -2645,7 +2666,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
             # Usado para criar novo conceito
             for concept in id_concept:
                 context['id_concept_new'] = concept
-
+                id_concept = concept.get('identifier_id')
 
             # IdentifierConceptListDesc - retrieves pk's that has even identifier_id - can bring more than 1
             ids = IdentifierConceptListDesc.objects.filter(
@@ -3604,14 +3625,18 @@ class QualifListView(LoginRequiredView, ListView):
         if self.actions['filter_language']:
             object_list = object_list.filter(language_code=self.actions['filter_language'])
 
-
         # Abbreviation
         # AND performance for Abbreviation --------------------------------------------------------------
         if self.actions['filter_fields'] == 'abbreviation':
-            id_register = IdentifierQualif.objects.filter(abbreviation=self.actions['s'].strip()).values('id')
-            id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
-            q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            id_register = IdentifierQualif.objects.filter(abbreviation=self.actions['s'].strip(),thesaurus_id=self.actions['choiced_thesaurus']).values('id')
+            if not id_register:
+                object_list = object_list.none()
+            else:
+                id_register = id_register[0].get('id')
+                id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
+                id_concept = id_concept[0].get('id')
+                q_id_concept = Q(identifier_concept_id=id_concept)
+                object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -3620,16 +3645,18 @@ class QualifListView(LoginRequiredView, ListView):
         # language
         if self.actions['filter_language']:
             object_list = object_list.filter(language_code=self.actions['filter_language'])
-
-
 
         # MESH Qualifier UI
         # AND performance for MESH Qualifier UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'qualifier_ui':
             id_register = IdentifierQualif.objects.filter(qualifier_ui=self.actions['s'].strip()).values('id')
-            id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
-            q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            if not id_register:
+                object_list = object_list.none()
+            else:
+                id_register = id_register[0].get('id')
+                id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
+                q_id_concept = Q(identifier_concept_id__in=id_concept)
+                object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -3639,15 +3666,18 @@ class QualifListView(LoginRequiredView, ListView):
         if self.actions['filter_language']:
             object_list = object_list.filter(language_code=self.actions['filter_language'])
 
-
-
-        # DeCS Qualifier UI
+        # DeCS Qualifier UI - decs_code
         # AND performance for DeCS Qualifier UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'decs_code':
-            id_register = IdentifierQualif.objects.filter(decs_code=self.actions['s'].strip()).values('id')
-            id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
-            q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            id_register = IdentifierQualif.objects.filter(decs_code=self.actions['s'].strip(),thesaurus_id=self.actions['choiced_thesaurus']).values('id')
+            if not id_register:
+                object_list = object_list.none()
+            else:
+                id_register = id_register[0].get('id')
+                id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
+                id_concept = id_concept[0].get('id')
+                q_id_concept = Q(identifier_concept_id=id_concept)
+                object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -3670,13 +3700,23 @@ class QualifListView(LoginRequiredView, ListView):
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
+
         # Concept UI
         # AND performance for Concept UI --------------------------------------------------------------
         if self.actions['filter_fields'] == 'concept_ui':
             concept_identifier_id = IdentifierConceptListQualif.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
-            id_register = IdentifierQualif.objects.filter(id__in=concept_identifier_id,thesaurus_id=self.actions['choiced_thesaurus']).values('id')
-            concept_id = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,concept_ui=self.actions['s'].strip()).values('id')
-            object_list = TermListQualif.objects.filter(identifier_concept_id=concept_id).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            if not concept_identifier_id:
+                object_list = object_list.none()
+            else:
+                for i in concept_identifier_id:
+                    # concept_identifier_id pode vir com mesmo ConceptUI para outro tesauro, então quando encontra o primeiro sai do loop
+                    id_register = IdentifierQualif.objects.filter(id=i.get('identifier_id'),thesaurus_id=self.actions['choiced_thesaurus']).values('id')
+                    if id_register:
+                        id_register = id_register[0].get('id')
+                        break
+                concept_id = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,concept_ui=self.actions['s'].strip()).values('id')
+                concept_id = concept_id[0].get('id')
+                object_list = TermListQualif.objects.filter(identifier_concept_id=concept_id).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
 
         # status
@@ -3781,7 +3821,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
                     if len(historical_annotation_old) > 0:
                         historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + concept_ui_origem
-                        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+                        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
                     else:
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + concept_ui_origem
                         historical_annotation_new=historical_annotation_now.encode('utf-8')
@@ -3811,7 +3851,7 @@ class QualifConceptTermUpdate(LoginRequiredView):
                     if len(historical_annotation_old) > 0:
                         historical_annotation_old=historical_annotation_old[0].get('historical_annotation')
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - sent to ' + concept_ui_destino
-                        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+                        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
                     else:
                         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - sent to ' + concept_ui_origem
                         historical_annotation_new=historical_annotation_now.encode('utf-8')
@@ -4102,6 +4142,7 @@ def ConceptListQualifModification(request,term_id, ths, concept_ori):
         if len(check_concept_id_origem) > 1:
 
             # Descobre qual o id do primeiro registro nao preferido
+            check_concept_id_origem = check_concept_id_origem[0].get('identifier_id')
             check_concept_id_not_preferred = IdentifierConceptListQualif.objects.filter(identifier_id=check_concept_id_origem,preferred_concept='N').values('id')
             check_concept_id_not_preferred = check_concept_id_not_preferred[0].get('id')
 
@@ -4123,7 +4164,7 @@ def ConceptListQualifModification(request,term_id, ths, concept_ori):
     if len(has_hist)>0:
         historical_annotation_old=has_hist[0].get('historical_annotation')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
     else:
         historical_annotation_new=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
 
@@ -4219,11 +4260,11 @@ def TermListQualifModification(request,term_id, ths, term_ori):
 
     # Descobre qual é o identifier_concept_id do termo destino
     id_concept_destino = TermListQualif.objects.filter(id=term_id).values('identifier_concept_id')
+    id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
 
     # Descobre qual é o identifier_id do conceito
     identifier_id_destino = IdentifierConceptListQualif.objects.filter(id=id_concept_destino).values('identifier_id')
     identifier_id_destino = identifier_id_destino[0].get('identifier_id')
-    id_concept_destino = id_concept_destino[0].get('identifier_concept_id')
 
     # Descobre qual é o identifier_concept_id do termo origem
     term_origem_values = TermListQualif.objects.filter(id=term_ori).values('identifier_concept_id','term_ui')
@@ -4253,7 +4294,7 @@ def TermListQualifModification(request,term_id, ths, term_ori):
     concept_ui_destino = IdentifierConceptListQualif.objects.filter(id=id_concept_destino).values('concept_ui')
     concept_ui_destino = concept_ui_destino[0].get('concept_ui')
     historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', sent to ' + concept_ui_destino
-    historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+    historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
 
     # Atualiza historico da origem
     TermListQualif.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -4269,7 +4310,7 @@ def TermListQualifModification(request,term_id, ths, term_ori):
     if len(exist_term) > 0:
         term_id_exist=exist_term[0].get('id')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
-        historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
 
         # Atualiza o historico do destino
         TermListQualif.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
@@ -4396,7 +4437,7 @@ class ConceptCreateQualifConfirm(LoginRequiredView, ListView):
                 if has_hist:
                     historical_annotation_old=has_hist[0].get('historical_annotation')
                     historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(qualifier_ui_ori)
-                    historical_annotation_new=historical_annotation_now.encode('utf-8') + ';' + historical_annotation_old.encode('utf-8')
+                    historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
 
                 created_time=datetime.datetime.now().strftime('%Y-%m-%d')
                 created_time = created_time.encode('utf-8')
@@ -5109,7 +5150,7 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
         # Username
         user_data = additional_user_info(self.request)
         for user_name in user_data:
-            username=user_data.get('user_name').encode('utf-8')
+            username=user_data.get('user_name')
             break
 
         v998='^d' + datetime.datetime.now().strftime('%Y-%m-%d') + '^h' + term_string_old + '^u' + username + '^t'
@@ -5472,6 +5513,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
             # Used to create new concept
             for concept in id_concept:
                 context['id_concept_new'] = concept
+                id_concept = concept.get('identifier_id')
 
             # IdentifierConceptListQualif - retrieves pk's that has even identifier_id - can bring more than 1
             ids = IdentifierConceptListQualif.objects.filter(

@@ -45,7 +45,7 @@ class IdentifierQualif(Generic, AuditLog):
     # DateEstablished
     date_established = models.DateField(_("Date established"), help_text='DD/MM/YYYY', blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
 
         concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=self.id).values('id')
@@ -94,7 +94,7 @@ class DescriptionQualif(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
         # return self.qualifier_name
         # return '%s%s%s%s' % (self.qualifier_name,' (',self.language_code,')')
@@ -119,7 +119,7 @@ class TreeNumbersListQualif(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -169,7 +169,7 @@ class legacyInformationQualif(models.Model):
     # z
     geog_decs = models.CharField(_("Geog DeCS"), max_length=1, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -202,7 +202,7 @@ class IdentifierConceptListQualif(models.Model):
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -225,7 +225,7 @@ class ConceptListQualif(models.Model):
     # def get_parent(self):
     #     return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -282,5 +282,5 @@ class TermListQualif(models.Model):
     # def get_parent(self):
     #     return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
