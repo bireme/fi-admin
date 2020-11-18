@@ -31,10 +31,10 @@ class ISISSerializer(Serializer):
 
             record_lines = []
             for field_name in item:
-                field = item[field_name]
+                field = item.get(field_name)
                 # check if field is not empty
                 if field:
-                    if type(field) is list:
+                    if isinstance(field, list):
                         # create a temp str field_value with all subfields of current occ
                         for field_occ in field:
                             field_value = ''
@@ -51,7 +51,7 @@ class ISISSerializer(Serializer):
                                     if not isinstance(value, str):
                                         value = str(value)
 
-                                    subfield = u''.join((subfield_id, value)).encode('utf-8').strip()
+                                    subfield = u''.join((subfield_id, value)).strip()
                                     field_value = ''.join((field_value, subfield))
                                 # format out line in ID format
                                 id_field = self.id_field(field_name, field_value)
@@ -87,10 +87,7 @@ class ISISSerializer(Serializer):
         id_field = ''
         field_number = self.field_tag.get(field, None)
         if field_number:
-            if type(value) is unicode:
-                field_value = value.encode('utf-8').strip()
-            else:
-                field_value = str(value)
+            field_value = str(value)
 
             id_field = "!v{0:03d}!{1} \n".format(int(field_number), field_value)
 
