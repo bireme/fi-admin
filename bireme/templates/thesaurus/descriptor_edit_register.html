@@ -5,6 +5,10 @@
 
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
+{% block extrahead %}
+<link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block breadcrumb %}
     {% if object %}
         <li>
@@ -113,8 +117,16 @@
                                         <td>{{ form.date_established }}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan=4>{{ form.abbreviation }}</td>
+                                        <td colspan=4>{% trans "Qualifiers" %}:</td>
                                     </tr>
+                                    <tr>
+                                        <td colspan=4>
+                                            <div class="abbreviation">
+                                                {{ form.abbreviation }}
+                                            </div>
+                                        </td>
+                                    </tr>
+
                                 </table>
 
                             </fieldset>
@@ -488,37 +500,17 @@
 
     </div>
 
-    <script src="{% static "site/js/jquery.js" %}"></script>
-    <script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
-    <script type="text/javascript" src="/admin/jsi18n/"></script>
-    <script type="text/javascript" src="{% static "admin/js/core.js" %}"></script>
-    <script type="text/javascript" src="{% static "admin/js/SelectBox.js" %}"></script>
-    <script type="text/javascript" src="{% static "admin/js/SelectFilter2.js" %}"></script>
-    <script type="text/javascript">
-        // PARAMETROS DO SELECT FILTER:
-        // ID do seu elemento select
-        // NAME do seu elemento select
-        // 0 - para filter_horizontal / 1 para filter_vertical
-        // Caminho do admin para source de imagens utilizadas
-
-        addEvent(window, "load", function(e) {SelectFilter.init("id_abbreviation", "{% trans "Qualifiers" %}", 1, "/static/admin/"); });
-
-    </script>
-
 {% endblock %}
 
 
-
-
 {% block extrajs %}
-   <script src="{% static 'js/jquery.formset.js' %}"></script>
-   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
-   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
-
-
+   <script src="{% static '/js/jquery.formset.js' %}"></script>
+   <script src="{% static '/js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static '/js/bootstrap-collapse.js' %}"></script>
+   <script src="{% static '/js/multiple-select.min.js' %}"></script>
 
    {% if LANGUAGE_CODE != 'en' %}
-       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
+       <script src="{% static ''%}/js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
    {% endif %}
 
    <script type="text/javascript">
@@ -553,7 +545,6 @@
                 }
             }
         });
-
 
         // Apaga localStorage quando eh novo registro
         $('[id="myTabNew"]').on('submit', function() {
@@ -630,27 +621,7 @@
                 }
             });
 
-
-            // Alerta sobre não preenchimento
-            // $('[id^="id_descriptors-"]').on('blur', function() {
-            //     val = $(this).val();
-            //     if ( val == '' ){
-            //         alert('{% trans "Warning" %}');
-            //         return false;
-            //     }
-            // });
-
-
-            // // Alerta sobre não preenchimento
-            // $('[id$="-term_string"]').on('blur', function() {
-            //     val = $(this).val();
-            //     if ( val == '' ){
-            //         // alert('{% trans "Warning: Field is empty!" %}');
-            //         alert('{% trans "Warning: Field is empty!" %}: '+$(this).val());
-            //         return false;
-            //     }
-            // });
-
+            $('[id$="id_abbreviation"]').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
 
             if ($("<input />").prop("required") === undefined) {
               $(document).on("submit", function(e) {
@@ -666,8 +637,10 @@
               });
             }
 
+
         })
 
    </script>
+
 
 {% endblock %}

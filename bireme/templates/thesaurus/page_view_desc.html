@@ -99,7 +99,7 @@
             </li>
 
             <!-- Legacy information -->
-            {% if request.GET.ths = '1' %}
+            {% if request.GET.ths == '1' %}
             <li>
                 <a href="#tab-legacy" data-toggle="tab"><strong>{% trans "Set exclusive to BIREME" %}</strong></a>
             </li>
@@ -365,7 +365,7 @@
                                     {{ obj.relateddesc__term_string }}
 
                                     <!-- Utilizado para visualizar termos que foram criados pelo DeCS -->
-                                    {% if user_cc = 'BR1.1' %}
+                                    {% if user_cc == 'BR1.1' %}
                                         {% if not obj.relateddesc__descriptor_ui %}
                                             <font color="blue">DeCS</font>
                                         <!-- Tipo de codigo utilizado para registros DeCS -->
