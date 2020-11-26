@@ -639,7 +639,13 @@ tr.relation-row td input, tr.relation-row td select{
     width: 160px;
 }
 
+tr.relation-row .row_act_apparatus input{
+    width: 300px;
+}
 
+tr.relation-row .row_order input{
+    width: 40px;
+}
 
 
 /* Horizontal filter */

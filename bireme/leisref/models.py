@@ -529,6 +529,7 @@ class ActRelationship(Generic):
     # field to inform a act already present in database
     act_referred = models.ForeignKey(Act, verbose_name=_("Act related"), related_name="referred", null=True)
     act_apparatus = models.CharField(_("Apparatus"), max_length=125, blank=True)
+    order = models.PositiveSmallIntegerField(_("order"), default=0)
 
 
 # ActURL
