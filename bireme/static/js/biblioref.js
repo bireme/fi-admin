@@ -1,23 +1,18 @@
 function consult_DeCS(field_id, lang){
-    janela = new Object();
-
-    if (lang == 'en'){
-        decs_lang = 'i';
-    }else{
-        decs_lang = lang.substring(0,1);
-    }
-
     var search_exp = "";
+    var decs_url = "https://decs.bvsalud.org/" + lang + "/ths?filter=ths_exact_term_bool";
+
     $('#' + field_id + ' option:selected').each(function() {
-        search_exp += "&search_exp=" + $(this).text();
+        search_exp += '"' + $(this).text() + '" OR ';
     });
 
    if (search_exp == "") {
       return;
+   }else{
+      search_exp = search_exp.substring(0, search_exp.length - 4);
+      search_exp = retira_acentos(search_exp);
+      decs_url +=  "&q=" + search_exp;
    }
-   search_exp = retira_acentos(search_exp);
-
-   var decs_url = "http://decs.bvs.br/cgi-bin/wxis1660.exe/decsserver/?IsisScript=../cgi-bin/decsserver/decsserver.xis&task=exact_term&previous_page=homepage&interface_language=" + decs_lang + "&search_language=" + decs_lang + search_exp + "&show_tree_number=T";
 
    open_window(decs_url);
 }
