@@ -1538,7 +1538,7 @@ def ConceptCreateDescDo(request, ths):
         historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
 
     created_time=datetime.datetime.now().strftime('%Y-%m-%d')
-    created_time = created_time.encode('utf-8')
+    created_time = str(created_time)
 
     # Get sequential number to write to decs_code
     try:
@@ -4440,7 +4440,7 @@ class ConceptCreateQualifConfirm(LoginRequiredView, ListView):
                     historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
 
                 created_time=datetime.datetime.now().strftime('%Y-%m-%d')
-                created_time = created_time.encode('utf-8')
+                created_time = str(created_time)
 
                 # Get sequential number to write to decs_code
                 try:
