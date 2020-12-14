@@ -106,6 +106,9 @@ class CollectionResource(ModelResource):
                 if bundle.obj.image:
                     bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
                 pass
+        # remove country name from collection parent name
+        if bundle.obj.parent:
+            bundle.data['parent'] = bundle.obj.parent.name
 
         return bundle
 
