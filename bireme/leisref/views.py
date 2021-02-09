@@ -43,7 +43,7 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         for key in settings.ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
-        search_field = self.search_field + '__icontains'
+        search_field = self.search_field + '__exact'
 
         # search by field
         search = self.actions['s']
