@@ -20,9 +20,9 @@ class Migration(migrations.Migration):
                 ('created_time', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('status', models.SmallIntegerField(null=True, verbose_name='Status', choices=[(-1, 'Not approved'), (1, 'Approved')])),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('log', models.ForeignKey(to='admin.LogEntry')),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('log', models.ForeignKey(to='admin.LogEntry', on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Log Review',

@@ -15,13 +15,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='referencecomplement',
             name='conference_country',
-            field=models.ForeignKey(verbose_name='Conference country', blank=True, to='utils.Country', null=True),
+            field=models.ForeignKey(verbose_name='Conference country', blank=True, to='utils.Country', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='referencesource',
             name='publication_country',
-            field=models.ForeignKey(verbose_name='Publication country', blank=True, to='utils.Country', null=True),
+            field=models.ForeignKey(verbose_name='Publication country', blank=True, to='utils.Country', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
     ]

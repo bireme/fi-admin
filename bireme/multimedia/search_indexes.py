@@ -1,7 +1,7 @@
 import datetime
 from haystack import indexes
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
-from models import Media, MediaType
+from multimedia.models import Media, MediaType
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -9,7 +9,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
     title_translated = indexes.CharField(model_attr='title_translated')
-    link = indexes.CharField(model_attr='link', null=True)    
+    link = indexes.CharField(model_attr='link', null=True)
     description = indexes.CharField(model_attr='description', null=True)
     authors = indexes.MultiValueField()
     contributors = indexes.MultiValueField()
@@ -40,7 +40,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     def should_update(self, instance, **kwargs):
         if instance.status != 0:
             return True
-        
+
         return False
     '''
 
@@ -86,7 +86,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
         """Used when the entire index for model is updated."""
         return self.get_model().objects.filter(created_time__lte=datetime.datetime.now())
 
-'''    
+'''
     def prepare_media_type(self, obj):
         return [ "|".join( event_type.get_translations() ) for event_type in EventType.objects.filter(event=obj.id) ]
 

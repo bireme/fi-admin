@@ -70,7 +70,7 @@
                                 {{ field.as_hidden }}
                             {% else %}
                                 {% if field.label %}
-                                    {% if not field.is_hidden or field.field|fieldtype == 'JSONFormField' %}
+                                    {% if not field.is_hidden or field.field|fieldtype == 'JSONField' %}
                                         {% if field.field|fieldtype == 'BooleanField' %}
                                             <span>{{ field.label }}</span>
                                         {% else %}
@@ -90,7 +90,7 @@
 
                                 {{ field.errors }}
 
-                                {% if field.field|fieldtype == 'JSONFormField' %}
+                                {% if field.field|fieldtype == 'JSONField' %}
                                     <div class="row">
                                         <a onclick="javascript:field_assist('{{field.html_name}}', '{{field.html_name}}', 'oer')" href="javascript:void(0);">
                                             <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>

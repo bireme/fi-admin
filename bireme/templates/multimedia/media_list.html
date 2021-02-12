@@ -75,13 +75,15 @@
                             {% endif %}
 
                             <div class="advanced_filters {% if not show_advaced_filters %}hide{% endif %}">
-                                {% trans "User" %}:
-                                <select name="filter_created_by_user">
-                                    <option value="">{% trans "All" %}</option>
-                                    {% for user in user_filter_list %}
-                                        <option value="{{ user.id }}" {% if actions.filter_created_by_user|add:"0" == user.id %}selected="true"{% endif %}>{{ user }}</option>
-                                    {% endfor %}
-                                </select>
+                                {% if user_filter_list %}
+                                    {% trans "User" %}:
+                                    <select name="filter_created_by_user">
+                                        <option value="">{% trans "All" %}</option>
+                                        {% for user in user_filter_list %}
+                                            <option value="{{ user.id }}" {% if actions.filter_created_by_user|add:"0" == user.id %}selected="true"{% endif %}>{{ user }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
 
                                 {% trans "Cooperative center" %}:
                                 <select name="filter_created_by_cc">
@@ -139,7 +141,7 @@
                             </td>
                             <td>
                                 <a href="{% url 'edit_media' media.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if media.created_by_id = user.id %}
+                                {% if media.created_by_id == user.id %}
                                     <a href="{% url 'delete_media' media.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>

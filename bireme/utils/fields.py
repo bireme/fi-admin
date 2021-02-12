@@ -19,7 +19,11 @@ class JSONField(jsonfield.JSONField):
         defaults = {'widget': forms.HiddenInput(attrs={'class': "jsonfield"})}
         defaults.update(kwargs)
 
-        return super(JSONField, self).formfield(**defaults)
+        field = super(JSONField, self).formfield(**defaults)
+        field.dump_kwargs['indent'] = None                  # disable indentation and newlines at JSON
+
+        return field
+
 
     def dumps_for_display(self, value):
         """ Overwrite to avoid problem when saving/retrieving JSON field at parent level of model """
@@ -37,8 +41,6 @@ class JSONField(jsonfield.JSONField):
 
 class AuxiliaryChoiceField(models.Field):
     """ Custom model field that present in select widget the values of AuxCode table for the current field """
-
-    __metaclass__ = models.SubfieldBase
 
     def get_internal_type(self):
         return "CharField"
@@ -58,8 +60,6 @@ class AuxiliaryChoiceField(models.Field):
 class MultipleAuxiliaryChoiceField(models.Field):
     """ Custom model field that present in select multiple widget the values of AuxCode table for the current field """
 
-    __metaclass__ = models.SubfieldBase
-
     def get_internal_type(self):
         return "TextField"
 
@@ -69,12 +69,15 @@ class MultipleAuxiliaryChoiceField(models.Field):
             return None
 
         try:
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 return json.loads(value)
         except ValueError:
             pass
 
         return value
+
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
 
     def get_db_prep_value(self, value, connection, prepared=False):
         """Convert JSON object to a string"""

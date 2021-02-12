@@ -1,6 +1,6 @@
 #! coding: utf-8
 from collections import defaultdict
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
@@ -12,10 +12,6 @@ from django.db.models.functions import Substr
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
-from field_definitions import FIELDS_BY_DOCUMENT_TYPE
-
-from utils.views import ACTIONS
-from cross_validation import check_for_publication
 from utils.context_processors import additional_user_info
 from attachments.models import Attachment
 from main.models import Descriptor
@@ -23,9 +19,13 @@ from title.models import Title
 from database.models import Database
 from help.models import get_help_fields
 from utils.views import LoginRequiredView
-from forms import *
+
+from biblioref.field_definitions import FIELDS_BY_DOCUMENT_TYPE
+from biblioref.cross_validation import check_for_publication
+from biblioref.forms import *
 
 import json
+import requests
 
 JOURNALS_FASCICLE = "S"
 
@@ -54,8 +54,8 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # getting action parameter
         self.actions = {}
-        for key in ACTIONS.keys():
-            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+        for key in settings.ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
         if settings.FULLTEXT_SEARCH:
             search_field = self.search_field + '__search'
@@ -322,6 +322,7 @@ class BiblioRefUpdate(LoginRequiredView):
                 return HttpResponseRedirect(self.get_success_url())
         else:
             # if not valid for publication return status to original (previous) value
+            form.data._mutable = True
             if self.object:
                 previous_status = self.object.previous_value('status')
                 self.object.status = previous_status
@@ -330,7 +331,7 @@ class BiblioRefUpdate(LoginRequiredView):
                 form.data['status'] = '-1'
 
             return self.render_to_response(
-                           self.get_context_data(form=form,
+                                        self.get_context_data(form=form,
                                                  formset_descriptor=formset_descriptor,
                                                  formset_attachment=formset_attachment,
                                                  formset_library=formset_library,
@@ -613,7 +614,7 @@ def view_duplicates(request, reference_id):
             # ignore possible errors at json load at field (eg. empty field)
             pass
 
-    return render_to_response('biblioref/duplicate_detail.html', {'duplicate_list': duplicate_list,
+    return render(request, 'biblioref/duplicate_detail.html', {'duplicate_list': duplicate_list,
                                                                   'duplicate': duplicate,
                                                                   'metadata': metadata,
                                                                   'indexing': indexing,
@@ -635,7 +636,7 @@ def refs_changed_by_other_cc(current_user):
 
     for reference in refs_from_cc:
         # get correct class (source our analytic)
-        c_type = reference.get_content_type_id
+        c_type = reference.get_content_type_id()
         # filter by logs of current reference, change type and made by other users
         log_list = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
                                    .exclude(user=current_user).order_by('-id')
@@ -673,7 +674,7 @@ def refs_changed_by_other_user(current_user):
     refs_from_user = Reference.objects.filter(created_by=current_user)
     for reference in refs_from_user:
         # get correct class (source our analytic)
-        c_type = reference.get_content_type_id
+        c_type = reference.get_content_type_id()
         # filter by logs of current reference, change type and made by other users
         changed_by_other_user = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
                                                 .exclude(user=current_user).order_by('-id')
@@ -741,6 +742,24 @@ def update_dedup_service(obj):
                 dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
             except:
                 pass
+
+    elif obj.document_type() == 'S':
+            dedup_schema = 'LILACS_Sas_Source'
+            dedup_params = {"data_iso": obj.publication_date_normalized[:4], "ISSN": obj.issn,
+                            "numero_fasciculo": obj.issue_number, "volume_fasciculo": obj.volume_serial,
+                            "titulo_revista": obj.title_serial}
+
+            json_data = json.dumps(dedup_params, ensure_ascii=True)
+            dedup_headers = {'Content-Type': 'application/json'}
+            ref_id = "fiadmin-{0}".format(obj.id)
+
+            dedup_url = "{0}/{1}/{2}/{3}".format(settings.DEDUP_PUT_URL, 'lilacs_Sas_Source', dedup_schema, ref_id)
+
+            try:
+                dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
+            except:
+                pass
+
 
 
 # update auxiliary field reference_title

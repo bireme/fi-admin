@@ -22,7 +22,7 @@
     <h2><i class='icon-thumbs-up'></i> {% trans "Suggestions" %}</h2>
 </div>
 
-<div class='body'>    
+<div class='body'>
     <ul class="nav nav-tabs" id='tab'>
         {% if service_role.LIS %}
             <li class="{% if actions.type == 'resources' or not actions.type %}active{% endif %}"><a href="#tab-resources" onclick="change_type('resources')" data-toggle="tab"><strong>{% trans "Resources" %}</strong></a></li>
@@ -32,7 +32,7 @@
         {% endif %}
         {% if service_role.LIS == 'edi' %}
             <li class="{% if actions.type == 'keywords'%}active{% endif %}"><a href="#tab-keywords" onclick="change_type('keywords')" data-toggle="tab"><strong>{% trans "Keywords" %}</strong></a></li>
-        {% endif %}        
+        {% endif %}
     </ul>
 
     <div class="row">
@@ -45,7 +45,7 @@
                         <input type="hidden" name="type" value="{{actions.type}}"/>
                     {% endif %}
                     <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}">&nbsp;
-                 
+
                     {% trans "Status" %}:
                     <select name="filter_status">
                         <option value="*">{% trans "All" %}</option>
@@ -65,7 +65,7 @@
         {% endif %}
     </div>
 
-    
+
     {% if actions.type == 'resources' or not actions.type %}
       <div class="tab-content">
         <div class="tab-pane active" id="tab-resources">
@@ -82,7 +82,7 @@
                 <tbody>
                     {% for resource in suggestions %}
                         <tr>
-                            <td><a href="{% url 'suggest.views.edit_suggested_resource' resource.id %}">{{ resource.id }}</a></td>
+                            <td><a href="{% url 'edit_suggested_resource' resource.id %}">{{ resource.id }}</a></td>
                             <td><span title="{{ resource.title }}">{{ resource.title|slice:"50" }}{% if resource.title|length > 50 %}...{% endif %}</span></td>
                             <td><span title="{{ resource.link }}">{{ resource.link|slice:"50" }}{% if resource.link|length > 50 %}...{% endif %}</span></td>
                             <td>
@@ -100,7 +100,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'suggest.views.edit_suggested_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                <a href="{% url 'edit_suggested_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -110,7 +110,7 @@
             {% include "pagination.html" %}
           </div>
         {%endif%}
-        
+
         {% if actions.type == 'keywords'%}
           <div class="tab-pane active" id="tab-keywords">
 
@@ -126,7 +126,7 @@
                 <tbody>
                     {% for keyword in suggestions %}
                         <tr>
-                            <td><a href="{% url 'main.views.create_edit_resource' keyword.object_id %}#tab-descriptors">{{ keyword.id }}</a></td>
+                            <td><a href="{% url 'main:edit_resource' keyword.object_id %}#tab-descriptors">{{ keyword.id }}</a></td>
                             <td><span title="{{ keyword.text }}">{{ keyword.text|slice:"30" }}{% if keyword.text|length > 30 %}...{% endif %}</span></td>
                             <td><span title="{{ keyword.resource }}">{{ keyword.content_object.title|slice:"120" }}{% if keyword.content_object.title|length > 120 %}...{% endif %}</span></td>
                             <td>
@@ -144,7 +144,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'main.views.create_edit_resource' keyword.object_id %}#tab-descriptors" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                <a href="{% url 'main:edit_resource' keyword.object_id %}#tab-descriptors" class='btn btn-mini'><i class='icon-pencil'></i></a>
                             </td>
                         </tr>
                     {% endfor %}

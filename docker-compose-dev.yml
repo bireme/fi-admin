@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  fi_admin:
+    container_name: fi-admin
+    build:
+      context: .
+      target: dev
+    expose:
+      - 8000
+    volumes:
+      - ./bireme/:/app/
+    env_file:
+      - ./conf/app-env-dev
+    command: gunicorn --workers 2 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000 --log-level DEBUG
+    networks:
+      - nginx-proxy
+
+networks:
+  nginx-proxy:
+    external: true

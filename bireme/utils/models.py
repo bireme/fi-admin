@@ -22,8 +22,8 @@ class Generic(models.Model):
 
     created_time = models.DateTimeField(_("created at"), auto_now_add=True, editable=False)
     updated_time = models.DateTimeField(_("updated"), auto_now=True, editable=False, null=True, blank=True)
-    created_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
-    updated_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False)
+    created_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False, on_delete=models.PROTECT)
+    updated_by = models.ForeignKey(User, null=True, blank=True, related_name="+", editable=False, on_delete=models.PROTECT)
 
     @property
     def diff(self):
@@ -87,7 +87,7 @@ class Country(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         cache_id = "country-{}-{}".format(lang_code, self.id)
         country_name_local = cache.get(cache_id)
@@ -108,7 +108,7 @@ class CountryLocal(models.Model):
         verbose_name = "Translation"
         verbose_name_plural = "Translations"
 
-    country = models.ForeignKey(Country, verbose_name=_("country"))
+    country = models.ForeignKey(Country, verbose_name=_("country"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=choices.LANGUAGES_CHOICES[1:])
     name = models.CharField(_("name"), max_length=255)
 
@@ -139,13 +139,20 @@ class AuxCode(Generic):
 
         return label_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
-        translation = AuxCodeLocal.objects.filter(auxcode_id=self.id, language=lang_code)
-        if translation:
-            return translation[0].label
-        else:
-            return self.label
+        cache_id = "auxcode-{}-{}".format(lang_code, self.id)
+        auxcode_name_local = cache.get(cache_id)
+        if not auxcode_name_local:
+            translation = AuxCodeLocal.objects.filter(auxcode_id=self.id, language=lang_code)
+            if translation:
+                auxcode_name_local = translation[0].label
+            else:
+                auxcode_name_local = self.label
+
+            cache.set(cache_id, auxcode_name_local, None)
+
+        return auxcode_name_local
 
 
 class AuxCodeLocal(models.Model):
@@ -154,9 +161,23 @@ class AuxCodeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    auxcode = models.ForeignKey(AuxCode, verbose_name=_("Source type"))
+    auxcode = models.ForeignKey(AuxCode, verbose_name=_("Source type"), on_delete=models.CASCADE)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     label = models.CharField(_("Label"), max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.label
+
+# __search query lookup
+# The search lookup, which supports MySQL only and is extremely limited in features, is deprecated. Replace it with a custom lookup:
+class Search(models.Lookup):
+    lookup_name = 'search'
+
+    def as_mysql(self, compiler, connection):
+        lhs, lhs_params = self.process_lhs(compiler, connection)
+        rhs, rhs_params = self.process_rhs(compiler, connection)
+        params = lhs_params + rhs_params
+        return 'MATCH (%s) AGAINST (%s IN BOOLEAN MODE)' % (lhs, rhs), params
+
+models.CharField.register_lookup(Search)
+models.TextField.register_lookup(Search)

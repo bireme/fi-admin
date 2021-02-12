@@ -87,9 +87,9 @@ class Migration(migrations.Migration):
                 ('zipcode', models.CharField(max_length=75, verbose_name='Zip code', blank=True)),
                 ('mailbox', models.CharField(max_length=75, verbose_name='Mailbox', blank=True)),
                 ('cooperative_center_code', models.CharField(max_length=55, verbose_name='Cooperative center', blank=True)),
-                ('country', models.ForeignKey(verbose_name='Country', blank=True, to='utils.Country', null=True)),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('country', models.ForeignKey(verbose_name='Country', blank=True, to='utils.Country', null=True, on_delete=models.PROTECT)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Institution',
@@ -105,8 +105,8 @@ class Migration(migrations.Migration):
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('name', models.CharField(max_length=155, verbose_name='Name')),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Institution type',
@@ -119,7 +119,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='Language', choices=[(b'en', 'English'), (b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
                 ('name', models.CharField(max_length=155, verbose_name='Name')),
-                ('type', models.ForeignKey(verbose_name='Type', to='institution.Type')),
+                ('type', models.ForeignKey(verbose_name='Type', to='institution.Type', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -132,7 +132,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=254, verbose_name='Name', blank=True)),
                 ('acronym', models.CharField(max_length=55, verbose_name='Acronym', blank=True)),
-                ('country', models.ForeignKey(verbose_name='Country', blank=True, to='utils.Country', null=True)),
+                ('country', models.ForeignKey(verbose_name='Country', blank=True, to='utils.Country', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Unit',
@@ -145,8 +145,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('level', models.PositiveSmallIntegerField(verbose_name='Level', choices=[(1, 'First level'), (2, 'Second level'), (3, 'Third level')])),
-                ('institution', models.ForeignKey(to='institution.Institution', null=True)),
-                ('unit', models.ForeignKey(verbose_name='Unit', to='institution.Unit', null=True)),
+                ('institution', models.ForeignKey(to='institution.Institution', null=True, on_delete=models.PROTECT)),
+                ('unit', models.ForeignKey(verbose_name='Unit', to='institution.Unit', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Hierarchical level',
@@ -160,7 +160,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('url_type', models.CharField(max_length=75, verbose_name='Type', choices=[(b'main', 'Main'), (b'other', 'Other')])),
                 ('url', models.URLField(max_length=300, verbose_name='URL')),
-                ('institution', models.ForeignKey(to='institution.Institution', null=True)),
+                ('institution', models.ForeignKey(to='institution.Institution', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'URL',
@@ -171,21 +171,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contactphone',
             name='institution',
-            field=models.ForeignKey(to='institution.Institution', null=True),
+            field=models.ForeignKey(to='institution.Institution', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='contactperson',
             name='institution',
-            field=models.ForeignKey(to='institution.Institution', null=True),
+            field=models.ForeignKey(to='institution.Institution', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='contactemail',
             name='institution',
-            field=models.ForeignKey(to='institution.Institution', null=True),
+            field=models.ForeignKey(to='institution.Institution', null=True, on_delete=models.PROTECT),
         ),
         migrations.AddField(
             model_name='adm',
             name='institution',
-            field=models.ForeignKey(to='institution.Institution', null=True),
+            field=models.ForeignKey(to='institution.Institution', null=True, on_delete=models.PROTECT),
         ),
     ]

@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('ecin_id', models.CharField(max_length=250, verbose_name='Identifier', blank=True)),
                 ('ecout_desc', models.CharField(max_length=250, verbose_name='Descriptor string', blank=True)),
                 ('ecout_id', models.CharField(max_length=250, verbose_name='Identifier', blank=True)),
-                ('identifier', models.ForeignKey(related_name='entrycombinationlistdesc', blank=True, to='thesaurus.IdentifierDesc', null=True)),
+                ('identifier', models.ForeignKey(related_name='entrycombinationlistdesc', blank=True, to='thesaurus.IdentifierDesc', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Entry combination List',

@@ -5,8 +5,7 @@ DESCRIPTORS
 '''
 
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
@@ -14,12 +13,11 @@ from tastypie.utils import trailing_slash
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
-from thesaurus.models import *
-from isis_serializer import ISISSerializer
-
-from tastypie_custom import CustomResource
+from api.isis_serializer import ISISSerializer
+from api.tastypie_custom import CustomResource
 
 from thesaurus.field_definitions_desc import field_tag_map
+from thesaurus.models import *
 
 import requests
 import urllib
@@ -60,7 +58,7 @@ class ThesaurusResourceDesc(CustomResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
         ]
 
@@ -102,60 +100,66 @@ class ThesaurusResourceDesc(CustomResource):
     def dehydrate(self, bundle):
 
         # 776
-        thesaurus_id = IdentifierDesc.objects.filter(id=bundle.obj.id)
-        for field in thesaurus_id:
-            bundle.data['identifier'] = str(bundle.obj.id).zfill(6)
-            # usado para filtrar pesquisa de qualificador
-            thesaurus_id_choiced = field.thesaurus_id
+        bundle.data['identifier'] = bundle.obj.id
 
-        id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=bundle.obj.id,preferred_concept='Y')
+        id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=bundle.obj.id,preferred_concept='Y').values('id')
+        id_concept = id_concept[0].get('id')
 
         # 'term_string_en': '001',
-        term_string_en = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='Y',record_preferred_term='Y',status='1')
-        for field in term_string_en:
-            bundle.data['term_string_en'] = field.term_string
+        term_string_en = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
+        term_string_en = term_string_en[0].get('term_string')
+        if term_string_en:
+            bundle.data['term_string_en'] = term_string_en
 
         # 'term_string_es': '002',
-        term_string_es = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es',concept_preferred_term='Y',record_preferred_term='Y',status='1')
-        for field in term_string_es:
-            bundle.data['term_string_es'] = field.term_string
+        term_string_es = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
+        term_string_es = term_string_es[0].get('term_string')
+        if term_string_es:
+            bundle.data['term_string_es'] = term_string_es
 
         # 'term_string_pt_br': '003',
-        term_string_pt_br = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='pt-br',concept_preferred_term='Y',record_preferred_term='Y',status='1')
-        for field in term_string_pt_br:
-            bundle.data['term_string_pt_br'] = field.term_string
+        term_string_pt_br = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='pt-br',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
+        term_string_pt_br = term_string_pt_br[0].get('term_string')
+        if term_string_pt_br:
+            bundle.data['term_string_pt_br'] = term_string_pt_br
 
         # 'term_string_es_es': '004',
-        term_string_es_es = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es-es',concept_preferred_term='Y',record_preferred_term='Y',status='1')
-        for field in term_string_es_es:
-            bundle.data['term_string_es_es'] = field.term_string
+        term_string_es_es = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es-es',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
+        term_string_es_es = term_string_es_es[0].get('term_string')
+        if term_string_es_es:
+            bundle.data['term_string_es_es'] = term_string_es_es
 
         # 'term_string_fr': '016',
-        term_string_fr = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='fr',concept_preferred_term='Y',record_preferred_term='Y',status='1')
-        for field in term_string_fr:
-            bundle.data['term_string_fr'] = field.term_string
+        term_string_fr = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='fr',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
+        term_string_fr = term_string_fr[0].get('term_string')
+        if term_string_fr:
+            bundle.data['term_string_fr'] = term_string_fr
 
 
 
         # 'scope_note_en': '005',
-        scope_note_en = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en')
-        for field in scope_note_en:
-            bundle.data['scope_note_en'] = '^n' + field.scope_note
+        scope_note_en = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en').values('scope_note')
+        scope_note_en = scope_note_en[0].get('scope_note')
+        if scope_note_en:
+            bundle.data['scope_note_en'] = '^n' + scope_note_en
 
         # # 'scope_note_es': '006',
-        scope_note_es = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es')
-        for field in scope_note_es:
-            bundle.data['scope_note_es'] = '^n' + field.scope_note
+        scope_note_es = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es').values('scope_note')
+        scope_note_es = scope_note_es[0].get('scope_note')
+        if scope_note_es:
+            bundle.data['scope_note_es'] = '^n' + scope_note_es
 
         # # 'scope_note_pt_br': '007',
-        scope_note_pt_br = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='pt-br')
-        for field in scope_note_pt_br:
-            bundle.data['scope_note_pt_br'] = '^n' + field.scope_note
+        scope_note_pt_br = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='pt-br').values('scope_note')
+        scope_note_pt_br = scope_note_pt_br[0].get('scope_note')
+        if scope_note_pt_br:
+            bundle.data['scope_note_pt_br'] = '^n' + scope_note_pt_br
 
         # # 'scope_note_es_es': '008',
-        scope_note_es_es = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es-es')
-        for field in scope_note_es_es:
-            bundle.data['scope_note_es_es'] = '^n' + field.scope_note
+        scope_note_es_es = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es-es').values('scope_note')
+        scope_note_es_es = scope_note_es_es[0].get('scope_note')
+        if scope_note_es_es:
+            bundle.data['scope_note_es_es'] = '^n' + scope_note_es_es
 
 
 
@@ -368,7 +372,7 @@ class ThesaurusResourceDesc(CustomResource):
             # 'descriptor_type_exploded': '106',
             if field.exploded:
                 bundle.data['descriptor_type_exploded'] = field.exploded
-            
+
             # z
             # geog_decs
             # 'descriptor_type_geog_decs': '106',
@@ -377,7 +381,7 @@ class ThesaurusResourceDesc(CustomResource):
 
 
 
-        # 'annotation_en': '110', 
+        # 'annotation_en': '110',
         annotation_en = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='en')
         for field in annotation_en:
             if field.annotation:
@@ -448,7 +452,7 @@ class ThesaurusResourceDesc(CustomResource):
         bundle.data['pharmacologicalaction_en'] = pharmacologicalaction_en_list
 
 
-        # 'annotation_es': '210', 
+        # 'annotation_es': '210',
         annotation_es = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='es')
         for field in annotation_es:
             if field.annotation:

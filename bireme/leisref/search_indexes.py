@@ -8,7 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import activate
 
 from main.models import Descriptor, ResourceThematic
-from models import *
+from leisref.models import *
 
 class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)

@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Event type" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'events.views.list_types' %}">{% trans "Event type" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'events:list_types' %}">{% trans "Event type" %}</a> <span class="divider">/</span></li>
     {% if is_new %}<li>{% trans "New Event type" %}</li>
     {% else %}<li>{% trans "Edit Event type" %}</li>{% endif %}
 {% endblock %}
@@ -77,4 +77,3 @@
         })
    </script>
 {% endblock %}
-

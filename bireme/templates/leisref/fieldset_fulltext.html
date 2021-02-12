@@ -81,7 +81,7 @@
             {% if attachment_list %}
                 {% for attachment in attachment_list %}
                     <tr>
-                        <td colspan="3"><a href="{% url 'attachments.views.view_document' %}{{attachment.short_url}}" target="_blank">{{ attachment }}</a></td>
+                        <td colspan="3"><a href="{% url 'attachments:view_document' %}{{attachment.short_url}}" target="_blank">{{ attachment }}</a></td>
                     </tr>
                 {% endfor %}
             {% endif %}
@@ -98,7 +98,7 @@
                         {% for field in form.visible_fields %}
                             {% if field.name == 'attachment_file' and form.instance.pk %}
                                 <td>
-                                    <strong><a href="{% url 'attachments.views.view_document' %}{{form.instance.short_url}}" target="_blank">{{ form.instance.filename }}</a></strong>
+                                    <strong><a href="{% url 'attachments:view_document' %}{{form.instance.short_url}}" target="_blank">{{ form.instance.filename }}</a></strong>
                                 </td>
                             {% elif field.name != 'DELETE' %}
                                 <td>
@@ -117,7 +117,7 @@
                     {% for field in form %}
                         {% if field.name == 'attachment_file' %}
                             <td>
-                                <strong><a href="{% url 'attachments.views.view_document' %}{{form.instance.short_url}}" target="_blank">{{ form.instance.filename }}</a></strong>
+                                <strong><a href="{% url 'attachments:view_document' %}{{form.instance.short_url}}" target="_blank">{{ form.instance.filename }}</a></strong>
                             </td>
                         {% elif field.name == 'language' %}
                             <td>

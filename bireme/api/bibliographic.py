@@ -1,9 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-from django.conf import settings
-from copy import copy
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
@@ -13,13 +10,13 @@ from tastypie import fields
 
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID, ReferenceLocal, ReferenceComplement
 from attachments.models import Attachment
-from isis_serializer import ISISSerializer
-
-from tastypie_custom import CustomResource
+from api.isis_serializer import ISISSerializer
+from api.tastypie_custom import CustomResource
 
 from main.models import Descriptor, ResourceThematic
 from database.models import Database
 from biblioref.field_definitions import field_tag_map
+from copy import copy
 
 import os
 import requests
@@ -29,7 +26,7 @@ import json
 
 class ReferenceResource(CustomResource):
     class Meta:
-        queryset = Reference.objects.all()
+        queryset = Reference.objects.prefetch_related('indexed_database', 'created_by', 'updated_by').all()
         allowed_methods = ['get']
         serializer = ISISSerializer(formats=['json', 'xml', 'isis_id'], field_tag=field_tag_map)
         resource_name = 'bibliographic'
@@ -42,6 +39,7 @@ class ReferenceResource(CustomResource):
             'id': ALL
         }
         include_resource_uri = True
+        max_limit = settings.MAX_EXPORT_API_LIMIT
 
 
     def build_filters(self, filters=None):
@@ -60,9 +58,9 @@ class ReferenceResource(CustomResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
-            url(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_last_id'), name="api_get_last_id"),
         ]
 
@@ -131,7 +129,7 @@ class ReferenceResource(CustomResource):
             bundle.data['source_control'] = 'FONTE'
 
         # Add system version control number
-        version_file = open(os.path.join(settings.PROJECT_ROOT_PATH, 'templates/version.txt'))
+        version_file = open(os.path.join(settings.BASE_DIR, 'templates/version.txt'))
         version_number = version_file.readlines()[0]
         bundle.data['system_version'] = version_number.rstrip()
 

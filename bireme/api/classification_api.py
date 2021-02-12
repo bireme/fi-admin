@@ -1,7 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
@@ -16,7 +15,7 @@ import urllib
 
 class CommunityResource(ModelResource):
     class Meta:
-        queryset = Collection.objects.filter(parent__isnull=True)
+        queryset = Collection.objects.filter(community_flag=True)
         allowed_methods = ['get']
         serializer = Serializer(formats=['json', 'xml'])
         resource_name = 'community'
@@ -39,7 +38,7 @@ class CommunityResource(ModelResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/get_country_list%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/get_country_list%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_country_list'), name="api_get_country_list"),
         ]
 
@@ -53,10 +52,10 @@ class CommunityResource(ModelResource):
 
     def get_country_list(self, request, **kwargs):
         self.method_check(request, allowed=['get'])
-        community_list = Collection.objects.filter(parent__isnull=True)
+        community_list = Collection.objects.filter(community_flag=True, country__isnull=False)
         country_list = [community.country for community in community_list]
         country_list_unique = set(country_list)
-        country_list_detail = [{'name': c.get_translations(), 'id': c.id} for c in country_list_unique]
+        country_list_detail = [{'name': c.get_translations(), 'id': c.id, 'code': c.code} for c in country_list_unique]
 
         return self.create_response(request, country_list_detail)
 
@@ -105,6 +104,9 @@ class CollectionResource(ModelResource):
                 if bundle.obj.image:
                     bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
                 pass
+        # remove country name from collection parent name
+        if bundle.obj.parent:
+            bundle.data['parent'] = bundle.obj.parent.name
 
         return bundle
 

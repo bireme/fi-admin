@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('thesaurus_occurrence', models.CharField(max_length=250, verbose_name='Name of a thesaurus where terms occur', blank=True)),
-                ('identifier_term', models.ForeignKey(related_name='tocurrence', blank=True, to='thesaurus.TermListDesc', null=True)),
+                ('identifier_term', models.ForeignKey(related_name='tocurrence', blank=True, to='thesaurus.TermListDesc', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Thesaurus occurrence',

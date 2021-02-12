@@ -6,11 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from deform.exception import ValidationFailure
 
 from main.decorators import *
-from urlparse import parse_qsl
 from pkg_resources import resource_filename
 
 import csv
@@ -21,31 +20,9 @@ import json
 import urllib
 
 
-# form actions
-ACTIONS = {
-    'orderby': 'id',
-    'order': '-',
-    'page': 1,
-    'type': "",
-    's': "",
-    'filter_owner': "",
-    'filter_status': "",
-    'filter_thematic': "",
-    'filter_created_by_user': "",
-    'filter_created_by_cc': "",
-    'filter_indexed_database': "",
-    'filter_act_type': "",
-    'filter_type': "",
-    'filter_category': "",
-    'filter_country': "",
-    'document_type': "",
-    'review_type': "",
-    'results_per_page': "",
-}
-
 def cookie_lang(request):
 
-    language = request.REQUEST.get('language')
+    language = request.GET.get('language')
     request.COOKIES[settings.LANGUAGE_COOKIE_NAME] = language
     request.session[settings.LANGUAGE_COOKIE_NAME] = language
 
@@ -135,7 +112,7 @@ class CSVResponseMixin(object):
 
             # Write the data from the context somehow
             for item in data:
-                encode_values = [value.encode('utf-8') if isinstance(value, basestring) else value for value in item.values()]
+                encode_values = [value.encode('utf-8') if isinstance(value, str) else value for value in item.values()]
                 writer.writerow(encode_values)
 
             return response
@@ -156,7 +133,7 @@ def get_class(kls):
 def field_assist(request, **kwargs):
 
     # add search_path to override deform templates
-    custom_deform_templates = '%s/templates/deform' % settings.PROJECT_ROOT_PATH
+    custom_deform_templates = '%s/templates/deform' % settings.BASE_DIR
     deform_templates = resource_filename('deform', 'templates')
     search_path = (custom_deform_templates, deform_templates)
     deform.Form.set_zpt_renderer(search_path)
@@ -191,13 +168,13 @@ def field_assist(request, **kwargs):
 
     # check if is a submit of deform form
     if request.method == 'POST' and formid == 'deform':
-        controls = parse_qsl(request.body, keep_blank_values=True)
+        controls = urllib.parse.parse_qsl(str(request.body), keep_blank_values=True)
         try:
             # If all goes well, deform returns a simple python structure of
             # the data. You use this same structure to populate a form with
             # data from permanent storage
             appstruct = form.validate(controls)
-        except ValidationFailure, e:
+        except ValidationFailure as e:
             # The exception contains a reference to the form object
             rendered = e.render()
         else:
@@ -229,41 +206,56 @@ def field_assist(request, **kwargs):
             # new reference
             rendered = form.render()
 
-    return render_to_response('utils/field_assist.html', {
+    deform_dependencies = form.get_widget_resources()
+    deform_dependencies['js'] = [file.replace('deform:static','deform') for file in deform_dependencies['js']]
+    deform_dependencies['css'] = [file.replace('deform:static','deform') for file in deform_dependencies['css']]
+
+    return render(request, 'utils/field_assist.html', {
         'form': rendered,
         'field_json': field_json,
         'field_name': field_name,
         'field_id': field_id,
         'module_name': module_name,
-        'deform_dependencies': form.get_widget_resources()
+        'deform_dependencies': deform_dependencies
     })
 
 @csrf_exempt
 def decs_suggestion(request):
     text_to_analyze = request.POST.get('text_to_analyze')
     output_lang = request.POST.get('output_lang')
+    text_by_lang = {}
     decs_list = []
+    decs_list_unique = []
+    decs_ids = []
+
+    text_to_analyze_json = json.loads(text_to_analyze)
+
+    for text in text_to_analyze_json:
+        lang = str(text['_i'])
+        # concat texts of the same language
+        text_by_lang[lang] = text_by_lang.get(lang, '') + ' ' + text['text']
 
     service_url = settings.DECS_HIGHLIGHTER_URL
-    service_params = {'document': text_to_analyze, 'outLang': output_lang, 'pubType': 'h'}
 
     headers = {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"}
 
-    r = requests.post(service_url, data=service_params, headers=headers)
-    if r.status_code == 200:
-        response_json = r.json()
-        decs_list_response = response_json['positions']
+    for lang, text in text_by_lang.items():
+        service_params = {'document': text, 'scanLang': lang, 'pubType': 'h', 'outLang': output_lang}
 
-        decs_list_unique = []
-        decs_ids = []
-        for decs_term in decs_list_response:
-            decs_id = decs_term['id']
-            if decs_id not in decs_ids:
-                decs_ids.append(decs_id)
-                decs_list_unique.append(decs_term)
+        r = requests.post(service_url, data=service_params, headers=headers)
+        if r.status_code == 200:
+            response_json = r.json()
+            decs_list_response = response_json['positions']
 
-        decs_list = sorted(decs_list_unique, key=lambda k: k['descriptor'])
+            for decs_term in decs_list_response:
+                decs_id = decs_term['id']
+                if decs_id not in decs_ids:
+                    decs_ids.append(decs_id)
+                    decs_list_unique.append(decs_term)
 
+
+    # sort final list
+    decs_list = sorted(decs_list_unique, key=lambda k: k['descriptor'])
 
     return render_to_response('utils/decs_suggestion.html',
                               {'decs_list': decs_list})

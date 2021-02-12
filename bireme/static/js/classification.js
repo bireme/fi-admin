@@ -44,15 +44,23 @@ function get_json_text_by_language(field_name, lang){
 }
 
 function open_decs_suggestions(language){
-    lang = language.substring(0,2);
-    if (lang == 'en'){
-        field_title = $('#id_english_translated_title').val();
-    }else{
+    var lang = language.substring(0,2);
+    var field_title = '[]'
+    var field_abstract = '[]'
+    
+    if ( $('#id_title').val() ){
         field_title = $('#id_title').val();
+    }else if( $('#id_title_monographic').val() ){
+        field_title = $('#id_title_monographic').val();
     }
-    field_abstract = $('#id_abstract').val();
+    field_title = jQuery.parseJSON(field_title);
+    
+    if ( $('#id_abstract').val() ){
+        field_abstract = $('#id_abstract').val();        
+    }
+    field_abstract = jQuery.parseJSON(field_abstract);
 
-    text_to_analyze = field_title + ' ' + field_abstract;
+    text_to_analyze = field_title.concat(field_abstract);
 
     decs_suggestion_url = '/utils/decs_suggestion/';
     post_params = {'text_to_analyze': text_to_analyze, 'output_lang': lang};

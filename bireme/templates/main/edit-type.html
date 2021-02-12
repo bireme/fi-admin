@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Source type" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'main.views.list_types' %}">{% trans "Source type" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'main:list_types' %}">{% trans "Source type" %}</a> <span class="divider">/</span></li>
     {% if is_new %}<li>{% trans "New Source type" %}</li>
     {% else %}<li>{% trans "Edit Source type" %}</li>{% endif %}
 {% endblock %}
@@ -77,4 +77,3 @@
         })
    </script>
 {% endblock %}
-

@@ -6,10 +6,8 @@ http://fi-admin.beta.bvsalud.org/api/desc/index/thesaurus/?format=json&ths=1&dec
 http://fi-admin.beta.bvsalud.org/api/qualif/index/thesaurus/?format=json&ths=1&decs_code=22003
 '''
 
-
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
@@ -17,12 +15,11 @@ from tastypie.utils import trailing_slash
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
-from thesaurus.models import *
-from isis_serializer import ISISSerializer
-
-from tastypie_custom import CustomResource
+from api.isis_serializer import ISISSerializer
+from api.tastypie_custom import CustomResource
 
 from thesaurus.field_definitions_thesaurus import field_tag_map
+from thesaurus.models import *
 
 import requests
 import urllib
@@ -30,7 +27,6 @@ import json
 import operator
 
 from django.db.models import Q
-
 
 
 class ThesaurusAPIDescResourceIndex(CustomResource):
@@ -62,7 +58,7 @@ class ThesaurusAPIDescResourceIndex(CustomResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
         ]
 
@@ -197,7 +193,7 @@ class ThesaurusAPIQualifResourceIndex(CustomResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
         ]
 

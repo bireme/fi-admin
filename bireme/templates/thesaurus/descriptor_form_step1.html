@@ -5,6 +5,10 @@
 
 {% block title %}{% trans "Thesaurus" %} | {{ block.super }}{% endblock %}
 
+{% block extrahead %}
+<link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
+{% endblock %}
+
 {% block breadcrumb %}
     <li>
         {% trans "Thesaurus" %}
@@ -117,7 +121,14 @@
                                         <td colspan="2">&nbsp;</td>
                                     </tr>
                                     <tr>
-                                        <td colspan=4>{{ form.abbreviation }}</td>
+                                        <td colspan=4>{% trans "Qualifiers" %}:</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan=4>
+                                            <div class="abbreviation">
+                                                {{ form.abbreviation }}
+                                            </div>
+                                        </td>
                                     </tr>
                                 </table>
 
@@ -495,7 +506,7 @@
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
    <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
-
+   <script src="{% static '/js/multiple-select.min.js' %}"></script>
 
 
    {% if LANGUAGE_CODE != 'en' %}
@@ -610,6 +621,8 @@
 
                 }
             });
+
+            $('[id$="id_abbreviation"]').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
 
             // Garante o preenchimento de idioma dos models baseando-se no campo registry_language
             $(document).on("submit", function(e) {

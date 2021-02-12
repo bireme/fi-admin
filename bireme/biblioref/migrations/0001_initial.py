@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReferenceAnalytic',
             fields=[
-                ('reference_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='biblioref.Reference')),
+                ('reference_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='biblioref.Reference', on_delete=models.PROTECT)),
                 ('individual_author', utils.fields.JSONField(null=True, verbose_name='Individual author', blank=True)),
                 ('corporate_author', utils.fields.JSONField(null=True, verbose_name='Corporate author', blank=True)),
                 ('title', utils.fields.JSONField(null=True, verbose_name='Title', blank=True)),
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReferenceSource',
             fields=[
-                ('reference_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='biblioref.Reference')),
+                ('reference_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='biblioref.Reference', on_delete=models.PROTECT)),
                 ('inventory_number', models.TextField(verbose_name='Inventory number', blank=True)),
                 ('individual_author_monographic', utils.fields.JSONField(null=True, verbose_name='Individual author', blank=True)),
                 ('corporate_author_monographic', utils.fields.JSONField(null=True, verbose_name='Corporate author', blank=True)),
@@ -137,25 +137,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='referencecomplement',
             name='source',
-            field=models.ForeignKey(verbose_name='Source', to='biblioref.Reference'),
+            field=models.ForeignKey(verbose_name='Source', to='biblioref.Reference', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='referenceanalytic',
             name='source',
-            field=models.ForeignKey(verbose_name='Source', to='biblioref.ReferenceSource'),
+            field=models.ForeignKey(verbose_name='Source', to='biblioref.ReferenceSource', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='reference',
             name='created_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='reference',
             name='updated_by',
-            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
     ]

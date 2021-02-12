@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 
-from models import *
+from error_reporting.models import *
 
 class ErrorReportForm(forms.ModelForm):
 
@@ -15,4 +15,3 @@ class ExternalErrorReportForm(forms.ModelForm):
     class Meta:
         model = ErrorReport
         exclude = ('status','object_id','content_type',)
-

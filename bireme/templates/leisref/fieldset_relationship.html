@@ -15,6 +15,7 @@
                 <th>{% trans "Relation type" %}</th>
                 <th>{% trans "Legislation" %}</th>
                 <th>{% trans "Apparatus" %}</th>
+                <th>{% trans "Order" %}</th>
                 <th>{% trans "Delete?" %}</th>
             </thead>
 
@@ -23,6 +24,7 @@
                 <tr>
                     <td>{{ passive.relation_type.get_label_past }}</td>
                     <td>{{ passive.act_related }}</td>
+                    <td>{{ passive.order }}</td>
                     <td></td>
                 </tr>
             {% endfor %}
@@ -56,7 +58,7 @@
                                 {% if field.name == 'act_referred' %}
                                     <td>
                                         {{ field.as_hidden }}
-                                        <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:act_related(this)">
+                                        <div class="input-xlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}" onclick="javascript:act_related(this)">
                                             {% spaceless %}
                                             {% if field.value == None or field.value == '' %}
                                                 {% trans "Select by search" %}
@@ -67,7 +69,7 @@
                                         </div>
                                     </td>
                                 {% elif field.name != 'DELETE' %}
-                                    <td>
+                                    <td class="row_{{field.name}}">
                                         {{ field }}
                                     </td>
                                 {% endif %}

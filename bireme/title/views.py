@@ -1,6 +1,6 @@
 #! coding: utf-8
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -19,8 +19,8 @@ from utils.views import LoginRequiredView, SuperUserRequiredView, GenericUpdateW
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
 
-from models import *
-from forms import *
+from title.models import *
+from title.forms import *
 
 # form actions
 ACTIONS = {

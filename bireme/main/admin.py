@@ -1,7 +1,8 @@
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.contrib import admin
 
-from models import *
+from main.models import *
 from error_reporting.models import ErrorReport
 from utils.admin import GenericAdmin
 
@@ -38,22 +39,22 @@ class SourceLanguageAdmin(GenericAdmin):
     inlines = [SourceLanguageLocalAdmin, ]
 
 
-class DescriptorAdmin(generic.GenericTabularInline):
+class DescriptorAdmin(GenericTabularInline):
     model = Descriptor
     extra = 1
 
 
-class KeywordAdmin(generic.GenericTabularInline):
+class KeywordAdmin(GenericTabularInline):
     model = Keyword
     extra = 1
 
 
-class ErrorReportAdmin(generic.GenericTabularInline):
+class ErrorReportAdmin(GenericTabularInline):
     model = ErrorReport
     extra = 1
 
 
-class ThematicAreaAdmin(generic.GenericTabularInline):
+class ThematicAreaAdmin(GenericTabularInline):
     model = ResourceThematic
     extra = 1
 

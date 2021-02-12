@@ -90,7 +90,7 @@
                                         {% if field.value or field.name == 'status' %}
                                             <blockquote>
                                                 <p><strong>{{ field.label }}</strong><p>
-                                                {% if field.name = 'status' %}
+                                                {% if field.name == 'status' %}
                                                     {% if form.document_type.0 == 'S' %}
                                                         <span class="label label-success">{% trans "Series source" %}</span>
                                                     {% else %}
@@ -319,7 +319,6 @@
                 var decs_op = decs_data[2];
                 var decs_primary = decs_data[3];
 
-                console.log(decs_data);
                 if (decs_op == 'ADD'){
                     decs_field = null;
                     total_lines = $('#id_main-descriptor-content_type-object_id-TOTAL_FORMS').val();
@@ -432,5 +431,102 @@
           $(this).removeData('modal');
         });
 
+        if (literature_type == 'S'){
+            // watch for change at specific fields for duplicated dectection
+            $("#id_title_serial, #id_volume_serial, #id_issue_number").bind("change", check_duplication);
+        }
+
+        function check_duplication() {
+          $( '#dedup-alert' ).remove();
+          // enable save buttons
+          $("button").attr("disabled", false);
+          $("button").removeClass("disabled");
+
+          var title_serial = $('#id_title_serial').val() || $('#id_title_serial_other').val();
+          var volume = $('#id_volume_serial').val();
+          var issue_number = $('#id_issue_number').val();
+
+          var minimumFieldsToCheck = title_serial && volume && issue_number;
+
+          if ( !minimumFieldsToCheck ) {
+            return ;
+          }
+
+          $.ajax(
+            {
+              method: "get",
+              url: "{{ settings.DEDUP_SERVICE_URL }}",
+              data: {
+                database: "lilacs_Sas_Source",
+                schema: "LILACS_Sas_Source",
+                titulo_revista: title_serial,
+                volume_fasciculo: volume,
+                numero_fasciculo: issue_number
+              },
+              dataType: "json",
+              success: function(data) {
+                //console.log(data);
+                var sources = data.result;
+                var duplicates_total = 0;
+                var ref_id = '';
+
+                {% if object.pk %}
+                ref_id = '{{ object.pk }}';
+
+                for (var i = 0; i < sources.length; i++) {
+                  var source = sources[i];
+                  var source_id = source['id'].split('-')[1]; // get only id number. ex. fiadmin-9999-pt
+
+                  if (source_id != ref_id) {
+                    duplicates_total++;
+                  }
+                }
+                {% else %}
+                    duplicates_total = data.total;
+                {% endif %}
+
+                if (duplicates_total == 0) {
+                  return ;
+                }
+
+                var duplicationPanelTitle = '{% trans "Possible duplication" %}';
+                var duplicationDiv = `
+                  <div class="row" id="dedup-alert"">
+                    <div class="span12"><h3>${duplicationPanelTitle}</h3></div>
+                    <div class="span12 alert alert-block" id="dedup-results"></div>
+                  </div>`;
+
+                $('#id_issue_number').parent('li').append( duplicationDiv );
+
+                var hasDuplicatesToShow = false;
+                for (var i = 0; i < sources.length; i++) {
+                  var pos = i + 1;
+                  var source = sources[i];
+                  var source_id = source['id'];
+                  var detail_url = '';
+                  var source_id = source['id'].split('-')[1];
+
+                  if (source_id != ref_id) {
+                    detail_url = `{% url "list_biblioref" %}edit-source/${source_id}`;
+                    var duplicationLink = `
+                        <a href="${detail_url}" target="_blank">${source['titulo_revista']}; ${source['volume_fasciculo']} (${source['numero_fasciculo']}), ${source['data_iso']}</a>`;
+
+                    $( '#dedup-results' ).append(
+                        $( '<div>', { html: duplicationLink }, '</div>' )
+                    );
+                    // if all fields match disable save buttons
+                    if ( title_serial == source['titulo_revista'] && volume == source['volume_fasciculo'] && issue_number == source['numero_fasciculo'] ){
+                        $("button").attr("disabled", true);
+                        $("button").addClass("disabled");
+                    }
+
+                  }
+                }
+
+                $( '#dedup-alert' ).addClass( 'animated shake' );
+              }
+            }
+          );
+        };
    </script>
 {% endblock %}

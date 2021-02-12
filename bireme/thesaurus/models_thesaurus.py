@@ -2,8 +2,7 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 from django.utils import timezone
-# from utils.models import Generic, Country
-from django.contrib.contenttypes.generic import GenericRelation
+
 from main.models import SourceLanguage
 
 # thesaurus fields
@@ -22,7 +21,7 @@ class Thesaurus(models.Model):
     thesaurus_acronym = models.CharField(_("Thesaurus acronym"), max_length=3, blank=True)
 
 
-    def __unicode__(self):
+    def __str__(self):
         return self.thesaurus_name
 
 
@@ -36,7 +35,7 @@ class code_controller(models.Model):
 
     thesaurus = models.CharField(_("Thesaurus"), max_length=50, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.id
 
 
@@ -50,5 +49,5 @@ class code_controller_term(models.Model):
 
     thesaurus = models.CharField(_("Thesaurus"), max_length=50, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.id

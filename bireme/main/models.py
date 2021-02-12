@@ -2,8 +2,7 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
-from django.contrib.contenttypes.generic import GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.core.cache import cache
 from log.models import AuditLog
 
@@ -39,13 +38,20 @@ class SourceType(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
-        translation = SourceTypeLocal.objects.filter(source_type=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "main_sourcetype-{}-{}".format(lang_code, self.id)
+        sourcetype_local = cache.get(cache_id)
+        if not sourcetype_local:
+            translation = SourceTypeLocal.objects.filter(source_type=self.id, language=lang_code)
+            if translation:
+                sourcetype_local = translation[0].name
+            else:
+                sourcetype_local = self.name
+
+            cache.set(cache_id, sourcetype_local, None)
+
+        return sourcetype_local
 
 
 class SourceTypeLocal(models.Model):
@@ -54,7 +60,7 @@ class SourceTypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    source_type = models.ForeignKey(SourceType, verbose_name=_("Source type"))
+    source_type = models.ForeignKey(SourceType, verbose_name=_("Source type"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=255)
 
@@ -79,14 +85,20 @@ class SourceLanguage(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
-        translation = SourceLanguageLocal.objects.filter(source_language=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "main_sourcelanguage-{}-{}".format(lang_code, self.id)
+        sourcelanguage_local = cache.get(cache_id)
+        if not sourcelanguage_local:
+            translation = SourceLanguageLocal.objects.filter(source_language=self.id, language=lang_code)
+            if translation:
+                sourcelanguage_local = translation[0].name
+            else:
+                sourcelanguage_local = self.name
 
+            cache.set(cache_id, sourcelanguage_local, None)
+
+        return sourcelanguage_local
 
 class SourceLanguageLocal(models.Model):
 
@@ -94,7 +106,7 @@ class SourceLanguageLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    source_language = models.ForeignKey(SourceLanguage, verbose_name=_("Source language"))
+    source_language = models.ForeignKey(SourceLanguage, verbose_name=_("Source language"), on_delete=models.CASCADE)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 
@@ -118,7 +130,7 @@ class ThematicArea(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
         cache_id = "thematicarea-{}-{}".format(lang_code, self.id)
         thematicarea_name_local = cache.get(cache_id)
@@ -140,7 +152,7 @@ class ThematicAreaLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    thematic_area = models.ForeignKey(ThematicArea, verbose_name=_("Thematic area"))
+    thematic_area = models.ForeignKey(ThematicArea, verbose_name=_("Thematic area"), on_delete=models.CASCADE)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
     name = models.CharField(_("Name"), max_length=255)
 
@@ -158,14 +170,14 @@ class ResourceThematic(Generic, AuditLog):
         verbose_name_plural = _("Thematic areas")
 
     object_id = models.PositiveIntegerField()
-    content_type = models.ForeignKey(ContentType, related_name='thematics')
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_type = models.ForeignKey(ContentType, related_name='thematics', on_delete=models.PROTECT)
+    content_object = GenericForeignKey('content_type', 'object_id')
 
-    thematic_area = models.ForeignKey(ThematicArea, related_name='+')
+    thematic_area = models.ForeignKey(ThematicArea, related_name='+', on_delete=models.PROTECT)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING, blank=True)
 
-    def __unicode__(self):
-        return self.thematic_area.name
+    def __str__(self):
+        return str(self.thematic_area.name)
 
 
 # DeCS descriptors table
@@ -177,16 +189,16 @@ class Descriptor(Generic, AuditLog):
     )
 
     object_id = models.PositiveIntegerField()
-    content_type = models.ForeignKey(ContentType, related_name='descriptors')
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_type = models.ForeignKey(ContentType, related_name='descriptors', on_delete=models.PROTECT)
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     text = models.CharField(_('Descriptor'), max_length=255, blank=True)
     code = models.CharField(_('Code'), max_length=50, blank=True)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
     primary = models.BooleanField(_('Primary?'), default=False)
 
-    def __unicode__(self):
-        return self.text
+    def __str__(self):
+        return str(self.text)
 
 
 # Keywords table
@@ -198,15 +210,15 @@ class Keyword(Generic, AuditLog):
     )
 
     object_id = models.PositiveIntegerField()
-    content_type = models.ForeignKey(ContentType, related_name='keywords')
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_type = models.ForeignKey(ContentType, related_name='keywords', on_delete=models.PROTECT)
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     text = models.CharField(_('Text'), max_length=255, blank=True)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
     user_recomendation = models.BooleanField(_('User recomendation?'), default=False)
 
-    def __unicode__(self):
-        return self.text
+    def __str__(self):
+        return str(self.text)
 
 
 # Main table
@@ -256,5 +268,5 @@ class Resource(Generic, AuditLog):
     def get_fields(self):
         return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]
 
-    def __unicode__(self):
-        return unicode(self.title)
+    def __str__(self):
+        return str(self.title)

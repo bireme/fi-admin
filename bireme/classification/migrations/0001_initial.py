@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(max_length=155, verbose_name='Slug', blank=True)),
                 ('description', models.TextField(verbose_name='Description', blank=True)),
                 ('image', models.FileField(upload_to=classification.models.attachment_upload, verbose_name='Image', blank=True)),
-                ('parent', models.ForeignKey(verbose_name='Parent', blank=True, to='classification.Collection', null=True)),
+                ('parent', models.ForeignKey(verbose_name='Parent', blank=True, to='classification.Collection', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Collection',
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=155, verbose_name='Name')),
                 ('description', models.TextField(verbose_name='Description', blank=True)),
                 ('image', models.FileField(upload_to=classification.models.attachment_upload, verbose_name='Image', blank=True)),
-                ('collection', models.ForeignKey(verbose_name='Collection', to='classification.Collection')),
+                ('collection', models.ForeignKey(verbose_name='Collection', to='classification.Collection', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -50,8 +50,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('object_id', models.PositiveIntegerField()),
-                ('collection', models.ForeignKey(verbose_name='Collection', to='classification.Collection')),
-                ('content_type', models.ForeignKey(related_name='relationship', to='contenttypes.ContentType')),
+                ('collection', models.ForeignKey(verbose_name='Collection', to='classification.Collection', on_delete=models.PROTECT)),
+                ('content_type', models.ForeignKey(related_name='relationship', to='contenttypes.ContentType', on_delete=models.PROTECT)),
             ],
         ),
         migrations.AlterUniqueTogether(

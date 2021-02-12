@@ -2,7 +2,7 @@
 from django.contrib import admin
 from utils.admin import GenericAdmin
 
-from models import *
+from biblioref.models import *
 
 
 class ReferenceAlternateIDAdmin(admin.ModelAdmin):

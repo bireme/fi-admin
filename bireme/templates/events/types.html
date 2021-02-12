@@ -20,7 +20,7 @@
 <div class='header'>
     <h2><i class='icon-calendar'></i> {% trans "Event types" %}</h2>
         <div class='pull-right'>
-            <a href="{% url 'events.views.create_edit_type' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Event type" %}</a>
+            <a href="{% url 'events:create_type' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Event type" %}</a>
         </div>
 </div>
 
@@ -28,7 +28,7 @@
     {% if actions.s %}
         <div>
             {% trans "Search" %}: <strong>{{ actions.s }}</strong>
-            <a href="{% url 'events.views.list_types' %}">[{% trans "clear" %}]</a>
+            <a href="{% url 'events:list_types' %}">[{% trans "clear" %}]</a>
         </div>
     {% endif %}
 
@@ -50,10 +50,10 @@
         <tbody>
             {% for type in types %}
                 <tr>
-                    <td><a href="{% url 'events.views.create_edit_type' type.id %}">{{ type.id }}</a></td>
+                    <td><a href="{% url 'events:edit_type' type.id %}">{{ type.id }}</a></td>
                     <td>{{ type.name }}</td>
                     <td>
-                        <a href="{% url 'events.views.create_edit_type' type.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                        <a href="{% url 'events:edit_type' type.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                         <a href="#" id="{{ type.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                     </td>
                 </tr>

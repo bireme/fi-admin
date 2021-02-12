@@ -5,6 +5,7 @@
 
 {% block extrahead %}
 <link href="{% static "css/bootstrap-datepicker.min.css" %}" rel="stylesheet">
+<link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
 {% endblock %}
 
 {% block title %}{% trans "Edit Legislation" %}{% endblock %}
@@ -62,7 +63,7 @@
                                 {{ field.errors }}
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
+                                    {% if field.name == 'status' %}
                                         <p>{{ act.get_status_display }}</p>
                                     {% else %}
                                         <p>{{ field.value|linebreaks }}<p>
@@ -80,56 +81,7 @@
                               {% endfor %}
                               {{ form.non_field_errors }}
                               {% for field in form.visible_fields %}
-                                  {% if field.name == 'indexed_database' %}
-                                      <fieldset id="indexed_database" style="width: 53%">
-                                          <div class="row">
-                                              <div class="span3">
-                                                  {% trans "Indexed in" %}
-                                              </div>
-                                              <div class="multiselect_buttons">&nbsp;</div>
-                                              <div class="span3">
-                                                  <span class="multiselect_label">{% trans "Selected" %}</span>
-                                              </div>
-                                          </div>
-
-                                          <div class="row">
-                                              <div class="span3">
-                                                  <select multiple="multiple" name="indexed_databases_available" id="multiselect">
-                                                      {% for value,label in form.indexed_database.field.choices %}
-                                                          {% if form.indexed_database.value %}
-                                                              {% if not value|inintvalues:form.indexed_database.value %}
-                                                                  <option value="{{ value }}">{{ label }}</option>
-                                                              {% endif %}
-                                                          {% else %}
-                                                              <option value="{{ value }}">{{ label }}</option>
-                                                          {% endif %}
-                                                      {% endfor %}
-                                                  </select>
-                                              </div>
-                                              <div class="multiselect_buttons">
-                                                  <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="icon-chevron-right"></i></button>
-                                                  <br/><br/>
-                                                  <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="icon-chevron-left"></i></button>
-                                              </div>
-                                              <div class="span3">
-                                                 <select name="{{ field.name }}"  id="multiselect_to" class="form-control" multiple="multiple">
-                                                     {% for value,label in form.indexed_database.field.choices %}
-                                                          {% if form.indexed_database.value %}
-                                                              {% if value|inintvalues:form.indexed_database.value  %}
-                                                                  <option value="{{ value }}">{{ label }}</option>
-                                                              {% endif %}
-                                                          {% else %}
-                                                              {% if value in field.value %}
-                                                                  <option value="{{ value }}">{{ label }}</option>
-                                                              {% endif %}
-                                                          {% endif %}
-                                                     {% endfor %}
-                                                 </select>
-                                              </div>
-                                          </div>
-                                      </fieldset>
-                                  {% else %}
-                                      <li id="field_{{ field.name }}">
+                                    <li id="field_{{ field.name }}">
                                       {% if field.name not in indexing_fields %}
                                           {% if field.field|fieldtype == 'BooleanField' %}
                                                 <span>{{ field.label }}</span>
@@ -154,8 +106,7 @@
                                           {{ field.errors }}
                                           {{ field }}
                                       {% endif %}
-                                      </li>
-                                  {% endif %}
+                                    </li>
                               {% endfor %}
                             </ul>
                         </fieldset>
@@ -171,7 +122,12 @@
                                 <p>{% trans "Last edit in" %} <strong>{{ act.updated_time }}</strong> {% trans "by user" %}  <strong>{{ act.updated_by.username }}</strong></p>
                             {% endif %}
                         </div>
-
+                        <div class="btn-group pull-right">
+                            <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{object.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                            {% if service_role.TAG %}
+                                <a href="#" onclick="javascript:open_classification('{{c_type.id}}', '{{object.id}}')" class="btn"><i class="icon icon-tags"></i> {% trans "Collection" %}</a>
+                            {% endif %}
+                        </div>
                     {% endif %}
             </div>
 
@@ -332,11 +288,12 @@
     </form>
 </div>
 
-{% include "modal_dedup.html" %}
-
-
 {% if help_fields %}
     {% include "modal_help.html" %}
+{% endif %}
+
+{% if object.id %}
+    {% include "modal_log.html" %}
 {% endif %}
 
 {% endblock %}
@@ -344,7 +301,8 @@
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
-   <script src="{% static 'js/multiselect.min.js' %}"></script>
+   <script src="{% static 'js/multiple-select.min.js' %}"></script>
+   <script src="{% static 'js/classification.js' %}"></script>
    {% if LANGUAGE_CODE != 'en' %}
        <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
    {% endif %}
@@ -439,16 +397,19 @@
                       replace_list_options('id_act_type', result.type_list);
                       replace_list_options('id_scope', result.scope_list);
                       replace_list_options('id_source_name', result.source_list);
-                      replace_list_options('id_organ_issuer', result.organ_issuer_list);
+                      replace_list_options('id_issuer_organ', result.organ_issuer_list);
                       replace_list_options('id_scope_state', result.state_list);
                       replace_list_options('id_scope_city', result.city_list);
                       replace_list_options('id_act_collection', result.collection_list);
+
+                      // refresh options on fields that use multiselect js
+                      $('#id_act_collection, #id_issuer_organ').multipleSelect('refreshOptions', {})
                   }
                });
             });
 
             // load multiselect plugin (indexed database field)
-            $('#multiselect').multiselect();
+            $('#id_indexed_database, #id_act_collection, #id_issuer_organ').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
 
         })
 

@@ -1,7 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.resources import ModelResource
@@ -23,6 +22,7 @@ class LinkResource(ModelResource):
             'thematic_area_id': 'exact',
         }
         include_resource_uri = False
+        max_limit = settings.MAX_EXPORT_API_LIMIT
 
     def build_filters(self, filters=None):
         orm_filters = super(LinkResource, self).build_filters(filters)
@@ -33,8 +33,8 @@ class LinkResource(ModelResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
-            url(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_last_id'), name="api_get_last_id"),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),
+            re_path(r"^(?P<resource_name>%s)/get_last_id%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_last_id'), name="api_get_last_id"),
         ]
 
 

@@ -43,6 +43,9 @@ function field_assist(field_name, field_id, module_name){
 
     field_assist_url = '/utils/field_assist/' + field_name + '/',
     field_value = $('#id_' + field_id).val();
+    if (field_value == 'null'){
+        field_value = '';
+    }
 
     post_params = {'field_value' : field_value, 'field_id': field_id, 'module_name': module_name};
 

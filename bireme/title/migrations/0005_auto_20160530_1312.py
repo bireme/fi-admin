@@ -21,8 +21,8 @@ class Migration(migrations.Migration):
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('code', models.CharField(max_length=55, verbose_name='Code', blank=True)),
                 ('name', models.CharField(max_length=455, verbose_name='Name', blank=True)),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'User',

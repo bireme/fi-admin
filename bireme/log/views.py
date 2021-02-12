@@ -1,14 +1,12 @@
 #! coding: utf-8
-from django.core.urlresolvers import reverse, reverse_lazy
-
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.contrib.admin.models import LogEntry
 from django.views.generic.edit import UpdateView
 from utils.views import LoginRequiredView
 from django.template import RequestContext
 
-from models import LogReview
-from forms import LogReviewForm
+from log.models import LogReview
+from log.forms import LogReviewForm
 
 def view_log(request, ctype_id, obj_id):
     """
@@ -16,7 +14,7 @@ def view_log(request, ctype_id, obj_id):
     """
     logs = LogEntry.objects.filter(content_type_id=ctype_id, object_id=obj_id)
 
-    return render_to_response('log/list.html', {'logs': logs})
+    return render(request, 'log/list.html', {'logs': logs})
 
 
 def review_log(request, type, ctype_id, obj_id):
@@ -47,10 +45,9 @@ def review_log(request, type, ctype_id, obj_id):
         reference_type = log_list[0].content_type.model
         reference_id = log_list[0].object_id
 
-    return render_to_response('log/review.html', {'logs': log_list,
+    return render(request, 'log/review.html', {'logs': log_list,
                                                   'reference_type': reference_type,
-                                                  'reference_id': reference_id},
-                              context_instance=RequestContext(request))
+                                                  'reference_id': reference_id})
 
 
 def update_review(request):
@@ -60,7 +57,7 @@ def update_review(request):
 
     not_approved_list = []
     # iterate for all params in the form
-    for param, value in request.POST.iteritems():
+    for param, value in request.POST.items():
         # check for review params (review_ID-OF-LOGENTRY)
         if 'review_' in param and value != '':
             # extract logentry id from param name
@@ -83,10 +80,9 @@ def update_review(request):
         reference_type = not_approved_logs[0].content_type.model
         reference_id = not_approved_logs[0].object_id
 
-        return render_to_response('log/review_notapproved.html',
-                                  {'logs': not_approved_logs, 'reference_type': reference_type,
-                                   'reference_id': reference_id},
-                                  context_instance=RequestContext(request))
+        return render('log/review_notapproved.html',
+                    {'logs': not_approved_logs, 'reference_type': reference_type,
+                    'reference_id': reference_id})
 
     else:
         return redirect('dashboard')

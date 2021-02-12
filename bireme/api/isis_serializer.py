@@ -31,15 +31,15 @@ class ISISSerializer(Serializer):
 
             record_lines = []
             for field_name in item:
-                field = item[field_name]
+                field = item.get(field_name)
                 # check if field is not empty
                 if field:
-                    if type(field) is list:
+                    if isinstance(field, list):
                         # create a temp str field_value with all subfields of current occ
                         for field_occ in field:
                             field_value = ''
                             if isinstance(field_occ, dict):
-                                for key, value in field_occ.iteritems():
+                                for key, value in field_occ.items():
                                     subfield_id = "^{0}".format(key[1]) if key.startswith('_') else ''
                                     # skip subfields with False values. ex. ^g of electronic_address
                                     if isinstance(value, bool) and value is False:
@@ -48,10 +48,10 @@ class ISISSerializer(Serializer):
                                     if not value:
                                         continue
 
-                                    if not isinstance(value, basestring):
+                                    if not isinstance(value, str):
                                         value = str(value)
 
-                                    subfield = u''.join((subfield_id, value)).encode('utf-8').strip()
+                                    subfield = u''.join((subfield_id, value)).strip()
                                     field_value = ''.join((field_value, subfield))
                                 # format out line in ID format
                                 id_field = self.id_field(field_name, field_value)
@@ -62,7 +62,7 @@ class ISISSerializer(Serializer):
 
                     else:
                         # check for fields with multiples lines as occurrences
-                        if isinstance(field, basestring) and "\n" in field:
+                        if isinstance(field, str) and "\n" in field:
                             for field_line in field.split('\n'):
                                 id_field = self.id_field(field_name, field_line)
                                 record_lines.append(id_field)
@@ -87,10 +87,7 @@ class ISISSerializer(Serializer):
         id_field = ''
         field_number = self.field_tag.get(field, None)
         if field_number:
-            if type(value) is unicode:
-                field_value = value.encode('utf-8').strip()
-            else:
-                field_value = str(value)
+            field_value = str(value)
 
             id_field = "!v{0:03d}!{1} \n".format(int(field_number), field_value)
 

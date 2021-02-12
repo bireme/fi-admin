@@ -21,8 +21,8 @@ class Migration(migrations.Migration):
                 ('updated_time', models.DateTimeField(auto_now=True, verbose_name='updated', null=True)),
                 ('acronym', models.CharField(max_length=55, verbose_name='Acronym')),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Database',
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'pt-br', 'Portuguese'), (b'es', 'Spanish'), (b'fr', 'French')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
-                ('database', models.ForeignKey(verbose_name='Database', to='leisref.Database')),
+                ('database', models.ForeignKey(verbose_name='Database', to='leisref.Database', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',
@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='act',
             name='act_collection',
-            field=models.ForeignKey(verbose_name='Collection', blank=True, to='leisref.ActCollection', null=True),
+            field=models.ForeignKey(verbose_name='Collection', blank=True, to='leisref.ActCollection', null=True, on_delete=models.PROTECT),
         ),
         migrations.AlterField(
             model_name='actcity',

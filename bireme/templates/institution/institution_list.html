@@ -94,7 +94,7 @@
                             <select name="filter_country">
                                 <option value="">{% trans "All" %}</option>
                                 {% for country in country_list %}
-                                    <option value="{{country.country_id}}" {% if actions.filter_country == country.country_id|slugify %}selected="true"{% endif %}>{{ country.country__name }}</option>
+                                    <option value="{{country.0}}" {% if actions.filter_country == country.0|slugify %}selected="true"{% endif %}>{{ country.1 }}</option>
                                 {% endfor %}
                             </select>
 
@@ -128,7 +128,7 @@
                             <td>{{ institution.status_label }}</a></td>
                             <td>
                                 <a href="{% url 'edit_institution' institution.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if user_cc = 'BR1.1' %}
+                                {% if user_cc == 'BR1.1' %}
                                     <a href="{% url 'delete_institution' institution.id  %}" class='btn btn-mini' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>

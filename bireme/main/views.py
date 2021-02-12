@@ -1,12 +1,9 @@
 #! coding: utf-8
-from django.shortcuts import redirect, render_to_response, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.shortcuts import redirect, reverse, render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import forms as auth_forms
-from django.contrib.auth.views import logout
-
 from django.contrib.contenttypes.models import ContentType
 
 from django.utils.translation import ugettext_lazy as _
@@ -16,22 +13,23 @@ from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 
-from utils.views import ACTIONS
 from utils.context_processors import additional_user_info
 from utils.forms import is_valid_for_publication
 from django.conf import settings
 from datetime import datetime
-from models import *
-from suggest.models import *
+
+from main.models import *
+from main.forms import *
+from main.decorators import *
+
 from help.models import get_help_fields
-from forms import *
 from error_reporting.forms import ErrorReportForm
 
 import mimetypes
 
 import os
-
-from decorators import *
+import json
+import requests
 
 ############ Resources (LIS) #############
 
@@ -49,11 +47,11 @@ def list_resources(request):
 
     # getting action parameters
     actions = {}
-    for key in ACTIONS.keys():
-        if request.REQUEST.get(key):
-            actions[key] = request.REQUEST.get(key)
+    for key in settings.ACTIONS.keys():
+        if request.GET.get(key):
+            actions[key] = request.GET.get(key)
         else:
-            actions[key] = ACTIONS[key]
+            actions[key] = settings.ACTIONS[key]
 
     page = 1
     if actions['page'] and actions['page'] != '':
@@ -128,7 +126,7 @@ def list_resources(request):
     output['pagination'] = pagination
     output['user_data'] = user_data
 
-    return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/resources.html', output)
 
 @login_required
 def create_edit_resource(request, **kwargs):
@@ -188,11 +186,10 @@ def create_edit_resource(request, **kwargs):
             # update solr index
             form.save()
             form.save_m2m()
+            # update DeDup service
+            update_dedup_service(resource)
 
-            output['alert'] = _("Resource successfully edited.")
-            output['alerttype'] = "alert-success"
-
-            redirect_url = request.session.get("filtered_list", 'main.views.list_resources')
+            redirect_url = request.session.get("filtered_list", 'main:list_resources')
 
             return redirect(redirect_url)
     # new/edit
@@ -237,7 +234,7 @@ def create_edit_resource(request, **kwargs):
     output['user_role'] = user_role
     output['help_fields'] = get_help_fields('resources')
 
-    return render_to_response('main/edit-resource.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/edit-resource.html', output)
 
 
 @login_required
@@ -263,7 +260,7 @@ def delete_resource(request, resource_id):
     output['alert'] = _("Resource deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('main/resources.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/resources.html', output)
 
 
 ############ Auxiliary table Thematic Area (LIS Type) #############
@@ -281,11 +278,11 @@ def list_thematics(request):
 
     # getting action parameters
     actions = {}
-    for key in ACTIONS.keys():
-        if request.REQUEST.get(key):
-            actions[key] = request.REQUEST.get(key)
+    for key in settings.ACTIONS.keys():
+        if request.GET.get(key):
+            actions[key] = request.GET.get(key)
         else:
-            actions[key] = ACTIONS[key]
+            actions[key] = settings.ACTIONS[key]
 
     page = 1
     if actions['page'] and actions['page'] != '':
@@ -309,7 +306,7 @@ def list_thematics(request):
     output['actions'] = actions
     output['pagination'] = pagination
 
-    return render_to_response('main/thematics.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/thematics.html', output)
 
 @login_required
 @superuser_permission
@@ -336,7 +333,7 @@ def create_edit_thematic(request, **kwargs):
             output['alert'] = _("Thematic area successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('main.views.list_thematics')
+            return redirect('main:list_thematics')
     # new
     else:
         form = ThematicAreaForm(instance=thematic)
@@ -346,7 +343,7 @@ def create_edit_thematic(request, **kwargs):
     output['formset'] = formset
     output['thematic'] = thematic
 
-    return render_to_response('main/edit-thematic.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/edit-thematic.html', output)
 
 
 @login_required
@@ -361,7 +358,7 @@ def delete_thematic(request, thematic_id):
     output['alert'] = _("Thematic area deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('main/thematics.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/thematics.html', output)
 
 
 ########## Auxiliary table Source Type ###########
@@ -379,11 +376,11 @@ def list_types(request):
 
     # getting action parameters
     actions = {}
-    for key in ACTIONS.keys():
-        if request.REQUEST.get(key):
-            actions[key] = request.REQUEST.get(key)
+    for key in settings.ACTIONS.keys():
+        if request.GET.get(key):
+            actions[key] = request.GET.get(key)
         else:
-            actions[key] = ACTIONS[key]
+            actions[key] = settings.ACTIONS[key]
 
     page = 1
     if actions['page'] and actions['page'] != '':
@@ -407,7 +404,7 @@ def list_types(request):
     output['actions'] = actions
     output['pagination'] = pagination
 
-    return render_to_response('main/types.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/types.html', output)
 
 @login_required
 @superuser_permission
@@ -434,7 +431,7 @@ def create_edit_type(request, **kwargs):
             output['alert'] = _("Type successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('main.views.list_types')
+            return redirect('main:list_types')
     # new
     else:
         form = TypeForm(instance=type)
@@ -444,7 +441,7 @@ def create_edit_type(request, **kwargs):
     output['formset'] = formset
     output['type'] = type
 
-    return render_to_response('main/edit-type.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/edit-type.html', output)
 
 
 @login_required
@@ -458,7 +455,7 @@ def delete_type(request, type):
     output['alert'] = _("Type deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('main/types.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/types.html', output)
 
 ############ Auxiliary table Source Languages #############
 
@@ -475,11 +472,11 @@ def list_languages(request):
 
     # getting action parameters
     actions = {}
-    for key in ACTIONS.keys():
-        if request.REQUEST.get(key):
-            actions[key] = request.REQUEST.get(key)
+    for key in settings.ACTIONS.keys():
+        if request.GET.get(key):
+            actions[key] = request.GET.get(key)
         else:
-            actions[key] = ACTIONS[key]
+            actions[key] = settings.ACTIONS[key]
 
     page = 1
     if actions['page'] and actions['page'] != '':
@@ -503,7 +500,7 @@ def list_languages(request):
     output['actions'] = actions
     output['pagination'] = pagination
 
-    return render_to_response('main/languages.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/languages.html', output)
 
 @login_required
 @superuser_permission
@@ -530,7 +527,7 @@ def create_edit_language(request, **kwargs):
             output['alert'] = _("Language successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('main.views.list_languages')
+            return redirect('main:list_languages')
     # new
     else:
         form = LanguageForm(instance=language)
@@ -540,7 +537,7 @@ def create_edit_language(request, **kwargs):
     output['formset'] = formset
     output['language'] = language
 
-    return render_to_response('main/edit-language.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/edit-language.html', output)
 
 
 @login_required
@@ -555,4 +552,24 @@ def delete_language(request, language_id):
     output['alert'] = _("Language deleted.")
     output['alerttype'] = "alert-success"
 
-    return render_to_response('main/languages.html', output, context_instance=RequestContext(request))
+    return render(request, 'main/languages.html', output)
+
+
+# update DeDup service
+def update_dedup_service(obj):
+
+    if obj.status < 2:
+        print("***update***")
+        dedup_schema = 'LIS_Two'
+        dedup_params = {"titulo": obj.title, "url": obj.link}
+
+        json_data = json.dumps(dedup_params, ensure_ascii=True)
+        dedup_headers = {'Content-Type': 'application/json'}
+
+        ref_id = obj.id
+        dedup_url = "{0}/{1}/{2}/{3}".format(settings.DEDUP_PUT_URL, 'LIS', dedup_schema, ref_id)
+
+        try:
+            dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
+        except:
+            pass

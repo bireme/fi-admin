@@ -1,0 +1,391 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}FI-ADMIN API{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block content %}
+    <div class="markdown-body">
+        <h1>
+          FI-ADMIN API
+       </h1>
+       <!-- REGISTROS BIBLIOGRÁFICOS -->
+        <h2>
+          Registros bibliográficos
+        </h2>
+        <h3>
+          Exportação
+        </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>status</strong> = (0 - LILACS-Express / 1 - Publicado em LILACS)
+            </li>
+            <li>
+                <strong>format</strong> = (xml, json, isis_id)
+            </li>
+            <li>
+                <strong>limit</strong> = quantidade de registros (0 para todos)
+            </li>
+            <li>
+                <strong>offset</strong> = registro inicial
+            </li>
+            <li>
+                <strong>LILACS_original_id</strong> = identificador LILACS
+            </li>
+            <li>
+                <strong>id</strong> = identificador do registro no fi-admin
+            </li>
+            <li>
+                <strong>indexed_database</strong> = acrónimo da base de dados do campo "indexado em"
+            </li>
+            <li>
+                <strong>collection</strong> = identificador da coleção onde o registro foi classificado
+            </li>
+            <li>
+                <strong>updated_time</strong> = data de atualização do registro, usar <strong>updated_time__gte</strong> (maior que) ou <strong>updated_time__lte</strong> (menor que) e a data em formato AAAA-MM-DD
+            </li>
+        </ul>
+        <p>Exs:</p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=0&amp;format=isis_id&amp;limit=10" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=0&amp;format=isis_id&amp;limit=10</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=1&amp;format=isis_id&amp;limit=10&amp;updated_time__gte=2016-01-01" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?status=1&amp;format=isis_id&amp;limit=10&amp;updated_time__gte=2016-01-01</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;id=831835" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;id=831835</a></p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;indexed_database=LILACS" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/bibliographic/?format=isis_id&amp;indexed_database=LILACS</a></p>
+
+        <!-- TITLE -->
+        <h2>
+          Revistas
+       </h2>
+        <h3>
+          Exportação
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/title/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/title/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>format</strong> = (xml, json, isis_id)
+            </li>
+            <li>
+                <strong>limit</strong> = quantidade de registros (0 para todos)
+            </li>
+            <li>
+                <strong>offset</strong> = registro inicial
+            </li>
+        </ul>
+        <p>Ex:</p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/title/?format=isis_id&amp;limit=10" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/title/?format=isis_id&amp;limit=10</a></p>
+
+        <!-- RECURSOS DE INTERNET -->
+        <h2>
+          Recursos de Internet
+       </h2>
+        <h3>
+          Exportação
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/resource/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/resource/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>format</strong> = (xml / json)
+            </li>
+            <li>
+                <strong>limit</strong> = quantidade de registros (0 para todos)
+            </li>
+            <li>
+                <strong>offset</strong> = registro inicial
+            </li>
+        </ul>
+        <h3>
+          Pesquisa
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/resource/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/resource/search/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>q</strong> = busca
+            </li>
+            <li>
+                <strong>fq</strong> = filtro
+            </li>
+            <li>
+                <strong>start</strong> = hit inicial
+            </li>
+            <li>
+                <strong>lang</strong> = idioma
+            </li>
+        </ul>
+
+        <!-- EVENTOS -->
+        <h2>
+          Eventos em Saúde
+       </h2>
+        <h3>
+          Exportação
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/event/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/event/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>format</strong> = (xml / json)
+            </li>
+            <li>
+                <strong>limit</strong> = quantidade de registros (0 para todos)
+            </li>
+            <li>
+                <strong>offset</strong> = registro inicial
+            </li>
+        </ul>
+        <h3>
+          Pesquisa
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/event/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/event/search/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>q</strong> = busca
+            </li>
+            <li>
+                <strong>fq</strong> = filtro
+            </li>
+            <li>
+                <strong>start</strong> = hit inicial
+            </li>
+            <li>
+                <strong>lang</strong> = idioma
+            </li>
+        </ul>
+        <h3>
+          Próximos eventos
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/event/next/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/event/next/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>fq</strong> = filtro
+            </li>
+            <li>
+                <strong>lang</strong> = idioma
+            </li>
+        </ul>
+
+        <!-- MULTIMIDIA -->
+        <h2>
+          Multimidia
+       </h2>
+        <h3>
+          Exportação
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/multimedia/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/multimedia/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>format</strong> = (xml / json)
+            </li>
+            <li>
+                <strong>limit</strong> = quantidade de registros (0 para todos)
+            </li>
+            <li>
+                <strong>offset</strong> = registro inicial
+            </li>
+        </ul>
+        <h3>
+          Pesquisa
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/multimedia/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/multimedia/search/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>q</strong> = busca
+            </li>
+            <li>
+                <strong>fq</strong> = filtro
+            </li>
+            <li>
+                <strong>start</strong> = hit inicial
+            </li>
+            <li>
+                <strong>lang</strong> = idioma
+            </li>
+        </ul>
+
+        <!-- RECURSOS EDUCACIONAIS -->
+        <h2>
+          Recursos Educacionais Abertos
+       </h2>
+        <h3>
+          Exportação
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/oer/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/oer/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>status</strong> = (-1 - Rascunho / 1 - Publicado)
+            </li>
+            <li>
+                <strong>format</strong> = (xml / json)
+            </li>
+            <li>
+                <strong>limit</strong> = quantidade de registros (0 para todos)
+            </li>
+            <li>
+                <strong>offset</strong> = registro inicial
+            </li>
+            <li>
+                <strong>cvsp_node</strong> = identificador do nó CVSP
+            </li>
+            <li>
+                <strong>CVSP_resource</strong> = (True / False)
+            </li>
+        </ul>
+        <h3>
+          Pesquisa
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/oer/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/oer/search/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>q</strong> = busca
+            </li>
+            <li>
+                <strong>fq</strong> = filtro
+            </li>
+            <li>
+                <strong>start</strong> = hit inicial
+            </li>
+            <li>
+                <strong>lang</strong> = idioma
+            </li>
+        </ul>
+
+        <!-- LEGISLAÇÃO -->
+        <h2>
+            Legislação
+         </h2>
+          <h3>
+            Exportação
+         </h3>
+          <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/leisref/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/leisref/</a></p>
+          <p>parâmetros:</p>
+          <ul>
+              <li>
+                  <strong>format</strong> = (xml / json)
+              </li>
+              <li>
+                  <strong>limit</strong> = quantidade de registros (0 para todos)
+              </li>
+              <li>
+                  <strong>offset</strong> = registro inicial
+              </li>
+              <li>
+                <strong>collection</strong> = identificador da coleção onde o registro foi classificado
+              </li>
+          </ul>
+          <h3>
+            Pesquisa
+         </h3>
+          <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/resource/search/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/leisref/search/</a></p>
+          <p>parâmetros:</p>
+          <ul>
+              <li>
+                  <strong>q</strong> = busca
+              </li>
+              <li>
+                  <strong>fq</strong> = filtro
+              </li>
+              <li>
+                  <strong>start</strong> = hit inicial
+              </li>
+              <li>
+                  <strong>lang</strong> = idioma
+              </li>
+          </ul>
+
+        <!-- COMUNIDADES/COLEÇÕES -->
+        <h2>
+          Comunidades/Coleções
+       </h2>
+        <h3>
+          Listar comunidades (coleção nível 0)
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/community/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/community/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>format</strong> = (xml / json)
+            </li>
+            <li>
+                <strong>limit</strong> = quantidade de registros (0 para todos)
+            </li>
+            <li>
+                <strong>country</strong> = identificador do país ao qual a comunidade pertence
+            </li>
+        </ul>
+        <h3>
+          Listar coleções
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/collection/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/collection/</a></p>
+        <p>parâmetros:</p>
+        <ul>
+            <li>
+                <strong>format</strong> = (xml / json)
+            </li>
+            <li>
+                <strong>limit</strong> = quantidade de registros (0 para todos)
+            </li>
+            <li>
+                <strong>community</strong> = ID da comunidade (coleção pai)
+            </li>
+            <li>
+                <strong>lang</strong> = idioma de retorno dos metadados da coleção
+            </li>
+        </ul>
+        <h3>
+          Listar países que possuem uma ou mais comunidades
+        </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/community/get_country_list/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/community/get_country_list/</a></p>
+
+        <!-- TESAURO -->
+        <h2>
+          Tesauro
+       </h2>
+        <h3>
+          Exportação registro descritor
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/desc/thesaurus/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/desc/thesaurus/</a></p>
+        <p>parâmetros</p>
+        <ul>
+            <li>
+                <strong>format</strong> = (xml / json)
+            </li>
+            <li>
+                <strong>ths</strong> = Código do tesauro
+            </li>
+            <li>
+                <strong>decs_code</strong> = identificador do registro no tesauro
+            </li>
+        </ul>
+        <p>Ex.:</p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/desc/thesaurus/?format=json&ths=1&decs_code=2" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/desc/thesaurus/?format=json&amp;ths=1&amp;decs_code=2</a></p>
+        <h3>
+          Exportação registro qualificador
+       </h3>
+        <p><strong>endpoint:</strong> <a href="{{request.scheme}}://{{request.get_host}}/api/qualif/thesaurus/" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/qualif/thesaurus/</a></p>
+        <p>parâmetros</p>
+        <ul>
+            <li>
+                <strong>format</strong> = (xml / json)
+            </li>
+            <li>
+                <strong>ths</strong> = Código do tesauro
+            </li>
+            <li>
+                <strong>decs_code</strong> = identificador do registro no tesauro
+            </li>
+        </ul>
+        <p>Ex.:</p>
+        <p><a href="{{request.scheme}}://{{request.get_host}}/api/qualif/thesaurus/?format=json&ths=1&decs_code=22004" rel="nofollow">{{request.scheme}}://{{request.get_host}}/api/qualif/thesaurus/?format=json&amp;ths=1&amp;decs_code=22004</a></p>
+    </div>
+{% endblock %}

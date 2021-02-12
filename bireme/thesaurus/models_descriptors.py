@@ -9,7 +9,7 @@ from .models_qualifiers import *
 from utils.models import Generic
 from log.models import AuditLog
 
-from choices import *
+from thesaurus.choices import *
 
 from multiselectfield import MultiSelectField
 
@@ -22,7 +22,7 @@ class IdentifierDesc(Generic, AuditLog):
         verbose_name_plural = _("Descriptors")
         ordering = ('decs_code',)
 
-    thesaurus = models.ForeignKey(Thesaurus, null=True, blank=False, default=None)
+    thesaurus = models.ForeignKey(Thesaurus, null=True, blank=False, default=None, on_delete=models.PROTECT)
 
     # DescriptorClass
     descriptor_class = models.CharField(_("Descriptor class"), choices=DESCRIPTOR_CLASS_CODE, max_length=2, blank=True)
@@ -51,10 +51,10 @@ class IdentifierDesc(Generic, AuditLog):
 
     abbreviation = models.ManyToManyField(IdentifierQualif, verbose_name='Abbreviation', blank=True)
 
-    # def __unicode__(self):
+    # def __str__(self):
     #     return self.descriptor_ui
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -69,7 +69,7 @@ class DescriptionDesc(models.Model, AuditLog):
         verbose_name_plural = _("Descriptions")
         unique_together = ('identifier','language_code')
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="descriptiondesc", null=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="descriptiondesc", null=True, on_delete=models.PROTECT)
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
 
@@ -91,7 +91,7 @@ class DescriptionDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -107,7 +107,7 @@ class TreeNumbersListDesc(models.Model, AuditLog):
         ordering = ('tree_number',)
         unique_together = ('identifier','tree_number')
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="dtreenumbers", null=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="dtreenumbers", null=True, on_delete=models.PROTECT)
 
     # Tree Number
     tree_number = models.CharField(_("Tree number"), max_length=250, blank=True)
@@ -115,7 +115,7 @@ class TreeNumbersListDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -127,7 +127,7 @@ class PharmacologicalActionList(models.Model, AuditLog):
         verbose_name = _("Pharmacological Action List")
         verbose_name_plural = _("Pharmacologicals Action List")
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="pharmacodesc", blank=True, null=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="pharmacodesc", blank=True, null=True, on_delete=models.PROTECT)
 
     # String
     term_string = models.CharField(_("String"), max_length=250, blank=True)
@@ -140,7 +140,7 @@ class PharmacologicalActionList(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -154,7 +154,7 @@ class SeeRelatedListDesc(models.Model, AuditLog):
         verbose_name = _("See Related List")
         verbose_name_plural = _("See Related List")
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="relateddesc", blank=True, null=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="relateddesc", blank=True, null=True, on_delete=models.PROTECT)
 
     # String
     term_string = models.CharField(_("String"), max_length=250, blank=True)
@@ -165,7 +165,7 @@ class SeeRelatedListDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -179,7 +179,7 @@ class PreviousIndexingListDesc(models.Model, AuditLog):
         verbose_name = _("Previous Indexing")
         verbose_name_plural = _("Previous Indexing")
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="previousdesc", blank=True, null=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="previousdesc", blank=True, null=True, on_delete=models.PROTECT)
 
     # PreviousIndexing
     previous_indexing = models.CharField(_("Previous indexing"), max_length=1000, blank=True)
@@ -189,7 +189,7 @@ class PreviousIndexingListDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -201,7 +201,7 @@ class legacyInformationDesc(models.Model):
         verbose_name = _("Legacy information")
         verbose_name_plural = _("Legacy information")
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="legacyinformationdesc", blank=True, null=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="legacyinformationdesc", blank=True, null=True, on_delete=models.PROTECT)
 
     # c
     pre_codificado = models.CharField(_("Pre-codificado"), max_length=1, blank=True)
@@ -239,7 +239,7 @@ class legacyInformationDesc(models.Model):
     # z
     geog_decs = models.CharField(_("Geog DeCS"), max_length=1, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -250,7 +250,7 @@ class EntryCombinationListDesc(models.Model, AuditLog):
         verbose_name = _("Entry combination List")
         verbose_name_plural = _("Entry combinations List")
 
-    identifier = models.ForeignKey(IdentifierDesc, related_name="entrycombinationlistdesc", blank=True, null=True)
+    identifier = models.ForeignKey(IdentifierDesc, related_name="entrycombinationlistdesc", blank=True, null=True, on_delete=models.PROTECT)
 
     ecin_qualif = models.CharField(_("Qualifier string"), max_length=250, blank=True)
     ecin_id = models.CharField(_("Identifier"), max_length=250, blank=True)
@@ -264,7 +264,7 @@ class EntryCombinationListDesc(models.Model, AuditLog):
     def get_parent(self):
         return self.identifier
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -277,7 +277,7 @@ class IdentifierConceptListDesc(models.Model):
         verbose_name = _("Concept record")
         verbose_name_plural = _("Concept records")
 
-    identifier = models.ForeignKey(IdentifierDesc, blank=True, null=True)
+    identifier = models.ForeignKey(IdentifierDesc, blank=True, null=True, on_delete=models.PROTECT)
     # identifier = models.ForeignKey(IdentifierDesc, related_name="identifierconceptdesc", blank=True, null=True)
 
     # ConceptUI
@@ -298,7 +298,7 @@ class IdentifierConceptListDesc(models.Model):
     # Historical annotation
     historical_annotation = models.TextField(_("Historical annotation"), max_length=1500, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -312,7 +312,7 @@ class ConceptListDesc(models.Model):
         verbose_name = _("Concept")
         verbose_name_plural = _("Concepts")
 
-    identifier_concept = models.ForeignKey(IdentifierConceptListDesc, related_name="conceptdesc", blank=True, null=True)
+    identifier_concept = models.ForeignKey(IdentifierConceptListDesc, related_name="conceptdesc", blank=True, null=True, on_delete=models.PROTECT)
 
 
     language_code = models.CharField(_("Language used for description"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
@@ -323,7 +323,7 @@ class ConceptListDesc(models.Model):
     # def get_parent(self):
     #     return self.identifier_concept
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -338,7 +338,7 @@ class TermListDesc(models.Model):
         verbose_name_plural = _("Terms")
         # ordering = ('language_code','term_string','concept_preferred_term')
 
-    identifier_concept = models.ForeignKey(IdentifierConceptListDesc, related_name="termdesc", blank=True, null=True)
+    identifier_concept = models.ForeignKey(IdentifierConceptListDesc, related_name="termdesc", blank=True, null=True, on_delete=models.PROTECT)
 
     # Adminstration field
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=-1)
@@ -382,7 +382,7 @@ class TermListDesc(models.Model):
     # def get_parent(self):
     #     return self.identifier_concept
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
 
 
@@ -393,11 +393,10 @@ class TheraurusOccurrenceListDesc(models.Model):
         verbose_name = _("Thesaurus occurrence")
         verbose_name_plural = _("Thesaurus occurrence")
 
-    identifier_term = models.ForeignKey(TermListDesc, related_name="tocurrencedesc", blank=True, null=True)
+    identifier_term = models.ForeignKey(TermListDesc, related_name="tocurrencedesc", blank=True, null=True, on_delete=models.PROTECT)
 
     # ThesaurusID
     thesaurus_occurrence = models.CharField(_("Name of a thesaurus where terms occur"), max_length=250, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % (self.id)
-

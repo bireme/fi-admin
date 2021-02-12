@@ -1,5 +1,5 @@
 #! coding: utf-8
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -10,7 +10,6 @@ from django.contrib.auth.models import User
 
 from django.conf import settings
 
-from utils.views import ACTIONS
 from utils.views import LoginRequiredView, SuperUserRequiredView, GenericUpdateWithOneFormset
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
@@ -19,8 +18,8 @@ from main.models import ThematicArea
 from attachments.models import Attachment
 from help.models import get_help_fields
 
-from models import *
-from forms import *
+from multimedia.models import *
+from multimedia.forms import *
 
 
 class MultimediaListView(LoginRequiredView, ListView):
@@ -36,8 +35,8 @@ class MultimediaListView(LoginRequiredView, ListView):
     def get_queryset(self):
         # getting action parameter
         self.actions = {}
-        for key in ACTIONS.keys():
-            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+        for key in settings.ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
         if ":" in self.actions["s"]:
             search_parts = self.actions["s"].split(":")
@@ -82,11 +81,12 @@ class MultimediaListView(LoginRequiredView, ListView):
         thematic_list = ThematicArea.objects.all().order_by('name')
         user_list = User.objects.filter(is_superuser=False).order_by('username')
         # mantain in user filter list only users from the same CCS (CC's in the network) as request.user
+        '''
         for user in user_list:
             user_cc = user.profile.get_attribute('cc')
             if user_cc == user_data['user_cc'] or user_cc in user_data['ccs']:
                 user_filter_list.append(user)
-
+        '''
         cc_filter_list = user_data['ccs']
         # remove duplications from list
         cc_filter_list = list(set(cc_filter_list))

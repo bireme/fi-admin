@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='collection',
             name='country',
-            field=models.ForeignKey(verbose_name='Country', blank=True, to='utils.Country', null=True),
+            field=models.ForeignKey(verbose_name='Country', blank=True, to='utils.Country', null=True, on_delete=models.PROTECT),
         ),
     ]

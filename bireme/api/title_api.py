@@ -1,7 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django.conf.urls import patterns, url, include
-
+from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
@@ -9,12 +8,11 @@ from tastypie.utils import trailing_slash
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
-from title.models import *
-from isis_serializer import ISISSerializer
-
-from tastypie_custom import CustomResource
+from api.isis_serializer import ISISSerializer
+from api.tastypie_custom import CustomResource
 
 from main.models import Descriptor
+from title.models import *
 from title.field_definitions import field_tag_map, issue_field_tag_map
 
 import requests
@@ -64,7 +62,7 @@ class TitleResource(CustomResource):
 
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
+            re_path(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_search'), name="api_get_search"),
         ]
 
@@ -190,7 +188,7 @@ class TitleResource(CustomResource):
                 index = '^z'+str(index+1) if text else ''
 
                 if data.notes:
-                    if isinstance(data.notes, basestring) and "\r\n" in data.notes:
+                    if isinstance(data.notes, str) and "\r\n" in data.notes:
                         lines = ''
                         for line in data.notes.split('\r\n'):
                             if line:
@@ -216,7 +214,7 @@ class TitleResource(CustomResource):
                         bundle.data['collection'] += [line]
             else:
                 bundle.data['collection'] = [collection.collection for collection in collections]
-                
+
         return bundle
 
 class IssueResource(CustomResource):
@@ -250,7 +248,7 @@ class IssueResource(CustomResource):
         bundle.data['record_type'] = bundle.obj.title.record_type
 
         if bundle.obj.notes:
-            if isinstance(bundle.obj.notes, basestring) and "\r\n" in bundle.obj.notes:
+            if isinstance(bundle.obj.notes, str) and "\r\n" in bundle.obj.notes:
                 lines = ''
                 for line in bundle.obj.notes.split('\r\n'):
                     if line:

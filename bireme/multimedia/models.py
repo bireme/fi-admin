@@ -2,14 +2,16 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 from django.utils import timezone
+from django.core.cache import cache
 
 from utils.models import Generic, Country
 from main.choices import LANGUAGES_CHOICES
 
-from django.contrib.contenttypes.generic import GenericRelation
+from django.contrib.contenttypes.fields import GenericRelation
 from log.models import AuditLog
 
 from main.models import SourceLanguage, ResourceThematic
+from classification.models import Relationship
 
 # Media Type model
 class MediaType(Generic):
@@ -31,14 +33,20 @@ class MediaType(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
-        translation = MediaTypeLocal.objects.filter(media_type=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "multimedia_mediatype-{}-{}".format(lang_code, self.id)
+        mediatype_local = cache.get(cache_id)
+        if not mediatype_local:
+            translation = MediaTypeLocal.objects.filter(media_type=self.id, language=lang_code)
+            if translation:
+                mediatype_local = translation[0].name
+            else:
+                mediatype_local = self.name
 
+            cache.set(cache_id, mediatype_local, None)
+
+        return mediatype_local
 
 class MediaTypeLocal(models.Model):
 
@@ -46,7 +54,7 @@ class MediaTypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    media_type = models.ForeignKey(MediaType, verbose_name=_("Media type"))
+    media_type = models.ForeignKey(MediaType, verbose_name=_("Media type"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=255)
 
@@ -57,7 +65,7 @@ class MediaCollection(Generic):
     description = models.TextField(_("Description"), blank=True)
     date = models.DateField(_('Date'), help_text='Format: DD/MM/YYYY', null=True, blank=True)
     city = models.CharField(_("City"), max_length=255, blank=True)
-    country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True, on_delete=models.PROTECT)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES, blank=True)
 
     # responsible cooperative center
@@ -67,7 +75,7 @@ class MediaCollection(Generic):
         verbose_name = _("Collection")
         verbose_name_plural = _("Collections")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -77,7 +85,7 @@ class MediaCollectionLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"))
+    media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=255)
     description = models.TextField(_("Description"), blank=True)
@@ -98,8 +106,8 @@ class Media(Generic, AuditLog):
     )
 
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
-    media_type = models.ForeignKey(MediaType, verbose_name=_("Media type"), blank=False)
-    media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"), null=True, blank=True)
+    media_type = models.ForeignKey(MediaType, verbose_name=_("Media type"), blank=False, on_delete=models.PROTECT)
+    media_collection = models.ForeignKey(MediaCollection, verbose_name=_("Collection"), null=True, blank=True, on_delete=models.PROTECT)
     title = models.CharField(_('Original title'), max_length=455, blank=False)
     title_translated = models.CharField(_('Translated title'), max_length=455, blank=True)
     link = models.URLField(_('Link'), max_length=255, blank=False)
@@ -122,5 +130,8 @@ class Media(Generic, AuditLog):
     # relations
     thematics = GenericRelation(ResourceThematic)
 
-    def __unicode__(self):
+    # classification
+    collection = GenericRelation(Relationship)
+
+    def __str__(self):
         return self.title

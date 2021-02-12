@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 
-from models import LogReview
+from log.models import LogReview
 
 class LogReviewAdmin(admin.ModelAdmin):
     model = LogReview

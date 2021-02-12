@@ -54,5 +54,5 @@ class LogReview(Generic):
         verbose_name = "Log Review"
         verbose_name_plural = "Log Reviews"
 
-    log = models.ForeignKey(LogEntry)
+    log = models.ForeignKey(LogEntry, on_delete=models.PROTECT)
     status = models.SmallIntegerField(_('Status'), choices=REVISION_CHOICES, null=True)

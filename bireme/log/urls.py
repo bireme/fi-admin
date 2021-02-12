@@ -1,11 +1,9 @@
-from django.conf import settings
-from django.conf.urls.static import static
-from django.conf.urls import patterns, include, url
+from django.urls import re_path
 
-from views import *
+from log import views as log_views
 
-urlpatterns = patterns('',
-    url(r'^view/(?P<ctype_id>\d+)/(?P<obj_id>\d+)/?$', view_log, name="view_log"),
-    url(r'^review/(?P<type>\w{0,15})/(?P<ctype_id>\d+)/(?P<obj_id>\d+)/?$', review_log, name="review_log"),
-    url(r'^update-review/?$', update_review, name="update_review"),
-)
+urlpatterns = [
+    re_path(r'^view/(?P<ctype_id>\d+)/(?P<obj_id>\d+)/?$', log_views.view_log, name="view_log"),
+    re_path(r'^review/(?P<type>\w{0,15})/(?P<ctype_id>\d+)/(?P<obj_id>\d+)/?$', log_views.review_log, name="review_log"),
+    re_path(r'^update-review/?$', log_views.update_review, name="update_review"),
+]

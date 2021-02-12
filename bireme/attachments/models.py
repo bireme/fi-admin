@@ -1,7 +1,7 @@
 #! coding: utf-8
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.conf import settings
@@ -39,9 +39,9 @@ class Attachment(Generic, AuditLog):
 
     objects = AttachmentManager()
 
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
     attachment_file = models.FileField(_('Select a file'), upload_to=attachment_upload, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES, blank=False)
     short_url = models.CharField(max_length=25, blank=False)
@@ -50,7 +50,7 @@ class Attachment(Generic, AuditLog):
         app_label = 'attachments'
         ordering = ['-created_time']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.attachment_file.name
 
     def save(self, *args, **kwargs):

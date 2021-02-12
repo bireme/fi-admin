@@ -2,13 +2,14 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 from django.utils import timezone
+from django.core.cache import cache
 
 from utils.models import Generic, Country
 from main.choices import LANGUAGES_CHOICES
 from main.models import ResourceThematic
 from error_reporting.models import ErrorReport
 
-from django.contrib.contenttypes.generic import GenericRelation
+from django.contrib.contenttypes.fields import GenericRelation
 
 # Auxiliar table
 class EventType(Generic):
@@ -30,14 +31,20 @@ class EventType(Generic):
 
         return translation_list
 
-    def __unicode__(self):
+    def __str__(self):
         lang_code = get_language()
-        translation = EventTypeLocal.objects.filter(event_type=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "events_eventtype-{}-{}".format(lang_code, self.id)
+        eventtype_local = cache.get(cache_id)
+        if not eventtype_local:
+            translation = EventTypeLocal.objects.filter(event_type=self.id, language=lang_code)
+            if translation:
+                eventtype_local = translation[0].name
+            else:
+                eventtype_local = self.name
 
+            cache.set(cache_id, eventtype_local, None)
+
+        return eventtype_local
 
 class EventTypeLocal(models.Model):
 
@@ -45,7 +52,7 @@ class EventTypeLocal(models.Model):
         verbose_name = _("Translation")
         verbose_name_plural = _("Translations")
 
-    event_type = models.ForeignKey(EventType, verbose_name=_("Event type"))
+    event_type = models.ForeignKey(EventType, verbose_name=_("Event type"), on_delete=models.CASCADE)
     language = models.CharField(_("language"), max_length=10, choices=LANGUAGES_CHOICES)
     name = models.CharField(_("name"), max_length=255)
 
@@ -75,7 +82,7 @@ class Event(Generic):
 
     address = models.CharField(_('Address'), max_length=255, blank=True, help_text=_("Enter full address of the local of the event to present it in a Google map"))
     city = models.CharField(_('City'), max_length=125, blank=True)
-    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True, on_delete=models.PROTECT)
 
     event_type = models.ManyToManyField(EventType, verbose_name=_("Event type"), blank=False)
     official_language = models.ManyToManyField('main.SourceLanguage', verbose_name=_("Official languages"), blank=True)
@@ -92,5 +99,5 @@ class Event(Generic):
     error_reports = GenericRelation(ErrorReport)
     thematics = GenericRelation(ResourceThematic)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title

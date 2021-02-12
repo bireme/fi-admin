@@ -1,20 +1,20 @@
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.admin import GenericTabularInline
 
-from models import *
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 from utils.admin import GenericAdmin
 
+from leisref.models import *
 
-class DescriptorAdmin(generic.GenericTabularInline):
+class DescriptorAdmin(GenericTabularInline):
     model = Descriptor
     exclude = ('status', 'code')
     extra = 1
 
 
-class ThematicAreaAdmin(generic.GenericTabularInline):
+class ThematicAreaAdmin(GenericTabularInline):
     model = ResourceThematic
     exclude = ('status',)
     extra = 1
@@ -26,7 +26,7 @@ class ActRelationshipAdmin(admin.TabularInline):
     extra = 1
 
 
-class AttachmentAdmin(generic.GenericTabularInline):
+class AttachmentAdmin(GenericTabularInline):
     model = Attachment
     exclude = ('short_url',)
     extra = 1
@@ -79,10 +79,10 @@ class ActOrganIssuerAdmin(GenericAdmin):
 
 class ActAdmin(GenericAdmin):
     model = Act
-    list_display = ('id', '__unicode__', 'scope_region', 'act_type', 'act_number',
+    list_display = ('id', '__str__', 'scope_region', 'act_type', 'act_number',
                     'scope', 'scope_state', 'scope_city','source_name',
                     'organ_issuer', 'created_by', 'status')
-    search_fields = ['id', '__unicode__']
+    search_fields = ['id', '__str__']
     list_filter = ('status','act_type', 'scope', 'act_collection', 'source_name',)
     inlines = [ActRelationshipAdmin, ActURLAdmin, AttachmentAdmin, DescriptorAdmin, ThematicAreaAdmin, ]
 
@@ -126,6 +126,9 @@ class ActCountryRegionAdmin(GenericAdmin):
     model = ActCountryRegion
     inlines = [ActCountryRegionLocalAdmin, ]
 
+class ActAlternateIDAdmin(admin.ModelAdmin):
+    raw_id_fields = ("act",)
+
 
 admin.site.register(Act, ActAdmin)
 admin.site.register(ActType, ActTypeAdmin)
@@ -137,3 +140,4 @@ admin.site.register(ActCollection, ActCollectionAdmin)
 admin.site.register(ActRelationship)
 admin.site.register(ActSource, ActSourceAdmin)
 admin.site.register(Database, DatabaseAdmin)
+admin.site.register(ActAlternateID, ActAlternateIDAdmin)

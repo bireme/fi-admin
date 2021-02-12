@@ -21,7 +21,7 @@
 <div class='header'>
     <h2><i class='icon-calendar'></i> {% trans "Events" %}</h2>
         <div class='pull-right'>
-            <a href="{% url 'events.views.create_edit_event' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Event" %}</a>
+            <a href="{% url 'events:create_event' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Event" %}</a>
         </div>
 </div>
 
@@ -106,7 +106,7 @@
                 <tbody>
                     {% for event in events %}
                         <tr>
-                            <td><a href="{% url 'events.views.create_edit_event' event.id %}">{{ event.id }}</a></td>
+                            <td><a href="{% url 'events:edit_event' event.id %}">{{ event.id }}</a></td>
                             <td><span title="{{ event.title }}">{{ event.title|slice:"50" }}{% if event.title|length > 50 %}...{% endif %}</span></td>
                             <td>
                                 {{ event.start_date|date:"d/m/y" }}
@@ -126,8 +126,8 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'events.views.create_edit_event' event.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if event.created_by_id = user.id %}
+                                <a href="{% url 'events:edit_event' event.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                {% if event.created_by_id == user.id %}
                                     <a href="#" id="{{ event.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>

@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.forms.models import inlineformset_factory
-from django.contrib.contenttypes.generic import generic_inlineformset_factory
+from django.contrib.contenttypes.forms import generic_inlineformset_factory
 
 from django.forms import widgets
 from django.conf import settings
@@ -12,7 +12,7 @@ from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 
 from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
-from models import *
+from oer.models import *
 
 import simplejson
 

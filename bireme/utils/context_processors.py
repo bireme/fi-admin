@@ -16,7 +16,7 @@ def additional_user_info(request):
     service_role = {}
     service_list = []
 
-    if user.is_authenticated():
+    if user.is_authenticated:
         if user.profile.data:
             user_data = simplejson.loads(user.profile.data)
             user_cc = user_data.get('cc')
@@ -26,8 +26,8 @@ def additional_user_info(request):
 
             # create a dictionary of service/role
             for sr in user_data['service_role']:
-                service_id = sr.keys()[0]
-                role_id = sr.values()[0]
+                service_id = list(sr.keys())[0]
+                role_id = list(sr.values())[0]
                 service_role[service_id] = role_id
 
                 if service_id not in service_list:

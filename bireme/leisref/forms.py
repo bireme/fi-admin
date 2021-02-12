@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.forms.models import inlineformset_factory
-from django.contrib.contenttypes.generic import generic_inlineformset_factory
+from django.contrib.contenttypes.forms import generic_inlineformset_factory
 
 from django.forms import widgets
 from django.db.models import Q
@@ -12,7 +12,7 @@ from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 
 from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
-from models import *
+from leisref.models import *
 
 import simplejson
 
@@ -20,7 +20,7 @@ class ActForm(forms.ModelForm):
 
     class Meta:
         model = Act
-        exclude = ('cooperative_center_code',)
+        exclude = ('organ_issuer','cooperative_center_code',)
         fields = '__all__'
 
     issue_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), required=False,
@@ -40,25 +40,25 @@ class ActForm(forms.ModelForm):
             first_option = [('', '----------')]
 
             # create context lists and sort by name
-            type_choices = [(s.id, unicode(s)) for s in ActType.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
+            type_choices = [(s.id, str(s)) for s in ActType.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
             type_choices.sort(key=lambda tup: tup[1])
-            scope_choices = [(s.id, unicode(s)) for s in ActScope.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
+            scope_choices = [(s.id, str(s)) for s in ActScope.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
             scope_choices.sort(key=lambda tup: tup[1])
-            source_choices = [(s.id, unicode(s)) for s in ActSource.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
+            source_choices = [(s.id, str(s)) for s in ActSource.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
             source_choices.sort(key=lambda tup: tup[1])
-            organ_choices = [(s.id, unicode(s)) for s in ActOrganIssuer.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
+            organ_choices = [(s.id, str(s)) for s in ActOrganIssuer.objects.filter(Q(scope_region=None) | Q(scope_region=region_id))]
             organ_choices.sort(key=lambda tup: tup[1])
-            state_choices = [(s.id, unicode(s)) for s in ActState.objects.filter(scope_region=region_id)]
+            state_choices = [(s.id, str(s)) for s in ActState.objects.filter(scope_region=region_id)]
             state_choices.sort(key=lambda tup: tup[1])
-            city_choices = [(s.id, unicode(s)) for s in ActCity.objects.filter(scope_region=region_id)]
+            city_choices = [(s.id, str(s)) for s in ActCity.objects.filter(scope_region=region_id)]
             city_choices.sort(key=lambda tup: tup[1])
-            collection_choices = [(s.id, unicode(s)) for s in ActCollection.objects.all()]
+            collection_choices = [(s.id, str(s)) for s in ActCollection.objects.all()]
             collection_choices.sort(key=lambda tup: tup[1])
 
             self.fields['act_type'].choices = first_option + type_choices
             self.fields['scope'].choices = first_option + scope_choices
             self.fields['source_name'].choices = first_option + source_choices
-            self.fields['organ_issuer'].choices = first_option + organ_choices
+            self.fields['issuer_organ'].choices = first_option + organ_choices
             self.fields['scope_state'].choices = first_option + state_choices
             self.fields['scope_city'].choices = first_option + city_choices
             self.fields['act_collection'].choices = first_option + collection_choices
@@ -67,7 +67,7 @@ class ActForm(forms.ModelForm):
             self.fields['act_type'].choices = empty_list
             self.fields['scope'].choices = empty_list
             self.fields['source_name'].choices = empty_list
-            self.fields['organ_issuer'].choices = empty_list
+            self.fields['issuer_organ'].choices = empty_list
             self.fields['scope_state'].choices = empty_list
             self.fields['scope_city'].choices = empty_list
             self.fields['act_collection'].choices = empty_list

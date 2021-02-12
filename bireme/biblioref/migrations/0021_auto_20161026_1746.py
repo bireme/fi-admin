@@ -40,6 +40,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='referencealternateid',
             name='reference',
-            field=models.ForeignKey(verbose_name='Reference', to='biblioref.Reference'),
+            field=models.ForeignKey(verbose_name='Reference', to='biblioref.Reference', on_delete=models.PROTECT),
         ),
     ]

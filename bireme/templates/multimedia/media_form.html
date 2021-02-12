@@ -65,13 +65,13 @@
                                 {{ field.errors }}
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
+                                    {% if field.name == 'status' %}
                                         <p>{{ media.get_status_display }}</p>
-                                    {% elif field.name = 'link' %}
+                                    {% elif field.name == 'link' %}
                                         {% for link in field.value.splitlines %}
                                             <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
                                         {% endfor %}
-                                    {% elif field.name = 'source_type' %}
+                                    {% elif field.name == 'source_type' %}
                                         {% for st in media.source_type.all %}
                                             <p>{{ st }}</p>
                                         {% endfor %}
@@ -145,6 +145,9 @@
                         </div>
                         <div class="btn-group pull-right">
                             <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{c_type.id}}/{{media.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
+                            {% if service_role.TAG %}
+                                <a href="#" onclick="javascript:open_classification('{{c_type.id}}', '{{object.id}}')" class="btn"><i class="icon icon-tags"></i> {% trans "Collection" %}</a>
+                            {% endif %}
                         </div>
                     {% endif %}
             </div>
@@ -350,7 +353,7 @@
                         {% if attachment_list %}
                             {% for attachment in attachment_list %}
                                 <tr>
-                                    <td colspan="3"><a href="{% url 'attachments.views.view_document' %}{{attachment.short_url}}" target="_blank">{{ attachment }}</a></td>
+                                    <td colspan="3"><a href="{% url 'attachments:view_document' %}{{attachment.short_url}}" target="_blank">{{ attachment }}</a></td>
                                 </tr>
                             {% endfor %}
                         {% endif %}
@@ -365,7 +368,7 @@
                                 {% for field in form.visible_fields %}
                                     {% if field.name == 'attachment_file' and form.instance.pk %}
                                         <td>
-                                            <strong><a href="{% url 'attachments.views.view_document' %}{{form.instance.short_url}}" target="_blank">{{ form.instance.filename }}</a></strong>
+                                            <strong><a href="{% url 'attachments:view_document' %}{{form.instance.short_url}}" target="_blank">{{ form.instance.filename }}</a></strong>
                                         </td>
                                     {% elif field.name != 'DELETE' %}
                                         <td>
@@ -407,6 +410,7 @@
 
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/classification.js' %}"></script>
 
    <script type="text/javascript">
         var decs_field;

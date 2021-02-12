@@ -21,7 +21,7 @@
 <div class='header'>
     <h2><i class='icon-star'></i> {% trans "Internet resources" %}</h2>
         <div class='pull-right'>
-            <a href="{% url 'main.views.create_edit_resource' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Resource" %}</a>
+            <a href="{% url 'main:create_resource' %}" class='btn btn-primary'><i class='icon-file'></i> {% trans "New Resource" %}</a>
         </div>
 </div>
 
@@ -108,7 +108,7 @@
                 <tbody>
                     {% for resource in resources %}
                         <tr>
-                            <td><a href="{% url 'main.views.create_edit_resource' resource.id %}">{{ resource.id }}</a></td>
+                            <td><a href="{% url 'main:edit_resource' resource.id %}">{{ resource.id }}</a></td>
                             <td><span title="{{ resource.title }}">{{ resource.title|slice:"130" }}{% if resource.title|length > 130 %}...{% endif %}</span></td>
                             <td><span title="{{ resource.link }}">{{ resource.link|slice:"80" }}{% if resource.link|length > 80 %}...{% endif %}</span></td>
                             <td>
@@ -126,8 +126,8 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'main.views.create_edit_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
-                                {% if resource.created_by_id = user.id %}
+                                <a href="{% url 'main:edit_resource' resource.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                {% if resource.created_by_id == user.id %}
                                     <a href="#" id="{{ resource.id }}" class='btn btn-mini delete_confirm' title="{% trans 'Remove' %}"><i class='icon-remove'></i></a>
                                 {% endif %}
                             </td>

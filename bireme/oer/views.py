@@ -1,5 +1,5 @@
 #! coding: utf-8
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
@@ -11,7 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render_to_response
 
 from pkg_resources import resource_filename
-from utils.views import ACTIONS, get_class
+from utils.views import get_class
 from utils.forms import is_valid_for_publication
 from utils.context_processors import additional_user_info
 from attachments.models import Attachment
@@ -19,7 +19,7 @@ from main.models import Descriptor
 from help.models import get_help_fields
 from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 from datetime import datetime
-from forms import *
+from oer.forms import *
 
 import json
 import colander
@@ -45,8 +45,8 @@ class OERGenericListView(LoginRequiredView, ListView):
 
         # getting action parameter
         self.actions = {}
-        for key in ACTIONS.keys():
-            self.actions[key] = self.request.GET.get(key, ACTIONS[key])
+        for key in settings.ACTIONS.keys():
+            self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
         search_field = self.search_field + '__icontains'
 
@@ -315,7 +315,7 @@ class OERDeleteView(LoginRequiredView, DeleteView):
 def field_assist(request, **kwargs):
 
     # add search_path to override deform templates
-    custom_deform_templates = '%s/templates/deform' % settings.PROJECT_ROOT_PATH
+    custom_deform_templates = '%s/templates/deform' % settings.BASE_DIR
     deform_templates = resource_filename('deform', 'templates')
     search_path = (custom_deform_templates, deform_templates)
     deform.Form.set_zpt_renderer(search_path)
@@ -355,7 +355,7 @@ def field_assist(request, **kwargs):
             # the data. You use this same structure to populate a form with
             # data from permanent storage
             appstruct = form.validate(controls)
-        except ValidationFailure, e:
+        except ValidationFailure as e:
             # The exception contains a reference to the form object
             rendered = e.render()
         else:

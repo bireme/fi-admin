@@ -24,8 +24,8 @@ class Migration(migrations.Migration):
                 ('regional_index', models.BooleanField(default=False, verbose_name='Regional index?')),
                 ('network_index', utils.fields.MultipleAuxiliaryChoiceField(verbose_name='Network index', blank=True)),
                 ('cc_index', models.CharField(max_length=55, verbose_name='Cooperative Center index')),
-                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
-                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('updated_by', models.ForeignKey(related_name='+', blank=True, editable=False, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Database',
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('language', models.CharField(max_length=10, verbose_name='language', choices=[(b'pt-br', 'Portuguese'), (b'es', 'Spanish')])),
                 ('name', models.CharField(max_length=255, verbose_name='name')),
-                ('database', models.ForeignKey(verbose_name='database', to='database.Database')),
+                ('database', models.ForeignKey(verbose_name='database', to='database.Database', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'Translation',

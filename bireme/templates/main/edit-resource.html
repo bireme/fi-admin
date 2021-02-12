@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Resource" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'main.views.list_resources' %}">{% trans "Internet resources" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'main:list_resources' %}">{% trans "Internet resources" %}</a> <span class="divider">/</span></li>
     {% if is_new %}<li>{% trans "New Resource" %}</li>
     {% else %}<li>{% trans "Edit Resource" %}</li>{% endif %}
 {% endblock %}
@@ -55,21 +55,21 @@
                                 {{ field.errors }}
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
+                                    {% if field.name == 'status' %}
                                         <p>{{ resource.get_status_display }}</p>
-                                    {% elif field.name = 'link' %}
+                                    {% elif field.name == 'link' %}
                                         {% for link in field.value.splitlines %}
                                             <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
                                         {% endfor %}
-                                    {% elif field.name = 'source_language' %}
+                                    {% elif field.name == 'source_language' %}
                                         {% for sl in resource.source_language.all %}
                                             <p>{{ sl }}</p>
                                         {% endfor %}
-                                    {% elif field.name = 'source_type' %}
+                                    {% elif field.name == 'source_type' %}
                                         {% for st in resource.source_type.all %}
                                             <p>{{ st }}</p>
                                         {% endfor %}
-                                    {% elif field.name = 'originator_location' %}
+                                    {% elif field.name == 'originator_location' %}
                                         {% for ol in resource.originator_location.all %}
                                             <p>{{ ol }}</p>
                                         {% endfor %}
@@ -87,27 +87,31 @@
                                 {{ hidden }}
                             {% endfor %}
                             {{ form.non_field_errors }}
+                            <ul>
                             {% for field in form.visible_fields %}
-                                <label for="{{ field.auto_id }}">
-                                    {% if field.name in help_fields %}
-                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/resources/{{field.name}}/" class="field_with_help">
+                                <li>
+                                    <label for="{{ field.auto_id }}">
+                                        {% if field.name in help_fields %}
+                                            <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/resources/{{field.name}}/" class="field_with_help">
+                                        {% endif %}
+                                        {% if field.field.required %}
+                                            <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                        {% else %}
+                                            {{ field.label }}
+                                        {% endif %}
+                                        {% if field.name in help_fields %}
+                                            </a>
+                                        {% endif %}
+                                    </label>
+                                    <p class="muted">{{ field.help_text }}</p>
+                                    {{ field.errors }}
+                                    {{ field }}
+                                    {% if field.name == 'title' %}
+                                        <span><a href="javascript:consult_VHL('{{field.auto_id}}', 'LIS', '{{LANGUAGE_CODE|slice:":2"}}')">{%trans 'Search for duplicates in the VHL' %}</a></span>
                                     {% endif %}
-                                    {% if field.field.required %}
-                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                    {% else %}
-                                        {{ field.label }}
-                                    {% endif %}
-                                    {% if field.name in help_fields %}
-                                        </a>
-                                    {% endif %}
-                                </label>
-                                <p class="muted">{{ field.help_text }}</p>
-                                {{ field.errors }}
-                                {{ field }}
-                                {% if field.name == 'title' %}
-                                    <span><a href="javascript:consult_VHL('{{field.auto_id}}', 'LIS', '{{LANGUAGE_CODE|slice:":2"}}')">{%trans 'Search for duplicates in the VHL' %}</a></span>
-                                {% endif %}
+                                </li>
                             {% endfor %}
+                            </ul>
                         </fieldset>
 
                     {% endif %}
@@ -124,7 +128,7 @@
                         </div>
                         <div class="btn-group pull-right">
                             <a href="#" data-toggle="modal" data-target="#log_modal" data-remote="/log/view/{{content_type}}/{{resource.id}}/" class="btn"><i class="icon icon-time"></i> {% trans "Changes history" %}</a>
-                            {% if user_cc = 'BR1.1' %}
+                            {% if user_cc == 'BR1.1' %}
                                 <a href="#" onclick="javascript:open_classification('{{content_type}}', '{{resource.id}}')" class="btn"><i class="icon icon-tags"></i> {% trans "Collection" %}</a>
                             {% endif %}
                         </div>
@@ -347,7 +351,7 @@
         </div>
 
         <div class="control-panel form-submit">
-            <a href="{%if request.session.filtered_list %} {{ request.session.filtered_list }} {% else %} {% url 'main.views.list_resources' %} {% endif %}" class="btn btn-large btn-danger">
+            <a href="{%if request.session.filtered_list %} {{ request.session.filtered_list }} {% else %} {% url 'main:list_resources' %} {% endif %}" class="btn btn-large btn-danger">
                 {% trans "Cancel" %}
             </a>
             <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
@@ -363,11 +367,11 @@
         </div>
 
         <div class="modal-header">
-            <form method="POST" action="{% url 'error_reporting.views.create_error_report' %}">
+            <form method="POST" action="{% url 'error_reporting:create_error_report' %}">
                 {% csrf_token %}
                 <input type="hidden" name="object_id" value="{{ resource.id }}"/>
                 <input type="hidden" name="content_type" value="{{ content_type }}"/>
-                <input type="hidden" name="return_url" value="{% url 'main.views.create_edit_resource' resource.id %}"/>
+                <input type="hidden" name="return_url" value="{% url 'main:edit_resource' resource.id %}"/>
 
                 <fieldset id="metadata">
                     {% for hidden in form_error_report.hidden_fields %}
@@ -481,5 +485,85 @@
             window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
         }
 
+        // watch for change at specific fields for duplicated dectection
+        $("#id_title ,#id_link").bind("change", check_duplication);
+
+        function check_duplication() {
+          $( '#dedup-alert' ).remove();
+
+          var title = $('#id_title').val();
+          var link = $('#id_link').val();
+
+          if ( !title ) {
+            return ;
+          }
+
+          $.ajax(
+            {
+              method: "get",
+              url: "{{ settings.DEDUP_SERVICE_URL }}",
+              data: {
+                database: "LIS",
+                schema: "LIS_Two",
+                titulo: title,
+                url: link
+              },
+              dataType: "json",
+              success: function(data) {
+                //console.log(data);
+                var resources = data.result;
+                var duplicates_total = 0;
+                var ref_id = '';
+
+                {% if resource.pk %}
+                ref_id = '{{ resource.pk }}';
+
+                for (var i = 0; i < resources.length; i++) {
+                  var resource = resources[i];
+                  var resource_id = resource['id'];
+
+                  if (resource_id != ref_id) {
+                    duplicates_total++;
+                  }
+                }
+                {% else %}
+                duplicates_total = data.total;
+                {% endif %}
+
+                if (duplicates_total == 0) {
+                  return ;
+                }
+
+                var duplicationPanelTitle = '{% trans "Possible duplication" %}';
+                var duplicationDiv = `
+                  <div class="row" id="dedup-alert"">
+                    <div class="span12"><h3>${duplicationPanelTitle}</h3></div>
+                    <div class="span12 alert alert-block" id="dedup-results"></div>
+                  </div>`;
+
+                $('#id_title').parent('li').append( duplicationDiv );
+
+                var hasDuplicatesToShow = false;
+                for (var i = 0; i < resources.length; i++) {
+                  var pos = i + 1;
+                  var resource = resources[i];
+                  var resource_id = resource['id'];
+
+                  detail_url = `/resource/edit/${resource_id}`;
+
+                  var duplicationLink = `
+                    <a href="${detail_url}" target="_blank">${resource['titulo']}</a>
+                    - (${resource['url']})`;
+
+                  $( '#dedup-results' ).append(
+                    $( '<div>', { html: duplicationLink } )
+                  );
+                }
+
+                $('#dedup-alert').addClass('animated shake');
+              }
+            }
+          );
+        };
    </script>
 {% endblock %}
