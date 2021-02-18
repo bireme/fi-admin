@@ -63,13 +63,13 @@
                             {{ field.errors }}
                             <blockquote>
                                 <p><strong>{{ field.label }}</strong><p>
-                                {% if field.name = 'status' %}
+                                {% if field.name == 'status' %}
                                     <p>{{ title.get_status_display }}</p>
-                                {% elif field.name = 'link' %}
+                                {% elif field.name == 'link' %}
                                     {% for link in field.value.splitlines %}
                                         <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
                                     {% endfor %}
-                                {% elif field.name = 'source_type' %}
+                                {% elif field.name == 'source_type' %}
                                     {% for st in title.source_type.all %}
                                         <p>{{ st }}</p>
                                     {% endfor %}
@@ -95,7 +95,7 @@
                                 {% if field.field|fieldtype != 'CharField' %}
                                     {% get_field_display form.instance field ', ' %}
                                 {% else %}
-                                    {% if field.field|widgetfieldtype = 'Textarea' %}
+                                    {% if field.field|widgetfieldtype == 'Textarea' %}
                                         <span class="textarea">{{ field.value|linebreaks }}</span>
                                     {% else %}
                                         {{ field.value }}
@@ -194,7 +194,7 @@
                         {% else %}
                             {% for field in form.visible_fields %}
                                 {{ field }}
-                                {% if field.field|widgetfieldtype = 'Textarea' %}
+                                {% if field.field|widgetfieldtype == 'Textarea' %}
                                     <span class="textarea">{{ field.value|linebreaks }}</span>
                                 {% else %}
                                     {{ field.value }}
@@ -238,7 +238,7 @@
                                 {% else %}
                                     <tr id="indexrange-{{ forloop.counter0 }}" class="indexrange-row{% if form.errors %} error{% endif %} formset-row">
                                         {% for field in form.visible_fields %}
-                                            {% if form.DELETE.value = False and field.name != 'DELETE' %}
+                                            {% if form.DELETE.value == False and field.name != 'DELETE' %}
                                                 {% if field.name == 'copy' %}
                                                     <td class="nowrap">
                                                 {% else %}
@@ -248,7 +248,7 @@
                                                     {% if field.field|fieldtype not in 'CharField|BooleanField' %}
                                                         {% get_field_display form.instance field %}
                                                     {% else %}
-                                                        {% if field.field|fieldtype = 'BooleanField' %}
+                                                        {% if field.field|fieldtype == 'BooleanField' %}
                                                             {% if field.value %}
                                                                 <div class="centralize">
                                                                     <i class='icon-ok'></i>
@@ -296,7 +296,7 @@
                                 {% else %}
                                     <tr id="specialty-{{ forloop.counter0 }}" class="specialty-row{% if form.errors %} error{% endif %} formset-row">
                                         {% for field in form.visible_fields %}
-                                            {% if form.DELETE.value = False and field.name != 'DELETE' %}
+                                            {% if form.DELETE.value == False and field.name != 'DELETE' %}
                                                 <td>
                                                     {{ field }}
                                                     {% if field.field|fieldtype != 'CharField' %}
@@ -346,7 +346,7 @@
                                 {% else %}
                                     <tr id="variance-{{ forloop.counter0 }}" class="variance-row{% if form.errors %} error{% endif %} formset-row">
                                         {% for field in form.visible_fields %}
-                                            {% if form.DELETE.value = False and field.name != 'DELETE' %}
+                                            {% if form.DELETE.value == False and field.name != 'DELETE' %}
                                                 <td>
                                                     {{ field }}
                                                     {% if field.field|fieldtype != 'CharField' %}
@@ -439,7 +439,7 @@
                                         {% if field.field|fieldtype not in 'CharField|URLField' %}
                                             {% get_field_display form.instance field ', ' %}
                                         {% else %}
-                                            {% if field.field|widgetfieldtype = 'Textarea' %}
+                                            {% if field.field|widgetfieldtype == 'Textarea' %}
                                                 <span class="textarea">{{ field.value|linebreaks }}</span>
                                             {% else %}
                                                 {{ field.value }}

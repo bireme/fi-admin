@@ -106,13 +106,13 @@
                                 {{ field.errors }}
                                 <blockquote>
                                     <p><strong>{{ field.label }}</strong><p>
-                                    {% if field.name = 'status' %}
+                                    {% if field.name == 'status' %}
                                         <p>{{ title.get_status_display }}</p>
-                                    {% elif field.name = 'link' %}
+                                    {% elif field.name == 'link' %}
                                         {% for link in field.value.splitlines %}
                                             <p><a href="{{ link }}" target="_blank">{{ link }}</a></p>
                                         {% endfor %}
-                                    {% elif field.name = 'source_type' %}
+                                    {% elif field.name == 'source_type' %}
                                         {% for st in title.source_type.all %}
                                             <p>{{ st }}</p>
                                         {% endfor %}
@@ -217,7 +217,7 @@
                                     {% elif field.name == 'text' %}
                                         <td class="span6">
                                             {{ field.as_hidden }}
-                                            <div class="input-large uneditable-input {% if not field.value %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
+                                            <div class="input-large uneditable-input pull-left {% if not field.value %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
                                                 {% spaceless %}
                                                 {% if not field.value %}
                                                     {% trans "Select by search" %}
@@ -226,7 +226,7 @@
                                                 {% endif %}
                                                 {% endspaceless %}
                                             </div>
-                                            <a href="#" onclick="javascript:decs_search(this)";><i class="icon-search"></i></a>
+                                            <a class="btn-decs" href="#" onclick="javascript:decs_search(this)";><i class="icon-search"></i></a>
                                         </td>
                                     {% elif field.name != 'DELETE' and field.name != 'status' %}
                                         <td class="span6">
