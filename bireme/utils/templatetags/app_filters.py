@@ -79,6 +79,7 @@ def profilefield(user, field):
 
 @register.simple_tag
 def get_field_display(object, field, sep=' '):
+    out = ''
     ft = fieldtype(field.field)
     widget = widgetfieldtype(field.field)
 
@@ -90,8 +91,9 @@ def get_field_display(object, field, sep=' '):
             out = getattr(object, 'get_%s_display' % field.name)()
     elif widget == 'SelectMultiple':
         list = []
-        for index in field.form[field.name][0].value:
-            list += [dict(field.field.choices)[int(index)]]
+        obj = field.form[field.name][0]
+        for value in [obj.data.get('value')]:
+            list += [dict(field.field.choices)[int(value)]]
         # query = getattr(object, field.name).all()
         # out = sep.join(str(i) for i in query)
         out = sep.join(list)

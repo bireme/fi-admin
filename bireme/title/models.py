@@ -17,7 +17,7 @@ class Users(Generic):
     code = models.CharField(_('Code'), max_length=55, blank=True)
     name = models.CharField(_('Name'), max_length=455, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 # Title model
@@ -130,7 +130,7 @@ class Title(Generic, AuditLog):
     # field tag 941
     last_change_date = models.CharField(_('Last change date'), help_text='Format: YYYYMMDD', max_length=55, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 class OwnerList(Generic):
@@ -141,7 +141,7 @@ class OwnerList(Generic):
 
     owner = models.CharField(_('Owner'), max_length=455, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.owner
 
 class OnlineResources(models.Model, AuditLog):
@@ -167,7 +167,7 @@ class OnlineResources(models.Model, AuditLog):
     def get_parent(self):
         return self.title
 
-    def __unicode__(self):
+    def __str__(self):
         return self._meta.verbose_name.title()
 
 class TitleVariance(models.Model, AuditLog):
@@ -187,7 +187,7 @@ class TitleVariance(models.Model, AuditLog):
     def get_parent(self):
         return self.title
 
-    def __unicode__(self):
+    def __str__(self):
         return self.label
 
 class BVSSpecialty(models.Model, AuditLog):
@@ -203,7 +203,7 @@ class BVSSpecialty(models.Model, AuditLog):
     def get_parent(self):
         return self.title
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title.title
 
 class IndexCode(Generic):
@@ -215,7 +215,7 @@ class IndexCode(Generic):
     code = models.CharField(_('Code'), max_length=55, blank=True)
     name = models.CharField(_('Name'), max_length=455, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class IndexRange(models.Model, AuditLog):
@@ -245,7 +245,7 @@ class IndexRange(models.Model, AuditLog):
     def get_parent(self):
         return self.title
 
-    def __unicode__(self):
+    def __str__(self):
         return self._meta.verbose_name.title()
 
 class Audit(models.Model, AuditLog):
@@ -262,7 +262,7 @@ class Audit(models.Model, AuditLog):
     def get_parent(self):
         return self.title
 
-    def __unicode__(self):
+    def __str__(self):
         return self.label
 
 class Mask(Generic):
@@ -296,7 +296,7 @@ class Mask(Generic):
 
         super(Mask, self).save()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % (self.mask if self.mask else _('(empty)'))
 
 class Issue(Generic):
@@ -332,7 +332,7 @@ class Issue(Generic):
     creation_date = models.CharField(_('Creation date'), help_text='Format: YYYYMMDD', max_length=55, blank=True)
     last_change_date = models.CharField(_('Last change date'), help_text='Format: YYYYMMDD', max_length=55, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title.title + ' - ' + str(self.id)
 
 class Collection(Generic):
@@ -344,5 +344,5 @@ class Collection(Generic):
     title = models.ForeignKey(Title, verbose_name=_("Title"), blank=True, on_delete=models.PROTECT)
     collection = models.TextField(_("Collection"), blank=True, help_text=_("Enter one per line"))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.collection
