@@ -41,11 +41,18 @@ class ActCountryRegion(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = ActCountryRegionLocal.objects.filter(act_region=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "leisref_countryregion-{}-{}".format(lang_code, self.id)
+        countryregion_local = cache.get(cache_id)
+        if not countryregion_local:
+            translation = ActCountryRegionLocal.objects.filter(act_region=self.id, language=lang_code)
+            if translation:
+                countryregion_local = translation[0].name
+            else:
+                countryregion_local = self.name
+
+            cache.set(cache_id, countryregion_local, None)
+
+        return countryregion_local
 
 
 class ActCountryRegionLocal(models.Model):
@@ -81,11 +88,18 @@ class ActType(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = ActTypeLocal.objects.filter(act_type=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "leisref_acttype-{}-{}".format(lang_code, self.id)
+        acttype_local = cache.get(cache_id)
+        if not acttype_local:
+            translation = ActTypeLocal.objects.filter(act_type=self.id, language=lang_code)
+            if translation:
+                acttype_local = translation[0].name
+            else:
+                acttype_local = self.name
+
+            cache.set(cache_id, acttype_local, None)
+
+        return acttype_local
 
 
 class ActTypeLocal(models.Model):
@@ -121,11 +135,18 @@ class ActScope(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = ActScopeLocal.objects.filter(act_scope=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "leisref_actscope-{}-{}".format(lang_code, self.id)
+        actscope_local = cache.get(cache_id)
+        if not actscope_local:
+            translation = ActScopeLocal.objects.filter(act_scope=self.id, language=lang_code)
+            if translation:
+                actscope_local = translation[0].name
+            else:
+                actscope_local = self.name
+
+            cache.set(cache_id, actscope_local, None)
+
+        return actscope_local
 
 
 class ActScopeLocal(models.Model):
@@ -161,11 +182,18 @@ class ActOrganIssuer(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = ActOrganIssuerLocal.objects.filter(organ_issuer=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "leisref_actorganissuer-{}-{}".format(lang_code, self.id)
+        actorganissuer_local = cache.get(cache_id)
+        if not actorganissuer_local:
+            translation = ActOrganIssuerLocal.objects.filter(organ_issuer=self.id, language=lang_code)
+            if translation:
+                actorganissuer_local = translation[0].name
+            else:
+                actorganissuer_local = self.name
+
+            cache.set(cache_id, actorganissuer_local, None)
+
+        return actorganissuer_local
 
 
 class ActOrganIssuerLocal(models.Model):
@@ -201,11 +229,18 @@ class ActSource(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = ActSourceLocal.objects.filter(act_source=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "leisref_actsource-{}-{}".format(lang_code, self.id)
+        actsource_local = cache.get(cache_id)
+        if not actsource_local:
+            translation = ActSourceLocal.objects.filter(act_source=self.id, language=lang_code)
+            if translation:
+                actsource_local = translation[0].name
+            else:
+                actsource_local = self.name
+
+            cache.set(cache_id, actsource_local, None)
+
+        return actsource_local
 
 
 class ActSourceLocal(models.Model):
@@ -299,11 +334,18 @@ class ActState(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = ActStateLocal.objects.filter(act_state=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "leisref_actstate-{}-{}".format(lang_code, self.id)
+        actstate_local = cache.get(cache_id)
+        if not actstate_local:
+            translation = ActStateLocal.objects.filter(act_state=self.id, language=lang_code)
+            if translation:
+                actstate_local = translation[0].name
+            else:
+                actstate_local = self.name
+
+            cache.set(cache_id, actstate_local, None)
+
+        return actstate_local
 
 
 class ActStateLocal(models.Model):
@@ -338,11 +380,18 @@ class ActCity(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = ActCityLocal.objects.filter(act_city=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "leisref_actcity-{}-{}".format(lang_code, self.id)
+        actcity_local = cache.get(cache_id)
+        if not actcity_local:
+            translation = ActCityLocal.objects.filter(act_city=self.id, language=lang_code)
+            if translation:
+                actcity_local = translation[0].name
+            else:
+                actcity_local = self.name
+
+            cache.set(cache_id, actcity_local, None)
+
+        return actcity_local
 
 
 class ActCityLocal(models.Model):
@@ -378,11 +427,18 @@ class ActCollection(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = ActCollectionLocal.objects.filter(act_collection=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "leisref_actcollection-{}-{}".format(lang_code, self.id)
+        actcollection_local = cache.get(cache_id)
+        if not actcollection_local:
+            translation = ActCollectionLocal.objects.filter(act_collection=self.id, language=lang_code)
+            if translation:
+                actcollection_local = translation[0].name
+            else:
+                actcollection_local = self.name
+
+            cache.set(cache_id, actcollection_local, None)
+
+        return actcollection_local
 
 
 class ActCollectionLocal(models.Model):
@@ -408,11 +464,18 @@ class Database(Generic):
 
     def __unicode__(self):
         lang_code = get_language()
-        translation = DatabaseLocal.objects.filter(database=self.id, language=lang_code)
-        if translation:
-            return translation[0].name
-        else:
-            return self.name
+        cache_id = "leisref_database-{}-{}".format(lang_code, self.id)
+        database_local = cache.get(cache_id)
+        if not database_local:
+            translation = DatabaseLocal.objects.filter(database=self.id, language=lang_code)
+            if translation:
+                database_local = translation[0].name
+            else:
+                database_local = self.name
+
+            cache.set(cache_id, database_local, None)
+
+        return database_local
 
 
 class DatabaseLocal(models.Model):
