@@ -29,6 +29,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     publication_date = indexes.CharField(model_attr='publication_date', default='')
     publication_year = indexes.CharField()
     organ_issuer = indexes.CharField()
+    issuer_organ = indexes.MultiValueField()
     language = indexes.CharField()
     official_ementa = indexes.CharField(model_attr='official_ementa')
     unofficial_ementa = indexes.CharField(model_attr='unofficial_ementa')
@@ -93,6 +94,11 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.organ_issuer:
             translations = obj.organ_issuer.get_translations()
             return "|".join(translations)
+
+    def prepare_issuer_organ(self, obj):
+        if obj.issuer_organ:
+            translations = ["|".join(organ.get_translations()) for organ in obj.issuer_organ.all()]
+            return translations
 
     def prepare_scope_state(self, obj):
         if obj.scope_state:
