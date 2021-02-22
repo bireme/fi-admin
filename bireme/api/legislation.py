@@ -60,6 +60,7 @@ class LeisrefResource(ModelResource):
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
         sort = request.GET.get('sort', 'created_date desc')
+        facet_list = request.GET.getlist('facet.field', [])
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -72,6 +73,16 @@ class LeisrefResource(ModelResource):
 
         search_params = {'site': 'fi', 'col': 'main', 'op': op,'output': 'site', 'lang': lang,
                          'q': q, 'fq': fq,  'start': start, 'count': count, 'id': id, 'sort': sort}
+
+        if facet_list:
+            search_params['facet.field'] = []
+            for facet_field in facet_list:
+                search_params['facet.field'].append(facet_field)
+                facet_limit_param = 'f.{}.facet.limit'.format(facet_field)
+                facet_field_limit = request.GET.get(facet_limit_param, None)
+                if facet_field_limit:
+                    search_params[facet_limit_param] = facet_field_limit
+
 
         r = requests.post(search_url, data=search_params)
 
