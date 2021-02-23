@@ -51,7 +51,7 @@
 
         <div class="tab-content">
             <div id="tab-data" class="tab-pane active">
-                    {% if role == 'doc' and not user_data.is_owner and act %}
+                    {% if user_role == 'doc' and not user_data.is_owner and act %}
                         <div class="well">
                             <blockquote>
                                 <p><strong>{% trans 'Identifier' %}</strong><p>
@@ -246,7 +246,7 @@
                             {% endfor %}
                             <tr id="thematic-{{ forloop.counter0 }}" class="thematic-row{% if form.errors %} error{% endif %} formset-row">
                                 {% for field in form.visible_fields %}
-                                    {% if role == 'doc' and field.name == 'status' %}
+                                    {% if user_role == 'doc' and field.name == 'status' %}
                                        <input type="hidden" id="{{ field.auto_id }}" name="{{ field.html_name }}" value="0" class="keep-field-value" />
                                     {% elif field.name != 'DELETE' %}
                                         <td>
