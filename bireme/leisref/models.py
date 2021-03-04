@@ -535,8 +535,10 @@ class Act(Generic, AuditLog):
     # data de publicação
     publication_date = models.DateField(_("Publication date"), help_text='DD/MM/YYYY',
                                         validators=[valid_min_year], blank=True, null=True)
+    # orgão emissor do ato (OLD)
+    organ_issuer = models.ForeignKey(ActOrganIssuer, verbose_name=_("Organ issuer"), blank=True, null=True, related_name='old_organ_issuer')
     # orgão emissor do ato
-    organ_issuer = models.ForeignKey(ActOrganIssuer, verbose_name=_("Organ issuer"), blank=True, null=True)
+    issuer_organ = models.ManyToManyField(ActOrganIssuer, verbose_name=_("Organ issuer"), blank=True)
     # idioma do ato
     language = models.ForeignKey(SourceLanguage, verbose_name=_("Language"), blank=True, null=True)
     # data de vigência do ato

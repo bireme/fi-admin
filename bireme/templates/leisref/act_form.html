@@ -397,7 +397,7 @@
                       replace_list_options('id_act_type', result.type_list);
                       replace_list_options('id_scope', result.scope_list);
                       replace_list_options('id_source_name', result.source_list);
-                      replace_list_options('id_organ_issuer', result.organ_issuer_list);
+                      replace_list_options('id_issuer_organ', result.organ_issuer_list);
                       replace_list_options('id_scope_state', result.state_list);
                       replace_list_options('id_scope_city', result.city_list);
                       replace_list_options('id_act_collection', result.collection_list);
@@ -406,7 +406,7 @@
             });
 
             // load multiselect plugin (indexed database field)
-            $('#id_indexed_database, #id_act_collection').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
+            $('#id_indexed_database, #id_act_collection, #id_issuer_organ').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
 
         })
 

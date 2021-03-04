@@ -20,7 +20,7 @@ class ActForm(forms.ModelForm):
 
     class Meta:
         model = Act
-        exclude = ('cooperative_center_code',)
+        exclude = ('organ_issuer', 'cooperative_center_code',)
         fields = '__all__'
 
     issue_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), required=False,
@@ -58,7 +58,7 @@ class ActForm(forms.ModelForm):
             self.fields['act_type'].choices = first_option + type_choices
             self.fields['scope'].choices = first_option + scope_choices
             self.fields['source_name'].choices = first_option + source_choices
-            self.fields['organ_issuer'].choices = first_option + organ_choices
+            self.fields['issuer_organ'].choices = first_option + organ_choices
             self.fields['scope_state'].choices = first_option + state_choices
             self.fields['scope_city'].choices = first_option + city_choices
             self.fields['act_collection'].choices = first_option + collection_choices
@@ -67,7 +67,7 @@ class ActForm(forms.ModelForm):
             self.fields['act_type'].choices = empty_list
             self.fields['scope'].choices = empty_list
             self.fields['source_name'].choices = empty_list
-            self.fields['organ_issuer'].choices = empty_list
+            self.fields['issuer_organ'].choices = empty_list
             self.fields['scope_state'].choices = empty_list
             self.fields['scope_city'].choices = empty_list
             self.fields['act_collection'].choices = empty_list
