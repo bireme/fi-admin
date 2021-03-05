@@ -202,7 +202,9 @@
    <field name="publication_country" type="string" indexed="true" stored="true" multiValued="true"/>
 
    <!-- legislation -->
+   <field name="scope" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="scope_region" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="scope_state" type="string" indexed="true" stored="true" multiValued="false"/>
    <field name="act_type" type="string" indexed="true" stored="true" multiValued="false"/>
 
    <!-- open educacional resource -->

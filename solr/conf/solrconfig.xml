@@ -85,40 +85,39 @@
          will be overridden by parameters in the request
       -->
      <lst name="defaults">
-       <str name="echoParams">explicit</str>
-     </lst>
-
-     <lst name="invariants">
-         <str name="facet">true</str>
-         <str name="facet.field">descriptor_filter</str>
-         <str name="facet.field">media_collection_filter</str>
-         <str name="facet.field">media_type_filter</str>
-         <str name="facet.field">event_type</str>
-         <str name="facet.field">institution_type</str>
-         <str name="facet.field">institution_thematic</str>
-         <str name="facet.field">type</str>
-         <str name="facet.field">format</str>
-         <str name="facet.field">country</str>
-         <str name="facet.field">publication_type</str>
-         <str name="facet.field">publication_language</str>
-         <str name="facet.field">publication_country</str>
-         <str name="facet.field">publication_year</str>
-         <str name="facet.field">journal</str>
-         <str name="facet.field">indexed_database</str>
-         <str name="facet.field">database</str>
-         <str name="facet.field">collection</str>
-         <str name="facet.field">scope_region</str>
-         <str name="facet.field">act_type</str>
-         <str name="facet.field">course_type</str>
-         <str name="facet.field">tec_resource_type</str>
-         <str name="facet.field">learning_resource_type</str>
-         <str name="facet.field">learning_context</str>
-         <str name="facet.field">aggregation_level</str>
-         <str name="facet.field">audience</str>
-         <str name="facet.field">license</str>
-         <str name="facet.field">language</str>
-         <str name="facet.limit">20</str>
-         <str name="facet.mincount">1</str>
+        <str name="echoParams">explicit</str>
+        <str name="facet">true</str>
+        <str name="facet.field">descriptor_filter</str>
+        <str name="facet.field">media_collection_filter</str>
+        <str name="facet.field">media_type_filter</str>
+        <str name="facet.field">event_type</str>
+        <str name="facet.field">institution_type</str>
+        <str name="facet.field">institution_thematic</str>
+        <str name="facet.field">type</str>
+        <str name="facet.field">format</str>
+        <str name="facet.field">country</str>
+        <str name="facet.field">publication_type</str>
+        <str name="facet.field">publication_language</str>
+        <str name="facet.field">publication_country</str>
+        <str name="facet.field">publication_year</str>
+        <str name="facet.field">journal</str>
+        <str name="facet.field">indexed_database</str>
+        <str name="facet.field">database</str>
+        <str name="facet.field">collection</str>
+        <str name="facet.field">scope</str>
+        <str name="facet.field">scope_region</str>
+        <str name="facet.field">scope_state</str>
+        <str name="facet.field">act_type</str>
+        <str name="facet.field">course_type</str>
+        <str name="facet.field">tec_resource_type</str>
+        <str name="facet.field">learning_resource_type</str>
+        <str name="facet.field">learning_context</str>
+        <str name="facet.field">aggregation_level</str>
+        <str name="facet.field">audience</str>
+        <str name="facet.field">license</str>
+        <str name="facet.field">language</str>
+        <str name="facet.limit">20</str>
+        <str name="facet.mincount">1</str>
      </lst>
   </requestHandler>
 
