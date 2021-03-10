@@ -1,5 +1,6 @@
 #! coding: utf-8
 from django.utils.translation import ugettext_lazy as _, get_language
+from django.core.cache import cache
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
@@ -88,11 +89,23 @@ class Collection(models.Model, AuditLog):
         super(Collection, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        col_name = self.name
-        if self.country:
-            col_name = u"{} ({})".format(self.name, self.country)
+        lang_code = get_language()
+        cache_id = "classification_collection-{}-{}".format(lang_code, self.id)
+        collection_local = cache.get(cache_id)
+        if not collection_local:
+            translation = CollectionLocal.objects.filter(collection=self.id, language=lang_code)
+            if translation:
+                collection_local = translation[0].name
+            else:
+                collection_local = self.name
 
-        return col_name
+            has_children = Collection.objects.filter(parent=self.id).exists()
+            if self.country and has_children:
+                collection_local = u"{} ({})".format(collection_local, self.country)
+
+            cache.set(cache_id, collection_local, None)
+
+        return collection_local
 
 class CollectionLocal(models.Model):
 
