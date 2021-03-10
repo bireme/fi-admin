@@ -401,6 +401,9 @@
                       replace_list_options('id_scope_state', result.state_list);
                       replace_list_options('id_scope_city', result.city_list);
                       replace_list_options('id_act_collection', result.collection_list);
+
+                      // refresh options on fields that use multiselect js
+                      $('#id_act_collection, #id_issuer_organ').multipleSelect('refreshOptions', {})
                   }
                });
             });
