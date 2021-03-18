@@ -45,9 +45,25 @@ class CommunityResource(ModelResource):
         ]
 
     def dehydrate(self, bundle):
-        # adjust image url in bundle object
-        if bundle.obj.image:
-            bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
+        lang_param = bundle.request.GET.get('lang', 'en')
+        # lang param compatibility with 2 letters calls
+        if lang_param and lang_param == 'pt':
+            lang_param = 'pt-br'
+
+        if bundle.obj.language != lang_param:
+            try:
+                translation = CollectionLocal.objects.filter(collection=bundle.obj.id, language=lang_param).first()
+                if translation:
+                    bundle.data['name'] = translation.name
+                    bundle.data['language'] = translation.language
+                    bundle.data['description'] = translation.description
+                    if translation.image:
+                        bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, translation.image)
+            except CollectionLocal.DoesNotExist:
+                # adjust image url in original bundle
+                if bundle.obj.image:
+                    bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
+                pass
 
         return bundle
 
