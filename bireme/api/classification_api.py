@@ -43,9 +43,27 @@ class CommunityResource(ModelResource):
         ]
 
     def dehydrate(self, bundle):
-        # adjust image url in bundle object
-        if bundle.obj.image:
-            bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
+        lang_param = bundle.request.GET.get('lang', 'en')
+        # lang param compatibility with 2 letters calls
+        if lang_param and lang_param == 'pt':
+            lang_param = 'pt-br'
+
+        community_image = bundle.obj.image
+        if bundle.obj.language != lang_param:
+            try:
+                translation = CollectionLocal.objects.filter(collection=bundle.obj.id, language=lang_param).first()
+                if translation:
+                    bundle.data['name'] = translation.name
+                    bundle.data['language'] = translation.language
+                    bundle.data['description'] = translation.description
+                    if translation.image:
+                        community_image = translation.image
+            except CollectionLocal.DoesNotExist:
+                pass
+
+        # adjust image url
+        if community_image:
+            bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, community_image)
 
         return bundle
 
@@ -90,6 +108,7 @@ class CollectionResource(ModelResource):
         if lang_param and lang_param == 'pt':
             lang_param = 'pt-br'
 
+        collection_image = bundle.obj.image
         if bundle.obj.language != lang_param:
             try:
                 translation = CollectionLocal.objects.filter(collection=bundle.obj.id, language=lang_param).first()
@@ -98,12 +117,14 @@ class CollectionResource(ModelResource):
                     bundle.data['language'] = translation.language
                     bundle.data['description'] = translation.description
                     if translation.image:
-                        bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, translation.image)
+                        collection_image = translation.image
             except CollectionLocal.DoesNotExist:
-                # adjust image url in original bundle
-                if bundle.obj.image:
-                    bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, bundle.obj.image)
                 pass
+
+        # adjust image url
+        if collection_image:
+            bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, collection_image)
+
         # remove country name from collection parent name
         if bundle.obj.parent:
             bundle.data['parent'] = bundle.obj.parent.name
