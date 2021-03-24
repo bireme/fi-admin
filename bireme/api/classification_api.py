@@ -127,9 +127,17 @@ class CollectionResource(ModelResource):
         if collection_image:
             bundle.data['image'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, collection_image)
 
-        # remove country name from collection parent name
+        # parent name
         if bundle.obj.parent:
-            bundle.data['parent'] = bundle.obj.parent.name
+            parent_name = bundle.obj.parent.name
+            try:
+                translation = CollectionLocal.objects.filter(collection=bundle.obj.parent.id, language=lang_param).first()
+                if translation:
+                    parent_name = translation.name
+            except CollectionLocal.DoesNotExist:
+                pass
+
+            bundle.data['parent'] = parent_name
 
         return bundle
 
