@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<schema name="bvs" version="1.5">
+  <types>
+    <fieldType name="string"   class="solr.StrField"                                                       sortMissingLast="true" omitNorms="true" />
+    <fieldType name="boolean"  class="solr.BoolField"                                                      sortMissingLast="true" omitNorms="true" />
+    <fieldType name="int"      class="solr.TrieIntField"     precisionStep="0"   positionIncrementGap="0" />
+    <fieldType name="float"    class="solr.TrieFloatField"   precisionStep="0"   positionIncrementGap="0" />
+    <fieldType name="long"     class="solr.TrieLongField"    precisionStep="0"   positionIncrementGap="0" />
+    <fieldType name="double"   class="solr.TrieDoubleField"  precisionStep="0"   positionIncrementGap="0" />
+    <fieldType name="tint"     class="solr.TrieIntField"     precisionStep="8"   positionIncrementGap="0" />
+    <fieldType name="tfloat"   class="solr.TrieFloatField"   precisionStep="8"   positionIncrementGap="0" />
+    <fieldType name="tlong"    class="solr.TrieLongField"    precisionStep="8"   positionIncrementGap="0" />
+    <fieldType name="tdouble"  class="solr.TrieDoubleField"  precisionStep="8"   positionIncrementGap="0" />
+    <fieldType name="date"     class="solr.TrieDateField"    precisionStep="0"   positionIncrementGap="0" />
+    <!-- A Trie based date field for faster date range queries and date faceting. -->
+    <fieldType name="tdate"    class="solr.TrieDateField"    precisionStep="6"   positionIncrementGap="0" />
+
+    <fieldType name="text_ws"                  class="solr.TextField"                            positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.WhitespaceTokenizerFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="decs"                     class="solr.TextField" omitNorms="false">
+      <analyzer type="index" class="org.bireme.dia.analysis.DeCSAnalyzer" />
+      <analyzer type="query">
+        <tokenizer class="solr.WhitespaceTokenizerFactory" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="decs_simple"              class="solr.TextField">
+      <analyzer type="index" class="org.bireme.dia.analysis.DeCSSimpleAnalyzer" />
+      <analyzer type="query">
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="decs_keyword"             class="solr.TextField">
+      <analyzer type="index" class="org.bireme.dia.analysis.DeCSKeywordAnalyzer" />
+      <analyzer type="query">
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="decs_code"                class="solr.TextField" omitNorms="true">
+      <analyzer type="index">
+        <tokenizer class="solr.PatternTokenizerFactory" pattern="(\^d[0-9]+)" group="1" />
+           <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="decs_qualifier"           class="solr.TextField">
+      <analyzer type="index" class="org.bireme.dia.analysis.DeCSQualifierAnalyzer" />
+      <analyzer type="query">
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+        <filter class="solr.ASCIIFoldingFilterFactory" />
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="decs_authorized_category" class="solr.TextField">
+      <analyzer type="index" class="org.bireme.dia.analysis.DeCSAuthorizedTermAndCategoryAnalyzer" />
+      <analyzer type="query">
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="dateiso"                  class="solr.TextField">
+      <analyzer type="index">
+        <tokenizer class="solr.PatternTokenizerFactory" pattern="(^[0-9]{4})" group="1" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="text"                     class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.WhitespaceTokenizerFactory" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.WordDelimiterFilterFactory"         generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" preserveOriginal="1" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.WhitespaceTokenizerFactory" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.WordDelimiterFilterFactory"         generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" preserveOriginal="1" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- lowercases the entire field value, keeping it as a single token.  -->
+    <fieldType name="string_lowercase"                class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+        <filter class="solr.ASCIIFoldingFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="text_with_decs"           class="solr.TextField">
+      <analyzer type="index" class="org.bireme.dia.analysis.BVSStandardAnalyzer" />
+      <analyzer type="query">
+        <tokenizer class="solr.WhitespaceTokenizerFactory" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" preserveOriginal="1" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="string_normalized"        class="solr.TextField">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.PatternReplaceFilterFactory"        pattern="([\.])"      replacement="" replace="all" />
+           <filter class="solr.LowerCaseFilterFactory" />
+           <!-- filter class="solr.TrimFilterFactory" / -->
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="multilanguage"            class="solr.TextField">
+      <analyzer type="index">
+        <tokenizer class="solr.PatternTokenizerFactory" pattern="\^[pei]\s*" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- spellchecker -->
+    <fieldType name="textSpell"                class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.WhitespaceTokenizerFactory" />
+           <filter class="solr.ASCIIFoldingFilterFactory" />
+           <filter class="solr.WordDelimiterFilterFactory"         generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <!-- spellchecker useful for names & titles -->
+    <fieldType name="textSpellPhrase"          class="solr.TextField" positionIncrementGap="100" stored="false" multiValued="true">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+           <filter class="solr.LowerCaseFilterFactory" />
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="ignored"                  class="solr.StrField" stored="false" indexed="false" />
+  </types>
+
+  <!-- Definicoes de campos indexaveis armazenaveis e etc -->
+  <fields>
+    <field name="_version_"                   type="long"                     indexed="true"   stored="true"/>
+
+    <!-- haystack control fields -->
+    <field name="django_ct" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="django_id" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- common fields -->
+    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+    <field name="title" type="text" indexed="true" stored="true" termVectors="true"/>
+    <field name="link" type="string" indexed="false" stored="true" multiValued="true"/>
+    <field name="language" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="type" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <field name="thematic_area" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="thematic_area_display" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="created_date" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="updated_date" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <field name="descriptor" type="decs_keyword" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+    <field name="descriptor_filter" type="decs_code" indexed="true" stored="false" multiValued="true"/>
+    <field name="keyword" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <field name="cooperative_center_code" type="string" indexed="true" stored="true"/>
+    <field name="status" type="int" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- resources -->
+    <field name="originator" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="originator_location" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="author" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="source_language" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="source_language_display" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="source_type" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="source_type_display" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="abstract" type="text" indexed="true" stored="true" termVectors="true"/>
+    <field name="time_period_textual" type="string" indexed="false" stored="true"/>
+    <field name="objective" type="text" indexed="true" stored="true" termVectors="true"/>
+
+    <!-- events -->
+    <field name="start_date" type="date" indexed="true" stored="true" multiValued="false"/>
+    <field name="end_date" type="date" indexed="true" stored="true" multiValued="false"/>
+    <field name="city" type="text" indexed="true" stored="true"/>
+    <field name="country" type="string" indexed="true" stored="true"/>
+    <field name="contact_email" type="string" indexed="false" stored="true"/>
+    <field name="contact_info" type="text" indexed="true" stored="true"/>
+    <field name="event_type" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- multimedia -->
+    <field name="description" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="media_type" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="media_type_filter" type="string" indexed="true" stored="false" multiValued="false"/>
+    <field name="media_collection" type="text" indexed="true" stored="true" multiValued="false"/>
+    <field name="media_collection_filter" type="string" indexed="true" stored="false" multiValued="false"/>
+    <field name="official_language" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="official_language_display" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- bibliographic references -->
+    <field name="reference_title" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
+    <field name="reference_abstract" type="text" indexed="true" stored="true" termVectors="true" multiValued="true"/>
+    <field name="reference_source" type="string" indexed="false" stored="true" multiValued="false"/>
+    <field name="database" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="journal" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="publication_date" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="publication_year" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="publication_type" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="publication_language" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="publication_country" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- legislation -->
+    <field name="scope" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="scope_region" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="scope_state" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="act_type" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- open educacional resource -->
+    <field name="course_type" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="tec_resource_type" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="learning_resource_type" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="learning_context" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="audience" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="license" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="aggregation_level" type="string" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- thesaurus -->
+    <field name="ths_regid" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="ths_conceptui" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="ths_decs_code" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="ths_treenumber" type="string_lowercase" indexed="true" stored="true" multiValued="true"/>
+    <field name="ths_exact_term" type="string_lowercase" indexed="true" stored="false" multiValued="true"/>
+    <field name="ths_termall" type="text" indexed="true" stored="false" multiValued="true"/>
+
+    <!-- multiple sources -->
+    <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="indexed_database" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- institution -->
+    <field name="unit" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="institution_type" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="institution_thematic" type="string" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- Compatibility with portal-org indexes -->
+    <field name="ti" type="text" indexed="true" stored="false" multiValued="true" />
+    <field name="au" type="text" indexed="true" stored="false" multiValued="true"/>
+    <field name="kw" type="text" indexed="true" stored="false" multiValued="true"/>
+    <field name="mh" type="decs_keyword" indexed="true"  stored="true" multiValued="true" />
+    <field name="mj" type="decs_keyword" indexed="true"  stored="true" multiValued="true" />
+
+    <!-- content fulltext field -->
+    <field name="content" type="text" indexed="true" stored="true" multiValued="false"/>
+
+    <!-- Dynamic field definitions -->
+    <dynamicField name="*" type="text" indexed="true" stored="true" multiValued="true"/>
+
+    <!-- catchall field, containing all other searchable text fields (implemented
+          via copyField further on in this schema  -->
+    <field name="text" type="text" indexed="true" stored="false" multiValued="false"/>
+    <field name="tw" type="text_with_decs" indexed="true" stored="false" multiValued="true"/>
+  </fields>
+
+ <!-- field to use to determine and enforce document uniqueness. -->
+ <uniqueKey>id</uniqueKey>
+
+ <!-- field for the QueryParser to use when an explicit fieldname is absent -->
+ <defaultSearchField>tw</defaultSearchField>
+
+ <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
+ <solrQueryParser defaultOperator="AND"/>
+
+ <copyField source="text" dest="tw"/>
+ <copyField source="title" dest="tw"/>
+ <copyField source="originator" dest="tw"/>
+ <copyField source="author" dest="tw"/>
+ <copyField source="abstract" dest="tw"/>
+ <copyField source="objective" dest="tw"/>
+ <copyField source="descriptor" dest="tw"/>
+ <copyField source="keyword" dest="tw"/>
+ <copyField source="description" dest="tw"/>
+ <copyField source="mh" dest="tw"/>
+
+ <copyField source="reference_title" dest="tw"/>
+ <copyField source="reference_abstract" dest="tw"/>
+
+ <copyField source="content" dest="tw"/>
+
+ <copyField source="descriptor" dest="descriptor_filter"/>
+ <copyField source="mj" dest="descriptor_filter"/>
+
+ <!-- Compatibility with portal-org indexes -->
+ <copyField source="title" dest="ti"/>
+ <copyField source="author" dest="au"/>
+ <copyField source="descriptor" dest="mh"/>
+ <copyField source="keyword" dest="kw"/>
+
+ <copyField source="media_collection" dest="media_collection_filter"/>
+
+</schema>
