@@ -283,7 +283,7 @@ DEFAULT_COOPERATIVE_CENTER = 'BR1.1'
 BIREMELOGIN_SERVICE = ''
 
 EXPOSE_API_ONLY = int(os.environ.get("EXPOSE_API_ONLY"), 0)
-MAX_EXPORT_API_LIMIT = os.environ.get("MAX_EXPORT_API_LIMIT", 100)
+MAX_EXPORT_API_LIMIT = int(os.environ.get("MAX_EXPORT_API_LIMIT", 100))
 
 HAYSTACK_SIGNAL_PROCESSOR = os.environ.get("HAYSTACK_SIGNAL_PROCESSOR")
 
@@ -329,6 +329,7 @@ ACTIONS = {
     'filter_created_by_cc': "",
     'filter_indexed_database': "",
     'filter_act_type': "",
+    'filter_scope': "",
     'filter_type': "",
     'filter_category': "",
     'filter_country': "",
@@ -340,8 +341,8 @@ ACTIONS = {
 if DEBUG_TOOLBAR:
     INSTALLED_APPS.append('debug_toolbar')
 
-    debug_toolbar_middleware = ['debug_toolbar.middleware.DebugToolbarMiddleware', 'utils.NonHtmlDebugToolbarMiddleware']
-    MIDDLEWARE_CLASSES.extend(debug_toolbar_middleware)
+    debug_toolbar_middleware = ['debug_toolbar.middleware.DebugToolbarMiddleware',]
+    MIDDLEWARE.extend(debug_toolbar_middleware)
 
     # Enable debug_toolbar bypass INTERNAL_IPS parameter
     DEBUG_TOOLBAR_CONFIG = {
