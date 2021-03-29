@@ -93,12 +93,19 @@
                                     {% endfor %}
                                 </select>
 
-
                                 {% trans "Act country/region" %}:
                                 <select name="filter_country">
                                     <option value="">{% trans "All" %}</option>
                                     {% for country in scope_region_list %}
                                         <option value="{{ country.id }}" {% if actions.filter_country|add:"0" == country.id %}selected="true"{% endif %}>{{ country }}</option>
+                                    {% endfor %}
+                                </select>
+
+                                {% trans "Act scope" %}:
+                                <select name="filter_scope">
+                                    <option value="">{% trans "All" %}</option>
+                                    {% for scope in scope_list %}
+                                        <option value="{{ scope.id }}" {% if actions.filter_scope|add:"0" == scope.id %}selected="true"{% endif %}>{{ scope }}</option>
                                     {% endfor %}
                                 </select>
 

@@ -35,6 +35,7 @@ ACTIONS = {
     'filter_created_by_cc': "",
     'filter_indexed_database': "",
     'filter_act_type': "",
+    'filter_scope': "",
     'filter_type': "",
     'filter_category': "",
     'filter_country': "",
@@ -246,18 +247,18 @@ def decs_suggestion(request):
     decs_list = []
     decs_list_unique = []
     decs_ids = []
-    
+
     text_to_analyze_json = json.loads(text_to_analyze)
 
     for text in text_to_analyze_json:
         lang = str(text['_i'])
         # concat texts of the same language
         text_by_lang[lang] = text_by_lang.get(lang, '') + ' ' + text['text']
-    
+
     service_url = settings.DECS_HIGHLIGHTER_URL
 
     headers = {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"}
-    
+
     for lang, text in text_by_lang.items():
         service_params = {'document': text, 'scanLang': lang, 'pubType': 'h', 'outLang': output_lang}
 

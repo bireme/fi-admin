@@ -85,10 +85,12 @@
                 {% endfor %}
             {% else %}
                 {% for form in formset_relation %}
-                    {% for field in form %}
-                        <td>
-                            {{ field }}
-                        </td>
+                    {% for field in form.visible_fields %}
+                        {% if form.instance.pk and field.name != 'DELETE' %}
+                            <td>
+                                {{ field.value }}
+                            </td>
+                        {% endif %}
                     {% endfor %}
                 {% endfor %}
             {% endif %}
