@@ -59,7 +59,7 @@ class LeisrefResource(ModelResource):
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
-        sort = request.GET.get('sort', 'created_date desc')
+        sort = request.GET.get('sort', 'publication_date desc')
         facet_list = request.GET.getlist('facet.field', [])
 
         # filter result by approved resources (status=1)
