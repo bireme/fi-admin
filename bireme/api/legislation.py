@@ -25,7 +25,7 @@ class LeisrefResource(ModelResource):
         serializer = Serializer(formats=['json', 'xml'])
         resource_name = 'leisref'
         filtering = {
-            'update_date': ('gte', 'lte'),
+            'updated_time': ('gte', 'lte'),
             'status': 'exact',
             'collection': ALL,
         }
