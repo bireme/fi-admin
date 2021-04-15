@@ -50,8 +50,10 @@ def get_children_list(request, parent_id):
         if children_list:
             children_type = 'collection'
 
+    # sort children list by name
+    children_list_sorted = sorted(children_list, key=lambda k: k['name'])
 
-    out_list = dict({'type': children_type, 'list': children_list})
+    out_list = dict({'type': children_type, 'list': children_list_sorted})
     data = json.dumps(out_list)
 
     return HttpResponse(data, content_type='application/json')
