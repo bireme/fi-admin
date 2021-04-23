@@ -61,7 +61,7 @@ class EventResource(ModelResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': lang,
+        search_params = {'site': settings.SEARCH_INDEX,'op': op,'output': 'site', 'lang': lang,
                     'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id, 'sort': sort}
 
 
@@ -91,7 +91,7 @@ class EventResource(ModelResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': 'pt',
+        search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': 'pt',
                     'q': q , 'fq': fq, 'sort': sort}
 
 

@@ -14,7 +14,7 @@ from django.core.paginator import Paginator
 
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
-from django.template.loader import render_to_string 
+from django.template.loader import render_to_string
 
 from django.conf import settings
 from datetime import datetime
@@ -25,14 +25,14 @@ from urllib import unquote
 @csrf_exempt
 def search(request):
 
-    output = {}    
+    output = {}
 
     # set encoding of old LIS interface to avoid problems with words with accent
     request.encoding = 'iso-8859-1'
 
     params = request.POST if request.method == 'POST' else request.GET
 
-    # LIS old interface send newexpr, expr or key (topics) to inform query 
+    # LIS old interface send newexpr, expr or key (topics) to inform query
     q = params.get('newexpr', '')
     q = params.get('expr', q)
     tl = params.get('TL', '')
@@ -40,11 +40,11 @@ def search(request):
     key = params.get('key', '')
     # handle search by topic
     if key:
-        # topic search format: ((descriptor/(323)) AND TL=LISBRXX        
+        # topic search format: ((descriptor/(323)) AND TL=LISBRXX
         key_search = re.search( r'AND TL=(.*)', key)
         if key_search:
             tl = key_search.group(1)
-                
+
         # remove old search by field 323 (descriptor)
         q = re.sub(r'\/\(323\)', '', key)
         # remove TL from expression
@@ -70,7 +70,7 @@ def search(request):
     # url
     search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-    search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': 'pt', 
+    search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': 'pt',
                 'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
 
     request_result = requests.post(search_url, data=search_params)
@@ -99,9 +99,9 @@ def search(request):
     output['page_navigation_prev_block'] = int(page_navigation_start - pages_count)
     output['page_navigation_next_block'] = int(page_navigation_start + pages_count)
     output['page_navigation_last_page'] = int(total_pages)
-    
+
     # render the template and convert the result to ISO-8859-1
     render_xml = render_to_string('api/lis_old_search.xml', output)
     result_iso = render_xml.encode('iso-8859-1')
-    
+
     return HttpResponse(result_iso, mimetype="text/xml; charset=iso-8859-1")

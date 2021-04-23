@@ -89,7 +89,7 @@ class ThesaurusResourceDesc(CustomResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main', 'op': op, 'output': 'site', 'lang': lang,
+        search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
                          'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort}
 
         r = requests.post(search_url, data=search_params)
@@ -368,7 +368,7 @@ class ThesaurusResourceDesc(CustomResource):
             # 'descriptor_type_exploded': '106',
             if field.exploded:
                 bundle.data['descriptor_type_exploded'] = field.exploded
-            
+
             # z
             # geog_decs
             # 'descriptor_type_geog_decs': '106',
@@ -377,7 +377,7 @@ class ThesaurusResourceDesc(CustomResource):
 
 
 
-        # 'annotation_en': '110', 
+        # 'annotation_en': '110',
         annotation_en = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='en')
         for field in annotation_en:
             if field.annotation:
@@ -448,7 +448,7 @@ class ThesaurusResourceDesc(CustomResource):
         bundle.data['pharmacologicalaction_en'] = pharmacologicalaction_en_list
 
 
-        # 'annotation_es': '210', 
+        # 'annotation_es': '210',
         annotation_es = DescriptionDesc.objects.filter(identifier_id=bundle.obj.id,language_code='es')
         for field in annotation_es:
             if field.annotation:

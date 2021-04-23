@@ -91,7 +91,7 @@ class TitleResource(CustomResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main', 'op': op, 'output': 'site', 'lang': lang,
+        search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
                          'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort}
 
         r = requests.post(search_url, data=search_params)
@@ -216,7 +216,7 @@ class TitleResource(CustomResource):
                         bundle.data['collection'] += [line]
             else:
                 bundle.data['collection'] = [collection.collection for collection in collections]
-                
+
         return bundle
 
 class IssueResource(CustomResource):

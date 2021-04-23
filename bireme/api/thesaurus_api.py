@@ -88,7 +88,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # print 'search_url -->',search_url
         # print 'q          -->',q
 
-        search_params = {'site': 'fi', 'col': 'main', 'op': op, 'output': 'site', 'lang': lang,
+        search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
                          'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort, 'decs_code': decs_code }
 
         r = requests.post(search_url, data=search_params)
@@ -122,7 +122,7 @@ class ThesaurusAPIDescResource(CustomResource):
             array_fields["date_created"] = field.date_created
             array_fields["date_revised"] = field.date_revised
             array_fields["date_established"] = field.date_established
-        
+
             id_abbrev = IdentifierDesc.objects.using('decs_portal').filter(id=field.id).values('abbreviation')
             allowed_qualifiers = IdentifierQualif.objects.using('decs_portal').filter(id__in=id_abbrev).order_by('abbreviation')
             allowed_qualifiers_concat = ''
@@ -307,7 +307,7 @@ class ThesaurusAPIDescResource(CustomResource):
             array_fields["ecout_desc_id"] = field.ecout_desc_id
             array_fields["ecout_qualif"] = field.ecout_qualif
             array_fields["ecout_qualif_id"] = field.ecout_qualif_id
-            
+
             # Armazena array
             array_fields_all.append(array_fields)
 
@@ -551,7 +551,7 @@ class ThesaurusAPIDescResource(CustomResource):
                             array_fields["tipo"] = "irmão"
                             array_fields["tree_number"] = field.get('dtreenumbers__tree_number')
                             array_fields["tree_number_original"] = tree_number
-                        
+
                             # Armazena demais ocorrências se houverem
                             leaf=True
                             SearchTermsforTreenumber(field.get('dtreenumbers__tree_number'),leaf)
@@ -597,7 +597,7 @@ class ThesaurusAPIDescResource(CustomResource):
         #                     array_fields["tipo"] = "irmão ancestral"
         #                     array_fields["tree_number"] = tree_number_ancestral
         #                     array_fields["tree_number_original"] = tree_number
-                        
+
         #                     # Armazena demais ocorrências se houverem
         #                     SearchTermsforTreenumber(tree_number_ancestral)
 
@@ -633,7 +633,7 @@ class ThesaurusAPIDescResource(CustomResource):
                         array_fields["tipo"] = "filho"
                         array_fields["tree_number"] = field.get('dtreenumbers__tree_number')
                         array_fields["tree_number_original"] = tree_number
-                    
+
                         # Armazena demais ocorrências se houverem
                         leaf=True
                         SearchTermsforTreenumber(field.get('dtreenumbers__tree_number'),leaf)
@@ -712,7 +712,7 @@ class ThesaurusAPIQualifResource(CustomResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main', 'op': op, 'output': 'site', 'lang': lang,
+        search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
                          'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort, 'decs_code': decs_code }
 
         r = requests.post(search_url, data=search_params)
@@ -745,7 +745,7 @@ class ThesaurusAPIQualifResource(CustomResource):
             array_fields["date_created"] = field.date_created
             array_fields["date_revised"] = field.date_revised
             array_fields["date_established"] = field.date_established
-        
+
             id_abbrev = IdentifierQualif.objects.using('decs_portal').filter(id=field.id).values('abbreviation')
             allowed_qualifiers = IdentifierQualif.objects.using('decs_portal').filter(id__in=id_abbrev).order_by('abbreviation')
             allowed_qualifiers_concat = ''
