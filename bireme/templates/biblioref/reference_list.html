@@ -53,7 +53,7 @@
                    <span class="badge badge-info">{{ paginator.count }}</span>
                {% endif %}
             </a>
-        </li>        
+        </li>
         <li class="{% if actions.filter_owner == '*' %}active{% endif %}">
             <a href="#tab-network" onclick="filter_owner('*')" data-toggle="tab">
                 <strong>{% trans "All records" %}</strong>
@@ -133,6 +133,19 @@
                                             <option value="{{ idb.id }}" {% if actions.filter_indexed_database|add:"0" == idb.id %}selected="true"{% endif %}>{{ idb }}</option>
                                         {% endfor %}
                                     </select>
+
+
+                                    {% trans "Collection" %}:
+                                    <select name="filter_collection" class="input-xxlarge">
+                                        <option value="">{% trans "All" %}</option>
+                                        {% for col in collection_list %}
+                                            {# skip first level collections (e-bluinfo, etc)  #}
+                                            {% if col.parent %}
+                                                <option value="{{ col.id }}" {% if actions.filter_collection|add:"0" == col.id %}selected="true"{% endif %}>{{ col.community_collection_path }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+
 
                                     <button class="btn" type="submit" name="apply_filters" value="true">{% trans "Apply" %}</button>
                                 </div>
