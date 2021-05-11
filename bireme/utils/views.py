@@ -34,6 +34,7 @@ ACTIONS = {
     'filter_created_by_user': "",
     'filter_created_by_cc': "",
     'filter_indexed_database': "",
+    'filter_collection': "",
     'filter_act_type': "",
     'filter_scope': "",
     'filter_type': "",
