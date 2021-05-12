@@ -118,7 +118,7 @@ def display_field(context, field):
     out = format_field(field_value)
     out = linebreaks(out)
 
-    return out
+    return mark_safe(out)
 
 @register.filter
 def display_json_value(value):
