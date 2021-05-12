@@ -125,7 +125,7 @@
 
                                 <a href="javascript:void()" id="show_advaced_filters">+ {% trans "Filters" %}</a>
 
-                                <div class="advanced_filters {% if not  actions.filter_indexed_database %}hide{% endif %}">
+                                <div class="advanced_filters {% if not  actions.filter_indexed_database and not actions.filter_collection %}hide{% endif %}">
                                     {% trans "Indexed in" %}:
                                     <select name="filter_indexed_database">
                                         <option value="">{% trans "All" %}</option>
@@ -134,9 +134,19 @@
                                         {% endfor %}
                                     </select>
 
+                                    {% trans "Collection" %}:
+                                    <select name="filter_collection" class="input-xxlarge">
+                                        <option value="">{% trans "All" %}</option>
+                                        {% for col in collection_list %}
+                                            {# skip first level collections (e-bluinfo, etc) and community levels #}
+                                            {% if col.parent and not col.community_flag %}
+                                                <option value="{{ col.id }}" {% if actions.filter_collection|add:"0" == col.id %}selected="true"{% endif %}>{{ col.community_collection_path }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+
                                     <button class="btn" type="submit" name="apply_filters" value="true">{% trans "Apply" %}</button>
                                 </div>
-
 
                             </form>
                         </div>

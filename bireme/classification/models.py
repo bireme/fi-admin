@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.core.cache import cache
 
 from django.db import models
 from log.models import AuditLog
@@ -77,11 +78,18 @@ class Collection(models.Model, AuditLog):
         return parent_list
 
     def community_collection_path(self):
-        parent_list = [str(parent) for parent in self.get_parents()]
-        full_list = parent_list + [self.name]
-        parent_path = ' / '.join(full_list)
+        lang_code = get_language()
+        cache_id = "classification_collection_fullpath-{}-{}".format(lang_code, self.id)
+        full_path = cache.get(cache_id)
 
-        return parent_path
+        if not full_path:
+            parent_list = [str(parent) for parent in self.get_parents()]
+            full_list = parent_list + [str(self)]
+            full_path = ' / '.join(full_list)
+
+            cache.set(cache_id, full_path, None)
+
+        return full_path
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
