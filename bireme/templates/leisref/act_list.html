@@ -83,7 +83,7 @@
 
                             <a href="#" onclick="$('#help_modal_title').html('{% trans 'Search' %}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/leisref/search/" class="field_with_help"><i class='icon-info-sign'></i></a>
 
-                            <a href="javascript:void()" id="show_advaced_filters">{% trans "Filters" %}</a>
+                            <a href="javascript:void()" id="show_advaced_filters">+{% trans "Filters" %}</a>
                             <div class="advanced_filters {% if not show_advaced_filters %}hide{% endif %}">
                                 {% trans "Act type" %}:
                                 <select name="filter_act_type">
@@ -108,12 +108,23 @@
                                         <option value="{{ scope.id }}" {% if actions.filter_scope|add:"0" == scope.id %}selected="true"{% endif %}>{{ scope }}</option>
                                     {% endfor %}
                                 </select>
-
+                                <br/><br/>
                                 {% trans "Indexed in" %}:
                                 <select name="filter_indexed_database">
                                     <option value="">{% trans "All" %}</option>
                                     {% for idb in indexed_database_list %}
                                         <option value="{{ idb.id }}" {% if actions.filter_indexed_database|add:"0" == idb.id %}selected="true"{% endif %}>{{ idb }}</option>
+                                    {% endfor %}
+                                </select>
+
+                                {% trans "Collection" %}:
+                                <select name="filter_collection" class="input-xxlarge">
+                                    <option value="">{% trans "All" %}</option>
+                                    {% for col in collection_list %}
+                                        {# skip first level collections (e-bluinfo, etc) and community levels #}
+                                        {% if col.parent and not col.community_flag %}
+                                            <option value="{{ col.id }}" {% if actions.filter_collection|add:"0" == col.id %}selected="true"{% endif %}>{{ col.community_collection_path }}</option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
 

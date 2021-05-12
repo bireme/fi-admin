@@ -14,6 +14,7 @@ from utils.context_processors import additional_user_info
 from attachments.models import Attachment
 from main.models import Descriptor
 from help.models import get_help_fields
+from classification.models import Collection
 from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 from datetime import datetime
 from forms import *
@@ -73,6 +74,9 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         # filter by act_type
         if self.actions['filter_act_type'] != '':
             object_list = object_list.filter(act_type=self.actions['filter_act_type'])
+        # filter by collection
+        if self.actions['filter_collection'] != '':
+            object_list = object_list.filter(collection__collection_id=self.actions['filter_collection'])
 
         # order
         if self.actions['order'] == "-":
@@ -96,6 +100,7 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         scope_region_list = ActCountryRegion.objects.all().order_by('name')
         indexed_database_list = Database.objects.all().order_by('name')
         act_type_list = ActType.objects.all().order_by('name')
+        collection_list = Collection.objects.all().order_by('parent_id')
 
         context['actions'] = self.actions
         context['user_role'] = user_role
@@ -103,6 +108,7 @@ class LeisRefGenericListView(LoginRequiredView, ListView):
         context['scope_region_list'] = scope_region_list
         context['show_advaced_filters'] = show_advaced_filters
         context['indexed_database_list'] = indexed_database_list
+        context['collection_list'] = collection_list
         context['act_type_list'] = act_type_list
 
         return context
