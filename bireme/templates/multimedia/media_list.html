@@ -74,7 +74,7 @@
                                 <a href="javascript:void()" id="show_advaced_filters">{% trans "Filters" %}</a>
                             {% endif %}
 
-                            <div class="advanced_filters {% if not show_advaced_filters %}hide{% endif %}">
+                            <div class="advanced_filters {% if not show_advaced_filters and not actions.filter_collection %}hide{% endif %}">
                                 {% if user_filter_list %}
                                     {% trans "User" %}:
                                     <select name="filter_created_by_user">
@@ -98,6 +98,17 @@
                                     <option value="">{% trans "All" %}</option>
                                     {% for thematic in thematic_list %}
                                         <option value="{{ thematic.id }}" {% if actions.filter_thematic|add:"0" == thematic.id %}selected="true"{% endif %}>{{ thematic }}</option>
+                                    {% endfor %}
+                                </select>
+
+                                {% trans "Collection" %}:
+                                <select name="filter_collection" class="input-xxlarge">
+                                    <option value="">{% trans "All" %}</option>
+                                    {% for col in collection_list %}
+                                        {# skip first level collections (e-bluinfo, etc) and community levels #}
+                                        {% if col.parent and not col.community_flag %}
+                                            <option value="{{ col.id }}" {% if actions.filter_collection|add:"0" == col.id %}selected="true"{% endif %}>{{ col.community_collection_path }}</option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
 

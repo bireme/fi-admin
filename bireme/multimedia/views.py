@@ -17,6 +17,7 @@ from utils.context_processors import additional_user_info
 
 from main.models import ThematicArea
 from attachments.models import Attachment
+from classification.models import Collection
 from help.models import get_help_fields
 
 from models import *
@@ -61,6 +62,9 @@ class MultimediaListView(LoginRequiredView, ListView):
         if self.actions['filter_created_by_cc'] != '':
             object_list = object_list.filter(cooperative_center_code=self.actions['filter_created_by_cc'])
 
+        if self.actions['filter_collection'] != '':
+            object_list = object_list.filter(collection__collection_id=self.actions['filter_collection'])
+
         if self.actions['order'] == "-":
             object_list = object_list.order_by("%s%s" % (self.actions["order"], self.actions["orderby"]))
 
@@ -81,6 +85,7 @@ class MultimediaListView(LoginRequiredView, ListView):
 
         thematic_list = ThematicArea.objects.all().order_by('name')
         user_list = User.objects.filter(is_superuser=False).order_by('username')
+        collection_list = Collection.objects.all().order_by('parent_id')
         # mantain in user filter list only users from the same CCS (CC's in the network) as request.user
         '''
         for user in user_list:
@@ -98,6 +103,7 @@ class MultimediaListView(LoginRequiredView, ListView):
         context['cc_filter_list'] = cc_filter_list
         context['user_filter_list'] = user_filter_list
         context['thematic_list'] = thematic_list
+        context['collection_list'] = collection_list
         context['show_advaced_filters'] = show_advaced_filters
         context['actions'] = self.actions
         return context
