@@ -863,7 +863,7 @@ class BiblioRefForm(BetterModelForm):
         field = 'doi_number'
         data = self.cleaned_data.get(field)
 
-        if data and self.is_visiblefield(field):
+        if data and self.is_visiblefield(field) and self.cleaned_data['status'] == 1:
             if not data[0].isdigit():
                 self.add_error(field, _('Please inform a valid DOI number. Ex. 10.1000/xyz123'))
 
