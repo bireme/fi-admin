@@ -11,10 +11,16 @@ from api.bibliographic import ReferenceResource
 from api.legislation import LeisrefResource
 from api.oer_api import OERResource
 from api.classification_api import *
+from api.thesaurus_treenumber_api import *
+
+from tastypie.api import Api
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
+ths_api = Api(api_name='ths')
+ths_api.register(TreeNumberResource())
 
 link_resource = LinkResource()
 event_resource = EventResource()
