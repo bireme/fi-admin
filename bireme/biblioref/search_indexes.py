@@ -3,6 +3,7 @@ from haystack import indexes
 from haystack.exceptions import SkipDocument
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceLocal
+from classification.models import Relationship
 from attachments.models import Attachment
 from title.models import Title
 from django.contrib.contenttypes.models import ContentType
@@ -40,6 +41,37 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return ReferenceAnalytic
+
+
+    def prepare(self, obj):
+        self.prepared_data = super(ReferenceAnalyticIndex, self).prepare(obj)
+
+        # create dynamic filters for collections
+        c_type = ContentType.objects.get_for_model(Reference)
+        relation_list = Relationship.objects.filter(object_id=obj.id, content_type=c_type).all()
+
+        if relation_list:
+            collection_filter = {}
+            for rel in relation_list:
+                collection_parent_slug = [parent.slug for parent in rel.collection.get_parents()]
+                # filter_id is created using the slug of parents "e-blueinfo_ops-guid"
+                filter_id = "_".join(collection_parent_slug)
+
+                collection_filter_item = "|".join(rel.collection.get_translations())
+                if not filter_id in collection_filter:
+                    collection_filter[filter_id] = []
+
+                collection_filter[filter_id].append(collection_filter_item)
+
+            # populate haystack prepared_data to send to solr
+            for filter_name, filter_value in collection_filter.items():
+                # add prefix filter_ to match dynamic field definition in schema.xml
+                filter_name = "collection_%s" % filter_name
+                self.prepared_data[filter_name] = filter_value
+
+
+        return self.prepared_data
+
 
     def prepare_reference_title(self, obj):
         if obj.title:
@@ -199,6 +231,37 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return ReferenceSource
+
+
+    def prepare(self, obj):
+        self.prepared_data = super(RefereceSourceIndex, self).prepare(obj)
+
+        # create dynamic filters for collections
+        c_type = ContentType.objects.get_for_model(Reference)
+        relation_list = Relationship.objects.filter(object_id=obj.id, content_type=c_type).all()
+
+        if relation_list:
+            collection_filter = {}
+            for rel in relation_list:
+                collection_parent_slug = [parent.slug for parent in rel.collection.get_parents()]
+                # filter_id is created using the slug of parents "e-blueinfo_ops-guid"
+                filter_id = "_".join(collection_parent_slug)
+
+                collection_filter_item = "|".join(rel.collection.get_translations())
+                if not filter_id in collection_filter:
+                    collection_filter[filter_id] = []
+
+                collection_filter[filter_id].append(collection_filter_item)
+
+            # populate haystack prepared_data to send to solr
+            for filter_name, filter_value in collection_filter.items():
+                # add prefix filter_ to match dynamic field definition in schema.xml
+                filter_name = "collection_%s" % filter_name
+                self.prepared_data[filter_name] = filter_value
+
+
+        return self.prepared_data
+
 
     def prepare_reference_title(self, obj):
         title = ''
