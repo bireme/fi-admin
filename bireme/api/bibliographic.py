@@ -42,8 +42,8 @@ class ReferenceResource(CustomResource):
         max_limit = settings.MAX_EXPORT_API_LIMIT
 
 
-    def build_filters(self, filters=None):
-        orm_filters = super(ReferenceResource, self).build_filters(filters)
+    def build_filters(self, filters=None, *args, **kwargs):
+        orm_filters = super(ReferenceResource, self).build_filters(filters, *args, **kwargs)
 
         if 'indexed_database' in filters:
             filter_db = filters['indexed_database']
@@ -77,6 +77,7 @@ class ReferenceResource(CustomResource):
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
         sort = request.GET.get('sort', 'publication_date desc')
+        facet_list = request.GET.getlist('facet.field', [])
 
         # filter result by status = -3 (Migration) OR 0 (LILACS Express) OR 1 (published)
         if fq != '':
@@ -87,8 +88,17 @@ class ReferenceResource(CustomResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main', 'op': op, 'output': 'site', 'lang': lang,
+        search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
                          'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort}
+
+        if facet_list:
+            search_params['facet.field'] = []
+            for facet_field in facet_list:
+                search_params['facet.field'].append(facet_field)
+                facet_limit_param = 'f.{}.facet.limit'.format(facet_field)
+                facet_field_limit = request.GET.get(facet_limit_param, None)
+                if facet_field_limit:
+                    search_params[facet_limit_param] = facet_field_limit
 
         r = requests.post(search_url, data=search_params)
 
