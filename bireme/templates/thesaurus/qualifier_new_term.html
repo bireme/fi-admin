@@ -74,7 +74,6 @@
                             </select>
                         </td>
 
-
                         <tr>
                             <td colspan="2" class="term_string" width="40%">
                                 <label for="term_string">{{ form.term_string.label_tag }}</label>
@@ -88,6 +87,11 @@
                                 <input id="id_term_string" maxlength="250" name="term_string" type="text" required="True">
                             </td>
                             <td>
+                                {% if lang_code and lang_label %}
+                                <select id="id_language_code" name="language_code" required="True">
+                                    <option value="{{ lang_code }}" selected>{{ lang_label }}</option>
+                                </select>
+                                {% else %}
                                 <select id="id_language_code" name="language_code" required="True">
                                     <option value="" selected="selected">---------</option>
                                     <option value="en">{% trans "English" %}</option>
@@ -96,6 +100,7 @@
                                     <option value="es-es">{% trans "Spanish Spain" %}</option>
                                     <option value="fr">{% trans "French" %}</option>
                                 </select>
+                                {% endif %}
                             </td>
                             <td>
                                 <input id="id_termqualif-0-date_created" name="termqualif-0-date_created" type="text" value="{% now "d/m/Y" %}" maxlength="10">

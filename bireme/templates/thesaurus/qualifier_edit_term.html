@@ -46,7 +46,7 @@
         {% endif %}
 
         {{ form.non_field_errors.as_ul }}
-        
+
         <form method="post">{% csrf_token %}
 
             <input type="hidden" id="id_identifier_concept_id" name="identifier_concept_id" value="{{ request.GET.identifier_concept_id }}">
@@ -112,7 +112,7 @@
                                     </center>
                                 </td>
                                 <td>
-                                    <input type="text" id="id_term_ui" name="term_ui" value="{% if form.term_ui.value %}{{ form.term_ui.value }}{% endif %}" readonly="True">
+                                    <input type="text" id="id_term_ui" name="term_ui" value="{% if form.term_ui.value %}{{ form.term_ui.value }}{% endif %}" {% if user_cc != 'BR1.1' %}readonly="True"{% endif %}>
                                 </td>
                                 <td>{{ form.date_created }}</td>
                             </tr>
@@ -158,7 +158,7 @@
 
 
             <div class="control-panel form-submit">
-                <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>                
+                <a href="{% url 'list_qualifier' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
                 <button class="btn btn-primary btn-large">{% trans "Save" %}</button>
             </div>
 

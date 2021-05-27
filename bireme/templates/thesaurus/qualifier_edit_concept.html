@@ -57,13 +57,13 @@
             <div class="tab-data1">
 
                 <!-- identifierconceptlistqualif -->
-                <div class="accordion-group">
+                <div class="accordion-group" {% if lang_code %}style="display: none;"{% endif %}>
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-target="#identifierconceptlistqualif">{% trans "Identifier of Concept" %}</a>
                     </div>
 
                     <ul>
-                        <fieldset id="identifierconceptlistqualif">                            
+                        <fieldset id="identifierconceptlistqualif">
                             {% for field in form.visible_fields %}
                                 {% if field.errors %}
                                     <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
@@ -72,7 +72,7 @@
                             <table class="descriptionqualif">
                                 <tr>
                                     <td colspan="2">{{ form.concept_ui.label }}:<br>
-                                        <input type="text" id="id_concept_ui" name="concept_ui" value="{% if form.concept_ui.value %}{{ form.concept_ui.value }}{% endif %}" readonly="True">
+                                        <input type="text" id="id_concept_ui" name="concept_ui" value="{% if form.concept_ui.value %}{{ form.concept_ui.value }}{% endif %}" {% if user_cc != 'BR1.1' %}readonly="True"{% endif %}>
                                     </td>
                                 </tr>
                                 <tr>
@@ -137,21 +137,59 @@
                                     <input type="hidden" id="id_identifier_concept_id" name="identifier_concept_id" value="{{ request.GET.identifier_concept_id }}">
 
                                     <div id="conceptlistqualif_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
-                                        <table width="98%">
-                                            <tr>
-                                                <td align="right" bgcolor="#F2F2F2">
-                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <table class="descriptionqualif">
-                                            <tr>
-                                                <td>{{ form.language_code.label }}:<br>{{ form.language_code }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ form.scope_note.label }}:{{ form.scope_note }}<td>
-                                            </tr>
-                                        </table>
+                                        {% if lang_code == form.language_code.value or not lang_code or not form.instance.pk %}
+                                            {% if form.instance.pk %}
+                                            <table width="98%">
+                                                <tr>
+                                                    <td align="right" bgcolor="#F2F2F2">
+                                                        {% trans 'Delete' %}? {{ form.DELETE }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            {% endif %}
+                                            <table class="descriptionqualif">
+                                                <tr>
+                                                    {% if form.instance.pk %}
+                                                    <td>
+                                                        <input type="hidden" id="id_conceptqualif-{{ forloop.counter0 }}-language_code" name="conceptqualif-{{ forloop.counter0 }}-language_code" value="{{ form.language_code.value }}" >
+                                                        {{ form.language_code.label }}:
+                                                        <font color="gray">
+                                                        {% if lang_code == 'en' %}{% trans "English" %}{% endif %}
+                                                        {% if lang_code == 'es' %}{% trans "Spanish Latin America" %}{% endif %}
+                                                        {% if lang_code == 'pt-br' %}{% trans "Portuguese" %}{% endif %}
+                                                        {% if lang_code == 'es-es' %}{% trans "Spanish Spain" %}{% endif %}
+                                                        {% if lang_code == 'fr' %}{% trans "French" %}{% endif %}
+                                                        </font>
+                                                    </td>
+                                                    {% else %}
+                                                    <td>{{ form.language_code.label }}:<br />{{ form.language_code }}</td>
+                                                    {% endif %}
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ form.scope_note.label }}:<br />{{ form.scope_note }}<td>
+                                                </tr>
+                                            </table>
+                                        {% else %}
+                                            <table class="descriptionqualif">
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" id="id_conceptqualif-{{ forloop.counter0 }}-language_code" name="conceptqualif-{{ forloop.counter0 }}-language_code" value="{{ form.language_code.value }}" >
+                                                        {{ form.language_code.label }}:
+                                                        <font color="gray">
+                                                        {% if form.language_code.value == 'en' %}{% trans "English" %}{% endif %}
+                                                        {% if form.language_code.value == 'es' %}{% trans "Spanish Latin America" %}{% endif %}
+                                                        {% if form.language_code.value == 'pt-br' %}{% trans "Portuguese" %}{% endif %}
+                                                        {% if form.language_code.value == 'es-es' %}{% trans "Spanish Spain" %}{% endif %}
+                                                        {% if form.language_code.value == 'fr' %}{% trans "French" %}{% endif %}
+                                                        </font>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <input type="hidden" id="id_conceptqualif-{{ forloop.counter0 }}-scope_note" name="conceptqualif-{{ forloop.counter0 }}-scope_note" value="{{ form.scope_note.value }}" >
+                                                    <td>{{ form.scope_note.label }}: <font color="gray">{{ form.scope_note.value }}</font><td>
+                                                </tr>
+                                            </table>
+                                        {% endif %}
                                     </div>
 
                                 {% endfor %}
