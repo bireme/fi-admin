@@ -1821,7 +1821,7 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
             lc = ''
 
         context['lang_code'] = lc
-        context['lang_label'] = REGISTRY_LANGUAGE[lc]
+        context['lang_label'] = REGISTRY_LANGUAGE[lc] if lc in REGISTRY_LANGUAGE else ''
 
         if self.request.method == 'GET':
             context['formset_concept'] = ConceptListDescFormSet(instance=self.object)
@@ -1939,7 +1939,6 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
 
 
 
-
 class TermListDescCreateView(LoginRequiredView, CreateView):
     """
     Used as class view to create TermListDesc
@@ -2001,7 +2000,7 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
             lc = ''
 
         context['lang_code'] = lc
-        context['lang_label'] = REGISTRY_LANGUAGE[lc]
+        context['lang_label'] = REGISTRY_LANGUAGE[lc] if lc in REGISTRY_LANGUAGE else ''
 
         if self.request.POST:
             context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(self.request.POST)
@@ -2870,6 +2869,8 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                             identifier=id_concept,preferred_concept='Y',
                                             ).order_by('identifier_id',
                                             ).values(
+                                                    'termdesc__concept_preferred_term',
+                                                    'termdesc__record_preferred_term',
                                                     'conceptdesc__language_code',
                                                     'conceptdesc__scope_note',
                                             ).distinct()
@@ -3076,7 +3077,6 @@ class PageViewDesc(LoginRequiredView, DetailView):
             context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
             return context
-
 
 
 
@@ -4802,7 +4802,7 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
             lc = ''
 
         context['lang_code'] = lc
-        context['lang_label'] = REGISTRY_LANGUAGE[lc]
+        context['lang_label'] = REGISTRY_LANGUAGE[lc] if lc in REGISTRY_LANGUAGE else ''
 
         if self.request.method == 'GET':
 
@@ -5219,7 +5219,7 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
             lc = ''
 
         context['lang_code'] = lc
-        context['lang_label'] = REGISTRY_LANGUAGE[lc]
+        context['lang_label'] = REGISTRY_LANGUAGE[lc] if lc in REGISTRY_LANGUAGE else ''
 
         return context
 

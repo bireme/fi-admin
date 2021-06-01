@@ -335,7 +335,7 @@
 
                     <ul>
 
-                        {% if forloop.counter == 1 %}
+                        {% if forloop.first %}
 
                             {% if obj.termqualif__concept_preferred_term == 'Y' %}
                                 {% ifchanged obj.termqualif__identifier_concept_id %}
@@ -371,12 +371,13 @@
                         {% endif %}
 
                         <ul>
-                            {% ifchanged %}
-                                <a href="{% url 'create_term_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}"><i class='icon-file'></i>&nbsp;{% trans "Add term" %}</a>
-
-                                <br>
-                                <b>{% trans "Term" %}</b>:
-                            {% endifchanged %}
+                            {% if forloop.first %}
+                                {% ifchanged %}
+                                    <a href="{% url 'create_term_qualif' %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}"><i class='icon-file'></i>&nbsp;{% trans "Add term" %}</a>
+                                    <br />
+                                    <b>{% trans "Term" %}</b>:
+                                {% endifchanged %}
+                            {% endif %}
 
                             {% ifchanged obj.termqualif__language_code %} <!-- Faz a separação em grupo de UPs por idioma -->
                                 {% if obj.termqualif__concept_preferred_term == 'N' %}
@@ -402,7 +403,9 @@
                                 {% if obj.termqualif__status != -3 %}
                                     {% if obj.termqualif__status != 3 %}
                                         {% if qualif_language_code == obj.termqualif__language_code or not qualif_language_code %}
+                                            {% if obj.termqualif__id %}
                                             <a href="{% url 'edit_term_qualif' obj.termqualif__id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}" title="{% trans "Edit qualifier information" %}"><i class="icon-pencil"></i></a>
+                                            {% endif %}
                                         {% endif %}
 
                                         {% if identifierconceptlist_objects_preferred|length > 1 %}
@@ -546,7 +549,9 @@
                                 {% if obj.termqualif__status != 3 %}
                                     <!-- force record_preferred_term=N -->
                                     {% if qualif_language_code == obj.termqualif__language_code or not qualif_language_code %}
+                                        {% if obj.termqualif__id %}
                                         <a href="{% url 'edit_term_qualif' obj.termqualif__id %}/?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}&string={{ obj.termqualif__term_string }}&lang={{obj.termqualif__language_code}}&identifier_concept_id={{ obj.termqualif__identifier_concept_id }}&record_preferred_term=N" title="{% trans "Edit qualifier information" %}"><i class="icon-pencil"></i></a>
+                                        {% endif %}
                                     {% endif %}
 
                                     {% if identifierconceptlist_objects|length > 1 %}
