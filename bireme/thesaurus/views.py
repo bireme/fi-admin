@@ -71,6 +71,13 @@ ACTIONS = {
     'choiced_language_code': '',
 }
 
+REGISTRY_LANGUAGE = {
+    'en': _('English'),
+    'es': _('Spanish Latin America'),
+    'pt-br': _('Portuguese'),
+    'es-es': _('Spanish Spain'),
+    'fr': _('French'),
+}
 
 
 # Descriptors ------------------------------------------------------------------------
@@ -657,6 +664,20 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['lang_code'] = lc
+
         if self.request.method == 'GET':
 
             context['formset_descriptor'] = DescriptionDescFormSet(instance=self.object)
@@ -890,13 +911,16 @@ class DescListView(LoginRequiredView, ListView):
         context = super(DescListView, self).get_context_data(**kwargs)
         context['actions'] = self.actions
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        context['user_cc'] = user_cc
+
         context['last_created_objects_list'] = TermListDesc.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(status=3).exclude(status=5).exclude(date_created__isnull=True).order_by('-date_created','-id')[:10][::-1]
         context['last_altered_objects_list'] = TermListDesc.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(date_altered__isnull=True).order_by('-date_altered','-id')[:10][::-1]
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
         return context
-
 
 
 
@@ -1784,6 +1808,21 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['lang_code'] = lc
+        context['lang_label'] = REGISTRY_LANGUAGE[lc] if lc in REGISTRY_LANGUAGE else ''
+
         if self.request.method == 'GET':
             context['formset_concept'] = ConceptListDescFormSet(instance=self.object)
             context['formset_term'] = TermListDescFormSet(instance=self.object)
@@ -1879,10 +1918,24 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        context['user_cc'] = user_cc
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['lang_code'] = lc
+
         if self.request.method == 'GET':
             context['formset_concept'] = ConceptListDescFormSet(instance=self.object)
         return context
-
 
 
 
@@ -1933,6 +1986,21 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
         context = super(TermListDescCreateView, self).get_context_data(**kwargs)
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['lang_code'] = lc
+        context['lang_label'] = REGISTRY_LANGUAGE[lc] if lc in REGISTRY_LANGUAGE else ''
 
         if self.request.POST:
             context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(self.request.POST)
@@ -2511,6 +2579,10 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        context['user_cc'] = user_cc
+
         if self.request.POST:
             context['formset_toccurrence'] = TheraurusOccurrenceListDescFormSet(self.request.POST)
         else:
@@ -2656,6 +2728,21 @@ class PageViewDesc(LoginRequiredView, DetailView):
 
         context = super(PageViewDesc, self).get_context_data(**kwargs)
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        context['user_cc'] = user_cc
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['desc_language_code'] = lc
+
         if self.object:
 
             # IdentifierConceptListDesc - recover pk from concept
@@ -2782,6 +2869,8 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                             identifier=id_concept,preferred_concept='Y',
                                             ).order_by('identifier_id',
                                             ).values(
+                                                    'termdesc__concept_preferred_term',
+                                                    'termdesc__record_preferred_term',
                                                     'conceptdesc__language_code',
                                                     'conceptdesc__scope_note',
                                             ).distinct()
@@ -2988,7 +3077,6 @@ class PageViewDesc(LoginRequiredView, DetailView):
             context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
             return context
-
 
 
 
@@ -3495,6 +3583,20 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
 
         context['language_system'] = get_language()
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['lang_code'] = lc
+
         if self.request.method == 'GET':
 
             context['formset_descriptor'] = DescriptionQualifFormSet(instance=self.object)
@@ -3741,18 +3843,17 @@ class QualifListView(LoginRequiredView, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(QualifListView, self).get_context_data(**kwargs)
-
         context['actions'] = self.actions
+
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        context['user_cc'] = user_cc
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
         context['last_created_objects_list'] = TermListQualif.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(status=3).exclude(status=5).exclude(date_created__isnull=True).order_by('-date_created','-id')[:10][::-1]
         context['last_altered_objects_list'] = TermListQualif.objects.filter(term_thesaurus=self.request.GET.get("ths")).exclude(status=-3).exclude(date_altered__isnull=True).order_by('-date_altered','-id')[:10][::-1]
 
         return context
-
-
-
-
 
 
 
@@ -4688,6 +4789,21 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['lang_code'] = lc
+        context['lang_label'] = REGISTRY_LANGUAGE[lc] if lc in REGISTRY_LANGUAGE else ''
+
         if self.request.method == 'GET':
 
             context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
@@ -4785,10 +4901,24 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        context['user_cc'] = user_cc
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['lang_code'] = lc
+
         if self.request.method == 'GET':
             context['formset_concept'] = ConceptListQualifFormSet(instance=self.object)
         return context
-
 
 
 
@@ -5075,6 +5205,21 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
         context = super(TermListQualifCreateView, self).get_context_data(**kwargs)
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
+
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['lang_code'] = lc
+        context['lang_label'] = REGISTRY_LANGUAGE[lc] if lc in REGISTRY_LANGUAGE else ''
 
         return context
 
@@ -5365,6 +5510,10 @@ class TermListQualifUpdateView(LoginRequiredView, UpdateView):
 
         context['choiced_thesaurus_name'] = Thesaurus.objects.filter(id=self.request.GET.get("ths"))
 
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        context['user_cc'] = user_cc
+
         return context
 
 
@@ -5502,6 +5651,21 @@ class PageViewQualif(LoginRequiredView, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PageViewQualif, self).get_context_data(**kwargs)
+
+        user_data = additional_user_info(self.request)
+        user_cc = user_data['user_cc']
+        context['user_cc'] = user_cc
+
+        if user_cc.startswith('CL'):
+            lc = 'es'
+        elif user_cc.startswith('ES'):
+            lc = 'es-es'
+        elif user_cc.startswith('FR'):
+            lc = 'fr'
+        else:
+            lc = ''
+
+        context['qualif_language_code'] = lc
 
         if self.object:
 

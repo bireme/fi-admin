@@ -67,7 +67,7 @@
             <div class="tab-data1">
 
                     <!-- identifierdesc -->
-                    <div class="accordion-group">
+                    <div class="accordion-group" {% if lang_code %}style="display: none;"{% endif %}>
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-target="#identifierdesc">{% trans "Identifier of Record" %}</a>
                         </div>
@@ -134,7 +134,7 @@
                     </div>
 
                     <!-- treenumberslistdesc -->
-                    <div class="accordion-group">
+                    <div class="accordion-group" {% if lang_code %}style="display: none;"{% endif %}>
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-target="#treenumber">{% trans "Tree Numbers List" %}</a>
                         </div>
@@ -209,52 +209,105 @@
                                     </table>
 
                                     <div id="descriptiondesc_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
-                                        <table width="98%">
-                                            <tr>
-                                                <td align="right" bgcolor="#F2F2F2">
-                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}                                                    
-                                                </td>
-                                            </tr>                                            
-                                        </table>
-                                        <table class="descriptiondesc">
-                                            <tr>
-                                                <td>
-                                                    {{ form.language_code.label_tag }}
-                                                    {{ form.language_code }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    {{ form.annotation.label_tag }}
-                                                    {{ form.annotation }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    {{ form.history_note.label_tag }}
-                                                    {{ form.history_note }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    {{ form.online_note.label_tag }}
-                                                    {{ form.online_note }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    {{ form.public_mesh_note.label_tag }}
-                                                    {{ form.public_mesh_note }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    {{ form.consider_also.label_tag }}
-                                                    {{ form.consider_also }}
-                                                </td>
-                                            </tr>
-                                        </table>
-
+                                        {% if lang_code == form.language_code.value or not lang_code or not form.instance.pk %}
+                                            {% if form.instance.pk %}
+                                            <table width="98%">
+                                                <tr>
+                                                    <td align="right" bgcolor="#F2F2F2">
+                                                        {% trans 'Delete' %}? {{ form.DELETE }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            {% endif %}
+                                            <table class="descriptiondesc">
+                                                <tr>
+                                                    {% if form.instance.pk %}
+                                                    <td>
+                                                        <input type="hidden" id="id_descriptiondesc-{{ forloop.counter0 }}-language_code" name="descriptiondesc-{{ forloop.counter0 }}-language_code" value="{{ form.language_code.value }}" >
+                                                        {{ form.language_code.label }}:
+                                                        <font color="gray">
+                                                        {% if lang_code == 'en' %}{% trans "English" %}{% endif %}
+                                                        {% if lang_code == 'es' %}{% trans "Spanish Latin America" %}{% endif %}
+                                                        {% if lang_code == 'pt-br' %}{% trans "Portuguese" %}{% endif %}
+                                                        {% if lang_code == 'es-es' %}{% trans "Spanish Spain" %}{% endif %}
+                                                        {% if lang_code == 'fr' %}{% trans "French" %}{% endif %}
+                                                        </font>
+                                                    </td>
+                                                    {% else %}
+                                                    <td>
+                                                        {{ form.language_code.label_tag }}
+                                                        {{ form.language_code }}
+                                                    </td>
+                                                    {% endif %}
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        {{ form.annotation.label_tag }}
+                                                        {{ form.annotation }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        {{ form.history_note.label_tag }}
+                                                        {{ form.history_note }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        {{ form.online_note.label_tag }}
+                                                        {{ form.online_note }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        {{ form.public_mesh_note.label_tag }}
+                                                        {{ form.public_mesh_note }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        {{ form.consider_also.label_tag }}
+                                                        {{ form.consider_also }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        {% else %}
+                                            <table class="descriptiondesc">
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" id="id_descriptiondesc-{{ forloop.counter0 }}-language_code" name="descriptiondesc-{{ forloop.counter0 }}-language_code" value="{{ form.language_code.value }}" >
+                                                        {{ form.language_code.label }}:
+                                                        <font color="gray">
+                                                        {% if form.language_code.value == 'en' %}{% trans "English" %}{% endif %}
+                                                        {% if form.language_code.value == 'es' %}{% trans "Spanish Latin America" %}{% endif %}
+                                                        {% if form.language_code.value == 'pt-br' %}{% trans "Portuguese" %}{% endif %}
+                                                        {% if form.language_code.value == 'es-es' %}{% trans "Spanish Spain" %}{% endif %}
+                                                        {% if form.language_code.value == 'fr' %}{% trans "French" %}{% endif %}
+                                                        </font>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <input type="hidden" id="id_descriptiondesc-{{ forloop.counter0 }}-annotation" name="descriptiondesc-{{ forloop.counter0 }}-annotation" value="{{ form.annotation.value }}" >
+                                                    <td>{{ form.annotation.label }}: <font color="gray">{{ form.annotation.value }}</font><td>
+                                                </tr>
+                                                <tr>
+                                                    <input type="hidden" id="id_descriptiondesc-{{ forloop.counter0 }}-history_note" name="descriptiondesc-{{ forloop.counter0 }}-history_note" value="{{ form.history_note.value }}" >
+                                                    <td>{{ form.history_note.label }}: <font color="gray">{{ form.history_note.value }}</font><td>
+                                                </tr>
+                                                <tr>
+                                                    <input type="hidden" id="id_descriptiondesc-{{ forloop.counter0 }}-online_note" name="descriptiondesc-{{ forloop.counter0 }}-online_note" value="{{ form.online_note.value }}" >
+                                                    <td>{{ form.online_note.label }}: <font color="gray">{{ form.online_note.value }}</font><td>
+                                                </tr>
+                                                <tr>
+                                                    <input type="hidden" id="id_descriptiondesc-{{ forloop.counter0 }}-public_mesh_note" name="descriptiondesc-{{ forloop.counter0 }}-public_mesh_note" value="{{ form.public_mesh_note.value }}" >
+                                                    <td>{{ form.public_mesh_note.label }}: <font color="gray">{{ form.public_mesh_note.value }}</font><td>
+                                                </tr>
+                                                <tr>
+                                                    <input type="hidden" id="id_descriptiondesc-{{ forloop.counter0 }}-consider_also" name="descriptiondesc-{{ forloop.counter0 }}-consider_also" value="{{ form.consider_also.value }}" >
+                                                    <td>{{ form.consider_also.label }}: <font color="gray">{{ form.consider_also.value }}</font><td>
+                                                </tr>
+                                            </table>
+                                        {% endif %}
                                     </div>
 
                                 {% endfor %}
@@ -264,7 +317,7 @@
                     </div>
 
                     <!-- pharmacologicalactionlist -->
-                    <div class="accordion-group">
+                    <div class="accordion-group" {% if lang_code %}style="display: none;"{% endif %}>
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-target="#pharmaco">{% trans "Pharmacological Action List" %}</a>
                         </div>
@@ -305,7 +358,7 @@
                     </div>
 
                     <!-- seerelatedlistdesc -->
-                    <div class="accordion-group">
+                    <div class="accordion-group" {% if lang_code %}style="display: none;"{% endif %}>
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-target="#relatedlistdesc">{% trans "Related List" %}</a>
                         </div>
@@ -346,7 +399,7 @@
 
 
                     <!-- previousindexinglistdesc -->
-                    <div class="accordion-group">
+                    <div class="accordion-group" {% if lang_code %}style="display: none;"{% endif %}>
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-target="#previousindexinglistdesc">{% trans "Previous Indexing List" %}</a>
                         </div>
@@ -391,7 +444,7 @@
                     </div>
 
                     <!-- entrycombinationlistdesc -->
-                    <div class="accordion-group">
+                    <div class="accordion-group" {% if lang_code %}style="display: none;"{% endif %}>
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-target="#entrycombination">{% trans "Entry Combination List" %}</a>
                         </div>
@@ -443,7 +496,7 @@
                                         <table class="entrycombination">
                                             <tr>
                                                 <td colspan="5" align="right" bgcolor="#F2F2F2">
-                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}                                                    
+                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}
                                                 </td>
                                             </tr>
                                             <tr>

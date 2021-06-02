@@ -72,7 +72,7 @@
                 </div>
 
                 <ul>
-                    <fieldset id="termlistdesc">                            
+                    <fieldset id="termlistdesc">
                         {% for field in form.visible_fields %}
                             {% if field.errors %}
                                 <font color="red"><b>{{ field.label }}</b></font>{{ field.errors }}
@@ -110,7 +110,7 @@
                                     </center>
                                 </td>
                                 <td>
-                                    <input type="text" id="id_term_ui" name="term_ui" value="{% if form.term_ui.value %}{{ form.term_ui.value }}{% endif %}" readonly="True">
+                                    <input type="text" id="id_term_ui" name="term_ui" value="{% if form.term_ui.value %}{{ form.term_ui.value }}{% endif %}" {% if user_cc != 'BR1.1' %}readonly="True"{% endif %}>
                                 </td>
                                 <td>{{ form.date_created }}</td>
                             </tr>
