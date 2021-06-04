@@ -87,6 +87,7 @@ class BiblioRefForm(BetterModelForm):
             self.fields['publisher'].widget = widgets.HiddenInput()
             self.fields['isbn'].widget = widgets.HiddenInput()
 
+        '''
         # load serial titles for serial analytic
         if self.document_type == 'S' and not self.reference_source:
             title_objects = Title.objects.all()
@@ -128,6 +129,7 @@ class BiblioRefForm(BetterModelForm):
 
             self.fields['title_serial'] = forms.ChoiceField(choices=title_list, required=False)
             self.fields['title_serial_other'] = forms.CharField(required=False)
+        '''
 
         if 'publication_country' in self.fields:
             # divide list of countries in Latin America & Caribbean and Others

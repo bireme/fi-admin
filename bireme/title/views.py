@@ -1,8 +1,12 @@
 #! coding: utf-8
+import json
+
+from django.core.serializers.json import DjangoJSONEncoder
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from django.db.models import Q
 
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -382,3 +386,17 @@ class TitleDeleteView(LoginRequiredView, DeleteView):
         Keyword.objects.filter(object_id=obj.id, content_type=c_type).delete()
 
         return super(TitleDeleteView, self).delete(request, *args, **kwargs)
+
+
+def search_title(request):
+    term = request.GET.get('term')
+    filter_title_qs = Q(title__icontains=term) | Q(shortened_title__icontains=term)
+    qs = Title.objects.filter(filter_title_qs).values_list("title", "shortened_title", "issn")
+
+    # convert the result to a list with a dict containing the label and value attributes. Ex. [{"label": "Revista 1", "value": "Rev. 1|11111X"}]
+    title_list = [{"label": title[0], "value": "%s|%s" % (title[1], title[2])} for title in qs]
+
+    title_list_response = json.dumps(list(title_list), cls=DjangoJSONEncoder)
+
+
+    return HttpResponse(title_list_response, content_type="application/json")

@@ -8,6 +8,17 @@
 
 {% block extrahead %}
 <link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
+{% if form.document_type == 'S' %}
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+<style>
+.ui-autocomplete {
+    max-height: 250px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}
+</style>
+{% endif %}
 {% endblock %}
 
 {% block title %}{% trans "Edit Source" %}{% endblock %}
@@ -213,6 +224,9 @@
    <script src="{% static 'js/biblioref.js' %}"></script>
    <script src="{% static 'js/classification.js' %}"></script>
    <script src="{% static 'js/multiple-select.min.js' %}"></script>
+   {% if form.document_type == 'S' %}
+   <script src="{% static 'js/jquery-ui.js' %}"></script>
+   {% endif %}
 
    <script id="itensTemplate" type="text/x-jsrender">
         <li>
@@ -364,6 +378,39 @@
             });
 
             $('#id_indexed_database, #id_publication_type, #id_check_tags').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
+
+            $("#id_title_serial").autocomplete( {
+                minLength: 4,
+                source: "/title/ajax/search/",
+
+                open: function (e, ui) {
+                    var acData = $(this).data('ui-autocomplete');
+                    acData
+                    .menu
+                    .element
+                    .find('li')
+                    .each(function () {
+                        var me = $(this);
+                        var keywords = acData.term.split(' ').join('|');
+                        let textWrapper = me.find('.ui-menu-item-wrapper');
+                        let text = textWrapper.text();
+                        let newTextHtml = text.replace(new RegExp("(" + keywords + ")", "gi"), '<b>$1</b>');
+                        textWrapper.html(newTextHtml);
+                    });
+                },
+                select: function( event, ui ) {
+                    // each item has the serial title and issn separated by |
+                    var title_data = ui.item.value.split('|');
+
+                    // update title field
+                    this.value = title_data[0];
+                    // update issn field
+                    serial_issn = title_data[1];
+                    $("#id_issn").val(serial_issn);
+
+                    return false;
+                }
+            });
         });
 
         function decs_search(obj){
