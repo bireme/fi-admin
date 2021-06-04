@@ -69,7 +69,7 @@ def search(request):
     # url
     search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-    search_params = {'site': 'fi', 'col': 'main','op': op,'output': 'site', 'lang': 'pt',
+    search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': 'pt',
                 'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
 
     request_result = requests.post(search_url, data=search_params)

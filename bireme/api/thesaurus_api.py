@@ -83,7 +83,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # print 'search_url -->',search_url
         # print 'q          -->',q
 
-        search_params = {'site': 'fi', 'col': 'main', 'op': op, 'output': 'site', 'lang': lang,
+        search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
                          'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort, 'decs_code': decs_code }
 
         r = requests.post(search_url, data=search_params)
@@ -707,7 +707,7 @@ class ThesaurusAPIQualifResource(CustomResource):
         # url
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
-        search_params = {'site': 'fi', 'col': 'main', 'op': op, 'output': 'site', 'lang': lang,
+        search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
                          'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort, 'decs_code': decs_code }
 
         r = requests.post(search_url, data=search_params)
