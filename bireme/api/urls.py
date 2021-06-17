@@ -14,6 +14,7 @@ from api.thesaurus_api_desc import *
 from api.thesaurus_api_qualif import *
 from api.thesaurus_api import *
 from api.thesaurus_solr_api import *
+from api.thesaurus_treenumber_api import *
 from api.institution_api import *
 
 
@@ -38,6 +39,7 @@ thesaurus_resource_qualif = ThesaurusResourceQualif()
 # used to render records in JSON format
 thesaurus_resource_desc_API = ThesaurusAPIDescResource()
 thesaurus_resource_qualif_API = ThesaurusAPIQualifResource()
+thesaurus_resource_treeview_API = ThesaurusAPITreeNumberResource()
 
 # used to render records in JSON format for solr index
 thesaurus_resource_desc_index_API = ThesaurusAPIDescResourceIndex()
@@ -70,6 +72,7 @@ urlpatterns = [
     # used to render records in JSON format
     re_path(r'^desc/', include(thesaurus_resource_desc_API.urls)),
     re_path(r'^qualif/', include(thesaurus_resource_qualif_API.urls)),
+    re_path(r'^ths/', include(thesaurus_resource_treeview_API.urls)),
 
     # used to render records in JSON format for solr index
     re_path(r'^desc/index/', include(thesaurus_resource_desc_index_API.urls)),
