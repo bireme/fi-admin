@@ -95,6 +95,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         filter_indexed_database = self.actions.get('filter_indexed_database')
         filter_collection = self.actions.get('filter_collection')
         filter_owner = self.actions.get('filter_owner')
+        filter_network = self.actions.get('filter_network')
 
         # default value for filter status (ALL)
         if filter_status == '':
@@ -194,6 +195,16 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             else:
                 object_list = object_list.none()
 
+        # default filter_network for GIM
+        if filter_owner == '*' and not filter_network and 'GIM' in user_data['networks']:
+            filter_network = 'GIM'
+
+        # apply filter network
+        if filter_network:
+            if 'ccs_by_network' in user_data:
+                ccs_in_network = user_data['ccs_by_network'].get(filter_network, [])
+                object_list = object_list.filter(cooperative_center_code__in=ccs_in_network)
+
 
         # apply filter status
         if filter_status != '*':
@@ -214,9 +225,14 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             if not filter_status:
                 self.actions['filter_status'] = '0'
 
+        # set default filter for users in GIM network
+        if self.actions['filter_owner'] == '*' and not self.actions['filter_network'] and 'GIM' in user_data['networks']:
+            self.actions['filter_network'] = 'GIM'
+
         context['actions'] = self.actions
         context['document_type'] = self.request.GET.get('document_type')
         context['source_id'] = self.request.GET.get('source')
+        context['user_data'] = user_data
         context['user_role'] = user_role
         context['indexed_database_list'] = Database.objects.all().order_by('name')
         context['collection_list'] = Collection.objects.all().order_by('parent_id')

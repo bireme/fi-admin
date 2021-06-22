@@ -125,7 +125,7 @@
 
                                 <a href="javascript:void()" id="show_advaced_filters">+ {% trans "Filters" %}</a>
 
-                                <div class="advanced_filters {% if not  actions.filter_indexed_database and not actions.filter_collection %}hide{% endif %}">
+                                <div class="advanced_filters {% if not  actions.filter_indexed_database and not actions.filter_collection and not actions.filter_network %}hide{% endif %}">
                                     {% trans "Indexed in" %}:
                                     <select name="filter_indexed_database">
                                         <option value="">{% trans "All" %}</option>
@@ -142,6 +142,14 @@
                                             {% if col.parent and not col.community_flag %}
                                                 <option value="{{ col.id }}" {% if actions.filter_collection|add:"0" == col.id %}selected="true"{% endif %}>{{ col.community_collection_path }}</option>
                                             {% endif %}
+                                        {% endfor %}
+                                    </select>
+
+                                    {% trans "Networks" %}:
+                                    <select name="filter_network">
+                                        <option value="">{% trans "All" %}</option>
+                                        {% for network in user_data.networks %}
+                                            <option value="{{ network }}" {% if actions.filter_network == network %}selected="true"{% endif %}>{{ network }}</option>
                                         {% endfor %}
                                     </select>
 
