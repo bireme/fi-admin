@@ -127,6 +127,8 @@ MIDDLEWARE = [
     # middlewares for log user actions
     'crum.CurrentRequestUserMiddleware',
     'log.middleware.WhodidMiddleware',
+    # send performance metrics to elastic apm
+    'elasticapm.contrib.django.middleware.TracingMiddleware',
 ]
 
 
@@ -163,6 +165,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+
+    'elasticapm.contrib.django',
 
     'haystack',
     'tastypie',
@@ -335,9 +339,17 @@ ACTIONS = {
     'filter_type': "",
     'filter_category': "",
     'filter_country': "",
+    'filter_network': "",
     'document_type': "",
     'review_type': "",
     'results_per_page': "",
+}
+
+ELASTIC_APM = {
+  'SERVICE_NAME': os.environ.get("ELASTIC_APM_SERVICE_NAME"),
+  'SECRET_TOKEN': os.environ.get("ELASTIC_APM_SECRET_TOKEN"),
+  'SERVER_URL': os.environ.get("ELASTIC_APM_SERVER_URL"),
+  'ENVIRONMENT': os.environ.get("ELASTIC_APM_ENVIRONMENT"),
 }
 
 if DEBUG_TOOLBAR:
