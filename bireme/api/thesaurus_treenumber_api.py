@@ -48,7 +48,7 @@ class TreeNumberResource(Resource):
 		include_resource_uri = False
 		serializer = WsDecsSerializer(formats=['xml', 'json'])
 		# elimina datos de paginacion
-		# paginator_class = NoPaginator
+		paginator_class = NoPaginator
 
 	def determine_format(self, request):
 		"""
