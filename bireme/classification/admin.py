@@ -26,7 +26,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
     def clear_cache(self, request, queryset):
         for collection in queryset:
-            for cache_lang in ['pt', 'es', 'en']:
+            for cache_lang in ['pt-br', 'es', 'en']:
                 cache_id_c = "classification_collection-{}-{}".format(cache_lang, collection.id)
                 cache_id_f = "classification_collection_fullpath-{}-{}".format(cache_lang, collection.id)
                 try:

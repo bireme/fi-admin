@@ -25,7 +25,7 @@ class DatabaseAdmin(GenericAdmin):
 
     def clear_cache(self, request, queryset):
         for db in queryset:
-            for cache_lang in ['pt', 'es', 'en']:
+            for cache_lang in ['pt-br', 'es', 'en']:
                 cache_id = "database-{}-{}".format(cache_lang, db.id)
                 try:
                     cache.delete(cache_id)
