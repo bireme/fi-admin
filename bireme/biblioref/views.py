@@ -200,7 +200,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             filter_network = 'GIM'
 
         # apply filter network
-        if filter_network:
+        if filter_network and filter_network != '*':
             if 'ccs_by_network' in user_data:
                 ccs_in_network = user_data['ccs_by_network'].get(filter_network, [])
                 object_list = object_list.filter(cooperative_center_code__in=ccs_in_network)

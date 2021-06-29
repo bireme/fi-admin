@@ -147,7 +147,7 @@
 
                                     {% trans "Networks" %}:
                                     <select name="filter_network">
-                                        <option value="">{% trans "All" %}</option>
+                                        <option value="*">{% trans "All" %}</option>
                                         {% for network in user_data.networks %}
                                             <option value="{{ network }}" {% if actions.filter_network == network %}selected="true"{% endif %}>{{ network }}</option>
                                         {% endfor %}
