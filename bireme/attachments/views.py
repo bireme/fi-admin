@@ -15,7 +15,7 @@ def view_document(request, short_id):
     doc = get_object_or_404(Attachment, pk=doc_id)
 
     # temporary check for validation of alternative environment python3
-    date_start_fiadmin2 = datetime(2021, 7, 1, tzinfo=timezone.utc)
+    date_start_fiadmin2 = datetime(2021, 7, 2, tzinfo=timezone.utc)
     view_documents_url = settings.VIEW_DOCUMENTS_BASE_URL if doc.created_time > date_start_fiadmin2 else 'https://docs.bvsalud.org'
 
     #document_url = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, doc.attachment_file)
