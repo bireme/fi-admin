@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.db.models import F, Q, Func, Count
 from django.db.models.functions import Substr
@@ -244,8 +244,8 @@ class InstUpdate(LoginRequiredView):
 
                 return HttpResponseRedirect(self.get_success_url())
         else:
-            return self.render(request, self.template_name,
-                           self.get_context_data(form=form,
+            return self.render_to_response(
+                                            self.get_context_data(form=form,
                                                  formset_contact=formset_contact,
                                                  formset_url=formset_url,
                                                  formset_adm=formset_adm,
