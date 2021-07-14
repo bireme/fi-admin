@@ -162,8 +162,8 @@
                                         <li>
                                             {% if reference_source.literature_type == 'S' %}
                                                 <strong>{{ reference_source }}</strong>
+                                                <span id="indexed_database_info" class="hide"> <i class="icon-info-sign"></i> {% trans 'Revista normalmente indexada em:' %} <span id="indexed_database_list"></span></span>
                                             {% else %}
-
                                                     <strong>{{ reference_source.title_serial }}</strong>
                                                     {% if reference_source.volume_serial %}
                                                         {% trans 'Volume' %}: <strong>{{ reference_source.volume_serial }}</strong>
@@ -172,7 +172,6 @@
                                                         {% trans 'Issue number' %}: <strong>{{ reference_source.issue_number }}</strong>
                                                     {% endif %}
                                                 </strong>
-
                                             {% endif %}
                                         </li>
                                     </li>
@@ -485,6 +484,34 @@
             });
 
             $('#id_indexed_database, #id_publication_type, #id_check_tags').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
+
+            // consult list of indexed databases from TITLE
+            var check_title = '{{reference_source.title_serial}}';
+            $.ajax({
+                url : "/title/ajax/get_indexcodes/?title=" + check_title,
+                dataType: "json",
+                success : function (data) {
+                    if (data.length > 0){
+                        var index_db_list = []
+                        for (var i = 0; i < data.length; i++) {
+                            var index_db = data[i]['index_db'];
+                            index_db_list.push(index_db);
+                            // for new records select indexed database from title
+                            {% if not object.pk %}
+                                $('#id_indexed_database option:contains(' + index_db + ')').each(function(){
+                                    if ($(this).text() == index_db) {
+                                        $(this).attr('selected', 'selected');
+                                    }
+                                });
+                            {% endif %}
+                        }
+                        $('#id_indexed_database').multipleSelect('refreshOptions', {})
+                        $('#indexed_database_list').html(index_db_list.join(', '));
+                        $('#indexed_database_info').show();
+                    }
+                }
+            });
+
         });
 
         function decs_search(obj){

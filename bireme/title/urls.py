@@ -10,4 +10,5 @@ urlpatterns = [
     re_path(r'^preview/(?P<pk>\d+)/?$', TitlePreview.as_view(), name='preview_title'),
 
     re_path(r'^ajax/search/$', search_title, name='search_title'),
+    re_path(r'^ajax/get_indexcodes/$', get_indexcodes, name='get_indexcodes'),
 ]

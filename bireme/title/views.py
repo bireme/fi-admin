@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from django.db.models import Q
+from django.db.models import F, Q
 
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -400,3 +400,17 @@ def search_title(request):
 
 
     return HttpResponse(title_list_response, content_type="application/json")
+
+
+def get_indexcodes(request):
+    title = request.GET.get('title')
+    title_indexcodes = {}
+
+    title_result = Title.objects.filter(shortened_title__iexact=title)
+    if title_result:
+        title_obj = title_result[0]
+        index_range = IndexRange.objects.filter(title=title_obj.pk).annotate(index_db=F('index_code__name')).values("index_db")
+        title_indexcodes = json.dumps(list(index_range), cls=DjangoJSONEncoder)
+
+
+    return HttpResponse(title_indexcodes, content_type="application/json")

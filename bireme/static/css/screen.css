@@ -857,3 +857,7 @@ tr.relation-row .row_order input{
 	position:relative;
 	top:1px;
 }
+
+#indexed_database_info{
+    color: #ff9800;
+}
