@@ -201,9 +201,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             else:
                 object_list = object_list.none()
 
-        # default filter_network for GIM
-        if filter_owner == '*' and not filter_network and 'GIM' in user_data['networks']:
-            filter_network = 'GIM'
+        # default filter_network for AIM
+        if filter_owner == '*' and not filter_network and 'AIM' in user_data['networks']:
+            filter_network = 'AIM'
 
         # apply filter network
         if filter_network and filter_network != '*':
@@ -231,9 +231,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             if not filter_status:
                 self.actions['filter_status'] = '0'
 
-        # set default filter for users in GIM network
-        if self.actions['filter_owner'] == '*' and not self.actions['filter_network'] and 'GIM' in user_data['networks']:
-            self.actions['filter_network'] = 'GIM'
+        # set default filter for users in AIM network
+        if self.actions['filter_owner'] == '*' and not self.actions['filter_network'] and 'AIM' in user_data['networks']:
+            self.actions['filter_network'] = 'AIM'
 
         context['actions'] = self.actions
         context['document_type'] = self.request.GET.get('document_type')
