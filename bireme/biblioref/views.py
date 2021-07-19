@@ -163,7 +163,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
             if titles_indexed:
                 # by default filter by LILACS express status (status = 0)
-                if filter_status == '*':
+                if filter_owner == 'indexed' and filter_status == '*':
                     filter_status = 0
 
                 # by default filter by articles (exclude sources of list)
