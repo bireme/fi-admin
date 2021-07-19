@@ -163,7 +163,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
             if titles_indexed:
                 # by default filter by LILACS express status (status = 0)
-                if filter_owner == 'indexed' and filter_status == '*':
+                if filter_owner == 'indexed' and self.actions.get('filter_status') == '':
                     filter_status = 0
 
                 # by default filter by articles (exclude sources of list)
@@ -228,7 +228,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if self.actions['filter_owner'] == 'indexed':
             filter_status = self.actions.get('filter_status')
             self.actions['document_type'] = self.actions.get('document_type') or 'Sas'
-            if not filter_status:
+            if filter_status == '':
                 self.actions['filter_status'] = '0'
 
         # set default filter for users in AIM network
