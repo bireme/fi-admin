@@ -40,6 +40,7 @@ ACTIONS = {
     'filter_type': "",
     'filter_category': "",
     'filter_country': "",
+    'filter_network': "",
     'document_type': "",
     'review_type': "",
     'results_per_page': "",

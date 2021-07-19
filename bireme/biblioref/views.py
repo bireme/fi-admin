@@ -96,6 +96,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         filter_indexed_database = self.actions.get('filter_indexed_database')
         filter_collection = self.actions.get('filter_collection')
         filter_owner = self.actions.get('filter_owner')
+        filter_network = self.actions.get('filter_network')
 
         # default value for filter status (ALL)
         if filter_status == '':
@@ -157,7 +158,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
             if titles_indexed:
                 # by default filter by LILACS express status (status = 0)
-                if filter_status == '*':
+                if filter_owner == 'indexed' and self.actions.get('filter_status') == '':
                     filter_status = 0
 
                 # by default filter by articles (exclude sources of list)
@@ -196,6 +197,17 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
                 object_list = object_list.none()
 
 
+        # default filter_network for AIM
+        if filter_owner == '*' and not filter_network and 'AIM' in user_data['networks']:
+            filter_network = 'AIM'
+
+        # apply filter network
+        if filter_network and filter_network != '*':
+            if 'ccs_by_network' in user_data:
+                ccs_in_network = user_data['ccs_by_network'].get(filter_network, [])
+                object_list = object_list.filter(cooperative_center_code__in=ccs_in_network)
+
+
         # apply filter status
         if filter_status != '*':
             object_list = object_list.filter(status=filter_status)
@@ -212,8 +224,12 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if self.actions['filter_owner'] == 'indexed':
             filter_status = self.actions.get('filter_status')
             self.actions['document_type'] = self.actions.get('document_type') or 'Sas'
-            if not filter_status:
+            if filter_status == '':
                 self.actions['filter_status'] = '0'
+
+        # set default filter for users in AIM network
+        if self.actions['filter_owner'] == '*' and not self.actions['filter_network'] and 'AIM' in user_data['networks']:
+            self.actions['filter_network'] = 'AIM'
 
         context['actions'] = self.actions
         context['document_type'] = self.request.GET.get('document_type')

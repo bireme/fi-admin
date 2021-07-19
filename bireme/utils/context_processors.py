@@ -15,6 +15,7 @@ def additional_user_info(request):
     ccs = ''
     service_role = {}
     service_list = []
+    ccs_by_network = []
 
     if user.is_authenticated():
         if user.profile.data:
@@ -22,6 +23,7 @@ def additional_user_info(request):
             user_cc = user_data.get('cc')
             networks = user_data.get('networks')
             ccs = user_data.get('ccs')
+            ccs_by_network = user_data.get('ccs_by_network')
             user_type = user_data.get('user_type')
 
             # create a dictionary of service/role
@@ -34,7 +36,7 @@ def additional_user_info(request):
                     service_list.append(service_id)
 
     return {'user_cc': user_cc, 'user_type': user_type, 'user_name': user.username, 'user_id' : str(user.id),
-            'networks': networks, 'ccs': ccs, 'service_role': service_role, 'service_list' : service_list}
+            'networks': networks, 'ccs': ccs, 'ccs_by_network': ccs_by_network, 'service_role': service_role, 'service_list' : service_list}
 
 def django_settings(request):
     """
