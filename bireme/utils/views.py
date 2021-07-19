@@ -264,7 +264,7 @@ def decs_suggestion(request):
     for lang, text in text_by_lang.items():
         service_params = {'document': text, 'scanLang': lang, 'pubType': 'h', 'outLang': output_lang}
 
-        r = requests.post(service_url, data=service_params, headers=headers)
+        r = requests.post(service_url, data=service_params, headers=headers, verify=False)
         if r.status_code == 200:
             response_json = r.json()
             decs_list_response = response_json['positions']
