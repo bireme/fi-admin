@@ -52,4 +52,7 @@ def django_settings(request):
             m = "TEMPLATE_VISIBLE_SETTINGS: '{0}' does not exist".format(attr)
             raise ImproperlyConfigured(m);
 
+    # make available LANGUAGE_CODE to all templates
+    template_settings['LANGUAGE_CODE'] = request.LANGUAGE_CODE
+
     return template_settings

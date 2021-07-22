@@ -118,12 +118,12 @@ DATE_INPUT_FORMATS = ('%d/%m/%Y')
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     # middlewares for log user actions
     'crum.CurrentRequestUserMiddleware',
     'log.middleware.WhodidMiddleware',
@@ -267,7 +267,7 @@ TINYMCE_DEFAULT_CONFIG = {
 TEMPLATE_VISIBLE_SETTINGS = (
     'GOOGLE_ANALYTICS_ID',
     'SITE_URL',
-    'LANGUAGE_CODE'
+    'LANGUAGE_CODE',
 )
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
