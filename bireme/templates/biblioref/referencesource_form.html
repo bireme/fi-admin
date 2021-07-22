@@ -379,38 +379,42 @@
 
             $('#id_indexed_database, #id_publication_type, #id_check_tags').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
 
-            $("#id_title_serial").autocomplete( {
-                minLength: 3,
-                source: "/title/ajax/search/",
+            {% if form.document_type == 'S' %}
 
-                open: function (e, ui) {
-                    var acData = $(this).data('ui-autocomplete');
-                    acData
-                    .menu
-                    .element
-                    .find('li')
-                    .each(function () {
-                        var me = $(this);
-                        var keywords = acData.term.split(' ').join('|');
-                        let textWrapper = me.find('.ui-menu-item-wrapper');
-                        let text = textWrapper.text();
-                        let newTextHtml = text.replace(new RegExp("(" + keywords + ")", "gi"), '<b>$1</b>');
-                        textWrapper.html(newTextHtml);
-                    });
-                },
-                select: function( event, ui ) {
-                    // each item has the serial title and issn separated by |
-                    var title_data = ui.item.value.split('|');
+                $("#id_title_serial").autocomplete( {
+                    minLength: 3,
+                    source: "/title/ajax/search/",
 
-                    // update title field
-                    this.value = title_data[0];
-                    // update issn field
-                    serial_issn = title_data[1];
-                    $("#id_issn").val(serial_issn);
+                    open: function (e, ui) {
+                        var acData = $(this).data('ui-autocomplete');
+                        acData
+                        .menu
+                        .element
+                        .find('li')
+                        .each(function () {
+                            var me = $(this);
+                            var keywords = acData.term.split(' ').join('|');
+                            let textWrapper = me.find('.ui-menu-item-wrapper');
+                            let text = textWrapper.text();
+                            let newTextHtml = text.replace(new RegExp("(" + keywords + ")", "gi"), '<b>$1</b>');
+                            textWrapper.html(newTextHtml);
+                        });
+                    },
+                    select: function( event, ui ) {
+                        // each item has the serial title and issn separated by |
+                        var title_data = ui.item.value.split('|');
 
-                    return false;
-                }
-            });
+                        // update title field
+                        this.value = title_data[0];
+                        // update issn field
+                        serial_issn = title_data[1];
+                        $("#id_issn").val(serial_issn);
+
+                        return false;
+                    }
+                });
+                
+            {% endif %}
         });
 
         function decs_search(obj){

@@ -231,9 +231,10 @@ def decs_suggestion(request):
     text_to_analyze_json = json.loads(text_to_analyze)
 
     for text in text_to_analyze_json:
-        lang = str(text['_i'])
-        # concat texts of the same language
-        text_by_lang[lang] = text_by_lang.get(lang, '') + ' ' + text['text']
+        if text and '_i' in text:
+            lang = str(text['_i'])
+            # concat texts of the same language
+            text_by_lang[lang] = text_by_lang.get(lang, '') + ' ' + text['text']
 
     service_url = settings.DECS_HIGHLIGHTER_URL
 
