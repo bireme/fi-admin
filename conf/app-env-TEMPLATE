@@ -33,6 +33,7 @@ CACHE_BACKEND=django.core.cache.backends.memcached.MemcachedCache
 CACHE_LOCATION=
 
 SEARCH_SERVICE_URL=http://srv.bvsalud.org/
+SEARCH_INDEX=solr/fi-admin
 DECS_LOOKUP_SERVICE=https://pesquisa.bvsalud.org/portal/decs-locator/?mode=dataentry
 GOOGLE_ANALYTICS_ID=
 
@@ -49,6 +50,11 @@ RECAPTCHA_PRIVATE_KEY=
 GOOGLE_MAPS_APIKEY=
 
 FULLTEXT_SEARCH=True
+
+ELASTIC_APM_SERVICE_NAME=fi-admin
+ELASTIC_APM_SECRET_TOKEN=
+ELASTIC_APM_SERVER_URL=
+ELASTIC_APM_ENVIRONMENT=
 
 EMAIL_HOST=
 EMAIL_PORT=
