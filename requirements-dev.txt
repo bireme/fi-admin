@@ -2,3 +2,4 @@
 
 model-mommy==1.6.0
 requests_mock==1.7.0
+python-dotenv==0.18.0
