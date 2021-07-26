@@ -240,6 +240,9 @@ class ThesaurusAPIDescResource(CustomResource):
         array_fields_all = []
         results = SeeRelatedListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
         for field in results:
+            array_terms = {}
+            array_terms_all = []
+
             descriptor_ui = field.descriptor_ui
             id_register = IdentifierDesc.objects.using('decs_portal').filter(descriptor_ui=descriptor_ui).values('id')
 
@@ -248,18 +251,18 @@ class ThesaurusAPIDescResource(CustomResource):
             IdentifierDesc_decs_code = IdentifierDesc.objects.using('decs_portal').filter(descriptor_ui=field.descriptor_ui).values('decs_code')
             array_fields['decs_code'] = IdentifierDesc_decs_code[0].get('decs_code')
 
-            concepts_of_register = IdentifierConceptListDesc.objects.using('decs_portal').filter(identifier_id=id_register,preferred_concept='Y').values('id')
-            id_concept = concepts_of_register[0].get('id')
-            terms_of_concept = TermListDesc.objects.using('decs_portal').filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y',status=1)
+            concepts_of_register = IdentifierConceptListDesc.objects.using('decs_portal').filter(identifier_id__in=id_register,preferred_concept='Y').values('id')
+            
+            if concepts_of_register:
+                id_concept = concepts_of_register[0].get('id')
+                terms_of_concept = TermListDesc.objects.using('decs_portal').filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y',status=1)
 
-            array_terms = {}
-            array_terms_all = []
-            for term in terms_of_concept:
-                array_terms['term_string'] = term.term_string.encode('utf-8')
-                array_terms['language_code'] = term.language_code
-                # Armazena array
-                array_terms_all.append(array_terms)
-                array_terms = {}
+                for term in terms_of_concept:
+                    array_terms['term_string'] = term.term_string.encode('utf-8')
+                    array_terms['language_code'] = term.language_code
+                    # Armazena array
+                    array_terms_all.append(array_terms)
+                    array_terms = {}
 
             array_fields['terms'] = array_terms_all
 
