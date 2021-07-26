@@ -13,3 +13,4 @@ fixtures/samples/
 uploads/
 **/*.db
 .DS_Store
+env/
