@@ -290,6 +290,15 @@ class BiblioRefUpdate(LoginRequiredView):
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
 
+        # skip validation if user want change the status to refused (2) or deleted (3)
+        new_status = form.data.get('status')
+        if not form_valid and new_status in ['2','3']:
+            # update only status field
+            self.object.status = new_status
+            self.object.save(update_fields=['status'])
+
+            return HttpResponseRedirect(self.get_success_url())
+
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_attachment_valid = formset_attachment.is_valid()
         formset_library_valid = formset_library.is_valid()
