@@ -77,7 +77,7 @@ else:
         re_path(r'^tinymce/', include('tinymce.urls')),
 
         # Maintenance
-        re_path(r'^maintenance/', TemplateView.as_view(template_name="maintenance.html")),
+        re_path(r'^maintenance/', TemplateView.as_view(template_name="maintenance.html"), name='maintenance'),
 
     ]
 

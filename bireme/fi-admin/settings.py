@@ -129,6 +129,8 @@ MIDDLEWARE = [
     'log.middleware.WhodidMiddleware',
     # send performance metrics to elastic apm
     'elasticapm.contrib.django.middleware.TracingMiddleware',
+    # maintenance mode
+    'utils.middleware.MaintenanceModeMiddleware',
 ]
 
 
@@ -351,6 +353,8 @@ ELASTIC_APM = {
   'SERVER_URL': os.environ.get("ELASTIC_APM_SERVER_URL"),
   'ENVIRONMENT': os.environ.get("ELASTIC_APM_ENVIRONMENT"),
 }
+
+MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 0))
 
 if DEBUG_TOOLBAR:
     INSTALLED_APPS.append('debug_toolbar')
