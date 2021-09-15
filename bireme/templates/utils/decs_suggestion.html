@@ -32,11 +32,17 @@
     {% if decs_list %}
         <form id="" action="" method="POST">
             {% csrf_token %}
-            <div class="row">
-                <div class="page-header">
-                    <h2>{% trans "Suggested descriptors identified in the title and abstract" %}</h2>
+
+            <div class="page-header">
+                <h2>{% trans "Suggested descriptors identified in the title and abstract" %}</h2>
+
+                <div style="text-align: justify; font-size: 12pt">
+                    <div class="alert alert-warning">
+                        <strong>{% trans 'Disclaimer' %}:</strong><br/> {% trans 'This service uses a computer program to identify DeCS/MeSH descriptors from title and abstract words. The descriptors identified do not reflect automatic indexing and should not be used indiscriminately, as they do not replace the process of reading and analyzing of a professional indexer.' %}
+                    </div>
                 </div>
             </div>
+
             <div class="row">
                 <table class="table table-condensed table-striped span12">
                     {% for decs in decs_list %}
@@ -63,6 +69,10 @@
                     </tr>
                     {% endfor %}
                 </table>
+
+                <div style="text-align: center;">
+                    <a href="javascript:this.close()" class="btn btn-large btn-inverse align-center" role="button">{% trans "Close" %}</a>
+                </div>
             </div>
         </form>
 
@@ -73,13 +83,6 @@
             </div>
         </div>
     {% endif %}
-
-    <div style="margin-top: 30px; text-align: center; ">
-        <div class="alert alert-warning">
-            <strong>{% trans 'Disclaimer' %}:</strong> {% trans 'This service use a computer program to analyze and identify DeCS/MeSH descriptors from words of title and abstract' %}
-        </div>
-        <a href="javascript:this.close()" class="btn btn-large btn-inverse" role="button">{% trans "Close" %}</a>
-    </div>
 
 </div>
 
