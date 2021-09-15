@@ -67,7 +67,7 @@
             {% endif %}
 
             {% if 'fulltext'|infieldset:form.fieldsets %}
-                <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if form|field_has_error:"electronic_address" or formset_attachment.errors and not formset_library.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+                <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if form|field_has_error:"electronic_address" or formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
 
             {% if form.document_type != 'S' %}
@@ -78,7 +78,6 @@
             {% endif %}
         {% endif %}
     </ul>
-
 
     <form method="POST" enctype="multipart/form-data" class="reference-form">
         {% csrf_token %}
