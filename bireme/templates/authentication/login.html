@@ -12,9 +12,6 @@
             $('.breadcrumb').hide();
         });
     </script>
-    {% if request.user.is_authenticated %}
-        <script>window.location = "{% url 'dashboard.views.widgets' %}"</script>
-    {% endif %}
 {% endblock %}
 
 {% block top %}{% endblock %}
