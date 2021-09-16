@@ -141,6 +141,9 @@ def field_assist(request, **kwargs):
     field_name = kwargs.get('field_name')
     # get previous value from field (json)
     field_value = request.POST.get('field_value', '')
+    # prevent null value
+    field_value = field_value if field_value != 'null' else ''
+
     field_id = request.POST.get('field_id', field_name)
     module_name = request.POST.get('module_name', '')
 
@@ -197,10 +200,6 @@ def field_assist(request, **kwargs):
                 field_value = field_value.replace('\\"','"').replace('\\r\\n', '\r\n')
                 # convert again
                 field_value_json = json.loads(field_value)
-
-            # prevent invalid field_valid_json
-            if not field_value_json or field_value_json == 'None':
-                field_value_json = ''
 
             appstruct = {}
             appstruct['data'] = field_value_json
