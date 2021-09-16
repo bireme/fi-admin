@@ -43,7 +43,7 @@ function field_assist(field_name, field_id, module_name){
 
     field_assist_url = '/utils/field_assist/' + field_name + '/',
     field_value = $('#id_' + field_id).val();
-    if (field_value == 'null'){
+    if (field_value == 'null' || field_value == null){
         field_value = '';
     }
 

@@ -198,6 +198,10 @@ def field_assist(request, **kwargs):
                 # convert again
                 field_value_json = json.loads(field_value)
 
+            # prevent invalid field_valid_json
+            if not field_value_json or field_value_json == 'None':
+                field_value_json = ''
+
             appstruct = {}
             appstruct['data'] = field_value_json
 
