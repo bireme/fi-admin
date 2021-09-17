@@ -11,6 +11,7 @@ from main.models import Resource, ResourceThematic, Descriptor, SourceType, Sour
 
 import requests
 import urllib
+import json
 
 class LinkResource(ModelResource):
 
@@ -65,9 +66,13 @@ class LinkResource(ModelResource):
                     'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
 
         r = requests.post(search_url, data=search_params)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
         self.log_throttled_access(request)
-        return self.create_response(request, r.json())
+        return self.create_response(request, response_json)
 
 
     def dehydrate(self, bundle):

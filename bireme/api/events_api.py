@@ -10,6 +10,7 @@ from  events.models import Event
 
 import requests
 import urllib
+import json
 
 class EventResource(ModelResource):
 
@@ -66,9 +67,13 @@ class EventResource(ModelResource):
 
 
         r = requests.post(search_url, data=search_params)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
         self.log_throttled_access(request)
-        return self.create_response(request, r.json())
+        return self.create_response(request, response_json)
 
     def get_next(self, request, **kwargs):
         self.method_check(request, allowed=['get'])
