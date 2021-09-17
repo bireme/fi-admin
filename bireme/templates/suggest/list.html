@@ -170,7 +170,7 @@
                 <tbody>
                     {% for event in suggestions %}
                         <tr>
-                            <td><a href="{% url 'suggest.views.edit_suggested_event' event.id %}#tab-descriptors">{{ event.id }}</a></td>
+                            <td><a href="{% url 'edit_suggested_event' event.id %}#tab-descriptors">{{ event.id }}</a></td>
                             <td><span title="{{ event.title }}">{{ event.title|slice:"30" }}{% if event.title|length > 30 %}...{% endif %}</span></td>
                             <td>
                                 {{ event.created_time|date:"d/m/y@f" }}
@@ -187,7 +187,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'suggest.views.edit_suggested_event' event.id %}#tab-descriptors" class='btn btn-mini'><i class='icon-pencil'></i></a>
+                                <a href="{% url 'edit_suggested_event' event.id %}#tab-descriptors" class='btn btn-mini'><i class='icon-pencil'></i></a>
                             </td>
                         </tr>
                     {% endfor %}

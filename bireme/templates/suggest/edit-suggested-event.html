@@ -5,7 +5,7 @@
 {% block title %}{% trans "Edit Suggested Event" %}{% endblock %}
 
 {% block breadcrumb %}
-    <li><a href="{% url 'suggest.views.list_suggestions' %}">{% trans "Suggested resources" %}</a> <span class="divider">/</span></li>
+    <li><a href="{% url 'list_suggestions' %}">{% trans "Suggested resources" %}</a> <span class="divider">/</span></li>
     <li>{% trans "Edit Event" %}</li>
 {% endblock %}
 
@@ -50,8 +50,8 @@
 
             </div>
 
-            <div class="control-panel form-submit">                
-                <a href="{% url 'suggest.views.create_event_from_suggestion' suggest.id %}">
+            <div class="control-panel form-submit">
+                <a href="{% url 'create_event_from_suggestion' suggest.id %}">
                     <button class="btn btn-warning btn-large" type="button">{% trans "Create a new Event using this suggestion" %}</button>
                 </a>
                 <button class="btn btn-primary btn-large" type="submit">{% trans "Save" %}</button>
