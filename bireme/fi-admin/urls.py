@@ -87,6 +87,12 @@ else:
             re_path(r'^rosetta/', include('rosetta.urls')),
         ]
 
+
+# customize error views
+handler404 = 'utils.views.custom_page_not_found'
+handler500 = 'utils.views.custom_error_page'
+
+
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
 

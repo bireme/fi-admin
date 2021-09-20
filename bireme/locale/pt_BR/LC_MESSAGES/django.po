@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-15 18:18+0000\n"
-"PO-Revision-Date: 2021-09-15 18:23-0306\n"
+"POT-Creation-Date: 2021-09-20 17:31+0000\n"
+"PO-Revision-Date: 2021-09-20 17:33-0306\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -279,7 +279,7 @@ msgstr "Tipo de arquivo"
 msgid "File extension"
 msgstr "Extensão do arquivo"
 
-#: biblioref/field_definitions.py:558 templates/authentication/login.html:41
+#: biblioref/field_definitions.py:558 templates/authentication/login.html:38
 #: title/choices.py:134
 msgid "Password"
 msgstr "Senha"
@@ -1979,7 +1979,7 @@ msgstr "Tratamento"
 msgid "Job title"
 msgstr "Cargo"
 
-#: institution/models.py:177 templates/authentication/login.html:38
+#: institution/models.py:177 templates/authentication/login.html:35
 #: templates/institution/fieldset_contact.html:16
 #: templates/institution/fieldset_email.html:16
 msgid "Email"
@@ -2823,7 +2823,7 @@ msgstr "Objeto relacionado"
 #: templates/thesaurus/qualifier_new_concept.html:275
 #: templates/thesaurus/qualifier_new_legacy.html:93
 #: templates/thesaurus/qualifier_new_term.html:158
-#: templates/title/form_preview.html:514 utils/views.py:165
+#: templates/title/form_preview.html:514 utils/views.py:169
 msgid "Save"
 msgstr "Gravar"
 
@@ -2881,25 +2881,34 @@ msgstr "Evento criado."
 msgid "Event successfully edited."
 msgstr "Evento editado com sucesso."
 
+#: templates/404.html:9 templates/404.html:20
+#| msgid "No changes found"
+msgid "Page not found"
+msgstr "Página não encontrada"
+
+#: templates/500.html:9 templates/500.html:18
+msgid "System error"
+msgstr "Erro de sistema"
+
 #: templates/admin/base_site.html:4 templates/admin/base_site.html:7
 msgid "FI-ADMIN Administration"
 msgstr "FI-ADMIN Administração"
 
 #: templates/authentication/login.html:5
-#: templates/authentication/login.html:43
+#: templates/authentication/login.html:40
 #: templates/authentication/logout.html:17
 msgid "Login"
 msgstr "Login"
 
-#: templates/authentication/login.html:28
+#: templates/authentication/login.html:25
 msgid "Information Sources Management"
 msgstr "Gerenciamento de Fontes de Informação"
 
-#: templates/authentication/login.html:45
+#: templates/authentication/login.html:42
 msgid "Forgot your password?"
 msgstr "Esqueceu sua senha?"
 
-#: templates/authentication/login.html:50
+#: templates/authentication/login.html:47
 msgid "works best in browsers"
 msgstr "funciona melhor nos navegadores"
 
