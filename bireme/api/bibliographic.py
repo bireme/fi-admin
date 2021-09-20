@@ -101,9 +101,13 @@ class ReferenceResource(CustomResource):
                     search_params[facet_limit_param] = facet_field_limit
 
         r = requests.post(search_url, data=search_params)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
         self.log_throttled_access(request)
-        return self.create_response(request, r.json())
+        return self.create_response(request, response_json)
 
     def full_dehydrate(self, bundle, for_list=False):
         # complete bundle fields with child fields. Ex. Analytic and Source fields to Reference
