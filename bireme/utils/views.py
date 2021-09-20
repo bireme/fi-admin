@@ -19,6 +19,7 @@ import deform
 import json
 import urllib
 
+import sys,traceback
 
 def cookie_lang(request):
 
@@ -112,7 +113,7 @@ class CSVResponseMixin(object):
 
             # Write the data from the context somehow
             for item in data:
-                encode_values = [value.encode('utf-8') if isinstance(value, str) else value for value in item.values()]
+                encode_values = [value for value in item.values()]
                 writer.writerow(encode_values)
 
             return response
@@ -263,3 +264,26 @@ def decs_suggestion(request):
 
     return render_to_response('utils/decs_suggestion.html',
                               {'decs_list': decs_list})
+
+
+def custom_page_not_found(request, *args, **argv):
+    response = render(request, '404.html', {})
+
+    response.status_code = 404
+    return response
+
+
+def custom_error_page(request, *args, **argv):
+
+    error_type, error_value, tb = sys.exc_info()
+
+
+
+    response = render(request, '500.html', {'error_type': error_type,
+                                            'error_value': error_value,
+                                            'traceback': traceback.format_exception(error_type, error_value, tb)})
+
+
+
+    response.status_code = 500
+    return response
