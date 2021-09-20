@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 {% load app_filters %}
+{% load static %}
 {% load i18n %}
 
 {% block title %}{% trans "Bibliographic Records" %} | {{ block.super }}{% endblock %}
 
 {% block breadcrumb %}
     <li>{% trans "Bibliographic Records" %}</li>
+{% endblock %}
+
+{% block extrahead %}
+<link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
 {% endblock %}
 
 
@@ -135,7 +140,7 @@
                                     </select>
 
                                     {% trans "Collection" %}:
-                                    <select name="filter_collection" class="input-xxlarge">
+                                    <select name="filter_collection" class="input-xxlarge" id="filter_collection">
                                         <option value="">{% trans "All" %}</option>
                                         {% for col in collection_list %}
                                             {# skip first level collections (e-bluinfo, etc) and community levels #}
@@ -246,4 +251,12 @@
 
 </div>
 
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static 'js/multiple-select.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $('#filter_collection').multipleSelect({selectAll: false,  filter: true});
+    </script>
 {% endblock %}
