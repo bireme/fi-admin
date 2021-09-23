@@ -5,6 +5,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
+from django.core.exceptions import PermissionDenied
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.shortcuts import render_to_response
@@ -311,7 +312,7 @@ class ActDeleteView(LoginRequiredView, DeleteView):
         obj = super(ActDeleteView, self).get_object()
         """ Hook to ensure object is owned by request.user. """
         if not obj.created_by == self.request.user:
-            return HttpResponse('Unauthorized', status=401)
+            raise PermissionDenied
 
         return obj
 
@@ -319,7 +320,9 @@ class ActDeleteView(LoginRequiredView, DeleteView):
         obj = super(ActDeleteView, self).get_object()
         c_type = ContentType.objects.get_for_model(obj)
 
-        # delete associated data
+        # first delete related objects
+        ActURL.objects.filter(act=obj).delete()
+        ActRelationship.objects.filter(act_related=obj).delete()
         Descriptor.objects.filter(object_id=obj.id, content_type=c_type).delete()
         Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
