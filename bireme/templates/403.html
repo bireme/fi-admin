@@ -7,11 +7,7 @@
         <h1><i class="icon-warning-sign"></i></h1>
         <br/><br/>
         <h1><i>Oops!</i></h1>
-        <h2>{% trans "System error" %}</h2>
         <br/><br/>
-        {{error_type}} {{error_value}}
+        <h2>{% trans "You don't have permission to perform this action" %}</h2>
     </div>
-    <!--
-        {{traceback}}
-    -->
 {% endblock %}
