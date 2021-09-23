@@ -85,4 +85,4 @@ def update_review(request):
                     'reference_id': reference_id})
 
     else:
-        return redirect('dashboard')
+        return redirect('dashboard:widgets')
