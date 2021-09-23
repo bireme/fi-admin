@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load app_filters %}
+{% load static %}
 {% load i18n %}
 
 {% block title %}{% trans "Legislation" %} | {{ block.super }}{% endblock %}
@@ -8,6 +9,9 @@
     <li>{% trans "Legislation" %}</li>
 {% endblock %}
 
+{% block extrahead %}
+<link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
 <form name="actions">
@@ -119,7 +123,7 @@
                                 </select>
 
                                 {% trans "Collection" %}:
-                                <select name="filter_collection" class="input-xxlarge">
+                                <select name="filter_collection" class="input-xxlarge" id="filter_collection">
                                     <option value="">{% trans "All" %}</option>
                                     {% for col in collection_list %}
                                         {# skip first level collections (e-bluinfo, etc) and community levels #}
@@ -195,4 +199,12 @@
 </div>
 {% include "modal_help.html" %}
 
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static 'js/multiple-select.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $('#filter_collection').multipleSelect({selectAll: false,  filter: true});
+    </script>
 {% endblock %}

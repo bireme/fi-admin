@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
 
 {% block title %}{% trans "Multimedia" %} | {{ block.super }}{% endblock %}
@@ -7,6 +8,9 @@
     <li>{% trans "Multimedia" %}</li>
 {% endblock %}
 
+{% block extrahead %}
+<link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
 <form name="actions">
@@ -70,9 +74,7 @@
                             </select>
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
 
-                            {% if actions.filter_owner == '*' %}
-                                <a href="javascript:void()" id="show_advaced_filters">+ {% trans "Filters" %}</a>
-                            {% endif %}
+                            <a href="javascript:void()" id="show_advaced_filters">+ {% trans "Filters" %}</a>
 
                             <div class="advanced_filters {% if not show_advaced_filters and not actions.filter_collection %}hide{% endif %}">
                                 {% if user_filter_list %}
@@ -102,7 +104,7 @@
                                 </select>
 
                                 {% trans "Collection" %}:
-                                <select name="filter_collection" class="input-xxlarge">
+                                <select name="filter_collection" class="input-xxlarge" id="filter_collection">
                                     <option value="">{% trans "All" %}</option>
                                     {% for col in collection_list %}
                                         {# skip first level collections (e-bluinfo, etc) and community levels #}
@@ -188,4 +190,13 @@
 
 </div>
 
+{% endblock %}
+
+
+{% block extrajs %}
+    <script src="{% static 'js/multiple-select.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $('#filter_collection').multipleSelect({selectAll: false,  filter: true});
+    </script>
 {% endblock %}
