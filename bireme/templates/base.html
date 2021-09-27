@@ -81,8 +81,11 @@
         </script>
         {% endblock %}
 
-        {% include "lang.html" %}
-        {% include "alert.html" %}
+        {% block lang_alert %}
+            {% include "lang.html" %}
+            {% include "alert.html" %}
+        {% endblock %}
+
 
         {% block extrajs %}{% endblock %}
 

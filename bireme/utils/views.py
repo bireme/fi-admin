@@ -274,16 +274,11 @@ def custom_page_not_found(request, *args, **argv):
 
 
 def custom_error_page(request, *args, **argv):
-
     error_type, error_value, tb = sys.exc_info()
-
-
 
     response = render(request, '500.html', {'error_type': error_type,
                                             'error_value': error_value,
                                             'traceback': traceback.format_exception(error_type, error_value, tb)})
-
-
 
     response.status_code = 500
     return response
