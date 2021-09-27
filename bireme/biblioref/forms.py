@@ -30,8 +30,8 @@ import re
 class SelectDocumentTypeForm(forms.Form):
     DOCUMENT_TYPE_CHOICES = (
         ('S', _('Journals (Periodical Series)')),
-        ('Mm', _('Monograph')),
-        ('Tm', _('Thesis/Dissertation')),
+        ('Mm', _('Book')),
+        ('Tm', _('Thesis, Dissertation and Monography')),
         ('Mmc', _('Monograph in a Collection')),
         ('Mc', _('Collection of Monographs')),
         ('MSms', _('Monograph Series')),
