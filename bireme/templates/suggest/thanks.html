@@ -21,7 +21,7 @@
         <div class="container">
            <div class="hero-unit">
                <h1>{% trans 'Thank you' %}</h1>
-                {% if type = 'event' %}
+                {% if type == 'event' %}
                     <p>{% trans 'Your suggestion will be evaluated and if approved will be included in the Events Directory' %}</p>
                 {% else %}
                     <p>{% trans 'Your suggestion will be evaluated and if approved will be included in the Health Information Locator' %}</p>
