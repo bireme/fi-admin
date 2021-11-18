@@ -619,6 +619,7 @@ class IndividualAuthorAttributes(colander.MappingSchema):
                              widget=deform.widget.SelectWidget(values=degree_choices),
                              missing=str(''),)
 
+    _e = colander.SchemaNode(colander.String(), title=_('E-mail'), missing=str(''),)
     _k = colander.SchemaNode(colander.String(), title=_('ORCID'), validator=validate_not_url, missing=str(''),
                                description=_('Format: 0000-0000-0000-0000'))
 
