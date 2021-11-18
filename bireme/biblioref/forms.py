@@ -18,6 +18,7 @@ from title.models import Title, IndexRange
 from utils.models import AuxCode
 from attachments.models import Attachment
 from database.models import Database
+from related.models import ResearchData, Resource
 
 from biblioref.models import *
 
@@ -1041,6 +1042,19 @@ class DescriptorForm(forms.ModelForm):
         obj.status = 1
         obj.save()
 
+
+class ResearchDataForm(forms.ModelForm):
+    class Meta:
+        model = ResearchData
+        fields = '__all__'
+
+
+class RelatedResourceForm(forms.ModelForm):
+    class Meta:
+        model = Resource
+        fields = '__all__'
+
+
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(
     Descriptor,
@@ -1059,3 +1073,10 @@ LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal, form=LibraryFo
 
 ComplementFormSet = inlineformset_factory(Reference, ReferenceComplement, form=ComplementForm, extra=1,
                                           max_num=1, can_delete=False)
+
+
+ResearchDataFormSet = generic_inlineformset_factory(ResearchData, form=ResearchDataForm, extra=1,
+                                                    can_delete=True)
+
+RelatedResourceFormSet = generic_inlineformset_factory(Resource, form=RelatedResourceForm, extra=1,
+                                                       can_delete=True)

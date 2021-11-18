@@ -736,3 +736,15 @@ class ClinicalTrialRegistryNameAttributes(colander.MappingSchema):
 
 class ClinicalTrialRegistryName(colander.SequenceSchema):
     item = ClinicalTrialRegistryNameAttributes(title=_('Clinical Trial'))
+
+
+class DescriptionAttributes(colander.MappingSchema):
+    text = colander.SchemaNode(colander.String(), title=_('Description'),
+                               widget=deform.widget.TextAreaWidget(rows=15, cols=120))
+    _i = colander.SchemaNode(colander.String(), widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Language'))
+
+
+class Description(colander.SequenceSchema):
+    item = DescriptionAttributes(title=_('Description'))
+

@@ -296,6 +296,11 @@ div[id^=tab] ul li {
     width: 100%;
 }
 
+.formset-row{
+    width: 100%;
+    clear: both;
+}
+
 .formset-row a {
     color: #333;
 }
@@ -322,6 +327,11 @@ fieldset.metadata input[type=text], fieldset.metadata textarea, fieldset.metadat
 #metadata textarea, fieldset.metadata textarea {
     height: 80px;
 }
+
+#researchdata input[type="url"], #relatedresource input[type="url"]{
+    width: 93%;
+}
+
 
 #onlineresource input[type=text], #onlineresource input[type=url], #onlineresource textarea, #onlineresource select {
     width: 540px;
@@ -382,7 +392,7 @@ span.mark{
 
 }
 
-ul.jsonfield_display{
+.jsonfield_display{
     width: 90%;
     min-height: 22px;
     padding: 2px;
@@ -392,7 +402,7 @@ ul.jsonfield_display{
     cursor: context-menu;
 }
 
-ul.jsonfield_display li{
+.jsonfield_display li{
     margin: 3px;
 }
 
@@ -440,7 +450,7 @@ div.onlineresource table tr td {
     border-top: 1px solid #ddd;
 }
 
-div.onlineresource table {
+div.onlineresource table{
     margin-top: 20px;
     float: none;
 }

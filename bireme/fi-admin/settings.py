@@ -199,6 +199,7 @@ INSTALLED_APPS = [
     'database',
     'classification',
     'thesaurus',
+    'related',
 ]
 
 # A sample logging configuration. The only tangible logging

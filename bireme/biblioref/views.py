@@ -286,6 +286,8 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_attachment = AttachmentFormSet(self.request.POST, self.request.FILES, instance=self.object)
         formset_library = LibraryFormSet(self.request.POST, instance=self.object)
         formset_complement = ComplementFormSet(self.request.POST, instance=self.object)
+        formset_researchdata = ResearchDataFormSet(self.request.POST, instance=self.object)
+        formset_relatedresource = RelatedResourceFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
@@ -303,6 +305,8 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_attachment_valid = formset_attachment.is_valid()
         formset_library_valid = formset_library.is_valid()
         formset_complement_valid = formset_complement.is_valid()
+        formset_researchdata_valid = formset_researchdata.is_valid()
+        formset_relatedresource_valid = formset_relatedresource.is_valid()
 
         user_data = additional_user_info(self.request)
         # run cross formsets validations
@@ -310,7 +314,8 @@ class BiblioRefUpdate(LoginRequiredView):
                                                              'attachment': formset_attachment}, user_data)
 
         if (form_valid and formset_descriptor_valid and formset_attachment_valid and
-           formset_complement_valid and valid_for_publication):
+           formset_complement_valid and valid_for_publication and formset_researchdata_valid and
+           formset_relatedresource_valid):
 
                 self.object = form.save()
 
@@ -345,6 +350,12 @@ class BiblioRefUpdate(LoginRequiredView):
                 formset_complement.instance = self.object
                 formset_complement.save()
 
+                formset_researchdata.instance = self.object
+                formset_researchdata.save()
+
+                formset_relatedresource.instance = self.object
+                formset_relatedresource.save()
+
                 # save many-to-many relation fields
                 form.save_m2m()
                 # update solr index
@@ -374,6 +385,8 @@ class BiblioRefUpdate(LoginRequiredView):
                                                  formset_attachment=formset_attachment,
                                                  formset_library=formset_library,
                                                  formset_complement=formset_complement,
+                                                 formset_researchdata=formset_researchdata,
+                                                 formset_relatedresource=formset_relatedresource,
                                                  valid_for_publication=valid_for_publication))
 
     def form_invalid(self, form):
@@ -478,6 +491,8 @@ class BiblioRefUpdate(LoginRequiredView):
             context['formset_library'] = LibraryFormSet(instance=self.object,
                                                         queryset=ReferenceLocal.objects.filter(cooperative_center_code=user_data['user_cc']))
             context['formset_complement'] = ComplementFormSet(instance=self.object)
+            context['formset_researchdata'] = ResearchDataFormSet(instance=self.object)
+            context['formset_relatedresource'] = RelatedResourceFormSet(instance=self.object)
 
         # source/analytic edition
         if self.object:

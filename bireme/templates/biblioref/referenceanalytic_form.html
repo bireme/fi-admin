@@ -53,6 +53,8 @@
             {% if form.document_type != 'Mc' and form.document_type.0 != 'T' %}
                 <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
+            <li><a href="#tab-researchdata" data-toggle="tab"><i class="icon-share"></i> {% trans "Rearch data" %}{% if formset_researchdata.errors and not formset_researchdata.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+            <li><a href="#tab-relatedresource" data-toggle="tab"><i class="icon-file"></i> {% trans "Related resources" %}{% if formset_relatedresource.errors and not formset_relatedresource.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         {% else %}
             <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if form|field_has_error:"electronic_address" or formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
@@ -243,6 +245,12 @@
             <!-- COMPLEMENT (PROJECT / EVENT) -->
             {% include "biblioref/fieldset_complement.html" %}
 
+            <!-- RESEARCH DATA -->
+            {% include "biblioref/fieldset_researchdata.html" %}
+
+            <!-- RELATED RESOURCES -->
+            {% include "biblioref/fieldset_relatedresources.html" %}
+
         </div>
 
         <div class="control-panel form-submit">
@@ -399,6 +407,26 @@
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'attachment_formset',
                     prefix: '{{ formset_attachment.prefix }}'
+            });
+
+            $('.researchdata-row').formset({
+                    addText : '{% trans "Add research data" %}',
+                    deleteText: '{% trans "delete" %}<i class="icon-trash"></i>',
+                    addCssClass : 'icon-plus-sign btn btn-large btn-inverse',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'researchdata_formset',
+                    prefix: '{{ formset_researchdata.prefix }}'
+            });
+
+            $('.relatedresource-row').formset({
+                    addText : '{% trans "Add resource" %}',
+                    deleteText: '{% trans "delete" %}<i class="icon-trash"></i>',
+                    addCssClass : 'icon-plus-sign btn btn-large btn-inverse',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'relatedresource_formset',
+                    prefix: '{{ formset_relatedresource.prefix }}'
             });
 
             var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
