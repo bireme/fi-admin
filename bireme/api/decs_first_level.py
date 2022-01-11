@@ -1,4 +1,5 @@
 # coding: utf-8
+# Arreglo con categorias de 1er nivel y funciones de traduccion
 
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
@@ -40,3 +41,41 @@ first_level_categories = {
 	'VS': _("HEALTH SURVEILLANCE"),
 	'Z': _("GEOGRAPHICALS"),
 }
+
+
+def get_category_id(tree_number):
+	category_id = tree_number[0:1]
+	if category_id not in ['Q', 'Y']:
+		category_id2 = tree_number[1:2]
+		if not category_id2.isdigit():
+			category_id = category_id + category_id2
+
+	return category_id
+
+
+def get_category(category_id, is_descriptor, lang):
+	if is_descriptor:
+		category = category_translated(first_level_categories[category_id], lang)
+	else:
+		category = category_translated(_("Other Qualifiers"), lang)
+
+	return category
+
+
+def get_category_label(category_id, is_descriptor):
+	category_label = []
+	# for ws model
+	# category_label = {}
+	languages = ["en", "es", "pt-br", "es-es", "fr"]
+	for lang in languages:
+		if is_descriptor:
+			category = category_translated(first_level_categories[category_id], lang)
+		else:
+			category = category_translated(_("Other Qualifiers"), lang)
+
+		category_label.append({'status': 1, '@value': category, '@language': lang})
+
+		# for ws model
+		# category_label[lang] = {"term":category, 'attr': {'tree_id': category_id}}
+
+	return category_label

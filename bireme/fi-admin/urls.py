@@ -11,16 +11,17 @@ from api.bibliographic import ReferenceResource
 from api.legislation import LeisrefResource
 from api.oer_api import OERResource
 from api.classification_api import *
-from api.thesaurus_treenumber_api import *
-
-from tastypie.api import Api
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
-ths_api = Api(api_name='ths')
-ths_api.register(TreeNumberResource())
+# WS decs with thesaurus: get descriptors and qualifiers by tree_id, words or bool
+from api.thesaurus_term_api import TermResource
+from tastypie.api import Api
+
+thesaurus = Api(api_name="thesaurus")
+thesaurus.register(TermResource())
 
 link_resource = LinkResource()
 event_resource = EventResource()
@@ -154,6 +155,7 @@ urlpatterns = patterns('',
     (r'^api/', include(oer_resource.urls)),
     (r'^api/', include(community_resource.urls)),
     (r'^api/', include(collection_resource.urls)),
+    (r'^api/', include(classification_resource.urls)),
     (r'^api/', include(classification_resource.urls)),
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
     (r'^api/users/get_user_id/(?P<username>[a-zA-z0-9\.\-]{0,30})/$', 'api.users.get_user_id'),

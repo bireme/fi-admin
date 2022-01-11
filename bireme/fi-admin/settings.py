@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     'rosetta',
     'form_utils',
     'tinymce',
+    'django_elasticsearch_dsl',
 
     'biremelogin',
 
@@ -239,6 +240,17 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 SEARCH_SERVICE_URL = 'http://srv.bvsalud.org/'
 
 DECS_LOOKUP_SERVICE = 'http://search.bvsalud.org/portal/decs-locator/?mode=dataentry'
+
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'localhost:9200',  # aquí ubicación del nodo de ES
+        #'timeout': 60,  # Custom timeout para aumentar valor por defecto
+    },
+}
+# Set to False to globally disable auto-syncing
+ELASTICSEARCH_DSL_AUTOSYNC = False
+# Set to False not force an [index refresh] with every save
+ELASTICSEARCH_DSL_AUTO_REFRESH = False
 
 RECAPTCHA_PRIVATE_KEY = ''
 

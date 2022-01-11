@@ -1,3 +1,5 @@
+# Serializador para que formato xml sea igual al del WS DeCS actual
+
 from tastypie.serializers import Serializer, get_type_string
 import datetime
 
@@ -43,8 +45,9 @@ class WsDecsSerializer(Serializer):
                 if name:
                     element = Element(name)
                 else:
+                    # aqui agregar query
                     element = Element('decsvmx', date=datetime.datetime.now().__format__('%Y%m%d %H%M%S'),
-                                      version="2.0")
+                                      version="2.0", query="query")
             else:
                 element = Element(name or 'object')
             for (key, value) in data.items():
