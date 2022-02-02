@@ -1323,11 +1323,14 @@ def ConceptListDescModification(request,term_id, ths, concept_ori):
     descriptor_ui_ori = descriptor_ui_ori[0].get('descriptor_ui')
 
     # Verifica se já existe anotação no historico
-    has_hist=IdentifierConceptListDesc.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='').values('id','historical_annotation')
+    has_hist = IdentifierConceptListDesc.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='').values('id','historical_annotation')
     if len(has_hist)>0:
-        historical_annotation_old=has_hist[0].get('historical_annotation')
-        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
-        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
+        historical_annotation_old = has_hist[0].get('historical_annotation')
+        historical_annotation_now = datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
+        if historical_annotation_old == '' or historical_annotation_old is None:
+            historical_annotation_new = historical_annotation_now
+        else:
+            historical_annotation_new = historical_annotation_now + '; ' + historical_annotation_old
     else:
         historical_annotation_new=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(descriptor_ui_ori)
 
@@ -1555,11 +1558,14 @@ def ConceptCreateDescDo(request, ths):
     descriptor_ui_ori = descriptor_ui_ori[0].get('descriptor_ui')
 
     # Verifica se já existe anotação no historico
-    has_hist=IdentifierConceptListDesc.objects.filter(id=concept_id).values('historical_annotation')
+    has_hist = IdentifierConceptListDesc.objects.filter(id=concept_id).values('historical_annotation')
     if has_hist:
-        historical_annotation_old=has_hist[0].get('historical_annotation')
-        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(descriptor_ui_ori)
-        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
+        historical_annotation_old = has_hist[0].get('historical_annotation')
+        historical_annotation_now = datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(descriptor_ui_ori)
+        if historical_annotation_old == '' or historical_annotation_old is None:
+            historical_annotation_new = historical_annotation_now
+        else:
+            historical_annotation_new = historical_annotation_now + '; ' + historical_annotation_old
 
     created_time=datetime.datetime.now().strftime('%Y-%m-%d')
     created_time = str(created_time)
@@ -2742,6 +2748,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
             lc = ''
 
         context['desc_language_code'] = lc
+        context['LANGUAGE_CODE'] = settings.LANGUAGE_CODE
 
         if self.object:
 
@@ -4261,11 +4268,14 @@ def ConceptListQualifModification(request,term_id, ths, concept_ori):
     qualifier_ui_ori = qualifier_ui_ori[0].get('qualifier_ui')
 
     # Verifica se já existe anotação no historico
-    has_hist=IdentifierConceptListQualif.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='').values('id','historical_annotation')
+    has_hist = IdentifierConceptListQualif.objects.filter(id=concept_ori).exclude(historical_annotation__isnull=True).exclude(historical_annotation='').values('id','historical_annotation')
     if len(has_hist)>0:
-        historical_annotation_old=has_hist[0].get('historical_annotation')
-        historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
-        historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
+        historical_annotation_old = has_hist[0].get('historical_annotation')
+        historical_annotation_now = datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
+        if historical_annotation_old == '' or historical_annotation_old is None:
+            historical_annotation_new = historical_annotation_now
+        else:
+            historical_annotation_new = historical_annotation_now + '; ' + historical_annotation_old
     else:
         historical_annotation_new=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + str(qualifier_ui_ori)
 
@@ -4534,11 +4544,14 @@ class ConceptCreateQualifConfirm(LoginRequiredView, ListView):
                 qualifier_ui_ori = qualifier_ui_ori[0].get('qualifier_ui')
 
                 # Verifica se já existe anotação no historico
-                has_hist=IdentifierConceptListQualif.objects.filter(id=concept_id).values('historical_annotation')
+                has_hist = IdentifierConceptListQualif.objects.filter(id=concept_id).values('historical_annotation')
                 if has_hist:
-                    historical_annotation_old=has_hist[0].get('historical_annotation')
-                    historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(qualifier_ui_ori)
-                    historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
+                    historical_annotation_old = has_hist[0].get('historical_annotation')
+                    historical_annotation_now = datetime.datetime.now().strftime('%Y-%m-%d') + ', turned into record - received from ' + str(qualifier_ui_ori)
+                    if historical_annotation_old == '' or historical_annotation_old is None:
+                        historical_annotation_new = historical_annotation_now
+                    else:
+                        historical_annotation_new = historical_annotation_now + '; ' + historical_annotation_old
 
                 created_time=datetime.datetime.now().strftime('%Y-%m-%d')
                 created_time = str(created_time)
