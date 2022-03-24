@@ -40,7 +40,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
     search_field = "reference_title"
 
     def dispatch(self, *args, **kwargs):
-        self.request.session["filtered_list"] = self.request.get_full_path()
+        # save url with filters in session to redirect when user done
+        if self.view_name != 'select_related_reference':
+            self.request.session["filtered_list"] = self.request.get_full_path()
         return super(BiblioRefGenericListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
@@ -58,11 +60,8 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         for key in settings.ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
-        if settings.FULLTEXT_SEARCH:
-            search_field = self.search_field + '__search'
-        else:
-            search_field = self.search_field + '__icontains'
-
+        lookup_method = '__search' if settings.FULLTEXT_SEARCH == True else '__icontains'
+        search_field = self.search_field + lookup_method
 
         # check if user has perform a search
         search = self.actions['s']
@@ -77,7 +76,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
                 lookup_expr = '__exact' if search_parts[0].endswith('id') else '__icontains'
                 search_field, search = "%s%s" % (search_parts[0], lookup_expr), search_parts[1]
 
-            elif settings.FULLTEXT_SEARCH:
+            elif settings.FULLTEXT_SEARCH == True:
                 # check if user is searching by serial. Ex. Mem. Inst. Oswaldo Cruz; 14 (41)
                 exp_serial = re.compile('[\.\;\(\)\|]')
                 if bool(re.search(exp_serial, search)):
@@ -94,7 +93,6 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
                 object_list = self.model.objects.filter(source_id=source_id)
             else:
                 object_list = self.model.objects.all()
-
 
         # get user filter values
         filter_status = self.actions.get('filter_status')
@@ -144,6 +142,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # if not at main reference list and source or document_type remove filter by user
         if model_name != 'Reference' and (source_id or document_type):
+            filter_owner = '*'
+
+        if self.view_name == 'select_related_reference':
             filter_owner = '*'
 
         # profile lilacs express editor - restrict by CC code when list sources
@@ -258,6 +259,15 @@ class BiblioRefListView(BiblioRefGenericListView, ListView):
     view_name = 'list_biblioref'
 
 
+class BiblioRefSelectView(BiblioRefGenericListView, ListView):
+    """
+    Extend BiblioRefSelectView to list bibliographic records
+    """
+    model = Reference
+    view_name = 'select_related_reference'
+    template_name = 'biblioref/select_related_reference.html'
+
+
 class BiblioRefListSourceView(BiblioRefGenericListView, ListView):
     """
     Extend BiblioRefGenericListView to list bibliographic records
@@ -355,10 +365,11 @@ class BiblioRefUpdate(LoginRequiredView):
 
                 formset_relatedresource.instance = self.object
                 formset_relatedresource.save()
-
+                '''
                 # save many-to-many relation fields
                 form.save_m2m()
-                # update solr index
+                '''
+                # save object and update solr index
                 form.save()
                 # update DeDup service
                 update_dedup_service(self.object)

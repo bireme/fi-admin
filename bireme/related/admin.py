@@ -6,27 +6,14 @@ from utils.admin import GenericAdmin
 
 from related.models import *
 
-
-class ResearchDataTypeLocalAdmin(admin.TabularInline):
-    model = ResearchDataTypeLocal
-    extra = 1
-
-
-class ResearchDataTypeAdmin(GenericAdmin):
-    model = ResearchDataType
-    inlines = [ResearchDataTypeLocalAdmin, ]
-
-
 class ResourceTypeLocalAdmin(admin.TabularInline):
-    model = ResourceTypeLocal
+    model = LinkedResourceTypeLocal
     extra = 1
 
 
 class ResourceTypeAdmin(GenericAdmin):
-    model = ResourceType
+    model = LinkedResourceType
     inlines = [ResourceTypeLocalAdmin, ]
 
 
-
-admin.site.register(ResearchDataType, ResearchDataTypeAdmin)
-admin.site.register(ResourceType, ResourceTypeAdmin)
+admin.site.register(LinkedResourceType, ResourceTypeAdmin)

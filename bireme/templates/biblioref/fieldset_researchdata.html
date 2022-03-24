@@ -21,48 +21,27 @@
                 <table class="table table-condensed table-striped span10">
                     <tr>
                         <td>
-                            <label for="{{ form.type.auto_id }}">
-                                {{ form.type.label }}
-                            </label>
-                            <p class="muted">{{ form.type.help_text }}</p>
-                            {{ form.type.errors }}
-                            {{ form.type }}
 
-                            <p>
-                                {{ form.title.label }}
-                            </p>
-                            {{ form.title.errors }}
-                            <div class="row" id="{{form.title.html_name}}">
-                                <input type="hidden" name="{{form.title.html_name}}" value="{{form.title.value}}" id="id_{{form.title.html_name}}" class="jsonfield" />
-                                <div onclick="javascript:field_assist('{{form.title.name}}', this.parentNode.id)" href="javascript:void(0);">
-                                    <div id="id_{{form.title.html_name}}_display" class="jsonfield_display"></div>
-                                </div>
-                            </div>
+                            {% for field in form.visible_fields %}
 
-                            <p>
-                                {{ form.description.label }}
-                            </p>
-                            {{ form.description.errors }}
-                            <div class="row" id="{{form.description.html_name}}">
-                                <input type="hidden" name="{{form.description.html_name}}" value="{{form.description.value}}" id="id_{{form.description.html_name}}" class="jsonfield" />
-                                <div onclick="javascript:field_assist('{{form.description.name}}', this.parentNode.id)" href="javascript:void(0);">
-                                    <div id="id_{{form.description.html_name}}_display" class="jsonfield_display"></div>
-                                </div>
-                            </div>
+                                <label for="{{ field.auto_id }}">
+                                    {% if field.name in help_fields %}
+                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/multimedia/{{field.name}}/" class="field_with_help">
+                                    {% endif %}
+                                    {% if field.field.required %}
+                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                    {% else %}
+                                        {{ field.label }}
+                                    {% endif %}
+                                    {% if field.name in help_fields %}
+                                        </a>
+                                    {% endif %}
+                                </label>
+                                <p class="muted">{{ field.help_text }}</p>
+                                {{ field.errors }}
+                                {{ field }}
 
-                            <label for="{{ form.link.auto_id }}">
-                                {{ form.link.label }}
-                            </label>
-                            {{ form.link.errors }}
-                            <p class="muted">{{ form.link.help_text }}</p>
-                            {{ form.link }}
-
-                            <label for="{{ form.language.auto_id }}">
-                                {{ form.language.label }}
-                            </label>
-                            {{ form.language.errors }}
-                            <p class="muted">{{ form.language.help_text }}</p>
-                            {{ form.language }}
+                            {% endfor %}
 
                         </td>
                         <td>

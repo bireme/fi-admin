@@ -14,4 +14,6 @@ urlpatterns = [
     re_path(r'^delete/(?P<pk>\d+)/?$', BiblioRefDeleteView.as_view(), name='delete_biblioref'),
 
     re_path(r'^duplicates/(?P<reference_id>\d+)/', view_duplicates, name='view_duplicates'),
+
+    re_path(r'^select_related_reference/?$', BiblioRefSelectView.as_view(), name='select_related_reference'),
 ]

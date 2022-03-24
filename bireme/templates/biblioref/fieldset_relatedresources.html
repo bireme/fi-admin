@@ -9,7 +9,6 @@
     {% endfor %}
 
     <fieldset class="{{ fieldset.classes }} accordion-body metadata" id="relatedresource">
-
         {{ formset_relatedresource.management_form }}
 
         {% for form in formset_relatedresource %}
@@ -22,49 +21,46 @@
                 <table class="table table-condensed table-striped span10">
                     <tr>
                         <td>
-                            <label for="{{ form.type.auto_id }}">
-                                {{ form.type.label }}
-                            </label>
-                            <p class="muted">{{ form.type.help_text }}</p>
-                            {{ form.type.errors }}
-                            {{ form.type }}
+                {% for field in form.visible_fields %}
 
+                    {% if field.name == 'internal_id' %}
+                        {{ field.as_hidden }}
+                    {% else %}
+                        {% if field.name == 'title' %}
                             <p>
-                                {{ form.title.label }}
+                                <strong>Para referências já registrada no FI-ADMIN faça uma busca abaixo</strong>
                             </p>
-                            {{ form.title.errors }}
-                            <div class="row" id="{{form.title.html_name}}">
-                                <input type="hidden" name="{{form.title.html_name}}" value="{{form.title.value}}" id="id_{{form.title.html_name}}" class="jsonfield" />
-                                <div onclick="javascript:field_assist('{{form.title.name}}', this.parentNode.id)" href="javascript:void(0);">
-                                    <div id="id_{{form.title.html_name}}_display" class="jsonfield_display"></div>
-                                </div>
-                            </div>
+                        {% endif %}
+                        <label for="{{ field.auto_id }}">
+                            {% if field.name in help_fields %}
+                                <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/multimedia/{{field.name}}/" class="field_with_help">
+                            {% endif %}
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                            {% if field.name in help_fields %}
+                                </a>
+                            {% endif %}
+                        </label>
+                        <p class="muted">{{ field.help_text }}</p>
+                        {{ field.errors }}
+                        {% if field.name == 'title' or field.name == 'link' %}
+                            {% if form.instance.internal_id != '' %}
+                                <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}" value="{{ field.value }}" readonly="true"/>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+                            {% if field.name == 'title' %}
+                                <i class="icon-search" onclick="javascript:select_related_reference(this)"></i>
+                            {% endif %}
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    {% endif %}
 
-                            <p>
-                                {{ form.description.label }}
-                            </p>
-                            {{ form.description.errors }}
-                            <div class="row" id="{{form.description.html_name}}">
-                                <input type="hidden" name="{{form.description.html_name}}" value="{{form.description.value}}" id="id_{{form.description.html_name}}" class="jsonfield" />
-                                <div onclick="javascript:field_assist('{{form.description.name}}', this.parentNode.id)" href="javascript:void(0);">
-                                    <div id="id_{{form.description.html_name}}_display" class="jsonfield_display"></div>
-                                </div>
-                            </div>
-
-                            <label for="{{ form.link.auto_id }}">
-                                {{ form.link.label }}
-                            </label>
-                            {{ form.link.errors }}
-                            <p class="muted">{{ form.link.help_text }}</p>
-                            {{ form.link }}
-
-                            <label for="{{ form.language.auto_id }}">
-                                {{ form.language.label }}
-                            </label>
-                            {{ form.language.errors }}
-                            <p class="muted">{{ form.language.help_text }}</p>
-                            {{ form.language }}
-
+                {% endfor %}
                         </td>
                         <td>
                             <div>{% if form.instance.pk %}{{ form.DELETE }}{% endif %}</div>
@@ -75,3 +71,34 @@
         {% endfor %}
     </fieldset>
 </div>
+
+
+{% block extrajs %}
+
+<script type="text/javascript">
+
+    function select_related_reference(obj){
+        var row = $(obj).parent();
+        related_field_name = row.find('input').attr('name');
+        related_row_id = related_field_name.replace( /[A-Za-z_$-]/g, '');
+
+        //console.log(related_field);
+        related_win = window.open('{% url "select_related_reference" %}', 'select_reference_list', 'scrollbars=1,width=785,height=590');
+    }
+
+    function dismissRelatedLookupPopup(chosenId, chosenLabel) {
+            // set value of internal_id hidden input
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-internal_id').val(chosenId);
+            // set value of title field
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-title').val(chosenLabel);
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-title').attr("readonly", true);
+
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-link').attr("disabled", true);
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-link').addClass("disabled");
+
+            related_win.close();
+    }
+
+</script>
+
+{% endblock %}
