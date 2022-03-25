@@ -13,6 +13,7 @@ class ResourceTypeLocalAdmin(admin.TabularInline):
 
 class ResourceTypeAdmin(GenericAdmin):
     model = LinkedResourceType
+    list_display = ('id', 'field', 'name', 'order')
     inlines = [ResourceTypeLocalAdmin, ]
 
 

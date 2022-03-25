@@ -20,7 +20,7 @@ class LinkedResourceType(Generic):
     field = models.CharField(_("Field"), max_length=25)
     name = models.CharField(_("Name"), max_length=55)
     language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES)
-    order = models.PositiveSmallIntegerField(_("Order"))
+    order = models.PositiveSmallIntegerField(_("Order"), blank=True, null=True)
 
     field_passive = models.ForeignKey('self', verbose_name=_("Field passive"), null=True, blank=True, on_delete=models.PROTECT)
 
