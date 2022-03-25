@@ -307,7 +307,6 @@ class InstUpdate(LoginRequiredView):
         # use last filtered_url saved in session
     def get_success_url(self):
         redirect_url = self.request.session.get("filtered_list", self.success_url)
-        print(redirect_url)
 
         return redirect_url
 
@@ -450,5 +449,4 @@ def adhesionterm(request, institution_id):
     return render(request, 'institution/adhesionterm.html',
                               {'institution_id': institution_id, 'adhesionterm': adhesionterm,
                                'acepted_status': acepted_status, 'serviceproduct_list': serviceproduct_list,
-                               'inst_servproduct_list': inst_servproduct_list},
-                                context_instance=RequestContext(request))
+                               'inst_servproduct_list': inst_servproduct_list})
