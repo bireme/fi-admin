@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry
 from utils.fields import JSONField, AuxiliaryChoiceField, MultipleAuxiliaryChoiceField
 from utils.models import Generic, Country
+from main.models import License
 from classification.models import Relationship
 from log.models import AuditLog
 
@@ -230,6 +231,8 @@ class ReferenceSource(Reference):
     isbn = models.CharField(_('ISBN'), max_length=60, blank=True)
     # field tag 724
     doi_number = models.CharField(_('DOI number'), max_length=150, blank=True)
+    # license field
+    license = models.ForeignKey(License, verbose_name=_("License"), blank=True, null=True, on_delete=models.PROTECT)
 
     def __str__(self):
         source_title = ''

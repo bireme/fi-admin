@@ -39,6 +39,17 @@ class SourceLanguageAdmin(GenericAdmin):
     inlines = [SourceLanguageLocalAdmin, ]
 
 
+class LicenseLocalAdmin(admin.TabularInline):
+    model = LicenseLocal
+    extra = 0
+
+
+class LicenseAdmin(GenericAdmin):
+    model = License
+    list_display = ('id', 'acronym', 'name', 'order')
+    inlines = [LicenseLocalAdmin, ]
+
+
 class DescriptorAdmin(GenericTabularInline):
     model = Descriptor
     extra = 1
@@ -71,3 +82,4 @@ class ResourceAdmin(GenericAdmin):
 admin.site.register(Resource, ResourceAdmin)
 admin.site.register(SourceLanguage, SourceLanguageAdmin)
 admin.site.register(ThematicArea)
+admin.site.register(License, LicenseAdmin)

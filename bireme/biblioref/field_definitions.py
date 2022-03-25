@@ -34,6 +34,7 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
                  'local_descriptors': '653', 'clinical_trial_registry_name': '700', 'doi_number': '724',
                  'source_control': '98', 'export_control_1': '776', 'export_control_2': '778', 'alternate_ids': '779',
                  'created_time': '91', 'created_by': '92', 'updated_time': '93', 'system_version': '899', 'indexed_database': '904',
+                 'linked_ein': '610', 'linked_efr': '611'
                  }
 
 
@@ -51,11 +52,11 @@ abstract_section = ('abstract', {'fields': ['abstract'],
                                  'classes': ['collapse']})
 
 
-comp_info_section = ('comp_info', {'fields': ['descriptive_information', 'text_language'],
+comp_info_section = ('comp_info', {'fields': ['descriptive_information', 'text_language', 'license'],
                                    'legend': _('Complementary Information'),
                                    'classes': ['collapse']})
 
-comp_info_section_doi = ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi_number'],
+comp_info_section_doi = ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi_number', 'license'],
                                        'legend': _('Complementary Information'),
                                        'classes': ['collapse']})
 
@@ -111,7 +112,7 @@ FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'LILACS_indexe
                                 'legend': _('General information')}),
 
                                 ('serial_level', {'fields': ['title_serial', 'issn', 'volume_serial',
-                                                             'issue_number'],
+                                                             'issue_number', 'license'],
                                                   'legend': _('Serial level')}),
 
                                 ('imprint', {'fields': ['publication_date', 'publication_date_normalized'],
