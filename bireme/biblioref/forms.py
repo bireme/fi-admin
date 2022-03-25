@@ -229,11 +229,8 @@ class BiblioRefForm(BetterModelForm):
 
     def check_author_presence(self, data, field_individual, field_corporate):
         # check presence of individual and corporate author
-        if data.get(field_individual) and data.get(field_corporate):
-            self.add_error(field_individual, _("Individual Author and Corporate Autor present simultaneous"))
-        else:
-            if not data.get(field_individual) and not data.get(field_corporate):
-                self.add_error(field_individual, _("Individual Author or Corporate Author mandatory"))
+        if not data.get(field_individual) and not data.get(field_corporate):
+            self.add_error(field_individual, _("Individual Author or Corporate Author mandatory"))
 
     def clean(self):
         data = self.cleaned_data
