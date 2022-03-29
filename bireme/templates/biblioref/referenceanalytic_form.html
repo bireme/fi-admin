@@ -519,7 +519,7 @@
                 url : "/title/ajax/get_indexcodes/?title=" + check_title,
                 dataType: "json",
                 success : function (data) {
-                    if (data.length > 0){
+                    if (data && data.length > 0){
                         var index_db_list = []
                         for (var i = 0; i < data.length; i++) {
                             var index_db = data[i]['index_db'];
@@ -539,6 +539,21 @@
                     }
                 }
             });
+
+            // check for passive linked resources
+            $.ajax({
+                url : "/related/ajax/get_passive_relations/{{c_type.id}}/biblio-{{object.id}}",
+                dataType: "json",
+                success : function (data) {
+                    if (data && data.length > 0){
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i]);
+                            $("#passive-linked-resources>ul").append("<li><span class='label label-info'>" + data[i].relation_type + "</span> " + data[i].title + "</strong></li>");
+                        }
+                    }
+                }
+            });
+
 
         });
 

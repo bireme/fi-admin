@@ -871,3 +871,9 @@ tr.relation-row .row_order input{
 #indexed_database_info{
     color: #ff9800;
 }
+
+#passive-linked-resources{
+    margin: 10px 0 20px 35px;
+    width: 53%;
+    padding: 10px;
+}

@@ -8,6 +8,11 @@
         </p>
     {% endfor %}
 
+    <div id="passive-linked-resources" class="alert">
+        <p style="display: block"><strong>{% trans "Resources linked to this document" %}:</strong></p>
+        <ul></ul>
+    </div>
+
     <fieldset class="{{ fieldset.classes }} accordion-body metadata" id="relatedresource">
         {{ formset_relatedresource.management_form }}
 
@@ -76,7 +81,6 @@
 {% block extrajs %}
 
 <script type="text/javascript">
-
     function select_related_reference(obj){
         var row = $(obj).parent();
         related_field_name = row.find('input').attr('name');
