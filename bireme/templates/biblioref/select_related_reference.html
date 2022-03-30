@@ -75,7 +75,7 @@
             {% for reference in object_list %}
                 <tr>
                     <td>
-                        <a href="#" onclick="opener.dismissRelatedLookupPopup('biblio-{{ reference.id }}', '{{ reference.reference_title|substring_after:'|' }}' ); return false;">{{ reference.id }}</a>
+                        <a href="#" onclick="opener.dismissRelatedLookupPopup('biblio-{{ reference.id }}', '{{ reference.reference_title }}' ); return false;">{{ reference.id }}</a>
                     </td>
                     <td>
                         {{ reference }}
