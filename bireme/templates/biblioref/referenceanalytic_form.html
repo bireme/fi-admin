@@ -542,7 +542,7 @@
 
             // check for passive linked resources
             $.ajax({
-                url : "/related/ajax/get_passive_relations/{{c_type.id}}/biblio-{{object.id}}",
+                url : "/related/ajax/get_passive_relations/biblio-{{object.id}}",
                 dataType: "json",
                 success : function (data) {
                     if (data && data.length > 0){
