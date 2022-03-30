@@ -442,6 +442,22 @@
                 });
 
             {% endif %}
+
+            // check for passive linked resources
+            $.ajax({
+                url : "/related/ajax/get_passive_relations/{{c_type.id}}/biblio-{{object.id}}",
+                dataType: "json",
+                success : function (data) {
+                    if (data && data.length > 0){
+                        $("#passive-linked-resources").show();
+                        for (var i = 0; i < data.length; i++) {
+                            console.log(data[i]);
+                            $("#passive-linked-resources>ul").append("<li><strong>" + data[i].relation_type + "</strong> " + data[i].title + "</li>");
+                        }
+                    }
+                }
+            });
+
         });
 
         function decs_search(obj){
