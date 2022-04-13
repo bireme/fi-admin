@@ -61,7 +61,7 @@
 
 </div>
 
-<div class='body'>    
+<div class='body'>
 
     <div class="row">
         <div class="span12">
@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    
+
     <div class="tab-content">
         <div>
             <table class='table'>
@@ -114,9 +114,8 @@
 
                         </td>
                         <td>
-                            <a href="{% url 'move_term_desc' term_id=obj.termdesc__id ths=request.GET.ths  %}{% if request.GET.choiced_term_id %}{{ request.GET.choiced_term_id }}{% endif %}" class='btn btn-primary'></i> {% trans "Move to this concept?" %}</a>
+                            <a href="{% url 'move_term_desc' term_id=obj.id ths=request.GET.ths %}{% if request.GET.choiced_term_id %}{{ request.GET.choiced_term_id }}{% endif %}" class='btn btn-primary'></i> {% trans "Move to this concept?" %}</a>
                         </td>
-
                     </tr>
 
                     {% empty %}
