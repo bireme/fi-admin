@@ -843,9 +843,12 @@ class DescListView(LoginRequiredView, ListView):
             else:
                 id_register = id_register[0].get('id')
                 id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
-                id_concept = id_concept[0].get('id')
-                q_id_concept = Q(identifier_concept_id=id_concept)
-                object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+                if not id_concept:
+                    object_list = object_list.none()
+                else:
+                    id_concept = id_concept[0].get('id')
+                    q_id_concept = Q(identifier_concept_id=id_concept)
+                    object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -3739,9 +3742,12 @@ class QualifListView(LoginRequiredView, ListView):
             else:
                 id_register = id_register[0].get('id')
                 id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
-                id_concept = id_concept[0].get('id')
-                q_id_concept = Q(identifier_concept_id=id_concept)
-                object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+                if not id_concept:
+                    object_list = object_list.none()
+                else:
+                    id_concept = id_concept[0].get('id')
+                    q_id_concept = Q(identifier_concept_id=id_concept)
+                    object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
@@ -3780,9 +3786,12 @@ class QualifListView(LoginRequiredView, ListView):
             else:
                 id_register = id_register[0].get('id')
                 id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
-                id_concept = id_concept[0].get('id')
-                q_id_concept = Q(identifier_concept_id=id_concept)
-                object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+                if not id_concept:
+                    object_list = object_list.none()
+                else:
+                    id_concept = id_concept[0].get('id')
+                    q_id_concept = Q(identifier_concept_id=id_concept)
+                    object_list = TermListQualif.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         # status
         if self.actions['filter_status']:
