@@ -1424,7 +1424,7 @@ class TermListDescView(LoginRequiredView, ListView):
 
 
 
-def TermListDescModification(request, term_id, ths, term_ori, term_des):
+def TermListDescModification(request, term_id, ths, term_ori):
 
     # Descobre qual é o identifier_id do conceito
     identifier_id_destino = IdentifierConceptListDesc.objects.filter(id=term_id).values('identifier_id')
