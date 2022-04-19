@@ -515,46 +515,52 @@
 
             // consult list of indexed databases from TITLE
             var check_title = '{{reference_source.title_serial}}';
-            $.ajax({
-                url : "/title/ajax/get_indexcodes/?title=" + check_title,
-                dataType: "json",
-                success : function (data) {
-                    if (data && data.length > 0){
-                        var index_db_list = []
-                        for (var i = 0; i < data.length; i++) {
-                            var index_db = data[i]['index_db'];
-                            index_db_list.push(index_db);
-                            // for new records select indexed database from title
-                            {% if not object.pk %}
-                                $('#id_indexed_database option:contains(' + index_db + ')').each(function(){
-                                    if ($(this).text() == index_db) {
-                                        $(this).attr('selected', 'selected');
-                                    }
-                                });
-                            {% endif %}
-                        }
-                        $('#id_indexed_database').multipleSelect('refreshOptions', {})
-                        $('#indexed_database_list').html(index_db_list.join(', '));
-                        $('#indexed_database_info').show();
-                    }
-                }
-            });
-
-            // check for passive linked resources
-            $.ajax({
-                url : "/related/ajax/get_passive_relations/biblio-{{object.id}}",
-                dataType: "json",
-                success : function (data) {
-                    if (data && data.length > 0){
-                        $("#passive-linked-resources").show();
-                        for (var i = 0; i < data.length; i++) {
-                            console.log(data[i]);
-                            $("#passive-linked-resources>ul").append("<li><strong>" + data[i].relation_type + "</strong> " + data[i].title + "</li>");
+            if (check_title != ''){
+                $.ajax({
+                    url : "/title/ajax/get_indexcodes/?title=" + check_title,
+                    dataType: "json",
+                    success : function (data) {
+                        if (data && data.length > 0){
+                            var index_db_list = []
+                            for (var i = 0; i < data.length; i++) {
+                                var index_db = data[i]['index_db'];
+                                index_db_list.push(index_db);
+                                // for new records select indexed database from title
+                                {% if not object.pk %}
+                                    $('#id_indexed_database option:contains(' + index_db + ')').each(function(){
+                                        if ($(this).text() == index_db) {
+                                            $(this).attr('selected', 'selected');
+                                        }
+                                    });
+                                {% endif %}
+                            }
+                            $('#id_indexed_database').multipleSelect('refreshOptions', {})
+                            $('#indexed_database_list').html(index_db_list.join(', '));
+                            $('#indexed_database_info').show();
                         }
                     }
-                }
-            });
+                });
+            }
 
+            {% if object.id %}
+                // execute a search for linked resource on the first click on the related resource tab
+                $( "#tab a[href='#tab-relatedresource']" ).one( "click", function( event, ui ) {
+                    // check for passive linked resources
+                    $.ajax({
+                        url : "/related/ajax/get_passive_relations/biblio-{{object.id}}",
+                        dataType: "json",
+                        success : function (data) {
+                            if (data && data.length > 0){
+                                $("#passive-linked-resources").show();
+                                for (var i = 0; i < data.length; i++) {
+                                    //console.log(data[i]);
+                                    $("#passive-linked-resources>ul").append("<li><strong>" + data[i].relation_type + "</strong> " + data[i].title + "</li>");
+                                }
+                            }
+                        }
+                    });
+                })
+            {% endif %}
 
         });
 
