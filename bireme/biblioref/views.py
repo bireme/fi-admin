@@ -365,12 +365,13 @@ class BiblioRefUpdate(LoginRequiredView):
 
                 formset_relatedresource.instance = self.object
                 formset_relatedresource.save()
-                '''
-                # save many-to-many relation fields
-                form.save_m2m()
-                '''
+
                 # save object and update solr index
                 form.save()
+
+                # save many-to-many fields (required because form.save in forms.py use commit=False)
+                form.save_m2m()
+
                 # update DeDup service
                 update_dedup_service(self.object)
 
