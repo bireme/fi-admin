@@ -820,8 +820,8 @@ class DescListView(LoginRequiredView, ListView):
             if not id_register:
                 object_list = object_list.none()
             else:
-                id_register = id_register[0].get('id')
-                id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
+                id_register = [obj.get('id') for obj in id_register]
+                id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_register,preferred_concept='Y').distinct().values('id')
                 q_id_concept = Q(identifier_concept_id__in=id_concept)
                 object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
@@ -1225,9 +1225,13 @@ class ConceptListDescView(LoginRequiredView, ListView):
             try:
                 id_registro = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'].strip(),thesaurus=self.request.GET.get("ths")).values('id')
                 if len(id_registro)>0:
-                    id_registro = id_registro[0].get('id')
-                    # Força somente 1 resultado
-                    object_list = IdentifierConceptListDesc.objects.filter(identifier_id=id_registro).values('identifier_id','termdesc__term_string','termdesc__language_code','termdesc__id')[:1]
+                    id_registro = [obj.get('id') for obj in id_registro]
+                    id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_registro,preferred_concept='Y').distinct().values('id')
+                    q_concept_preferred_term = Q(concept_preferred_term='Y')
+                    q_record_preferred_term = Q(record_preferred_term='Y')
+                    q_id_concept = Q(identifier_concept_id__in=id_concept)
+                    object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.request.GET.get("ths")).order_by('term_string')
+
             except IdentifierDesc.DoesNotExist:
                 # order performance -------------------------------------------------------------------------------------
                 if self.actions['order'] == "-":
@@ -1280,7 +1284,7 @@ class ConceptListDescView(LoginRequiredView, ListView):
 
 
 
-def ConceptListDescModification(request,term_id, ths, concept_ori):
+def ConceptListDescModification(request, term_id, ths, concept_ori):
 
     # Descobre qual é o id do conceito do termo destino
     id_concept_destino = TermListDesc.objects.filter(id=term_id).values('identifier_concept_id')
