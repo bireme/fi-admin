@@ -77,7 +77,7 @@
             <br>
             {{ id_register_objects }} -->
 
-<div class='body'>    
+<div class='body'>
 
     <div class="row">
         <div class="span12">
@@ -94,7 +94,7 @@
         </div>
     </div>
 
-    
+
     <div class="tab-content">
         <div>
             <table class='table'>
@@ -116,9 +116,9 @@
                 {% for obj in registers|slice:":1" %}
                     <tr>
                         <td>
-                            {% if obj.termdesc__term_string %}
-                                {% if obj.termdesc__term_string %}
-                                    {% trans "Descriptor" %}: {{ obj.termdesc__term_string }} ({{ obj.termdesc__language_code }})
+                            {% if obj.term_string %}
+                                {% if obj.term_string %}
+                                    {% trans "Descriptor" %}: {{ obj.term_string }} ({{ obj.language_code }})
                                     <br>
                                 {% endif %}
                             {% endif %}
@@ -130,7 +130,7 @@
 
                         </td>
                         <td>
-                            <a href="{% url 'move_concept_desc' term_id=obj.termdesc__id ths=request.GET.ths  %}{% if request.GET.identifier_concept_id %}{{ request.GET.identifier_concept_id }}{% else %}{{ actions.choiced_concept_identifier_id }}{% endif %}" class='btn btn-primary'></i> {% trans "Move to this descriptor?" %}</a>
+                            <a href="{% url 'move_concept_desc' term_id=obj.id ths=request.GET.ths %}{% if request.GET.identifier_concept_id %}{{ request.GET.identifier_concept_id }}{% else %}{{ actions.choiced_concept_identifier_id }}{% endif %}" class='btn btn-primary'></i> {% trans "Move to this descriptor?" %}</a>
                         </td>
 
                     </tr>
