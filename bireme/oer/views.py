@@ -19,7 +19,9 @@ from main.models import Descriptor
 from help.models import get_help_fields
 from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 from datetime import datetime
+
 from oer.forms import *
+from oer.search_indexes import *
 
 import json
 import colander
@@ -191,10 +193,13 @@ class OERUpdate(LoginRequiredView):
                 formset_thematic.instance = self.object
                 formset_thematic.save()
 
-                # update solr index
+                # update object
                 form.save()
                 # save many-to-many relation fields
                 form.save_m2m()
+                # update solr index
+                update_search_index(self.object)
+
                 return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(
@@ -309,6 +314,10 @@ class OERDeleteView(LoginRequiredView, DeleteView):
         Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
 
+        # delete search index entry
+        index = OERIndex()
+        index.remove_object(obj)
+
         return super(OERDeleteView, self).delete(request, *args, **kwargs)
 
 @csrf_exempt
@@ -382,3 +391,14 @@ def field_assist(request, **kwargs):
         'field_id': field_id,
         'deform_dependencies': form.get_widget_resources()
     })
+
+
+# update search index
+def update_search_index(oer):
+    if oer.status != -1:
+        index = OERIndex()
+
+        try:
+            index.update_object(oer)
+        except:
+            pass

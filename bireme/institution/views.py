@@ -20,6 +20,7 @@ from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 from operator import itemgetter, attrgetter
 from datetime import datetime
 from institution.forms import *
+from institution.search_indexes import *
 
 import re
 
@@ -239,8 +240,11 @@ class InstUpdate(LoginRequiredView):
                 formset_adm.instance = self.object
                 formset_adm.save()
 
-                # update solr index
+                # update institution
                 form.save()
+                # update search index
+                update_search_index(self.object)
+
 
                 return HttpResponseRedirect(self.get_success_url())
         else:
@@ -450,3 +454,13 @@ def adhesionterm(request, institution_id):
                               {'institution_id': institution_id, 'adhesionterm': adhesionterm,
                                'acepted_status': acepted_status, 'serviceproduct_list': serviceproduct_list,
                                'inst_servproduct_list': inst_servproduct_list})
+
+
+# update search index
+def update_search_index(institution):
+    index = InstitutionIndex()
+
+    try:
+        index.update_object(institution)
+    except:
+        pass

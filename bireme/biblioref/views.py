@@ -21,8 +21,10 @@ from classification.models import Collection
 from help.models import get_help_fields
 from utils.views import LoginRequiredView
 
+
 from biblioref.field_definitions import FIELDS_BY_DOCUMENT_TYPE
 from biblioref.cross_validation import check_for_publication
+from biblioref.search_indexes import *
 from biblioref.forms import *
 
 import json
@@ -366,14 +368,14 @@ class BiblioRefUpdate(LoginRequiredView):
                 formset_relatedresource.instance = self.object
                 formset_relatedresource.save()
 
-                # save object and update solr index
+                # save object
                 form.save()
-
                 # save many-to-many fields (required because form.save in forms.py use commit=False)
                 form.save_m2m()
-
                 # update DeDup service
                 update_dedup_service(self.object)
+                # update search index
+                update_search_index(self.object)
 
                 # if record is a serial source update analytics auxiliary field reference_title
                 if self.object.literature_type == 'S' and not hasattr(self.object, 'source'):
@@ -837,5 +839,18 @@ def update_reference_tite(source):
             analytic.reference_title = u"{0} | {1}".format(source.reference_title, analytic_title)
             # update only specific fields to avoid mess up json fields (escape)
             analytic.save(update_fields=['reference_title', 'updated_time', 'updated_by'])
+        except:
+            pass
+
+# update search index
+def update_search_index(reference):
+    if reference.status != -1:
+        if hasattr(reference, 'source'):
+            index = ReferenceAnalyticIndex()
+        else:
+            index = RefereceSourceIndex()
+
+        try:
+            index.update_object(reference)
         except:
             pass
