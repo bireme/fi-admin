@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Delete reference" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'list_biblioref' %}">{% trans "Bibliographic Records" %}</a> <span class="divider">/</span></li>
+    <li>{% trans "Delete record" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class='header'>
+    <h2><i class='icon-remove'></i>{% trans "Delete record" %}</h2>
+</div>
+
+<div class='body'>
+    <div class="alert">
+        <h3>{{ title }}</h3>
+        <br/>
+        <h3>{% trans "It is not possible to delete a source record without first deleting its analytics" %}</h3>
+        <br/>
+        <p>
+            <a href="{% url 'list_biblioref_analytics' %}?source={{source_id}}">{% trans 'See analytics' %}</a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

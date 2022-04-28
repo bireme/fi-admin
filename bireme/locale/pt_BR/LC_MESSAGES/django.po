@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-29 16:50+0000\n"
-"PO-Revision-Date: 2022-03-29 16:51-0306\n"
+"POT-Creation-Date: 2022-04-28 18:38+0000\n"
+"PO-Revision-Date: 2022-04-28 18:40-0306\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -988,7 +988,8 @@ msgstr "Apagado"
 msgid "Bibliographic Record"
 msgstr "Registro bibliográfico"
 
-#: biblioref/models.py:30 templates/biblioref/reference_form.html:9
+#: biblioref/models.py:30 templates/biblioref/delete_analytics_first.html:8
+#: templates/biblioref/reference_form.html:9
 #: templates/biblioref/reference_list.html:6
 #: templates/biblioref/reference_list.html:9
 #: templates/biblioref/reference_list.html:28
@@ -1869,15 +1870,15 @@ msgstr ""
 msgid "Target groups"
 msgstr "Público alvo"
 
-#: events/views.py:245
+#: events/views.py:253
 msgid "Event deleted."
 msgstr "Evento apagado."
 
-#: events/views.py:318 main/views.py:431
+#: events/views.py:326 main/views.py:439
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: events/views.py:342 main/views.py:455
+#: events/views.py:350 main/views.py:463
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
@@ -2054,7 +2055,7 @@ msgid "Third level"
 msgstr "Terceiro nível"
 
 #: institution/models.py:235 thesaurus/views.py:219 thesaurus/views.py:620
-#: thesaurus/views.py:3208 thesaurus/views.py:3561
+#: thesaurus/views.py:3211 thesaurus/views.py:3564
 msgid "Hierarchical level"
 msgstr "Nível hierárquico"
 
@@ -2543,23 +2544,23 @@ msgstr "Alcance temporal"
 msgid "Objective"
 msgstr "Objetivos"
 
-#: main/views.py:260
+#: main/views.py:268
 msgid "Resource deleted."
 msgstr "Recurso apagado."
 
-#: main/views.py:333
+#: main/views.py:341
 msgid "Thematic area successfully edited."
 msgstr "Área temática editada com sucesso."
 
-#: main/views.py:358
+#: main/views.py:366
 msgid "Thematic area deleted."
 msgstr "Área Temática apagada"
 
-#: main/views.py:527
+#: main/views.py:535
 msgid "Language successfully edited."
 msgstr "Idioma editado com sucesso."
 
-#: main/views.py:552
+#: main/views.py:560
 msgid "Language deleted."
 msgstr "Idioma apagado."
 
@@ -2811,7 +2812,7 @@ msgstr "Relacionamentos"
 msgid "OER related"
 msgstr "Objeto relacionado"
 
-#: oer/views.py:346 templates/biblioref/reference_form.html:323
+#: oer/views.py:355 templates/biblioref/reference_form.html:323
 #: templates/biblioref/referencesource_form.html:191
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:350
 #: templates/events/edit-event.html:397 templates/events/edit-type.html:56
@@ -2996,6 +2997,31 @@ msgstr "Termos e condições de uso"
 msgid "Privacy Policy"
 msgstr "Política de Privacidade"
 
+#: templates/biblioref/delete_analytics_first.html:5
+msgid "Delete reference"
+msgstr "Apagar referência"
+
+#: templates/biblioref/delete_analytics_first.html:9
+#: templates/biblioref/delete_analytics_first.html:15
+#: templates/biblioref/reference_confirm_delete.html:5
+#: templates/biblioref/reference_confirm_delete.html:9
+#: templates/biblioref/reference_confirm_delete.html:15
+msgid "Delete record"
+msgstr "Apagar registro"
+
+#: templates/biblioref/delete_analytics_first.html:22
+msgid ""
+"It is not possible to delete a source record without first deleting its "
+"analytics"
+msgstr ""
+"Não é possível excluir um registro fonte sem primeiro excluir suas "
+"analíticas"
+
+#: templates/biblioref/delete_analytics_first.html:25
+#| msgid "Create analytic"
+msgid "See analytics"
+msgstr "Ver analíticas"
+
 #: templates/biblioref/duplicate_detail.html:11
 msgid "Duplicate record list"
 msgstr "Lista de registros duplicados"
@@ -3132,8 +3158,8 @@ msgstr "Selecione pela pesquisa"
 #: templates/biblioref/fieldset_indexing.html:70
 #: templates/biblioref/reference_confirm_delete.html:29
 #: templates/biblioref/referenceanalytic_form.html:494
-#: templates/biblioref/referenceanalytic_form.html:592
-#: templates/biblioref/referencesource_form.html:479
+#: templates/biblioref/referenceanalytic_form.html:599
+#: templates/biblioref/referencesource_form.html:500
 #: templates/delete_confirm.html:17
 #: templates/institution/institution_confirm_delete.html:29
 #: templates/leisref/act_confirm_delete.html:29
@@ -3165,19 +3191,12 @@ msgid "Descriptors suggestions"
 msgstr "Sugestão de descritores"
 
 #: templates/biblioref/fieldset_relatedresources.html:12
-#| msgid "Resources of my center"
 msgid "Resources linked to this document"
 msgstr "Recursos vinculados a este documento"
 
 #: templates/biblioref/fieldset_relatedresources.html:36
 msgid "For references already registered in FI-ADMIN, search below"
 msgstr "Para referências já cadastradas no FI-ADMIN, pesquise abaixo"
-
-#: templates/biblioref/reference_confirm_delete.html:5
-#: templates/biblioref/reference_confirm_delete.html:9
-#: templates/biblioref/reference_confirm_delete.html:15
-msgid "Delete record"
-msgstr "Apagar registro"
 
 #: templates/biblioref/reference_confirm_delete.html:8
 msgid "Record"
@@ -3200,8 +3219,8 @@ msgstr "Você tem certeza que deseja apagar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
 #: templates/biblioref/referenceanalytic_form.html:495
-#: templates/biblioref/referenceanalytic_form.html:593
-#: templates/biblioref/referencesource_form.html:480
+#: templates/biblioref/referenceanalytic_form.html:600
+#: templates/biblioref/referencesource_form.html:501
 #: templates/delete_confirm.html:16
 #: templates/institution/institution_confirm_delete.html:28
 #: templates/leisref/act_confirm_delete.html:28
@@ -3604,7 +3623,7 @@ msgid "Filter by"
 msgstr "Filtrar por"
 
 #: templates/biblioref/reference_list.html:183
-#: templates/dashboard/index.html:57
+#: templates/dashboard/index.html:58
 msgid "Changed by other cooperative center"
 msgstr "Modificados por outros centros cooperantes"
 
@@ -3640,8 +3659,7 @@ msgstr "Modificado por outros usuários"
 msgid "Actions"
 msgstr "Ações"
 
-#: templates/biblioref/reference_list.html:215
-#: templates/biblioref/reference_list.html:219
+#: templates/biblioref/reference_list.html:214
 #: templates/biblioref/referenceanalytic_list.html:81
 #: templates/biblioref/referencesource_list.html:80
 #: templates/biblioref/referencesource_list.html:84
@@ -3660,11 +3678,11 @@ msgstr "Ações"
 msgid "Remove"
 msgstr "Apagar"
 
-#: templates/biblioref/reference_list.html:224
+#: templates/biblioref/reference_list.html:218
 msgid "review"
 msgstr "revisar"
 
-#: templates/biblioref/reference_list.html:243
+#: templates/biblioref/reference_list.html:238
 #: templates/events/events.html:153 templates/leisref/act_list.html:190
 #: templates/main/resources.html:153 templates/multimedia/media_list.html:182
 #: templates/oer/oer_list.html:140
@@ -3769,7 +3787,7 @@ msgstr "Duplicados"
 #: templates/thesaurus/descriptor_new_concept.html:276
 #: templates/thesaurus/descriptor_new_legacy.html:92
 #: templates/thesaurus/descriptor_new_term.html:214
-#: templates/thesaurus/page_view_desc.html:911
+#: templates/thesaurus/page_view_desc.html:919
 #: templates/thesaurus/page_view_qualif.html:752
 #: templates/thesaurus/qualifier_edit_concept.html:205
 #: templates/thesaurus/qualifier_edit_legacy.html:94
@@ -3783,7 +3801,7 @@ msgstr "Duplicados"
 #: templates/thesaurus/qualifier_new_term.html:157
 #: templates/thesaurus/search_concept_desc.html:152
 #: templates/thesaurus/search_concept_qualif.html:152
-#: templates/thesaurus/search_term_desc.html:137
+#: templates/thesaurus/search_term_desc.html:136
 #: templates/thesaurus/search_term_qualif.html:135
 msgid "Cancel"
 msgstr "Cancelar"
@@ -3842,8 +3860,8 @@ msgstr "Adicionar dados de pesquisa"
 msgid "Add resource"
 msgstr "Adicionar recurso"
 
-#: templates/biblioref/referenceanalytic_form.html:583
-#: templates/biblioref/referencesource_form.html:470
+#: templates/biblioref/referenceanalytic_form.html:590
+#: templates/biblioref/referencesource_form.html:491
 msgid ""
 "After publication the record can only be modified by a user with editor "
 "profile. Continue?"
@@ -3851,8 +3869,8 @@ msgstr ""
 "Após a publicação, o registro só pode ser modificado por um usuário com "
 "perfil de editor. Continuar?"
 
-#: templates/biblioref/referenceanalytic_form.html:659
-#: templates/biblioref/referencesource_form.html:570
+#: templates/biblioref/referenceanalytic_form.html:666
+#: templates/biblioref/referencesource_form.html:591
 #: templates/events/edit-event.html:595
 #: templates/institution/institution_form.html:44
 #: templates/leisref/act_form.html:46 templates/main/edit-resource.html:538
@@ -3966,19 +3984,26 @@ msgstr "Sucesso!"
 msgid "Recent actions"
 msgstr "Ações recentes"
 
-#: templates/dashboard/index.html:64
+#: templates/dashboard/index.html:44 templates/dashboard/index.html:60
+#: templates/dashboard/index.html:68
+#: templates/institution/institution_form.html:44
+#: templates/leisref/act_form.html:46
+msgid "check"
+msgstr "verificar"
+
+#: templates/dashboard/index.html:66
 msgid "LILACS-Express records for indexing"
 msgstr "Registros LILACS-Express para indexação"
 
-#: templates/dashboard/index.html:72
+#: templates/dashboard/index.html:75
 msgid "Institutional"
 msgstr "Institucional"
 
-#: templates/dashboard/index.html:74
+#: templates/dashboard/index.html:77
 msgid "Update your institution information"
 msgstr "Atualize as informações da sua instituição"
 
-#: templates/dashboard/index.html:76
+#: templates/dashboard/index.html:79
 msgid "Review adhesion term"
 msgstr "Revisar o termo de adesão"
 
@@ -4153,11 +4178,6 @@ msgstr "Sites"
 #: templates/institution/institution_form.html:38
 msgid "Administrative"
 msgstr "Administrativo"
-
-#: templates/institution/institution_form.html:44
-#: templates/leisref/act_form.html:46
-msgid "check"
-msgstr "verificar"
 
 #: templates/institution/institution_form.html:95
 #: templates/oer/oer_form.html:119
@@ -5096,7 +5116,7 @@ msgstr "Campo obrigatório"
 #: templates/thesaurus/confirm_create_register_qualif.html:78
 #: templates/thesaurus/descriptor_form_step0.html:67
 #: templates/thesaurus/qualifier_form_step0.html:67 thesaurus/views.py:221
-#: thesaurus/views.py:622 thesaurus/views.py:3210 thesaurus/views.py:3563
+#: thesaurus/views.py:622 thesaurus/views.py:3213 thesaurus/views.py:3566
 msgid "already exists!!!"
 msgstr "já existe!"
 
@@ -5123,8 +5143,8 @@ msgstr "Editar conceito"
 
 #: templates/thesaurus/descriptor_edit_concept.html:28
 #: templates/thesaurus/page_view_desc.html:516
-#: templates/thesaurus/page_view_desc.html:643
-#: templates/thesaurus/page_view_desc.html:645
+#: templates/thesaurus/page_view_desc.html:647
+#: templates/thesaurus/page_view_desc.html:649
 #: templates/thesaurus/page_view_qualif.html:357
 #: templates/thesaurus/page_view_qualif.html:485
 #: templates/thesaurus/page_view_qualif.html:487
@@ -5349,8 +5369,8 @@ msgid "Edit term"
 msgstr "Editar termo"
 
 #: templates/thesaurus/descriptor_edit_term.html:29
-#: templates/thesaurus/page_view_desc.html:566
-#: templates/thesaurus/page_view_desc.html:711
+#: templates/thesaurus/page_view_desc.html:568
+#: templates/thesaurus/page_view_desc.html:717
 #: templates/thesaurus/qualifier_edit_term.html:29
 msgid "Edit term information"
 msgstr "Editar informações do termo"
@@ -5605,8 +5625,8 @@ msgid "Add concept"
 msgstr "Adicionar conceito"
 
 #: templates/thesaurus/page_view_desc.html:507
-#: templates/thesaurus/page_view_desc.html:620
-#: templates/thesaurus/page_view_desc.html:666
+#: templates/thesaurus/page_view_desc.html:624
+#: templates/thesaurus/page_view_desc.html:670
 #: templates/thesaurus/page_view_qualif.html:347
 #: templates/thesaurus/page_view_qualif.html:461
 #: templates/thesaurus/page_view_qualif.html:508
@@ -5620,143 +5640,143 @@ msgid "Preferred Concept"
 msgstr "Conceito preferido"
 
 #: templates/thesaurus/page_view_desc.html:520
-#: templates/thesaurus/page_view_desc.html:649
+#: templates/thesaurus/page_view_desc.html:653
 #: templates/thesaurus/page_view_qualif.html:361
 #: templates/thesaurus/page_view_qualif.html:491
 msgid "Move this concept to another record"
 msgstr "Mover este conceito para outro registro"
 
 #: templates/thesaurus/page_view_desc.html:535
-#: templates/thesaurus/page_view_desc.html:679
+#: templates/thesaurus/page_view_desc.html:683
 #: templates/thesaurus/page_view_qualif.html:376
 #: templates/thesaurus/page_view_qualif.html:521
 msgid "Add term"
 msgstr "Adicionar termo"
 
 #: templates/thesaurus/page_view_desc.html:537
-#: templates/thesaurus/page_view_desc.html:681
+#: templates/thesaurus/page_view_desc.html:685
 #: templates/thesaurus/page_view_qualif.html:378
 #: templates/thesaurus/page_view_qualif.html:524
 #: thesaurus/models_descriptors.py:337 thesaurus/models_qualifiers.py:238
 msgid "Term"
 msgstr "Termo"
 
-#: templates/thesaurus/page_view_desc.html:559
-#: templates/thesaurus/page_view_desc.html:703
+#: templates/thesaurus/page_view_desc.html:561
+#: templates/thesaurus/page_view_desc.html:709
 #: templates/thesaurus/page_view_qualif.html:400
 #: templates/thesaurus/page_view_qualif.html:545
 msgid "Preferred Term"
 msgstr "Termo preferido"
 
-#: templates/thesaurus/page_view_desc.html:573
-#: templates/thesaurus/page_view_desc.html:718
+#: templates/thesaurus/page_view_desc.html:575
+#: templates/thesaurus/page_view_desc.html:724
 msgid "Move this term to another concept"
 msgstr "Mover este termo para outro conceito"
 
-#: templates/thesaurus/page_view_desc.html:577
-#: templates/thesaurus/page_view_desc.html:722
+#: templates/thesaurus/page_view_desc.html:579
+#: templates/thesaurus/page_view_desc.html:728
 msgid "Create a new record from this term"
 msgstr "Criar um novo registro a partir deste termo"
 
-#: templates/thesaurus/page_view_desc.html:587
-#: templates/thesaurus/page_view_desc.html:732
+#: templates/thesaurus/page_view_desc.html:589
+#: templates/thesaurus/page_view_desc.html:738
 #: templates/thesaurus/page_view_qualif.html:428
 #: templates/thesaurus/page_view_qualif.html:574
 msgid "Term UI"
 msgstr "ID do termo"
 
-#: templates/thesaurus/page_view_desc.html:588
-#: templates/thesaurus/page_view_desc.html:733
+#: templates/thesaurus/page_view_desc.html:590
+#: templates/thesaurus/page_view_desc.html:739
 #: templates/thesaurus/page_view_qualif.html:429
 #: templates/thesaurus/page_view_qualif.html:575
 msgid "ConceptPreferredTerm"
 msgstr "Termo preferido do conceito"
 
-#: templates/thesaurus/page_view_desc.html:589
-#: templates/thesaurus/page_view_desc.html:734
+#: templates/thesaurus/page_view_desc.html:591
+#: templates/thesaurus/page_view_desc.html:740
 #: templates/thesaurus/page_view_qualif.html:430
 #: templates/thesaurus/page_view_qualif.html:576
 msgid "Is permuted"
 msgstr "É permutado"
 
-#: templates/thesaurus/page_view_desc.html:590
-#: templates/thesaurus/page_view_desc.html:735
+#: templates/thesaurus/page_view_desc.html:592
+#: templates/thesaurus/page_view_desc.html:741
 #: templates/thesaurus/page_view_qualif.html:431
 #: templates/thesaurus/page_view_qualif.html:577
 msgid "LexicalTag"
 msgstr "LexicalTag"
 
-#: templates/thesaurus/page_view_desc.html:591
-#: templates/thesaurus/page_view_desc.html:736
+#: templates/thesaurus/page_view_desc.html:593
+#: templates/thesaurus/page_view_desc.html:742
 #: templates/thesaurus/page_view_qualif.html:432
 #: templates/thesaurus/page_view_qualif.html:578
 msgid "RecordPreferredTerm"
 msgstr "Termo preferido do registro"
 
-#: templates/thesaurus/page_view_desc.html:592
-#: templates/thesaurus/page_view_desc.html:737
+#: templates/thesaurus/page_view_desc.html:594
+#: templates/thesaurus/page_view_desc.html:743
 #: templates/thesaurus/page_view_qualif.html:433
 #: templates/thesaurus/page_view_qualif.html:579
 msgid "Entry Version"
 msgstr "Versão de entrada"
 
-#: templates/thesaurus/page_view_desc.html:593
-#: templates/thesaurus/page_view_desc.html:738
+#: templates/thesaurus/page_view_desc.html:595
+#: templates/thesaurus/page_view_desc.html:744
 #: templates/thesaurus/page_view_qualif.html:434
 #: templates/thesaurus/page_view_qualif.html:580
 msgid "DateCreated"
 msgstr "Data de criação"
 
-#: templates/thesaurus/page_view_desc.html:594
-#: templates/thesaurus/page_view_desc.html:739
+#: templates/thesaurus/page_view_desc.html:596
+#: templates/thesaurus/page_view_desc.html:745
 #: templates/thesaurus/page_view_qualif.html:435
 #: templates/thesaurus/page_view_qualif.html:581
 msgid "DateAltered"
 msgstr "Data de alteração"
 
-#: templates/thesaurus/page_view_desc.html:595
-#: templates/thesaurus/page_view_desc.html:740
+#: templates/thesaurus/page_view_desc.html:597
+#: templates/thesaurus/page_view_desc.html:746
 #: templates/thesaurus/page_view_qualif.html:436
 #: templates/thesaurus/page_view_qualif.html:582
 msgid "History annotation"
 msgstr "Anotações de histórico"
 
-#: templates/thesaurus/page_view_desc.html:625
+#: templates/thesaurus/page_view_desc.html:629
 #: templates/thesaurus/page_view_qualif.html:467
 msgid "Narrower"
 msgstr "NRW - Mais específico"
 
-#: templates/thesaurus/page_view_desc.html:629
+#: templates/thesaurus/page_view_desc.html:633
 #: templates/thesaurus/page_view_qualif.html:471 thesaurus/choices.py:33
 msgid "BRD - Broader"
 msgstr "BRD - Mais amplo"
 
-#: templates/thesaurus/page_view_desc.html:633
+#: templates/thesaurus/page_view_desc.html:637
 #: templates/thesaurus/page_view_qualif.html:475 thesaurus/choices.py:34
 msgid "REL - Related but not broader or narrower"
 msgstr "REL - Relacionado, mas não mais amplo ou mais específico"
 
-#: templates/thesaurus/page_view_desc.html:653
+#: templates/thesaurus/page_view_desc.html:657
 #: templates/thesaurus/page_view_qualif.html:495
 msgid "Create a new record from this concept"
 msgstr "Criar um novo registro a partir deste conceito"
 
-#: templates/thesaurus/page_view_desc.html:666
+#: templates/thesaurus/page_view_desc.html:670
 #: templates/thesaurus/page_view_qualif.html:508
 msgid "Please set the preferred term for this concept"
 msgstr "Por favor, defina o termo preferido para este conceito"
 
-#: templates/thesaurus/page_view_desc.html:762
+#: templates/thesaurus/page_view_desc.html:770
 #: templates/thesaurus/page_view_qualif.html:604
 msgid "Edit this configurations"
 msgstr "Editar essas configurações"
 
-#: templates/thesaurus/page_view_desc.html:878
+#: templates/thesaurus/page_view_desc.html:886
 #: templates/thesaurus/page_view_qualif.html:720
 msgid "Create this configurations"
 msgstr "Criar estas configurações"
 
-#: templates/thesaurus/page_view_desc.html:980
+#: templates/thesaurus/page_view_desc.html:988
 #: templates/thesaurus/page_view_qualif.html:820
 #: templates/thesaurus/qualifier_list.html:164
 #: templates/thesaurus/thesaurus_home.html:162
@@ -5949,7 +5969,7 @@ msgid "Move to this descriptor?"
 msgstr "Mover para este descritor?"
 
 #: templates/thesaurus/search_concept_desc.html:141
-#: templates/thesaurus/search_term_desc.html:125
+#: templates/thesaurus/search_term_desc.html:124
 #: templates/thesaurus/search_term_qualif.html:124
 msgid "No descriptor records were found"
 msgstr "Nenhum registro de descritor foi encontrado"
@@ -6624,19 +6644,19 @@ msgstr "Controle sequencial"
 msgid "Sequential number"
 msgstr "Número sequencial"
 
-#: thesaurus/views.py:1109 thesaurus/views.py:1804 thesaurus/views.py:4054
-#: thesaurus/views.py:4792
+#: thesaurus/views.py:1112 thesaurus/views.py:1807 thesaurus/views.py:4063
+#: thesaurus/views.py:4801
 msgid "This Concept already exist!"
 msgstr "Este conceito já existe!"
 
-#: thesaurus/views.py:2063 thesaurus/views.py:2419 thesaurus/views.py:5026
-#: thesaurus/views.py:5376
+#: thesaurus/views.py:2066 thesaurus/views.py:2422 thesaurus/views.py:5035
+#: thesaurus/views.py:5385
 msgid "This configuration already exists for this concept!"
 msgstr "Esta configuração já existe para este conceito!"
 
-#: thesaurus/views.py:2168 thesaurus/views.py:2272 thesaurus/views.py:2462
-#: thesaurus/views.py:2539 thesaurus/views.py:5125 thesaurus/views.py:5214
-#: thesaurus/views.py:5418 thesaurus/views.py:5488
+#: thesaurus/views.py:2171 thesaurus/views.py:2275 thesaurus/views.py:2465
+#: thesaurus/views.py:2542 thesaurus/views.py:5134 thesaurus/views.py:5223
+#: thesaurus/views.py:5427 thesaurus/views.py:5497
 msgid "This Term already exist!"
 msgstr "Este termo já existe!"
 
@@ -7600,9 +7620,6 @@ msgstr "Ano deve ser maior que 1900"
 
 #~ msgid "Record Analytics"
 #~ msgstr "Analíticas"
-
-#~ msgid "Delete reference"
-#~ msgstr "Apagar referência"
 
 #~ msgid "Edit Bibliographic Reference"
 #~ msgstr "Editar Referência Bibliográfica"

@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.db.models.functions import Substr
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
 from utils.context_processors import additional_user_info
@@ -633,13 +633,20 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
     model = Reference
     success_url = reverse_lazy('list_biblioref')
 
-    def get_object(self, queryset=None):
-        obj = super(BiblioRefDeleteView, self).get_object()
-        """ Hook to ensure object is owned by request.user. """
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+
+        # not allow delete of record created by another user
         if not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)
 
-        return obj
+        # not allow delete of source with analytics
+        if not hasattr(obj, 'source'):
+            exist_analytic = ReferenceAnalytic.objects.filter(source=obj.pk).exists()
+            if exist_analytic:
+                return render(self.request, 'biblioref/delete_analytics_first.html', {'title': obj, 'source_id': obj.pk})
+
+        return super(BiblioRefDeleteView, self).dispatch(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         obj = super(BiblioRefDeleteView, self).get_object()
