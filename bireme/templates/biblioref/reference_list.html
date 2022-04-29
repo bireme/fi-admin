@@ -217,7 +217,6 @@
                                 {% else %}
                                     <a href="/log/review/{% if actions.review_type %}{{actions.review_type}}{% else %}cc{% endif %}/{{reference.get_content_type_id}}/{{reference.id}}/" class='btn btn-mini'>{% trans "review" %}</a>
                                 {% endif %}
-                                [{{ reference.created_by_id }}] / [{{reference.literature_type}}] / [{{reference.treatment_level}}] / [{{reference.status}}]
                             </td>
                         </tr>
                     {% endfor %}
