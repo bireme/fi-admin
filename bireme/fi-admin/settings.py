@@ -310,7 +310,7 @@ DECS_HIGHLIGHTER_URL = os.environ.get("DECS_HIGHLIGHTER_URL")
 RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY")
 GOOGLE_MAPS_APIKEY = os.environ.get("GOOGLE_MAPS_APIKEY")
 
-FULLTEXT_SEARCH = os.environ.get("FULLTEXT_SEARCH")
+FULLTEXT_SEARCH = True if os.environ.get("FULLTEXT_SEARCH") == 'True' else False
 
 # don't registry changes at specific fields on audit log (ex. control fields)
 EXCLUDE_AUDITLOG_FIELDS = ('content_type', 'object_id', 'reference_title',

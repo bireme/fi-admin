@@ -62,7 +62,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         for key in settings.ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
-        lookup_method = '__search' if settings.FULLTEXT_SEARCH == True else '__icontains'
+        lookup_method = '__search' if settings.FULLTEXT_SEARCH else '__icontains'
         search_field = self.search_field + lookup_method
 
         # check if user has perform a search
@@ -78,7 +78,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
                 lookup_expr = '__exact' if search_parts[0].endswith('id') else '__icontains'
                 search_field, search = "%s%s" % (search_parts[0], lookup_expr), search_parts[1]
 
-            elif settings.FULLTEXT_SEARCH == True:
+            elif settings.FULLTEXT_SEARCH:
                 # check if user is searching by serial. Ex. Mem. Inst. Oswaldo Cruz; 14 (41)
                 exp_serial = re.compile('[\.\;\(\)\|]')
                 if bool(re.search(exp_serial, search)):
