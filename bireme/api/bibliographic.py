@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.conf import settings
 from django.urls import re_path
+from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
@@ -10,6 +11,7 @@ from tastypie import fields
 
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID, ReferenceLocal, ReferenceComplement
 from attachments.models import Attachment
+from related.models import LinkedResource
 from api.isis_serializer import ISISSerializer
 from api.tastypie_custom import CustomResource
 
@@ -135,7 +137,7 @@ class ReferenceResource(CustomResource):
                                  'publication_country', 'symbol', 'isbn', 'individual_author_collection',
                                  'corporate_author_collection', 'title_collection', 'english_title_collection',
                                  'total_number_of_volumes', 'thesis_dissertation_leader',
-                                 'thesis_dissertation_institution', 'thesis_dissertation_academic_title']
+                                 'thesis_dissertation_institution', 'thesis_dissertation_academic_title', 'license']
 
             source_id = bundle.data['source']
             obj_source = ReferenceSource.objects.get(pk=source_id)
@@ -181,6 +183,8 @@ class ReferenceResource(CustomResource):
         alternate_ids = ReferenceAlternateID.objects.filter(reference_id=bundle.obj.id)
         library_records = ReferenceLocal.objects.filter(source=bundle.obj.id)
         complement_data = ReferenceComplement.objects.filter(source=bundle.obj.id)
+        related_obj_id = 'biblio-{}'.format(bundle.obj.id)
+        linked_resources = LinkedResource.objects.filter( Q(object_id=bundle.obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
 
         # create lists for primary and secundary descriptors
         descriptors_primary = []
@@ -205,6 +209,15 @@ class ReferenceResource(CustomResource):
         bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
         indexed_database_list = bundle.obj.indexed_database.all()
         bundle.data['indexed_database'] = [database.acronym for database in indexed_database_list]
+
+        for linked in linked_resources:
+            if linked.object_id == bundle.obj.id:
+                linked_field = 'linked_{}'.format(linked.type.field)
+                bundle.data[linked_field] = {'_m': linked.internal_id, '_u': linked.link, '_t': linked.title}
+            else:
+                linked_field = 'linked_{}'.format(linked.type.field_passive.field)
+                linked_id = 'biblio-{}'.format(linked.object_id)
+                bundle.data[linked_field] = {'_m': linked_id}
 
         # check if object has classification (relationship model)
         if bundle.obj.collection.count():
