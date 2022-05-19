@@ -348,12 +348,14 @@ ACTIONS = {
     'results_per_page': "",
 }
 
-ELASTIC_APM = {
-  'SERVICE_NAME': os.environ.get("ELASTIC_APM_SERVICE_NAME"),
-  'SECRET_TOKEN': os.environ.get("ELASTIC_APM_SECRET_TOKEN"),
-  'SERVER_URL': os.environ.get("ELASTIC_APM_SERVER_URL"),
-  'ENVIRONMENT': os.environ.get("ELASTIC_APM_ENVIRONMENT"),
-}
+ELASTIC_APM_ENABLED = True if os.environ.get("ELASTIC_APM_ENABLED") == 'True' else False
+
+if ELASTIC_APM_ENABLED:
+    ELASTIC_APM = {
+        'SERVICE_NAME': os.environ.get("ELASTIC_APM_SERVICE_NAME"),
+        'SECRET_TOKEN': os.environ.get("ELASTIC_APM_SECRET_TOKEN"),
+        'SERVER_URL': os.environ.get("ELASTIC_APM_SERVER_URL"),
+    }
 
 MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 0))
 
