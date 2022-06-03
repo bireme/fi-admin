@@ -107,59 +107,68 @@ class ThesaurusResourceDesc(CustomResource):
 
         # 'term_string_en': '001',
         term_string_en = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
-        term_string_en = term_string_en[0].get('term_string')
         if term_string_en:
-            bundle.data['term_string_en'] = term_string_en
+            term_string_en = term_string_en[0].get('term_string')
+            if term_string_en:
+                bundle.data['term_string_en'] = term_string_en
 
         # 'term_string_es': '002',
         term_string_es = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
-        term_string_es = term_string_es[0].get('term_string')
         if term_string_es:
-            bundle.data['term_string_es'] = term_string_es
+            term_string_es = term_string_es[0].get('term_string')
+            if term_string_es:
+                bundle.data['term_string_es'] = term_string_es
 
         # 'term_string_pt_br': '003',
         term_string_pt_br = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='pt-br',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
-        term_string_pt_br = term_string_pt_br[0].get('term_string')
         if term_string_pt_br:
-            bundle.data['term_string_pt_br'] = term_string_pt_br
+            term_string_pt_br = term_string_pt_br[0].get('term_string')
+            if term_string_pt_br:
+                bundle.data['term_string_pt_br'] = term_string_pt_br
 
         # 'term_string_es_es': '004',
         term_string_es_es = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es-es',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
-        term_string_es_es = term_string_es_es[0].get('term_string')
         if term_string_es_es:
-            bundle.data['term_string_es_es'] = term_string_es_es
+            term_string_es_es = term_string_es_es[0].get('term_string')
+            if term_string_es_es:
+                bundle.data['term_string_es_es'] = term_string_es_es
 
         # 'term_string_fr': '016',
         term_string_fr = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='fr',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
-        term_string_fr = term_string_fr[0].get('term_string')
         if term_string_fr:
-            bundle.data['term_string_fr'] = term_string_fr
+            term_string_fr = term_string_fr[0].get('term_string')
+            if term_string_fr:
+                bundle.data['term_string_fr'] = term_string_fr
 
 
 
         # 'scope_note_en': '005',
         scope_note_en = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en').values('scope_note')
-        scope_note_en = scope_note_en[0].get('scope_note')
         if scope_note_en:
-            bundle.data['scope_note_en'] = '^n' + scope_note_en
+            scope_note_en = scope_note_en[0].get('scope_note')
+            if scope_note_en:
+                bundle.data['scope_note_en'] = '^n' + scope_note_en
 
         # # 'scope_note_es': '006',
         scope_note_es = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es').values('scope_note')
-        scope_note_es = scope_note_es[0].get('scope_note')
         if scope_note_es:
-            bundle.data['scope_note_es'] = '^n' + scope_note_es
+            scope_note_es = scope_note_es[0].get('scope_note')
+            if scope_note_es:
+                bundle.data['scope_note_es'] = '^n' + scope_note_es
 
         # # 'scope_note_pt_br': '007',
         scope_note_pt_br = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='pt-br').values('scope_note')
-        scope_note_pt_br = scope_note_pt_br[0].get('scope_note')
         if scope_note_pt_br:
-            bundle.data['scope_note_pt_br'] = '^n' + scope_note_pt_br
+            scope_note_pt_br = scope_note_pt_br[0].get('scope_note')
+            if scope_note_pt_br:
+                bundle.data['scope_note_pt_br'] = '^n' + scope_note_pt_br
 
         # # 'scope_note_es_es': '008',
         scope_note_es_es = ConceptListDesc.objects.filter(identifier_concept_id=id_concept,language_code='es-es').values('scope_note')
-        scope_note_es_es = scope_note_es_es[0].get('scope_note')
         if scope_note_es_es:
-            bundle.data['scope_note_es_es'] = '^n' + scope_note_es_es
+            scope_note_es_es = scope_note_es_es[0].get('scope_note')
+            if scope_note_es_es:
+                bundle.data['scope_note_es_es'] = '^n' + scope_note_es_es
 
 
 
