@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
+from tastypie.exceptions import BadRequest
 from tastypie import fields
 
 from api.isis_serializer import ISISSerializer
@@ -103,7 +104,10 @@ class ThesaurusResourceDesc(CustomResource):
         bundle.data['identifier'] = bundle.obj.id
 
         id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=bundle.obj.id,preferred_concept='Y').values('id')
-        id_concept = id_concept[0].get('id')
+        if id_concept:
+            id_concept = id_concept[0].get('id')
+        else:
+            raise BadRequest("invalid request")
 
         # 'term_string_en': '001',
         term_string_en = TermListDesc.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
