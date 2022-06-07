@@ -16,6 +16,13 @@ from api.classification_api import *
 from django.contrib import admin
 admin.autodiscover()
 
+# WS decs with thesaurus: get descriptors and qualifiers by tree_id, words or bool
+from api.thesaurus_term_api import TermResource
+from tastypie.api import Api
+
+thesaurus = Api(api_name="thesaurus")
+thesaurus.register(TermResource())
+
 link_resource = LinkResource()
 event_resource = EventResource()
 media_resource = MediaResource()
@@ -148,6 +155,7 @@ urlpatterns = patterns('',
     (r'^api/', include(oer_resource.urls)),
     (r'^api/', include(community_resource.urls)),
     (r'^api/', include(collection_resource.urls)),
+    (r'^api/', include(classification_resource.urls)),
     (r'^api/', include(classification_resource.urls)),
     (r'^api/lis-old/search/', 'api.lis_old_api.search'),
     (r'^api/users/get_user_id/(?P<username>[a-zA-z0-9\.\-]{0,30})/$', 'api.users.get_user_id'),

@@ -11,3 +11,4 @@ biremelogin
 bireme/templates/version.txt
 fixtures/samples/
 uploads/
+.idea
