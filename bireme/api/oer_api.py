@@ -42,8 +42,8 @@ class OERResource(ModelResource):
         include_resource_uri = False
         max_limit = settings.MAX_EXPORT_API_LIMIT
 
-    def build_filters(self, filters=None):
-        orm_filters = super(OERResource, self).build_filters(filters)
+    def build_filters(self, filters=None, *args, **kwargs):
+        orm_filters = super(OERResource, self).build_filters(filters, *args, **kwargs)
 
         if 'cvsp_node' in filters:
             orm_filters['cvsp_node__exact'] = filters['cvsp_node']

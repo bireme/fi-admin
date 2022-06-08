@@ -231,8 +231,8 @@ class IssueResource(CustomResource):
             'cc': 'exact',
         }
 
-    def build_filters(self, filters=None):
-        orm_filters = super(IssueResource, self).build_filters(filters)
+    def build_filters(self, filters=None, *args, **kwargs):
+        orm_filters = super(IssueResource, self).build_filters(filters, *args, **kwargs)
 
         if 'title' in filters:
             filter_title = filters['title']

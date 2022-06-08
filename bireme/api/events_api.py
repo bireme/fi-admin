@@ -24,8 +24,8 @@ class EventResource(ModelResource):
         include_resource_uri = False
         max_limit = settings.MAX_EXPORT_API_LIMIT
 
-    def build_filters(self, filters=None):
-        orm_filters = super(EventResource, self).build_filters(filters)
+    def build_filters(self, filters=None, *args, **kwargs):
+        orm_filters = super(EventResource, self).build_filters(filters, *args, **kwargs)
 
         if 'thematic_area_id' in filters:
             orm_filters['thematics__thematic_area__exact'] = filters['thematic_area_id']
