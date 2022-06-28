@@ -9,6 +9,8 @@ class TextBlockLocalAdmin(admin.TabularInline):
 
 class TextBlockAdmin(admin.ModelAdmin):
     model = TextBlock
+    list_display = ['title', 'display']
+    list_filter = ('display',)
     inlines = [TextBlockLocalAdmin, ]
 
 

@@ -6,16 +6,10 @@ services:
     build:
       context: .
       target: dev
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
     volumes:
       - ./bireme/:/app/
     env_file:
       - ./conf/app-env-dev
-    command: gunicorn --workers 2 --bind 0.0.0.0:8000 fi-admin.wsgi --reload --timeout 1000 --log-level DEBUG
-    networks:
-      - nginx-proxy
-
-networks:
-  nginx-proxy:
-    external: true
+    command: python manage.py runserver 0.0.0.0:8000
