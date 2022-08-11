@@ -21,7 +21,7 @@ def get_status_info(code):
         {'code': 2, 'label': _('Refused'), 'icons': 'icon-ban-circle status-del', 'label_color': 'warning'},
         {'code': 3, 'label': _('Deleted'), 'icons': 'icon-minus-sign status-del', 'label_color': 'important'},
         # Thesaurus
-        {'code': 5, 'label': _('Historical'), 'icons': 'icon-upload status-migration', 'label_color': 'important'},
+        {'code': 5, 'label': _('Historical'), 'icons': 'icon-upload status-migration', 'label_color': 'salmon'},
         {'code': 10, 'label': _('Awaiting translation'), 'icons': 'icon-upload status-migration', 'label_color': 'warning'},
 
     )

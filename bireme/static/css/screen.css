@@ -877,3 +877,7 @@ tr.relation-row .row_order input{
     width: 52%;
     padding: 10px;
 }
+
+.label-salmon {
+    background-color: #fa8072;
+}

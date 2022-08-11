@@ -2792,6 +2792,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'date_created',
                                                 'date_revised',
                                                 'date_established',
+                                                'updated_time',
                                                 'abbreviation',
                                             )
 
@@ -5726,6 +5727,7 @@ class PageViewQualif(LoginRequiredView, DetailView):
                                                 'date_created',
                                                 'date_revised',
                                                 'date_established',
+                                                'updated_time',
                                             )
 
             context['description_objects'] = IdentifierQualif.objects.filter(
