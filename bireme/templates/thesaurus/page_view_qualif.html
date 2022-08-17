@@ -311,6 +311,18 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td valign="top" align="right" width="15%"><b>{% trans "Update Date" %}</b></td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td valign="top">
+                        {% for obj in id_register_objects %}
+                            {% ifchanged %}
+                                {{ obj.updated_time|default_if_none:"" }}
+                            {% endifchanged %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+
                 </table>
 
                 <div class="btn-group pull-right">
