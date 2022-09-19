@@ -51,12 +51,27 @@ class IdentifierDesc(Generic, AuditLog):
 
     abbreviation = models.ManyToManyField(IdentifierQualif, verbose_name='Abbreviation', blank=True)
 
-    # def __str__(self):
-    #     return self.descriptor_ui
-
     def __str__(self):
-        return '%s' % (self.id)
-
+        lang_code = get_language()
+        concepts_of_register = IdentifierConceptListDesc.objects.filter(identifier_id=self.id).values('id').first()
+        if concepts_of_register:
+            id_concept = concepts_of_register.get('id')
+            # Verify if exist term with published status
+            has_term = TermListDesc.objects.filter(identifier_concept_id=id_concept, status='1', concept_preferred_term='Y', record_preferred_term='Y')
+            if len(has_term) > 0:
+                # Verify if exist tradution for the interface choiced
+                translation = TermListDesc.objects.filter(identifier_concept_id=id_concept, status='1', language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y').first()
+                if translation:
+                    treatment = translation.term_string.replace('/','')
+                    return '%s' % treatment
+                else:
+                    translation = TermListDesc.objects.filter(identifier_concept_id=id_concept, status='1', language_code='en', concept_preferred_term='Y', record_preferred_term='Y').first()
+                    if translation:
+                        treatment = translation.term_string.replace('/','')
+                        return '%s' % treatment
+            return '%s' % (self.id)
+        else:
+            return '%s' % (self.id)
 
 
 
@@ -93,7 +108,6 @@ class DescriptionDesc(models.Model, AuditLog):
 
     def __str__(self):
         return '%s' % (self.id)
-
 
 
 
@@ -145,7 +159,6 @@ class PharmacologicalActionList(models.Model, AuditLog):
 
 
 
-
 # SeeRelatedList for descriptors
 class SeeRelatedListDesc(models.Model, AuditLog):
 # class SeeRelatedListDesc(models.Model):
@@ -167,7 +180,6 @@ class SeeRelatedListDesc(models.Model, AuditLog):
 
     def __str__(self):
         return '%s' % (self.id)
-
 
 
 

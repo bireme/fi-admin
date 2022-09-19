@@ -10,6 +10,7 @@ from django.utils.deprecation import MiddlewareMixin
 from crum import get_current_request, get_current_user
 from log.models import AuditLog
 from itertools import chain
+from datetime import datetime
 
 import threading
 import json
@@ -170,12 +171,17 @@ class WhodidMiddleware(MiddlewareMixin):
         obj_model = type(instance)
         obj_name = obj_model._meta.verbose_name.title()
 
+        new_value = str(instance)
+        related_model = getattr(instance, 'get_parent', False)
+        if related_model:
+            new_value = str(instance.get_parent())
+
         if new_object:
             field_change.append({'label': 'new', 'field_name': obj_name, 'previous_value': '',
-                                 'new_value': str(instance)})
+                                 'new_value': new_value})
         elif was_deleted:
             field_change.append({'label': 'deleted', 'field_name': obj_name,
-                                 'previous_value': str(instance), 'new_value': ''})
+                                 'previous_value': new_value, 'new_value': ''})
         else:
             # get previous attributes values of object
             obj = obj_model.objects.get(pk=instance.id)
@@ -214,6 +220,8 @@ class WhodidMiddleware(MiddlewareMixin):
                     if previous_value:
                         previous_value = previous_value.strftime("%d/%m/%Y")
                     if new_value:
+                        if isinstance(new_value, str):
+                            new_value = datetime.strptime(new_value, '%Y-%m-%d')
                         new_value = new_value.strftime("%d/%m/%Y")
 
                 if field_name not in exclude_log_fields and new_value != previous_value:
