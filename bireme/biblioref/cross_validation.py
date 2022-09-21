@@ -19,9 +19,10 @@ def check_url_or_page(form, formset_attachment):
     pages = form.cleaned_data.get(field_pages)
     status = form.cleaned_data.get('status')
     electronic_address = form.cleaned_data.get('electronic_address')
+    BIREME_reviewed = form.cleaned_data.get('BIREME_reviewed', False)
 
-    # only apply checks for status published
-    if status == 1:
+    # only apply checks for status published and not BIREME reviewed
+    if BIREME_reviewed == False and status == 1:
         # if not electronic_address field check for attachment files
         if not electronic_address:
             for form_attach in formset_attachment:
@@ -46,9 +47,10 @@ def check_url_or_attachment(form, formset_attachment):
     url_or_attachment = True
     status = form.cleaned_data.get('status')
     electronic_address = form.cleaned_data.get('electronic_address')
+    BIREME_reviewed = form.cleaned_data.get('BIREME_reviewed', False)
 
-    # only apply checks for status published
-    if status == 1:
+    # only apply checks for status published and not BIREME reviewed
+    if BIREME_reviewed == False and status == 1:
         # if not electronic_address field check for attachment files
         if not electronic_address:
             for form_attach in formset_attachment:
@@ -104,6 +106,7 @@ def check_for_publication(form, formsets, user_data):
 
     status = form.cleaned_data.get('status')
     user_role = user_data['service_role'].get('LILDBI')
+    BIREME_reviewed = form.cleaned_data.get('BIREME_reviewed', False)
 
     # for LILACS status and not Serie Source is required at least one primary descriptor
     if status == 1 and form.document_type != 'S':
@@ -120,5 +123,9 @@ def check_for_publication(form, formsets, user_data):
 
     if not valid_descriptor or not valid_url:
         valid = False
+
+    # for BIREME reviewed data force valid state
+    if BIREME_reviewed:
+        valid = True
 
     return valid

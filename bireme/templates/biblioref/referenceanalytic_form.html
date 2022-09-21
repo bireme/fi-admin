@@ -57,6 +57,8 @@
             <li><a href="#tab-attachment" data-toggle="tab"><i class="icon-globe"></i>  {% trans "Fulltext" %}{% if form|field_has_error:"electronic_address" or formset_attachment.errors and not formset_attachment.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
         {% endif %}
+        <li><a href="#tab-relatedresource" data-toggle="tab"><i class="icon-file"></i> {% trans "Related resources" %}{% if formset_relatedresource.errors and not formset_relatedresource.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+        <li><a href="#tab-researchdata" data-toggle="tab"><i class="icon-share"></i> {% trans "Rearch data" %}{% if formset_researchdata.errors and not formset_researchdata.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
     </ul>
 
     <form method="POST" enctype="multipart/form-data" class="reference-form">
@@ -243,6 +245,12 @@
             <!-- COMPLEMENT (PROJECT / EVENT) -->
             {% include "biblioref/fieldset_complement.html" %}
 
+            <!-- RESEARCH DATA -->
+            {% include "biblioref/fieldset_researchdata.html" %}
+
+            <!-- RELATED RESOURCES -->
+            {% include "biblioref/fieldset_relatedresources.html" %}
+
         </div>
 
         <div class="control-panel form-submit">
@@ -401,6 +409,26 @@
                     prefix: '{{ formset_attachment.prefix }}'
             });
 
+            $('.researchdata-row').formset({
+                    addText : '{% trans "Add research data" %}',
+                    deleteText: '{% trans "delete" %}<i class="icon-trash"></i>',
+                    addCssClass : 'icon-plus-sign btn btn-large btn-inverse',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'researchdata_formset',
+                    prefix: '{{ formset_researchdata.prefix }}'
+            });
+
+            $('.relatedresource-row').formset({
+                    addText : '{% trans "Add resource" %}',
+                    deleteText: '{% trans "delete" %}<i class="icon-trash"></i>',
+                    addCssClass : 'icon-plus-sign btn btn-large btn-inverse',
+                    deleteCssClass : 'btn',
+                    keepFieldValues: '.keep-field-value',
+                    formCssClass: 'relatedresource_formset',
+                    prefix: '{{ formset_relatedresource.prefix }}'
+            });
+
             var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
             var eventer = window[eventMethod];
             var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
@@ -487,30 +515,52 @@
 
             // consult list of indexed databases from TITLE
             var check_title = '{{reference_source.title_serial}}';
-            $.ajax({
-                url : "/title/ajax/get_indexcodes/?title=" + check_title,
-                dataType: "json",
-                success : function (data) {
-                    if (data.length > 0){
-                        var index_db_list = []
-                        for (var i = 0; i < data.length; i++) {
-                            var index_db = data[i]['index_db'];
-                            index_db_list.push(index_db);
-                            // for new records select indexed database from title
-                            {% if not object.pk %}
-                                $('#id_indexed_database option:contains(' + index_db + ')').each(function(){
-                                    if ($(this).text() == index_db) {
-                                        $(this).attr('selected', 'selected');
-                                    }
-                                });
-                            {% endif %}
+            if (check_title != ''){
+                $.ajax({
+                    url : "/title/ajax/get_indexcodes/?title=" + check_title,
+                    dataType: "json",
+                    success : function (data) {
+                        if (data && data.length > 0){
+                            var index_db_list = []
+                            for (var i = 0; i < data.length; i++) {
+                                var index_db = data[i]['index_db'];
+                                index_db_list.push(index_db);
+                                // for new records select indexed database from title
+                                {% if not object.pk %}
+                                    $('#id_indexed_database option:contains(' + index_db + ')').each(function(){
+                                        if ($(this).text() == index_db) {
+                                            $(this).attr('selected', 'selected');
+                                        }
+                                    });
+                                {% endif %}
+                            }
+                            $('#id_indexed_database').multipleSelect('refreshOptions', {})
+                            $('#indexed_database_list').html(index_db_list.join(', '));
+                            $('#indexed_database_info').show();
                         }
-                        $('#id_indexed_database').multipleSelect('refreshOptions', {})
-                        $('#indexed_database_list').html(index_db_list.join(', '));
-                        $('#indexed_database_info').show();
                     }
-                }
-            });
+                });
+            }
+
+            {% if object.id %}
+                // execute a search for linked resource on the first click on the related resource tab
+                $( "#tab a[href='#tab-relatedresource']" ).one( "click", function( event, ui ) {
+                    // check for passive linked resources
+                    $.ajax({
+                        url : "/related/ajax/get_passive_relations/biblio-{{object.id}}",
+                        dataType: "json",
+                        success : function (data) {
+                            if (data && data.length > 0){
+                                $("#passive-linked-resources").show();
+                                for (var i = 0; i < data.length; i++) {
+                                    //console.log(data[i]);
+                                    $("#passive-linked-resources>ul").append("<li><strong>" + data[i].relation_type + "</strong> " + data[i].title + "</li>");
+                                }
+                            }
+                        }
+                    });
+                })
+            {% endif %}
 
         });
 

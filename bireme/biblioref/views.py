@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.db.models.functions import Substr
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
 from utils.context_processors import additional_user_info
@@ -21,8 +21,10 @@ from classification.models import Collection
 from help.models import get_help_fields
 from utils.views import LoginRequiredView
 
+
 from biblioref.field_definitions import FIELDS_BY_DOCUMENT_TYPE
 from biblioref.cross_validation import check_for_publication
+from biblioref.search_indexes import *
 from biblioref.forms import *
 
 import json
@@ -40,7 +42,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
     search_field = "reference_title"
 
     def dispatch(self, *args, **kwargs):
-        self.request.session["filtered_list"] = self.request.get_full_path()
+        # save url with filters in session to redirect when user done
+        if self.view_name != 'select_related_reference':
+            self.request.session["filtered_list"] = self.request.get_full_path()
         return super(BiblioRefGenericListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
@@ -58,11 +62,8 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         for key in settings.ACTIONS.keys():
             self.actions[key] = self.request.GET.get(key, settings.ACTIONS[key])
 
-        if settings.FULLTEXT_SEARCH:
-            search_field = self.search_field + '__search'
-        else:
-            search_field = self.search_field + '__icontains'
-
+        lookup_method = '__search' if settings.FULLTEXT_SEARCH else '__icontains'
+        search_field = self.search_field + lookup_method
 
         # check if user has perform a search
         search = self.actions['s']
@@ -94,7 +95,6 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
                 object_list = self.model.objects.filter(source_id=source_id)
             else:
                 object_list = self.model.objects.all()
-
 
         # get user filter values
         filter_status = self.actions.get('filter_status')
@@ -144,6 +144,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # if not at main reference list and source or document_type remove filter by user
         if model_name != 'Reference' and (source_id or document_type):
+            filter_owner = '*'
+
+        if self.view_name == 'select_related_reference':
             filter_owner = '*'
 
         # profile lilacs express editor - restrict by CC code when list sources
@@ -258,6 +261,15 @@ class BiblioRefListView(BiblioRefGenericListView, ListView):
     view_name = 'list_biblioref'
 
 
+class BiblioRefSelectView(BiblioRefGenericListView, ListView):
+    """
+    Extend BiblioRefSelectView to list bibliographic records
+    """
+    model = Reference
+    view_name = 'select_related_reference'
+    template_name = 'biblioref/select_related_reference.html'
+
+
 class BiblioRefListSourceView(BiblioRefGenericListView, ListView):
     """
     Extend BiblioRefGenericListView to list bibliographic records
@@ -286,6 +298,8 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_attachment = AttachmentFormSet(self.request.POST, self.request.FILES, instance=self.object)
         formset_library = LibraryFormSet(self.request.POST, instance=self.object)
         formset_complement = ComplementFormSet(self.request.POST, instance=self.object)
+        formset_researchdata = ResearchDataFormSet(self.request.POST, instance=self.object)
+        formset_relatedresource = RelatedResourceFormSet(self.request.POST, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
@@ -303,6 +317,8 @@ class BiblioRefUpdate(LoginRequiredView):
         formset_attachment_valid = formset_attachment.is_valid()
         formset_library_valid = formset_library.is_valid()
         formset_complement_valid = formset_complement.is_valid()
+        formset_researchdata_valid = formset_researchdata.is_valid()
+        formset_relatedresource_valid = formset_relatedresource.is_valid()
 
         user_data = additional_user_info(self.request)
         # run cross formsets validations
@@ -310,7 +326,8 @@ class BiblioRefUpdate(LoginRequiredView):
                                                              'attachment': formset_attachment}, user_data)
 
         if (form_valid and formset_descriptor_valid and formset_attachment_valid and
-           formset_complement_valid and valid_for_publication):
+           formset_complement_valid and valid_for_publication and formset_researchdata_valid and
+           formset_relatedresource_valid):
 
                 self.object = form.save()
 
@@ -345,12 +362,20 @@ class BiblioRefUpdate(LoginRequiredView):
                 formset_complement.instance = self.object
                 formset_complement.save()
 
-                # save many-to-many relation fields
-                form.save_m2m()
-                # update solr index
+                formset_researchdata.instance = self.object
+                formset_researchdata.save()
+
+                formset_relatedresource.instance = self.object
+                formset_relatedresource.save()
+
+                # save object
                 form.save()
+                # save many-to-many fields (required because form.save in forms.py use commit=False)
+                form.save_m2m()
                 # update DeDup service
                 update_dedup_service(self.object)
+                # update search index
+                update_search_index(self.object)
 
                 # if record is a serial source update analytics auxiliary field reference_title
                 if self.object.literature_type == 'S' and not hasattr(self.object, 'source'):
@@ -374,6 +399,8 @@ class BiblioRefUpdate(LoginRequiredView):
                                                  formset_attachment=formset_attachment,
                                                  formset_library=formset_library,
                                                  formset_complement=formset_complement,
+                                                 formset_researchdata=formset_researchdata,
+                                                 formset_relatedresource=formset_relatedresource,
                                                  valid_for_publication=valid_for_publication))
 
     def form_invalid(self, form):
@@ -478,6 +505,8 @@ class BiblioRefUpdate(LoginRequiredView):
             context['formset_library'] = LibraryFormSet(instance=self.object,
                                                         queryset=ReferenceLocal.objects.filter(cooperative_center_code=user_data['user_cc']))
             context['formset_complement'] = ComplementFormSet(instance=self.object)
+            context['formset_researchdata'] = ResearchDataFormSet(instance=self.object)
+            context['formset_relatedresource'] = RelatedResourceFormSet(instance=self.object)
 
         # source/analytic edition
         if self.object:
@@ -604,13 +633,20 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
     model = Reference
     success_url = reverse_lazy('list_biblioref')
 
-    def get_object(self, queryset=None):
-        obj = super(BiblioRefDeleteView, self).get_object()
-        """ Hook to ensure object is owned by request.user. """
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+
+        # not allow delete of record created by another user
         if not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)
 
-        return obj
+        # not allow delete of source with analytics
+        if not hasattr(obj, 'source'):
+            exist_analytic = ReferenceAnalytic.objects.filter(source=obj.pk).exists()
+            if exist_analytic:
+                return render(self.request, 'biblioref/delete_analytics_first.html', {'title': obj, 'source_id': obj.pk})
+
+        return super(BiblioRefDeleteView, self).dispatch(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         obj = super(BiblioRefDeleteView, self).get_object()
@@ -810,5 +846,18 @@ def update_reference_tite(source):
             analytic.reference_title = u"{0} | {1}".format(source.reference_title, analytic_title)
             # update only specific fields to avoid mess up json fields (escape)
             analytic.save(update_fields=['reference_title', 'updated_time', 'updated_by'])
+        except:
+            pass
+
+# update search index
+def update_search_index(reference):
+    if reference.status != -1:
+        if hasattr(reference, 'source'):
+            index = ReferenceAnalyticIndex()
+        else:
+            index = RefereceSourceIndex()
+
+        try:
+            index.update_object(reference)
         except:
             pass

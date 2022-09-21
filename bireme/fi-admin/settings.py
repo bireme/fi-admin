@@ -199,6 +199,7 @@ INSTALLED_APPS = [
     'database',
     'classification',
     'thesaurus',
+    'related',
 ]
 
 # A sample logging configuration. The only tangible logging
@@ -309,7 +310,7 @@ DECS_HIGHLIGHTER_URL = os.environ.get("DECS_HIGHLIGHTER_URL")
 RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY")
 GOOGLE_MAPS_APIKEY = os.environ.get("GOOGLE_MAPS_APIKEY")
 
-FULLTEXT_SEARCH = os.environ.get("FULLTEXT_SEARCH")
+FULLTEXT_SEARCH = True if os.environ.get("FULLTEXT_SEARCH") == 'True' else False
 
 # don't registry changes at specific fields on audit log (ex. control fields)
 EXCLUDE_AUDITLOG_FIELDS = ('content_type', 'object_id', 'reference_title',
@@ -347,12 +348,14 @@ ACTIONS = {
     'results_per_page': "",
 }
 
-ELASTIC_APM = {
-  'SERVICE_NAME': os.environ.get("ELASTIC_APM_SERVICE_NAME"),
-  'SECRET_TOKEN': os.environ.get("ELASTIC_APM_SECRET_TOKEN"),
-  'SERVER_URL': os.environ.get("ELASTIC_APM_SERVER_URL"),
-  'ENVIRONMENT': os.environ.get("ELASTIC_APM_ENVIRONMENT"),
-}
+ELASTIC_APM_ENABLED = True if os.environ.get("ELASTIC_APM_ENABLED") == 'True' else False
+
+if ELASTIC_APM_ENABLED:
+    ELASTIC_APM = {
+        'SERVICE_NAME': os.environ.get("ELASTIC_APM_SERVICE_NAME"),
+        'SECRET_TOKEN': os.environ.get("ELASTIC_APM_SECRET_TOKEN"),
+        'SERVER_URL': os.environ.get("ELASTIC_APM_SERVER_URL"),
+    }
 
 MAINTENANCE_MODE = int(os.environ.get("MAINTENANCE_MODE", 0))
 

@@ -47,23 +47,20 @@ class IdentifierQualif(Generic, AuditLog):
 
     def __str__(self):
         lang_code = get_language()
-
-        concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=self.id).values('id')
+        concepts_of_register = IdentifierConceptListQualif.objects.filter(identifier_id=self.id).values('id').first()
         if concepts_of_register:
-            id_concept = concepts_of_register[0].get('id')
+            id_concept = concepts_of_register.get('id')
             # Verify if exist term with published status
-            has_term = TermListQualif.objects.filter(identifier_concept_id=id_concept, status='1', concept_preferred_term='Y', record_preferred_term='Y', )
+            has_term = TermListQualif.objects.filter(identifier_concept_id=id_concept, status='1', concept_preferred_term='Y', record_preferred_term='Y')
             if len(has_term) > 0:
-                # Verifý if exist tradution for the interface choiced
-                translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, status='1', language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y', )
+                # Verify if exist tradution for the interface choiced
+                translation = TermListQualif.objects.filter(identifier_concept_id=id_concept, status='1', language_code=lang_code, concept_preferred_term='Y', record_preferred_term='Y').first()
                 if translation:
-                    # treatment1 = translation[0].term_string.replace('/','').upper()
-                    treatment1 = translation[0].term_string.replace('/','')
-                    # return '%s%s%s' % (self.abbreviation,' - ',treatment1)
-                    return '%s%s%s%s' % (treatment1,' (',self.abbreviation,')')
+                    treatment = translation.term_string.replace('/','')
+                    return '%s%s%s%s' % (treatment,' (',self.abbreviation,')')
                 else:
                     return '%s%s%s' % ('Description without translation (',self.abbreviation,')')
-            return '%s' % ''
+            return '%s' % (self.id)
         else:
             return '%s' % (self.id)
 

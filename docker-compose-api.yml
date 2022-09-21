@@ -8,14 +8,13 @@ services:
       context: .
       target: prod
     image: ${IMAGE_TAG}
-    expose:
-      - 8000
     volumes:
       - ${LOG_PATH}:/logs
       - static_files:/app/static_files
+      - gunisock:/tmp
     env_file:
       - ./conf/app-env-api
-    command: gunicorn --bind 0.0.0.0:8000 fi-admin.wsgi ${GUNICORN_PARAMS}
+    command: gunicorn --bind unix:/tmp/gunicorn.sock fi-admin.wsgi ${GUNICORN_PARAMS}
     networks:
       - nginx-proxy
     deploy:
@@ -34,6 +33,7 @@ services:
     volumes:
       - ./conf/nginx/api:/etc/nginx/conf.d
       - static_files:/app/static_files
+      - gunisock:/tmp
     depends_on:
       - fi_admin_api
     environment:
@@ -54,3 +54,4 @@ networks:
 
 volumes:
   static_files:
+  gunisock:

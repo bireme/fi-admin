@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _, get_language
 from django.utils.translation import ugettext as __
 from django.utils.text import format_lazy
 from django.forms import inlineformset_factory
+from django.forms.utils import ErrorDict
 from  django.contrib.contenttypes.forms import generic_inlineformset_factory
 
 from django.forms import widgets
@@ -18,6 +19,7 @@ from title.models import Title, IndexRange
 from utils.models import AuxCode
 from attachments.models import Attachment
 from database.models import Database
+from related.models import LinkedResearchData, LinkedResource
 
 from biblioref.models import *
 
@@ -87,49 +89,6 @@ class BiblioRefForm(BetterModelForm):
             self.fields['publisher'].widget = widgets.HiddenInput()
             self.fields['isbn'].widget = widgets.HiddenInput()
 
-        '''
-        # load serial titles for serial analytic
-        if self.document_type == 'S' and not self.reference_source:
-            title_objects = Title.objects.all()
-
-            # populate choice title list based on user profile
-            if self.user_role == 'editor_llxp':
-                # for LILACS Express editor return only serials with same editor_cc_code of current user
-                titles_from_this_editor = title_objects.filter(editor_cc_code=self.user_data['user_cc']).exclude(indexer_cc_code='')
-                titles_from_this_editor = titles_from_this_editor.order_by('shortened_title')
-                title_list = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_from_this_editor]
-            else:
-                # for regular users return a title list splited in two parts:
-                # 1- journals that is indexed by the user center code using index range relation model
-                cc_code = self.user_data['user_cc']
-                titles_indexed_by_this_cc = title_objects.filter(indexrange__indexer_cc_code=cc_code).order_by('shortened_title').distinct()
-
-                # 2- titles that has indexed by other centers
-                # -exclude titles that has not records in indexrange and then exclude titles from the current cc (alread listed in titles_indexed_by_this_cc)
-                titles_indexed_by_others = title_objects.exclude(indexrange__isnull=True).exclude(indexrange__indexer_cc_code=cc_code)
-                # -filter by titles thas has at least one indexer_cc_code (diff from empty string)
-                titles_indexed_by_others = titles_indexed_by_others.filter(indexrange__indexer_cc_code__gt='').distinct()
-                # -sort by short title
-                titles_indexed_by_others = titles_indexed_by_others.order_by('shortened_title')
-
-                title_list = []
-                title_list_indexer_code = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_indexed_by_this_cc]
-                title_list_other = [(t.shortened_title, "%s|%s" % (t.shortened_title, t.issn)) for t in titles_indexed_by_others]
-
-                separator = u' ────────── '
-                label_indexed = separator + __('Indexed by your cooperative center') + separator
-                label_not_indexed = separator + __('Indexed by other cooperative centers') + separator
-
-                if title_list_indexer_code:
-                    title_list.extend([('', label_indexed)])
-                    title_list.extend(title_list_indexer_code)
-                    title_list.extend([('', '')])
-                title_list.extend([('', label_not_indexed)])
-                title_list.extend(title_list_other)
-
-            self.fields['title_serial'] = forms.ChoiceField(choices=title_list, required=False)
-            self.fields['title_serial_other'] = forms.CharField(required=False)
-        '''
 
         if 'publication_country' in self.fields:
             # divide list of countries in Latin America & Caribbean and Others
@@ -228,15 +187,13 @@ class BiblioRefForm(BetterModelForm):
 
     def check_author_presence(self, data, field_individual, field_corporate):
         # check presence of individual and corporate author
-        if data.get(field_individual) and data.get(field_corporate):
-            self.add_error(field_individual, _("Individual Author and Corporate Autor present simultaneous"))
-        else:
-            if not data.get(field_individual) and not data.get(field_corporate):
-                self.add_error(field_individual, _("Individual Author or Corporate Author mandatory"))
+        if not data.get(field_individual) and not data.get(field_corporate):
+            self.add_error(field_individual, _("Individual Author or Corporate Author mandatory"))
 
     def clean(self):
         data = self.cleaned_data
         status = self.cleaned_data.get('status')
+        BIREME_reviewed = data.get('BIREME_reviewed', False)
         error_messages = []
 
         # only apply checks when status is published
@@ -271,6 +228,11 @@ class BiblioRefForm(BetterModelForm):
                 lilacs_validation_flag = self.cleaned_data.get('LILACS_indexed')
                 if not lilacs_validation_flag:
                     self.add_error('LILACS_indexed', _("Required when indexed in LILACS database"))
+
+        # for BIREME reviewed record force the clean of all previous errors to allow save inconplete legacy records
+        if BIREME_reviewed:
+            self._errors = ErrorDict()
+
 
         # Always return the full collection of cleaned data.
         return data
@@ -1041,6 +1003,23 @@ class DescriptorForm(forms.ModelForm):
         obj.status = 1
         obj.save()
 
+
+class ResearchDataForm(forms.ModelForm):
+    class Meta:
+        model = LinkedResearchData
+        fields = '__all__'
+
+
+class RelatedResourceForm(forms.ModelForm):
+    class Meta:
+        model = LinkedResource
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(RelatedResourceForm, self).__init__(*args, **kwargs)
+        self.fields['type'].queryset = self.fields['type'].queryset.order_by('order')
+
+
 # definition of inline formsets
 DescriptorFormSet = generic_inlineformset_factory(
     Descriptor,
@@ -1059,3 +1038,10 @@ LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal, form=LibraryFo
 
 ComplementFormSet = inlineformset_factory(Reference, ReferenceComplement, form=ComplementForm, extra=1,
                                           max_num=1, can_delete=False)
+
+
+ResearchDataFormSet = generic_inlineformset_factory(LinkedResearchData, form=ResearchDataForm, extra=1,
+                                                    can_delete=True)
+
+RelatedResourceFormSet = generic_inlineformset_factory(LinkedResource, form=RelatedResourceForm, extra=1,
+                                                       can_delete=True)

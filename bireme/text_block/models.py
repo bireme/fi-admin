@@ -14,6 +14,7 @@ class TextBlock(models.Model):
     order = models.SmallIntegerField(_("Order"), blank=True, null=True)
     user_profile = models.CharField(_("User profile"), max_length=30, choices=choices.USER_PROFILES, blank=True)
     language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
+    display = models.BooleanField(_("Display"), default=True)
     content = HTMLField(_("Content"))
 
     def get_title(self):

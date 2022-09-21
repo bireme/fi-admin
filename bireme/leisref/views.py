@@ -19,6 +19,7 @@ from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 from datetime import datetime
 
 from leisref.forms import *
+from leisref.search_indexes import *
 
 import json
 
@@ -220,8 +221,10 @@ class LeisRefUpdate(LoginRequiredView):
 
                 # save many-to-many relation fields
                 form.save_m2m()
-                # update solr index
+                # update object
                 form.save()
+                # update solr index
+                update_search_index(self.object)
 
                 return HttpResponseRedirect(self.get_success_url())
         else:
@@ -893,3 +896,13 @@ class ActCollectionDeleteView(LoginRequiredView, DeleteView):
         if not self.request.user.is_superuser or not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)
         return obj
+
+# update search index
+def update_search_index(act):
+    if act.status != -1:
+        index = LeisRefIndex()
+
+        try:
+            index.update_object(act)
+        except:
+            pass

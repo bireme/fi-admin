@@ -58,6 +58,9 @@ else:
         # Classification
         re_path(r'^classification/', include('classification.urls')),
 
+        # LinkedResources
+        re_path(r'^related/', include('related.urls')),
+
         # APIs
         re_path(r'^api/', include('api.urls')),
 

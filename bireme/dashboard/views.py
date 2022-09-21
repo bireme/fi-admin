@@ -29,7 +29,7 @@ def widgets(request):
     institution_id = ''
 
     # retrive text blocks
-    text_blocks = TextBlock.objects.filter(slot='dashboard', user_profile__in=user_roles).order_by('order')
+    text_blocks = TextBlock.objects.filter(slot='dashboard', user_profile__in=user_roles, display=True).order_by('order')
 
     if 'DirIns' in user_data['service_role']:
         try:

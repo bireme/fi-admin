@@ -317,18 +317,13 @@ def validate_recaptcha (private_key, recaptcha_response, remoteip):
     if not (recaptcha_response):
         return {'is_valid': False, 'error_code': 'incorrect-captcha-sol'}
 
-    def encode_if_necessary(s):
-        if isinstance(s, unicode):
-            return s.encode('utf-8')
-        return s
+    params = urllib.parse.urlencode ({
+                'secret': private_key,
+                'remoteip': remoteip,
+                'response' : recaptcha_response
+            }).encode('utf-8')
 
-    params = urllib.urlencode ({
-                'secret': encode_if_necessary(private_key),
-                'remoteip': encode_if_necessary(remoteip),
-                'response' : encode_if_necessary(recaptcha_response)
-            })
-
-    request = urllib.Request (
+    request = urllib.request.Request (
         url = "https://www.google.com/recaptcha/api/siteverify",
         data = params,
         headers = {
@@ -337,7 +332,7 @@ def validate_recaptcha (private_key, recaptcha_response, remoteip):
           }
         )
 
-    httpresp = urllib.urlopen(request)
+    httpresp = urllib.request.urlopen(request)
     try:
         res = httpresp.read()
         return_values = json.loads(res)

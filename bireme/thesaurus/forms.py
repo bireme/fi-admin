@@ -8,6 +8,7 @@ from thesaurus.models_qualifiers import *
 from thesaurus.models_descriptors import *
 
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 from django.forms import widgets
 from django import forms
@@ -18,6 +19,7 @@ from django.core.exceptions import ValidationError
 from django.core.exceptions import NON_FIELD_ERRORS
 
 import requests
+
 
 class ThesaurusForm(forms.ModelForm):
     class Meta:
@@ -44,7 +46,6 @@ class IdentifierQualifForm(forms.ModelForm):
         upper_data = data.upper()
         data = upper_data
         return data
-
 
 class DescriptionQualifForm(forms.ModelForm):
     class Meta:
@@ -113,9 +114,18 @@ class TreeNumbersListQualifForm(forms.ModelForm):
 
         return data
 
-
 # Concept + Term - Form2
 class IdentifierConceptListQualifForm(forms.ModelForm):
+    def save(self, *args, **kwargs):
+        obj = super(IdentifierConceptListQualifForm, self).save(commit=False)
+        concept = IdentifierConceptListQualif.objects.filter(id=obj.id).values('identifier_id').first()
+        if concept:
+            qualifier = IdentifierQualif.objects.filter(id=concept.get('identifier_id'))
+            if qualifier:
+                qualifier.update(updated_time=timezone.now())
+        obj.save()
+        return obj
+
     class Meta:
         model = IdentifierConceptListQualif
         fields = '__all__'
@@ -141,22 +151,29 @@ class TermListQualifForm(forms.ModelForm):
 
 # Processos a parte
 class TermListQualifUniqueForm(forms.ModelForm):
-    class Meta:
-        model = TermListQualif
-        exclude = ('identifier',)
-
     date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date created"), required=False)
     date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date altered"), required=False)
 
+    def save(self, *args, **kwargs):
+        obj = super(TermListQualifUniqueForm, self).save(commit=False)
+        concept = IdentifierConceptListQualif.objects.filter(id=obj.identifier_concept_id).values('identifier_id').first()
+        if concept:
+            qualifier = IdentifierQualif.objects.filter(id=concept.get('identifier_id'))
+            if qualifier:
+                qualifier.update(updated_time=timezone.now())
+        obj.save()
+        return obj
+
+    class Meta:
+        model = TermListQualif
+        exclude = ('identifier',)
 
 class legacyInformationQualifForm(forms.ModelForm):
     class Meta:
         model = legacyInformationQualif
         exclude = ('identifier',)
-
-
 
 # Descriptor ------------------------------------------------------------------
 
@@ -177,7 +194,7 @@ class IdentifierDescForm(forms.ModelForm):
     # Utilizado para pre filtrar abbreviation com registros especificos do tesauro escolhido
     def __init__(self, *args, **kwargs):
         self.ths = kwargs.pop('ths', None)
-        
+
         super(IdentifierDescForm, self).__init__(*args, **kwargs)
         self.fields['abbreviation'].queryset = IdentifierQualif.objects.filter(thesaurus=self.ths)
 
@@ -298,11 +315,18 @@ class EntryCombinationListDescForm(forms.ModelForm):
             }
         }
 
-
-
-
 # Concept + Term - Form2
 class IdentifierConceptListDescForm(forms.ModelForm):
+    def save(self, *args, **kwargs):
+        obj = super(IdentifierConceptListDescForm, self).save(commit=False)
+        concept = IdentifierConceptListDesc.objects.filter(id=obj.id).values('identifier_id').first()
+        if concept:
+            descriptor = IdentifierDesc.objects.filter(id=concept.get('identifier_id'))
+            if descriptor:
+                descriptor.update(updated_time=timezone.now())
+        obj.save()
+        return obj
+
     class Meta:
         model = IdentifierConceptListDesc
         fields = '__all__'
@@ -312,6 +336,7 @@ class ConceptListDescForm(forms.ModelForm):
         max_length = 5000,
         widget = forms.Textarea
     )
+
     class Meta:
         Model = ConceptListDesc
         fields = '__all__'
@@ -326,36 +351,36 @@ class TermListDescForm(forms.ModelForm):
         Model = TermListDesc
         fields = '__all__'
 
-
-
-
 # Processos a parte
 class TermListDescUniqueForm(forms.ModelForm):
-    class Meta:
-        model = TermListDesc
-        exclude = ('identifier',)
-
     date_created = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date created"), required=False)
     date_altered = forms.DateField(widget=forms.DateInput(format = '%d/%m/%Y'),
                                     input_formats=('%d/%m/%Y',), help_text='DD/MM/YYYY', label=_("Date altered"), required=False)
+
+    def save(self, *args, **kwargs):
+        obj = super(TermListDescUniqueForm, self).save(commit=False)
+        concept = IdentifierConceptListDesc.objects.filter(id=obj.identifier_concept_id).values('identifier_id').first()
+        if concept:
+            descriptor = IdentifierDesc.objects.filter(id=concept.get('identifier_id'))
+            if descriptor:
+                descriptor.update(updated_time=timezone.now())
+        obj.save()
+        return obj
+
+    class Meta:
+        model = TermListDesc
+        exclude = ('identifier',)
 
 class TheraurusOccurrenceListDescForm(forms.ModelForm):
     class Meta:
         model = TheraurusOccurrenceListDesc
         fields = '__all__'
 
-
-
-
-
 class legacyInformationDescForm(forms.ModelForm):
     class Meta:
         model = legacyInformationDesc
         exclude = ('identifier',)
-
-
-
 
 # FormSets
 # Descriptor ------------------------------------------------------------------

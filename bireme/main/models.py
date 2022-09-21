@@ -221,6 +221,56 @@ class Keyword(Generic, AuditLog):
         return str(self.text)
 
 
+# Auxiliar model for licenses (creative commons, etc)
+class License(Generic):
+
+    class Meta:
+        verbose_name = _("License")
+        verbose_name_plural = _("Licenses")
+
+    acronym = models.CharField(_("Acronym"), max_length=25, blank=True)
+    language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
+    name = models.CharField(_("Name"), max_length=75)
+    description = models.TextField(_("Description"), blank=True)
+    order = models.PositiveSmallIntegerField(_("Order"), blank=True, null=True)
+
+    def get_translations(self):
+        translation_list = ["%s^%s" % (self.language, self.name.strip())]
+        translation = LicenseLocal.objects.filter(license=self.id)
+        if translation:
+            other_languages = ["%s^%s" % (trans.language, trans.name.strip()) for trans in translation]
+            translation_list.extend(other_languages)
+
+        return translation_list
+
+    def __str__(self):
+        lang_code = get_language()
+        cache_id = "license-{}-{}".format(lang_code, self.id)
+        license_name_local = cache.get(cache_id)
+        if not license_name_local:
+            translation = LicenseLocal.objects.filter(license=self.id, language=lang_code)
+            if translation:
+                license_name_local = translation[0].name
+            else:
+                license_name_local = self.name
+
+            cache.set(cache_id, license_name_local, None)
+
+        return license_name_local
+
+
+class LicenseLocal(models.Model):
+
+    class Meta:
+        verbose_name = _("Translation")
+        verbose_name_plural = _("Translations")
+
+    license = models.ForeignKey(License, verbose_name=_("License"), on_delete=models.CASCADE)
+    language = models.CharField(_("Language"), max_length=10, choices=choices.LANGUAGES_CHOICES)
+    name = models.CharField(_("Name"), max_length=75)
+    description = models.TextField(_("Description"), blank=True)
+
+
 # Main table
 class Resource(Generic, AuditLog):
 

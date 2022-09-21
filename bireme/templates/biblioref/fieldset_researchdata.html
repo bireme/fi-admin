@@ -1,0 +1,56 @@
+{% load app_filters %}
+{% load i18n %}
+
+<div id='tab-researchdata' class="tab-pane">
+    {% for error in formset_researchdata.non_form_errors  %}
+        <p class="errorlist alert alert-error">
+            {{ error|escape }}
+        </p>
+    {% endfor %}
+
+    <fieldset class="{{ fieldset.classes }} accordion-body metadata" id="researchdata">
+        {{ formset_researchdata.management_form }}
+
+        {% for form in formset_researchdata %}
+            {% for hidden in form.hidden_fields %}
+                {% if not hidden.field|fieldtype == 'JSONField' %}
+                    {{ hidden }}
+                {% endif %}
+            {% endfor %}
+            <div id="researchdata-{{ forloop.counter0 }}" class="researchdata researchdata-row{% if form.errors %} error{% endif %} formset-row">
+                <table class="table table-condensed table-striped span10">
+                    <tr>
+                        <td>
+
+                            {% for field in form.visible_fields %}
+
+                                <label for="{{ field.auto_id }}">
+                                    {% if field.name in help_fields %}
+                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/multimedia/{{field.name}}/" class="field_with_help">
+                                    {% endif %}
+                                    {% if field.field.required %}
+                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                    {% else %}
+                                        {{ field.label }}
+                                    {% endif %}
+                                    {% if field.name in help_fields %}
+                                        </a>
+                                    {% endif %}
+                                </label>
+                                <p class="muted">{{ field.help_text }}</p>
+                                {{ field.errors }}
+                                {{ field }}
+
+                            {% endfor %}
+
+                        </td>
+                        <td>
+                            <div>{% if form.instance.pk %}{{ form.DELETE }}{% endif %}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        {% endfor %}
+    </fieldset>
+</div>

@@ -32,8 +32,8 @@ class LeisrefResource(ModelResource):
         include_resource_uri = False
         max_limit = settings.MAX_EXPORT_API_LIMIT
 
-    def build_filters(self, filters=None):
-        orm_filters = super(LeisrefResource, self).build_filters(filters)
+    def build_filters(self, filters=None, *args, **kwargs):
+        orm_filters = super(LeisrefResource, self).build_filters(filters, *args, **kwargs)
 
         if 'collection' in filters:
             filter_col_id = filters['collection']

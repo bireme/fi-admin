@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load app_filters %}
+
+{% block top %}{% endblock %}
+
+{% block title %}{% trans "Bibliographic Records" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb_wrap %}{% endblock %}
+
+{% block content %}
+<form name="actions">
+    <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+    <input type="hidden" name="orderby" value="{{ actions.orderby }}">
+    <input type="hidden" name="order" value="{{ actions.order }}">
+    <input type="hidden" name="page" value="{{ actions.page }}">
+    <input type='hidden' name="s"  value="{{ actions.s }}">
+</form>
+
+
+<div class="row">
+    <div class="span12">
+        <div class="input-append">
+            <form name="search" onSubmit="return search();" class="form-inline">
+                <input type="hidden" name="page" value="">
+                <input type="hidden" name="filter_owner" value="{{ actions.filter_owner }}">
+                <p>
+                    <input type='text' name="s"  value="{{ actions.s }}" placeholder="{% trans "Search" %}" class="input-xxlarge">
+                    <button class="btn" type="submit"><i class='icon-search'></i></button>
+                </p>
+                {% trans "Record type" %}:
+                <select name="document_type" class="input-mediuml">
+                    {% if actions.filter_owner == 'indexed' %}
+                        <option value="S" {% if actions.document_type == 'S' %}selected="true"{% endif %}>{% trans "Journals - Fascicle" %}</option>
+                        <option value="Sas" {% if actions.document_type == 'Sas' %}selected="true"{% endif %}>{% trans "Journals - Article" %}</option>
+                    {% else %}
+                        <option value="">{% trans "All" %}</option>
+                        <option value="S" {% if actions.document_type == 'S' %}selected="true"{% endif %}>{% trans "Journals - Fascicle" %}</option>
+                        <option value="Sas" {% if actions.document_type == 'Sas' %}selected="true"{% endif %}>{% trans "Journals - Article" %}</option>
+                        <option value="Mm" {% if actions.document_type == 'Mm' %}selected="true"{% endif %}>{% trans "Book" %}</option>
+                        <option value="Tm" {% if actions.document_type == 'Tm' %}selected="true"{% endif %}>{% trans "Thesis, Dissertation and Monography" %}</option>
+                        <option value="Mmc" {% if actions.document_type == 'Mmc' %}selected="true"{% endif %}>{% trans "Monograph in a Collection" %}</option>
+                        <option value="Mc" {% if actions.document_type == 'Mc' %}selected="true"{% endif %}>{% trans "Collection of Monographs" %}</option>
+                        <option value="MSms" {% if actions.document_type == 'MSms' %}selected="true"{% endif %}>{% trans "Monograph Series" %}</option>
+                        <option value="Nm" {% if actions.document_type == 'Nm' %}selected="true"{% endif %}>{% trans "Non conventional" %}</option>
+                        <option value="TSms" {% if actions.document_type == 'TSms' %}selected="true"{% endif %}>{% trans "Thesis/Dissertation appearing as a Monograph Series" %}</option>
+                    {% endif %}
+                </select>
+
+                {% trans "Status" %}:
+                <select name="filter_status" class="input-medium">
+                    <option value="*">{% trans "All" %}</option>
+                    <option value="-3" {% if actions.filter_status == '-3' %}selected="true"{% endif %}>{% trans "Migration" %}</option>
+                    <option value="-1" {% if actions.filter_status == '-1' %}selected="true"{% endif %}>{% trans "Draft" %}</option>
+                    <option value="0" {% if actions.filter_status == '0' %}selected="true"{% endif %}>{% trans "LILACS-Express" %}</option>
+                    <option value="1" {% if actions.filter_status == '1' %}selected="true"{% endif %}>{% trans "Published" %}</option>
+                    <option value="2" {% if actions.filter_status == '2' %}selected="true"{% endif %}>{% trans "Refused" %}</option>
+                    <option value="3" {% if actions.filter_status == '3' %}selected="true"{% endif %}>{% trans "Deleted" %}</option>
+                </select>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class='body'>
+
+    <h3>{% trans "Select bibliographic reference" %}</h3>
+    <table class='table'>
+        <thead>
+            <th>{% trans "ID" %}</a></th>
+            <th>{% trans "Reference" %}</a></th>
+        </thead>
+        <tbody>
+            {% for reference in object_list %}
+                <tr>
+                    <td>
+                        <a href="#" onclick="opener.dismissRelatedLookupPopup('biblio-{{ reference.id }}', '{{ reference.reference_title }}' ); return false;">{{ reference.id }}</a>
+                    </td>
+                    <td>
+                        {{ reference }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% include "pagination_generic.html" %}
+
+</div>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}

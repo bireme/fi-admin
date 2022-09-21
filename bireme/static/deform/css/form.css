@@ -1,3 +1,9 @@
+.deform-seq-add{
+    color: #fff;
+    background-color: #204d74 !important;
+    border-color: #122b40;
+}
+
 .deform-seq-add:visited {
    color: blue;
 }

@@ -25,8 +25,8 @@ class CommunityResource(ModelResource):
         }
         include_resource_uri = False
 
-    def build_filters(self, filters=None):
-        orm_filters = super(CommunityResource, self).build_filters(filters)
+    def build_filters(self, filters=None, *args, **kwargs):
+        orm_filters = super(CommunityResource, self).build_filters(filters, *args, **kwargs)
 
         if 'community' in filters:
             orm_filters['id__exact'] = filters['community']
@@ -91,8 +91,8 @@ class CollectionResource(ModelResource):
         }
         include_resource_uri = False
 
-    def build_filters(self, filters=None):
-        orm_filters = super(CollectionResource, self).build_filters(filters)
+    def build_filters(self, filters=None, *args, **kwargs):
+        orm_filters = super(CollectionResource, self).build_filters(filters, *args, **kwargs)
 
         if 'community' in filters:
             orm_filters['parent__exact'] = filters['community']

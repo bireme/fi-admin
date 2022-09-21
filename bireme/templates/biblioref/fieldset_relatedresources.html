@@ -1,0 +1,109 @@
+{% load app_filters %}
+{% load i18n %}
+
+<div id='tab-relatedresource' class="tab-pane">
+    {% for error in formset_relatedresource.non_form_errors  %}
+        <p class="errorlist alert alert-error">
+            {{ error|escape }}
+        </p>
+    {% endfor %}
+
+    <div id="passive-linked-resources" class="alert" style="display: none">
+        <p><strong>{% trans "Resources linked to this document" %}:</strong></p>
+        <ul></ul>
+    </div>
+
+    <fieldset class="{{ fieldset.classes }} accordion-body metadata" id="relatedresource">
+        {{ formset_relatedresource.management_form }}
+
+        {% for form in formset_relatedresource %}
+            {% for hidden in form.hidden_fields %}
+                {% if not hidden.field|fieldtype == 'JSONField' %}
+                    {{ hidden }}
+                {% endif %}
+            {% endfor %}
+            <div id="relatedresource-{{ forloop.counter0 }}" class="relatedresource relatedresource-row{% if form.errors %} error{% endif %} formset-row">
+                <table class="table table-condensed table-striped span10">
+                    <tr>
+                        <td>
+                {% for field in form.visible_fields %}
+
+                    {% if field.name == 'internal_id' %}
+                        {{ field.as_hidden }}
+                    {% else %}
+                        {% if field.name == 'title' %}
+                            <p>
+                                <strong>{% trans "For references already registered in FI-ADMIN, search below" %}</strong>
+                            </p>
+                        {% endif %}
+                        <label for="{{ field.auto_id }}">
+                            {% if field.name in help_fields %}
+                                <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/multimedia/{{field.name}}/" class="field_with_help">
+                            {% endif %}
+                            {% if field.field.required %}
+                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+                            {% if field.name in help_fields %}
+                                </a>
+                            {% endif %}
+                        </label>
+                        <p class="muted">{{ field.help_text }}</p>
+                        {{ field.errors }}
+                        {% if field.name == 'title' or field.name == 'link' %}
+                            {% if form.instance.internal_id != '' %}
+                                <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}" value="{{ field.value }}" readonly="true"/>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+                            {% if field.name == 'title' %}
+                                <i class="icon-search" onclick="javascript:select_related_reference(this)"></i>
+                            {% endif %}
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    {% endif %}
+
+                {% endfor %}
+                        </td>
+                        <td>
+                            <div>{% if form.instance.pk %}{{ form.DELETE }}{% endif %}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% endfor %}
+    </fieldset>
+</div>
+
+
+{% block extrajs %}
+
+<script type="text/javascript">
+    function select_related_reference(obj){
+        var row = $(obj).parent();
+        related_field_name = row.find('input').attr('name');
+        related_row_id = related_field_name.replace( /[A-Za-z_$-]/g, '');
+
+        //console.log(related_field);
+        related_win = window.open('{% url "select_related_reference" %}', 'select_reference_list', 'scrollbars=1,width=785,height=590');
+    }
+
+    function dismissRelatedLookupPopup(chosenId, chosenLabel) {
+            // set value of internal_id hidden input
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-internal_id').val(chosenId);
+            // set value of title field
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-title').val(chosenLabel);
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-title').attr("readonly", true);
+
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-link').val("");
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-link').attr("disabled", true);
+            $('#id_related-linkedresource-content_type-object_id-' + related_row_id + '-link').addClass("disabled");
+
+            related_win.close();
+    }
+
+</script>
+
+{% endblock %}

@@ -25,6 +25,7 @@ from main.models import ThematicArea
 
 from events.models import *
 from events.forms import *
+from events.search_indexes import *
 
 import mimetypes
 
@@ -170,12 +171,14 @@ def create_edit_event(request, **kwargs):
             formset_keyword.save()
             formset_thematic.save()
 
-            # update solr index
+            # update event
             form.save()
             # save many-to-many relation fields
             form.save_m2m()
             # update DeDup service
             update_dedup_service(event)
+            # update search index
+            update_search_index(event)
 
             return redirect('events:list_events')
     # new/edit
@@ -235,6 +238,11 @@ def delete_event(request, event_id):
     if event.created_by_id != user.id:
         return HttpResponse('Unauthorized', status=401)
 
+    # delete search index entry
+    index = EventIndex()
+    index.remove_object(event)
+
+    # delete object
     event.delete()
 
     # delete associated data
@@ -361,5 +369,16 @@ def update_dedup_service(obj):
 
         try:
             dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
+        except:
+            pass
+
+
+# update search index
+def update_search_index(event):
+    if event.status != 0:
+        index = EventIndex()
+
+        try:
+            index.update_object(event)
         except:
             pass

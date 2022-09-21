@@ -21,6 +21,7 @@ from datetime import datetime
 from main.models import *
 from main.forms import *
 from main.decorators import *
+from main.search_indexes import *
 
 from help.models import get_help_fields
 from error_reporting.forms import ErrorReportForm
@@ -183,11 +184,14 @@ def create_edit_resource(request, **kwargs):
             formset_keyword.save()
             formset_thematic.save()
 
-            # update solr index
+            # update resource
             form.save()
+            # save many-to-many relation fields
             form.save_m2m()
             # update DeDup service
             update_dedup_service(resource)
+            # update search index
+            update_search_index(resource)
 
             redirect_url = request.session.get("filtered_list", 'main:list_resources')
 
@@ -239,7 +243,6 @@ def create_edit_resource(request, **kwargs):
 
 @login_required
 def delete_resource(request, resource_id):
-
     user = request.user
     resource = get_object_or_404(Resource, id=resource_id)
     c_type = ContentType.objects.get_for_model(Resource)
@@ -250,6 +253,11 @@ def delete_resource(request, resource_id):
     if resource.created_by_id != user.id:
         return HttpResponse('Unauthorized', status=401)
 
+    # delete search index entry
+    index = ResourceIndex()
+    index.remove_object(resource)
+
+    # delete object
     resource.delete()
 
     # delete associated data
@@ -559,7 +567,6 @@ def delete_language(request, language_id):
 def update_dedup_service(obj):
 
     if obj.status < 2:
-        print("***update***")
         dedup_schema = 'LIS_Two'
         dedup_params = {"titulo": obj.title, "url": obj.link}
 
@@ -571,5 +578,16 @@ def update_dedup_service(obj):
 
         try:
             dedup_request = requests.post(dedup_url, headers=dedup_headers, data=json_data, timeout=5)
+        except:
+            pass
+
+
+# update search index
+def update_search_index(resource):
+    if resource.status != 0:
+        index = ResourceIndex()
+
+        try:
+            index.update_object(resource)
         except:
             pass

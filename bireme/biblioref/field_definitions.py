@@ -34,6 +34,7 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
                  'local_descriptors': '653', 'clinical_trial_registry_name': '700', 'doi_number': '724',
                  'source_control': '98', 'export_control_1': '776', 'export_control_2': '778', 'alternate_ids': '779',
                  'created_time': '91', 'created_by': '92', 'updated_time': '93', 'system_version': '899', 'indexed_database': '904',
+                 'linked_ein': '610', 'linked_efr': '611'
                  }
 
 
@@ -51,11 +52,11 @@ abstract_section = ('abstract', {'fields': ['abstract'],
                                  'classes': ['collapse']})
 
 
-comp_info_section = ('comp_info', {'fields': ['descriptive_information', 'text_language'],
+comp_info_section = ('comp_info', {'fields': ['descriptive_information', 'text_language', 'license'],
                                    'legend': _('Complementary Information'),
                                    'classes': ['collapse']})
 
-comp_info_section_doi = ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi_number'],
+comp_info_section_doi = ('comp_info', {'fields': ['descriptive_information', 'text_language', 'doi_number', 'license'],
                                        'legend': _('Complementary Information'),
                                        'classes': ['collapse']})
 
@@ -111,7 +112,7 @@ FIELDS_BY_DOCUMENT_TYPE['S'] = [('general', {'fields': ['status', 'LILACS_indexe
                                 'legend': _('General information')}),
 
                                 ('serial_level', {'fields': ['title_serial', 'issn', 'volume_serial',
-                                                             'issue_number'],
+                                                             'issue_number', 'license'],
                                                   'legend': _('Serial level')}),
 
                                 ('imprint', {'fields': ['publication_date', 'publication_date_normalized'],
@@ -619,6 +620,7 @@ class IndividualAuthorAttributes(colander.MappingSchema):
                              widget=deform.widget.SelectWidget(values=degree_choices),
                              missing=str(''),)
 
+    _e = colander.SchemaNode(colander.String(), title=_('E-mail'), missing=str(''),)
     _k = colander.SchemaNode(colander.String(), title=_('ORCID'), validator=validate_not_url, missing=str(''),
                                description=_('Format: 0000-0000-0000-0000'))
 
@@ -736,3 +738,15 @@ class ClinicalTrialRegistryNameAttributes(colander.MappingSchema):
 
 class ClinicalTrialRegistryName(colander.SequenceSchema):
     item = ClinicalTrialRegistryNameAttributes(title=_('Clinical Trial'))
+
+
+class DescriptionAttributes(colander.MappingSchema):
+    text = colander.SchemaNode(colander.String(), title=_('Description'),
+                               widget=deform.widget.TextAreaWidget(rows=15, cols=120))
+    _i = colander.SchemaNode(colander.String(), widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Language'))
+
+
+class Description(colander.SequenceSchema):
+    item = DescriptionAttributes(title=_('Description'))
+

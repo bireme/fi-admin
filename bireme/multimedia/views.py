@@ -21,6 +21,7 @@ from help.models import get_help_fields
 
 from multimedia.models import *
 from multimedia.forms import *
+from multimedia.search_indexes import *
 
 
 class MultimediaListView(LoginRequiredView, ListView):
@@ -160,10 +161,13 @@ class MediaUpdate(LoginRequiredView):
                 formset_attachment.instance = self.object
                 formset_attachment.save()
 
-                # update solr index
+                # update media
                 form.save()
                 # save many-to-many relation fields
                 form.save_m2m()
+                # update search index
+                update_search_index(self.object)
+
                 return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(
@@ -282,6 +286,10 @@ class MediaDeleteView(LoginRequiredView, DeleteView):
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
         Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
 
+        # delete search index entry
+        index = MediaIndex()
+        index.remove_object(obj)
+
         return super(MediaDeleteView, self).delete(request, *args, **kwargs)
 
 
@@ -387,3 +395,14 @@ class MediaCollectionDeleteView(LoginRequiredView, DeleteView):
         if not obj.created_by == self.request.user:
             return HttpResponse('Unauthorized', status=401)
         return obj
+
+
+# update search index
+def update_search_index(media):
+    if media.status != 0:
+        index = MediaIndex()
+
+        try:
+            index.update_object(media)
+        except:
+            pass
