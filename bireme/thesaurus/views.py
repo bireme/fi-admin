@@ -772,30 +772,46 @@ class DescListView(LoginRequiredView, ListView):
         q_record_preferred_term = Q(record_preferred_term='Y')
 
         # status
-        if self.actions['filter_status']:
+        if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
             q_filter_status = Q(status=self.actions['filter_status'])
 
 
         # Term
         # AND performance for Term ------------------------------------------------------------------------
         # Do the initial search in term_string field
-        if self.actions['s'] and not self.actions['filter_fields']:
-            object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
-        else:
-            # bring all registers
-            object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
+        if not self.actions['filter_fields']:
+            if self.actions['s']:
+                object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
+            else:
+                # bring all registers
+                object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
 
         # term_string
-        if self.actions['filter_fields'] == 'term_string' and self.actions['s']:
+        if self.actions['s'] and self.actions['filter_fields'] == 'term_string':
             object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-        # status
-        if self.actions['filter_status']:
-            object_list = object_list.filter(status=self.actions['filter_status'])
+        if not self.actions['filter_fields'] or self.actions['filter_fields'] == 'term_string':
+            # status
+            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                object_list = object_list.filter(status=self.actions['filter_status'])
 
-        # language
-        if self.actions['filter_language']:
-            object_list = object_list.filter(language_code=self.actions['filter_language'])
+            # language
+            if self.actions['filter_language']:
+                if self.actions['filter_status'] == 'wt':
+                    exclude_list = []
+                    for obj in object_list:
+                        identifier_id = IdentifierConceptListDesc.objects.filter(id=obj.identifier_concept_id).distinct().values('identifier_id')
+                        id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=identifier_id,preferred_concept='Y').distinct().values('id')
+                        q_id_concept = Q(identifier_concept_id__in=id_concept)
+                        q_object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+                        q_object_list = q_object_list.filter(language_code=self.actions['filter_language'])
+                        if q_object_list:
+                            exclude_list.append(obj.id)
+                    object_list = object_list.exclude(id__in=exclude_list)
+                else:
+                    object_list = object_list.filter(language_code=self.actions['filter_language'])
+            elif self.actions['filter_status'] == 'wt':
+                object_list = object_list.none()
 
 
         # Concept
@@ -804,13 +820,25 @@ class DescListView(LoginRequiredView, ListView):
         if self.actions['filter_fields'] == 'concept':
             object_list = TermListDesc.objects.filter( q_term_string & q_concept_preferred_term & q_record_preferred_term ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-        # status
-        if self.actions['filter_status']:
-            object_list = object_list.filter(status=self.actions['filter_status'])
+            # status
+            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                object_list = object_list.filter(status=self.actions['filter_status'])
 
-        # language
-        if self.actions['filter_language']:
-            object_list = object_list.filter(language_code=self.actions['filter_language'])
+            # language
+            if self.actions['filter_language']:
+                if self.actions['filter_status'] == 'wt':
+                    exclude_list = []
+                    for obj in object_list:
+                        q_id_concept = Q(identifier_concept_id=obj.identifier_concept_id)
+                        q_object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+                        q_object_list = q_object_list.filter(language_code=self.actions['filter_language'])
+                        if q_object_list:
+                            exclude_list.append(obj.id)
+                    object_list = object_list.exclude(id__in=exclude_list)
+                else:
+                    object_list = object_list.filter(language_code=self.actions['filter_language'])
+            elif self.actions['filter_status'] == 'wt':
+                object_list = object_list.none()
 
 
         # MESH Descriptor UI
@@ -825,13 +853,21 @@ class DescListView(LoginRequiredView, ListView):
                 q_id_concept = Q(identifier_concept_id__in=id_concept)
                 object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-        # status
-        if self.actions['filter_status']:
-            object_list = object_list.filter(status=self.actions['filter_status'])
+            # status
+            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                object_list = object_list.filter(status=self.actions['filter_status'])
 
-        # language
-        if self.actions['filter_language']:
-            object_list = object_list.filter(language_code=self.actions['filter_language'])
+            # language
+            if self.actions['filter_language']:
+                obj = object_list
+                object_list = object_list.filter(language_code=self.actions['filter_language'])
+                if self.actions['filter_status'] == 'wt':
+                    if object_list:
+                        object_list = object_list.none()
+                    else:
+                        object_list = obj.filter(language_code='en')
+            elif self.actions['filter_status'] == 'wt':
+                object_list = object_list.none()
 
 
         # DeCS Descriptor UI - decs_code
@@ -850,13 +886,21 @@ class DescListView(LoginRequiredView, ListView):
                     q_id_concept = Q(identifier_concept_id=id_concept)
                     object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-        # status
-        if self.actions['filter_status']:
-            object_list = object_list.filter(status=self.actions['filter_status'])
+            # status
+            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                object_list = object_list.filter(status=self.actions['filter_status'])
 
-        # language
-        if self.actions['filter_language']:
-            object_list = object_list.filter(language_code=self.actions['filter_language'])
+            # language
+            if self.actions['filter_language']:
+                obj = object_list
+                object_list = object_list.filter(language_code=self.actions['filter_language'])
+                if self.actions['filter_status'] == 'wt':
+                    if object_list:
+                        object_list = object_list.none()
+                    else:
+                        object_list = obj.filter(language_code='en')
+            elif self.actions['filter_status'] == 'wt':
+                object_list = object_list.none()
 
 
         # Tree Number
@@ -870,6 +914,26 @@ class DescListView(LoginRequiredView, ListView):
             id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number,preferred_concept='Y').distinct().values('id')
             q_id_concept = Q(identifier_concept_id__in=id_concept)
             object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+
+            # status
+            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                object_list = object_list.filter(status=self.actions['filter_status'])
+
+            # language
+            if self.actions['filter_language']:
+                if self.actions['filter_status'] == 'wt':
+                    exclude_list = []
+                    for obj in object_list:
+                        q_id_concept = Q(identifier_concept_id=obj.identifier_concept_id)
+                        q_object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+                        q_object_list = q_object_list.filter(language_code=self.actions['filter_language'])
+                        if q_object_list:
+                            exclude_list.append(obj.id)
+                    object_list = object_list.exclude(id__in=exclude_list)
+                else:
+                    object_list = object_list.filter(language_code=self.actions['filter_language'])
+            elif self.actions['filter_status'] == 'wt':
+                object_list = object_list.none()
 
 
         # Concept UI
@@ -890,13 +954,21 @@ class DescListView(LoginRequiredView, ListView):
                 object_list = TermListDesc.objects.filter(identifier_concept_id=concept_id).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
 
-        # status
-        if self.actions['filter_status']:
-            object_list = object_list.filter(status=self.actions['filter_status'])
+            # status
+            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                object_list = object_list.filter(status=self.actions['filter_status'])
 
-        # language
-        if self.actions['filter_language']:
-            object_list = object_list.filter(language_code=self.actions['filter_language'])
+            # language
+            if self.actions['filter_language']:
+                obj = object_list
+                object_list = object_list.filter(language_code=self.actions['filter_language'])
+                if self.actions['filter_status'] == 'wt':
+                    if object_list:
+                        object_list = object_list.none()
+                    else:
+                        object_list = obj.filter(language_code='en')
+            elif self.actions['filter_status'] == 'wt':
+                object_list = object_list.none()
 
 
         # order performance -------------------------------------------------------------------------------------
@@ -1431,7 +1503,8 @@ class TermListDescView(LoginRequiredView, ListView):
 def TermListDescModification(request, term_id, ths, term_ori):
 
     # Descobre qual é o identifier_id do conceito
-    identifier_id_destino = IdentifierConceptListDesc.objects.filter(id=term_id).values('identifier_id')
+    identifier_id_destino = IdentifierConceptListDesc.objects.filter(id=term_id).values('id','identifier_id')
+    id_destino = identifier_id_destino[0].get('id')
     identifier_id_destino = identifier_id_destino[0].get('identifier_id')
 
     # Descobre qual é o identifier_concept_id do termo origem
@@ -1467,31 +1540,51 @@ def TermListDescModification(request, term_id, ths, term_ori):
     # Atualiza historico da origem
     TermListDesc.objects.filter(id=term_ori).update(status=-3,historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
 
-    # Pesquisa a existencia de um registro existente no destino com o status de migracao - 3
+    # Pesquisa a existencia de um registro existente no destino com o status de migracao -3
     # para isso pesquisa o term_ui de origem e o status=-3
     new_term=TermListDesc.objects.filter(id=term_ori).values('status','term_ui','language_code','term_string','concept_preferred_term','is_permuted_term','lexical_tag','record_preferred_term','entry_version','date_created','date_altered','historical_annotation','term_thesaurus','identifier_concept_id',)
     term_ui_ori=new_term[0].get('term_ui')
     term_string_ori=new_term[0].get('term_string').encode('utf-8')
 
-    exist_term=TermListDesc.objects.filter(status=-3, term_ui=term_ui_ori, term_string=term_string_ori, identifier_concept_id=term_id).values('id','historical_annotation')
+    exist_term = TermListDesc.objects.filter(
+        status=-3,
+        term_ui=term_ui_ori,
+        term_string=term_string_ori,
+        identifier_concept_id=term_id
+    ).values('id','historical_annotation')
 
     if len(exist_term) > 0:
         term_id_exist=exist_term[0].get('id')
         historical_annotation_now=datetime.datetime.now().strftime('%Y-%m-%d') + ', received from ' + concept_ui_origem
         historical_annotation_new=historical_annotation_now + ';' + historical_annotation_old
 
-
         # Atualiza o historico do destino
         TermListDesc.objects.filter(id=term_id_exist).update(status='1',concept_preferred_term='N',is_permuted_term='N',record_preferred_term='N',historical_annotation=historical_annotation_new, date_altered=datetime.datetime.now().strftime('%Y-%m-%d'))
 
     else:
+        language_code_ori = new_term[0].get('language_code')
+        term_thesaurus_ori = new_term[0].get('term_thesaurus')
+
+        term_exists = TermListDesc.objects.filter(
+            status='1',
+            concept_preferred_term='Y',
+            record_preferred_term='N',
+            identifier_concept_id=id_destino,
+            term_thesaurus=term_thesaurus_ori,
+            language_code=language_code_ori
+        ).order_by('term_string')
+
+        concept_preferred_term = 'Y'
+        if term_exists:
+            concept_preferred_term = 'N'
+
         # Cria nova entrada
         item = TermListDesc.objects.create(
                 status='1',
                 term_ui=new_term[0].get('term_ui'),
                 language_code=new_term[0].get('language_code'),
                 term_string=new_term[0].get('term_string'),
-                concept_preferred_term='N',
+                concept_preferred_term=concept_preferred_term,
                 is_permuted_term='N',
                 lexical_tag=new_term[0].get('lexical_tag'),
                 record_preferred_term='N',
