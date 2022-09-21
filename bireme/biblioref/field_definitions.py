@@ -718,8 +718,8 @@ class AuthorKeyword(colander.SequenceSchema):
 
 class PagesAttributes(colander.MappingSchema):
     text = colander.SchemaNode(colander.String(), title=_('Pages'), missing=str(''),)
-    _f = colander.SchemaNode(colander.String(), title=_('Initial number'), missing=str(''),)
-    _l = colander.SchemaNode(colander.String(), title=_('End number'), missing=str(''),)
+    _f = colander.SchemaNode(colander.String(), title=_('Initial page'), missing=str(''),)
+    _l = colander.SchemaNode(colander.String(), title=_('End page'), missing=str(''),)
     _e = colander.SchemaNode(colander.String(), title=_('Electronic location identifier'), missing=str(''),)
 
 

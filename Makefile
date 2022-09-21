@@ -33,11 +33,17 @@ dev_ps:
 dev_rm:
 	@docker-compose -f $(COMPOSE_FILE_DEV) rm -f
 
-dev_exec_shell:
+dev_sh:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh
 
-dev_make_test:
+dev_test:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin make test
+
+dev_add_gettext:
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin apk add --no-cache gettext
+
+dev_update_translations:
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py makemessages --all
 
 dev_import:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py loaddata $(import_file)
