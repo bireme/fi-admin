@@ -184,7 +184,7 @@ class ReferenceResource(CustomResource):
         library_records = ReferenceLocal.objects.filter(source=bundle.obj.id)
         complement_data = ReferenceComplement.objects.filter(source=bundle.obj.id)
         related_obj_id = 'biblio-{}'.format(bundle.obj.id)
-        linked_resources = LinkedResource.objects.filter( Q(object_id=bundle.obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
+        related_resources = LinkedResource.objects.filter( Q(object_id=bundle.obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
 
         # create lists for primary and secundary descriptors
         descriptors_primary = []
@@ -210,14 +210,16 @@ class ReferenceResource(CustomResource):
         indexed_database_list = bundle.obj.indexed_database.all()
         bundle.data['indexed_database'] = [database.acronym for database in indexed_database_list]
 
-        for linked in linked_resources:
-            if linked.object_id == bundle.obj.id:
-                linked_field = 'linked_{}'.format(linked.type.field)
-                bundle.data[linked_field] = {'_m': linked.internal_id, '_u': linked.link, '_t': linked.title}
+        for related in related_resources:
+            if related.object_id == bundle.obj.id:
+                related_link = '{}{}'.format(settings.DEDUP_ARTICLE_DETAIL, related.internal_id) if  related.internal_id else related.link
+                related_dict = {'_i': related.type.field, '_t': related.title, '_6': related.link, '_w': related.internal_id}
+                bundle.data['related_resource'] = {k: v for k, v in related_dict.items() if v}
             else:
-                linked_field = 'linked_{}'.format(linked.type.field_passive.field)
-                linked_id = 'biblio-{}'.format(linked.object_id)
-                bundle.data[linked_field] = {'_m': linked_id}
+                related_id = 'biblio-{}'.format(related.object_id)
+                related_title = Reference.objects.get(pk=related.object_id).reference_title
+                related_dict = {'_i': related.type.field_passive.field, '_t': related_title, '_6': related.link, '_w': related_id}
+                bundle.data['related_resource'] = {k: v for k, v in related_dict.items() if v}
 
         # check if object has classification (relationship model)
         if bundle.obj.collection.count():
