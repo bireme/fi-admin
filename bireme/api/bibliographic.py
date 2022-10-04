@@ -11,7 +11,7 @@ from tastypie import fields
 
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID, ReferenceLocal, ReferenceComplement
 from attachments.models import Attachment
-from related.models import LinkedResource
+from related.models import LinkedResource, LinkedResearchData
 from api.isis_serializer import ISISSerializer
 from api.tastypie_custom import CustomResource
 
@@ -185,6 +185,7 @@ class ReferenceResource(CustomResource):
         complement_data = ReferenceComplement.objects.filter(source=bundle.obj.id)
         related_obj_id = 'biblio-{}'.format(bundle.obj.id)
         related_resources = LinkedResource.objects.filter( Q(object_id=bundle.obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
+        related_research = LinkedResearchData.objects.filter(object_id=bundle.obj.id, content_type=c_type)
 
         # create lists for primary and secundary descriptors
         descriptors_primary = []
@@ -212,7 +213,6 @@ class ReferenceResource(CustomResource):
 
         for related in related_resources:
             if related.object_id == bundle.obj.id:
-                related_link = '{}{}'.format(settings.DEDUP_ARTICLE_DETAIL, related.internal_id) if  related.internal_id else related.link
                 related_dict = {'_i': related.type.field, '_t': related.title, '_6': related.link, '_w': related.internal_id}
                 bundle.data['related_resource'] = {k: v for k, v in related_dict.items() if v}
             else:
@@ -220,6 +220,10 @@ class ReferenceResource(CustomResource):
                 related_title = Reference.objects.get(pk=related.object_id).reference_title
                 related_dict = {'_i': related.type.field_passive.field, '_t': related_title, '_6': related.link, '_w': related_id}
                 bundle.data['related_resource'] = {k: v for k, v in related_dict.items() if v}
+
+        for research in related_research:
+            research_dict = {'_t': research.title, '_6': research.link, '_n': research.description}
+            bundle.data['related_research'] = {k: v for k, v in research_dict.items() if v}
 
         # check if object has classification (relationship model)
         if bundle.obj.collection.count():
