@@ -846,7 +846,7 @@ class DescListView(LoginRequiredView, ListView):
         if self.actions['filter_fields'] == 'descriptor_ui':
             id_register = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'].strip()).values('id')
             if not id_register:
-                object_list = object_list.none()
+                object_list = []
             else:
                 id_register = [obj.get('id') for obj in id_register]
                 id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_register,preferred_concept='Y').distinct().values('id')
@@ -875,7 +875,7 @@ class DescListView(LoginRequiredView, ListView):
         if self.actions['filter_fields'] == 'decs_code':
             id_register = IdentifierDesc.objects.filter(decs_code=self.actions['s'].strip(),thesaurus_id=self.actions['choiced_thesaurus']).values('id')
             if not id_register:
-                object_list = object_list.none()
+                object_list = []
             else:
                 id_register = id_register[0].get('id')
                 id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
@@ -941,7 +941,7 @@ class DescListView(LoginRequiredView, ListView):
         if self.actions['filter_fields'] == 'concept_ui':
             concept_identifier_id = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
             if not concept_identifier_id:
-                object_list = object_list.none()
+                object_list = []
             else:
                 for i in concept_identifier_id:
                     # concept_identifier_id pode vir com mesmo ConceptUI para outro tesauro, então quando encontra o primeiro sai do loop
