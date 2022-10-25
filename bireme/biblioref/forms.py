@@ -630,7 +630,7 @@ class BiblioRefForm(BetterModelForm):
 
         if self.is_visiblefield(field) and (status == 1 or self.document_type == 'S'):
             search_year = re.search('[0-9]{4}', data)
-            if search_year == None and data != 's.d' and data != 's.f':
+            if search_year == None:
                 self.add_error(field, _("Date without year"))
 
             if not data:
@@ -646,34 +646,29 @@ class BiblioRefForm(BetterModelForm):
         status = self.cleaned_data.get('status')
 
         if self.is_visiblefield(normalized_field) and (status == 1 or self.document_type == 'S'):
-            if raw_date != 's.d' and raw_date != 's.f':
-                if not normalized_date:
-                    self.add_error(normalized_field, _("Entering information in this field is conditional to filling out publication date field"))
-                else:
-                    if len(normalized_date) != 8:
-                        self.add_error(normalized_field, _("Different of 8 characters"))
-
-                    if self.is_LILACS and int(normalized_date[:4]) < 1982:
-                        self.add_error(normalized_field, _("Incompatible with LILACS"))
-
-                    # extract year from raw date field
-                    search_year = re.search('([0-9]{4})', raw_date)
-                    if search_year != None:
-                        raw_date_year = search_year.group(1)
-
-                        if not normalized_date[0:4] == raw_date_year:
-                            error_message = _("Normalized date year must be '%s'") % raw_date_year
-                            self.add_error(normalized_field, error_message)
-
-                        if len(raw_date) == 4:
-                            incomplete_normalized_date = "%s0000" % raw_date
-                            if not normalized_date == incomplete_normalized_date:
-                                error_message = _("Error in the date, use: %s") % incomplete_normalized_date
-                                self.add_error(normalized_field, error_message)
+            if not normalized_date:
+                self.add_error(normalized_field, _("Entering information in this field is conditional to filling out publication date field"))
             else:
-                if normalized_date:
-                    msg = _("Leave blank, publication date = %s") % raw_date
-                    self.add_error(normalized_field, msg)
+                if len(normalized_date) != 8:
+                    self.add_error(normalized_field, _("Different of 8 characters"))
+
+                if self.is_LILACS and int(normalized_date[:4]) < 1982:
+                    self.add_error(normalized_field, _("Incompatible with LILACS"))
+
+                # extract year from raw date field
+                search_year = re.search('([0-9]{4})', raw_date)
+                if search_year != None:
+                    raw_date_year = search_year.group(1)
+
+                    if not normalized_date[0:4] == raw_date_year:
+                        error_message = _("Normalized date year must be '%s'") % raw_date_year
+                        self.add_error(normalized_field, error_message)
+
+                    if len(raw_date) == 4:
+                        incomplete_normalized_date = "%s0000" % raw_date
+                        if not normalized_date == incomplete_normalized_date:
+                            error_message = _("Error in the date, use: %s") % incomplete_normalized_date
+                            self.add_error(normalized_field, error_message)
 
         return normalized_date
 
@@ -768,8 +763,7 @@ class BiblioRefForm(BetterModelForm):
 
         if self.is_visiblefield(field) and self.cleaned_data['status'] == 1:
             if not(data):
-                if self.cleaned_data['publication_city'] != 's.l':
-                    self.add_error(field, _('Entering information in this field is conditional to filling out publication city field'))
+                self.add_error(field, _('Entering information in this field is conditional to filling out publication city field'))
             else:
                 if self.is_LILACS:
                     country_list_latin_caribbean = [c for c in Country.objects.filter(LA_Caribbean=True)]
