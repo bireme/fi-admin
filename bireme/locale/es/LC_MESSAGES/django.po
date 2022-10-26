@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-21 20:15+0000\n"
-"PO-Revision-Date: 2022-09-21 20:17-0306\n"
+"POT-Creation-Date: 2022-10-26 15:12+0000\n"
+"PO-Revision-Date: 2022-10-26 15:14-0306\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -307,8 +307,8 @@ msgstr "Nota pública"
 #: biblioref/models.py:37 biblioref/models.py:189 biblioref/models.py:201
 #: biblioref/models.py:207 biblioref/models.py:275 events/models.py:77
 #: leisref/models.py:505 main/models.py:291 oer/models.py:468
-#: related/models.py:68 related/models.py:83 suggest/models.py:25
-#: suggest/models.py:56 templates/biblioref/reference_list.html:197
+#: related/models.py:83 suggest/models.py:25 suggest/models.py:56
+#: templates/biblioref/reference_list.html:197
 #: templates/biblioref/referenceanalytic_form.html:118
 #: templates/biblioref/referenceanalytic_list.html:54
 #: templates/biblioref/referenceanalytic_list.html:65
@@ -345,8 +345,8 @@ msgid "Personal author"
 msgstr "Autor personal"
 
 #: biblioref/field_definitions.py:612
-msgid "Format: Lastname, Name"
-msgstr "Formato: Apellido, Nombre"
+msgid "Format: Lastname, Name. Use \"Anonimous Authoship\" for anonimous."
+msgstr ""
 
 #: biblioref/field_definitions.py:613 biblioref/field_definitions.py:682
 #: oer/field_definitions.py:42
@@ -465,12 +465,10 @@ msgid "Pages"
 msgstr "Páginas"
 
 #: biblioref/field_definitions.py:721
-#| msgid "Initial date"
 msgid "Initial page"
 msgstr "Página inicial"
 
 #: biblioref/field_definitions.py:722
-#| msgid "End date"
 msgid "End page"
 msgstr "Página final"
 
@@ -595,10 +593,10 @@ msgstr "Grado de responsabilidade incompatible con LILACS"
 #: biblioref/forms.py:281 biblioref/forms.py:420 biblioref/forms.py:496
 #: biblioref/forms.py:504 biblioref/forms.py:517 biblioref/forms.py:555
 #: biblioref/forms.py:573 biblioref/forms.py:593 biblioref/forms.py:621
-#: biblioref/forms.py:637 biblioref/forms.py:732 biblioref/forms.py:743
-#: biblioref/forms.py:761 biblioref/forms.py:799 biblioref/forms.py:814
-#: biblioref/forms.py:824 biblioref/forms.py:960 biblioref/forms.py:973
-#: biblioref/forms.py:994
+#: biblioref/forms.py:637 biblioref/forms.py:727 biblioref/forms.py:738
+#: biblioref/forms.py:756 biblioref/forms.py:793 biblioref/forms.py:808
+#: biblioref/forms.py:818 biblioref/forms.py:954 biblioref/forms.py:967
+#: biblioref/forms.py:988
 msgid "Mandatory"
 msgstr "Obligatorio"
 
@@ -647,7 +645,7 @@ msgstr ""
 msgid " at subfield %s "
 msgstr "en el subcampo %s"
 
-#: biblioref/forms.py:386 biblioref/forms.py:696
+#: biblioref/forms.py:386 biblioref/forms.py:691
 #, python-format
 msgid "item %s: "
 msgstr "item %s:"
@@ -661,7 +659,7 @@ msgid "File type attribute is mandatory"
 msgstr "Atributo de tipo del archivo es obligatorio"
 
 #: biblioref/forms.py:399 biblioref/forms.py:526 biblioref/forms.py:549
-#: biblioref/forms.py:615 biblioref/forms.py:804
+#: biblioref/forms.py:615 biblioref/forms.py:798
 msgid "Language incompatible with LILACS"
 msgstr "Idioma incompatible con LILACS"
 
@@ -796,7 +794,7 @@ msgstr "Llenado inválido. No se traduz titulo en Inglés"
 msgid "Date without year"
 msgstr "Fecha sin año"
 
-#: biblioref/forms.py:651
+#: biblioref/forms.py:650
 msgid ""
 "Entering information in this field is conditional to filling out publication"
 " date field"
@@ -804,50 +802,45 @@ msgstr ""
 "El registro de información en este campo es condicional a llenar el campo de"
 " fecha de publicación"
 
-#: biblioref/forms.py:654 biblioref/forms.py:976
+#: biblioref/forms.py:653 biblioref/forms.py:970
 msgid "Different of 8 characters"
 msgstr "No contiene 8 dígitos"
 
-#: biblioref/forms.py:657
+#: biblioref/forms.py:656
 msgid "Incompatible with LILACS"
 msgstr "Incompatible con LILACS"
 
-#: biblioref/forms.py:665
+#: biblioref/forms.py:664
 #, python-format
 msgid "Normalized date year must be '%s'"
 msgstr "Año de la fecha normalizada debe ser '%s'"
 
-#: biblioref/forms.py:671
+#: biblioref/forms.py:670
 #, python-format
 msgid "Error in the date, use: %s"
 msgstr "Error en la fecha, utilize: %s"
 
-#: biblioref/forms.py:675 biblioref/forms.py:983
-#, python-format
-msgid "Leave blank, publication date = %s"
-msgstr "Deje en blanco, fecha de publicación = %s"
-
-#: biblioref/forms.py:687
+#: biblioref/forms.py:682
 msgid "Do not have more than 4 occurrences, use passim"
 msgstr "No puede tener mas que 4 ocurrencias, usar passim"
 
-#: biblioref/forms.py:699
+#: biblioref/forms.py:694
 msgid "If the attribute first is passim, the attribute last should be empty"
 msgstr "Si el atributo inicio es Passim, el atributo final debe ser vacío"
 
-#: biblioref/forms.py:704
+#: biblioref/forms.py:699
 msgid "Attribute last is missing"
 msgstr "Atributo último no fue informado"
 
-#: biblioref/forms.py:709
+#: biblioref/forms.py:704
 msgid "Attribute first is missing"
 msgstr "Atributo primero no fue informado"
 
-#: biblioref/forms.py:714
+#: biblioref/forms.py:709
 msgid "Square brackets are missing [ ]"
 msgstr "Hace falta los corchetes [ ] "
 
-#: biblioref/forms.py:719
+#: biblioref/forms.py:714
 msgid ""
 "When the electronic location attribute is informed the others attributes "
 "should be empty"
@@ -855,11 +848,11 @@ msgstr ""
 "Cuando se informó el atributo de la localización electrónica los otros "
 "atributos deben ser vacíos"
 
-#: biblioref/forms.py:751 biblioref/forms.py:777
+#: biblioref/forms.py:746 biblioref/forms.py:771
 msgid "LILACS incompatible"
 msgstr "Incompatible con LILACS"
 
-#: biblioref/forms.py:772
+#: biblioref/forms.py:766
 msgid ""
 "Entering information in this field is conditional to filling out publication"
 " city field"
@@ -867,25 +860,30 @@ msgstr ""
 "El registro de información en este campo es condicional a llenar el campo de"
 " la ciudad de publicación"
 
-#: biblioref/forms.py:787
+#: biblioref/forms.py:781
 msgid "Maximum number of characteres = 9"
 msgstr "Número máximo de caracteres = 9"
 
-#: biblioref/forms.py:834
+#: biblioref/forms.py:828
 msgid "Please inform a valid DOI number. Ex. 10.1000/xyz123"
 msgstr "Informe un número DOI válido. Ej. 10.1000/xyz123"
 
-#: biblioref/forms.py:947
+#: biblioref/forms.py:941
 msgid "Event name mandatory"
 msgstr "Nombre del evento es obligatório"
 
-#: biblioref/forms.py:950
+#: biblioref/forms.py:944
 msgid "Project name OR Project number mandatory"
 msgstr "Nombre del proyecto O Número del proyecto obligatorio"
 
-#: biblioref/forms.py:980
+#: biblioref/forms.py:974
 msgid "Error in the date"
 msgstr "Error en la fecha"
+
+#: biblioref/forms.py:977
+#, python-format
+msgid "Leave blank, publication date = %s"
+msgstr "Deje en blanco, fecha de publicación = %s"
 
 #: biblioref/models.py:16 templates/biblioref/reference_list.html:122
 #: templates/biblioref/select_related_reference.html:53
@@ -2881,6 +2879,11 @@ msgstr "Campos"
 msgid "Field passive"
 msgstr "Ayuda de campo"
 
+#: related/models.py:68
+#| msgid "Parallel title"
+msgid "Dataset title"
+msgstr "Título del conjunto de datos"
+
 #: related/models.py:82
 #, fuzzy
 #| msgid "New Reference"
@@ -3164,7 +3167,7 @@ msgstr "Seleccione por búsqueda"
 #: templates/biblioref/fieldset_indexing.html:70
 #: templates/biblioref/reference_confirm_delete.html:29
 #: templates/biblioref/referenceanalytic_form.html:494
-#: templates/biblioref/referenceanalytic_form.html:599
+#: templates/biblioref/referenceanalytic_form.html:600
 #: templates/biblioref/referencesource_form.html:500
 #: templates/delete_confirm.html:17
 #: templates/institution/institution_confirm_delete.html:29
@@ -3225,7 +3228,7 @@ msgstr "¿Está seguro que desea borrar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
 #: templates/biblioref/referenceanalytic_form.html:495
-#: templates/biblioref/referenceanalytic_form.html:600
+#: templates/biblioref/referenceanalytic_form.html:601
 #: templates/biblioref/referencesource_form.html:501
 #: templates/delete_confirm.html:16
 #: templates/institution/institution_confirm_delete.html:28
@@ -3867,7 +3870,7 @@ msgstr "Añadir datos de investigación"
 msgid "Add resource"
 msgstr "Adicionar recurso"
 
-#: templates/biblioref/referenceanalytic_form.html:590
+#: templates/biblioref/referenceanalytic_form.html:591
 #: templates/biblioref/referencesource_form.html:491
 msgid ""
 "After publication the record can only be modified by a user with editor "
@@ -3876,7 +3879,7 @@ msgstr ""
 "Después de la publicación, el registro sólo puede ser modificado por un "
 "usuario con el perfil del editor. ¿Continuar?"
 
-#: templates/biblioref/referenceanalytic_form.html:666
+#: templates/biblioref/referenceanalytic_form.html:667
 #: templates/biblioref/referencesource_form.html:591
 #: templates/events/edit-event.html:595
 #: templates/institution/institution_form.html:44
@@ -7318,6 +7321,9 @@ msgstr "Registro creado"
 #: utils/validators.py:12
 msgid "Year must be greater than 1900"
 msgstr "El año debe ser mayor que 1900"
+
+#~ msgid "Format: Lastname, Name"
+#~ msgstr "Formato: Apellido, Nombre"
 
 #~ msgid "End number"
 #~ msgstr "Número final"
