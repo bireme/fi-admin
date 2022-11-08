@@ -228,6 +228,17 @@
                 formCssClass: 'toccurrence_formset',
                 prefix: '{{ formset_toccurrence.prefix }}'
             });
+
+            $('select#id_status').on('change', function() {
+                val = $(this).val();
+                if ( val == 3 || val == 5 ) {                    
+                    if (confirm('{% trans "Are you sure you want to delete this term" %}?')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
         })
 
     </script>

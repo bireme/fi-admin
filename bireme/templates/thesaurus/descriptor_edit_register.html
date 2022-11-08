@@ -665,12 +665,13 @@
             });
 
             $('[id$="-DELETE"]').on('click', function() {
-                val = $(this).val();
-                if (confirm('{% trans "Delete" %}?')) {
-                    return true;
-                } else {
-                    return false;
-
+                if ($(this).is(':checked')) {
+                    val = $(this).val();
+                    if (confirm('{% trans "Delete" %}?')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             });
 
