@@ -52,6 +52,11 @@
             text-decoration:none;
         }
 
+        .entry-combination {
+            margin-bottom: 1em;
+            padding-bottom: 1em;
+            border-bottom: 1px solid #DDD;
+        }
     </style>
 
     <div class='header'>
@@ -210,17 +215,34 @@
                         <td valign="top" align="right" width="15%"><b>{% trans "Entry Combination" %}</b></td>
                         <td>&nbsp;&nbsp;</td>
                         <td valign="top">
-                        {% for obj in entrycombination_objects %}
-                            {% if obj.ecin_qualif %}
-                                {% ifchanged %}
-                                    {{ obj.ecin_qualif }}:{{ obj.ecout_desc }}
-                                    {% if obj.ecout_qualif %}
-                                        /{{ obj.ecout_qualif }}
-                                    {% endif %}
-                                    <br>
-                                {% endifchanged %}
-                            {% endif %}
-                        {% endfor %}
+                            <div class="entrycombination_en entry-combination">
+                                <font color="blue">en</font>
+                            </div>
+                            <div class="entrycombination_es entry-combination">
+                                <font color="blue">es</font>
+                            </div>
+                            <div class="entrycombination_pt-br entry-combination">
+                                <font color="blue">pt-br</font>
+                            </div>
+                            <div class="entrycombination_es-es entry-combination">
+                                <font color="blue">es-es</font>
+                            </div>
+                            <div class="entrycombination_fr entry-combination">
+                                <font color="blue">fr</font>
+                            </div>
+
+                            {% for obj in entrycombination_objects %}
+                                <div class="entrycombination_list ec_{{ obj.language_code }}">
+                                {% if obj.ecin_qualif %}
+                                    {% ifchanged %}
+                                        {{ obj.ecin_qualif }}:{{ obj.ecout_desc }}
+                                        {% if obj.ecout_qualif %}
+                                            /{{ obj.ecout_qualif }}
+                                        {% endif %}
+                                    {% endifchanged %}
+                                {% endif %}
+                                <div/>
+                            {% endfor %}
                         </td>
                     </tr>
 
@@ -968,7 +990,7 @@
         var strFound;
 
         if (window.find) {
-    // CODE FOR BROWSERS THAT SUPPORT window.find
+        // CODE FOR BROWSERS THAT SUPPORT window.find
 
             strFound=self.find(str);
             if (strFound && self.getSelection && !self.getSelection().anchorNode) {
@@ -991,16 +1013,15 @@
                 TRange=self.document.body.createTextRange()
                 strFound=TRange.findText(str)
                 if (strFound) TRange.select()
-                }
             }
-            else if (navigator.appName=="Opera") {
-                alert ("Opera browsers not supported, sorry...")
-                return;
-            }
-            if (!strFound) alert ('{% trans "No results found" %}')
-                return;
-            }
-
+        }
+        else if (navigator.appName=="Opera") {
+            alert ("Opera browsers not supported, sorry...")
+            return;
+        }
+        if (!strFound) alert ('{% trans "No results found" %}')
+            return;
+        }
 
         $('#id_t1').keypress(function(e) {
             if(e.which == 13) {
@@ -1008,7 +1029,6 @@
               console.log('Não vou enviar');
             }
         });
-
 
         $(document).ready(function(){
             $(window).scroll(function(){
@@ -1025,20 +1045,43 @@
             });
         });
 
-
         var menuId = location.hash.substring(1);
         $( document ).ready(function() {
-        if (menuId) {
-            var menu = $('#myTab');
-            var current = $("li[id='" + menuId + "']");
-            if(!current.hasClass("current")){
-            $('.current').removeClass('current');
-            current.addClass("current");
-            $('.pbox:visible').hide();
-            $('#' + menuId + '.pbox').show(600);
-            history.pushState(null, null, '#' + menuId);
-        }
-        }
+            if (menuId) {
+                var menu = $('#myTab');
+                var current = $("li[id='" + menuId + "']");
+                if(!current.hasClass("current")){
+                    $('.current').removeClass('current');
+                    current.addClass("current");
+                    $('.pbox:visible').hide();
+                    $('#' + menuId + '.pbox').show(600);
+                    history.pushState(null, null, '#' + menuId);
+                }
+            }
+        });
+
+        $(function() {
+            $(".ec_en").detach().appendTo(".entrycombination_en");
+            $(".ec_es").detach().appendTo(".entrycombination_es");
+            $(".ec_pt-br").detach().appendTo(".entrycombination_pt-br");
+            $(".ec_es-es").detach().appendTo(".entrycombination_es-es");
+            $(".ec_fr").detach().appendTo(".entrycombination_fr");
+
+            $('.entrycombination_en').filter(function (index) {
+                return $(this).children('.ec_en').length < 1;
+            }).remove();
+            $('.entrycombination_es').filter(function (index) {
+                return $(this).children('.ec_es').length < 1;
+            }).remove();
+            $('.entrycombination_pt-br').filter(function (index) {
+                return $(this).children('.ec_pt-br').length < 1;
+            }).remove();
+            $('.entrycombination_es-es').filter(function (index) {
+                return $(this).children('.ec_es-es').length < 1;
+            }).remove();
+            $('.entrycombination_fr').filter(function (index) {
+                return $(this).children('.ec_fr').length < 1;
+            }).remove();
         });
 
     //-->
@@ -1055,8 +1098,6 @@
         if (activeTab) {
            $('a[href="' + activeTab + '"]').tab('show');
         }
-
     </script>
-
 
 {% endblock %}

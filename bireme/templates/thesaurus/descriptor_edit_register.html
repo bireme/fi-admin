@@ -28,6 +28,14 @@
 
 {% block content %}
 
+    <style rel="stylesheet" type="text/css">
+        .entry-combination {
+            margin-bottom: 1em;
+            padding-bottom: 1em;
+            border-bottom: 1px solid #DDD;
+        }
+    </style>
+
     <!-- header -->
     <div class='header'>
         {% if object %}
@@ -350,7 +358,6 @@
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}
-                                    </tr>
                                 </table>
 
                             </fieldset>
@@ -390,7 +397,6 @@
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}
-                                    </tr>
                                 </table>
 
                             </fieldset>
@@ -437,7 +443,6 @@
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}
-                                    </tr>
                                 </table>
                             </fieldset>
                         </ul>
@@ -452,9 +457,27 @@
                         <ul>
                             <fieldset class="collapse" id="entrycombination">
 
+                                <div class="entrycombination_en entry-combination">
+                                    <font color="blue">{% trans "English" %}</font>
+                                </div>
+                                <div class="entrycombination_es entry-combination">
+                                    <font color="blue">{% trans "Spanish Latin America" %}</font>
+                                </div>
+                                <div class="entrycombination_pt-br entry-combination">
+                                    <font color="blue">{% trans "Portuguese" %}</font>
+                                </div>
+                                <div class="entrycombination_es-es entry-combination">
+                                    <font color="blue">{% trans "Spanish Spain" %}</font>
+                                </div>
+                                <div class="entrycombination_fr entry-combination">
+                                    <font color="blue">{% trans "French" %}</font>
+                                </div>
+
                                 {{ formset_entrycombination.management_form }}
 
                                 {% for form in formset_entrycombination %}
+
+                                <div class="entrycombination_list ec_{{ form.language_code.value }}">
 
                                     {{ form.non_field_errors.as_ul }}
 
@@ -482,8 +505,6 @@
                                                         {% endif %}
                                                     </b>
                                                     </font>
-
-                                                    </b>
                                                 {% else %}
                                                     <br><i class='icon-file'></i>&nbsp;{% trans 'Add new entry combination' %}
                                                 {% endif %}
@@ -493,46 +514,52 @@
 
                                     <div id="entrycombination_{{ form.instance.pk }}" class="{% if not form.errors %} panel-collapse collapse {% else %} error {% endif %}">
                                         <ul>
-                                        <table class="entrycombination">
-                                            <tr>
-                                                <td colspan="5" align="right" bgcolor="#F2F2F2">
-                                                    {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ form.ecin_qualif.label_tag }}</td>
-                                                <td>{% trans "Transport UI" %}:</td>
-                                                <td colspan="3">&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ form.ecin_qualif }}</td>
-                                                <td>{{ form.ecin_id }}</td>
-                                                <td colspan="3">&nbsp;</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td colspan="5">
-                                                    <b>{% trans 'Entry combination' %}</b>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ form.ecout_desc.label_tag }}</td>
-                                                <td>{% trans "Transport UI" %}:</td>
-                                                <td>&nbsp;</td>
-                                                <td>{{ form.ecout_qualif.label_tag }}</td>
-                                                <td>{% trans "Transport UI" %}:</td>
-                                            </tr>
-                                            <tr>
-                                                <td>{{ form.ecout_desc }}</td>
-                                                <td>{{ form.ecout_desc_id }}</td>
-                                                <td><b>&nbsp;/&nbsp;</b></td>
-                                                <td>{{ form.ecout_qualif }}</td>
-                                                <td>{{ form.ecout_qualif_id }}</td>
-                                            </tr>
-                                        </table>
+                                            <table class="entrycombination">
+                                                <tr>
+                                                    <td colspan="5" align="right" bgcolor="#F2F2F2">
+                                                        {% if form.instance.pk %}{% trans 'Delete' %}?{{ form.DELETE }}{% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        {{ form.language_code.label_tag }}
+                                                        {{ form.language_code }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ form.ecin_qualif.label_tag }}</td>
+                                                    <td>{% trans "Transport UI" %}:</td>
+                                                    <td colspan="3">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ form.ecin_qualif }}</td>
+                                                    <td>{{ form.ecin_id }}</td>
+                                                    <td colspan="3">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <b>{% trans 'Entry combination' %}</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ form.ecout_desc.label_tag }}</td>
+                                                    <td>{% trans "Transport UI" %}:</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>{{ form.ecout_qualif.label_tag }}</td>
+                                                    <td>{% trans "Transport UI" %}:</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ form.ecout_desc }}</td>
+                                                    <td>{{ form.ecout_desc_id }}</td>
+                                                    <td><b>&nbsp;/&nbsp;</b></td>
+                                                    <td>{{ form.ecout_qualif }}</td>
+                                                    <td>{{ form.ecout_qualif_id }}</td>
+                                                </tr>
+                                            </table>
                                         </ul>
-
                                     </div>
+
+                                </div>
 
                                 {% endfor %}
 
@@ -540,7 +567,6 @@
                         </ul>
 
                     </div>
-
 
                     <div class="control-panel form-submit">
                         <a href="{% url 'list_descriptor' %}?ths={% if request.GET.ths %}{{ request.GET.ths }}{% else %}{{ actions.choiced_thesaurus }}{% endif %}" class="btn btn-large btn-danger">{% trans "Cancel" %}</a>
@@ -691,8 +717,29 @@
               });
             }
 
+            $(".ec_en").detach().appendTo(".entrycombination_en");
+            $(".ec_es").detach().appendTo(".entrycombination_es");
+            $(".ec_pt-br").detach().appendTo(".entrycombination_pt-br");
+            $(".ec_es-es").detach().appendTo(".entrycombination_es-es");
+            $(".ec_fr").detach().appendTo(".entrycombination_fr");
 
-        })
+            $('.entrycombination_en').filter(function (index) {
+                return $(this).children('.ec_en').length < 1;
+            }).remove();
+            $('.entrycombination_es').filter(function (index) {
+                return $(this).children('.ec_es').length < 1;
+            }).remove();
+            $('.entrycombination_pt-br').filter(function (index) {
+                return $(this).children('.ec_pt-br').length < 1;
+            }).remove();
+            $('.entrycombination_es-es').filter(function (index) {
+                return $(this).children('.ec_es-es').length < 1;
+            }).remove();
+            $('.entrycombination_fr').filter(function (index) {
+                return $(this).children('.ec_fr').length < 1;
+            }).remove();
+
+        });
 
    </script>
 

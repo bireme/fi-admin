@@ -3009,6 +3009,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'ecout_qualif',
                                                 'ecout_qualif_id',
                                                 'identifier_id',
+                                                'language_code',
                                             )
 
 
