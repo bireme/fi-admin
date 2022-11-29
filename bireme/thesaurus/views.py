@@ -48,6 +48,7 @@ ACTIONS = {
 
     'filter_fields': '',
     'filter_status': '',
+    'filter_category': '',
 
     'decs_code': '',
     'tree_number': '',
@@ -969,6 +970,14 @@ class DescListView(LoginRequiredView, ListView):
                         object_list = obj.filter(language_code='en')
             elif self.actions['filter_status'] == 'wt':
                 object_list = object_list.none()
+
+
+        # Category --------------------------------------------------------------
+        if self.actions['filter_category']:
+            id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith=self.actions['filter_category'].strip()).values('identifier_id')
+            id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number).distinct().values('id')
+            q_id_concept = Q(identifier_concept_id__in=id_concept)
+            object_list = object_list.filter( q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
 
         # order performance -------------------------------------------------------------------------------------
