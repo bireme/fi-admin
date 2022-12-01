@@ -854,21 +854,22 @@ class DescListView(LoginRequiredView, ListView):
                 q_id_concept = Q(identifier_concept_id__in=id_concept)
                 object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-            # status
-            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
-                object_list = object_list.filter(status=self.actions['filter_status'])
+            if object_list:
+                # status
+                if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                    object_list = object_list.filter(status=self.actions['filter_status'])
 
-            # language
-            if self.actions['filter_language']:
-                obj = object_list
-                object_list = object_list.filter(language_code=self.actions['filter_language'])
-                if self.actions['filter_status'] == 'wt':
-                    if object_list:
-                        object_list = object_list.none()
-                    else:
-                        object_list = obj.filter(language_code='en')
-            elif self.actions['filter_status'] == 'wt':
-                object_list = object_list.none()
+                # language
+                if self.actions['filter_language']:
+                    obj = object_list
+                    object_list = object_list.filter(language_code=self.actions['filter_language'])
+                    if self.actions['filter_status'] == 'wt':
+                        if object_list:
+                            object_list = object_list.none()
+                        else:
+                            object_list = obj.filter(language_code='en')
+                elif self.actions['filter_status'] == 'wt':
+                    object_list = object_list.none()
 
 
         # DeCS Descriptor UI - decs_code
@@ -887,21 +888,22 @@ class DescListView(LoginRequiredView, ListView):
                     q_id_concept = Q(identifier_concept_id=id_concept)
                     object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-            # status
-            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
-                object_list = object_list.filter(status=self.actions['filter_status'])
+            if object_list:
+                # status
+                if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                    object_list = object_list.filter(status=self.actions['filter_status'])
 
-            # language
-            if self.actions['filter_language']:
-                obj = object_list
-                object_list = object_list.filter(language_code=self.actions['filter_language'])
-                if self.actions['filter_status'] == 'wt':
-                    if object_list:
-                        object_list = object_list.none()
-                    else:
-                        object_list = obj.filter(language_code='en')
-            elif self.actions['filter_status'] == 'wt':
-                object_list = object_list.none()
+                # language
+                if self.actions['filter_language']:
+                    obj = object_list
+                    object_list = object_list.filter(language_code=self.actions['filter_language'])
+                    if self.actions['filter_status'] == 'wt':
+                        if object_list:
+                            object_list = object_list.none()
+                        else:
+                            object_list = obj.filter(language_code='en')
+                elif self.actions['filter_status'] == 'wt':
+                    object_list = object_list.none()
 
 
         # Tree Number
@@ -974,10 +976,11 @@ class DescListView(LoginRequiredView, ListView):
 
         # Category --------------------------------------------------------------
         if self.actions['filter_category']:
-            id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith=self.actions['filter_category'].strip()).values('identifier_id')
-            id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number).distinct().values('id')
-            q_id_concept = Q(identifier_concept_id__in=id_concept)
-            object_list = object_list.filter( q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            if object_list:
+                id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith=self.actions['filter_category'].strip()).values('identifier_id')
+                id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number).distinct().values('id')
+                q_id_concept = Q(identifier_concept_id__in=id_concept)
+                object_list = object_list.filter( q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
 
         # order performance -------------------------------------------------------------------------------------
