@@ -788,8 +788,12 @@ class DescListView(LoginRequiredView, ListView):
                 object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
 
         # term_string
-        if self.actions['s'] and self.actions['filter_fields'] == 'term_string':
-            object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+        if self.actions['filter_fields'] == 'term_string':
+            if self.actions['s']:
+                object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            else:
+                # bring all registers
+                object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         if not self.actions['filter_fields'] or self.actions['filter_fields'] == 'term_string':
             # status
