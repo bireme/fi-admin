@@ -65,7 +65,7 @@ class LinkedResearchData(Generic, AuditLog):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     link = models.URLField(_('Link'),  max_length=255, blank=False)
-    title = models.CharField(_('Title'), max_length=255, blank=True)
+    title = models.CharField(_('Dataset title'), max_length=255, blank=True)
     description = models.TextField(_('Description'), blank=True)
 
     def __str__(self):
