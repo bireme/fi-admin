@@ -211,19 +211,30 @@ class ReferenceResource(CustomResource):
         indexed_database_list = bundle.obj.indexed_database.all()
         bundle.data['indexed_database'] = [database.acronym for database in indexed_database_list]
 
+        # add related resource
+        related_resource_list = []
         for related in related_resources:
             if related.object_id == bundle.obj.id:
-                related_dict = {'_i': related.type.field, '_t': related.title, '_6': related.link, '_w': related.internal_id}
-                bundle.data['related_resource'] = {k: v for k, v in related_dict.items() if v}
+                related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
             else:
                 related_id = 'biblio-{}'.format(related.object_id)
                 related_title = Reference.objects.get(pk=related.object_id).reference_title
-                related_dict = {'_i': related.type.field_passive.field, '_t': related_title, '_6': related.link, '_w': related_id}
-                bundle.data['related_resource'] = {k: v for k, v in related_dict.items() if v}
+                related_dict = {"_i": related.type.field_passive.field, "_t": related_title, "_6": related.link, "_w": related_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
 
+        bundle.data['related_resource'] = related_resource_list
+
+        # add related research
+        related_research_list = []
         for research in related_research:
-            research_dict = {'_t': research.title, '_6': research.link, '_n': research.description}
-            bundle.data['related_research'] = {k: v for k, v in research_dict.items() if v}
+            research_dict = {"_t": research.title, "_6": research.link, "_n": research.description}
+            research_dict_json = self.dict2json(research_dict)
+            related_research_list.append(research_dict_json)
+
+        bundle.data['related_research'] = related_research_list
 
         # check if object has classification (relationship model)
         if bundle.obj.collection.count():
@@ -318,3 +329,9 @@ class ReferenceResource(CustomResource):
         response = Reference.objects.latest('pk').pk
 
         return self.create_response(request, response)
+
+    def dict2json(self, raw_dict):
+        clean_dict = {k: v for k, v in raw_dict.items() if v}
+        json_out = json.dumps(clean_dict, ensure_ascii=False).encode('utf8')
+
+        return json_out
