@@ -48,6 +48,7 @@ ACTIONS = {
 
     'filter_fields': '',
     'filter_status': '',
+    'filter_category': '',
 
     'decs_code': '',
     'tree_number': '',
@@ -787,8 +788,12 @@ class DescListView(LoginRequiredView, ListView):
                 object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
 
         # term_string
-        if self.actions['s'] and self.actions['filter_fields'] == 'term_string':
-            object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+        if self.actions['filter_fields'] == 'term_string':
+            if self.actions['s']:
+                object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            else:
+                # bring all registers
+                object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         if not self.actions['filter_fields'] or self.actions['filter_fields'] == 'term_string':
             # status
@@ -853,21 +858,22 @@ class DescListView(LoginRequiredView, ListView):
                 q_id_concept = Q(identifier_concept_id__in=id_concept)
                 object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-            # status
-            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
-                object_list = object_list.filter(status=self.actions['filter_status'])
+            if object_list:
+                # status
+                if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                    object_list = object_list.filter(status=self.actions['filter_status'])
 
-            # language
-            if self.actions['filter_language']:
-                obj = object_list
-                object_list = object_list.filter(language_code=self.actions['filter_language'])
-                if self.actions['filter_status'] == 'wt':
-                    if object_list:
-                        object_list = object_list.none()
-                    else:
-                        object_list = obj.filter(language_code='en')
-            elif self.actions['filter_status'] == 'wt':
-                object_list = object_list.none()
+                # language
+                if self.actions['filter_language']:
+                    obj = object_list
+                    object_list = object_list.filter(language_code=self.actions['filter_language'])
+                    if self.actions['filter_status'] == 'wt':
+                        if object_list:
+                            object_list = object_list.none()
+                        else:
+                            object_list = obj.filter(language_code='en')
+                elif self.actions['filter_status'] == 'wt':
+                    object_list = object_list.none()
 
 
         # DeCS Descriptor UI - decs_code
@@ -886,21 +892,22 @@ class DescListView(LoginRequiredView, ListView):
                     q_id_concept = Q(identifier_concept_id=id_concept)
                     object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-            # status
-            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
-                object_list = object_list.filter(status=self.actions['filter_status'])
+            if object_list:
+                # status
+                if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                    object_list = object_list.filter(status=self.actions['filter_status'])
 
-            # language
-            if self.actions['filter_language']:
-                obj = object_list
-                object_list = object_list.filter(language_code=self.actions['filter_language'])
-                if self.actions['filter_status'] == 'wt':
-                    if object_list:
-                        object_list = object_list.none()
-                    else:
-                        object_list = obj.filter(language_code='en')
-            elif self.actions['filter_status'] == 'wt':
-                object_list = object_list.none()
+                # language
+                if self.actions['filter_language']:
+                    obj = object_list
+                    object_list = object_list.filter(language_code=self.actions['filter_language'])
+                    if self.actions['filter_status'] == 'wt':
+                        if object_list:
+                            object_list = object_list.none()
+                        else:
+                            object_list = obj.filter(language_code='en')
+                elif self.actions['filter_status'] == 'wt':
+                    object_list = object_list.none()
 
 
         # Tree Number
@@ -969,6 +976,15 @@ class DescListView(LoginRequiredView, ListView):
                         object_list = obj.filter(language_code='en')
             elif self.actions['filter_status'] == 'wt':
                 object_list = object_list.none()
+
+
+        # Category --------------------------------------------------------------
+        if self.actions['filter_category']:
+            if object_list:
+                id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith=self.actions['filter_category'].strip()).values('identifier_id')
+                id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number).distinct().values('id')
+                q_id_concept = Q(identifier_concept_id__in=id_concept)
+                object_list = object_list.filter( q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
 
         # order performance -------------------------------------------------------------------------------------
@@ -3009,6 +3025,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'ecout_qualif',
                                                 'ecout_qualif_id',
                                                 'identifier_id',
+                                                'language_code',
                                             )
 
 
