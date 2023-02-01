@@ -981,7 +981,15 @@ class DescListView(LoginRequiredView, ListView):
         # Category --------------------------------------------------------------
         if self.actions['filter_category']:
             if object_list:
-                id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith=self.actions['filter_category'].strip()).values('identifier_id')
+                if self.actions['filter_category'] == 'H':
+                    id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith='H').exclude(tree_number__startswith='HP').values('identifier_id')
+                elif self.actions['filter_category'] == 'M':
+                    id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith='M').exclude(tree_number__startswith='MT').values('identifier_id')
+                elif self.actions['filter_category'] == 'V':
+                    id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith='V').exclude(tree_number__startswith='VS').values('identifier_id')
+                else:
+                    id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith=self.actions['filter_category'].strip()).values('identifier_id')
+
                 id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number).distinct().values('id')
                 q_id_concept = Q(identifier_concept_id__in=id_concept)
                 object_list = object_list.filter( q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
