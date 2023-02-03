@@ -2150,6 +2150,16 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
             identifier_concept_id = self.request.POST.get("identifier_concept_id")
             term_thesaurus = self.request.GET.get("ths")
 
+            _record_preferred_term = self.request.GET.get("record_preferred_term")
+            if _record_preferred_term == 'N':
+                if concept_preferred_term == 'N' and record_preferred_term == 'Y':
+                    record_preferred_term = 'N'
+            else:
+                if concept_preferred_term == 'Y' and record_preferred_term == 'N':
+                    record_preferred_term = 'Y'
+                elif concept_preferred_term == 'N' and record_preferred_term == 'Y':
+                    record_preferred_term = 'N'
+
             if concept_preferred_term == 'Y' and record_preferred_term == 'Y':
                 # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "Y"
                 # Search by published record
@@ -2237,6 +2247,8 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                             self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
 
                         self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+                        self.object.concept_preferred_term = concept_preferred_term
+                        self.object.record_preferred_term  = record_preferred_term
                         self.object = form.save(commit=True)
 
                         formset_toccurrence.instance = self.object
@@ -2342,6 +2354,8 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                         self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
 
                     self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+                    self.object.concept_preferred_term = concept_preferred_term
+                    self.object.record_preferred_term  = record_preferred_term
                     self.object = form.save(commit=True)
 
                     formset_toccurrence.instance = self.object
@@ -2470,12 +2484,12 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
         _record_preferred_term = self.request.GET.get("record_preferred_term")
         if _record_preferred_term == 'N':
-            if ( concept_preferred_term == 'N' and record_preferred_term == 'Y' ):
+            if concept_preferred_term == 'N' and record_preferred_term == 'Y':
                 record_preferred_term = 'N'
         else:
-            if ( concept_preferred_term == 'Y' and record_preferred_term == 'N' ):
+            if concept_preferred_term == 'Y' and record_preferred_term == 'N':
                 record_preferred_term = 'Y'
-            elif ( concept_preferred_term == 'N' and record_preferred_term == 'Y' ):
+            elif concept_preferred_term == 'N' and record_preferred_term == 'Y':
                 record_preferred_term = 'N'
 
         # Username
