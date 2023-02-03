@@ -2468,6 +2468,16 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
         identifier_concept_id = self.request.POST.get("identifier_concept_id")
         term_thesaurus = self.request.GET.get("ths")
 
+        _record_preferred_term = self.request.GET.get("record_preferred_term")
+        if _record_preferred_term == 'N':
+            if ( concept_preferred_term == 'N' and record_preferred_term == 'Y' ):
+                record_preferred_term = 'N'
+        else:
+            if ( concept_preferred_term == 'Y' and record_preferred_term == 'N' ):
+                record_preferred_term = 'Y'
+            elif ( concept_preferred_term == 'N' and record_preferred_term == 'Y' ):
+                record_preferred_term = 'N'
+
         # Username
         user_data = additional_user_info(self.request)
         for user_name in user_data:
@@ -2604,6 +2614,9 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
                         self.object.historical_annotation = term_string_historical
 
+                        self.object.concept_preferred_term = concept_preferred_term
+                        self.object.record_preferred_term  = record_preferred_term
+
                         self.object = form.save(commit=True)
 
                         formset_toccurrence.instance = self.object
@@ -2680,6 +2693,9 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
                         term_string_historical=term_string_historical + ';' + historical_annotation_old
 
                     self.object.historical_annotation = term_string_historical
+
+                    self.object.concept_preferred_term = concept_preferred_term
+                    self.object.record_preferred_term  = record_preferred_term
 
                     self.object = form.save(commit=True)
 
