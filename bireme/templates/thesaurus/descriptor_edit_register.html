@@ -430,15 +430,8 @@
                                         <tr id="previous-{{ forloop.counter0 }}" class="previous-row{% if form.errors %} error{% endif %} formset-row">
                                             {% for field in form.visible_fields %}
                                             <td>
-
-                                                {% if field.name == 'previous_indexing' %}
-                                                    {{ field }}
-                                                {% endif %}
-
-                                                {% if field.name == 'language_code' %}
-                                                    {{ form.language_code }}
-                                                {% endif %}
-
+                                                {{ field }}
+                                                {{ field.errors }}
                                             </td>
                                             {% endfor %}
                                         </tr>
