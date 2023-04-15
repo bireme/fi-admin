@@ -15,7 +15,7 @@ deform==2.0.15
 jsonfield==3.1.0
 django-form-utils==1.0.3
 short-url==1.2.2
-django-tinymce==3.0.2
+django-tinymce==3.4.0
 colander==1.8.3
 django-multiselectfield==0.1.12
 python-memcached==1.59
