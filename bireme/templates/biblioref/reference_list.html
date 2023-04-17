@@ -144,7 +144,7 @@
                                         <option value="">{% trans "All" %}</option>
                                         {% for col in collection_list %}
                                             {# skip first level collections (e-bluinfo, etc) and community levels #}
-                                            {% if col.parent and not col.community_flag %}
+                                            {% if col.parent_id and not col.community_flag %}
                                                 <option value="{{ col.id }}" {% if actions.filter_collection|add:"0" == col.id %}selected="true"{% endif %}>{{ col.community_collection_path }}</option>
                                             {% endif %}
                                         {% endfor %}

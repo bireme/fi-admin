@@ -118,7 +118,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if document_type:
             literature_type = re.sub('[^A-Z]|[CP]', '', document_type)  # get only uppercase chars excepct CP (congress/project)
             treatment_level = re.sub('[A-Z]', '', document_type)  # get only lowercase chars
-            object_list = object_list.filter(literature_type__startswith=literature_type,
+            object_list = object_list.filter(literature_type__istartswith=literature_type,
                                              treatment_level=treatment_level)
 
         # apply custom order if user filter by journals fascicle in reference list
@@ -171,7 +171,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
                 # by default filter by articles (exclude sources of list)
                 if not document_type:
-                    object_list = object_list.filter(literature_type__startswith='S', treatment_level='as')
+                    object_list = object_list.filter(literature_type__istartswith='S', treatment_level='as')
 
                 # filter by serial list indexed by center
                 filter_title_qs = Q()
