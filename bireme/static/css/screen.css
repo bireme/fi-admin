@@ -881,3 +881,7 @@ tr.relation-row .row_order input{
 .label-salmon {
     background-color: #fa8072;
 }
+
+.btn-filter {
+    display: inline-block;
+}

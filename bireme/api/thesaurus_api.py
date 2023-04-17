@@ -294,17 +294,16 @@ class ThesaurusAPIDescResource(CustomResource):
         # EntryCombinationListDesc
         array_fields = {}
         array_fields_all = []
-        results = EntryCombinationListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
+        results = EntryCombinationListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id).values('id', 'ecin_id', 'ecin_qualif', 'ecout_desc', 'ecout_desc_id', 'ecout_qualif', 'ecout_qualif_id')
         for field in results:
             # Armazena campos
-            array_fields["id"] = field.id
-            array_fields["ecin_qualif"] = field.ecin_qualif
-            array_fields["ecin_id"] = field.ecin_id
-
-            array_fields["ecout_desc"] = field.ecout_desc
-            array_fields["ecout_desc_id"] = field.ecout_desc_id
-            array_fields["ecout_qualif"] = field.ecout_qualif
-            array_fields["ecout_qualif_id"] = field.ecout_qualif_id
+            array_fields["id"] = field.get('id')
+            array_fields["ecin_id"] = field.get('ecin_id')
+            array_fields["ecin_qualif"] = field.get('ecin_qualif')
+            array_fields["ecout_desc"] = field.get('ecout_desc')
+            array_fields["ecout_desc_id"] = field.get('ecout_desc_id')
+            array_fields["ecout_qualif"] = field.get('ecout_qualif')
+            array_fields["ecout_qualif_id"] = field.get('ecout_qualif_id')
 
             # Armazena array
             array_fields_all.append(array_fields)
