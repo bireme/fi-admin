@@ -1,8 +1,9 @@
 #! coding: utf-8
 from collections import defaultdict
 from django.urls import reverse_lazy
+from django.core.cache import cache
 from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, get_language
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.contenttypes.models import ContentType
@@ -158,12 +159,20 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             object_list = object_list.filter(created_by=self.request.user)
         # filter by cooperative center
         elif filter_owner == 'center':
-            user_cc = self.request.user.profile.get_attribute('cc')
+            user_cc = user_data.get('user_cc')
             object_list = object_list.filter(cooperative_center_code=user_cc)
         # filter by titles of responsibility of current user CC
         elif filter_owner == 'indexed' or (view_name == 'list_biblioref_sources' and document_type == 'S'):
-            user_cc = self.request.user.profile.get_attribute('cc')
-            titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
+            user_cc = user_data.get('user_cc')
+
+            # set/get titles_indexed_by from cache
+            titles_indexed_ck = 'titles_indexed_by_{}'.format(user_cc)
+
+            titles_indexed = cache.get(titles_indexed_ck)
+            if not titles_indexed:
+                titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
+                cache.set(titles_indexed_ck, titles_indexed)
+
             if titles_indexed:
                 # by default filter by LILACS express status (status = 0)
                 if filter_owner == 'indexed' and self.actions.get('filter_status') == '':
@@ -243,8 +252,24 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         context['source_id'] = self.request.GET.get('source')
         context['user_data'] = user_data
         context['user_role'] = user_role
-        context['indexed_database_list'] = Database.objects.all().order_by('name')
-        context['collection_list'] = Collection.objects.all().order_by('parent_id')
+
+        # set/get additional filters lists from cache
+        lang_code = get_language()
+        indexed_database_list_ck = 'biblioref_indexed_database_list_{}'.format(lang_code)
+
+        indexed_database_list = cache.get(indexed_database_list_ck)
+        if not indexed_database_list:
+            indexed_database_list = Database.objects.all().order_by('name')
+            cache.set(indexed_database_list_ck, indexed_database_list)
+
+        collection_list_ck = 'biblioref_collection_list_{}'.format(lang_code)
+        collection_list = cache.get(collection_list_ck)
+        if not collection_list:
+            collection_list = Collection.objects.all().order_by('parent_id')
+            cache.set(collection_list_ck, collection_list)
+
+        context['indexed_database_list'] = indexed_database_list
+        context['collection_list'] = collection_list
         if source_id:
             context['reference_source'] = ReferenceSource.objects.get(pk=source_id)
 

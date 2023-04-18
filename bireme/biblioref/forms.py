@@ -3,6 +3,7 @@ from collections import OrderedDict
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.utils.translation import ugettext as __
 from django.utils.text import format_lazy
+from django.core.cache import cache
 from django.forms import inlineformset_factory
 from django.forms.utils import ErrorDict
 from  django.contrib.contenttypes.forms import generic_inlineformset_factory
@@ -91,25 +92,33 @@ class BiblioRefForm(BetterModelForm):
 
 
         if 'publication_country' in self.fields:
-            # divide list of countries in Latin America & Caribbean and Others
-            country_list = [('', '')]
-            country_list_latin_caribbean = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=True)]
-            country_list_other = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=False)]
+            lang_code = get_language()
+            # get/set cache
+            publication_country_ck = 'publication_country_{}'.format(lang_code)
+            publication_country_list = cache.get(publication_country_ck)
 
-            # sort list by translation name
-            country_list_latin_caribbean.sort(key=lambda c: c[1])
-            country_list_other.sort(key=lambda c: c[1])
+            if not publication_country_list:
+                # divide list of countries in Latin America & Caribbean and Others
+                publication_country_list = [('', '')]
+                country_list_latin_caribbean = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=True)]
+                country_list_other = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=False)]
 
-            separator = "-----------"
-            label_latin_caribbean = separator + __('Latin America & Caribbean') + separator
-            label_other = separator + __('Others') + separator
+                # sort list by translation name
+                country_list_latin_caribbean.sort(key=lambda c: c[1])
+                country_list_other.sort(key=lambda c: c[1])
 
-            country_list.extend([('', label_latin_caribbean)])
-            country_list.extend(country_list_latin_caribbean)
-            country_list.extend([('', label_other)])
-            country_list.extend(country_list_other)
+                separator = "-----------"
+                label_latin_caribbean = separator + __('Latin America & Caribbean') + separator
+                label_other = separator + __('Others') + separator
 
-            self.fields['publication_country'].choices = country_list
+                publication_country_list.extend([('', label_latin_caribbean)])
+                publication_country_list.extend(country_list_latin_caribbean)
+                publication_country_list.extend([('', label_other)])
+                publication_country_list.extend(country_list_other)
+
+                cache.set(publication_country_ck, publication_country_list)
+
+            self.fields['publication_country'].choices = publication_country_list
 
         if 'indexed_database' in self.fields:
             regional_indexes = Database.objects.filter(regional_index=True)
