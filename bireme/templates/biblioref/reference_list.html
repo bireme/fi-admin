@@ -180,8 +180,8 @@
 
                                 {% trans "Filter by" %}:
                                 <select name="review_type" class="input-xlarge">
-                                    <option value="cc" {% if actions.review_type == 'cc' %}selected="true"{% endif %}>{% trans "Changed by other cooperative center" %}</option>
                                     <option value="user" {% if actions.review_type == 'user' %}selected="true"{% endif %}>{% trans "Changed by other users" %}</option>
+                                    <option value="cc" {% if actions.review_type == 'cc' %}selected="true"{% endif %}>{% trans "Changed by other cooperative center" %}</option>
                                 </select>
                                 <button class="btn" type="submit"><i class='icon-search'></i></button>
                             </form>

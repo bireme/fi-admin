@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _, get_language
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.db.models.functions import Substr
@@ -201,14 +202,14 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # filter by records changed by others
         elif filter_owner == 'review':
-            if self.actions['review_type'] == 'user':
-                ref_list = refs_changed_by_other_user(self.request.user)
-            else:
+            if self.actions['review_type'] == 'cc':
                 ref_list = refs_changed_by_other_cc(self.request.user)
+            else:
+                ref_list = refs_changed_by_other_user(self.request.user)
 
             if ref_list:
                 # get only ID's from filter reference list
-                reference_id_list = ref_list.keys
+                reference_id_list = ref_list.keys()
                 object_list = object_list.filter(id__in=reference_id_list)
             else:
                 object_list = object_list.none()
@@ -729,35 +730,27 @@ def refs_changed_by_other_cc(current_user):
     """
     current_user_cc = current_user.profile.get_attribute('cc')
     result_list = defaultdict(list)
+    log_list = []
 
-    # get last references of current user cooperative center
-    refs_from_cc = Reference.objects.filter(cooperative_center_code=current_user_cc).order_by('-id')[:100]
+     # get last references of current user cooperative center
+    refs_from_cc = Reference.objects.filter(cooperative_center_code=current_user_cc).order_by('-id').values_list('id', flat=True)[:100]
+    refs_from_cc_id_list = list(refs_from_cc)
 
-    for reference in refs_from_cc:
-        # get correct class (source our analytic)
-        c_type = reference.get_content_type_id()
-        # filter by logs of current reference, change type and made by other users
-        log_list = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
-                                   .exclude(user=current_user).order_by('-id')
+    # get from this list objects that was modified from other users
+    log_list = LogEntry.objects.filter(object_id__in=refs_from_cc_id_list, action_flag=2) \
+                                .exclude(user=current_user).order_by('-id')
 
-        if log_list:
-            # exclude from list all changes that was already reviewed (logreview is created)
-            log_list = log_list.exclude(logreview__isnull=False)
-
-        # create list of log users of same cc
-        exclude_user_list = []
+    if log_list:
+        # loop all log entries and add to result_list only logs from different centers
+        checked_users = []
         for log in log_list:
-            log_user_cc = log.user.profile.get_attribute('cc')
-            if log_user_cc == current_user_cc:
-                exclude_user_list.append(log.user)
-        # exclude from log list users from same cc as current user
-        if exclude_user_list:
-            log_list = log_list.exclude(user__in=exclude_user_list)
+            if log.user.id not in checked_users:
+                log_user_cc = log.user.profile.get_attribute('cc')
+                checked_users.append(log.user.id)
+                if log_user_cc != current_user_cc:
+                    # create only one entry for each reference (with multiples updates logs)
+                    result_list[log.object_id] = log
 
-        if log_list:
-            # group result by id (one line for each reference)
-            for log in log_list:
-                result_list[log.object_id] = log
 
     return result_list
 
@@ -769,26 +762,19 @@ def refs_changed_by_other_user(current_user):
     log_list = []
     result_list = defaultdict(list)
 
-    # get references created by current user
-    refs_from_user = Reference.objects.filter(created_by=current_user)
-    for reference in refs_from_user:
-        # get correct class (source our analytic)
-        c_type = reference.get_content_type_id()
-        # filter by logs of current reference, change type and made by other users
-        changed_by_other_user = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
-                                                .exclude(user=current_user).order_by('-id')
-        if changed_by_other_user:
-            # exclude from list all changes that was already reviewed (logreview is created)
-            changed_by_other_user = changed_by_other_user.exclude(logreview__isnull=False)
+    # get last references of current user
+    refs_from_user = Reference.objects.filter(created_by=current_user).order_by('-id').values_list('id', flat=True)[:100]
+    refs_from_user_id_list = list(refs_from_user)
 
-        log_list.extend(changed_by_other_user)
+    # get from this list objects that was modified from other users
+    log_list = LogEntry.objects.filter(object_id__in=refs_from_user_id_list, action_flag=2) \
+                                .exclude(user=current_user).order_by('-id')
 
-    # group result (one line for each reference)
+
     if log_list:
         # group result by id (one line for each reference)
         for log in log_list:
             result_list[log.object_id] = log
-
 
     return result_list
 

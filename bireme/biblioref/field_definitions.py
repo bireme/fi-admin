@@ -609,7 +609,7 @@ class IndividualAuthorAttributes(colander.MappingSchema):
     countries_choices = get_aux_country_list()
 
     text = colander.SchemaNode(colander.String(), title=_('Personal author'), validator=validate_author,
-                               description=_('Format: Lastname, Name'))
+                               description=_('Format: Lastname, Name. Use "Anonimous Authoship" for anonimous.'))
     _1 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 1'), missing=str(''),)
     _2 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 2'), missing=str(''),)
     _3 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 3'), missing=str(''),)
