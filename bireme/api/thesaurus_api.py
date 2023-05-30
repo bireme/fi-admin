@@ -209,7 +209,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # PharmacologicalActionList
         array_fields = {}
         array_fields_all = []
-        results = PharmacologicalActionList.objects.using('decs_portal').filter(identifier_id=identifier_id)
+        results = PharmacologicalActionList.objects.using('decs_portal').filter(identifier_id=identifier_id,language_code='en')
         for field in results:
             # Armazena campos
             if field.term_string:
@@ -220,9 +220,33 @@ class ThesaurusAPIDescResource(CustomResource):
 
                 # Armazena array
                 array_fields_all.append(array_fields)
-
+                
                 # Zera array pra próxima leitura
                 array_fields = {}
+
+                # Recupera termo em todos os idiomas
+                descriptor_ui = field.descriptor_ui
+                id_register = IdentifierDesc.objects.using('decs_portal').filter(descriptor_ui=descriptor_ui).values('id')
+                # IdentifierDesc_decs_code = IdentifierDesc.objects.using('decs_portal').filter(descriptor_ui=field.descriptor_ui).values('decs_code')
+                concepts_of_register = IdentifierConceptListDesc.objects.using('decs_portal').filter(identifier_id__in=id_register,preferred_concept='Y').values('id')
+
+                if concepts_of_register:
+                    array_terms = {}
+                    id_concept = concepts_of_register[0].get('id')
+                    terms_of_concept = TermListDesc.objects.using('decs_portal').filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y',status=1)
+
+                    for term in terms_of_concept:
+                        if term.language_code != 'en':
+                            # array_terms['decs_code'] = IdentifierDesc_decs_code[0].get('decs_code')
+                            array_terms['term_string'] = term.term_string.encode('utf-8')
+                            array_terms['descriptor_ui'] = field.descriptor_ui
+                            array_terms['language_code'] = term.language_code
+
+                            # Armazena array
+                            array_fields_all.append(array_terms)
+                            
+                            # Zera array pra próxima leitura
+                            array_terms = {}
 
         bundle.data['PharmacologicalActionList'] = array_fields_all
 
