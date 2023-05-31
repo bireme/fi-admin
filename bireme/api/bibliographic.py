@@ -240,12 +240,15 @@ class ReferenceResource(CustomResource):
         if bundle.obj.collection.count():
             community_list = []
             collection_list = []
+            community_collection_path = []
 
             collection_all = bundle.obj.collection.all()
             for rel in collection_all:
                 collection_labels = "|".join(rel.collection.get_translations())
                 collection_item = u"{}|{}".format(rel.collection.id, collection_labels)
                 collection_list.append(collection_item)
+                community_collection_path.append(rel.collection.community_collection_path_translations())
+
                 if rel.collection.parent:
                     community_labels = "|".join(rel.collection.parent.get_translations())
                     community_item = u"{}|{}".format(rel.collection.parent.id, community_labels)
@@ -253,6 +256,7 @@ class ReferenceResource(CustomResource):
 
             bundle.data['community'] = community_list
             bundle.data['collection'] = collection_list
+            bundle.data['community_collection_path'] = community_collection_path
 
         # change code of cooperative_center_code to indexer_cc_code at API record export #553
         if bundle.obj.indexer_cc_code:
