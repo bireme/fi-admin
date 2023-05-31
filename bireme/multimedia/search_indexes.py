@@ -13,6 +13,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     description = indexes.CharField(model_attr='description', null=True)
     authors = indexes.MultiValueField()
     contributors = indexes.MultiValueField()
+    related_links = indexes.MultiValueField()
     media_collection = indexes.CharField(model_attr='media_collection', null=True)
     item_extension = indexes.CharField(model_attr='item_extension', null=True)
     other_physical_details = indexes.CharField(model_attr='other_physical_details', null=True)
@@ -61,6 +62,9 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_contributors(self, obj):
         return [line.strip() for line in obj.contributors.split('\n') if line.strip()]
+
+    def prepare_related_links(self, obj):
+        return [line.strip() for line in obj.related_links.split('\n') if line.strip()]
 
     def prepare_thematic_area(self, obj):
         return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
