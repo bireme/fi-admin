@@ -96,6 +96,7 @@ class MediaResource(ModelResource):
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['authors'] = [line.strip() for line in bundle.obj.authors.split('\n') if line.strip()]
         bundle.data['contributors'] = [line.strip() for line in bundle.obj.contributors.split('\n') if line.strip()]
+        bundle.data['related_links'] = [line.strip() for line in bundle.obj.related_links.split('\n') if line.strip()]
 
         # check if object has classification (relationship model)
         if bundle.obj.collection.exists():
