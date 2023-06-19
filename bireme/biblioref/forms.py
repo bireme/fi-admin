@@ -180,6 +180,11 @@ class BiblioRefForm(BetterModelForm):
 
         if pontuation in value:
             if not pontuation_with_space_after in value:
+                if pontuation == '.':
+                    search_version_info = re.search('(\d+\.)(\d+)', value)
+                    if search_version_info != None:
+                        return
+
                 message = _("Insert space after %s") % pontuation
                 message = format_lazy('{}{}', message_item, message)
                 self.add_error(field, message)
