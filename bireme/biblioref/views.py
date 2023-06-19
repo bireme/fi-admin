@@ -228,6 +228,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         # apply filter status
         if filter_status != '*':
             object_list = object_list.filter(status=filter_status)
+            # when filter for draft (-1) exclude serial sources #1409
+            if filter_status == '-1' and not document_type:
+                object_list = object_list.exclude(treatment_level='')
 
         return object_list
 
