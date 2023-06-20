@@ -861,10 +861,14 @@ class BiblioRefForm(BetterModelForm):
 
         if self.document_type[0] == 'S':
             if self.document_type == 'S':
-                obj.reference_title = u"{0}; {1} ({2}), {3}".format(self.cleaned_data['title_serial'],
-                                                                    self.cleaned_data['volume_serial'],
-                                                                    self.cleaned_data['issue_number'],
-                                                                    self.cleaned_data['publication_date_normalized'][:4])
+                issue_number = self.cleaned_data['issue_number']
+                issue_str = " (" + issue_number + ")" if issue_number else ''
+                obj.reference_title = u"{serial}; {volume}{issue}, {year}".format(serial=self.cleaned_data['title_serial'],
+                                                                                   volume=self.cleaned_data['volume_serial'],
+                                                                                   issue=issue_str,
+                                                                                   year=self.cleaned_data['publication_date_normalized'][:4])
+
+
             elif self.document_type == 'Sas':
                 if self.cleaned_data['title']:
                     analytic_title = self.cleaned_data['title']
