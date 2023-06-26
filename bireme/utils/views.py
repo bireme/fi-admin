@@ -241,8 +241,12 @@ def decs_suggestion(request):
             text_by_lang[lang] = text_by_lang.get(lang, '') + ' ' + text['text']
 
     service_url = settings.DECS_HIGHLIGHTER_URL
+    print(service_url)
 
-    headers = {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"}
+    headers = {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'apikey': settings.DECS_HIGHLIGHTER_APIKEY
+        }
 
     for lang, text in text_by_lang.items():
         service_params = {'document': text, 'scanLang': lang, 'pubType': 'h', 'outLang': output_lang}
