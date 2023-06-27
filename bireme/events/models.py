@@ -71,6 +71,12 @@ class Event(Generic):
         (3, _('Deleted')),
     )
 
+    MODALITY_CHOICES = (
+        ('in-person', _('In-person')),
+        ('hybrid', _('Hybrid')),
+        ('online', _('Online')),
+    )
+
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, null=True, default=0)
     not_regional_event = models.BooleanField(_('Do not publish in the regional event directory'), default=False)
 
@@ -83,6 +89,8 @@ class Event(Generic):
     address = models.CharField(_('Address'), max_length=255, blank=True, help_text=_("Enter full address of the local of the event to present it in a Google map"))
     city = models.CharField(_('City'), max_length=125, blank=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True, on_delete=models.PROTECT)
+
+    event_modality = models.CharField(_('Event modality'), max_length=55, choices=MODALITY_CHOICES, blank=True)
 
     event_type = models.ManyToManyField(EventType, verbose_name=_("Event type"), blank=False)
     official_language = models.ManyToManyField('main.SourceLanguage', verbose_name=_("Official languages"), blank=True)
