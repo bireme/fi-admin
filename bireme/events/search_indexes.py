@@ -16,7 +16,7 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     start_date = indexes.DateTimeField(model_attr='start_date')
     end_date = indexes.DateTimeField(model_attr='end_date')
     contact_email = indexes.CharField(model_attr='contact_email', null=True)
-    contact_info = indexes.CharField()
+    contact_info = indexes.CharField(model_attr='contact_info', null=True)
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
     official_language = indexes.MultiValueField()
@@ -29,8 +29,8 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     updated_date = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
     not_regional_event = indexes.CharField(model_attr='not_regional_event')
-    observations = indexes.CharField()
-    target_groups = indexes.CharField()
+    observations = indexes.CharField(model_attr='observations', null=True)
+    target_groups = indexes.CharField(model_attr='target_groups', null=True)
 
     def get_model(self):
         return Event
