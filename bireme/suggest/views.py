@@ -25,6 +25,8 @@ from events.models import Event
 from suggest.models import *
 from suggest.forms import *
 
+from django.db.models import Q
+
 import os
 import json
 import urllib
@@ -90,7 +92,7 @@ def list_suggestions(request):
     if actions['type'] and actions['type'] == 'keywords':
         suggestions = Keyword.objects.filter(user_recomendation=True, status=0, text__icontains=actions['s'])
     elif actions['type'] == 'events':
-        suggestions = SuggestEvent.objects.filter(title__icontains=actions['s'])
+        suggestions = SuggestEvent.objects.filter(Q(title__icontains=actions['s']) | Q(origin__icontains=actions['s']))
     else:
         suggestions = SuggestResource.objects.filter(title__icontains=actions['s'])
 

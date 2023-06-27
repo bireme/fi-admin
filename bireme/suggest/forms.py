@@ -18,7 +18,6 @@ class SuggestEventForm(forms.ModelForm):
         fields = '__all__'
 
 
-
 class ExternalSuggestResourceForm(forms.ModelForm):
 
     class Meta:

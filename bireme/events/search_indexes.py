@@ -21,6 +21,7 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     thematic_area_display = indexes.MultiValueField()
     official_language = indexes.MultiValueField()
     official_language_display = indexes.MultiValueField()
+    event_modality = indexes.CharField()
     event_type = indexes.MultiValueField()
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
