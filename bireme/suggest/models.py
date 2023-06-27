@@ -59,6 +59,8 @@ class SuggestEvent(models.Model):
 
     link = models.URLField(_('Link'), blank=True)
 
+    origin = models.URLField(_('Origin'), blank=True)
+
     city = models.CharField(_('City'), max_length=125, blank=True)
 
     administrative_comments = models.TextField(_('Administrative comments'), blank=True)
