@@ -41,12 +41,15 @@ class Command(BaseCommand):
 
 
         self.stdout.write('Total analytics records to be indexed: %s' % records.count())
-
+        count = 0
         for r in records:
             try:
                 index.update_object(r)
             except:
                 self.stdout.write("Error processing record id: %s" % r.id)
+
+            count = count+1
+            self.stdout.write("+%s" % count )
 
         index = RefereceSourceIndex()
         records = ReferenceSource.objects.all()
@@ -60,13 +63,16 @@ class Command(BaseCommand):
 
 
         self.stdout.write('Total source records to be indexed: %s' % records.count())
-
+        count = 0
         for r in records:
             try:
                 index.update_object(r)
+                self.stdout.write(r.id)
             except:
                 self.stdout.write("Error processing record id: %s" % r.id)
 
+            count = count+1
+            self.stdout.write("+%s" % count )
 
         exec_time = time.time() - start
         self.stdout.write("Execution time: %s"  % time.strftime("%H:%M:%S", time.gmtime(exec_time)))
