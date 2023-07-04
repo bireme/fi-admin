@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
 from biblioref.models import *
 from biblioref.search_indexes import *
@@ -49,7 +50,7 @@ class Command(BaseCommand):
             self.stdout.write('Database code to be indexed: %s' % filter_db)
 
         if updated_after_days:
-            current_date = date.today()
+            current_date = timezone.now()
             updated_after_date = current_date - timedelta(days=int(updated_after_days))
 
         if updated_after_date:
