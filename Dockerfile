@@ -39,6 +39,7 @@ FROM base AS prod
 
 # copy crontab scripts
 COPY ./conf/crontab/daily/* /etc/periodic/daily/
+RUN chmod +x /etc/periodic/daily/*
 
 # create a app user
 RUN addgroup -S appuser && adduser -S appuser -G appuser
