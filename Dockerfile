@@ -38,7 +38,7 @@ RUN pip install --no-cache-dir -r /app/requirements-dev.txt
 FROM base AS prod
 
 # copy crontab scripts
-COPY ./conf/crontab/daily /etc/cron.daily
+COPY ./conf/crontab/daily/* /etc/periodic/daily/
 
 # create a app user
 RUN addgroup -S appuser && adduser -S appuser -G appuser
