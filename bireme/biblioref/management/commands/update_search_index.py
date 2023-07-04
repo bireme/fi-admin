@@ -17,9 +17,28 @@ class Command(BaseCommand):
         parser.add_argument('--updated_after_days', help="Only index records updates after N days from current date. Ex. 7 (get records from last week)")
 
 
+    def index_records(self, records, index):
+        total_records = records.count()
+        self.stdout.write('Total records to be indexed: %s' % total_records)
+        count = 0
+        commit_flag = False
+        for r in records:
+            count = count+1
+            try:
+                if count == total_records:
+                    commit_flag = True
+                self.stdout.write("commit: %s" % commit_flag)
+                index.update_object(r, commit=commit_flag)
+            except:
+                self.stdout.write("Error processing record id: %s" % r.id)
+
+            self.stdout.write("+%s" % count)
+
+
     def handle(self, *args, **options):
         start = time.time()
 
+        ## Index Analytics
         index = ReferenceAnalyticIndex()
         records = ReferenceAnalytic.objects.all()
         filter_db = options.get('database_code')
@@ -34,23 +53,14 @@ class Command(BaseCommand):
             current_date = date.today()
             updated_after_date = current_date - timedelta(days=int(updated_after_days))
 
-
         if updated_after_date:
             self.stdout.write('Only index records updated after: %s' % updated_after_date)
             records = records.filter(updated_time__gte=updated_after_date)
 
+        self.stdout.write('Indexing analytics ...')
+        self.index_records(records, index)
 
-        self.stdout.write('Total analytics records to be indexed: %s' % records.count())
-        count = 0
-        for r in records:
-            try:
-                index.update_object(r)
-            except:
-                self.stdout.write("Error processing record id: %s" % r.id)
-
-            count = count+1
-            self.stdout.write("+%s" % count )
-
+        ## Index Sources
         index = RefereceSourceIndex()
         records = ReferenceSource.objects.all()
 
@@ -61,18 +71,8 @@ class Command(BaseCommand):
             records = records.filter(updated_time__gte=updated_after_date)
             self.stdout.write('Only index records updated after: %s' % updated_after_date)
 
-
-        self.stdout.write('Total source records to be indexed: %s' % records.count())
-        count = 0
-        for r in records:
-            try:
-                index.update_object(r)
-                self.stdout.write(r.id)
-            except:
-                self.stdout.write("Error processing record id: %s" % r.id)
-
-            count = count+1
-            self.stdout.write("+%s" % count )
+        self.stdout.write('Indexing sources ...')
+        self.index_records(records, index)
 
         exec_time = time.time() - start
         self.stdout.write("Execution time: %s"  % time.strftime("%H:%M:%S", time.gmtime(exec_time)))
