@@ -27,7 +27,6 @@ class Command(BaseCommand):
             try:
                 if count == total_records:
                     commit_flag = True
-                self.stdout.write("commit: %s" % commit_flag)
                 index.update_object(r, commit=commit_flag)
             except:
                 self.stdout.write("Error processing record id: %s" % r.id)
