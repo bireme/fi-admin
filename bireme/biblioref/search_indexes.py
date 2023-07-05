@@ -325,9 +325,11 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         lang_list = []
         if obj.text_language:
             for code in obj.text_language:
-                aux_code = AuxCode.objects.get(field='text_language', code=code)
-                lang_translations = "|".join(aux_code.get_translations())
-                lang_list.append(lang_translations)
+                aux_code = AuxCode.objects.filter(field='text_language', code=code)
+                if aux_code:
+                    aux_code = aux_code[0]
+                    lang_translations = "|".join(aux_code.get_translations())
+                    lang_list.append(lang_translations)
 
             return lang_list
 
