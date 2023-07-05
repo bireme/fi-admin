@@ -42,6 +42,9 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return ReferenceAnalytic
 
+    def get_updated_field(self):
+        return "updated_time"
+
     def prepare(self, obj):
         self.prepared_data = super(ReferenceAnalyticIndex, self).prepare(obj)
 
@@ -230,6 +233,9 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return ReferenceSource
+
+    def get_updated_field(self):
+        return "updated_time"
 
     def prepare(self, obj):
         self.prepared_data = super(RefereceSourceIndex, self).prepare(obj)
