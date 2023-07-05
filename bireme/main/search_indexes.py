@@ -29,6 +29,9 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Resource
 
+    def get_updated_field(self):
+        return "updated_time"
+
     def prepare_link(self, obj):
         return [line.strip() for line in obj.link.split('\n') if line.strip()]
 
@@ -51,23 +54,23 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
         return [ "|".join( source_type.get_translations() ) for source_type in SourceType.objects.filter(resource=obj.id) ]
 
     def prepare_thematic_area(self, obj):
-        return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, 
+        return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id,
                     content_type=ContentType.objects.get_for_model(obj), status=1) ]
 
     def prepare_thematic_area_display(self, obj):
-        return [ "|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id, 
+        return [ "|".join( rt.thematic_area.get_translations() ) for rt in ResourceThematic.objects.filter(object_id=obj.id,
                     content_type=ContentType.objects.get_for_model(obj), status=1) ]
 
     def prepare_descriptor(self, obj):
-        return [ descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, 
+        return [ descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id,
                     content_type=ContentType.objects.get_for_model(obj), status=1) ]
 
     def prepare_keyword(self, obj):
-        return [ keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, 
+        return [ keyword.text for keyword in Keyword.objects.filter(object_id=obj.id,
                     content_type=ContentType.objects.get_for_model(obj), status=1) ]
 
     def prepare_created_date(self, obj):
-        if obj.created_time:        
+        if obj.created_time:
             return obj.created_time.strftime('%Y%m%d')
 
     def prepare_updated_date(self, obj):

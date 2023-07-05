@@ -35,6 +35,9 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Event
 
+    def get_updated_field(self):
+        return "updated_time"
+
     def prepare_official_language(self, obj):
         return [ source_language.acronym for source_language in SourceLanguage.objects.filter(event=obj.id) ]
 

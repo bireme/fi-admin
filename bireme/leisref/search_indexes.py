@@ -45,6 +45,9 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Act
 
+    def get_updated_field(self):
+        return "updated_time"
+
     def prepare_reference_title(self, obj):
         '''
         Used for search purpose, index act title different languages

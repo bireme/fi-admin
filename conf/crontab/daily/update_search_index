@@ -1,0 +1,22 @@
+#!/bin/sh
+DATE=$(date '+%Y-%m-%d')
+
+cd /app
+
+# index biblioref
+python manage.py update_search_index --updated_after_days 1 > /logs/update_search_index-${DATE}.log
+
+# index events
+python manage.py update_index events --age 24 >> /logs/update_search_index-${DATE}.log
+
+# index lis
+python manage.py update_index main.Resource --age 24 >> /logs/update_search_index-${DATE}.log
+
+# index institution
+python manage.py update_index institution --age 24 >> /logs/update_search_index-${DATE}.log
+
+# index multimedia
+python manage.py update_index multimedia --age 24 >> /logs/update_search_index-${DATE}.log
+
+# index leisref
+python manage.py update_index leisref --age 24 >> /logs/update_search_index-${DATE}.log

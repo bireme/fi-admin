@@ -37,6 +37,9 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Media
 
+    def get_updated_field(self):
+        return "updated_time"
+
     '''
     def should_update(self, instance, **kwargs):
         if instance.status != 0:

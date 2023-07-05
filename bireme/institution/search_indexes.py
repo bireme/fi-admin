@@ -28,6 +28,9 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Institution
 
+    def get_updated_field(self):
+        return "updated_time"
+
     def prepare_title(self, obj):
         return str(obj)
 
