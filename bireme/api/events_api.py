@@ -84,6 +84,7 @@ class EventResource(ModelResource):
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
         sort = request.GET.get('sort', 'start_date asc')
+        count = request.GET.get('count', '')
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -97,7 +98,7 @@ class EventResource(ModelResource):
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': 'pt',
-                    'q': q , 'fq': fq, 'sort': sort}
+                    'q': q , 'fq': fq, 'sort': sort, 'count': count}
 
 
         r = requests.post(search_url, data=search_params)
