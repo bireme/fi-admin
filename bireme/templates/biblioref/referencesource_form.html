@@ -564,7 +564,7 @@
               },
               dataType: "json",
               success: function(data) {
-                //console.log(data);
+                console.log(data);
                 var sources = data.result;
                 var duplicates_total = 0;
                 var ref_id = '';
@@ -613,12 +613,6 @@
                     $( '#dedup-results' ).append(
                         $( '<div>', { html: duplicationLink }, '</div>' )
                     );
-                    // if all fields match disable save buttons
-                    if ( title_serial == source['titulo_revista'] && volume == source['volume_fasciculo'] && issue_number == source['numero_fasciculo'] ){
-                        $("button").attr("disabled", true);
-                        $("button").addClass("disabled");
-                    }
-
                   }
                 }
 
