@@ -16,6 +16,7 @@ import re
 class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     reference_title = indexes.MultiValueField(null=True)
+    english_title = indexes.CharField(model_attr='english_translated_title')
     author = indexes.MultiValueField(null=True)
     reference_abstract = indexes.MultiValueField()
     abstract_language = indexes.MultiValueField()
