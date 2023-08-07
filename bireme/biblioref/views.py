@@ -31,6 +31,7 @@ from biblioref.forms import *
 
 import json
 import requests
+import asyncio
 
 JOURNALS_FASCICLE = "S"
 
@@ -401,15 +402,9 @@ class BiblioRefUpdate(LoginRequiredView):
                 form.save()
                 # save many-to-many fields (required because form.save in forms.py use commit=False)
                 form.save_m2m()
-                # update DeDup service
-                update_dedup_service(self.object)
-                # update search index
-                update_search_index(self.object)
 
-                # if record is a serial source update analytics auxiliary field reference_title
-                if self.object.literature_type == 'S' and not hasattr(self.object, 'source'):
-                    update_reference_tite(self.object)
-
+                # run secundary updates (async)
+                asyncio.run(update_services(self.object))
 
                 return HttpResponseRedirect(self.get_success_url())
         else:
@@ -687,6 +682,8 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
         Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ReferenceLocal.objects.filter(source=obj.id).delete()
         ReferenceComplement.objects.filter(source=obj.id).delete()
+        # update search index
+        asyncio.run(update_search_index(obj, delete=True))
 
         return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
 
@@ -801,7 +798,7 @@ def refs_llxp_for_indexing(current_user):
 
 
 # update DeDup service
-def update_dedup_service(obj):
+async def update_dedup_service(obj):
     if obj.document_type() == 'Sas':
         # send multiple DeDup entries with the same ID for each title #728
         for article_title in obj.title:
@@ -848,23 +845,24 @@ def update_dedup_service(obj):
             except:
                 pass
 
-
-
 # update auxiliary field reference_title
-def update_reference_tite(source):
-    analytic_list = ReferenceAnalytic.objects.filter(source=source.id)
-    for analytic in analytic_list:
-        # try update field on each analytic record
-        try:
-            analytic_title = analytic.title[0]['text']
-            analytic.reference_title = u"{0} | {1}".format(source.reference_title, analytic_title)
-            # update only specific fields to avoid mess up json fields (escape)
-            analytic.save(update_fields=['reference_title', 'updated_time', 'updated_by'])
-        except:
-            pass
+async def update_reference_title(obj):
+    if obj.literature_type == 'S' and not hasattr(obj, 'source'):
+        analytic_list = ReferenceAnalytic.objects.filter(source=obj.id)
+        for analytic in analytic_list:
+            # try update field on each analytic record
+            try:
+                analytic_title = analytic.title[0]['text']
+                analytic.reference_title = u"{0} | {1}".format(obj.reference_title, analytic_title)
+                # update only specific fields to avoid mess up json fields (escape)
+                analytic.save(update_fields=['reference_title', 'updated_time', 'updated_by'])
+            except:
+                pass
+
+    return
 
 # update search index
-def update_search_index(reference):
+async def update_search_index(reference, delete=False):
     if reference.status != -1:
         if hasattr(reference, 'source'):
             index = ReferenceAnalyticIndex()
@@ -872,6 +870,18 @@ def update_search_index(reference):
             index = RefereceSourceIndex()
 
         try:
-            index.update_object(reference)
+            if delete:
+                index.remove_object(reference)
+            else:
+                index.update_object(reference)
         except:
             pass
+
+async def update_services(obj):
+    update_search = asyncio.create_task(update_search_index(obj))
+    update_dedup  = asyncio.create_task(update_dedup_service(obj))
+    update_title  = asyncio.create_task(update_reference_title(obj))
+
+    await asyncio.gather(update_search, update_dedup, update_title)
+
+    return
