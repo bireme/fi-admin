@@ -153,7 +153,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             filter_owner = '*'
 
         # profile lilacs express editor - restrict by CC code when list sources
-        if document_type and user_role == 'editor_llxp':
+        if view_name == 'list_biblioref_sources' and user_role == 'editor_llxp':
             filter_owner = 'center'
 
         # filter by user
