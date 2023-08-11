@@ -141,7 +141,7 @@ def edit_suggested_resource(request, **kwargs):
             output['alert'] = _("Resource successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('suggest.views.list_suggestions')
+            return redirect('list_suggestions')
     # new/edit
     else:
         form = SuggestResourceForm(instance=resource)
@@ -293,7 +293,7 @@ def edit_suggested_event(request, **kwargs):
             output['alert'] = _("Event successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('suggest.views.list_suggestions')
+            return redirect('list_suggestions')
     # new/edit
     else:
         form = SuggestEventForm(instance=suggest)
