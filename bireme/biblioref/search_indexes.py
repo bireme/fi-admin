@@ -193,11 +193,18 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
             return obj.updated_time.strftime('%Y%m%d')
 
     def get_field_values(self, field, attribute = 'text'):
-        value_list = field
-        if type(field) != list:
-            value_list = json.loads(field)
+        field_values = []
+        try:
+            value_list = field
+            if type(field) != list:
+                value_list = json.loads(field)
 
-        return [occ.get(attribute) for occ in value_list]
+            field_values = [occ.get(attribute) for occ in value_list]
+        except:
+            # ignore json field load error
+            pass
+
+        return field_values
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
@@ -207,6 +214,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
 class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     reference_title = indexes.MultiValueField(null=True)
+    english_title = indexes.CharField()
     author = indexes.MultiValueField(null=True)
     reference_abstract = indexes.MultiValueField()
     abstract_language = indexes.MultiValueField()
@@ -276,6 +284,15 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
             title = self.get_field_values(obj.title_collection)
 
         return title
+
+    def prepare_english_title(self, obj):
+        english_title = ''
+        if obj.english_title_monographic:
+            english_title = obj.english_title_monographic
+        elif obj.english_title_collection:
+            english_title = obj.english_title_collection
+
+        return english_title
 
     def prepare_author(self, obj):
         author_list = []
@@ -393,11 +410,18 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
 
 
     def get_field_values(self, field, attribute = 'text'):
-        value_list = field
-        if type(field) != list:
-            value_list = json.loads(field)
+        field_values = []
+        try:
+            value_list = field
+            if type(field) != list:
+                value_list = json.loads(field)
 
-        return [occ.get(attribute) for occ in value_list]
+            field_values = [occ.get(attribute) for occ in value_list]
+        except:
+            # ignore json field load error
+            pass
+
+        return field_values
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
