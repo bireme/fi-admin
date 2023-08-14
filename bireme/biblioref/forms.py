@@ -75,7 +75,7 @@ class BiblioRefForm(BetterModelForm):
             if self.document_type == 'S':
                 self.fields['issn'].widget = widgets.HiddenInput()
             # analytic
-            else:
+            elif self.document_type == 'Sas':
                 self.fields['record_type'].widget = widgets.HiddenInput()
                 self.fields['item_form'].widget = widgets.HiddenInput()
                 self.fields['type_of_journal'].widget = widgets.HiddenInput()
