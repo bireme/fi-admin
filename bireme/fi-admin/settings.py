@@ -344,6 +344,7 @@ ACTIONS = {
     'filter_category': "",
     'filter_country': "",
     'filter_network': "",
+    'filter_updated': "",
     'document_type': "",
     'review_type': "",
     'results_per_page': "",
