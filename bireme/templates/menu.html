@@ -40,7 +40,7 @@
                             {% endif %}
 
                             {% if service_role.TesauroDeCS %}
-                                {% if user_cc == 'BR1.1' or user_cc|slice:":2" == 'CL' or user_cc|slice:":2" == 'ES' or user_cc|slice:":2" == 'FR' %}
+                                {% if user_cc|slice:":2" == 'BR' or user_cc|slice:":2" == 'CL' or user_cc|slice:":2" == 'ES' or user_cc|slice:":2" == 'FR' %}
                                     <li><a href="{% url 'list_descriptor' %}?ths=1" title=""><i class="icon-book"></i> {% trans "Thesaurus DeCS" %}</a></li>
                                 {% endif %}
                             {% endif %}

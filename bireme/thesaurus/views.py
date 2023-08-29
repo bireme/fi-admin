@@ -668,7 +668,9 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -1937,7 +1939,9 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -2048,7 +2052,9 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
         user_cc = user_data['user_cc']
         context['user_cc'] = user_cc
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -2116,7 +2122,9 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -2888,7 +2896,9 @@ class PageViewDesc(LoginRequiredView, DetailView):
         user_cc = user_data['user_cc']
         context['user_cc'] = user_cc
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -3745,7 +3755,9 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -4963,7 +4975,9 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -5076,7 +5090,9 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
         user_cc = user_data['user_cc']
         context['user_cc'] = user_cc
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -5380,7 +5396,9 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -5827,7 +5845,9 @@ class PageViewQualif(LoginRequiredView, DetailView):
         user_cc = user_data['user_cc']
         context['user_cc'] = user_cc
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
