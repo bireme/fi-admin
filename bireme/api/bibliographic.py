@@ -73,6 +73,7 @@ class ReferenceResource(CustomResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
+        fb = request.GET.get('fb', '')
         start = request.GET.get('start', '')
         count = request.GET.get('count', '')
         lang = request.GET.get('lang', 'pt')
@@ -91,7 +92,7 @@ class ReferenceResource(CustomResource):
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort}
+                         'q': q, 'fq': fq, 'fb': fb, 'start': start, 'count': count, 'id': id, 'sort': sort}
 
         if facet_list:
             search_params['facet.field'] = []

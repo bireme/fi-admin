@@ -81,6 +81,7 @@ class EventResource(ModelResource):
         self.throttle_check(request)
 
         fq = request.GET.get('fq', '')
+        fb = request.GET.get('fb', '')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
         sort = request.GET.get('sort', 'start_date asc')
@@ -98,7 +99,7 @@ class EventResource(ModelResource):
         search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': 'pt',
-                    'q': q , 'fq': fq, 'sort': sort, 'count': count}
+                    'q': q , 'fq': fq, 'fb': fb, 'sort': sort, 'count': count}
 
 
         r = requests.post(search_url, data=search_params)
