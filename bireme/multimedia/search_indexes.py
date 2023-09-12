@@ -11,7 +11,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     title_translated = indexes.CharField(model_attr='title_translated')
     link = indexes.CharField(model_attr='link', null=True)
     description = indexes.CharField(model_attr='description', null=True)
-    authors = indexes.MultiValueField()
+    author = indexes.MultiValueField()
     contributors = indexes.MultiValueField()
     related_links = indexes.MultiValueField()
     media_collection = indexes.CharField(model_attr='media_collection', null=True)
@@ -60,7 +60,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_language_display(self, obj):
         return [ "|".join( source_language.get_translations() ) for source_language in SourceLanguage.objects.filter(media=obj.id) ]
 
-    def prepare_authors(self, obj):
+    def prepare_author(self, obj):
         return [line.strip() for line in obj.authors.split('\n') if line.strip()]
 
     def prepare_contributors(self, obj):
