@@ -22,6 +22,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     content_notes = indexes.CharField(model_attr='content_notes', null=True)
     version_notes = indexes.CharField(model_attr='version_notes', null=True)
     publication_date = indexes.CharField(model_attr='publication_date', null=True)
+    publication_year = indexes.CharField()
     language = indexes.MultiValueField()
     language_display = indexes.MultiValueField()
     media_type = indexes.MultiValueField()
@@ -81,6 +82,9 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_keyword(self, obj):
         return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
 
+    def prepare_publication_year(self, obj):
+        return obj.publication_date[:4]
+    
     def prepare_created_date(self, obj):
         if obj.created_time:
             return obj.created_time.strftime('%Y%m%d')
