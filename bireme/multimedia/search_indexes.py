@@ -83,8 +83,9 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
         return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
 
     def prepare_publication_year(self, obj):
-        return obj.publication_date[:4]
-    
+        if obj.publication_date:
+           return obj.publication_date.year
+
     def prepare_created_date(self, obj):
         if obj.created_time:
             return obj.created_time.strftime('%Y%m%d')
