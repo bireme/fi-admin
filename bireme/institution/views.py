@@ -109,7 +109,7 @@ class InstGenericListView(LoginRequiredView, ListView):
                 date_since = dt.now().date() - timedelta(days=years*365)
 
                 object_list = object_list.filter( Q(updated_time__lte=date_since) | Q(updated_time__isnull=True) )
-                object_list = object_list.order_by('updated_time')
+                object_list = object_list.order_by('-updated_time')
             else:
                 # by default order by reverse order of id's
                 object_list = object_list.order_by('-id')
