@@ -98,12 +98,13 @@
                                 {% endfor %}
                             </select>
                             <br/>
-                            {% trans "Updated" %}:
+                            {% trans "Last update" %}:
                             <select name="filter_updated">
-                                <option value="">{% trans "All" %}</option>
-                                <option value="1" {% if actions.filter_updated == '1' %}selected="true"{% endif %}>{% trans "> 1 year" %}</option>
-                                <option value="2" {% if actions.filter_updated == '2' %}selected="true"{% endif %}>{% trans "> 2 years" %}</option>
-                                <option value="3" {% if actions.filter_updated == '3' %}selected="true"{% endif %}>{% trans "> 3 years" %}</option>
+                                <option value="">---</option>
+                                <option value="0" {% if actions.filter_updated == '0' %}selected="true"{% endif %}>{% trans "Current year" %}</option>
+                                <option value="1" {% if actions.filter_updated == '1' %}selected="true"{% endif %}>> 1 {% trans "year" %}</option>
+                                <option value="2" {% if actions.filter_updated == '2' %}selected="true"{% endif %}>> 2 {% trans "years" %}</option>
+                                <option value="3" {% if actions.filter_updated == '3' %}selected="true"{% endif %}>> 3 {% trans "years" %}</option>
                             </select>
 
 
@@ -121,7 +122,7 @@
                     <th><a href="#" id="id_title">{% trans "Name" %}</a></th>
                     <th><a href="#" id="id_country">{% trans "Country" %}</a></th>
                     <th><a href="#" id="id_status">{% trans "Status" %}</a></th>
-                    <th><a href="#" id="id_updated">{% trans "Updated" %}</a></th>
+                    <th><a href="#" id="id_updated">{% trans "Last update" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
                 <tbody>

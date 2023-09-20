@@ -108,7 +108,12 @@ class InstGenericListView(LoginRequiredView, ListView):
                 years = int(self.actions['filter_updated'])
                 date_since = dt.now().date() - timedelta(days=years*365)
 
-                object_list = object_list.filter( Q(updated_time__lte=date_since) | Q(updated_time__isnull=True) )
+                if years == 0:
+                    current_year = dt.now().year
+                    object_list = object_list.filter(updated_time__year=current_year)
+                else:
+                    object_list = object_list.filter( Q(updated_time__lte=date_since) | Q(updated_time__isnull=True) )
+
                 object_list = object_list.order_by('-updated_time')
             else:
                 # by default order by reverse order of id's
