@@ -161,19 +161,19 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
                 type_list.append('Psychology')
             if 'MTCI' in adm_type_list:
                 type_list.append('MTCI')
-            if 'BIBLIOSUS' in category_list:
+            if 'BIBLIOSUS' in adm_type_list:
                 type_list.append('BIBLIOSUS')
-            if 'BVSVET' in category_list:
+            if 'BVSVET' in adm_type_list:
                 type_list.append('BVSVET')
-            if 'EPORT' in category_list:
+            if 'EPORT' in adm_type_list:
                 type_list.append('EPORT')
-            if 'EVIPNET' in category_list:
+            if 'EVIPNET' in adm_type_list:
                 type_list.append('EVIPNET')
-            if 'ODONTOLOGIA' in category_list:
+            if 'ODONTOLOGIA' in adm_type_list:
                 type_list.append('ODONTOLOGIA')
-            if 'SES-SP' in category_list:
+            if 'SES-SP' in adm_type_list:
                 type_list.append('SES-SP')
-            if 'SMS-SP' in category_list:
+            if 'SMS-SP' in adm_type_list:
                 type_list.append('SMS-SP')
 
         return type_list
