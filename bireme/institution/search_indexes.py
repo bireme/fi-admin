@@ -122,6 +122,8 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
                 type_list.append('CoordinatingCentersRg')
             if 'CCN' in adm_type_list:
                 type_list.append('CoordinatingCentersNc')
+            if 'CCT' in adm_type_list:
+                type_list.append('CoordinatingCentersTh')
             if any(value in adm_type_list for value in ['REDEBR/CC', 'REDEAL/CC', 'MEDCARIB/CC']):
                 type_list.append('CooperatingCenters')
             if 'LILACS' in adm_type_list:
@@ -159,6 +161,20 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
                 type_list.append('Psychology')
             if 'MTCI' in adm_type_list:
                 type_list.append('MTCI')
+            if 'BIBLIOSUS' in category_list:
+                type_list.append('BIBLIOSUS')
+            if 'BVSVET' in category_list:
+                type_list.append('BVSVET')
+            if 'EPORT' in category_list:
+                type_list.append('EPORT')
+            if 'EVIPNET' in category_list:
+                type_list.append('EVIPNET')
+            if 'ODONTOLOGIA' in category_list:
+                type_list.append('ODONTOLOGIA')
+            if 'SES-SP' in category_list:
+                type_list.append('SES-SP')
+            if 'SMS-SP' in category_list:
+                type_list.append('SMS-SP')
 
         return type_list
 
