@@ -1,12 +1,16 @@
 from django.conf import settings
+from django.db.models import Q
+from django.contrib.contenttypes.models import ContentType
+
 from haystack import indexes
 from haystack.exceptions import SkipDocument
+
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceLocal
+from related.models import LinkedResource, LinkedResearchData
+from classification.models import Relationship
 from attachments.models import Attachment
 from title.models import Title
-from classification.models import Relationship
-from django.contrib.contenttypes.models import ContentType
 from utils.models import AuxCode
 
 import datetime
@@ -240,6 +244,8 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     thesis_dissertation_institution = indexes.CharField(model_attr='thesis_dissertation_institution')
     thesis_dissertation_academic_title = indexes.CharField(model_attr='thesis_dissertation_academic_title')
 
+    related_resources = indexes.MultiValueField()
+
     def get_model(self):
         return ReferenceSource
 
@@ -400,6 +406,27 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.thesis_dissertation_leader:
             return self.get_field_values(obj.thesis_dissertation_leader)
 
+    def prepare_related_resources(self, obj):
+        related_obj_id = 'biblio-{}'.format(obj.id)
+        c_type = ContentType.objects.get_for_model(ReferenceSource)
+        related_resources = LinkedResource.objects.filter( Q(object_id=obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
+
+        # add related resource
+        related_resource_list = []
+        for related in related_resources:
+            if related.object_id == obj.id:
+                related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
+            else:
+                related_id = 'biblio-{}'.format(related.object_id)
+                related_title = Reference.objects.get(pk=related.object_id).reference_title
+                related_dict = {"_i": related.type.field_passive.field, "_t": related_title, "_6": related.link, "_w": related_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
+
+        return related_resource_list
+
     def prepare_created_date(self, obj):
         if obj.created_time:
             return obj.created_time.strftime('%Y%m%d')
@@ -422,6 +449,13 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
             pass
 
         return field_values
+
+    def dict2json(self, raw_dict):
+        clean_dict = {k: v for k, v in raw_dict.items() if v}
+        json_out = json.dumps(clean_dict, ensure_ascii=False).encode('utf8')
+
+        return json_out
+
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
