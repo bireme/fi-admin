@@ -44,6 +44,9 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     updated_date = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
 
+    related_resources = indexes.MultiValueField()
+    related_research = indexes.MultiValueField()
+
     def get_model(self):
         return ReferenceAnalytic
 
@@ -196,6 +199,40 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.updated_time:
             return obj.updated_time.strftime('%Y%m%d')
 
+    def prepare_related_resources(self, obj):
+        related_obj_id = 'biblio-{}'.format(obj.id)
+        c_type = ContentType.objects.get_for_model(ReferenceAnalytic)
+        related_resources = LinkedResource.objects.filter( Q(object_id=obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
+
+        # add related resource
+        related_resource_list = []
+        for related in related_resources:
+            if related.object_id == obj.id:
+                related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
+            else:
+                related_id = 'biblio-{}'.format(related.object_id)
+                related_title = Reference.objects.get(pk=related.object_id).reference_title
+                related_dict = {"_i": related.type.field_passive.field, "_t": related_title, "_6": related.link, "_w": related_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
+
+        return related_resource_list
+
+    def prepare_related_research(self, obj):
+        c_type = ContentType.objects.get_for_model(ReferenceAnalytic)
+        related_research = LinkedResearchData.objects.filter(object_id=obj.id, content_type=c_type)
+
+        # add related research
+        related_research_list = []
+        for related in related_research:
+            related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+            related_dict_json = self.dict2json(related_dict)
+            related_research_list.append(related_dict_json)
+
+        return related_research_list
+
     def get_field_values(self, field, attribute = 'text'):
         field_values = []
         try:
@@ -245,6 +282,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     thesis_dissertation_academic_title = indexes.CharField(model_attr='thesis_dissertation_academic_title')
 
     related_resources = indexes.MultiValueField()
+    related_research = indexes.MultiValueField()
 
     def get_model(self):
         return ReferenceSource
@@ -426,6 +464,19 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
                 related_resource_list.append(related_dict_json)
 
         return related_resource_list
+
+    def prepare_related_research(self, obj):
+        c_type = ContentType.objects.get_for_model(ReferenceSource)
+        related_research = LinkedResearchData.objects.filter(object_id=obj.id, content_type=c_type)
+
+        # add related research
+        related_research_list = []
+        for related in related_research:
+            related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+            related_dict_json = self.dict2json(related_dict)
+            related_research_list.append(related_dict_json)
+
+        return related_research_list
 
     def prepare_created_date(self, obj):
         if obj.created_time:
