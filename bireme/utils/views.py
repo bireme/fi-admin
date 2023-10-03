@@ -241,7 +241,6 @@ def decs_suggestion(request):
             text_by_lang[lang] = text_by_lang.get(lang, '') + ' ' + text['text']
 
     service_url = settings.DECS_HIGHLIGHTER_URL
-    print(service_url)
 
     headers = {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',

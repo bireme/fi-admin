@@ -227,11 +227,17 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         # add related research
         related_research_list = []
         for related in related_research:
-            related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+            related_dict = {"_t": related.title, "_6": related.link, "_n": related.description}
             related_dict_json = self.dict2json(related_dict)
             related_research_list.append(related_dict_json)
 
         return related_research_list
+
+    def dict2json(self, raw_dict):
+        clean_dict = {k: v for k, v in raw_dict.items() if v}
+        json_out = json.dumps(clean_dict, ensure_ascii=False).encode('utf8')
+
+        return json_out
 
     def get_field_values(self, field, attribute = 'text'):
         field_values = []
@@ -472,7 +478,7 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         # add related research
         related_research_list = []
         for related in related_research:
-            related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+            related_dict = {"_t": related.title, "_6": related.link, "_n": related.description}
             related_dict_json = self.dict2json(related_dict)
             related_research_list.append(related_dict_json)
 
