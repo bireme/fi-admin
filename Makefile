@@ -1,5 +1,5 @@
 IMAGE_NAME=bireme/fi-admin
-APP_VERSION=$(shell git describe --tags --long --always | sed 's/-g[a-z0-9]\{7\}//')
+APP_VERSION?=$(shell git describe --tags --long --always | sed 's/-g[a-z0-9]\{7\}//' | sed 's/-/\./') # change 2.1-0-gc231d6f --> 2.1.0
 TAG_LATEST=$(IMAGE_NAME):latest
 
 COMPOSE_FILE_DEV=docker-compose-dev.yml
@@ -106,6 +106,14 @@ prod_ps:
 
 prod_rm:
 	@docker-compose --compatibility rm -f
+
+prod_list_images:
+	@docker images $(IMAGE_NAME}
+
+prod_rollback:
+	@echo '*** ROLLBACK TO VERSION $(APP_VERSION) ***'
+	@docker-compose --compatibility stop
+	@docker-compose --compatibility up -d
 
 prod_exec_shell:
 	@docker-compose --compatibility exec fi_admin sh
