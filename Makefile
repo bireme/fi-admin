@@ -1,5 +1,5 @@
 IMAGE_NAME=bireme/fi-admin
-APP_VERSION?=$(shell git describe --tags --long --always | sed 's/-g[a-z0-9]\{7\}//' | sed 's/-/\./') # change 2.1-0-gc231d6f --> 2.1.0
+APP_VERSION?=$(shell git describe --tags --long --always | sed 's/-g[a-z0-9]\{7\}//' | sed 's/-/\./')
 TAG_LATEST=$(IMAGE_NAME):latest
 
 COMPOSE_FILE_DEV=docker-compose-dev.yml
