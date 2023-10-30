@@ -133,7 +133,9 @@ class TitleResource(CustomResource):
                 text += '^v'+title.initial_volume if title.initial_volume else ''
                 text += '^n'+title.initial_number if title.initial_number else ''
                 text += '^i'+title.issn if title.issn else ''
-                bundle.data[dict(TITLE_VARIANCE_LABELS)[title.type]] += [text]
+
+                if title.type and text:
+                    bundle.data[dict(TITLE_VARIANCE_LABELS)[title.type]] += [text]
 
         # field tag 436
         if bvs_specialties:
@@ -169,7 +171,9 @@ class TitleResource(CustomResource):
             for audit in audits:
                 text = audit.label if audit.label else ''
                 text += '^i'+audit.issn if audit.issn else ''
-                bundle.data[dict(AUDIT_LABELS)[audit.type]] += [text]
+
+                if audit.type and text:
+                    bundle.data[dict(AUDIT_LABELS)[audit.type]] += [text]
 
         # field tags 880 and 999
         if new_url:
