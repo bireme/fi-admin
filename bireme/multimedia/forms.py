@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 
-from utils.forms import DescriptorRequired, ResourceThematicRequired
+from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
 
 from multimedia.models import *
 
@@ -77,12 +77,12 @@ class AttachmentForm(forms.ModelForm):
 
 # definition of inline formsets
 
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, exclude=['primary'],
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=BaseDescriptorInlineFormSet, exclude=('primary', 'status',),
                                                   can_delete=True, extra=1)
 
-KeywordFormSet = generic_inlineformset_factory(Keyword, fields='__all__', can_delete=True, extra=1)
+KeywordFormSet = generic_inlineformset_factory(Keyword, exclude=('status',), can_delete=True, extra=1)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired,
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, exclude=('status',),
                                                         can_delete=True, extra=1)
 
 TypeTranslationFormSet = inlineformset_factory(MediaType, MediaTypeLocal, fields='__all__',

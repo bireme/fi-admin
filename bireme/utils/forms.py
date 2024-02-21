@@ -192,8 +192,8 @@ def is_valid_for_publication(form, formsets):
         one descriptor and one thematica area
         '''
         if status == 1:
-            #for biblioref descriptor/thematic status is admited by default
-            status_default = True if 'BiblioRef' in form_class else False
+            #set default to True when status field not present
+            status_default = True
 
             # access forms from formsets:
             for formset in formsets:
