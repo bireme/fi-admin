@@ -163,8 +163,8 @@
                                     <ul>
                                         <li>
                                             {% if reference_source.literature_type == 'S' %}
-                                                <strong>{{ reference_source }}</strong>
-                                                <span id="indexed_database_info" class="hide"> <i class="icon-info-sign"></i> {% trans 'Journal usually indexed in' %}: <strong><span id="indexed_database_list"></span></span></strong>
+                                                <a href="{% url 'edit_biblioref_source' reference_source.id %}"><strong>{{ reference_source }}</strong></a><br />
+                                                <span id="indexed_database_info" class="hide">{% trans 'Journal usually indexed in' %}: <strong><span id="indexed_database_list"></span></span></strong>
                                             {% else %}
                                                     <strong>{{ reference_source.title_serial }}</strong>
                                                     {% if reference_source.volume_serial %}
