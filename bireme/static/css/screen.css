@@ -882,6 +882,10 @@ tr.relation-row .row_order input{
     background-color: #fa8072;
 }
 
+.label-lilac {
+    background-color: #c8a2c8;
+}
+
 .btn-filter {
     display: inline-block;
 }
