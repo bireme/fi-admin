@@ -101,7 +101,10 @@ class ThesaurusResourceQualif(CustomResource):
         bundle.data['identifier'] = bundle.obj.id
 
         id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=bundle.obj.id,preferred_concept='Y').values('id')
-        id_concept = id_concept[0].get('id')
+        if id_concept:
+            id_concept = id_concept[0].get('id')
+        else:
+            return bundle
 
         # 'term_string_en': '001',
         term_string_en = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')
