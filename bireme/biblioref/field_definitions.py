@@ -23,7 +23,7 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
                  'symbol': '68', 'isbn': '69', 'descriptive_information': '38', 'text_language': '40',
                  'conference_sponsoring_institution': '52', 'conference_name': '53', 'conference_date': '54',
                  'conference_normalized_date': '55', 'conference_city': '56', 'project_sponsoring_institution': '58',
-                 'project_name': '59', 'internal_note': '61', 'publication_date': '64', 'publication_country': '67',
+                 'project_name': '59', 'project_number': '60', 'internal_note': '61', 'publication_date': '64', 'publication_country': '67',
                  'publication_date_normalized': '65', 'publication_type': '71', 'total_number_of_references': '72',
                  'time_limits_from': '74', 'time_limits_to': '75', 'check_tags': '76', 'person_as_subject': '78', 'non_decs_region': '82',
                  'abstract': '83', 'transfer_date_to_database': '84', 'author_keyword': '85', 'descriptors_primary': '87',
