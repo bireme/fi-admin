@@ -131,6 +131,8 @@ MIDDLEWARE = [
     'elasticapm.contrib.django.middleware.TracingMiddleware',
     # maintenance mode
     'utils.middleware.MaintenanceModeMiddleware',
+    # secure login from brute force attack
+    'utils.middleware.BruteForceProtectionMiddleware',
 ]
 
 
@@ -275,8 +277,8 @@ TEMPLATE_VISIBLE_SETTINGS = (
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-# set permissions after file upload (444 read only file for security reasons)
-FILE_UPLOAD_PERMISSIONS = 0o444
+# set permissions after file upload (644 write only for the owner)
+FILE_UPLOAD_PERMISSIONS = 0o644
 
 # set max upload size
 # 10MB - 10485760
@@ -323,6 +325,9 @@ EMAIL_PORT = os.environ.get("EMAIL_PORT")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_FROM = os.environ.get("EMAIL_FROM")
+
+BRUTE_FORCE_THRESHOLD = int(os.environ.get("BRUTE_FORCE_THRESHOLD", 3))   # Number of failed login attempts
+BRUTE_FORCE_TIMEOUT = int(os.environ.get("BRUTE_FORCE_TIMEOUT", 300))     # Lock the user out for X seconds
 
 # form actions
 ACTIONS = {
