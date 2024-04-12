@@ -132,7 +132,7 @@ MIDDLEWARE = [
     # maintenance mode
     'utils.middleware.MaintenanceModeMiddleware',
     # secure login from brute force attack
-    'utils.middleware.BruteForceProtectionMiddleware',
+    #'utils.middleware.BruteForceProtectionMiddleware',
 ]
 
 
