@@ -31,18 +31,30 @@ class BruteForceProtectionMiddleware:
         if request.path == settings.LOGIN_URL and request.method == "POST":
 
             # Get the IP address of the client
-            ip_address = request.META.get("REMOTE_ADDR")
+            # If request is using proxy extract IP from FORWARDED list
+            x_forward_for = request.META.get('HTTP_X_FORWARDED_FOR', None)
+            if x_forward_for:
+                ip_address = x_forward_for.split(',')[0]
+            else:
+                ip_address = request.META.get('REMOTE_ADDR')
+
+            # debug
+            print(ip_address)
 
             # Increment the failed login attempt count for this IP address
             cache_key = f"login_attempts:{ip_address}"
 
             login_attempts = cache.get(cache_key, 0)
 
-            # Save attemp in cache
-            cache.set(cache_key, login_attempts + 1, timeout=settings.BRUTE_FORCE_TIMEOUT)
+            # debug
+            print(login_attempts + 1)
+
+            # Save attemp in cache if user is not being redirect to app main page (login OK - status 302)
+            if response.status_code != 302:
+                cache.set(cache_key, login_attempts + 1, timeout=settings.BRUTE_FORCE_TIMEOUT)
 
             # If the login attempts exceed the threshold, block further attempts
-            if login_attempts >= settings.BRUTE_FORCE_THRESHOLD:
+            if login_attempts > settings.BRUTE_FORCE_THRESHOLD:
                 time_to_wait = settings.BRUTE_FORCE_TIMEOUT // 60
                 return HttpResponseForbidden(
                     f"Too many login attempts. Please try again later after {time_to_wait} minutes."

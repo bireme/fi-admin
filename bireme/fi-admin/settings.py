@@ -132,7 +132,7 @@ MIDDLEWARE = [
     # maintenance mode
     'utils.middleware.MaintenanceModeMiddleware',
     # secure login from brute force attack
-    #'utils.middleware.BruteForceProtectionMiddleware',
+    'utils.middleware.BruteForceProtectionMiddleware',
 ]
 
 
@@ -326,7 +326,7 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_FROM = os.environ.get("EMAIL_FROM")
 
-BRUTE_FORCE_THRESHOLD = int(os.environ.get("BRUTE_FORCE_THRESHOLD", 3))   # Number of failed login attempts
+BRUTE_FORCE_THRESHOLD = int(os.environ.get("BRUTE_FORCE_THRESHOLD", 5))   # Number of failed login attempts
 BRUTE_FORCE_TIMEOUT = int(os.environ.get("BRUTE_FORCE_TIMEOUT", 300))     # Lock the user out for X seconds
 
 # form actions
