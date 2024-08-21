@@ -16,7 +16,7 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     status = indexes.CharField(model_attr='status')
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
-    country = indexes.CharField()
+    country = indexes.MultiValueField()
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
 
@@ -40,8 +40,12 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_country(self, obj):
         if obj.country:
-            translations = obj.country.get_translations()
-            return "|".join(translations)
+            country_list = []
+            for country in obj.country.all():
+                country_translations = "|".join(country.get_translations())
+                country_list.append(country_translations)
+
+            return country_list
 
     def prepare_thematic_area(self, obj):
         return [line.strip() for line in obj.thematic_area.split('\n') if line.strip()]
