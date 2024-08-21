@@ -24,3 +24,6 @@ python manage.py update_index multimedia --nocommit --workers=10 --age 720 >> /l
 # index leisref
 python manage.py update_index leisref --nocommit --workers=10 --age 720 >> /logs/update_index-monthly-${DATE}.log
 
+# index title
+python manage.py update_index title --nocommit --workers=10 --age 720 >> /logs/update_index-monthly-${DATE}.log
+

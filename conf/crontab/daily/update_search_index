@@ -23,3 +23,6 @@ python manage.py update_index multimedia --age 24 >> /logs/update_index-daily-${
 
 # index leisref
 python manage.py update_index leisref --age 24 >> /logs/update_index-daily-${DATE}.log
+
+# index title
+python manage.py update_index title --age 24 >> /logs/update_index-daily-${DATE}.log
