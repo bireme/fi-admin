@@ -256,7 +256,7 @@ def decs_suggestion(request):
             decs_list_response = response_json['positions']
 
             for decs_term in decs_list_response:
-                decs_id = decs_term['id']
+                decs_id = str(int(decs_term['decsId']))
                 if decs_id not in decs_ids:
                     decs_ids.append(decs_id)
                     decs_list_unique.append(decs_term)
