@@ -52,16 +52,16 @@
                         <td>
                         <td>
                             <div class="btn-group disabled">
-                                <button class="btn btn-info" id="btn_{{ decs.id }}" data-toggle="dropdown"><i class="icon-plus"></i>{% trans "Add" %}</button>
-                                <button class="btn btn-info dropdown-toggle" id="btn_icon_{{ decs.id }}" data-toggle="dropdown">
+                                <button class="btn btn-info" id="btn_{{ decs.decsId }}" data-toggle="dropdown"><i class="icon-plus"></i>{% trans "Add" %}</button>
+                                <button class="btn btn-info dropdown-toggle" id="btn_icon_{{ decs.decsId }}" data-toggle="dropdown">
                                   <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" id="btn_{{ decs.id }}_primary" value="{{ decs.id }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.id|add:"0" }}|ADD|PRIMARY', '{{ decs.id }}'); return false">{% trans "Primary descriptor" %}</a>
+                                        <a href="#" id="btn_{{ decs.decsId }}_primary" value="{{ decs.decsId }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.decsId|add:"0" }}|ADD|PRIMARY', '{{ decs.decsId }}'); return false">{% trans "Primary descriptor" %}</a>
                                     </li>
                                     <li>
-                                        <a href="#" id="btn_{{ decs.id }}_secundary" value="{{ decs.id }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.id|add:"0" }}|ADD', '{{ decs.id }}'); return false">{% trans "Secundary descriptor" %}</a>
+                                        <a href="#" id="btn_{{ decs.decsId }}_secundary" value="{{ decs.decsId }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.decsId|add:"0" }}|ADD', '{{ decs.decsId }}'); return false">{% trans "Secundary descriptor" %}</a>
                                     </li>
                                 </ul>
                             </div>
