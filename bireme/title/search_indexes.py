@@ -11,12 +11,23 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     title = indexes.CharField(model_attr='title')
     subtitle = indexes.CharField(model_attr='subtitle')
     shortened_title = indexes.CharField(model_attr='shortened_title')
+    section = indexes.CharField(model_attr='section')
+    section_title = indexes.CharField(model_attr='section_title')
+    initial_volume = indexes.CharField(model_attr='initial_volume')
+    final_volume = indexes.CharField(model_attr='final_volume')
+    initial_number = indexes.CharField(model_attr='initial_number')
+    final_number = indexes.CharField(model_attr='final_number')
+    initial_date = indexes.CharField(model_attr='initial_date')
+    final_date = indexes.CharField(model_attr='final_date')
+    responsibility_mention = indexes.CharField(model_attr='responsibility_mention')
     issn = indexes.CharField(model_attr='issn')
     thematic_area = indexes.MultiValueField()
     status = indexes.CharField(model_attr='status')
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
     country = indexes.MultiValueField()
+    city = indexes.CharField(model_attr='city')
+    text_language = indexes.MultiValueField()
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
 
@@ -49,6 +60,12 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_thematic_area(self, obj):
         return [line.strip() for line in obj.thematic_area.split('\n') if line.strip()]
+
+    def prepare_text_language(self, obj):
+        if obj.text_language:
+            translations = ["|".join(text_language.get_translations()) for text_language in obj.text_language.all()]
+            return translations
+
 
     def prepare_created_date(self, obj):
         if obj.created_time:
