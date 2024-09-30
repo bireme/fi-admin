@@ -11,6 +11,7 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     title = indexes.CharField(model_attr='title')
     subtitle = indexes.CharField(model_attr='subtitle')
     shortened_title = indexes.CharField(model_attr='shortened_title')
+    medline_shortened_title = indexes.CharField(model_attr='medline_shortened_title')
     section = indexes.CharField(model_attr='section')
     section_title = indexes.CharField(model_attr='section_title')
     initial_volume = indexes.CharField(model_attr='initial_volume')
@@ -22,12 +23,12 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     responsibility_mention = indexes.CharField(model_attr='responsibility_mention')
     issn = indexes.CharField(model_attr='issn')
     thematic_area = indexes.MultiValueField()
-    status = indexes.CharField(model_attr='status')
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
     country = indexes.MultiValueField()
     city = indexes.CharField(model_attr='city')
-    text_language = indexes.MultiValueField()
+    language = indexes.MultiValueField()
+    status = indexes.CharField()
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
 
@@ -38,10 +39,11 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
         return "updated_time"
 
     def prepare_status(self, obj):
-        if obj.status == 'C':
-            return 1
-        else:
+        if obj.status == '?':
             raise SkipDocument
+        else:
+            status_int = 1 if obj.status == 'C' else 0
+            return status_int
 
     def prepare_descriptor(self, obj):
         return [descriptor.code for descriptor in Descriptor.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
@@ -61,11 +63,10 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_thematic_area(self, obj):
         return [line.strip() for line in obj.thematic_area.split('\n') if line.strip()]
 
-    def prepare_text_language(self, obj):
+    def prepare_language(self, obj):
         if obj.text_language:
             translations = ["|".join(text_language.get_translations()) for text_language in obj.text_language.all()]
             return translations
-
 
     def prepare_created_date(self, obj):
         if obj.created_time:

@@ -1,4 +1,5 @@
 {{ object.title }}
 {{ object.subtitle }}
 {{ object.shortened_title }}
+{{ object.medline_shortened_title }}
 {{ object.issn }}
