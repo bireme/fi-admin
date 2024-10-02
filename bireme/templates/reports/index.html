@@ -85,6 +85,14 @@
                             {% endfor %}
                         </select>
 
+                        {% trans "Year" %}:
+                        <select name="filter_year">
+                            <option value="">{% trans "All" %}</option>
+                            {% for year in year_list %}
+                                <option value="{{year}}" {% if params.filter_year|add:"0" == year %}selected="true"{% endif %}>{{year}}</option>
+                            {% endfor %}
+                        </select>
+
                         <button class="btn" type="submit" name="apply_filters" value="true">{% trans "Apply" %}</button>
                     </div>
 
