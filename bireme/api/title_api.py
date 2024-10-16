@@ -161,6 +161,7 @@ class TitleResource(CustomResource):
                 text += '^h'+str(int(index.distribute)) if index.distribute else '' # boolean field
                 text += '^i'+index.copy if index.copy else ''
                 text += '^j'+str(int(index.selective)) if index.selective else '' # boolean field
+                text += '^n'+index.index_code.name if index.index_code else ''
                 bundle.data['index_range'] += [text]
 
         # field tags 510, 520, 530, 540, 550, 560, 610, 620, 650,
