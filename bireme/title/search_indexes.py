@@ -2,7 +2,7 @@ import datetime
 from haystack import indexes
 from haystack.exceptions import SkipDocument
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
-from title.models import Title
+from title.models import Title, IndexRange
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -29,6 +29,7 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     city = indexes.CharField(model_attr='city')
     language = indexes.MultiValueField()
     status = indexes.CharField()
+    indexed_database = indexes.MultiValueField()
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
 
@@ -67,6 +68,12 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.text_language:
             translations = ["|".join(text_language.get_translations()) for text_language in obj.text_language.all()]
             return translations
+
+    def prepare_indexed_database(self, obj):
+        index_range = IndexRange.objects.filter(title=obj.id)
+        indexed_database_list = [index.index_code.name for index in index_range if index.indexer_cc_code != '']
+
+        return indexed_database_list
 
     def prepare_created_date(self, obj):
         if obj.created_time:
