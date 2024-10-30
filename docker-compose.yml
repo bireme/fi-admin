@@ -86,6 +86,19 @@ services:
     user: root
     command: crond -f -L /dev/stdout
 
+  fi_admin_cache:
+    image: bitnami/memcached:1.6.32
+    container_name: fi-admin-cache
+    restart: unless-stopped
+    depends_on:
+      - fi_admin
+    ports:
+      - 11211:11211
+    environment:
+      - MEMCACHED_CACHE_SIZE=128
+    networks:
+      - nginx-proxy
+
 networks:
   nginx-proxy:
     external: true
