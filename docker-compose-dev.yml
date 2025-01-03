@@ -6,6 +6,9 @@ services:
     build:
       context: .
       target: dev
+    depends_on:
+      - fi_admin_cache
+    restart: unless-stopped
     ports:
       - 8000:8000
     volumes:
@@ -20,8 +23,6 @@ services:
     image: bitnami/memcached:1.6.32
     container_name: fi-admin-cache
     restart: unless-stopped
-    depends_on:
-      - fi_admin
     ports:
       - 11211:11211
     environment:

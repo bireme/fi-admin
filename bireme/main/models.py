@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+
 from django.core.cache import cache
 from log.models import AuditLog
 
@@ -11,6 +12,7 @@ from django.db import models
 
 from utils.models import Generic, Country
 from error_reporting.models import ErrorReport
+from classification.models import Relationship
 
 from main import choices
 
@@ -314,6 +316,7 @@ class Resource(Generic, AuditLog):
     error_reports = GenericRelation(ErrorReport)
     thematics = GenericRelation(ResourceThematic)
     descriptors = GenericRelation(Descriptor)
+    collection = GenericRelation(Relationship)
 
     def get_fields(self):
         return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]

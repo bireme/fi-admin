@@ -53,6 +53,7 @@ class LinkResource(ModelResource):
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
         sort = request.GET.get('sort', 'created_date desc')
+        facet_list = request.GET.getlist('facet.field', [])
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -65,6 +66,15 @@ class LinkResource(ModelResource):
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': lang,
                     'q': q , 'fq': fq, 'fb': fb, 'start': start, 'count': count, 'id' : id,'sort': sort}
+
+        if facet_list:
+            search_params['facet.field'] = []
+            for facet_field in facet_list:
+                search_params['facet.field'].append(facet_field)
+                facet_limit_param = 'f.{}.facet.limit'.format(facet_field)
+                facet_field_limit = request.GET.get(facet_limit_param, None)
+                if facet_field_limit:
+                    search_params[facet_limit_param] = facet_field_limit
 
         r = requests.post(search_url, data=search_params)
         try:
@@ -90,6 +100,16 @@ class LinkResource(ModelResource):
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['source_types'] = [source_type.acronym for source_type in source_types]
         bundle.data['source_languages'] = [source_language.acronym for source_language in source_languages]
+
+        # check if object has classification (relationship model)
+        if bundle.obj.collection.count():
+            community_collection_path = []
+
+            collection_all = bundle.obj.collection.all()
+            for rel in collection_all:
+                community_collection_path.append(rel.collection.community_collection_path_translations())
+
+            bundle.data['collections'] = community_collection_path
 
         return bundle
 

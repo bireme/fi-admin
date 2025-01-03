@@ -3,6 +3,7 @@ from haystack import indexes
 from main.models import Resource, Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
 
 from django.contrib.contenttypes.models import ContentType
+from classification.models import Relationship
 
 
 class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
@@ -31,6 +32,28 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_updated_field(self):
         return "updated_time"
+
+    def prepare(self, obj):
+        self.prepared_data = super(ResourceIndex, self).prepare(obj)
+
+        # create dynamic filters for collections, exs: collection_e-bluinfo, collection_tmgl
+        relation_list = obj.collection.all()
+
+        if relation_list:
+
+            for rel in relation_list:
+                community_collection_path = rel.collection.community_collection_path_translations(include_first_parent=False)
+
+                collection_first_parent = [parent.slug for parent in rel.collection.get_parents()][0]
+                filter_name = "collection_{}".format(collection_first_parent)
+
+                if filter_name in self.prepared_data:
+                    self.prepared_data[filter_name].append(community_collection_path)
+                else:
+                    self.prepared_data[filter_name] = [community_collection_path]
+
+
+        return self.prepared_data
 
     def prepare_link(self, obj):
         return [line.strip() for line in obj.link.split('\n') if line.strip()]
