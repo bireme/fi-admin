@@ -23,6 +23,7 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     time_period_textual = indexes.CharField(model_attr='time_period_textual')
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
+    publication_country = indexes.MultiValueField()
     status = indexes.IntegerField(model_attr='status')
     created_date = indexes.CharField()
     updated_date = indexes.CharField()
@@ -51,7 +52,6 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
                     self.prepared_data[filter_name].append(community_collection_path)
                 else:
                     self.prepared_data[filter_name] = [community_collection_path]
-
 
         return self.prepared_data
 
@@ -91,6 +91,15 @@ class ResourceIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_keyword(self, obj):
         return [ keyword.text for keyword in Keyword.objects.filter(object_id=obj.id,
                     content_type=ContentType.objects.get_for_model(obj), status=1) ]
+
+    def prepare_publication_country(self, obj):
+        if obj.originator_location:
+            country_list = []
+            for country in obj.originator_location.all():
+                country_translations = "|".join(country.get_translations())
+                country_list.append(country_translations)
+
+            return country_list
 
     def prepare_created_date(self, obj):
         if obj.created_time:
