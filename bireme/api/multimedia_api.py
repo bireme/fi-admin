@@ -57,8 +57,8 @@ class MediaResource(ModelResource):
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
         fb = request.GET.get('fb', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -71,12 +71,15 @@ class MediaResource(ModelResource):
             fq = '(status:1 AND django_ct:multimedia.media)'
 
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': lang,
-                    'q': q , 'fq': fq, 'fb': fb, 'start': start, 'count': count, 'id' : id,'sort': sort}
+                    'q': q , 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'id' : id,'sort': sort}
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
         try:
             response_json = r.json()
         except ValueError:
