@@ -72,6 +72,11 @@ api_ps:
 api_rm:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility rm -f
 
+api_rollback:
+	@echo '*** ROLLBACK TO VERSION $(APP_VERSION) ***'
+	@docker-compose --compatibility stop
+	@docker-compose --compatibility up -d
+
 api_exec_shell:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec fi_admin_api sh
 
