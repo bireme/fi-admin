@@ -67,13 +67,17 @@ def search(request):
         fq = '(status:1 AND django_ct:main.resource)'
 
     # url
-    search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+    search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
     search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': 'pt',
-                'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
+                     'q': q , 'fq': [fq],  'start': int(start), 'count': int(count), 'id' : id,'sort': sort}
 
-    request_result = requests.post(search_url, data=search_params)
-    result = request_result.json()
+    search_params_json = json.dumps(search_params)
+    request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+    r = requests.post(search_url, data=search_params_json, headers=request_headers)
+
+    result = r.json()
     total = result['diaServerResponse'][0]['response']['numFound']
 
     pages_count = 10

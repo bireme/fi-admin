@@ -63,8 +63,8 @@ class ThesaurusAPIDescResource(CustomResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -78,15 +78,24 @@ class ThesaurusAPIDescResource(CustomResource):
         #     fq = 'django_ct:thesaurus.identifierdesc*'
 
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         # print 'search_url -->',search_url
         # print 'q          -->',q
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort, 'decs_code': decs_code }
+                         'q': q, 'fq': [fq], 'start': int(start), 'count': int(count), 'id': id, 'sort': sort, 'decs_code': decs_code,
+                         'facet': 'false'
+                    }
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
@@ -220,7 +229,7 @@ class ThesaurusAPIDescResource(CustomResource):
 
                 # Armazena array
                 array_fields_all.append(array_fields)
-                
+
                 # Zera array pra próxima leitura
                 array_fields = {}
 
@@ -244,7 +253,7 @@ class ThesaurusAPIDescResource(CustomResource):
 
                             # Armazena array
                             array_fields_all.append(array_terms)
-                            
+
                             # Zera array pra próxima leitura
                             array_terms = {}
 
@@ -716,8 +725,8 @@ class ThesaurusAPIQualifResource(CustomResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -731,12 +740,19 @@ class ThesaurusAPIQualifResource(CustomResource):
             fq = '(status:1 AND django_ct:title.title*)'
 
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort, 'decs_code': decs_code }
+                         'q': q, 'fq': [fq], 'start': int(start), 'count': int(count), 'id': id, 'sort': sort, 'decs_code': decs_code }
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
