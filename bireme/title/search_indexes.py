@@ -1,7 +1,7 @@
 import datetime
 from django.conf import settings
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
-from title.models import Title, IndexRange, PublicInfo
+from title.models import Title, IndexRange, OnlineResources, PublicInfo
 from haystack import indexes
 from haystack.exceptions import SkipDocument
 
@@ -34,6 +34,7 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     description = indexes.CharField()
     logo_image_file = indexes.CharField()
     logo_image_url = indexes.CharField()
+    link = indexes.MultiValueField()
     status = indexes.CharField()
     indexed_database = indexes.MultiValueField()
     created_date = indexes.CharField()
@@ -106,6 +107,13 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
         indexed_database_list = [index.index_code.name for index in index_range if index.indexer_cc_code != '']
 
         return indexed_database_list
+
+    def prepare_link(self, obj):
+        online_list = OnlineResources.objects.filter(title=obj.id)
+        link_list = [online.url for online in online_list]
+
+        return link_list
+
 
     def prepare_created_date(self, obj):
         if obj.created_time:
