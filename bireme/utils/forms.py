@@ -126,7 +126,7 @@ class BaseDescriptorInlineFormSet(BaseGenericInlineFormSet):
                     _("Duplicated descriptors are not allowed"), code="invalid"
                 )
 
-            if text is not None:
+            if text is not None and text != "":
                 descriptors.append(text)
 
 

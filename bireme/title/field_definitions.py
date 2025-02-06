@@ -1,6 +1,8 @@
 # coding: utf-8
 from django.utils.translation import ugettext_lazy as _
 
+from utils.models import AuxCode
+
 import colander
 import deform
 import json
@@ -53,3 +55,14 @@ issue_field_tag_map = {
                         'creation_date': '940',
                         'last_change_date': '941'
                       }
+
+
+class DescriptionAttributes(colander.MappingSchema):
+    _i = colander.SchemaNode(colander.String(), widget=deform.widget.SelectWidget(values=language_choices),
+                             title=_('Language'))
+    text = colander.SchemaNode(colander.String(), title=_('Description'),
+                               widget=deform.widget.TextAreaWidget(rows=15, cols=120))
+
+
+class Description(colander.SequenceSchema):
+    item = DescriptionAttributes(title=_('Description'))

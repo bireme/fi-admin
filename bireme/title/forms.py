@@ -189,6 +189,24 @@ class CollectionForm(forms.ModelForm):
             'collection': forms.Textarea(attrs={'rows':20, 'cols':90}),
         }
 
+
+class PublicInfoForm(forms.ModelForm):
+    class Meta:
+        model = PublicInfo
+        fields = '__all__'
+
+    def clean_logo_image(self):
+        image = self.cleaned_data.get('logo_image')
+        if image:
+            image_extension = image.name.split('.')[-1]
+            valid_extensions = ['jpg', 'png', 'gif', 'jpeg']
+
+            if not image_extension.lower() in valid_extensions:
+                raise ValidationError('Unsupported file extension.')
+
+        return image
+
+
 # Definition of inline formsets
 
 DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True, extra=1, exclude=('primary', ))
@@ -200,3 +218,4 @@ BVSSpecialtyFormSet = inlineformset_factory(Title, BVSSpecialty, fields='__all__
 IndexRangeFormSet = inlineformset_factory(Title, IndexRange, fields='__all__', can_delete=True, extra=1)
 IssueFormSet = inlineformset_factory(Title, Issue, form=IssueForm, fields='__all__', can_delete=True, extra=1)
 CollectionFormSet = inlineformset_factory(Title, Collection, form=CollectionForm, fields='__all__', can_delete=False, extra=1, max_num=1)
+PublicInfoFormSet = inlineformset_factory(Title, PublicInfo, form=PublicInfoForm, fields='__all__', can_delete=False, extra=1, max_num=1)

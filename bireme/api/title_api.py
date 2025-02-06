@@ -111,6 +111,7 @@ class TitleResource(CustomResource):
         audits = Audit.objects.filter(title=bundle.obj.id)
         new_url = OnlineResources.objects.filter(title=bundle.obj.id)
         collections = Collection.objects.filter(title=bundle.obj.id)
+        public_info = PublicInfo.objects.filter(title=bundle.obj.id)
 
         # m2m fields
         country = bundle.obj.country.all()
@@ -223,6 +224,17 @@ class TitleResource(CustomResource):
                         bundle.data['collection'] += [line]
             else:
                 bundle.data['collection'] = [collection.collection for collection in collections]
+
+        # public info fields
+        if public_info:
+            public_info_data = public_info[0]
+
+            if public_info_data.description:
+                bundle.data['description'] = public_info_data.description
+            if public_info_data.logo_image_url:
+                bundle.data['logo_image_url'] = public_info_data.logo_image_url
+            if public_info_data.logo_image_file:
+                bundle.data['logo_image_file'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, public_info_data.logo_image_file)
 
         return bundle
 

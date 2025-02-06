@@ -1,10 +1,13 @@
 import datetime
+from django.conf import settings
+from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
+from title.models import Title, IndexRange, PublicInfo
 from haystack import indexes
 from haystack.exceptions import SkipDocument
-from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
-from title.models import Title, IndexRange
 
 from django.contrib.contenttypes.models import ContentType
+
+import json
 
 class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -28,6 +31,9 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     country = indexes.MultiValueField()
     city = indexes.CharField(model_attr='city')
     language = indexes.MultiValueField()
+    description = indexes.CharField()
+    logo_image_file = indexes.CharField()
+    logo_image_url = indexes.CharField()
     status = indexes.CharField()
     indexed_database = indexes.MultiValueField()
     created_date = indexes.CharField()
@@ -38,6 +44,32 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_updated_field(self):
         return "updated_time"
+
+    def prepare(self, obj):
+        self.prepared_data = super(TitleIndex, self).prepare(obj)
+
+        public_info = PublicInfo.objects.filter(title=obj.id)
+        if public_info:
+            public_info_data = public_info[0]
+
+            # Export description with language identification (pt, es, en) and abstract text separate by pipe |
+            if public_info_data.description:
+                description_list = public_info_data.description
+                description_lang = []
+
+                for desc in description_list:
+                    description_lang.append(u"{}|{}".format(desc.get('_i'), desc.get('text')))
+
+                self.prepared_data['description'] = description_lang
+
+            if public_info_data.logo_image_url:
+                self.prepared_data['logo_image_url'] = public_info_data.logo_image_url
+
+            if public_info_data.logo_image_file:
+                self.prepared_data['logo_image_file'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, public_info_data.logo_image_file)
+
+        return self.prepared_data
+
 
     def prepare_status(self, obj):
         if obj.status == '?':

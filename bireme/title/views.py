@@ -122,6 +122,7 @@ class TitleUpdate(LoginRequiredView):
         formset_collection = CollectionFormSet(self.request.POST, instance=self.object)
         formset_descriptor = DescriptorFormSet(self.request.POST, instance=self.object)
         formset_keyword = KeywordFormSet(self.request.POST, instance=self.object)
+        formset_publicinfo = PublicInfoFormSet(self.request.POST, self.request.FILES, instance=self.object)
 
         # run all validation before for display formset errors at form
         form_valid = form.is_valid()
@@ -135,21 +136,48 @@ class TitleUpdate(LoginRequiredView):
         formset_collection_valid = formset_collection.is_valid()
         formset_descriptor_valid = formset_descriptor.is_valid()
         formset_keyword_valid = formset_keyword.is_valid()
+        formset_publicinfo_valid = formset_publicinfo.is_valid()
 
         # for status = admitted check  if the resource have at least one descriptor and one thematica area
-        valid_for_publication = is_valid_for_publication(form, [formset_issues, formset_links, formset_specialty, formset_variance, formset_indexrange, formset_audit, formset_collection, formset_descriptor, formset_keyword])
+        valid_for_publication = is_valid_for_publication(
+            form,
+            [
+                formset_issues,
+                formset_links,
+                formset_specialty,
+                formset_variance,
+                formset_indexrange,
+                formset_audit,
+                formset_collection,
+                formset_descriptor,
+                formset_keyword,
+            ]
+        )
 
-        if (form_valid and formset_issues_valid and formset_links_valid and formset_specialty_valid and formset_variance_valid and formset_indexrange_valid and formset_audit_valid and formset_collection_valid and formset_descriptor_valid and formset_keyword_valid and valid_for_publication):
+        if (form_valid and
+            formset_issues_valid and
+            formset_links_valid and
+            formset_specialty_valid and
+            formset_variance_valid and
+            formset_indexrange_valid and
+            formset_audit_valid and
+            formset_collection_valid and
+            formset_descriptor_valid and
+            formset_keyword_valid and
+            formset_publicinfo_valid and
+            valid_for_publication):
 
             action = self.request.POST['action']
 
-            if action in ('preview', 'edit'):
+            # When previewing, editing or creating a title, if there is no file, the form is displayed again
+            if action in ('preview', 'edit') and not self.request.FILES:
                 view = 'title/form_preview.html' if action == 'preview' else 'title/title_form.html'
 
                 return render(
                             self.request,
                             view,
-                            self.get_context_data(form=form,
+                            self.get_context_data(
+                                    form=form,
                                     formset_issues=formset_issues,
                                     formset_links=formset_links,
                                     formset_specialty=formset_specialty,
@@ -159,7 +187,9 @@ class TitleUpdate(LoginRequiredView):
                                     formset_collection=formset_collection,
                                     formset_descriptor=formset_descriptor,
                                     formset_keyword=formset_keyword,
-                                    valid_for_publication=valid_for_publication))
+                                    formset_publicinfo=formset_publicinfo,
+                                    valid_for_publication=valid_for_publication
+                                    ))
             else:
                 self.object = form.save()
 
@@ -190,7 +220,10 @@ class TitleUpdate(LoginRequiredView):
                 formset_keyword.instance = self.object
                 formset_keyword.save()
 
-                # update solr index
+                formset_publicinfo.instance = self.object
+                formset_publicinfo.save()
+
+                # update models
                 form.save()
                 form.save_m2m()
                 return HttpResponseRedirect(self.get_success_url())
@@ -206,7 +239,9 @@ class TitleUpdate(LoginRequiredView):
                                 formset_collection=formset_collection,
                                 formset_descriptor=formset_descriptor,
                                 formset_keyword=formset_keyword,
-                                valid_for_publication=valid_for_publication))
+                                formset_publicinfo=formset_publicinfo,
+                                valid_for_publication=valid_for_publication
+                                ))
 
 
     def form_invalid(self, form):
@@ -274,7 +309,9 @@ class TitleUpdate(LoginRequiredView):
                 context['formset_indexrange'] = IndexRangeFormSet(instance=self.object)
                 context['formset_audit'] = AuditFormSet(instance=self.object)
                 context['formset_collection'] = CollectionFormSet(instance=self.object)
+                context['formset_publicinfo'] = PublicInfoFormSet(instance=self.object)
                 # context['formset_issues'] = IssueFormSet(instance=self.object)
+
             else:
                 context['formset_links'] = OnlineResourcesFormSet(instance=self.object)
                 context['formset_specialty'] = BVSSpecialtyFormSet(instance=self.object)
@@ -284,6 +321,7 @@ class TitleUpdate(LoginRequiredView):
                 context['formset_collection'] = CollectionFormSet(instance=self.object)
                 context['formset_descriptor'] = DescriptorFormSet(instance=self.object)
                 context['formset_keyword'] = KeywordFormSet(instance=self.object)
+                context['formset_publicinfo'] = PublicInfoFormSet(instance=self.object)
                 # context['formset_issues'] = IssueFormSet(instance=self.object)
         else:
             keep_context = False

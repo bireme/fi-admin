@@ -2,7 +2,12 @@
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.db import models
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+from django.template.defaultfilters import slugify
+
+
 from utils.models import Generic, Country
+from utils.fields import JSONField
 from main.models import SourceLanguage
 from log.models import AuditLog
 from title.choices import *
@@ -346,3 +351,29 @@ class Collection(Generic):
 
     def __str__(self):
         return self.collection
+
+
+def image_upload(instance, filename):
+    """Stores the image at "uploads/<app_label>/<primary key>/" folder"""
+
+    fname, dot, extension = filename.rpartition('.')
+    slug_filename = "%s.%s" % (slugify(fname), extension)
+
+    upload_path = 'title/%s/%s' % (instance.title.id, slug_filename)
+
+    return upload_path
+
+
+class PublicInfo(models.Model, AuditLog):
+
+    class Meta:
+        verbose_name = _("Public information")
+        verbose_name_plural = _("Public informations")
+
+    title = models.ForeignKey(Title, verbose_name=_("Original title"), blank=True, on_delete=models.PROTECT)
+    description = JSONField(_('Description'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+    logo_image_url = models.URLField(_('Logo image url'), max_length=255, blank=True, null=True)
+    logo_image_file = models.FileField(_('Logo image file'), upload_to=image_upload, blank=True, null=True)
+
+    def __str__(self):
+        return self._meta.verbose_name.title()

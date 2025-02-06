@@ -320,7 +320,7 @@ fieldset a.icon-plus-sign, fieldset a.add-button {
     width: 560px;
 }
 
-fieldset.metadata input[type=text], fieldset.metadata textarea, fieldset.metadata select {
+fieldset.metadata input[type=text], fieldset.metadata input[type=url], fieldset.metadata textarea, fieldset.metadata select {
     width: 560px;
 }
 
