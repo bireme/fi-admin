@@ -88,11 +88,14 @@ class ReferenceResource(CustomResource):
         else:
             fq = '(status:("-3" OR "0" OR "1") AND django_ct:biblioref.reference*)'
 
+        if id != '':
+            q = 'id:%s' % id
+
         # url
         search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'id': id, 'sort': sort}
+                         'q': q, 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'sort': sort}
 
         if facet_list:
             search_params['facet.field'] = []
