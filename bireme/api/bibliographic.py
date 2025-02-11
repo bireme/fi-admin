@@ -112,6 +112,11 @@ class ReferenceResource(CustomResource):
         except ValueError:
             response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
+        # Duplicate "response" to "match" element for old compatibility calls
+        if id != '' and response_json:
+            response_json['diaServerResponse'][0]['match'] = response_json['diaServerResponse'][0]['response']
+
+
         self.log_throttled_access(request)
         return self.create_response(request, response_json)
 

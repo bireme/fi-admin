@@ -90,8 +90,8 @@ class LinkResource(ModelResource):
         except ValueError:
             response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
+        # Duplicate "response" to "match" element for old compatibility calls (wp plugin)
         if id != '' and response_json:
-            # Duplicate "response" to "match" element for old compatibility calls (lis wp plugin)
             response_json['diaServerResponse'][0]['match'] = response_json['diaServerResponse'][0]['response']
 
 
