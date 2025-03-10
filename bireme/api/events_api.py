@@ -60,11 +60,14 @@ class EventResource(ModelResource):
         else:
             fq = '(status:1 AND django_ct:events.event)'
 
+        if id != '':
+            q = 'id:%s' % id
+
         # url
         search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': lang,
-                    'q': q , 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'id' : id, 'sort': sort}
+                    'q': q , 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'sort': sort}
 
 
         search_params_json = json.dumps(search_params)
@@ -75,6 +78,10 @@ class EventResource(ModelResource):
             response_json = r.json()
         except ValueError:
             response_json = json.loads('{"type": "error", "message": "invalid output"}')
+
+        # Duplicate "response" to "match" element for old compatibility calls
+        if id != '' and response_json:
+            response_json['diaServerResponse'][0]['match'] = response_json['diaServerResponse'][0]['response']
 
         self.log_throttled_access(request)
         return self.create_response(request, response_json)
