@@ -26,6 +26,7 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
     responsibility_mention = indexes.CharField(model_attr='responsibility_mention')
     issn = indexes.CharField(model_attr='issn')
     thematic_area = indexes.MultiValueField()
+    thematic_area_display = indexes.MultiValueField()
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
     country = indexes.MultiValueField()
@@ -95,6 +96,9 @@ class TitleIndex(indexes.SearchIndex, indexes.Indexable):
             return country_list
 
     def prepare_thematic_area(self, obj):
+        return [line.strip() for line in obj.thematic_area.split('\n') if line.strip()]
+
+    def prepare_thematic_area_display(self, obj):
         return [line.strip() for line in obj.thematic_area.split('\n') if line.strip()]
 
     def prepare_language(self, obj):
