@@ -11,7 +11,7 @@ from tastypie import fields
 
 from multimedia.models import Media
 
-from  main.models import Descriptor, ResourceThematic
+from  main.models import Descriptor, ResourceThematic, Keyword
 import requests
 import urllib
 import json
@@ -100,10 +100,13 @@ class MediaResource(ModelResource):
         c_type = ContentType.objects.get_for_model(bundle.obj)
 
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        keywords = Keyword.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
 
         # add fields to output
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
+        bundle.data['keywords'] = [keyword.text for keyword in keywords]
+
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['authors'] = [line.strip() for line in bundle.obj.authors.split('\n') if line.strip()]
         bundle.data['contributors'] = [line.strip() for line in bundle.obj.contributors.split('\n') if line.strip()]

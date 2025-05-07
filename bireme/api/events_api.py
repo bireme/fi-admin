@@ -1,12 +1,14 @@
 # coding: utf-8
 from django.conf import settings
 from django.urls import re_path
+from django.contrib.contenttypes.models import ContentType
 
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 from tastypie import fields
 
 from  events.models import Event
+from  main.models import Descriptor, ResourceThematic, Keyword
 
 import requests
 import urllib
@@ -131,3 +133,18 @@ class EventResource(ModelResource):
         response = Event.objects.latest('pk').pk
 
         return self.create_response(request, response)
+
+
+    def dehydrate(self, bundle):
+        c_type = ContentType.objects.get_for_model(bundle.obj)
+
+        descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        keywords = Keyword.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+
+        # add fields to output
+        bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
+        bundle.data['keywords'] = [keyword.text for keyword in keywords]
+        bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
+
+        return bundle

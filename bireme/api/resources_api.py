@@ -7,7 +7,7 @@ from tastypie.resources import ModelResource
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from tastypie import fields
-from main.models import Resource, ResourceThematic, Descriptor, SourceType, SourceLanguage
+from main.models import Resource, ResourceThematic, Descriptor, SourceType, SourceLanguage, Keyword
 
 import requests
 import urllib
@@ -105,11 +105,13 @@ class LinkResource(ModelResource):
         source_types = SourceType.objects.filter(resource=bundle.obj.id)
         source_languages = SourceLanguage.objects.filter(resource=bundle.obj.id)
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+        keywords = Keyword.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
 
         # add fields to output
         bundle.data['link'] = [line.strip() for line in bundle.obj.link.split('\n') if line.strip()]
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
+        bundle.data['keywords'] = [keyword.text for keyword in keywords]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['source_types'] = [source_type.acronym for source_type in source_types]
         bundle.data['source_languages'] = [source_language.acronym for source_language in source_languages]
