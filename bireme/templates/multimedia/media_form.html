@@ -5,6 +5,7 @@
 {% block title %}{% trans "Edit Media" %}{% endblock %}
 
 {% block extrahead %}
+    <link href="{% static "css/multiple-select.min.css" %}" rel="stylesheet">
     <style>
         input[type="url"]{
             width: 560px;
@@ -378,6 +379,7 @@
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/classification.js' %}"></script>
+   <script src="{% static 'js/multiple-select.min.js' %}"></script>
 
    <script type="text/javascript">
         var decs_field;
@@ -447,6 +449,8 @@
             $(document).on("click", "a.add_error_report", function(){
                 $("#error_report_modal").modal("show");
             });
+
+            $('.input_select_text_language').multipleSelect({selectAll: false, single: true, filter: true});
 
         })
 

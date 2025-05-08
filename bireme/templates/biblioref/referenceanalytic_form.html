@@ -513,6 +513,7 @@
             });
 
             $('#id_indexed_database, #id_publication_type, #id_check_tags').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
+            $('.input_select_text_language').multipleSelect({selectAll: false, single: true, filter: true});
 
             // consult list of indexed databases from TITLE
             var check_title = '{{reference_source.title_serial}}';

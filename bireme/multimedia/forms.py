@@ -9,6 +9,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
+from utils.models import AuxCode
 
 from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
 
@@ -63,6 +64,17 @@ class MediaCollectionForm(forms.ModelForm):
 class AttachmentForm(forms.ModelForm):
     # change widget from attachment_file field for simple select
     attachment_file = forms.FileField(widget=widgets.FileInput)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # change the default values for the language field for the text_language AuxCode
+        # adjust the 'pt' value for compatibility with previous versions of the table
+        self.fields['language'].choices = [
+            (lang.code if lang.code != 'pt' else 'pt-br', lang)
+            for lang in AuxCode.objects.filter(field='text_language')
+        ]
+        self.fields['language'].widget.attrs['class'] = 'input_select_text_language'
+
 
     def clean_attachment_file(self):
         data = self.cleaned_data['attachment_file']

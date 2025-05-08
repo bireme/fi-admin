@@ -10,6 +10,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
+from utils.models import AuxCode
 
 from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
 from leisref.models import *
@@ -115,11 +116,28 @@ class AttachmentForm(forms.ModelForm):
     # change widget from attachment_file field for simple select
     attachment_file = forms.FileField(widget=widgets.FileInput(attrs={'class': 'input-xxlarge'}))
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # change the default values for the language field for the text_language AuxCode
+        self.fields['language'].choices = [
+            (lang.code if lang.code != 'pt' else 'pt-br', lang)
+            for lang in AuxCode.objects.filter(field='text_language')
+        ]
+        self.fields['language'].widget.attrs['class'] = 'input_select_text_language'
+
 
 class URLForm(forms.ModelForm):
     # add class to field
     url = forms.URLField(widget=widgets.URLInput(attrs={'class': 'input-xxlarge'}))
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # change the default values for the language field for the text_language AuxCode
+        self.fields['language'].choices = [
+            (lang.code if lang.code != 'pt' else 'pt-br', lang)
+            for lang in AuxCode.objects.filter(field='text_language')
+        ]
+        self.fields['language'].widget.attrs['class'] = 'input_select_text_language'
 
 
 class ActRelatedForm(forms.ModelForm):
