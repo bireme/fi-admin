@@ -119,10 +119,12 @@ class AttachmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # change the default values for the language field for the text_language AuxCode
-        self.fields['language'].choices = [
+        blank_option = [('', '---------')]
+        language_choices = [
             (lang.code if lang.code != 'pt' else 'pt-br', lang)
             for lang in AuxCode.objects.filter(field='text_language')
         ]
+        self.fields['language'].choices = blank_option + language_choices
         self.fields['language'].widget.attrs['class'] = 'input_select_text_language'
 
 
@@ -133,10 +135,12 @@ class URLForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # change the default values for the language field for the text_language AuxCode
-        self.fields['language'].choices = [
+        blank_option = [('', '---------')]
+        language_choices = [
             (lang.code if lang.code != 'pt' else 'pt-br', lang)
             for lang in AuxCode.objects.filter(field='text_language')
         ]
+        self.fields['language'].choices = blank_option + language_choices
         self.fields['language'].widget.attrs['class'] = 'input_select_text_language'
 
 
