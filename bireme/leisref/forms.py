@@ -124,8 +124,13 @@ class AttachmentForm(forms.ModelForm):
             (lang.code if lang.code != 'pt' else 'pt-br', lang)
             for lang in AuxCode.objects.filter(field='text_language')
         ]
-        self.fields['language'].choices = blank_option + language_choices
-        self.fields['language'].widget.attrs['class'] = 'input_select_text_language'
+        # replace the auto‐generated CharField with a ChoiceField
+        self.fields['language'] = forms.ChoiceField(
+            choices=blank_option + language_choices,
+            widget=forms.Select(attrs={'class': 'input_select_text_language'}),
+            label=self.fields['language'].label,
+            required=self.fields['language'].required,
+        )
 
 
 class URLForm(forms.ModelForm):
@@ -140,8 +145,13 @@ class URLForm(forms.ModelForm):
             (lang.code if lang.code != 'pt' else 'pt-br', lang)
             for lang in AuxCode.objects.filter(field='text_language')
         ]
-        self.fields['language'].choices = blank_option + language_choices
-        self.fields['language'].widget.attrs['class'] = 'input_select_text_language'
+        # replace the auto‐generated CharField with a ChoiceField
+        self.fields['language'] = forms.ChoiceField(
+            choices=blank_option + language_choices,
+            widget=forms.Select(attrs={'class': 'input_select_text_language'}),
+            label=self.fields['language'].label,
+            required=self.fields['language'].required,
+        )
 
 
 class ActRelatedForm(forms.ModelForm):
