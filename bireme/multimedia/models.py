@@ -115,6 +115,7 @@ class Media(Generic, AuditLog):
     authors = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
     contributors = models.TextField(_('Contributors'), blank=True, help_text=_("Enter one per line"))
     language = models.ManyToManyField(SourceLanguage, verbose_name=_("language"), blank=True)
+    publication_country = models.ManyToManyField(Country, verbose_name=_('Publication country'), blank=True)
     item_extension = models.CharField(_('Item extension'), max_length=255, blank=True)
     other_physical_details = models.CharField(_('Other physical details'), max_length=255, blank=True)
     dimension = models.CharField(_('Dimension'), max_length=255, blank=True)
