@@ -312,7 +312,7 @@ class ReferenceResource(CustomResource):
                         field_value = getattr(library, field.name, {})
                         if field_value:
                             # convert lines of database field in list
-                            if field.name == 'database':
+                            if field.name == 'database' or field.name == 'local_descriptors':
                                 field_value = [line.strip() for line in field_value.split('\n') if line.strip()]
 
                             # check if field already in bundle
