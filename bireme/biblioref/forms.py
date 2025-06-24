@@ -666,9 +666,6 @@ class BiblioRefForm(BetterModelForm):
                 if len(normalized_date) != 8:
                     self.add_error(normalized_field, _("Different of 8 characters"))
 
-                if self.is_LILACS and int(normalized_date[:4]) < 1982:
-                    self.add_error(normalized_field, _("Incompatible with LILACS"))
-
                 # extract year from raw date field
                 search_year = re.search('([0-9]{4})', raw_date)
                 if search_year != None:
