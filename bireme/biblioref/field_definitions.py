@@ -484,8 +484,8 @@ FIELDS_BY_DOCUMENT_TYPE['MSms'] = [indexed_databases,
                                    ]
 
 # Monograph Series (analytic)
-FIELDS_BY_DOCUMENT_TYPE['MSams'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                            'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['MSams'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'indexed_database',
+                                                            'BIREME_reviewed', 'record_type', 'item_form', 'type_of_computer_file',
                                                             'type_of_cartographic_material', 'type_of_journal',
                                                             'type_of_visual_material', 'specific_designation_of_the_material'],
                                                  'legend': _('General information')}),
