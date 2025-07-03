@@ -269,6 +269,59 @@ def decs_suggestion(request):
                               {'decs_list': decs_list})
 
 
+@csrf_exempt
+def annif_suggestion(request):
+    text_to_analyze = request.POST.get('text_to_analyze')
+    output_lang = request.POST.get('output_lang')
+    text_by_lang = {}
+    text_to_analyze_out_lang = {}
+    decs_list = []
+
+    try:
+        text_to_analyze_json = json.loads(text_to_analyze)
+    except json.JSONDecodeError:
+        text_to_analyze_json = []
+
+    for text in text_to_analyze_json:
+        if text and '_i' in text:
+            lang = str(text['_i'])
+            # concat texts of the same language
+            text_by_lang[lang] = text_by_lang.get(lang, '') + ' ' + text['text']
+
+    # pick only one language to analyze (prefered the same of the output, otherwise the first)
+    if output_lang in text_by_lang:
+        text_to_analyze_out_lang[output_lang] = text_by_lang[output_lang]
+    else:
+        first_key = next(iter(text_by_lang))
+        text_to_analyze_out_lang[first_key] = text_by_lang[first_key]
+
+    if text_to_analyze_out_lang:
+        headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+
+        # create params to the request for annif api
+        request_lang, request_text = next(iter(text_to_analyze_out_lang.items()))    # lang = 'pt' / text = the content string
+
+        service_url = "{}projects/ensemble-decs-{}/suggest".format(settings.ANNIF_API_URL, request_lang)
+        service_params = {'text': request_text, 'language': request_lang, 'limit': 20}
+
+        r = requests.post(service_url, data=service_params, headers=headers)
+        if r.status_code == 200:
+            response_json = r.json()
+            result_response = response_json['results']
+
+            for result in result_response:
+                decs_id_list = result['notation'].split('|')  # e.g. D008289|8463
+                decs_id = decs_id_list[1] # get ID used by FI-ADMIN (after |)
+
+                decs_detail = {}
+                decs_detail['decsId'] = decs_id
+                decs_detail['descriptor'] = result['label']
+                decs_list.append(decs_detail)
+
+    return render_to_response('utils/decs_suggestion.html',
+                              {'decs_list': decs_list})
+
+
 def custom_page_not_found(request, *args, **argv):
     response = render(request, '404.html', {})
 
