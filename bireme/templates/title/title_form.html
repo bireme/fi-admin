@@ -47,6 +47,7 @@
     {{ formset_links.non_form_errors }}
     {{ formset_descriptor.non_form_errors }}
     {{ formset_keyword.non_form_errors }}
+    {{ formset_publicinfo.non_form_errors }}
 
     <ul class="nav nav-tabs" id='tab'>
         <li class="{% if not request.GET.tab %}active{% endif %}"><a href="#tab-data" data-toggle="tab">{% trans "Metadata" %}</a></li>
@@ -58,6 +59,7 @@
         <li><a href="#tab-onlineresource" data-toggle="tab"><i class="icon-link"></i> {% trans "Online resources" %}</a></li>
         <li class="{% if request.GET.tab == 'issues' %}active{% endif %}"><a href="#tab-issues" data-toggle="tab"><i class="icon-book"></i> {% trans "Issues" %}</a></li>
         <li><a href="#tab-collection" data-toggle="tab"><i class="icon-book"></i> {% trans "Collection" %}</a></li>
+        <li><a href="#tab-publicinfo" data-toggle="tab"><i class="icon-info-sign"></i> {% trans "Information" %}{% if formset_publicinfo.errors and not formset_publicinfo.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
     </ul>
 
     <div id="filter-cc" class="row" {% if request.GET.tab != 'issues' %}style="display: none;"{% endif %}>
@@ -87,10 +89,11 @@
         {% endif %}
     </div>
 
-    <form method="POST" class="title-form">
+    <form method="POST" class="title-form" enctype="multipart/form-data">
         {% csrf_token %}
 
         <input type="hidden" name="action" value="preview" />
+        <!--input type="hidden" name="action" value="save" /-->
 
         <div class="tab-content">
             <div id="tab-data" class="tab-pane {% if not request.GET.tab %}active{% endif %}">
@@ -608,6 +611,49 @@
                     {% endfor %}
                 </fieldset>
             </div>
+
+            <div id='tab-publicinfo' class="tab-pane">
+                <fieldset id="publicinfo" class="metadata">
+
+                    {{ formset_publicinfo.management_form }}
+
+                    {% for form in formset_publicinfo %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                        {{ form.non_field_errors }}
+
+                        {% for field in form %}
+
+                            {% if not field.is_hidden or field.field|fieldtype == 'JSONField' %}
+                                <label for="{{ field.auto_id }}">
+                                    {% if field.field.required %}
+                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                    {% else %}
+                                        {{ field.label }}
+                                    {% endif %}
+                                </label>
+                            {% endif %}
+
+                            {{ field.errors }}
+
+                            {% if field.field|fieldtype == 'JSONField' %}
+                                <div class="row">
+                                    <a onclick="javascript:field_assist('{{field.name}}', '{{field.html_name}}', 'title')" href="javascript:void(0);">
+                                        <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                                    </a>
+                                </div>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+
+                            <p class="muted">{{ field.help_text }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </fieldset>
+            </div>
+
         </div>
 
         <div class="control-panel form-submit">
@@ -626,6 +672,21 @@
 {% block extrajs %}
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/jquery.inlineformset.js' %}"></script>
+   <script src="{% static 'js/field_assist.js' %}"></script>
+   <script id="itensTemplate" type="text/x-jsrender">
+        <li>
+            [[props tmpl="#keyPropTemplate" /]]
+        </li>
+   </script>
+
+   <script id="keyPropTemplate" type="text/x-jsrender">
+        [[if prop]]
+            <strong>[[>~format(key)]]</strong> [[>prop]]
+        [[/if]]
+   </script>
+
+   <script src="{% static 'js/jsrender.min.js' %}"></script>
+   <script src="{% static 'js/field_json.js' %}"></script>
 
    <script type="text/javascript">
         var decs_field;

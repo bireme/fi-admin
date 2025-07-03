@@ -28,6 +28,9 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Institution
 
+    def get_updated_field(self):
+        return "updated_time"
+
     def prepare_title(self, obj):
         return str(obj)
 
@@ -113,10 +116,14 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
 
         if adm:
             adm_type_list = [type.name for type in adm.type.all()]
+            category_list = [category.name for category in adm.category.all()]
+
             if 'CCR' in adm_type_list:
                 type_list.append('CoordinatingCentersRg')
             if 'CCN' in adm_type_list:
                 type_list.append('CoordinatingCentersNc')
+            if 'CCT' in adm_type_list:
+                type_list.append('CoordinatingCentersTh')
             if any(value in adm_type_list for value in ['REDEBR/CC', 'REDEAL/CC', 'MEDCARIB/CC']):
                 type_list.append('CooperatingCenters')
             if 'LILACS' in adm_type_list:
@@ -127,6 +134,8 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
                 type_list.append('ParticipantsUnits')
             if  any(value in adm_type_list for value in ['REDEAL', 'REDEBR', 'EPORT', 'MEDCARIB']):
                 type_list.append('VHLNetwork')
+            if 'PERIODICO EDITOR' in category_list:
+                type_list.append('EDITOR')
 
         return type_list
 
@@ -152,6 +161,20 @@ class InstitutionIndex(indexes.SearchIndex, indexes.Indexable):
                 type_list.append('Psychology')
             if 'MTCI' in adm_type_list:
                 type_list.append('MTCI')
+            if 'BIBLIOSUS' in adm_type_list:
+                type_list.append('BIBLIOSUS')
+            if 'BVSVET' in adm_type_list:
+                type_list.append('BVSVET')
+            if 'EPORT' in adm_type_list:
+                type_list.append('EPORT')
+            if 'EVIPNET' in adm_type_list:
+                type_list.append('EVIPNET')
+            if 'ODONTOLOGIA' in adm_type_list:
+                type_list.append('ODONTOLOGIA')
+            if 'SES-SP' in adm_type_list:
+                type_list.append('SES-SP')
+            if 'SMS-SP' in adm_type_list:
+                type_list.append('SMS-SP')
 
         return type_list
 

@@ -43,8 +43,9 @@
     {{ formset_links.non_form_errors }}
     {{ formset_descriptor.non_form_errors }}
     {{ formset_keyword.non_form_errors }}
+    {{ formset_publicinfo.non_form_errors }}
 
-    <form method="POST" class="form-preview">
+    <form method="POST" class="form-preview" enctype="multipart/form-data">
         {% csrf_token %}
 
         <input type="hidden" name="action" value="save" />
@@ -507,6 +508,47 @@
                     <p class="muted"></p>
                 </fieldset>
             </div>
+
+            <div id='tab-publicinfo' class="tab-pane">
+                <fieldset id="publicinfo">
+                    <span class="table-header">{% trans "Information" %}</span>
+                    <p class="muted"></p>
+
+                    {{ formset_publicinfo.management_form }}
+
+                    {{ form.non_field_errors }}
+
+                    {% for form in formset_publicinfo %}
+                        {{ form.non_field_errors }}
+
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+
+                        {% for field in form %}
+                            {% if not field.is_hidden or field.field|fieldtype == 'JSONField' %}
+                                <label for="{{ field.auto_id }}">
+                                    {{ field.label }}:
+                                </label>
+                                {% if field.field|fieldtype == 'JSONField' %}
+                                    {{ field.value|display_json_value|safe }}
+                                {% else %}
+                                    {% if field.value %}{{ field.value }}{% endif %}
+                                {% endif %}
+                                <p class="muted"></p>
+                                {% if field.field|fieldtype == 'FileField' %}
+                                    {% if field.value == "False" %}
+                                        <input type="hidden" name="publicinfo_set-0-logo_image_file-clear" id="publicinfo_set-0-logo_image_file-clear_id" value="on">
+                                    {% endif %}
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </fieldset>
+            </div>
+
         </div>
 
         <div class="control-panel form-submit" style="margin-top: 10px !important;">

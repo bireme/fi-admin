@@ -7,7 +7,7 @@ from tastypie.resources import ModelResource
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 from tastypie import fields
-from main.models import Resource, ResourceThematic, Descriptor, SourceType, SourceLanguage
+from main.models import Resource, ResourceThematic, Descriptor, SourceType, SourceLanguage, Keyword
 
 import requests
 import urllib
@@ -46,12 +46,14 @@ class LinkResource(ModelResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        fb = request.GET.get('fb', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
         sort = request.GET.get('sort', 'created_date desc')
+        facet_list = request.GET.getlist('facet.field', [])
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -59,17 +61,39 @@ class LinkResource(ModelResource):
         else:
             fq = '(status:1 AND django_ct:main.resource)'
 
+        if id != '':
+            q = 'id:%s' % id
+
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': lang,
-                    'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
+                         'q': q , 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count),
+                         'sort': sort
+                }
 
-        r = requests.post(search_url, data=search_params)
+        if facet_list:
+            search_params['facet.field'] = []
+            for facet_field in facet_list:
+                search_params['facet.field'].append(facet_field)
+                facet_limit_param = 'f.{}.facet.limit'.format(facet_field)
+                facet_field_limit = request.GET.get(facet_limit_param, None)
+                if facet_field_limit:
+                    search_params[facet_limit_param] = facet_field_limit
+
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
         try:
             response_json = r.json()
         except ValueError:
             response_json = json.loads('{"type": "error", "message": "invalid output"}')
+
+        # Duplicate "response" to "match" element for old compatibility calls (wp plugin)
+        if id != '' and response_json:
+            response_json['diaServerResponse'][0]['match'] = response_json['diaServerResponse'][0]['response']
+
 
         self.log_throttled_access(request)
         return self.create_response(request, response_json)
@@ -81,14 +105,27 @@ class LinkResource(ModelResource):
         source_types = SourceType.objects.filter(resource=bundle.obj.id)
         source_languages = SourceLanguage.objects.filter(resource=bundle.obj.id)
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+        keywords = Keyword.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
 
         # add fields to output
         bundle.data['link'] = [line.strip() for line in bundle.obj.link.split('\n') if line.strip()]
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
+        bundle.data['keywords'] = [keyword.text for keyword in keywords]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
         bundle.data['source_types'] = [source_type.acronym for source_type in source_types]
         bundle.data['source_languages'] = [source_language.acronym for source_language in source_languages]
+        bundle.data['publication_country'] = ["|".join(country.get_translations()) for country in bundle.obj.originator_location.all()]
+
+        # check if object has classification (relationship model)
+        if bundle.obj.collection.count():
+            community_collection_path = []
+
+            collection_all = bundle.obj.collection.all()
+            for rel in collection_all:
+                community_collection_path.append(rel.collection.community_collection_path_translations())
+
+            bundle.data['collections'] = community_collection_path
 
         return bundle
 

@@ -1,12 +1,12 @@
 #! coding: utf-8
-from  django.urls import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 from django.http import HttpResponse, HttpResponseRedirect
 
 from django.views.generic.list import ListView
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.db import connection
 
 from django.conf import settings
@@ -21,6 +21,7 @@ from title.models import Title, IndexRange, IndexCode
 from utils.views import CSVResponseMixin
 from biblioref.models import ReferenceAnalytic
 
+from datetime import datetime
 
 class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
     """
@@ -40,6 +41,7 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
         filter_status = self.request.GET.get('status', None)
         filter_thematic = self.request.GET.get('filter_thematic', None)
         filter_created_by_cc = self.request.GET.get('filter_created_by_cc', None)
+        filter_year = self.request.GET.get('filter_year', None)
         export = self.request.GET.get('export', '')
         report_rows = []
 
@@ -56,7 +58,8 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                 user_filter_list = []
 
                 # if is superuser or is a user from BR1.1 (BIREME)
-                if self.request.user.is_superuser or user_data['user_cc'] == 'BR1.1':
+                #if self.request.user.is_superuser or user_data['user_cc'] == 'BR1.1':
+                if user_data['user_cc'] == 'BR1.1':
                     user_filter_list = user_list
                 else:
                     # else filter only users from the same CC as request.user
@@ -67,7 +70,16 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                                 user_filter_list.append(user)
 
                 for user in user_filter_list:
-                    source_list = source.objects.filter(created_by=user)
+                    if filter_year:
+                        source_list = source.objects.filter(
+                            (Q(created_by=user) & Q(created_time__year=filter_year)) |
+                            (Q(updated_by=user) & Q(updated_time__year=filter_year))
+                        )
+                    else:
+                        source_list = source.objects.filter(
+                            Q(created_by=user) | Q(updated_by=user)
+                        )
+
                     if filter_status:
                         source_list = source_list.filter(status=filter_status)
                     if filter_created_by_cc:
@@ -75,15 +87,21 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                     if filter_thematic:
                         source_list = source_list.filter(thematics__thematic_area=filter_thematic)
 
-                    total_by_user = source_list.count()
-                    if total_by_user > 0:
+                    # Counting the number of objects created and updated by the current user separately
+                    created_count = source_list.filter(created_by=user).count()
+                    updated_count = source_list.filter(updated_by=user).count()
+
+                    user_count = created_count + updated_count
+                    if user_count > 0:
                         data = OrderedDict()
                         data['user'] = user.username
-                        data['total'] = total_by_user
+                        data['total_created'] = created_count
+                        data['total_updated'] = updated_count
+                        data['total'] = user_count
                         report_rows.append(data)
 
-                    # sort the result list by total (reverse)
-                    report_rows = sorted(report_rows, key=lambda k:k['total'], reverse=True)
+                # sort the result list by total (reverse)
+                report_rows = sorted(report_rows, key=lambda k:k['total'], reverse=True)
 
             elif report == '2':
                 source_list = source.objects.all()
@@ -212,6 +230,8 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
         cc_filter_list = []
         user_filter_list = []
         thematic_list = []
+        current_year = datetime.now().year
+        year_list = [current_year - i for i in range(5)]
 
         user_data = additional_user_info(self.request)
 
@@ -228,6 +248,7 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
 
         context['cc_filter_list'] = cc_filter_list
         context['thematic_list'] = thematic_list
+        context['year_list'] = year_list
         context['show_advaced_filters'] = show_advaced_filters
         context['title'] = u'export'
         context['params'] = self.request.GET

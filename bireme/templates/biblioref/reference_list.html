@@ -144,7 +144,7 @@
                                         <option value="">{% trans "All" %}</option>
                                         {% for col in collection_list %}
                                             {# skip first level collections (e-bluinfo, etc) and community levels #}
-                                            {% if col.parent and not col.community_flag %}
+                                            {% if col.parent_id and not col.community_flag %}
                                                 <option value="{{ col.id }}" {% if actions.filter_collection|add:"0" == col.id %}selected="true"{% endif %}>{{ col.community_collection_path }}</option>
                                             {% endif %}
                                         {% endfor %}
@@ -180,8 +180,8 @@
 
                                 {% trans "Filter by" %}:
                                 <select name="review_type" class="input-xlarge">
-                                    <option value="cc" {% if actions.review_type == 'cc' %}selected="true"{% endif %}>{% trans "Changed by other cooperative center" %}</option>
                                     <option value="user" {% if actions.review_type == 'user' %}selected="true"{% endif %}>{% trans "Changed by other users" %}</option>
+                                    <option value="cc" {% if actions.review_type == 'cc' %}selected="true"{% endif %}>{% trans "Changed by other cooperative center" %}</option>
                                 </select>
                                 <button class="btn" type="submit"><i class='icon-search'></i></button>
                             </form>

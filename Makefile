@@ -1,5 +1,5 @@
 IMAGE_NAME=bireme/fi-admin
-APP_VERSION=$(shell git describe --tags --long --always | sed 's/-g[a-z0-9]\{7\}//')
+APP_VERSION?=$(shell git describe --tags --long --always | sed 's/-g[a-z0-9]\{7\}//' | sed 's/-/\./')
 TAG_LATEST=$(IMAGE_NAME):latest
 
 COMPOSE_FILE_DEV=docker-compose-dev.yml
@@ -33,11 +33,17 @@ dev_ps:
 dev_rm:
 	@docker-compose -f $(COMPOSE_FILE_DEV) rm -f
 
-dev_exec_shell:
+dev_sh:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh
 
-dev_make_test:
+dev_test:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin make test
+
+dev_add_gettext:
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin apk add --no-cache gettext
+
+dev_update_translations:
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py makemessages --all
 
 dev_import:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py loaddata $(import_file)
@@ -65,6 +71,11 @@ api_ps:
 
 api_rm:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility rm -f
+
+api_rollback:
+	@echo '*** ROLLBACK TO VERSION $(APP_VERSION) ***'
+	@docker-compose -f $(COMPOSE_FILE_API) --compatibility stop
+	@docker-compose -f $(COMPOSE_FILE_API) --compatibility up -d
 
 api_exec_shell:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility exec fi_admin_api sh
@@ -100,6 +111,14 @@ prod_ps:
 
 prod_rm:
 	@docker-compose --compatibility rm -f
+
+prod_list_images:
+	@docker images $(IMAGE_NAME}
+
+prod_rollback:
+	@echo '*** ROLLBACK TO VERSION $(APP_VERSION) ***'
+	@docker-compose --compatibility stop
+	@docker-compose --compatibility up -d
 
 prod_exec_shell:
 	@docker-compose --compatibility exec fi_admin sh

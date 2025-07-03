@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-28 18:38+0000\n"
-"PO-Revision-Date: 2022-04-28 18:40-0306\n"
+"POT-Creation-Date: 2025-02-10 13:09+0000\n"
+"PO-Revision-Date: 2025-02-10 13:57-0306\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -100,27 +100,26 @@ msgid "GEOGRAPHICALS"
 msgstr ""
 
 #: api/thesaurus_treenumber_api.py:539
-#, fuzzy
 #| msgid "Qualifiers"
 msgid "Other Qualifiers"
-msgstr "Qualificadores"
+msgstr "Outros qualificadores"
 
 #: attachments/models.py:45
 msgid "Select a file"
 msgstr "Selecione o arquivo"
 
-#: attachments/models.py:46 biblioref/field_definitions.py:551
-#: biblioref/field_definitions.py:574 biblioref/field_definitions.py:701
-#: biblioref/field_definitions.py:712 biblioref/field_definitions.py:747
-#: classification/models.py:38 classification/models.py:125
-#: events/models.py:22 help/models.py:26 help/models.py:53
+#: attachments/models.py:46 biblioref/field_definitions.py:552
+#: biblioref/field_definitions.py:575 biblioref/field_definitions.py:702
+#: biblioref/field_definitions.py:713 biblioref/field_definitions.py:748
+#: classification/models.py:38 classification/models.py:141
+#: events/models.py:22 help/models.py:33 help/models.py:60
 #: institution/models.py:24 institution/models.py:51 institution/models.py:63
-#: institution/models.py:90 institution/models.py:278
-#: institution/models.py:323 leisref/models.py:32 leisref/models.py:77
+#: institution/models.py:90 institution/models.py:283
+#: institution/models.py:328 leisref/models.py:32 leisref/models.py:77
 #: leisref/models.py:123 leisref/models.py:320 leisref/models.py:366
 #: leisref/models.py:413 leisref/models.py:540 leisref/models.py:607
-#: main/models.py:29 main/models.py:76 main/models.py:110 main/models.py:121
-#: main/models.py:156 main/models.py:232 main/models.py:269
+#: main/models.py:31 main/models.py:78 main/models.py:112 main/models.py:123
+#: main/models.py:158 main/models.py:234 main/models.py:271
 #: multimedia/models.py:24 multimedia/models.py:69 oer/models.py:28
 #: oer/models.py:67 oer/models.py:105 oer/models.py:144 oer/models.py:183
 #: oer/models.py:221 oer/models.py:250 oer/models.py:281 oer/models.py:310
@@ -130,63 +129,64 @@ msgstr "Selecione o arquivo"
 #: templates/leisref/fieldset_fulltext.html:15
 #: templates/leisref/fieldset_fulltext.html:75
 #: templates/main/edit-language.html:8
-#: templates/multimedia/media_form.html:350
+#: templates/multimedia/media_form.html:317
 #: templates/oer/fieldset_fulltext.html:15
 #: templates/oer/fieldset_fulltext.html:75
-#: templates/thesaurus/descriptor_edit_register.html:332
-#: templates/thesaurus/descriptor_edit_register.html:413
+#: templates/thesaurus/descriptor_edit_register.html:340
+#: templates/thesaurus/descriptor_edit_register.html:419
 #: templates/thesaurus/qualifier_list.html:102
-#: templates/thesaurus/thesaurus_home.html:101 text_block/models.py:16
-#: text_block/models.py:52 utils/models.py:124 utils/models.py:165
+#: templates/thesaurus/thesaurus_home.html:111 text_block/models.py:16
+#: text_block/models.py:53 thesaurus/models_descriptors.py:267
+#: title/field_definitions.py:62 utils/models.py:124 utils/models.py:165
 msgid "Language"
 msgstr "Idioma"
 
-#: biblioref/cross_validation.py:36
+#: biblioref/cross_validation.py:37
 msgid "Eletronic address, fulltext file OR pages are required"
 msgstr "Endereço eletrônico, texto completo OU paginação obrigatório"
 
-#: biblioref/cross_validation.py:62
+#: biblioref/cross_validation.py:64
 msgid "Eletronic address or fulltext file required"
 msgstr "Endereço eletrônico OU texto completo obrigatório"
 
-#: biblioref/cross_validation.py:90
+#: biblioref/cross_validation.py:92
 msgid "For status \"Published\" you must have at least one primary descriptor"
 msgstr ""
 "Para o status \"Publicado\" é necessário ter pelo menos um descritor "
 "primário"
 
-#: biblioref/field_definitions.py:42
+#: biblioref/field_definitions.py:43
 msgid "Indexed databases"
 msgstr "Bases de dados "
 
-#: biblioref/field_definitions.py:47
+#: biblioref/field_definitions.py:48
 msgid "Other notes"
 msgstr "Outras notas"
 
-#: biblioref/field_definitions.py:51 biblioref/field_definitions.py:698
-#: biblioref/field_definitions.py:705 biblioref/models.py:76
-#: main/models.py:305
+#: biblioref/field_definitions.py:52 biblioref/field_definitions.py:699
+#: biblioref/field_definitions.py:706 biblioref/models.py:76
+#: main/models.py:307
 msgid "Abstract"
 msgstr "Resumo"
 
-#: biblioref/field_definitions.py:56 biblioref/field_definitions.py:60
-#: biblioref/field_definitions.py:137
+#: biblioref/field_definitions.py:57 biblioref/field_definitions.py:61
+#: biblioref/field_definitions.py:138
 msgid "Complementary Information"
 msgstr "Informações Complementares"
 
-#: biblioref/field_definitions.py:65
+#: biblioref/field_definitions.py:66
 msgid "Subject"
 msgstr "Assuntos"
 
-#: biblioref/field_definitions.py:70
+#: biblioref/field_definitions.py:71
 msgid "Additional indexing fields"
 msgstr "Campos adicionais de indexação"
 
-#: biblioref/field_definitions.py:76 biblioref/field_definitions.py:119
+#: biblioref/field_definitions.py:77 biblioref/field_definitions.py:120
 msgid "Imprint"
 msgstr "Imprenta"
 
-#: biblioref/field_definitions.py:80 biblioref/field_definitions.py:548
+#: biblioref/field_definitions.py:81 biblioref/field_definitions.py:549
 #: templates/biblioref/referenceanalytic_form.html:51
 #: templates/biblioref/referenceanalytic_form.html:57
 #: templates/biblioref/referencesource_form.html:70
@@ -194,121 +194,121 @@ msgstr "Imprenta"
 msgid "Fulltext"
 msgstr "Texto completo"
 
-#: biblioref/field_definitions.py:88 biblioref/field_definitions.py:241
-#: biblioref/field_definitions.py:407 biblioref/field_definitions.py:468
+#: biblioref/field_definitions.py:89 biblioref/field_definitions.py:242
+#: biblioref/field_definitions.py:408 biblioref/field_definitions.py:469
 msgid "Monographic Level"
 msgstr "Nível Monográfico"
 
-#: biblioref/field_definitions.py:94
+#: biblioref/field_definitions.py:95
 #: templates/biblioref/referenceanalytic_form.html:102
 msgid "Collection level"
 msgstr "Nível de coleção"
 
-#: biblioref/field_definitions.py:99 biblioref/field_definitions.py:116
+#: biblioref/field_definitions.py:100 biblioref/field_definitions.py:117
 #: templates/biblioref/referenceanalytic_form.html:159
 msgid "Serial level"
 msgstr "Nível Série"
 
-#: biblioref/field_definitions.py:104 biblioref/field_definitions.py:275
-#: biblioref/field_definitions.py:441
+#: biblioref/field_definitions.py:105 biblioref/field_definitions.py:276
+#: biblioref/field_definitions.py:442
 msgid "Thesis Notes"
 msgstr "Notas da Tese"
 
-#: biblioref/field_definitions.py:112 biblioref/field_definitions.py:128
-#: biblioref/field_definitions.py:159 biblioref/field_definitions.py:184
-#: biblioref/field_definitions.py:210 biblioref/field_definitions.py:236
-#: biblioref/field_definitions.py:266 biblioref/field_definitions.py:295
-#: biblioref/field_definitions.py:320 biblioref/field_definitions.py:346
-#: biblioref/field_definitions.py:374 biblioref/field_definitions.py:400
-#: biblioref/field_definitions.py:432 biblioref/field_definitions.py:461
-#: biblioref/field_definitions.py:490
+#: biblioref/field_definitions.py:113 biblioref/field_definitions.py:129
+#: biblioref/field_definitions.py:160 biblioref/field_definitions.py:185
+#: biblioref/field_definitions.py:211 biblioref/field_definitions.py:237
+#: biblioref/field_definitions.py:267 biblioref/field_definitions.py:296
+#: biblioref/field_definitions.py:321 biblioref/field_definitions.py:347
+#: biblioref/field_definitions.py:375 biblioref/field_definitions.py:401
+#: biblioref/field_definitions.py:433 biblioref/field_definitions.py:462
+#: biblioref/field_definitions.py:491
 msgid "General information"
 msgstr "Informações Gerais"
 
-#: biblioref/field_definitions.py:134 biblioref/field_definitions.py:188
-#: biblioref/field_definitions.py:270 biblioref/field_definitions.py:324
-#: biblioref/field_definitions.py:378 biblioref/field_definitions.py:436
-#: biblioref/field_definitions.py:494
+#: biblioref/field_definitions.py:135 biblioref/field_definitions.py:189
+#: biblioref/field_definitions.py:271 biblioref/field_definitions.py:325
+#: biblioref/field_definitions.py:379 biblioref/field_definitions.py:437
+#: biblioref/field_definitions.py:495
 msgid "Analytic Level"
 msgstr "Nível Analítico"
 
-#: biblioref/field_definitions.py:143
+#: biblioref/field_definitions.py:144
 msgid "Content data"
 msgstr "Dados de conteúdo"
 
-#: biblioref/field_definitions.py:516
+#: biblioref/field_definitions.py:517
 msgid "-- Latin America & Caribbean --"
 msgstr "-- América Latina e Caribe --"
 
-#: biblioref/field_definitions.py:518
+#: biblioref/field_definitions.py:519
 msgid "-- Others --"
 msgstr "-- Outros --"
 
-#: biblioref/field_definitions.py:525 institution/models.py:101
+#: biblioref/field_definitions.py:526 institution/models.py:101
 msgid "Center code"
 msgstr "Código Centro Cooperante"
 
-#: biblioref/field_definitions.py:526
+#: biblioref/field_definitions.py:527
 msgid "Classification number"
 msgstr "Número de classificação"
 
-#: biblioref/field_definitions.py:527
+#: biblioref/field_definitions.py:528
 msgid "Author number"
 msgstr "Número de autor"
 
-#: biblioref/field_definitions.py:528
+#: biblioref/field_definitions.py:529
 msgid "Volumen, inventory number, part"
 msgstr "Volume, tompo, parte, etc"
 
-#: biblioref/field_definitions.py:529
+#: biblioref/field_definitions.py:530
 msgid "Lending system"
 msgstr "Sistema de empréstimo"
 
-#: biblioref/field_definitions.py:533 biblioref/models.py:342
+#: biblioref/field_definitions.py:534 biblioref/models.py:342
 msgid "Call number"
 msgstr "Localização do documento"
 
-#: biblioref/field_definitions.py:545 biblioref/field_definitions.py:567
+#: biblioref/field_definitions.py:546 biblioref/field_definitions.py:568
 #: biblioref/models.py:47
 msgid "Electronic address"
 msgstr "Endereço eletrônico"
 
-#: biblioref/field_definitions.py:554
+#: biblioref/field_definitions.py:555
 msgid "File type"
 msgstr "Tipo de arquivo"
 
-#: biblioref/field_definitions.py:557
+#: biblioref/field_definitions.py:558
 msgid "File extension"
 msgstr "Extensão do arquivo"
 
-#: biblioref/field_definitions.py:559 templates/authentication/login.html:38
+#: biblioref/field_definitions.py:560 templates/authentication/login.html:38
 #: title/choices.py:134
 msgid "Password"
 msgstr "Senha"
 
-#: biblioref/field_definitions.py:560
+#: biblioref/field_definitions.py:561
 msgid "Logon"
 msgstr "Logon"
 
-#: biblioref/field_definitions.py:561
+#: biblioref/field_definitions.py:562
 msgid "File length"
 msgstr "Tamanho do arquivo"
 
-#: biblioref/field_definitions.py:562
+#: biblioref/field_definitions.py:563
 msgid "No public note"
 msgstr "Nota não pública"
 
-#: biblioref/field_definitions.py:563
+#: biblioref/field_definitions.py:564
 msgid "Public note"
 msgstr "Nota pública"
 
-#: biblioref/field_definitions.py:571 biblioref/field_definitions.py:578
-#: biblioref/field_definitions.py:582 biblioref/field_definitions.py:586
+#: biblioref/field_definitions.py:572 biblioref/field_definitions.py:579
+#: biblioref/field_definitions.py:583 biblioref/field_definitions.py:587
 #: biblioref/models.py:37 biblioref/models.py:189 biblioref/models.py:201
-#: biblioref/models.py:207 biblioref/models.py:275 events/models.py:77
-#: leisref/models.py:505 main/models.py:291 oer/models.py:468
-#: related/models.py:68 related/models.py:83 suggest/models.py:25
-#: suggest/models.py:56 templates/biblioref/reference_list.html:197
+#: biblioref/models.py:207 biblioref/models.py:275 events/models.py:83
+#: leisref/models.py:505 main/models.py:293 oer/models.py:468
+#: related/models.py:83 suggest/models.py:25 suggest/models.py:56
+#: templates/biblioref/reference_list.html:197
 #: templates/biblioref/referenceanalytic_form.html:118
 #: templates/biblioref/referenceanalytic_list.html:54
 #: templates/biblioref/referenceanalytic_list.html:65
@@ -316,298 +316,296 @@ msgstr "Nota pública"
 #: templates/biblioref/referencesource_list.html:59
 #: templates/events/events.html:100 templates/main/resources.html:102
 #: templates/multimedia/media_list.html:133 templates/suggest/list.html:76
-#: templates/suggest/list.html:165 templates/title/form_preview.html:329
-#: templates/title/form_preview.html:379 templates/title/title_form.html:400
-#: templates/title/title_form.html:445 templates/title/title_list.html:69
+#: templates/suggest/list.html:165 templates/title/form_preview.html:330
+#: templates/title/form_preview.html:380 templates/title/title_form.html:403
+#: templates/title/title_form.html:448 templates/title/title_list.html:69
 #: templates/title/title_list.html:101 text_block/models.py:12
-#: text_block/models.py:53 title/models.py:27 title/models.py:59
-#: title/models.py:153 title/models.py:181 title/models.py:199
-#: title/models.py:232 title/models.py:259 title/models.py:319
-#: title/models.py:344
+#: text_block/models.py:54 title/models.py:32 title/models.py:64
+#: title/models.py:158 title/models.py:186 title/models.py:204
+#: title/models.py:237 title/models.py:264 title/models.py:324
+#: title/models.py:349
 msgid "Title"
 msgstr "Título"
 
-#: biblioref/field_definitions.py:593 biblioref/forms.py:329
+#: biblioref/field_definitions.py:594 biblioref/forms.py:307
 msgid "Comma abscent"
 msgstr "Ausência de vírgula"
 
-#: biblioref/field_definitions.py:596 biblioref/forms.py:333
-#: biblioref/forms.py:354
+#: biblioref/field_definitions.py:597 biblioref/forms.py:311
+#: biblioref/forms.py:332
 msgid "Insert space after comma"
 msgstr "Adicionar espaço depois da vírgula"
 
-#: biblioref/field_definitions.py:602
+#: biblioref/field_definitions.py:603
 msgid "Do not inform URL for this field"
 msgstr ""
 
-#: biblioref/field_definitions.py:611
+#: biblioref/field_definitions.py:612
 msgid "Personal author"
 msgstr "Autor pessoal"
 
-#: biblioref/field_definitions.py:612
-msgid "Format: Lastname, Name"
-msgstr "Formato: Sobrenome, Nome"
+#: biblioref/field_definitions.py:613
+msgid "Format: Lastname, Name. Use \"Anonimous Authoship\" for anonimous."
+msgstr ""
 
-#: biblioref/field_definitions.py:613 biblioref/field_definitions.py:682
+#: biblioref/field_definitions.py:614 biblioref/field_definitions.py:683
 #: oer/field_definitions.py:42
 msgid "Affiliation institution level 1"
 msgstr "Afiliação - Instituição nível 1"
 
-#: biblioref/field_definitions.py:614 biblioref/field_definitions.py:683
+#: biblioref/field_definitions.py:615 biblioref/field_definitions.py:684
 #: oer/field_definitions.py:43
 msgid "Affiliation institution level 2"
 msgstr "Afiliação - Instituição nível 2"
 
-#: biblioref/field_definitions.py:615 biblioref/field_definitions.py:684
+#: biblioref/field_definitions.py:616 biblioref/field_definitions.py:685
 #: oer/field_definitions.py:44
 msgid "Affiliation institution level 3"
 msgstr "Afiliação - Instituição nível 3"
 
-#: biblioref/field_definitions.py:616 biblioref/field_definitions.py:685
+#: biblioref/field_definitions.py:617 biblioref/field_definitions.py:686
 #: oer/field_definitions.py:45
 msgid "Affiliation city"
 msgstr "Afiliação - Cidade"
 
-#: biblioref/field_definitions.py:617 biblioref/field_definitions.py:686
+#: biblioref/field_definitions.py:618 biblioref/field_definitions.py:687
 #: oer/field_definitions.py:46
 msgid "Affiliation country"
 msgstr "Afiliação - País"
 
-#: biblioref/field_definitions.py:619 oer/field_definitions.py:48
+#: biblioref/field_definitions.py:620 oer/field_definitions.py:48
 msgid "Affiliation degree of responsibility"
 msgstr "Afiliação - Grau de responsabilidade"
 
-#: biblioref/field_definitions.py:623
-#, fuzzy
+#: biblioref/field_definitions.py:624
 #| msgid "Email"
 msgid "E-mail"
 msgstr "Email"
 
-#: biblioref/field_definitions.py:624
+#: biblioref/field_definitions.py:625
 msgid "ORCID"
 msgstr ""
 
-#: biblioref/field_definitions.py:625
+#: biblioref/field_definitions.py:626
 msgid "Format: 0000-0000-0000-0000"
 msgstr ""
 
-#: biblioref/field_definitions.py:627
+#: biblioref/field_definitions.py:628
 msgid "Web of Science ResearcherID"
 msgstr ""
 
-#: biblioref/field_definitions.py:628
+#: biblioref/field_definitions.py:629
 msgid "Format: D-0000-0000"
 msgstr ""
 
-#: biblioref/field_definitions.py:632 biblioref/field_definitions.py:636
-#: biblioref/field_definitions.py:640 biblioref/models.py:185
+#: biblioref/field_definitions.py:633 biblioref/field_definitions.py:637
+#: biblioref/field_definitions.py:641 biblioref/models.py:185
 #: biblioref/models.py:197 biblioref/models.py:271
 #: templates/biblioref/referenceanalytic_form.html:109
 #: templates/biblioref/referenceanalytic_form.html:143
 msgid "Individual author"
 msgstr "Autor pessoal"
 
-#: biblioref/field_definitions.py:648 biblioref/field_definitions.py:656
-#: biblioref/field_definitions.py:660 biblioref/field_definitions.py:664
+#: biblioref/field_definitions.py:649 biblioref/field_definitions.py:657
+#: biblioref/field_definitions.py:661 biblioref/field_definitions.py:665
 #: biblioref/models.py:187 biblioref/models.py:199 biblioref/models.py:273
 #: templates/biblioref/referenceanalytic_form.html:114
 #: templates/biblioref/referenceanalytic_form.html:148
 msgid "Corporate author"
 msgstr "Autor institucional"
 
-#: biblioref/field_definitions.py:650
+#: biblioref/field_definitions.py:651
 msgid "Degree of responsibility"
 msgstr "Grau de responsabilidade"
 
-#: biblioref/field_definitions.py:668 multimedia/models.py:119
+#: biblioref/field_definitions.py:669 multimedia/models.py:119
 msgid "Other physical details"
 msgstr "Outros detalhes físicos"
 
-#: biblioref/field_definitions.py:669 multimedia/models.py:118
+#: biblioref/field_definitions.py:670 multimedia/models.py:118
 msgid "Item extension"
 msgstr "Extensão do item"
 
-#: biblioref/field_definitions.py:670 multimedia/models.py:120
+#: biblioref/field_definitions.py:671 multimedia/models.py:120
 msgid "Dimension"
 msgstr "Dimensão"
 
-#: biblioref/field_definitions.py:671
+#: biblioref/field_definitions.py:672
 msgid "Accompanying material"
 msgstr "Material acompanhante"
 
-#: biblioref/field_definitions.py:675 biblioref/models.py:52
+#: biblioref/field_definitions.py:676 biblioref/models.py:52
 msgid "Descriptive information"
 msgstr "Informação descritiva"
 
-#: biblioref/field_definitions.py:681 biblioref/field_definitions.py:691
-#: biblioref/field_definitions.py:694 biblioref/models.py:215
+#: biblioref/field_definitions.py:682 biblioref/field_definitions.py:692
+#: biblioref/field_definitions.py:695 biblioref/models.py:215
 #: biblioref/models.py:281
 msgid "Leader"
 msgstr "Orientador"
 
-#: biblioref/field_definitions.py:709 templates/suggest/list.html:120
+#: biblioref/field_definitions.py:710 templates/suggest/list.html:120
 msgid "Keyword"
 msgstr "Palavra-chave"
 
-#: biblioref/field_definitions.py:710
+#: biblioref/field_definitions.py:711
 #: templates/thesaurus/search_concept_qualif.html:121
 #: thesaurus/models_qualifiers.py:20
 msgid "Qualifier"
 msgstr "Qualificador"
 
-#: biblioref/field_definitions.py:716 biblioref/models.py:80
+#: biblioref/field_definitions.py:717 biblioref/models.py:80
 msgid "Author keyword"
 msgstr "Palavras-chave do autor"
 
-#: biblioref/field_definitions.py:720 biblioref/field_definitions.py:727
-#: biblioref/models.py:193 biblioref/models.py:279 leisref/models.py:527
+#: biblioref/field_definitions.py:721 biblioref/field_definitions.py:728
+#: biblioref/models.py:193 leisref/models.py:527
 msgid "Pages"
 msgstr "Páginas"
 
-#: biblioref/field_definitions.py:721 templates/title/form_preview.html:218
-#: templates/title/form_preview.html:333 templates/title/title_form.html:319
-#: templates/title/title_form.html:404 title/models.py:77 title/models.py:185
-#: title/models.py:236
-msgid "Initial number"
-msgstr "Número inicial"
-
 #: biblioref/field_definitions.py:722
-msgid "End number"
-msgstr "Número final"
+msgid "Initial page"
+msgstr "Página inicial"
 
 #: biblioref/field_definitions.py:723
+msgid "End page"
+msgstr "Página final"
+
+#: biblioref/field_definitions.py:724
 msgid "Electronic location identifier"
 msgstr "Identificador de localização eletrônica"
 
-#: biblioref/field_definitions.py:734 biblioref/models.py:344
+#: biblioref/field_definitions.py:735 biblioref/models.py:344
 #: database/models.py:49 leisref/models.py:484
 msgid "Database"
 msgstr "Base de dados"
 
-#: biblioref/field_definitions.py:736
+#: biblioref/field_definitions.py:737
 msgid "Record number"
 msgstr "Número do registro"
 
-#: biblioref/field_definitions.py:737 institution/models.py:195
-#: institution/models.py:200 leisref/models.py:606 oer/models.py:530
+#: biblioref/field_definitions.py:738 institution/models.py:200
+#: institution/models.py:205 leisref/models.py:606 oer/models.py:530
 #: oer/models.py:534 templates/institution/fieldset_url.html:15
 #: templates/leisref/fieldset_fulltext.html:14
 #: templates/main/resources.html:103 templates/oer/fieldset_fulltext.html:14
-#: templates/suggest/list.html:77 title/models.py:154
+#: templates/suggest/list.html:77 title/models.py:159
 msgid "URL"
 msgstr "URL"
 
-#: biblioref/field_definitions.py:740
+#: biblioref/field_definitions.py:741
 msgid "Clinical Trial"
 msgstr "Registro de Ensaio Clínico"
 
-#: biblioref/field_definitions.py:744 biblioref/field_definitions.py:751
-#: classification/models.py:42 classification/models.py:127
-#: error_reporting/models.py:37 main/models.py:234 main/models.py:271
+#: biblioref/field_definitions.py:745 biblioref/field_definitions.py:752
+#: classification/models.py:42 classification/models.py:143
+#: error_reporting/models.py:37 main/models.py:236 main/models.py:273
 #: multimedia/models.py:65 multimedia/models.py:91 multimedia/models.py:114
 #: oer/models.py:472 related/models.py:69 templates/error_report/list.html:73
-#: templates/error_report/list.html:134 thesaurus/models_descriptors.py:68
+#: templates/error_report/list.html:134 thesaurus/models_descriptors.py:83
+#: title/field_definitions.py:63 title/field_definitions.py:68
+#: title/models.py:374
 msgid "Description"
 msgstr "Descrição"
 
-#: biblioref/forms.py:33
+#: biblioref/forms.py:35
 msgid "Journals (Periodical Series)"
 msgstr "Revistas (Série Periódica)"
 
-#: biblioref/forms.py:34 templates/biblioref/reference_list.html:109
+#: biblioref/forms.py:36 templates/biblioref/reference_list.html:109
 #: templates/biblioref/select_related_reference.html:40
 msgid "Book"
 msgstr "Livro"
 
-#: biblioref/forms.py:35 templates/biblioref/reference_list.html:110
+#: biblioref/forms.py:37 templates/biblioref/reference_list.html:110
 #: templates/biblioref/select_related_reference.html:41
 msgid "Thesis, Dissertation and Monography"
 msgstr "Tese, Dissertação e Monografia"
 
-#: biblioref/forms.py:36 templates/biblioref/reference_list.html:111
+#: biblioref/forms.py:38 templates/biblioref/reference_list.html:111
 #: templates/biblioref/select_related_reference.html:42
 msgid "Monograph in a Collection"
 msgstr "Monografia pertencente a uma Coleção"
 
-#: biblioref/forms.py:37 templates/biblioref/reference_list.html:112
+#: biblioref/forms.py:39 templates/biblioref/reference_list.html:112
 #: templates/biblioref/select_related_reference.html:43
 msgid "Collection of Monographs"
 msgstr "Coleção de Monografias"
 
-#: biblioref/forms.py:38 templates/biblioref/reference_list.html:113
+#: biblioref/forms.py:40 templates/biblioref/reference_list.html:113
 #: templates/biblioref/select_related_reference.html:44
 msgid "Monograph Series"
 msgstr "Série Monográfica"
 
-#: biblioref/forms.py:39 templates/biblioref/reference_list.html:114
+#: biblioref/forms.py:41 templates/biblioref/reference_list.html:114
 #: templates/biblioref/select_related_reference.html:45
 msgid "Non conventional"
 msgstr "Não convencional"
 
-#: biblioref/forms.py:40 templates/biblioref/reference_list.html:115
+#: biblioref/forms.py:42 templates/biblioref/reference_list.html:115
 #: templates/biblioref/select_related_reference.html:46
 msgid "Thesis/Dissertation appearing as a Monograph Series"
 msgstr "Tese/Dissertação pertencente a uma Série Monográfica"
 
-#: biblioref/forms.py:43 templates/biblioref/select_document_type.html:6
+#: biblioref/forms.py:45 templates/biblioref/select_document_type.html:6
 msgid "Select document type"
 msgstr "Selecione o tipo do documento"
 
-#: biblioref/forms.py:216
+#: biblioref/forms.py:188
 #, python-format
 msgid "Insert space after %s"
 msgstr "Adicionar espaço depois de %s"
 
-#: biblioref/forms.py:220
+#: biblioref/forms.py:192
 #, python-format
 msgid "Delete space before %s"
 msgstr "Apagar espaço antes de %s"
 
-#: biblioref/forms.py:233
+#: biblioref/forms.py:205
 msgid "Individual Author or Corporate Author mandatory"
 msgstr "Autor Pessoal ou Autor Institucional obrigatório"
 
-#: biblioref/forms.py:247
+#: biblioref/forms.py:220
 #, python-format
 msgid "The % simbol don't separete occurences"
 msgstr "O símbolo %s não separa ocorrências"
 
-#: biblioref/forms.py:251 biblioref/forms.py:391
+#: biblioref/forms.py:224 biblioref/forms.py:369
 msgid "Point at end of field is not allowed"
 msgstr "Não é permitido ponto no final do campo"
 
-#: biblioref/forms.py:264
+#: biblioref/forms.py:237
 msgid "Volume or issue number mandatory"
 msgstr "Volume ou número da edição obrigatório"
 
-#: biblioref/forms.py:271
+#: biblioref/forms.py:244
 msgid "Required when indexed in LILACS database"
 msgstr "Obrigatório quando indexado na base de dados LILACS"
 
-#: biblioref/forms.py:295 biblioref/forms.py:323 biblioref/forms.py:346
+#: biblioref/forms.py:273 biblioref/forms.py:301 biblioref/forms.py:324
 #, python-format
 msgid "Author %s: "
 msgstr "Autor %s:"
 
-#: biblioref/forms.py:297 biblioref/forms.py:384
+#: biblioref/forms.py:275 biblioref/forms.py:362
 msgid "Degree of responsibility incompatible with LILACS"
 msgstr "Grau de responsabilidade incompatível com LILACS"
 
-#: biblioref/forms.py:317 biblioref/forms.py:456 biblioref/forms.py:532
-#: biblioref/forms.py:540 biblioref/forms.py:553 biblioref/forms.py:591
-#: biblioref/forms.py:609 biblioref/forms.py:629 biblioref/forms.py:657
-#: biblioref/forms.py:673 biblioref/forms.py:768 biblioref/forms.py:779
-#: biblioref/forms.py:797 biblioref/forms.py:835 biblioref/forms.py:850
-#: biblioref/forms.py:860 biblioref/forms.py:996 biblioref/forms.py:1009
-#: biblioref/forms.py:1030
+#: biblioref/forms.py:295 biblioref/forms.py:434 biblioref/forms.py:510
+#: biblioref/forms.py:518 biblioref/forms.py:531 biblioref/forms.py:569
+#: biblioref/forms.py:587 biblioref/forms.py:607 biblioref/forms.py:635
+#: biblioref/forms.py:651 biblioref/forms.py:741 biblioref/forms.py:752
+#: biblioref/forms.py:770 biblioref/forms.py:807 biblioref/forms.py:822
+#: biblioref/forms.py:832 biblioref/forms.py:972 biblioref/forms.py:985
+#: biblioref/forms.py:1006
 msgid "Mandatory"
 msgstr "Obrigatório"
 
-#: biblioref/forms.py:325
+#: biblioref/forms.py:303
 msgid "Thesis's author anonymous"
 msgstr "Autor de tese anônimo"
 
-#: biblioref/forms.py:337
+#: biblioref/forms.py:315
 msgid ""
 "Affiliation information in Thesis/Dissertation must be provide at "
 "'Institution to which it is submitted' field"
@@ -615,27 +613,27 @@ msgstr ""
 "Informação de afiliação em Tese/Dissertação deve ser informada no campo "
 "'Instituição a qual se apresenta'"
 
-#: biblioref/forms.py:349
+#: biblioref/forms.py:327
 msgid "Comma absense or error in the word Anon"
 msgstr "Ausência de vírgula ou erro na digitação de Anon"
 
-#: biblioref/forms.py:358
+#: biblioref/forms.py:336
 msgid "Insert space after point"
 msgstr "Insira espaço após a virgula"
 
-#: biblioref/forms.py:362
+#: biblioref/forms.py:340
 msgid "Invalid abbreviation input Junior and/or Filho"
 msgstr "Abreviação inválida Junior e/ou Filho"
 
-#: biblioref/forms.py:367
+#: biblioref/forms.py:345
 msgid "Affiliation institution level 1 mandatory"
 msgstr "Instituição nível 1 da afiliação obrigatório"
 
-#: biblioref/forms.py:372
+#: biblioref/forms.py:350
 msgid "Affiliation country mandatory"
 msgstr "País de afiliação obrigatório"
 
-#: biblioref/forms.py:378
+#: biblioref/forms.py:356
 msgid ""
 "For absent or s.af affiliation do not describe the others affiliation "
 "atributes"
@@ -643,40 +641,40 @@ msgstr ""
 "Para afiliação ausente OU s.af  não descreva os outros atributos da "
 "afiliação"
 
-#: biblioref/forms.py:392
+#: biblioref/forms.py:370
 #, python-format
 msgid " at subfield %s "
 msgstr "no subcampo %s"
 
-#: biblioref/forms.py:422 biblioref/forms.py:732
+#: biblioref/forms.py:400 biblioref/forms.py:705
 #, python-format
 msgid "item %s: "
 msgstr "Item %s:"
 
-#: biblioref/forms.py:425
+#: biblioref/forms.py:403
 msgid "File extension attribute is mandatory"
 msgstr "Atributo de extensão do arquivo é obrigatório"
 
-#: biblioref/forms.py:430
+#: biblioref/forms.py:408
 msgid "File type attribute is mandatory"
 msgstr "Atributo de tipo de arquivo é obrigatório"
 
-#: biblioref/forms.py:435 biblioref/forms.py:562 biblioref/forms.py:585
-#: biblioref/forms.py:651 biblioref/forms.py:840
+#: biblioref/forms.py:413 biblioref/forms.py:540 biblioref/forms.py:563
+#: biblioref/forms.py:629 biblioref/forms.py:812
 msgid "Language incompatible with LILACS"
 msgstr "Idioma incompatível com LILACS"
 
-#: biblioref/forms.py:442
+#: biblioref/forms.py:420
 msgid "URL duplicated"
 msgstr "URL duplicada"
 
-#: biblioref/forms.py:459
+#: biblioref/forms.py:437
 msgid ""
 "Printed music in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 "Música Impressa no Tipo de Registro é incompatível com a Metodologia LILACS"
 
-#: biblioref/forms.py:461
+#: biblioref/forms.py:439
 msgid ""
 "Manuscript music in the Record Type is incompatible with the LILACS "
 "Methodology"
@@ -684,7 +682,7 @@ msgstr ""
 "Manuscritos de música no Tipo de Registro é incompatível com a Metodologia "
 "LILACS"
 
-#: biblioref/forms.py:463
+#: biblioref/forms.py:441
 msgid ""
 "Printed cartographic material in the Record Type is incompatible with the "
 "LILACS Methodology"
@@ -692,7 +690,7 @@ msgstr ""
 "Material Cartográfico no Tipo de Registro é incompatível com a Metodologia "
 "LILACS"
 
-#: biblioref/forms.py:465
+#: biblioref/forms.py:443
 msgid ""
 "Manuscript cartographic material in the Record Type is incompatible with the"
 " LILACS Methodology"
@@ -700,7 +698,7 @@ msgstr ""
 "Manuscritos de Material Cartográfico no Tipo de Registro é incompatível com "
 "a Metodologia LILACS"
 
-#: biblioref/forms.py:467
+#: biblioref/forms.py:445
 msgid ""
 "Musical sound recording in the Record Type is incompatible with the LILACS "
 "Methodology"
@@ -708,7 +706,7 @@ msgstr ""
 "Registros musicais no Tipo de Registro é incompatível com a Metodologia "
 "LILACS"
 
-#: biblioref/forms.py:469
+#: biblioref/forms.py:447
 msgid ""
 "Two-dimensional nonprojectable graphic in the Record Type is incompatible "
 "with the LILACS Methodology"
@@ -716,25 +714,25 @@ msgstr ""
 "Gráficos bi-dimensionais não projetáveis no Tipo de Registro é incompatível "
 "com a Metodologia LILACS"
 
-#: biblioref/forms.py:471
+#: biblioref/forms.py:449
 msgid ""
 "Computer file in the Record Type is incompatible with the LILACS Methodology"
 msgstr ""
 "Arquivo de computador no Tipo de Registro é incompatível com a Metodologia "
 "LILACS"
 
-#: biblioref/forms.py:473
+#: biblioref/forms.py:451
 msgid "Kit in the Record Type is incompatible with the LILACS Methodology"
 msgstr "Kit no Tipo de Registro é incompatível com a Metodologia LILACS"
 
-#: biblioref/forms.py:475
+#: biblioref/forms.py:453
 msgid ""
 "Mixed material in the Record Type is incompatible with the LILACS "
 "Methodology"
 msgstr ""
 "Material misto no Tipo de Registro é incompatível com a Metodologia LILACS"
 
-#: biblioref/forms.py:477
+#: biblioref/forms.py:455
 msgid ""
 "Three-dimensional artifact or naturally occurring object in the Record Type "
 "is incompatible with the LILACS Methodology"
@@ -742,14 +740,14 @@ msgstr ""
 "Material tridimensional, artefato, objeto no Tipo de Registro é incompatível"
 " com a Metodologia LILACS"
 
-#: biblioref/forms.py:479
+#: biblioref/forms.py:457
 msgid ""
 "Manuscript language material in the Record Type is incompatible with the "
 "LILACS Methodology"
 msgstr ""
 "Manuscritos  no Tipo de Registro é incompatível com a Metodologia LILACS"
 
-#: biblioref/forms.py:498
+#: biblioref/forms.py:476
 msgid ""
 "For the tradicional material of LILACS which is only in electronic form you "
 "should describe it as Electronic"
@@ -757,22 +755,22 @@ msgstr ""
 "Para material tradicional de LILACS que se encontrem somente em formato "
 "eletrônico deve-se preenchê-lo com a opção Eletrônico"
 
-#: biblioref/forms.py:502
+#: biblioref/forms.py:480
 msgid "For articles, item form must be empty or Eletronic"
 msgstr "Para artigos, a forma do item deve ser vazio ou Eletrônico"
 
-#: biblioref/forms.py:514
+#: biblioref/forms.py:492
 msgid ""
 "For articles indexed in LILACS, type of journal must be Journal or Separatum"
 msgstr ""
 "Para artigos indexados na LILACS, o tipo de periódico deve ser Revistas ou "
 "Separatas"
 
-#: biblioref/forms.py:526
+#: biblioref/forms.py:504
 msgid "For LILACS references is mandatory select a journal from the list"
 msgstr "Para referências LILACS é obrigatório selecionar uma revista de lista"
 
-#: biblioref/forms.py:529
+#: biblioref/forms.py:507
 msgid ""
 "Please choose one journal from the list or use blank to inform other journal"
 " title"
@@ -780,20 +778,20 @@ msgstr ""
 "Por favor selecione uma revista da lista ou escolha opção vazia para "
 "informar um outro título de revista"
 
-#: biblioref/forms.py:559 biblioref/forms.py:582 biblioref/forms.py:648
+#: biblioref/forms.py:537 biblioref/forms.py:560 biblioref/forms.py:626
 #, python-format
 msgid "Title %s: "
 msgstr "Título %s:"
 
-#: biblioref/forms.py:612 biblioref/forms.py:632
+#: biblioref/forms.py:590 biblioref/forms.py:610
 msgid "Invalid fill. Don't translate title in English"
 msgstr "Preenchimento inválido. Não traduza título em Inglês"
 
-#: biblioref/forms.py:670
+#: biblioref/forms.py:648
 msgid "Date without year"
 msgstr "Data sem ano"
 
-#: biblioref/forms.py:687
+#: biblioref/forms.py:664
 msgid ""
 "Entering information in this field is conditional to filling out publication"
 " date field"
@@ -801,52 +799,47 @@ msgstr ""
 "O registro de informação neste campo está condicionado ao preenchimento do "
 "campo data de publicação"
 
-#: biblioref/forms.py:690 biblioref/forms.py:1012
+#: biblioref/forms.py:667 biblioref/forms.py:988
 msgid "Different of 8 characters"
 msgstr "Não contem 8 dígitos"
 
-#: biblioref/forms.py:693
+#: biblioref/forms.py:670
 msgid "Incompatible with LILACS"
 msgstr "Incompatível com LILACS"
 
-#: biblioref/forms.py:701
+#: biblioref/forms.py:678
 #, python-format
 msgid "Normalized date year must be '%s'"
 msgstr "Ano da data normalizada deve ser: '%s'"
 
-#: biblioref/forms.py:707
+#: biblioref/forms.py:684
 #, python-format
 msgid "Error in the date, use: %s"
 msgstr "Erro na data, use: %s"
 
-#: biblioref/forms.py:711 biblioref/forms.py:1019
-#, python-format
-msgid "Leave blank, publication date = %s"
-msgstr "Deixe em branco, data de publicação = %s"
-
-#: biblioref/forms.py:723
+#: biblioref/forms.py:696
 msgid "Do not have more than 4 occurrences, use passim"
 msgstr "Mais que 4 ocorrências não permitido, use passim"
 
-#: biblioref/forms.py:735
+#: biblioref/forms.py:708
 msgid "If the attribute first is passim, the attribute last should be empty"
 msgstr ""
 "Se o atributo número inicial é passim, o atributo número final precisa ser "
 "vazio"
 
-#: biblioref/forms.py:740
+#: biblioref/forms.py:713
 msgid "Attribute last is missing"
 msgstr "Atributo número final não presente"
 
-#: biblioref/forms.py:745
+#: biblioref/forms.py:718
 msgid "Attribute first is missing"
 msgstr "Atributo número inicial não presente"
 
-#: biblioref/forms.py:750
+#: biblioref/forms.py:723
 msgid "Square brackets are missing [ ]"
 msgstr "Colchetes não presentes"
 
-#: biblioref/forms.py:755
+#: biblioref/forms.py:728
 msgid ""
 "When the electronic location attribute is informed the others attributes "
 "should be empty"
@@ -854,11 +847,11 @@ msgstr ""
 "Quando o atributo de localização eletrônica é informado os outros atributos "
 "devem ser vazios"
 
-#: biblioref/forms.py:787 biblioref/forms.py:813
+#: biblioref/forms.py:760 biblioref/forms.py:785
 msgid "LILACS incompatible"
 msgstr "Incompatível com a LILACS"
 
-#: biblioref/forms.py:808
+#: biblioref/forms.py:780
 msgid ""
 "Entering information in this field is conditional to filling out publication"
 " city field"
@@ -866,33 +859,39 @@ msgstr ""
 "O preenchimento de informação neste campo está condicionado ao preenchimento"
 " do campo cidade de publicação"
 
-#: biblioref/forms.py:823
+#: biblioref/forms.py:795
 msgid "Maximum number of characteres = 9"
 msgstr "Número máximo de caracteres = 9"
 
-#: biblioref/forms.py:870
+#: biblioref/forms.py:842
 msgid "Please inform a valid DOI number. Ex. 10.1000/xyz123"
 msgstr ""
 
-#: biblioref/forms.py:983
+#: biblioref/forms.py:959
 msgid "Event name mandatory"
 msgstr "Nome do evento obrigatório"
 
-#: biblioref/forms.py:986
+#: biblioref/forms.py:962
 msgid "Project name OR Project number mandatory"
 msgstr "Nome do Projeto ou Número do Projeto obrigatório"
 
-#: biblioref/forms.py:1016
+#: biblioref/forms.py:992
 msgid "Error in the date"
 msgstr "Erro na data"
 
+#: biblioref/forms.py:995
+#, python-format
+msgid "Leave blank, publication date = %s"
+msgstr "Deixe em branco, data de publicação = %s"
+
 #: biblioref/models.py:16 templates/biblioref/reference_list.html:122
 #: templates/biblioref/select_related_reference.html:53
-#: templates/reports/index.html:64 utils/templatetags/app_filters.py:16
+#: templates/reports/index.html:64 templates/thesaurus/thesaurus_home.html:100
+#: utils/templatetags/app_filters.py:18
 msgid "Migration"
 msgstr "Migrado"
 
-#: biblioref/models.py:17 utils/templatetags/app_filters.py:17
+#: biblioref/models.py:17 utils/templatetags/app_filters.py:19
 msgid "Submission"
 msgstr "Submissão"
 
@@ -908,8 +907,8 @@ msgstr "Submissão"
 #: templates/thesaurus/qualifier_list.html:95
 #: templates/thesaurus/qualifier_new_concept.html:179
 #: templates/thesaurus/qualifier_new_term.html:72
-#: templates/thesaurus/thesaurus_home.html:94 thesaurus/choices.py:53
-#: utils/templatetags/app_filters.py:18
+#: templates/thesaurus/thesaurus_home.html:101 thesaurus/choices.py:53
+#: utils/templatetags/app_filters.py:20
 msgid "Draft"
 msgstr "Rascunho"
 
@@ -929,13 +928,13 @@ msgstr "LILACS-Express"
 #: templates/thesaurus/qualifier_list.html:96
 #: templates/thesaurus/qualifier_new_concept.html:180
 #: templates/thesaurus/qualifier_new_term.html:73
-#: templates/thesaurus/thesaurus_home.html:95 thesaurus/choices.py:54
-#: utils/templatetags/app_filters.py:20
+#: templates/thesaurus/thesaurus_home.html:102 thesaurus/choices.py:54
+#: utils/templatetags/app_filters.py:22
 msgid "Published"
 msgstr "Publicado"
 
 #: biblioref/models.py:21 events/models.py:70 leisref/models.py:19
-#: main/models.py:165 main/models.py:188 main/models.py:209 main/models.py:284
+#: main/models.py:167 main/models.py:190 main/models.py:211 main/models.py:286
 #: multimedia/models.py:104 oer/models.py:14 suggest/models.py:18
 #: suggest/models.py:50 templates/biblioref/reference_form.html:152
 #: templates/biblioref/reference_form.html:225
@@ -946,20 +945,18 @@ msgstr "Publicado"
 #: templates/leisref/act_list.html:74 templates/main/edit-resource.html:175
 #: templates/main/edit-resource.html:246 templates/main/edit-resource.html:316
 #: templates/main/resources.html:76 templates/main/resources.html:123
-#: templates/multimedia/media_form.html:176
-#: templates/multimedia/media_form.html:249
 #: templates/multimedia/media_list.html:72
 #: templates/multimedia/media_list.html:150 templates/oer/oer_list.html:72
-#: templates/reports/index.html:68 templates/reports/index.html:146
+#: templates/reports/index.html:68 templates/reports/index.html:154
 #: templates/suggest/list.html:54 templates/suggest/list.html:97
-#: templates/suggest/list.html:141 templates/suggest/list.html:184
-#: templates/title/title_form.html:195 templates/title/title_form.html:267
-#: utils/templatetags/app_filters.py:21
+#: templates/suggest/list.html:141 templates/suggest/list.html:186
+#: templates/title/title_form.html:198 templates/title/title_form.html:270
+#: utils/templatetags/app_filters.py:23
 msgid "Refused"
 msgstr "Recusado"
 
 #: biblioref/models.py:22 events/models.py:71 leisref/models.py:20
-#: main/models.py:285 multimedia/models.py:105 oer/models.py:15
+#: main/models.py:287 multimedia/models.py:105 oer/models.py:15
 #: suggest/models.py:19 suggest/models.py:51
 #: templates/biblioref/reference_form.html:154
 #: templates/biblioref/reference_form.html:227
@@ -970,17 +967,15 @@ msgstr "Recusado"
 #: templates/leisref/act_list.html:75 templates/main/edit-resource.html:177
 #: templates/main/edit-resource.html:248 templates/main/edit-resource.html:318
 #: templates/main/resources.html:77 templates/main/resources.html:125
-#: templates/multimedia/media_form.html:178
-#: templates/multimedia/media_form.html:251
 #: templates/multimedia/media_list.html:73
 #: templates/multimedia/media_list.html:152 templates/oer/oer_list.html:73
-#: templates/reports/index.html:69 templates/reports/index.html:148
+#: templates/reports/index.html:69 templates/reports/index.html:156
 #: templates/suggest/list.html:55 templates/suggest/list.html:99
-#: templates/suggest/list.html:143 templates/suggest/list.html:186
+#: templates/suggest/list.html:143 templates/suggest/list.html:188
 #: templates/thesaurus/qualifier_list.html:97
-#: templates/thesaurus/thesaurus_home.html:96
-#: templates/title/title_form.html:197 templates/title/title_form.html:269
-#: thesaurus/choices.py:55 utils/templatetags/app_filters.py:22
+#: templates/thesaurus/thesaurus_home.html:103
+#: templates/title/title_form.html:200 templates/title/title_form.html:272
+#: thesaurus/choices.py:55 utils/templatetags/app_filters.py:24
 msgid "Deleted"
 msgstr "Apagado"
 
@@ -1003,9 +998,9 @@ msgstr "Registro bibliográfico"
 msgid "Bibliographic Records"
 msgstr "Registros bibliográficos"
 
-#: biblioref/models.py:32 error_reporting/models.py:35 events/models.py:74
+#: biblioref/models.py:32 error_reporting/models.py:35 events/models.py:80
 #: institution/models.py:100 leisref/models.py:495 log/models.py:58
-#: main/models.py:177 main/models.py:197 main/models.py:217 main/models.py:289
+#: main/models.py:179 main/models.py:199 main/models.py:219 main/models.py:291
 #: multimedia/models.py:108 oer/models.py:464 suggest/models.py:23
 #: suggest/models.py:54 templates/biblioref/reference_form.html:136
 #: templates/biblioref/reference_form.html:209
@@ -1019,26 +1014,23 @@ msgstr "Registros bibliográficos"
 #: templates/events/edit-event.html:307 templates/events/events.html:71
 #: templates/events/events.html:103
 #: templates/institution/institution_list.html:69
-#: templates/institution/institution_list.html:114
+#: templates/institution/institution_list.html:124
 #: templates/leisref/act_list.html:68 templates/leisref/act_list.html:149
 #: templates/main/edit-resource.html:160 templates/main/edit-resource.html:230
 #: templates/main/edit-resource.html:302 templates/main/resources.html:71
-#: templates/main/resources.html:105 templates/multimedia/media_form.html:161
-#: templates/multimedia/media_form.html:233
-#: templates/multimedia/media_form.html:305
-#: templates/multimedia/media_list.html:67
+#: templates/main/resources.html:105 templates/multimedia/media_list.html:67
 #: templates/multimedia/media_list.html:135 templates/oer/oer_list.html:67
 #: templates/oer/oer_list.html:107 templates/reports/index.html:61
 #: templates/suggest/list.html:49 templates/suggest/list.html:79
-#: templates/suggest/list.html:123 templates/suggest/list.html:167
+#: templates/suggest/list.html:123 templates/suggest/list.html:168
 #: templates/thesaurus/descriptor_new_concept.html:179
 #: templates/thesaurus/qualifier_list.html:92
 #: templates/thesaurus/qualifier_list.html:143
 #: templates/thesaurus/qualifier_new_concept.html:176
-#: templates/thesaurus/thesaurus_home.html:91
-#: templates/thesaurus/thesaurus_home.html:138
-#: templates/title/form_preview.html:470 templates/title/title_form.html:543
-#: thesaurus/models_descriptors.py:344 thesaurus/models_qualifiers.py:246
+#: templates/thesaurus/thesaurus_home.html:96
+#: templates/thesaurus/thesaurus_home.html:179
+#: templates/title/form_preview.html:471 templates/title/title_form.html:546
+#: thesaurus/models_descriptors.py:358 thesaurus/models_qualifiers.py:243
 msgid "Status"
 msgstr "Status"
 
@@ -1051,11 +1043,11 @@ msgid "Reviewed by BIREME?"
 msgstr "Revisado pela BIREME"
 
 #: biblioref/models.py:39 biblioref/models.py:352 biblioref/models.py:381
-#: events/models.py:96 institution/models.py:111 leisref/models.py:558
-#: main/models.py:311 multimedia/models.py:72 multimedia/models.py:128
+#: events/models.py:104 institution/models.py:111 leisref/models.py:558
+#: main/models.py:313 multimedia/models.py:72 multimedia/models.py:128
 #: oer/models.py:518 templates/multimedia/media_list.html:90
-#: templates/reports/index.html:72 templates/title/title_form.html:71
-#: templates/title/title_list.html:105 title/models.py:49 title/models.py:321
+#: templates/reports/index.html:72 templates/title/title_form.html:73
+#: templates/title/title_list.html:105 title/models.py:54 title/models.py:326
 msgid "Cooperative center"
 msgstr "Centro cooperante"
 
@@ -1069,16 +1061,16 @@ msgstr "Indexado em"
 msgid "Literature type"
 msgstr "Tipo de literatura"
 
-#: biblioref/models.py:45 title/models.py:47 title/models.py:320
+#: biblioref/models.py:45 title/models.py:52 title/models.py:325
 msgid "Treatment level"
 msgstr "Nível de tratamento"
 
 #: biblioref/models.py:49 templates/biblioref/reference_list.html:100
-#: templates/biblioref/select_related_reference.html:31 title/models.py:45
+#: templates/biblioref/select_related_reference.html:31 title/models.py:50
 msgid "Record type"
 msgstr "Tipo de registro"
 
-#: biblioref/models.py:54 title/models.py:93
+#: biblioref/models.py:54 title/models.py:98
 msgid "Text language"
 msgstr "idioma do texto"
 
@@ -1099,7 +1091,7 @@ msgstr "Data de publicação normalizada"
 msgid "Format: YYYYMMDD"
 msgstr "Formato: AAAAMMDD"
 
-#: biblioref/models.py:62 title/models.py:328
+#: biblioref/models.py:62 title/models.py:333
 msgid "Publication type"
 msgstr "Tipo de publicação"
 
@@ -1164,8 +1156,8 @@ msgid "Formatted contents note"
 msgstr "Nota formatada de conteúdo"
 
 #: biblioref/models.py:98
-msgid "Additional physical form available note"
-msgstr "Nota de disponibilidade de forma física adicional"
+msgid "Note of other available formats"
+msgstr "Nota de outros formatos disponíveis"
 
 #: biblioref/models.py:100
 msgid "Reproduction note"
@@ -1213,8 +1205,8 @@ msgstr "Título traduzido para o inglês"
 
 #: biblioref/models.py:195 biblioref/models.py:209
 #: templates/biblioref/referenceanalytic_form.html:171
-#: templates/title/form_preview.html:466 templates/title/title_form.html:539
-#: title/models.py:323
+#: templates/title/form_preview.html:467 templates/title/title_form.html:542
+#: title/models.py:328
 msgid "Volume"
 msgstr "Volume"
 
@@ -1226,11 +1218,11 @@ msgstr "Número total de volumes"
 msgid "Issue number"
 msgstr "Número do fascículo"
 
-#: biblioref/models.py:213 templates/title/form_preview.html:330
-#: templates/title/form_preview.html:380 templates/title/title_form.html:401
-#: templates/title/title_form.html:446 templates/title/title_list.html:84
-#: templates/title/title_list.html:102 title/models.py:99 title/models.py:182
-#: title/models.py:260
+#: biblioref/models.py:213 templates/title/form_preview.html:331
+#: templates/title/form_preview.html:381 templates/title/title_form.html:404
+#: templates/title/title_form.html:449 templates/title/title_list.html:84
+#: templates/title/title_list.html:102 title/models.py:104 title/models.py:187
+#: title/models.py:265
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -1270,7 +1262,7 @@ msgstr "ISBN"
 msgid "DOI number"
 msgstr "Número DOI"
 
-#: biblioref/models.py:235 main/models.py:228 main/models.py:268
+#: biblioref/models.py:235 main/models.py:230 main/models.py:270
 #: oer/models.py:63 oer/models.py:92
 msgid "License"
 msgstr "Licença"
@@ -1284,7 +1276,7 @@ msgid "Bibliographic Records Analytic"
 msgstr "Registro bibliográfico - Analíticas"
 
 #: biblioref/models.py:269 biblioref/models.py:311 biblioref/models.py:340
-#: help/models.py:24 templates/reports/index.html:33
+#: help/models.py:31 templates/reports/index.html:33
 msgid "Source"
 msgstr "Fonte de informação"
 
@@ -1292,9 +1284,13 @@ msgstr "Fonte de informação"
 msgid "Field mandatory"
 msgstr "Campo obrigatório"
 
+#: biblioref/models.py:279
+msgid "Page identifier"
+msgstr "Identificador de páginas"
+
 #: biblioref/models.py:283
-msgid "Clinical trial registry name"
-msgstr "Nome do registro do ensaio clínico"
+msgid "Clinical trial registry"
+msgstr "Registro de Ensaio Clínico"
 
 #: biblioref/models.py:308
 msgid "Bibliographic Record Complement"
@@ -1418,8 +1414,9 @@ msgid "data"
 msgstr "dados"
 
 #: classification/models.py:29 institution/models.py:59
-#: institution/models.py:89 institution/models.py:148
+#: institution/models.py:89 institution/models.py:153
 #: templates/institution/institution_list.html:85
+#: templates/thesaurus/thesaurus_home.html:124
 msgid "Category"
 msgstr "Categoria"
 
@@ -1427,24 +1424,24 @@ msgstr "Categoria"
 msgid "Theme"
 msgstr "Tema"
 
-#: classification/models.py:34 classification/models.py:124
-#: classification/models.py:140 leisref/models.py:511 multimedia/models.py:75
+#: classification/models.py:34 classification/models.py:140
+#: classification/models.py:156 leisref/models.py:511 multimedia/models.py:75
 #: multimedia/models.py:88 multimedia/models.py:110
 #: templates/biblioref/reference_list.html:142
 #: templates/biblioref/referenceanalytic_form.html:226
-#: templates/biblioref/referencesource_form.html:152
+#: templates/biblioref/referencesource_form.html:154
 #: templates/classification/classify.html:26
 #: templates/leisref/act_form.html:129 templates/leisref/act_list.html:125
 #: templates/main/edit-resource.html:133
 #: templates/multimedia/media_form.html:150
 #: templates/multimedia/media_list.html:106
-#: templates/title/form_preview.html:184 templates/title/title_form.html:60
-#: title/models.py:341 title/models.py:345
+#: templates/title/form_preview.html:185 templates/title/title_form.html:61
+#: title/models.py:346 title/models.py:350
 msgid "Collection"
 msgstr "Coleção"
 
 #: classification/models.py:35 multimedia/models.py:76
-#: templates/classification/classify.html:74 title/models.py:342
+#: templates/classification/classify.html:74 title/models.py:347
 msgid "Collections"
 msgstr "Coleções"
 
@@ -1452,24 +1449,24 @@ msgstr "Coleções"
 msgid "Parent"
 msgstr "Pai"
 
-#: classification/models.py:39 events/models.py:85 institution/models.py:104
-#: institution/models.py:217 multimedia/models.py:68
+#: classification/models.py:39 events/models.py:91 institution/models.py:104
+#: institution/models.py:222 multimedia/models.py:68
 #: templates/institution/institution_list.html:93
-#: templates/institution/institution_list.html:113 title/models.py:85
+#: templates/institution/institution_list.html:123 title/models.py:90
 msgid "Country"
 msgstr "País"
 
-#: classification/models.py:40 classification/models.py:126
+#: classification/models.py:40 classification/models.py:142
 #: database/models.py:22 events/models.py:23 institution/models.py:23
 #: institution/models.py:52 institution/models.py:62 institution/models.py:91
-#: institution/models.py:102 institution/models.py:175
-#: institution/models.py:215 institution/models.py:304
-#: institution/models.py:324 leisref/models.py:31 leisref/models.py:76
+#: institution/models.py:102 institution/models.py:180
+#: institution/models.py:220 institution/models.py:309
+#: institution/models.py:329 leisref/models.py:31 leisref/models.py:76
 #: leisref/models.py:122 leisref/models.py:168 leisref/models.py:215
 #: leisref/models.py:319 leisref/models.py:365 leisref/models.py:412
-#: leisref/models.py:460 main/models.py:30 main/models.py:77
-#: main/models.py:111 main/models.py:122 main/models.py:157 main/models.py:233
-#: main/models.py:270 multimedia/models.py:25 oer/field_definitions.py:40
+#: leisref/models.py:460 main/models.py:32 main/models.py:79
+#: main/models.py:113 main/models.py:124 main/models.py:159 main/models.py:235
+#: main/models.py:272 multimedia/models.py:25 oer/field_definitions.py:40
 #: oer/models.py:27 oer/models.py:66 oer/models.py:104 oer/models.py:143
 #: oer/models.py:182 oer/models.py:220 oer/models.py:249 oer/models.py:280
 #: oer/models.py:309 oer/models.py:348 oer/models.py:387 oer/models.py:426
@@ -1478,7 +1475,7 @@ msgstr "País"
 #: templates/institution/fieldset_email.html:15
 #: templates/institution/fieldset_email.html:68
 #: templates/institution/fieldset_person.html:14
-#: templates/institution/institution_list.html:112
+#: templates/institution/institution_list.html:122
 #: templates/institution/institution_unit.html:43
 #: templates/leisref/act_related.html:50
 #: templates/leisref/actcity_list.html:48
@@ -1492,8 +1489,8 @@ msgstr "País"
 #: templates/leisref/acttype_list.html:48 templates/main/languages.html:47
 #: templates/main/thematics.html:47 templates/main/types.html:47
 #: templates/multimedia/mediacollection_list.html:40
-#: templates/multimedia/mediatype_list.html:47 title/models.py:18
-#: title/models.py:216
+#: templates/multimedia/mediatype_list.html:47 title/models.py:23
+#: title/models.py:221
 msgid "Name"
 msgstr "Nome"
 
@@ -1501,7 +1498,7 @@ msgstr "Nome"
 msgid "Slug"
 msgstr ""
 
-#: classification/models.py:43 classification/models.py:128
+#: classification/models.py:43 classification/models.py:144
 msgid "Image"
 msgstr "Imagem"
 
@@ -1513,32 +1510,33 @@ msgstr "Comunidade?"
 msgid "Collection type"
 msgstr "Tipo de coleção"
 
-#: classification/models.py:46
+#: classification/models.py:46 templates/institution/institution_list.html:101
+#: templates/institution/institution_list.html:125
 msgid "Last update"
 msgstr "Data da última modificação"
 
-#: classification/models.py:121 events/models.py:52 help/models.py:49
-#: institution/models.py:47 institution/models.py:86 institution/models.py:274
-#: institution/models.py:319 leisref/models.py:61 leisref/models.py:107
+#: classification/models.py:137 events/models.py:52 help/models.py:56
+#: institution/models.py:47 institution/models.py:86 institution/models.py:279
+#: institution/models.py:324 leisref/models.py:61 leisref/models.py:107
 #: leisref/models.py:153 leisref/models.py:200 leisref/models.py:246
 #: leisref/models.py:303 leisref/models.py:351 leisref/models.py:397
-#: leisref/models.py:444 main/models.py:60 main/models.py:106
-#: main/models.py:152 main/models.py:265 multimedia/models.py:54
+#: leisref/models.py:444 main/models.py:62 main/models.py:108
+#: main/models.py:154 main/models.py:267 multimedia/models.py:54
 #: multimedia/models.py:85 oer/models.py:52 oer/models.py:89 oer/models.py:128
 #: oer/models.py:167 oer/models.py:206 oer/models.py:235 oer/models.py:264
 #: oer/models.py:295 oer/models.py:333 oer/models.py:372 oer/models.py:411
 #: oer/models.py:450 oer/models.py:586 related/models.py:54
-#: text_block/models.py:48 utils/models.py:161
+#: text_block/models.py:49 utils/models.py:161
 msgid "Translation"
 msgstr "Tradução"
 
-#: classification/models.py:122 events/models.py:53 help/models.py:50
-#: institution/models.py:48 institution/models.py:87 institution/models.py:275
-#: institution/models.py:320 leisref/models.py:62 leisref/models.py:108
+#: classification/models.py:138 events/models.py:53 help/models.py:57
+#: institution/models.py:48 institution/models.py:87 institution/models.py:280
+#: institution/models.py:325 leisref/models.py:62 leisref/models.py:108
 #: leisref/models.py:154 leisref/models.py:201 leisref/models.py:247
 #: leisref/models.py:304 leisref/models.py:352 leisref/models.py:398
-#: leisref/models.py:445 main/models.py:61 main/models.py:107
-#: main/models.py:153 main/models.py:266 multimedia/models.py:55
+#: leisref/models.py:445 main/models.py:63 main/models.py:109
+#: main/models.py:155 main/models.py:268 multimedia/models.py:55
 #: multimedia/models.py:86 oer/models.py:53 oer/models.py:90 oer/models.py:129
 #: oer/models.py:168 oer/models.py:207 oer/models.py:236 oer/models.py:265
 #: oer/models.py:296 oer/models.py:334 oer/models.py:373 oer/models.py:412
@@ -1555,12 +1553,12 @@ msgstr "Tradução"
 #: templates/leisref/acttype_form.html:49 templates/main/edit-language.html:36
 #: templates/main/edit-thematic.html:36 templates/main/edit-type.html:36
 #: templates/multimedia/mediacollection_form.html:34
-#: templates/multimedia/mediatype_form.html:36 text_block/models.py:49
+#: templates/multimedia/mediatype_form.html:36 text_block/models.py:50
 #: utils/models.py:162
 msgid "Translations"
 msgstr "Traduções"
 
-#: classification/models.py:142 utils/models.py:24
+#: classification/models.py:158 utils/models.py:24
 msgid "updated"
 msgstr "atualizado"
 
@@ -1571,8 +1569,9 @@ msgstr "atualizado"
 #: templates/thesaurus/confirm_create_register_qualif.html:63
 #: templates/thesaurus/descriptor_edit_concept.html:163
 #: templates/thesaurus/descriptor_edit_concept.html:185
-#: templates/thesaurus/descriptor_edit_register.html:229
-#: templates/thesaurus/descriptor_edit_register.html:281
+#: templates/thesaurus/descriptor_edit_register.html:237
+#: templates/thesaurus/descriptor_edit_register.html:289
+#: templates/thesaurus/descriptor_edit_register.html:454
 #: templates/thesaurus/descriptor_edit_term.html:104
 #: templates/thesaurus/descriptor_form_step0.html:81
 #: templates/thesaurus/descriptor_form_step2.html:208
@@ -1588,8 +1587,8 @@ msgstr "atualizado"
 #: templates/thesaurus/qualifier_list.html:105
 #: templates/thesaurus/qualifier_new_concept.html:79
 #: templates/thesaurus/qualifier_new_term.html:97
-#: templates/thesaurus/thesaurus_home.html:104 thesaurus/choices.py:10
-#: thesaurus/views.py:75
+#: templates/thesaurus/thesaurus_home.html:115 thesaurus/choices.py:10
+#: thesaurus/views.py:76
 msgid "English"
 msgstr "Inglês"
 
@@ -1600,8 +1599,9 @@ msgstr "Inglês"
 #: templates/thesaurus/confirm_create_register_qualif.html:65
 #: templates/thesaurus/descriptor_edit_concept.html:165
 #: templates/thesaurus/descriptor_edit_concept.html:187
-#: templates/thesaurus/descriptor_edit_register.html:231
-#: templates/thesaurus/descriptor_edit_register.html:283
+#: templates/thesaurus/descriptor_edit_register.html:239
+#: templates/thesaurus/descriptor_edit_register.html:291
+#: templates/thesaurus/descriptor_edit_register.html:460
 #: templates/thesaurus/descriptor_edit_term.html:106
 #: templates/thesaurus/descriptor_form_step0.html:83
 #: templates/thesaurus/descriptor_form_step2.html:210
@@ -1617,8 +1617,8 @@ msgstr "Inglês"
 #: templates/thesaurus/qualifier_list.html:107
 #: templates/thesaurus/qualifier_new_concept.html:81
 #: templates/thesaurus/qualifier_new_term.html:99
-#: templates/thesaurus/thesaurus_home.html:106 thesaurus/choices.py:12
-#: thesaurus/views.py:77
+#: templates/thesaurus/thesaurus_home.html:117 thesaurus/choices.py:12
+#: thesaurus/views.py:78
 msgid "Portuguese"
 msgstr "Português"
 
@@ -1627,8 +1627,8 @@ msgid "Spanish"
 msgstr "Espanhol"
 
 #: database/models.py:21 events/models.py:21 institution/models.py:103
-#: institution/models.py:216 institution/models.py:305 leisref/models.py:459
-#: main/models.py:28 main/models.py:75 main/models.py:120 main/models.py:231
+#: institution/models.py:221 institution/models.py:310 leisref/models.py:459
+#: main/models.py:30 main/models.py:77 main/models.py:122 main/models.py:233
 #: multimedia/models.py:23
 msgid "Acronym"
 msgstr "Sigla"
@@ -1650,7 +1650,7 @@ msgstr "Índice do Centro Cooperante"
 #: leisref/models.py:204 leisref/models.py:216 leisref/models.py:250
 #: leisref/models.py:262 leisref/models.py:307 leisref/models.py:355
 #: leisref/models.py:401 leisref/models.py:448 leisref/models.py:485
-#: main/models.py:64 multimedia/models.py:58 multimedia/models.py:89
+#: main/models.py:66 multimedia/models.py:58 multimedia/models.py:89
 #: multimedia/models.py:117 oer/models.py:56 oer/models.py:93
 #: oer/models.py:132 oer/models.py:171 oer/models.py:210 oer/models.py:239
 #: oer/models.py:268 oer/models.py:299 oer/models.py:337 oer/models.py:376
@@ -1663,7 +1663,7 @@ msgstr "idioma"
 #: leisref/models.py:112 leisref/models.py:158 leisref/models.py:205
 #: leisref/models.py:251 leisref/models.py:261 leisref/models.py:356
 #: leisref/models.py:402 leisref/models.py:449 leisref/models.py:486
-#: main/models.py:65 multimedia/models.py:59 multimedia/models.py:90
+#: main/models.py:67 multimedia/models.py:59 multimedia/models.py:90
 #: oer/models.py:57 oer/models.py:94 oer/models.py:133 oer/models.py:172
 #: oer/models.py:211 oer/models.py:240 oer/models.py:269 oer/models.py:300
 #: oer/models.py:338 oer/models.py:377 oer/models.py:416 oer/models.py:455
@@ -1683,8 +1683,8 @@ msgstr "Informe de erro"
 msgid "Error reports"
 msgstr "Informes de erro"
 
-#: error_reporting/models.py:18 events/models.py:68 main/models.py:163
-#: main/models.py:186 main/models.py:207 main/models.py:282
+#: error_reporting/models.py:18 events/models.py:68 main/models.py:165
+#: main/models.py:188 main/models.py:209 main/models.py:284
 #: multimedia/models.py:102 suggest/models.py:16 suggest/models.py:48
 #: templates/biblioref/reference_form.html:148
 #: templates/biblioref/reference_form.html:221
@@ -1693,13 +1693,11 @@ msgstr "Informes de erro"
 #: templates/events/events.html:74 templates/events/events.html:119
 #: templates/main/edit-resource.html:171 templates/main/edit-resource.html:242
 #: templates/main/edit-resource.html:312 templates/main/resources.html:74
-#: templates/main/resources.html:119 templates/multimedia/media_form.html:172
-#: templates/multimedia/media_form.html:245
-#: templates/multimedia/media_list.html:70
-#: templates/multimedia/media_list.html:146 templates/reports/index.html:142
+#: templates/main/resources.html:119 templates/multimedia/media_list.html:70
+#: templates/multimedia/media_list.html:146 templates/reports/index.html:150
 #: templates/suggest/list.html:52 templates/suggest/list.html:93
-#: templates/suggest/list.html:137 templates/suggest/list.html:180
-#: templates/title/title_form.html:191 templates/title/title_form.html:263
+#: templates/suggest/list.html:137 templates/suggest/list.html:182
+#: templates/title/title_form.html:194 templates/title/title_form.html:266
 msgid "Pending"
 msgstr "Pendente"
 
@@ -1727,7 +1725,7 @@ msgstr "Conteúdo inapropriado"
 msgid "Duplicated"
 msgstr "Duplicado"
 
-#: error_reporting/models.py:28 institution/models.py:191
+#: error_reporting/models.py:28 institution/models.py:196
 msgid "Other"
 msgstr "Outro"
 
@@ -1747,17 +1745,17 @@ msgstr "Informe editado com sucesso."
 msgid "Report deleted."
 msgstr "Informe apagado."
 
-#: events/forms.py:19 events/models.py:78 suggest/models.py:57
+#: events/forms.py:19 events/models.py:84 suggest/models.py:57
 #: templates/events/events.html:101
 msgid "Start date"
 msgstr "Data de ínicio"
 
-#: events/forms.py:21 events/models.py:79 suggest/models.py:58
+#: events/forms.py:21 events/models.py:85 suggest/models.py:58
 #: templates/events/events.html:102
 msgid "End date"
 msgstr "Data de término"
 
-#: events/models.py:18 events/models.py:55 events/models.py:87
+#: events/models.py:18 events/models.py:55 events/models.py:95
 #: templates/events/edit-type.html:8
 msgid "Event type"
 msgstr "Tipo de evento"
@@ -1780,8 +1778,8 @@ msgstr "Evento"
 msgid "Events"
 msgstr "Eventos"
 
-#: events/models.py:69 main/models.py:164 main/models.py:187
-#: main/models.py:208 main/models.py:283 multimedia/models.py:103
+#: events/models.py:69 main/models.py:166 main/models.py:189
+#: main/models.py:210 main/models.py:285 multimedia/models.py:103
 #: suggest/models.py:17 suggest/models.py:49
 #: templates/biblioref/reference_form.html:150
 #: templates/biblioref/reference_form.html:223
@@ -1790,21 +1788,31 @@ msgstr "Eventos"
 #: templates/events/events.html:121 templates/main/edit-resource.html:173
 #: templates/main/edit-resource.html:244 templates/main/edit-resource.html:314
 #: templates/main/resources.html:75 templates/main/resources.html:121
-#: templates/multimedia/media_form.html:174
-#: templates/multimedia/media_form.html:247
 #: templates/multimedia/media_list.html:71
-#: templates/multimedia/media_list.html:148 templates/reports/index.html:144
+#: templates/multimedia/media_list.html:148 templates/reports/index.html:152
 #: templates/suggest/list.html:53 templates/suggest/list.html:95
-#: templates/suggest/list.html:139 templates/suggest/list.html:182
-#: templates/title/title_form.html:193 templates/title/title_form.html:265
+#: templates/suggest/list.html:139 templates/suggest/list.html:184
+#: templates/title/title_form.html:196 templates/title/title_form.html:268
 msgid "Admitted"
 msgstr "Admitido"
 
 #: events/models.py:75
+msgid "In-person"
+msgstr "Presencial"
+
+#: events/models.py:76
+msgid "Hybrid"
+msgstr "Híbrido"
+
+#: events/models.py:77
+msgid "Online"
+msgstr "Online"
+
+#: events/models.py:81
 msgid "Do not publish in the regional event directory"
 msgstr "Não publicar no diretório de eventos regional"
 
-#: events/models.py:77
+#: events/models.py:83
 msgid ""
 "Enter the full name of the event, as it appears and in the same language. "
 "Ex: XIX Congresso Brasileiro de Arritmias Cardiacas. XVII Simposio Nacional "
@@ -1814,49 +1822,53 @@ msgstr ""
 "Ex: XIX Congresso Brasileiro de Arritmias Cardíacas. XVII Simpósio Nacional "
 "do DECS-SBCC"
 
-#: events/models.py:81 main/models.py:293 multimedia/models.py:113
+#: events/models.py:87 main/models.py:295 multimedia/models.py:113
 #: related/models.py:67 related/models.py:84 suggest/models.py:27
 #: suggest/models.py:60
 msgid "Link"
 msgstr "Link"
 
-#: events/models.py:81
+#: events/models.py:87
 msgid "Enter the link of event portal"
 msgstr "Inserir link do portal do evento"
 
-#: events/models.py:83 institution/models.py:105
+#: events/models.py:89 institution/models.py:105
 msgid "Address"
 msgstr "Endereço"
 
-#: events/models.py:83
+#: events/models.py:89
 msgid ""
 "Enter full address of the local of the event to present it in a Google map"
 msgstr ""
 "Incluir endereço completo do local do evento para apresentar-lo no mapa do "
 "Google"
 
-#: events/models.py:84 institution/models.py:106 multimedia/models.py:67
-#: suggest/models.py:62 title/models.py:117
+#: events/models.py:90 institution/models.py:106 multimedia/models.py:67
+#: suggest/models.py:64 title/models.py:122
 msgid "City"
 msgstr "Cidade"
 
-#: events/models.py:88
+#: events/models.py:93
+msgid "Event modality"
+msgstr "Modalidade do evento"
+
+#: events/models.py:96
 msgid "Official languages"
 msgstr "Idiomas oficiais"
 
-#: events/models.py:90
+#: events/models.py:98
 msgid "Contact email"
 msgstr "Email para contato"
 
-#: events/models.py:91
+#: events/models.py:99
 msgid "Information for contact"
 msgstr "Informação de contato"
 
-#: events/models.py:92 title/models.py:165
+#: events/models.py:100 title/models.py:170
 msgid "Observations"
 msgstr "Observações"
 
-#: events/models.py:92
+#: events/models.py:100
 msgid ""
 "Enter information about institutions that organize and/or sponsor the event,"
 " deadline for submission of papers, simultaneous translation service, event "
@@ -1866,32 +1878,32 @@ msgstr ""
 "prazo para submissão de trabalhos, serviço de tradução simultânea, programa "
 "do evento, etc."
 
-#: events/models.py:93
+#: events/models.py:101
 msgid "Target groups"
 msgstr "Público alvo"
 
-#: events/views.py:253
+#: events/views.py:252
 msgid "Event deleted."
 msgstr "Evento apagado."
 
-#: events/views.py:326 main/views.py:439
+#: events/views.py:325 main/views.py:439
 msgid "Type successfully edited."
 msgstr "Tipo editado com sucesso."
 
-#: events/views.py:350 main/views.py:463
+#: events/views.py:349 main/views.py:463
 msgid "Type deleted."
 msgstr "Tipo apagado."
 
-#: help/models.py:21 help/models.py:27 help/models.py:52 help/models.py:54
+#: help/models.py:28 help/models.py:34 help/models.py:59 help/models.py:61
 #: templates/help/page.html:7 templates/modal_help.html:6
 msgid "Help"
 msgstr "Ajuda"
 
-#: help/models.py:22
+#: help/models.py:29
 msgid "Helps"
 msgstr "Ajudas"
 
-#: help/models.py:25 utils/models.py:123
+#: help/models.py:32 utils/models.py:123
 msgid "Field name"
 msgstr "Nome do campo"
 
@@ -1911,16 +1923,16 @@ msgstr "Inativa"
 msgid "Closed"
 msgstr "Fechada"
 
-#: institution/models.py:20 institution/models.py:50 institution/models.py:149
-#: institution/models.py:199 oer/models.py:24 oer/models.py:55
+#: institution/models.py:20 institution/models.py:50 institution/models.py:154
+#: institution/models.py:204 oer/models.py:24 oer/models.py:55
 #: oer/models.py:478 related/models.py:81
 #: templates/institution/fieldset_email.html:14
 #: templates/institution/fieldset_email.html:67
 #: templates/institution/fieldset_url.html:14
 #: templates/institution/institution_list.html:77
-#: templates/title/form_preview.html:328 templates/title/form_preview.html:378
-#: templates/title/title_form.html:399 templates/title/title_form.html:444
-#: title/models.py:180 title/models.py:258
+#: templates/title/form_preview.html:329 templates/title/form_preview.html:379
+#: templates/title/title_form.html:402 templates/title/title_form.html:447
+#: title/models.py:185 title/models.py:263
 msgid "Type"
 msgstr "Tipo"
 
@@ -1947,7 +1959,7 @@ msgstr "Instituição"
 msgid "Institutions"
 msgstr "Instituições"
 
-#: institution/models.py:107 title/models.py:87
+#: institution/models.py:107 title/models.py:92
 msgid "State"
 msgstr "Estado"
 
@@ -1959,150 +1971,150 @@ msgstr "CEP"
 msgid "Mailbox"
 msgstr "Caixa Postal"
 
-#: institution/models.py:144
+#: institution/models.py:149
 msgid "Administrative information"
 msgstr "Informação administrativa"
 
-#: institution/models.py:145
+#: institution/models.py:150
 msgid "Administrative informations"
 msgstr "Informações administrativas"
 
-#: institution/models.py:150
+#: institution/models.py:155
 msgid "Category (history)"
 msgstr "Categoria (histórico)"
 
-#: institution/models.py:151
+#: institution/models.py:156
 msgid "Type (history)"
 msgstr "Tipo (histórico)"
 
-#: institution/models.py:152 leisref/models.py:550
-#: templates/title/form_preview.html:472 templates/title/title_form.html:545
-#: title/models.py:121 title/models.py:329
+#: institution/models.py:157 leisref/models.py:550
+#: templates/title/form_preview.html:473 templates/title/title_form.html:548
+#: title/models.py:126 title/models.py:334
 msgid "Notes"
 msgstr "Notas"
 
-#: institution/models.py:164
+#: institution/models.py:169
 msgid "Mr."
 msgstr "Sr."
 
-#: institution/models.py:165
+#: institution/models.py:170
 msgid "Mrs."
 msgstr "Sra."
 
-#: institution/models.py:166
+#: institution/models.py:171
 msgid "Dr."
 msgstr "Dr."
 
-#: institution/models.py:170
+#: institution/models.py:175
 msgid "Contact"
 msgstr "Contato"
 
-#: institution/models.py:171 templates/institution/institution_form.html:34
+#: institution/models.py:176 templates/institution/institution_form.html:34
 msgid "Contacts"
 msgstr "Contatos"
 
-#: institution/models.py:174
+#: institution/models.py:179
 msgid "Prefix"
 msgstr "Tratamento"
 
-#: institution/models.py:176 templates/institution/fieldset_contact.html:15
+#: institution/models.py:181 templates/institution/fieldset_contact.html:15
 #: templates/institution/fieldset_person.html:15
 msgid "Job title"
 msgstr "Cargo"
 
-#: institution/models.py:177 templates/authentication/login.html:35
+#: institution/models.py:182 templates/authentication/login.html:35
 #: templates/institution/fieldset_contact.html:16
 #: templates/institution/fieldset_email.html:16
 msgid "Email"
 msgstr "Email"
 
-#: institution/models.py:178
+#: institution/models.py:183
 msgid "Country/Area code"
 msgstr "Código País/Área"
 
-#: institution/models.py:179 templates/institution/fieldset_contact.html:18
+#: institution/models.py:184 templates/institution/fieldset_contact.html:18
 msgid "Phone"
 msgstr "Telefone"
 
-#: institution/models.py:190
+#: institution/models.py:195
 msgid "Main"
 msgstr "Principal"
 
-#: institution/models.py:196 oer/models.py:531
-#: templates/title/form_preview.html:473 templates/title/title_form.html:546
-#: title/models.py:330
+#: institution/models.py:201 oer/models.py:531
+#: templates/title/form_preview.html:474 templates/title/title_form.html:549
+#: title/models.py:335
 msgid "URLs"
 msgstr "Endereços eletrônicos"
 
-#: institution/models.py:212 institution/models.py:241
+#: institution/models.py:217 institution/models.py:246
 msgid "Unit"
 msgstr "Unidade"
 
-#: institution/models.py:213
+#: institution/models.py:218
 msgid "Units"
 msgstr "Unidades"
 
-#: institution/models.py:229
+#: institution/models.py:234
 msgid "First level"
 msgstr "Primeiro nível"
 
-#: institution/models.py:230
+#: institution/models.py:235
 msgid "Second level"
 msgstr "Segundo nível"
 
-#: institution/models.py:231
+#: institution/models.py:236
 msgid "Third level"
 msgstr "Terceiro nível"
 
-#: institution/models.py:235 thesaurus/views.py:219 thesaurus/views.py:620
-#: thesaurus/views.py:3211 thesaurus/views.py:3564
+#: institution/models.py:240 thesaurus/views.py:220 thesaurus/views.py:621
+#: thesaurus/views.py:3370 thesaurus/views.py:3723
 msgid "Hierarchical level"
 msgstr "Nível hierárquico"
 
-#: institution/models.py:236
+#: institution/models.py:241
 msgid "Hierarchical levels"
 msgstr "Níveis hierárquicos"
 
-#: institution/models.py:240 templates/institution/fieldset_unitlevel.html:15
+#: institution/models.py:245 templates/institution/fieldset_unitlevel.html:15
 msgid "Level"
 msgstr "Nível"
 
-#: institution/models.py:253 institution/models.py:277
-#: institution/models.py:285 templates/institution/adhesionterm.html:8
+#: institution/models.py:258 institution/models.py:282
+#: institution/models.py:290 templates/institution/adhesionterm.html:8
 #: templates/institution/adhesionterm.html:86
 #: templates/institution/institution_form.html:104
 msgid "Adhesion term"
 msgstr "Termo de adesão"
 
-#: institution/models.py:254 institution/models.py:286
+#: institution/models.py:259 institution/models.py:291
 msgid "Adhesion terms"
 msgstr "Termos de adesão"
 
-#: institution/models.py:256 institution/models.py:279 main/models.py:216
+#: institution/models.py:261 institution/models.py:284 main/models.py:218
 msgid "Text"
 msgstr "Texto"
 
-#: institution/models.py:257
+#: institution/models.py:262
 msgid "Version"
 msgstr "Versão"
 
-#: institution/models.py:290
+#: institution/models.py:295
 msgid "Acepted"
 msgstr "Aceito"
 
-#: institution/models.py:301 institution/models.py:322
+#: institution/models.py:306 institution/models.py:327
 msgid "Service/Product"
 msgstr "Serviço/Produto"
 
-#: institution/models.py:302
+#: institution/models.py:307
 msgid "Services/Products"
 msgstr "Serviços/Produtos"
 
-#: institution/models.py:329
+#: institution/models.py:334
 msgid "Institution service product"
 msgstr "Produto e serviço"
 
-#: institution/models.py:330
+#: institution/models.py:335
 msgid "Instituion services products"
 msgstr "Produtos e serviços"
 
@@ -2327,8 +2339,9 @@ msgstr "Aprovado"
 #: templates/thesaurus/confirm_create_register_qualif.html:67
 #: templates/thesaurus/descriptor_edit_concept.html:167
 #: templates/thesaurus/descriptor_edit_concept.html:189
-#: templates/thesaurus/descriptor_edit_register.html:233
-#: templates/thesaurus/descriptor_edit_register.html:285
+#: templates/thesaurus/descriptor_edit_register.html:241
+#: templates/thesaurus/descriptor_edit_register.html:293
+#: templates/thesaurus/descriptor_edit_register.html:466
 #: templates/thesaurus/descriptor_edit_term.html:108
 #: templates/thesaurus/descriptor_form_step0.html:85
 #: templates/thesaurus/descriptor_form_step2.html:212
@@ -2344,12 +2357,12 @@ msgstr "Aprovado"
 #: templates/thesaurus/qualifier_list.html:109
 #: templates/thesaurus/qualifier_new_concept.html:83
 #: templates/thesaurus/qualifier_new_term.html:101
-#: templates/thesaurus/thesaurus_home.html:108 thesaurus/choices.py:14
-#: thesaurus/views.py:79
+#: templates/thesaurus/thesaurus_home.html:119 thesaurus/choices.py:14
+#: thesaurus/views.py:80
 msgid "French"
 msgstr "Francês"
 
-#: main/choices.py:13 main/models.py:279 templates/error_report/list.html:7
+#: main/choices.py:13 main/models.py:281 templates/error_report/list.html:7
 #: templates/error_report/list.html:30 templates/oer/oer_form.html:9
 #: templates/oer/oer_related.html:7 templates/reports/index.html:36
 #: templates/suggest/list.html:7 templates/suggest/list.html:28
@@ -2405,46 +2418,46 @@ msgstr "DeCS: Descritores em Ciências da Saúde"
 #: main/choices.py:41 suggest/models.py:31
 #: templates/biblioref/reference_form.html:208
 #: templates/events/edit-event.html:234 templates/main/edit-resource.html:229
-#: templates/multimedia/media_form.html:232 templates/suggest/list.html:34
-#: templates/title/form_preview.html:150 templates/title/title_form.html:251
+#: templates/multimedia/media_form.html:216 templates/suggest/list.html:34
+#: templates/title/form_preview.html:151 templates/title/title_form.html:254
 msgid "Keywords"
 msgstr "Palavras-chave"
 
-#: main/models.py:25
+#: main/models.py:27
 msgid "source type"
 msgstr "tipo de fonte"
 
-#: main/models.py:26
+#: main/models.py:28
 msgid "source types"
 msgstr "tipos de fonte"
 
-#: main/models.py:63 main/models.py:303 templates/main/edit-type.html:8
+#: main/models.py:65 main/models.py:305 templates/main/edit-type.html:8
 #: utils/models.py:164
 msgid "Source type"
 msgstr "Tipo de Fonte"
 
-#: main/models.py:72 main/models.py:109 main/models.py:301
+#: main/models.py:74 main/models.py:111 main/models.py:303
 msgid "Source language"
 msgstr "Idiomas da fonte"
 
-#: main/models.py:73 templates/main/languages.html:4
+#: main/models.py:75 templates/main/languages.html:4
 #: templates/main/languages.html:7 templates/main/languages.html:21
 msgid "Source languages"
 msgstr "Idiomas da fonte"
 
-#: main/models.py:117 main/models.py:155 main/models.py:169
+#: main/models.py:119 main/models.py:157 main/models.py:171
 #: templates/biblioref/fieldset_thematic.html:9
 #: templates/biblioref/reference_form.html:280
 #: templates/events/edit-event.html:306 templates/events/events.html:79
 #: templates/leisref/act_form.html:230 templates/main/edit-resource.html:301
 #: templates/main/edit-thematic.html:8 templates/main/resources.html:79
-#: templates/multimedia/media_form.html:304
+#: templates/multimedia/media_form.html:273
 #: templates/multimedia/media_list.html:98 templates/oer/oer_form.html:228
-#: templates/reports/index.html:80 title/models.py:107 title/models.py:201
+#: templates/reports/index.html:80 title/models.py:112 title/models.py:206
 msgid "Thematic area"
 msgstr "Áreas temáticas"
 
-#: main/models.py:118 main/models.py:170
+#: main/models.py:120 main/models.py:172
 #: templates/biblioref/reference_form.html:39
 #: templates/events/edit-event.html:48 templates/leisref/act_form.html:41
 #: templates/main/edit-resource.html:37 templates/main/thematics.html:4
@@ -2454,7 +2467,7 @@ msgstr "Áreas temáticas"
 msgid "Thematic areas"
 msgstr "Áreas temáticas"
 
-#: main/models.py:195 templates/biblioref/duplicate_detail.html:52
+#: main/models.py:197 templates/biblioref/duplicate_detail.html:52
 #: templates/thesaurus/search_concept_desc.html:121
 #: templates/thesaurus/search_term_desc.html:105
 #: templates/thesaurus/search_term_qualif.html:104
@@ -2462,39 +2475,39 @@ msgstr "Áreas temáticas"
 msgid "Descriptor"
 msgstr "Descritor"
 
-#: main/models.py:196 title/models.py:17 title/models.py:215
+#: main/models.py:198 title/models.py:22 title/models.py:220
 #: utils/models.py:122
 msgid "Code"
 msgstr "Código"
 
-#: main/models.py:198 templates/biblioref/duplicate_detail.html:53
+#: main/models.py:200 templates/biblioref/duplicate_detail.html:53
 #: templates/biblioref/fieldset_indexing.html:10
 #: templates/biblioref/reference_form.html:137
 #: templates/leisref/act_form.html:141 templates/oer/oer_form.html:138
 msgid "Primary?"
 msgstr "Primário?"
 
-#: main/models.py:218
+#: main/models.py:220
 msgid "User recomendation?"
 msgstr "Recomendação de usuário?"
 
-#: main/models.py:229 oer/models.py:64
+#: main/models.py:231 oer/models.py:64
 msgid "Licenses"
 msgstr "Licenças"
 
-#: main/models.py:235 related/models.py:23
+#: main/models.py:237 related/models.py:23
 #: templates/leisref/fieldset_relationship.html:18 text_block/models.py:14
 msgid "Order"
 msgstr "Ordem"
 
-#: main/models.py:278 templates/error_report/list.html:72
+#: main/models.py:280 templates/error_report/list.html:72
 #: templates/error_report/list.html:74
 #: templates/oer/fieldset_relationship.html:16 templates/oer/oer_list.html:106
 #: templates/suggest/list.html:121
 msgid "Resource"
 msgstr "Recurso"
 
-#: main/models.py:291
+#: main/models.py:293
 msgid ""
 "Transcribe as it appears on the internet resource. If there is no title, "
 "provide a brief, simple but explanatory title"
@@ -2502,11 +2515,11 @@ msgstr ""
 "Transcrever conforme aparece no recurso de internet. Se não houver, fornecer"
 " um título breve e simples, porém explicativo"
 
-#: main/models.py:295
+#: main/models.py:297
 msgid "Originator"
 msgstr "Originador"
 
-#: main/models.py:295
+#: main/models.py:297
 msgid ""
 "Institutional or personnel name of the responsible for the existence of the "
 "internet resource. Ex. Brazilian Society for Dental Research"
@@ -2514,15 +2527,15 @@ msgstr ""
 "Nome do responsável institucional ou pessoal pela existência do recurso de "
 "internet. Ex. Sociedade Brasileira de Pesquisa Odontológica"
 
-#: main/models.py:297
+#: main/models.py:299
 msgid "Originator location"
 msgstr "Local geográfico do originador"
 
-#: main/models.py:299 multimedia/models.py:115
+#: main/models.py:301 multimedia/models.py:115
 msgid "Authors"
 msgstr "Autores"
 
-#: main/models.py:299
+#: main/models.py:301
 msgid ""
 "Enter one per line. Only filled if different from the originator of the "
 "resource"
@@ -2530,17 +2543,17 @@ msgstr ""
 "Insira um por linha. Somente preenchido se diferente do originador do "
 "recurso"
 
-#: main/models.py:305
+#: main/models.py:307
 msgid ""
 "Include information on the content and operation of the internet resource"
 msgstr ""
 "Incluir informações sobre o conteúdo e funcionamento do recurso de internet"
 
-#: main/models.py:307
+#: main/models.py:309
 msgid "Temporal range"
 msgstr "Alcance temporal"
 
-#: main/models.py:309
+#: main/models.py:311
 msgid "Objective"
 msgstr "Objetivos"
 
@@ -2588,7 +2601,7 @@ msgstr "Tipos de mídia"
 #: templates/error_report/list.html:135 templates/log/list.html:8
 #: templates/log/review.html:24 templates/log/review_notapproved.html:21
 #: templates/suggest/list.html:78 templates/suggest/list.html:122
-#: templates/suggest/list.html:166
+#: templates/suggest/list.html:167
 msgid "Date"
 msgstr "Data"
 
@@ -2600,7 +2613,8 @@ msgstr "Mídia"
 msgid "Medias"
 msgstr "Mídias"
 
-#: multimedia/models.py:111 title/models.py:179 title/models.py:257
+#: multimedia/models.py:111 title/models.py:184 title/models.py:262
+#: title/models.py:373
 msgid "Original title"
 msgstr "Título original"
 
@@ -2609,10 +2623,10 @@ msgid "Translated title"
 msgstr "Título traduzido"
 
 #: multimedia/models.py:115 multimedia/models.py:116 multimedia/models.py:123
-#: title/models.py:55 title/models.py:67 title/models.py:105
-#: title/models.py:107 title/models.py:121 title/models.py:123
-#: title/models.py:165 title/models.py:329 title/models.py:330
-#: title/models.py:345
+#: title/models.py:60 title/models.py:72 title/models.py:110
+#: title/models.py:112 title/models.py:126 title/models.py:128
+#: title/models.py:170 title/models.py:334 title/models.py:335
+#: title/models.py:350
 msgid "Enter one per line"
 msgstr "Insira um por linha"
 
@@ -2669,9 +2683,9 @@ msgid "Technical resource type"
 msgstr "Tipo de recurso técnico"
 
 #: oer/models.py:179 oer/models.py:180 oer/models.py:209 oer/models.py:488
-#: thesaurus/forms.py:80 thesaurus/forms.py:91 thesaurus/forms.py:97
-#: thesaurus/forms.py:103 thesaurus/forms.py:213 thesaurus/forms.py:224
-#: thesaurus/forms.py:230 thesaurus/forms.py:236
+#: thesaurus/forms.py:81 thesaurus/forms.py:92 thesaurus/forms.py:98
+#: thesaurus/forms.py:104 thesaurus/forms.py:230 thesaurus/forms.py:241
+#: thesaurus/forms.py:247 thesaurus/forms.py:253
 msgid "Format"
 msgstr "Formato"
 
@@ -2799,8 +2813,8 @@ msgid "Passive form"
 msgstr "Forma no passivo"
 
 #: oer/models.py:599 templates/leisref/act_form.html:40
-#: templates/oer/oer_form.html:41 thesaurus/models_descriptors.py:287
-#: thesaurus/models_qualifiers.py:191
+#: templates/oer/oer_form.html:41 thesaurus/models_descriptors.py:301
+#: thesaurus/models_qualifiers.py:188
 msgid "Relationship"
 msgstr "Relacionamentos"
 
@@ -2813,7 +2827,7 @@ msgid "OER related"
 msgstr "Objeto relacionado"
 
 #: oer/views.py:355 templates/biblioref/reference_form.html:323
-#: templates/biblioref/referencesource_form.html:191
+#: templates/biblioref/referencesource_form.html:193
 #: templates/error_report/edit.html:60 templates/events/edit-event.html:350
 #: templates/events/edit-event.html:397 templates/events/edit-type.html:56
 #: templates/institution/adhesionterm.html:154
@@ -2828,14 +2842,14 @@ msgstr "Objeto relacionado"
 #: templates/leisref/acttype_form.html:72 templates/main/edit-language.html:56
 #: templates/main/edit-resource.html:358 templates/main/edit-resource.html:401
 #: templates/main/edit-thematic.html:56 templates/main/edit-type.html:56
-#: templates/multimedia/media_form.html:396
+#: templates/multimedia/media_form.html:363
 #: templates/multimedia/mediacollection_form.html:54
 #: templates/multimedia/mediatype_form.html:56
 #: templates/suggest/edit-suggested-event.html:58
 #: templates/suggest/edit-suggested-resource.html:59
 #: templates/thesaurus/descriptor_edit_concept.html:212
 #: templates/thesaurus/descriptor_edit_legacy.html:95
-#: templates/thesaurus/descriptor_edit_register.html:547
+#: templates/thesaurus/descriptor_edit_register.html:566
 #: templates/thesaurus/descriptor_edit_term.html:202
 #: templates/thesaurus/descriptor_form_step2.html:275
 #: templates/thesaurus/descriptor_new_concept.html:277
@@ -2849,7 +2863,7 @@ msgstr "Objeto relacionado"
 #: templates/thesaurus/qualifier_new_concept.html:275
 #: templates/thesaurus/qualifier_new_legacy.html:93
 #: templates/thesaurus/qualifier_new_term.html:158
-#: templates/title/form_preview.html:514 utils/views.py:169
+#: templates/title/form_preview.html:556 utils/views.py:169
 msgid "Save"
 msgstr "Gravar"
 
@@ -2862,10 +2876,9 @@ msgid "Resource types"
 msgstr "Tipos de recurso"
 
 #: related/models.py:20
-#, fuzzy
 #| msgid "Fields"
 msgid "Field"
-msgstr "Campos"
+msgstr "Campo"
 
 #: related/models.py:25
 #, fuzzy
@@ -2873,13 +2886,17 @@ msgstr "Campos"
 msgid "Field passive"
 msgstr "Assistente de campo"
 
+#: related/models.py:68
+msgid "Dataset title"
+msgstr "Título do conjunto de dados"
+
 #: related/models.py:82
 #, fuzzy
 #| msgid "New Reference"
 msgid "FI-ADMIN Reference"
 msgstr "Nova referência"
 
-#: suggest/forms.py:32 suggest/forms.py:52
+#: suggest/forms.py:31 suggest/forms.py:51
 msgid "Title too short"
 msgstr "Título muito curto"
 
@@ -2897,11 +2914,11 @@ msgstr "Recursos sugeridos"
 msgid "abstract"
 msgstr "Resumo"
 
-#: suggest/models.py:33 suggest/models.py:64
+#: suggest/models.py:33 suggest/models.py:66
 msgid "Administrative comments"
 msgstr "Comentários administrativos"
 
-#: suggest/models.py:35 suggest/models.py:66 utils/models.py:23
+#: suggest/models.py:35 suggest/models.py:68 utils/models.py:23
 msgid "created at"
 msgstr "criado em"
 
@@ -2917,19 +2934,25 @@ msgstr "Eventos sugeridos"
 msgid "day/month/year"
 msgstr "DD/MM/YYYY"
 
-#: suggest/views.py:139
+#: suggest/models.py:62 templates/suggest/list.html:166
+#, fuzzy
+#| msgid "Originator"
+msgid "Origin"
+msgstr "Originador"
+
+#: suggest/views.py:141
 msgid "Resource successfully edited."
 msgstr "Recurso editado com sucesso."
 
-#: suggest/views.py:174
+#: suggest/views.py:176
 msgid "Resource created."
 msgstr "Recurso criado."
 
-#: suggest/views.py:196
+#: suggest/views.py:198
 msgid "Event created."
 msgstr "Evento criado."
 
-#: suggest/views.py:291
+#: suggest/views.py:293
 msgid "Event successfully edited."
 msgstr "Evento editado com sucesso."
 
@@ -2987,12 +3010,12 @@ msgstr "novamente clicando abaixo"
 msgid "FI Administration"
 msgstr "FI Administração"
 
-#: templates/base.html:57 templates/suggest/invalid-link.html:52
+#: templates/base.html:56 templates/suggest/invalid-link.html:52
 #: templates/suggest/thanks.html:34
 msgid "Terms and conditions of use"
 msgstr "Termos e condições de uso"
 
-#: templates/base.html:58 templates/suggest/invalid-link.html:53
+#: templates/base.html:57 templates/suggest/invalid-link.html:53
 #: templates/suggest/thanks.html:35
 msgid "Privacy Policy"
 msgstr "Política de Privacidade"
@@ -3018,7 +3041,6 @@ msgstr ""
 "analíticas"
 
 #: templates/biblioref/delete_analytics_first.html:25
-#| msgid "Create analytic"
 msgid "See analytics"
 msgstr "Ver analíticas"
 
@@ -3043,7 +3065,7 @@ msgstr "Registro duplicado"
 #: templates/institution/institution_form.html:33
 #: templates/leisref/act_form.html:37 templates/main/edit-resource.html:35
 #: templates/multimedia/media_form.html:44 templates/oer/oer_form.html:38
-#: templates/title/title_form.html:52
+#: templates/title/title_form.html:53
 msgid "Metadata"
 msgstr "Metadados"
 
@@ -3084,7 +3106,7 @@ msgstr "Notas de projeto"
 
 #: templates/biblioref/fieldset_fulltext.html:20
 #: templates/leisref/fieldset_fulltext.html:74
-#: templates/multimedia/media_form.html:349
+#: templates/multimedia/media_form.html:316
 #: templates/oer/fieldset_fulltext.html:74
 msgid "File"
 msgstr "Arquivo"
@@ -3105,22 +3127,22 @@ msgstr "Arquivo"
 #: templates/leisref/fieldset_fulltext.html:17
 #: templates/leisref/fieldset_fulltext.html:77
 #: templates/leisref/fieldset_relationship.html:19
-#: templates/multimedia/media_form.html:162
-#: templates/multimedia/media_form.html:235
-#: templates/multimedia/media_form.html:306
-#: templates/multimedia/media_form.html:351
+#: templates/multimedia/media_form.html:161
+#: templates/multimedia/media_form.html:218
+#: templates/multimedia/media_form.html:274
+#: templates/multimedia/media_form.html:318
 #: templates/oer/fieldset_fulltext.html:17
 #: templates/oer/fieldset_fulltext.html:77
 #: templates/oer/fieldset_relationship.html:18 templates/oer/oer_form.html:230
-#: templates/title/title_form.html:181 templates/title/title_form.html:253
-#: templates/title/title_form.html:327 templates/title/title_form.html:366
-#: templates/title/title_form.html:405 templates/title/title_form.html:447
+#: templates/title/title_form.html:184 templates/title/title_form.html:256
+#: templates/title/title_form.html:330 templates/title/title_form.html:369
+#: templates/title/title_form.html:408 templates/title/title_form.html:450
 msgid "Delete?"
 msgstr "Apagar?"
 
 #: templates/biblioref/fieldset_include.html:29
 #: templates/biblioref/reference_list.html:207
-#: templates/biblioref/referencesource_form.html:107
+#: templates/biblioref/referencesource_form.html:109
 msgid "Series source"
 msgstr "Fonte"
 
@@ -3133,12 +3155,12 @@ msgstr "Consultar definição no DeCS"
 #: templates/events/edit-event.html:164 templates/leisref/act_form.html:140
 #: templates/main/edit-resource.html:159
 #: templates/multimedia/media_form.html:160 templates/oer/oer_form.html:137
-#: templates/thesaurus/page_view_desc.html:61
+#: templates/thesaurus/page_view_desc.html:66
 #: templates/thesaurus/qualifier_list.html:61
-#: templates/thesaurus/thesaurus_home.html:44
-#: templates/thesaurus/thesaurus_home.html:61
-#: templates/title/form_preview.html:114 templates/title/title_form.html:53
-#: templates/title/title_form.html:179 thesaurus/models_descriptors.py:22
+#: templates/thesaurus/thesaurus_home.html:45
+#: templates/thesaurus/thesaurus_home.html:62
+#: templates/title/form_preview.html:115 templates/title/title_form.html:54
+#: templates/title/title_form.html:182 thesaurus/models_descriptors.py:22
 msgid "Descriptors"
 msgstr "Descritores"
 
@@ -3150,16 +3172,16 @@ msgstr "Descritores"
 #: templates/leisref/fieldset_relationship.html:64
 #: templates/main/edit-resource.html:203
 #: templates/multimedia/media_form.html:103
-#: templates/multimedia/media_form.html:205 templates/oer/oer_form.html:161
-#: templates/title/title_form.html:224
+#: templates/multimedia/media_form.html:190 templates/oer/oer_form.html:161
+#: templates/title/title_form.html:227
 msgid "Select by search"
 msgstr "Selecione pela pesquisa"
 
 #: templates/biblioref/fieldset_indexing.html:70
 #: templates/biblioref/reference_confirm_delete.html:29
 #: templates/biblioref/referenceanalytic_form.html:494
-#: templates/biblioref/referenceanalytic_form.html:599
-#: templates/biblioref/referencesource_form.html:500
+#: templates/biblioref/referenceanalytic_form.html:600
+#: templates/biblioref/referencesource_form.html:502
 #: templates/delete_confirm.html:17
 #: templates/institution/institution_confirm_delete.html:29
 #: templates/leisref/act_confirm_delete.html:29
@@ -3219,8 +3241,8 @@ msgstr "Você tem certeza que deseja apagar?"
 
 #: templates/biblioref/reference_confirm_delete.html:28
 #: templates/biblioref/referenceanalytic_form.html:495
-#: templates/biblioref/referenceanalytic_form.html:600
-#: templates/biblioref/referencesource_form.html:501
+#: templates/biblioref/referenceanalytic_form.html:601
+#: templates/biblioref/referencesource_form.html:503
 #: templates/delete_confirm.html:16
 #: templates/institution/institution_confirm_delete.html:28
 #: templates/leisref/act_confirm_delete.html:28
@@ -3277,7 +3299,7 @@ msgstr "Editar Registro Bibliográfico"
 #: templates/leisref/act_form.html:30 templates/main/edit-resource.html:23
 #: templates/multimedia/media_form.html:32 templates/oer/oer_form.html:26
 #: templates/thesaurus/descriptor_edit_concept.html:43
-#: templates/thesaurus/descriptor_edit_register.html:50
+#: templates/thesaurus/descriptor_edit_register.html:58
 #: templates/thesaurus/descriptor_edit_term.html:44
 #: templates/thesaurus/descriptor_form_step1.html:43
 #: templates/thesaurus/descriptor_form_step2.html:39
@@ -3306,13 +3328,13 @@ msgstr ""
 
 #: templates/biblioref/reference_form.html:51
 #: templates/biblioref/referenceanalytic_form.html:72
-#: templates/biblioref/referencesource_form.html:92
+#: templates/biblioref/referencesource_form.html:94
 #: templates/events/edit-event.html:60 templates/leisref/act_form.html:57
 #: templates/main/edit-resource.html:49
 #: templates/multimedia/media_form.html:59
-#: templates/title/form_preview.html:57 templates/title/title_form.html:100
-#: thesaurus/models_descriptors.py:256 thesaurus/models_descriptors.py:259
-#: thesaurus/models_descriptors.py:262
+#: templates/title/form_preview.html:58 templates/title/title_form.html:103
+#: thesaurus/models_descriptors.py:270 thesaurus/models_descriptors.py:273
+#: thesaurus/models_descriptors.py:276
 msgid "Identifier"
 msgstr "Identificador"
 
@@ -3325,8 +3347,8 @@ msgstr "Mídia criada em"
 #: templates/biblioref/reference_form.html:124
 #: templates/biblioref/referenceanalytic_form.html:208
 #: templates/biblioref/referenceanalytic_form.html:215
-#: templates/biblioref/referencesource_form.html:137
-#: templates/biblioref/referencesource_form.html:140
+#: templates/biblioref/referencesource_form.html:139
+#: templates/biblioref/referencesource_form.html:142
 #: templates/events/edit-event.html:136 templates/events/edit-event.html:139
 #: templates/institution/institution_form.html:95
 #: templates/institution/institution_form.html:97
@@ -3334,35 +3356,35 @@ msgstr "Mídia criada em"
 #: templates/main/edit-resource.html:124 templates/main/edit-resource.html:127
 #: templates/multimedia/media_form.html:141
 #: templates/multimedia/media_form.html:144 templates/oer/oer_form.html:119
-#: templates/oer/oer_form.html:125 templates/title/title_form.html:160
-#: templates/title/title_form.html:163
+#: templates/oer/oer_form.html:125 templates/title/title_form.html:163
+#: templates/title/title_form.html:166
 msgid "by user"
 msgstr "pelo usuário"
 
 #: templates/biblioref/reference_form.html:122
 #: templates/biblioref/referenceanalytic_form.html:209
-#: templates/biblioref/referencesource_form.html:138
+#: templates/biblioref/referencesource_form.html:140
 #: templates/events/edit-event.html:137 templates/leisref/act_form.html:121
 #: templates/main/edit-resource.html:125
 #: templates/multimedia/media_form.html:142 templates/oer/oer_form.html:121
-#: templates/title/title_form.html:161
+#: templates/title/title_form.html:164
 msgid "Cooperative center code"
 msgstr "Código Centro Cooperante"
 
 #: templates/biblioref/reference_form.html:124
 #: templates/biblioref/referenceanalytic_form.html:215
-#: templates/biblioref/referencesource_form.html:140
+#: templates/biblioref/referencesource_form.html:142
 #: templates/events/edit-event.html:139
 #: templates/institution/institution_form.html:97
 #: templates/leisref/act_form.html:123 templates/main/edit-resource.html:127
 #: templates/multimedia/media_form.html:144 templates/oer/oer_form.html:125
-#: templates/title/title_form.html:163
+#: templates/title/title_form.html:166
 msgid "Last edit in"
 msgstr "Última edição realizada em"
 
 #: templates/biblioref/reference_form.html:210
 #: templates/events/edit-event.html:236 templates/main/edit-resource.html:231
-#: templates/multimedia/media_form.html:234
+#: templates/multimedia/media_form.html:217
 msgid "Suggestion"
 msgstr "Sugestão"
 
@@ -3370,19 +3392,19 @@ msgstr "Sugestão"
 #: templates/biblioref/reference_form.html:255
 #: templates/events/edit-event.html:258 templates/events/edit-event.html:281
 #: templates/main/edit-resource.html:253 templates/main/edit-resource.html:276
-#: templates/multimedia/media_form.html:256
-#: templates/multimedia/media_form.html:279
-#: templates/title/title_form.html:274
+#: templates/multimedia/media_form.html:228
+#: templates/multimedia/media_form.html:248
+#: templates/title/title_form.html:277
 msgid "Suggested"
 msgstr "Sugerido"
 
 #: templates/biblioref/reference_form.html:396
 #: templates/biblioref/referenceanalytic_form.html:393
-#: templates/biblioref/referencesource_form.html:301
+#: templates/biblioref/referencesource_form.html:303
 #: templates/events/edit-event.html:423 templates/leisref/act_form.html:316
 #: templates/main/edit-resource.html:428
-#: templates/multimedia/media_form.html:421 templates/oer/oer_form.html:374
-#: templates/title/title_form.html:636
+#: templates/multimedia/media_form.html:388 templates/oer/oer_form.html:374
+#: templates/title/title_form.html:697
 msgid "Add descriptor"
 msgstr "Adicionar descritor"
 
@@ -3393,11 +3415,11 @@ msgstr "Adicionar descritor"
 #: templates/biblioref/referenceanalytic_form.html:404
 #: templates/biblioref/referenceanalytic_form.html:414
 #: templates/biblioref/referenceanalytic_form.html:424
-#: templates/biblioref/referencesource_form.html:302
-#: templates/biblioref/referencesource_form.html:312
-#: templates/biblioref/referencesource_form.html:322
-#: templates/biblioref/referencesource_form.html:332
-#: templates/biblioref/referencesource_form.html:342
+#: templates/biblioref/referencesource_form.html:304
+#: templates/biblioref/referencesource_form.html:314
+#: templates/biblioref/referencesource_form.html:324
+#: templates/biblioref/referencesource_form.html:334
+#: templates/biblioref/referencesource_form.html:344
 #: templates/events/edit-event.html:424 templates/events/edit-event.html:434
 #: templates/events/edit-event.html:444 templates/events/edit-type.html:72
 #: templates/institution/institution_form.html:160
@@ -3416,21 +3438,21 @@ msgstr "Adicionar descritor"
 #: templates/leisref/acttype_form.html:88 templates/main/edit-language.html:72
 #: templates/main/edit-resource.html:429 templates/main/edit-resource.html:439
 #: templates/main/edit-thematic.html:72 templates/main/edit-type.html:72
-#: templates/multimedia/media_form.html:422
-#: templates/multimedia/media_form.html:432
-#: templates/multimedia/media_form.html:442
-#: templates/multimedia/media_form.html:452
+#: templates/multimedia/media_form.html:389
+#: templates/multimedia/media_form.html:399
+#: templates/multimedia/media_form.html:409
+#: templates/multimedia/media_form.html:419
 #: templates/multimedia/mediacollection_form.html:70
 #: templates/multimedia/mediatype_form.html:72 templates/oer/oer_form.html:375
 #: templates/oer/oer_form.html:385 templates/oer/oer_form.html:395
 #: templates/oer/oer_form.html:405 templates/oer/oer_form.html:415
 #: templates/thesaurus/descriptor_edit_concept.html:298
 #: templates/thesaurus/descriptor_edit_concept.html:308
-#: templates/thesaurus/descriptor_edit_register.html:619
-#: templates/thesaurus/descriptor_edit_register.html:629
-#: templates/thesaurus/descriptor_edit_register.html:639
-#: templates/thesaurus/descriptor_edit_register.html:649
-#: templates/thesaurus/descriptor_edit_register.html:659
+#: templates/thesaurus/descriptor_edit_register.html:638
+#: templates/thesaurus/descriptor_edit_register.html:648
+#: templates/thesaurus/descriptor_edit_register.html:658
+#: templates/thesaurus/descriptor_edit_register.html:668
+#: templates/thesaurus/descriptor_edit_register.html:678
 #: templates/thesaurus/descriptor_edit_term.html:224
 #: templates/thesaurus/descriptor_form_step1.html:567
 #: templates/thesaurus/descriptor_form_step1.html:577
@@ -3448,25 +3470,25 @@ msgstr "Adicionar descritor"
 #: templates/thesaurus/qualifier_form_step1.html:298
 #: templates/thesaurus/qualifier_new_concept.html:351
 #: templates/thesaurus/qualifier_new_concept.html:361
-#: templates/title/title_form.html:637 templates/title/title_form.html:646
-#: templates/title/title_form.html:655 templates/title/title_form.html:664
-#: templates/title/title_form.html:673 templates/title/title_form.html:682
-#: templates/title/title_form.html:691
+#: templates/title/title_form.html:698 templates/title/title_form.html:707
+#: templates/title/title_form.html:716 templates/title/title_form.html:725
+#: templates/title/title_form.html:734 templates/title/title_form.html:743
+#: templates/title/title_form.html:752
 msgid "delete"
 msgstr "apagar"
 
 #: templates/biblioref/reference_form.html:406
-#: templates/biblioref/referencesource_form.html:321
+#: templates/biblioref/referencesource_form.html:323
 #: templates/events/edit-event.html:433 templates/main/edit-resource.html:438
-#: templates/multimedia/media_form.html:431
-#: templates/title/title_form.html:645
+#: templates/multimedia/media_form.html:398
+#: templates/title/title_form.html:706
 msgid "Add keyword"
 msgstr "Adicionar palavra-chave"
 
 #: templates/biblioref/reference_form.html:416
 #: templates/events/edit-event.html:443 templates/leisref/act_form.html:356
 #: templates/main/edit-resource.html:448
-#: templates/multimedia/media_form.html:451 templates/oer/oer_form.html:414
+#: templates/multimedia/media_form.html:418 templates/oer/oer_form.html:414
 msgid "Add thematic area"
 msgstr "Adicionar área temática"
 
@@ -3529,14 +3551,14 @@ msgstr "Revisão de colaboração"
 #: templates/multimedia/mediatype_list.html:38
 #: templates/oer/fieldset_relationship.html:63 templates/oer/oer_list.html:65
 #: templates/oer/oer_related.html:17 templates/suggest/list.html:47
-#: templates/thesaurus/page_view_desc.html:75
+#: templates/thesaurus/page_view_desc.html:80
 #: templates/thesaurus/page_view_qualif.html:75
 #: templates/thesaurus/qualifier_list.html:78
 #: templates/thesaurus/search_concept_desc.html:88
 #: templates/thesaurus/search_concept_qualif.html:88
 #: templates/thesaurus/search_term_desc.html:72
 #: templates/thesaurus/search_term_qualif.html:71
-#: templates/thesaurus/thesaurus_home.html:78
+#: templates/thesaurus/thesaurus_home.html:79
 msgid "Search"
 msgstr "Pesquisa"
 
@@ -3577,7 +3599,7 @@ msgstr "Revista - Artigo"
 #: templates/multimedia/media_list.html:108 templates/oer/oer_list.html:69
 #: templates/oer/oer_list.html:84 templates/reports/index.html:63
 #: templates/reports/index.html:74 templates/reports/index.html:82
-#: templates/suggest/list.html:51
+#: templates/reports/index.html:90 templates/suggest/list.html:51
 #: templates/thesaurus/confirm_create_desc.html:46
 #: templates/thesaurus/confirm_create_qualif.html:46
 #: templates/thesaurus/confirm_create_register_desc.html:50
@@ -3586,8 +3608,9 @@ msgstr "Revista - Artigo"
 #: templates/thesaurus/qualifier_form_step0.html:80
 #: templates/thesaurus/qualifier_list.html:94
 #: templates/thesaurus/qualifier_list.html:104
-#: templates/thesaurus/thesaurus_home.html:93
-#: templates/thesaurus/thesaurus_home.html:103
+#: templates/thesaurus/thesaurus_home.html:99
+#: templates/thesaurus/thesaurus_home.html:114
+#: templates/thesaurus/thesaurus_home.html:127
 msgid "All"
 msgstr "Todos"
 
@@ -3607,14 +3630,14 @@ msgstr "Filtros"
 #: templates/dashboard/index.html:19 templates/events/events.html:92
 #: templates/main/resources.html:94 templates/multimedia/media_list.html:125
 #: templates/oer/oer_list.html:98 templates/suggest/list.html:63
-#: templates/title/title_form.html:85 templates/title/title_list.html:93
+#: templates/title/title_form.html:87 templates/title/title_list.html:93
 msgid "Networks"
 msgstr "Redes"
 
 #: templates/biblioref/reference_list.html:161
 #: templates/leisref/act_list.html:136
 #: templates/multimedia/media_list.html:117 templates/oer/oer_list.html:90
-#: templates/reports/index.html:88
+#: templates/reports/index.html:96
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -3623,14 +3646,14 @@ msgid "Filter by"
 msgstr "Filtrar por"
 
 #: templates/biblioref/reference_list.html:183
-#: templates/dashboard/index.html:58
-msgid "Changed by other cooperative center"
-msgstr "Modificados por outros centros cooperantes"
-
-#: templates/biblioref/reference_list.html:184
 #: templates/dashboard/index.html:42
 msgid "Changed by other users"
 msgstr "Modificado por outros usuários"
+
+#: templates/biblioref/reference_list.html:184
+#: templates/dashboard/index.html:58
+msgid "Changed by other cooperative center"
+msgstr "Modificados por outros centros cooperantes"
 
 #: templates/biblioref/reference_list.html:199
 #: templates/biblioref/referenceanalytic_list.html:67
@@ -3638,7 +3661,7 @@ msgstr "Modificado por outros usuários"
 #: templates/error_report/list.html:77 templates/error_report/list.html:137
 #: templates/events/edit-event.html:308 templates/events/events.html:104
 #: templates/events/types.html:48
-#: templates/institution/institution_list.html:115
+#: templates/institution/institution_list.html:126
 #: templates/leisref/act_list.html:150 templates/leisref/actcity_list.html:51
 #: templates/leisref/actcollection_list.html:49
 #: templates/leisref/actcountryregion_list.html:49
@@ -3654,7 +3677,7 @@ msgstr "Modificado por outros usuários"
 #: templates/multimedia/mediacollection_list.html:41
 #: templates/multimedia/mediatype_list.html:48 templates/oer/oer_list.html:108
 #: templates/suggest/list.html:80 templates/suggest/list.html:124
-#: templates/suggest/list.html:168 templates/title/title_form.html:547
+#: templates/suggest/list.html:169 templates/title/title_form.html:550
 #: templates/title/title_list.html:106
 msgid "Actions"
 msgstr "Ações"
@@ -3664,7 +3687,7 @@ msgstr "Ações"
 #: templates/biblioref/referencesource_list.html:80
 #: templates/biblioref/referencesource_list.html:84
 #: templates/events/events.html:131 templates/events/types.html:57
-#: templates/institution/institution_list.html:132
+#: templates/institution/institution_list.html:144
 #: templates/leisref/act_list.html:162 templates/main/languages.html:57
 #: templates/main/resources.html:131 templates/main/thematics.html:57
 #: templates/main/types.html:57 templates/multimedia/media_list.html:158
@@ -3682,7 +3705,7 @@ msgstr "Apagar"
 msgid "review"
 msgstr "revisar"
 
-#: templates/biblioref/reference_list.html:238
+#: templates/biblioref/reference_list.html:237
 #: templates/events/events.html:153 templates/leisref/act_list.html:190
 #: templates/main/resources.html:153 templates/multimedia/media_list.html:182
 #: templates/oer/oer_list.html:140
@@ -3715,12 +3738,12 @@ msgstr ""
 "Por favor verifique mensagens de erros nos respectivos campos de dados"
 
 #: templates/biblioref/referenceanalytic_form.html:60
-#: templates/biblioref/referencesource_form.html:80
+#: templates/biblioref/referencesource_form.html:81
 msgid "Related resources"
 msgstr "Recursos relacionados"
 
 #: templates/biblioref/referenceanalytic_form.html:61
-#: templates/biblioref/referencesource_form.html:79
+#: templates/biblioref/referencesource_form.html:80
 msgid "Rearch data"
 msgstr "Dados de pesquisa"
 
@@ -3733,7 +3756,7 @@ msgid "Journal usually indexed in"
 msgstr "Revista normalmente indexada em"
 
 #: templates/biblioref/referenceanalytic_form.html:208
-#: templates/biblioref/referencesource_form.html:137
+#: templates/biblioref/referencesource_form.html:139
 msgid "Record created in"
 msgstr "Registro criado"
 
@@ -3742,24 +3765,24 @@ msgid "Indexer cooperative center code"
 msgstr "Código do centro indexador"
 
 #: templates/biblioref/referenceanalytic_form.html:224
-#: templates/biblioref/referencesource_form.html:150
+#: templates/biblioref/referencesource_form.html:152
 #: templates/institution/institution_form.html:101
 #: templates/leisref/act_form.html:127 templates/main/edit-resource.html:131
 #: templates/modal_log.html:7 templates/multimedia/media_form.html:148
-#: templates/thesaurus/page_view_desc.html:438
-#: templates/thesaurus/page_view_qualif.html:317
-#: templates/title/title_form.html:167
+#: templates/thesaurus/page_view_desc.html:472
+#: templates/thesaurus/page_view_qualif.html:329
+#: templates/title/title_form.html:170
 msgid "Changes history"
 msgstr "Histórico de mudanças"
 
 #: templates/biblioref/referenceanalytic_form.html:229
-#: templates/biblioref/referencesource_form.html:155
-#: templates/title/title_form.html:169
+#: templates/biblioref/referencesource_form.html:157
+#: templates/title/title_form.html:172
 msgid "Duplicates"
 msgstr "Duplicados"
 
 #: templates/biblioref/referenceanalytic_form.html:260
-#: templates/biblioref/referencesource_form.html:188
+#: templates/biblioref/referencesource_form.html:190
 #: templates/events/edit-event.html:349 templates/events/edit-event.html:396
 #: templates/institution/adhesionterm.html:149
 #: templates/leisref/act_form.html:272 templates/leisref/actcity_form.html:56
@@ -3772,14 +3795,14 @@ msgstr "Duplicados"
 #: templates/leisref/actstate_form.html:56
 #: templates/leisref/acttype_form.html:70
 #: templates/main/edit-resource.html:356 templates/main/edit-resource.html:400
-#: templates/multimedia/media_form.html:395
+#: templates/multimedia/media_form.html:362
 #: templates/thesaurus/confirm_create_desc.html:60
 #: templates/thesaurus/confirm_create_qualif.html:60
 #: templates/thesaurus/confirm_create_register_desc.html:64
 #: templates/thesaurus/confirm_create_register_qualif.html:88
 #: templates/thesaurus/descriptor_edit_concept.html:211
 #: templates/thesaurus/descriptor_edit_legacy.html:94
-#: templates/thesaurus/descriptor_edit_register.html:546
+#: templates/thesaurus/descriptor_edit_register.html:565
 #: templates/thesaurus/descriptor_edit_term.html:201
 #: templates/thesaurus/descriptor_form_step0.html:99
 #: templates/thesaurus/descriptor_form_step1.html:474
@@ -3787,8 +3810,8 @@ msgstr "Duplicados"
 #: templates/thesaurus/descriptor_new_concept.html:276
 #: templates/thesaurus/descriptor_new_legacy.html:92
 #: templates/thesaurus/descriptor_new_term.html:214
-#: templates/thesaurus/page_view_desc.html:919
-#: templates/thesaurus/page_view_qualif.html:752
+#: templates/thesaurus/page_view_desc.html:953
+#: templates/thesaurus/page_view_qualif.html:764
 #: templates/thesaurus/qualifier_edit_concept.html:205
 #: templates/thesaurus/qualifier_edit_legacy.html:94
 #: templates/thesaurus/qualifier_edit_register.html:284
@@ -3807,14 +3830,14 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: templates/biblioref/referenceanalytic_form.html:264
-#: templates/biblioref/referencesource_form.html:193
+#: templates/biblioref/referencesource_form.html:195
 #: templates/institution/institution_form.html:127
 #: templates/leisref/act_form.html:274 templates/oer/oer_form.html:279
 msgid "Save Draft"
 msgstr "Gravar Rascunho"
 
 #: templates/biblioref/referenceanalytic_form.html:266
-#: templates/biblioref/referencesource_form.html:195
+#: templates/biblioref/referencesource_form.html:197
 #: templates/institution/institution_form.html:129
 #: templates/leisref/act_form.html:276 templates/oer/oer_form.html:281
 msgid "Save as"
@@ -3830,15 +3853,15 @@ msgstr "Publicar como LILACS-Express"
 
 #: templates/biblioref/referenceanalytic_form.html:277
 #: templates/biblioref/referenceanalytic_form.html:281
-#: templates/biblioref/referencesource_form.html:199
-#: templates/biblioref/referencesource_form.html:203
+#: templates/biblioref/referencesource_form.html:201
+#: templates/biblioref/referencesource_form.html:205
 #: templates/institution/institution_form.html:133
 #: templates/leisref/act_form.html:280 templates/oer/oer_form.html:285
 msgid "Publish"
 msgstr "Publicar"
 
 #: templates/biblioref/referenceanalytic_form.html:286
-#: templates/biblioref/referencesource_form.html:207
+#: templates/biblioref/referencesource_form.html:209
 #: templates/institution/institution_form.html:137
 #: templates/leisref/act_form.html:284 templates/oer/oer_form.html:289
 #: templates/suggest/invalid-link.html:47 templates/suggest/thanks.html:29
@@ -3846,22 +3869,22 @@ msgid "Back"
 msgstr "Voltar"
 
 #: templates/biblioref/referenceanalytic_form.html:403
-#: templates/biblioref/referencesource_form.html:311
+#: templates/biblioref/referencesource_form.html:313
 msgid "Add file"
 msgstr "Adicionar arquivo"
 
 #: templates/biblioref/referenceanalytic_form.html:413
-#: templates/biblioref/referencesource_form.html:331
+#: templates/biblioref/referencesource_form.html:333
 msgid "Add research data"
 msgstr "Adicionar dados de pesquisa"
 
 #: templates/biblioref/referenceanalytic_form.html:423
-#: templates/biblioref/referencesource_form.html:341
+#: templates/biblioref/referencesource_form.html:343
 msgid "Add resource"
 msgstr "Adicionar recurso"
 
-#: templates/biblioref/referenceanalytic_form.html:590
-#: templates/biblioref/referencesource_form.html:491
+#: templates/biblioref/referenceanalytic_form.html:591
+#: templates/biblioref/referencesource_form.html:493
 msgid ""
 "After publication the record can only be modified by a user with editor "
 "profile. Continue?"
@@ -3869,8 +3892,8 @@ msgstr ""
 "Após a publicação, o registro só pode ser modificado por um usuário com "
 "perfil de editor. Continuar?"
 
-#: templates/biblioref/referenceanalytic_form.html:666
-#: templates/biblioref/referencesource_form.html:591
+#: templates/biblioref/referenceanalytic_form.html:667
+#: templates/biblioref/referencesource_form.html:593
 #: templates/events/edit-event.html:595
 #: templates/institution/institution_form.html:44
 #: templates/leisref/act_form.html:46 templates/main/edit-resource.html:538
@@ -3929,10 +3952,9 @@ msgid "Select"
 msgstr "Selecione"
 
 #: templates/biblioref/select_related_reference.html:68
-#, fuzzy
 #| msgid "New Bibliographic Reference"
 msgid "Select bibliographic reference"
-msgstr "Nova Referência Bibliográfica"
+msgstr "Selecione a referência bibliográfica"
 
 #: templates/biblioref/select_related_reference.html:71
 #: templates/title/title_list.html:78
@@ -3972,7 +3994,7 @@ msgstr "Classificação atualizada"
 
 #: templates/classification/classify.html:93 templates/modal_dedup.html:11
 #: templates/modal_help.html:11 templates/modal_log.html:13
-#: templates/reports/index.html:182 templates/utils/decs_suggestion.html:74
+#: templates/reports/index.html:190 templates/utils/decs_suggestion.html:74
 msgid "Close"
 msgstr "Fechar"
 
@@ -4022,10 +4044,10 @@ msgstr "Nenhum registro foi encontrado"
 
 #: templates/delete_confirm.html:5
 #: templates/thesaurus/descriptor_edit_concept.html:151
-#: templates/thesaurus/descriptor_edit_concept.html:348
-#: templates/thesaurus/descriptor_edit_register.html:217
-#: templates/thesaurus/descriptor_edit_register.html:499
-#: templates/thesaurus/descriptor_edit_register.html:669
+#: templates/thesaurus/descriptor_edit_concept.html:349
+#: templates/thesaurus/descriptor_edit_register.html:225
+#: templates/thesaurus/descriptor_edit_register.html:513
+#: templates/thesaurus/descriptor_edit_register.html:689
 #: templates/thesaurus/descriptor_form_step1.html:617
 #: templates/thesaurus/descriptor_form_step2.html:411
 #: templates/thesaurus/descriptor_new_concept.html:413
@@ -4204,7 +4226,20 @@ msgstr "Minha instituição"
 msgid "All instutions"
 msgstr "Todas instituições"
 
-#: templates/institution/institution_list.html:111
+#: templates/institution/institution_list.html:104
+msgid "Current year"
+msgstr "Ano atual"
+
+#: templates/institution/institution_list.html:105
+msgid "year"
+msgstr "ano"
+
+#: templates/institution/institution_list.html:106
+#: templates/institution/institution_list.html:107
+msgid "years"
+msgstr "anos"
+
+#: templates/institution/institution_list.html:121
 msgid "CC"
 msgstr ""
 
@@ -4255,7 +4290,7 @@ msgid "Add URL"
 msgstr "Adicionar Endereço Eletrônico"
 
 #: templates/leisref/act_form.html:336
-#: templates/multimedia/media_form.html:441 templates/oer/oer_form.html:394
+#: templates/multimedia/media_form.html:408 templates/oer/oer_form.html:394
 msgid "Add File"
 msgstr "Adicionar Arquivo"
 
@@ -4483,7 +4518,7 @@ msgstr "Novo Tipo de Ato"
 
 #: templates/log/list.html:9 templates/log/review.html:25
 #: templates/log/review_notapproved.html:22
-#: templates/multimedia/media_list.html:81 title/models.py:14
+#: templates/multimedia/media_list.html:81 title/models.py:19
 msgid "User"
 msgstr "Usuário"
 
@@ -4649,7 +4684,7 @@ msgstr "Sugestões"
 
 #: templates/menu.html:75 templates/reports/index.html:5
 #: templates/reports/index.html:8 templates/reports/index.html:23
-#: templates/reports/index.html:177
+#: templates/reports/index.html:185
 msgid "Reports"
 msgstr "Relatórios"
 
@@ -4843,27 +4878,32 @@ msgstr "Revista por Situação da Publicação"
 msgid "Execute"
 msgstr "Executar"
 
-#: templates/reports/index.html:118 title/models.py:35
+#: templates/reports/index.html:88 templates/title/form_preview.html:466
+#: templates/title/title_form.html:541 title/models.py:327
+msgid "Year"
+msgstr ""
+
+#: templates/reports/index.html:126 title/models.py:40
 msgid "Current"
 msgstr "Corrente"
 
-#: templates/reports/index.html:120 title/choices.py:25 title/models.py:36
+#: templates/reports/index.html:128 title/choices.py:25 title/models.py:41
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: templates/reports/index.html:122 title/models.py:37
+#: templates/reports/index.html:130 title/models.py:42
 msgid "Suspended or closed"
 msgstr "Suspenso ou encerrado"
 
-#: templates/reports/index.html:160
+#: templates/reports/index.html:168
 msgid "Export CSV"
 msgstr "Exportar em CSV"
 
-#: templates/reports/index.html:166
+#: templates/reports/index.html:174
 msgid "No data for these criteria"
 msgstr "Nenhum dado para estes critérios"
 
-#: templates/reports/index.html:200
+#: templates/reports/index.html:208
 msgid "Combination (Source x Report / Filter) not available"
 msgstr "Combinação (Fonte x Relatório / Filtro) não disponível"
 
@@ -4988,7 +5028,7 @@ msgstr ""
 #: templates/thesaurus/search_term_qualif.html:12
 #: templates/thesaurus/thesaurus_home.html:6
 #: templates/thesaurus/thesaurus_home.html:11
-#: thesaurus/models_descriptors.py:380 thesaurus/models_qualifiers.py:280
+#: thesaurus/models_descriptors.py:394 thesaurus/models_qualifiers.py:277
 #: thesaurus/models_thesaurus.py:12 thesaurus/models_thesaurus.py:13
 #: thesaurus/models_thesaurus.py:36 thesaurus/models_thesaurus.py:50
 msgid "Thesaurus"
@@ -5003,14 +5043,14 @@ msgstr "Você confirma a criação de um novo registro com este termo?"
 #: templates/thesaurus/confirm_create_qualif.html:37
 #: templates/thesaurus/confirm_create_register_desc.html:41
 #: templates/thesaurus/confirm_create_register_qualif.html:52
-#: templates/thesaurus/descriptor_edit_register.html:330
-#: templates/thesaurus/descriptor_edit_register.html:371
+#: templates/thesaurus/descriptor_edit_register.html:338
+#: templates/thesaurus/descriptor_edit_register.html:378
 #: templates/thesaurus/descriptor_form_step0.html:73
 #: templates/thesaurus/descriptor_form_step1.html:250
 #: templates/thesaurus/descriptor_form_step1.html:299
 #: templates/thesaurus/qualifier_form_step0.html:73
-#: thesaurus/models_descriptors.py:133 thesaurus/models_descriptors.py:160
-#: thesaurus/models_descriptors.py:352 thesaurus/models_qualifiers.py:266
+#: thesaurus/models_descriptors.py:147 thesaurus/models_descriptors.py:173
+#: thesaurus/models_descriptors.py:366 thesaurus/models_qualifiers.py:263
 msgid "String"
 msgstr "Termo"
 
@@ -5022,10 +5062,10 @@ msgstr "Termo"
 #: templates/thesaurus/descriptor_new_concept.html:70
 #: templates/thesaurus/qualifier_form_step0.html:74
 #: templates/thesaurus/qualifier_new_concept.html:70
-#: thesaurus/models_descriptors.py:74 thesaurus/models_descriptors.py:138
-#: thesaurus/models_descriptors.py:187 thesaurus/models_descriptors.py:318
-#: thesaurus/models_descriptors.py:349 thesaurus/models_qualifiers.py:83
-#: thesaurus/models_qualifiers.py:220 thesaurus/models_qualifiers.py:248
+#: thesaurus/models_descriptors.py:89 thesaurus/models_descriptors.py:152
+#: thesaurus/models_descriptors.py:199 thesaurus/models_descriptors.py:332
+#: thesaurus/models_descriptors.py:363 thesaurus/models_qualifiers.py:80
+#: thesaurus/models_qualifiers.py:217 thesaurus/models_qualifiers.py:245
 msgid "Language used for description"
 msgstr "Linguagem utilizada para descrição"
 
@@ -5035,8 +5075,9 @@ msgstr "Linguagem utilizada para descrição"
 #: templates/thesaurus/confirm_create_register_qualif.html:64
 #: templates/thesaurus/descriptor_edit_concept.html:164
 #: templates/thesaurus/descriptor_edit_concept.html:186
-#: templates/thesaurus/descriptor_edit_register.html:230
-#: templates/thesaurus/descriptor_edit_register.html:282
+#: templates/thesaurus/descriptor_edit_register.html:238
+#: templates/thesaurus/descriptor_edit_register.html:290
+#: templates/thesaurus/descriptor_edit_register.html:457
 #: templates/thesaurus/descriptor_edit_term.html:105
 #: templates/thesaurus/descriptor_form_step0.html:82
 #: templates/thesaurus/descriptor_form_step2.html:209
@@ -5052,8 +5093,8 @@ msgstr "Linguagem utilizada para descrição"
 #: templates/thesaurus/qualifier_list.html:106
 #: templates/thesaurus/qualifier_new_concept.html:80
 #: templates/thesaurus/qualifier_new_term.html:98
-#: templates/thesaurus/thesaurus_home.html:105 thesaurus/choices.py:11
-#: thesaurus/views.py:76
+#: templates/thesaurus/thesaurus_home.html:116 thesaurus/choices.py:11
+#: thesaurus/views.py:77
 msgid "Spanish Latin America"
 msgstr "Espanhol da América Latina"
 
@@ -5063,8 +5104,9 @@ msgstr "Espanhol da América Latina"
 #: templates/thesaurus/confirm_create_register_qualif.html:66
 #: templates/thesaurus/descriptor_edit_concept.html:166
 #: templates/thesaurus/descriptor_edit_concept.html:188
-#: templates/thesaurus/descriptor_edit_register.html:232
-#: templates/thesaurus/descriptor_edit_register.html:284
+#: templates/thesaurus/descriptor_edit_register.html:240
+#: templates/thesaurus/descriptor_edit_register.html:292
+#: templates/thesaurus/descriptor_edit_register.html:463
 #: templates/thesaurus/descriptor_edit_term.html:107
 #: templates/thesaurus/descriptor_form_step0.html:84
 #: templates/thesaurus/descriptor_form_step2.html:211
@@ -5080,8 +5122,8 @@ msgstr "Espanhol da América Latina"
 #: templates/thesaurus/qualifier_list.html:108
 #: templates/thesaurus/qualifier_new_concept.html:82
 #: templates/thesaurus/qualifier_new_term.html:100
-#: templates/thesaurus/thesaurus_home.html:107 thesaurus/choices.py:13
-#: thesaurus/views.py:78
+#: templates/thesaurus/thesaurus_home.html:118 thesaurus/choices.py:13
+#: thesaurus/views.py:79
 msgid "Spanish Spain"
 msgstr "Espanhol da  Espanha"
 
@@ -5115,8 +5157,8 @@ msgstr "Campo obrigatório"
 
 #: templates/thesaurus/confirm_create_register_qualif.html:78
 #: templates/thesaurus/descriptor_form_step0.html:67
-#: templates/thesaurus/qualifier_form_step0.html:67 thesaurus/views.py:221
-#: thesaurus/views.py:622 thesaurus/views.py:3213 thesaurus/views.py:3566
+#: templates/thesaurus/qualifier_form_step0.html:67 thesaurus/views.py:222
+#: thesaurus/views.py:623 thesaurus/views.py:3372 thesaurus/views.py:3725
 msgid "already exists!!!"
 msgstr "já existe!"
 
@@ -5127,12 +5169,12 @@ msgid "Delete Descriptor"
 msgstr "Excluir descritor"
 
 #: templates/thesaurus/descriptor_confirm_delete.html:34
-#: templates/thesaurus/thesaurus_home.html:85
+#: templates/thesaurus/thesaurus_home.html:88
 msgid "MESH Descriptor UI"
 msgstr "ID de transporte"
 
 #: templates/thesaurus/descriptor_confirm_delete.html:38
-#: templates/thesaurus/thesaurus_home.html:86
+#: templates/thesaurus/thesaurus_home.html:89
 msgid "DeCS Descriptor UI"
 msgstr "ID no tesauro"
 
@@ -5142,12 +5184,12 @@ msgid "Edit Concept"
 msgstr "Editar conceito"
 
 #: templates/thesaurus/descriptor_edit_concept.html:28
-#: templates/thesaurus/page_view_desc.html:516
-#: templates/thesaurus/page_view_desc.html:647
-#: templates/thesaurus/page_view_desc.html:649
-#: templates/thesaurus/page_view_qualif.html:357
-#: templates/thesaurus/page_view_qualif.html:485
-#: templates/thesaurus/page_view_qualif.html:487
+#: templates/thesaurus/page_view_desc.html:550
+#: templates/thesaurus/page_view_desc.html:681
+#: templates/thesaurus/page_view_desc.html:683
+#: templates/thesaurus/page_view_qualif.html:369
+#: templates/thesaurus/page_view_qualif.html:497
+#: templates/thesaurus/page_view_qualif.html:499
 #: templates/thesaurus/qualifier_edit_concept.html:29
 msgid "Edit concept information"
 msgstr "Editar informações do conceito"
@@ -5176,21 +5218,21 @@ msgid "Description of Concept"
 msgstr "Definição do conceito"
 
 #: templates/thesaurus/descriptor_edit_concept.html:134
-#: templates/thesaurus/descriptor_edit_register.html:202
+#: templates/thesaurus/descriptor_edit_register.html:210
 #: templates/thesaurus/qualifier_edit_concept.html:128
 #: templates/thesaurus/qualifier_edit_register.html:188
 msgid "Description in"
 msgstr "Descrição em"
 
 #: templates/thesaurus/descriptor_edit_concept.html:137
-#: templates/thesaurus/descriptor_edit_register.html:205
+#: templates/thesaurus/descriptor_edit_register.html:213
 #: templates/thesaurus/qualifier_edit_concept.html:131
 #: templates/thesaurus/qualifier_edit_register.html:191
 msgid "Add new description"
 msgstr "Adicionar nova descrição"
 
 #: templates/thesaurus/descriptor_edit_concept.html:297
-#: templates/thesaurus/descriptor_edit_register.html:618
+#: templates/thesaurus/descriptor_edit_register.html:637
 #: templates/thesaurus/descriptor_form_step1.html:566
 #: templates/thesaurus/descriptor_form_step2.html:360
 #: templates/thesaurus/descriptor_new_concept.html:362
@@ -5202,7 +5244,7 @@ msgid "Add Tree Number"
 msgstr "Adicionar categoria"
 
 #: templates/thesaurus/descriptor_edit_concept.html:307
-#: templates/thesaurus/descriptor_edit_register.html:648
+#: templates/thesaurus/descriptor_edit_register.html:667
 #: templates/thesaurus/descriptor_form_step1.html:596
 #: templates/thesaurus/descriptor_form_step2.html:370
 #: templates/thesaurus/descriptor_new_concept.html:372
@@ -5213,7 +5255,7 @@ msgstr "Adicionar indexação prévia"
 
 #: templates/thesaurus/descriptor_edit_concept.html:331
 #: templates/thesaurus/descriptor_edit_concept.html:340
-#: templates/thesaurus/descriptor_edit_concept.html:369
+#: templates/thesaurus/descriptor_edit_concept.html:370
 #: templates/thesaurus/descriptor_form_step1.html:639
 #: templates/thesaurus/descriptor_form_step2.html:394
 #: templates/thesaurus/descriptor_form_step2.html:403
@@ -5231,8 +5273,8 @@ msgstr "Adicionar indexação prévia"
 msgid "Warning"
 msgstr "Atenção"
 
-#: templates/thesaurus/descriptor_edit_concept.html:379
 #: templates/thesaurus/descriptor_edit_concept.html:380
+#: templates/thesaurus/descriptor_edit_concept.html:381
 #: templates/thesaurus/descriptor_form_step1.html:649
 #: templates/thesaurus/descriptor_form_step1.html:650
 #: templates/thesaurus/descriptor_form_step2.html:443
@@ -5260,106 +5302,106 @@ msgstr "Editar informações do legado"
 msgid "Edit Register"
 msgstr "Editar registro"
 
-#: templates/thesaurus/descriptor_edit_register.html:35
+#: templates/thesaurus/descriptor_edit_register.html:43
 #: templates/thesaurus/qualifier_edit_register.html:29
 msgid "Edit registry information"
 msgstr "Editar informações do registro"
 
-#: templates/thesaurus/descriptor_edit_register.html:72
+#: templates/thesaurus/descriptor_edit_register.html:80
 #: templates/thesaurus/descriptor_form_step1.html:79
 #: templates/thesaurus/qualifier_edit_register.html:63
 #: templates/thesaurus/qualifier_form_step1.html:72
 msgid "Identifier of Record"
 msgstr "Identificação do registro"
 
-#: templates/thesaurus/descriptor_edit_register.html:120
+#: templates/thesaurus/descriptor_edit_register.html:128
 #: templates/thesaurus/descriptor_form_step1.html:124
 #: templates/thesaurus/descriptor_form_step1.html:497
-#: templates/thesaurus/page_view_desc.html:94
+#: templates/thesaurus/page_view_desc.html:99
 #: templates/thesaurus/page_view_qualif.html:61
 #: templates/thesaurus/qualifier_list.html:44
 #: templates/thesaurus/qualifier_list.html:64
-#: templates/thesaurus/thesaurus_home.html:64
+#: templates/thesaurus/thesaurus_home.html:65
 #: thesaurus/models_qualifiers.py:21
 msgid "Qualifiers"
 msgstr "Qualificadores"
 
-#: templates/thesaurus/descriptor_edit_register.html:139
+#: templates/thesaurus/descriptor_edit_register.html:147
 #: templates/thesaurus/descriptor_form_step1.html:142
 #: templates/thesaurus/qualifier_edit_register.html:126
 #: templates/thesaurus/qualifier_form_step1.html:135
 msgid "Tree Numbers List"
 msgstr "Lista de códigos hierárquicos"
 
-#: templates/thesaurus/descriptor_edit_register.html:173
+#: templates/thesaurus/descriptor_edit_register.html:181
 #: templates/thesaurus/descriptor_form_step1.html:180
 #: templates/thesaurus/qualifier_edit_register.html:161
 #: templates/thesaurus/qualifier_form_step1.html:170
 msgid "Description of Record"
 msgstr "Descrição do registro"
 
-#: templates/thesaurus/descriptor_edit_register.html:322
+#: templates/thesaurus/descriptor_edit_register.html:330
 #: templates/thesaurus/descriptor_form_step1.html:242
-#: thesaurus/models_descriptors.py:127
+#: thesaurus/models_descriptors.py:141
 msgid "Pharmacological Action List"
 msgstr "Lista de ação farmacológica"
 
-#: templates/thesaurus/descriptor_edit_register.html:331
-#: templates/thesaurus/descriptor_edit_register.html:372
-#: templates/thesaurus/descriptor_edit_register.html:504
-#: templates/thesaurus/descriptor_edit_register.html:520
-#: templates/thesaurus/descriptor_edit_register.html:523
+#: templates/thesaurus/descriptor_edit_register.html:339
+#: templates/thesaurus/descriptor_edit_register.html:379
+#: templates/thesaurus/descriptor_edit_register.html:524
+#: templates/thesaurus/descriptor_edit_register.html:539
+#: templates/thesaurus/descriptor_edit_register.html:542
 #: templates/thesaurus/descriptor_form_step1.html:251
 #: templates/thesaurus/descriptor_form_step1.html:300
 #: templates/thesaurus/descriptor_form_step1.html:433
 #: templates/thesaurus/descriptor_form_step1.html:447
 #: templates/thesaurus/descriptor_form_step1.html:450
-#: thesaurus/models_descriptors.py:31 thesaurus/models_descriptors.py:136
-#: thesaurus/models_descriptors.py:163 thesaurus/models_qualifiers.py:27
+#: thesaurus/models_descriptors.py:31 thesaurus/models_descriptors.py:150
+#: thesaurus/models_descriptors.py:176 thesaurus/models_qualifiers.py:27
 msgid "Transport UI"
 msgstr "ID de transporte"
 
-#: templates/thesaurus/descriptor_edit_register.html:363
+#: templates/thesaurus/descriptor_edit_register.html:370
 #: templates/thesaurus/descriptor_form_step1.html:291
 msgid "Related List"
 msgstr "Lista de descritores relacionados"
 
-#: templates/thesaurus/descriptor_edit_register.html:404
+#: templates/thesaurus/descriptor_edit_register.html:410
 #: templates/thesaurus/descriptor_form_step1.html:333
 msgid "Previous Indexing List"
 msgstr "Lista de indexação prévia"
 
-#: templates/thesaurus/descriptor_edit_register.html:412
+#: templates/thesaurus/descriptor_edit_register.html:418
 #: templates/thesaurus/descriptor_form_step1.html:341
 msgid "Previous Index"
 msgstr "Indexação prévia"
 
-#: templates/thesaurus/descriptor_edit_register.html:449
+#: templates/thesaurus/descriptor_edit_register.html:447
 #: templates/thesaurus/descriptor_form_step1.html:378
 msgid "Entry Combination List"
 msgstr "Lista de descritores pré-coordenados (precoord)"
 
-#: templates/thesaurus/descriptor_edit_register.html:488
+#: templates/thesaurus/descriptor_edit_register.html:502
 #: templates/thesaurus/descriptor_form_step1.html:417
 msgid "Add new entry combination"
 msgstr "Adicionar novo Precoord"
 
-#: templates/thesaurus/descriptor_edit_register.html:515
+#: templates/thesaurus/descriptor_edit_register.html:534
 #: templates/thesaurus/descriptor_form_step1.html:442
 msgid "Entry combination"
 msgstr "Precoord"
 
-#: templates/thesaurus/descriptor_edit_register.html:628
+#: templates/thesaurus/descriptor_edit_register.html:647
 #: templates/thesaurus/descriptor_form_step1.html:576
 msgid "Add Pharmacological Action"
 msgstr "Adicionar ação farmacológica"
 
-#: templates/thesaurus/descriptor_edit_register.html:638
+#: templates/thesaurus/descriptor_edit_register.html:657
 #: templates/thesaurus/descriptor_form_step1.html:586
 msgid "Add Related"
 msgstr "Adicionar relacionado"
 
-#: templates/thesaurus/descriptor_edit_register.html:658
+#: templates/thesaurus/descriptor_edit_register.html:677
 #: templates/thesaurus/descriptor_form_step1.html:606
 msgid "Add Entry Combination"
 msgstr "Adicionar novo Precoord"
@@ -5369,8 +5411,8 @@ msgid "Edit term"
 msgstr "Editar termo"
 
 #: templates/thesaurus/descriptor_edit_term.html:29
-#: templates/thesaurus/page_view_desc.html:568
-#: templates/thesaurus/page_view_desc.html:717
+#: templates/thesaurus/page_view_desc.html:602
+#: templates/thesaurus/page_view_desc.html:751
 #: templates/thesaurus/qualifier_edit_term.html:29
 msgid "Edit term information"
 msgstr "Editar informações do termo"
@@ -5397,6 +5439,11 @@ msgstr "Nome do tesauro"
 #: templates/thesaurus/descriptor_new_term.html:236
 msgid "Add thesaurus name"
 msgstr "Adicionar nome do tesauro"
+
+#: templates/thesaurus/descriptor_edit_term.html:235
+#| msgid "Are you sure you want to delete?"
+msgid "Are you sure you want to delete this term"
+msgstr "Você tem certeza que deseja apagar este termo?"
 
 #: templates/thesaurus/descriptor_form_step0.html:24
 #: templates/thesaurus/descriptor_form_step1.html:22
@@ -5495,27 +5542,27 @@ msgstr "Cria informação para novo termo"
 msgid "Edit Descriptor"
 msgstr "Editar descritor"
 
-#: templates/thesaurus/page_view_desc.html:90
+#: templates/thesaurus/page_view_desc.html:95
 #: templates/thesaurus/page_view_qualif.html:90
 msgid "Details"
 msgstr "Detalhes"
 
-#: templates/thesaurus/page_view_desc.html:98
+#: templates/thesaurus/page_view_desc.html:103
 #: templates/thesaurus/page_view_qualif.html:94
-#: thesaurus/models_descriptors.py:313 thesaurus/models_qualifiers.py:216
+#: thesaurus/models_descriptors.py:327 thesaurus/models_qualifiers.py:213
 msgid "Concepts"
 msgstr "Conceitos"
 
-#: templates/thesaurus/page_view_desc.html:104
+#: templates/thesaurus/page_view_desc.html:109
 #: templates/thesaurus/page_view_qualif.html:100
 msgid "Set exclusive to BIREME"
 msgstr "Conjunto exclusivo para BIREME"
 
-#: templates/thesaurus/page_view_desc.html:114
+#: templates/thesaurus/page_view_desc.html:119
 msgid "Descriptor record"
 msgstr "Descritor"
 
-#: templates/thesaurus/page_view_desc.html:120
+#: templates/thesaurus/page_view_desc.html:125
 msgid ""
 "Edit record information, descriptions, abbreviations, hierarchical codes, "
 "pharmacological actions, related, previous indexes and Precoord"
@@ -5524,262 +5571,268 @@ msgstr ""
 "hierárquicos, ações farmacológicas, relacionados, indexações prévia e "
 "Precoord"
 
-#: templates/thesaurus/page_view_desc.html:128
+#: templates/thesaurus/page_view_desc.html:133
 #: templates/thesaurus/page_view_qualif.html:124
 msgid "Tree Number(s)"
 msgstr "Categorias"
 
-#: templates/thesaurus/page_view_desc.html:140
+#: templates/thesaurus/page_view_desc.html:145
 #: templates/thesaurus/page_view_qualif.html:136
 #: templates/thesaurus/search_concept_desc.html:127
 #: templates/thesaurus/search_concept_qualif.html:127
 msgid "Unique ID"
 msgstr "ID de transporte"
 
-#: templates/thesaurus/page_view_desc.html:152
+#: templates/thesaurus/page_view_desc.html:157
 #: templates/thesaurus/page_view_qualif.html:148
 msgid "Thesaurus ID"
 msgstr "ID no tesauro"
 
-#: templates/thesaurus/page_view_desc.html:164
+#: templates/thesaurus/page_view_desc.html:169
 #: templates/thesaurus/page_view_qualif.html:160
 msgid "Indexing Annotation"
 msgstr "Nota de Indexação"
 
-#: templates/thesaurus/page_view_desc.html:187
+#: templates/thesaurus/page_view_desc.html:192
 #: templates/thesaurus/page_view_qualif.html:183
 msgid "Definition"
 msgstr "Definição"
 
-#: templates/thesaurus/page_view_desc.html:210
-#: templates/thesaurus/page_view_desc.html:453
+#: templates/thesaurus/page_view_desc.html:215
+#: templates/thesaurus/page_view_desc.html:487
 msgid "Entry Combination"
 msgstr "Precoord"
 
-#: templates/thesaurus/page_view_desc.html:228
+#: templates/thesaurus/page_view_desc.html:250
 #: templates/thesaurus/page_view_qualif.html:220
 msgid "Entry Term(s)"
 msgstr "Termos alternativos"
 
-#: templates/thesaurus/page_view_desc.html:259
+#: templates/thesaurus/page_view_desc.html:281
 msgid "Pharmacological Action"
 msgstr "Ação Farmacológica"
 
-#: templates/thesaurus/page_view_desc.html:273
+#: templates/thesaurus/page_view_desc.html:295
 msgid "Registry Number"
 msgstr "Número de registro"
 
-#: templates/thesaurus/page_view_desc.html:289
+#: templates/thesaurus/page_view_desc.html:311
 msgid "CAS Type 1 Name"
 msgstr "Nome do Tipo 1 do CAS"
 
-#: templates/thesaurus/page_view_desc.html:303
-#: thesaurus/models_descriptors.py:179 thesaurus/models_descriptors.py:180
+#: templates/thesaurus/page_view_desc.html:325
+#: thesaurus/models_descriptors.py:191 thesaurus/models_descriptors.py:192
 msgid "Previous Indexing"
 msgstr "Indexação prévia"
 
-#: templates/thesaurus/page_view_desc.html:317
+#: templates/thesaurus/page_view_desc.html:339
 msgid "Public MeSH Note"
 msgstr "Nota pública"
 
-#: templates/thesaurus/page_view_desc.html:331
+#: templates/thesaurus/page_view_desc.html:353
 #: templates/thesaurus/page_view_qualif.html:251
 msgid "Online Note"
 msgstr "Nota Online"
 
-#: templates/thesaurus/page_view_desc.html:345
+#: templates/thesaurus/page_view_desc.html:367
 #: templates/thesaurus/page_view_qualif.html:265
 msgid "History Note"
 msgstr "Nota histórica"
 
-#: templates/thesaurus/page_view_desc.html:359
+#: templates/thesaurus/page_view_desc.html:381
 msgid "See Also"
 msgstr "Veja também"
 
-#: templates/thesaurus/page_view_desc.html:385
+#: templates/thesaurus/page_view_desc.html:407
 msgid "Consider Also"
 msgstr "Considere também"
 
-#: templates/thesaurus/page_view_desc.html:399
+#: templates/thesaurus/page_view_desc.html:421
 #: templates/thesaurus/page_view_qualif.html:279
 msgid "Date Established"
 msgstr "Data de estabelecimento"
 
-#: templates/thesaurus/page_view_desc.html:411
+#: templates/thesaurus/page_view_desc.html:433
 #: templates/thesaurus/page_view_qualif.html:291
 msgid "Date of Entry"
 msgstr "Data de entrada"
 
-#: templates/thesaurus/page_view_desc.html:423
+#: templates/thesaurus/page_view_desc.html:445
 #: templates/thesaurus/page_view_qualif.html:303
 msgid "Revision Date"
 msgstr "Data da revisão"
 
-#: templates/thesaurus/page_view_desc.html:474
+#: templates/thesaurus/page_view_desc.html:457
+#: templates/thesaurus/page_view_qualif.html:315
+#| msgid "Update date"
+msgid "Update Date"
+msgstr "Data de atualização"
+
+#: templates/thesaurus/page_view_desc.html:508
 msgid "Allowable Qualifiers"
 msgstr "Qualificadores permitidos"
 
-#: templates/thesaurus/page_view_desc.html:491
-#: templates/thesaurus/page_view_qualif.html:331
+#: templates/thesaurus/page_view_desc.html:525
+#: templates/thesaurus/page_view_qualif.html:343
 msgid "Add concept"
 msgstr "Adicionar conceito"
 
-#: templates/thesaurus/page_view_desc.html:507
-#: templates/thesaurus/page_view_desc.html:624
-#: templates/thesaurus/page_view_desc.html:670
-#: templates/thesaurus/page_view_qualif.html:347
-#: templates/thesaurus/page_view_qualif.html:461
-#: templates/thesaurus/page_view_qualif.html:508
-#: thesaurus/models_descriptors.py:312 thesaurus/models_qualifiers.py:215
+#: templates/thesaurus/page_view_desc.html:541
+#: templates/thesaurus/page_view_desc.html:658
+#: templates/thesaurus/page_view_desc.html:704
+#: templates/thesaurus/page_view_qualif.html:359
+#: templates/thesaurus/page_view_qualif.html:473
+#: templates/thesaurus/page_view_qualif.html:520
+#: thesaurus/models_descriptors.py:326 thesaurus/models_qualifiers.py:212
 msgid "Concept"
 msgstr "Conceito"
 
-#: templates/thesaurus/page_view_desc.html:515
-#: templates/thesaurus/page_view_qualif.html:356
+#: templates/thesaurus/page_view_desc.html:549
+#: templates/thesaurus/page_view_qualif.html:368
 msgid "Preferred Concept"
 msgstr "Conceito preferido"
 
-#: templates/thesaurus/page_view_desc.html:520
-#: templates/thesaurus/page_view_desc.html:653
-#: templates/thesaurus/page_view_qualif.html:361
-#: templates/thesaurus/page_view_qualif.html:491
+#: templates/thesaurus/page_view_desc.html:554
+#: templates/thesaurus/page_view_desc.html:687
+#: templates/thesaurus/page_view_qualif.html:373
+#: templates/thesaurus/page_view_qualif.html:503
 msgid "Move this concept to another record"
 msgstr "Mover este conceito para outro registro"
 
-#: templates/thesaurus/page_view_desc.html:535
-#: templates/thesaurus/page_view_desc.html:683
-#: templates/thesaurus/page_view_qualif.html:376
-#: templates/thesaurus/page_view_qualif.html:521
+#: templates/thesaurus/page_view_desc.html:569
+#: templates/thesaurus/page_view_desc.html:717
+#: templates/thesaurus/page_view_qualif.html:388
+#: templates/thesaurus/page_view_qualif.html:533
 msgid "Add term"
 msgstr "Adicionar termo"
 
-#: templates/thesaurus/page_view_desc.html:537
-#: templates/thesaurus/page_view_desc.html:685
-#: templates/thesaurus/page_view_qualif.html:378
-#: templates/thesaurus/page_view_qualif.html:524
-#: thesaurus/models_descriptors.py:337 thesaurus/models_qualifiers.py:238
+#: templates/thesaurus/page_view_desc.html:571
+#: templates/thesaurus/page_view_desc.html:719
+#: templates/thesaurus/page_view_qualif.html:390
+#: templates/thesaurus/page_view_qualif.html:536
+#: thesaurus/models_descriptors.py:351 thesaurus/models_qualifiers.py:235
 msgid "Term"
 msgstr "Termo"
 
-#: templates/thesaurus/page_view_desc.html:561
-#: templates/thesaurus/page_view_desc.html:709
-#: templates/thesaurus/page_view_qualif.html:400
-#: templates/thesaurus/page_view_qualif.html:545
+#: templates/thesaurus/page_view_desc.html:595
+#: templates/thesaurus/page_view_desc.html:743
+#: templates/thesaurus/page_view_qualif.html:412
+#: templates/thesaurus/page_view_qualif.html:557
 msgid "Preferred Term"
 msgstr "Termo preferido"
 
-#: templates/thesaurus/page_view_desc.html:575
-#: templates/thesaurus/page_view_desc.html:724
+#: templates/thesaurus/page_view_desc.html:609
+#: templates/thesaurus/page_view_desc.html:758
 msgid "Move this term to another concept"
 msgstr "Mover este termo para outro conceito"
 
-#: templates/thesaurus/page_view_desc.html:579
-#: templates/thesaurus/page_view_desc.html:728
+#: templates/thesaurus/page_view_desc.html:613
+#: templates/thesaurus/page_view_desc.html:762
 msgid "Create a new record from this term"
 msgstr "Criar um novo registro a partir deste termo"
 
-#: templates/thesaurus/page_view_desc.html:589
-#: templates/thesaurus/page_view_desc.html:738
-#: templates/thesaurus/page_view_qualif.html:428
-#: templates/thesaurus/page_view_qualif.html:574
+#: templates/thesaurus/page_view_desc.html:623
+#: templates/thesaurus/page_view_desc.html:772
+#: templates/thesaurus/page_view_qualif.html:440
+#: templates/thesaurus/page_view_qualif.html:586
 msgid "Term UI"
 msgstr "ID do termo"
 
-#: templates/thesaurus/page_view_desc.html:590
-#: templates/thesaurus/page_view_desc.html:739
-#: templates/thesaurus/page_view_qualif.html:429
-#: templates/thesaurus/page_view_qualif.html:575
+#: templates/thesaurus/page_view_desc.html:624
+#: templates/thesaurus/page_view_desc.html:773
+#: templates/thesaurus/page_view_qualif.html:441
+#: templates/thesaurus/page_view_qualif.html:587
 msgid "ConceptPreferredTerm"
 msgstr "Termo preferido do conceito"
 
-#: templates/thesaurus/page_view_desc.html:591
-#: templates/thesaurus/page_view_desc.html:740
-#: templates/thesaurus/page_view_qualif.html:430
-#: templates/thesaurus/page_view_qualif.html:576
+#: templates/thesaurus/page_view_desc.html:625
+#: templates/thesaurus/page_view_desc.html:774
+#: templates/thesaurus/page_view_qualif.html:442
+#: templates/thesaurus/page_view_qualif.html:588
 msgid "Is permuted"
 msgstr "É permutado"
 
-#: templates/thesaurus/page_view_desc.html:592
-#: templates/thesaurus/page_view_desc.html:741
-#: templates/thesaurus/page_view_qualif.html:431
-#: templates/thesaurus/page_view_qualif.html:577
+#: templates/thesaurus/page_view_desc.html:626
+#: templates/thesaurus/page_view_desc.html:775
+#: templates/thesaurus/page_view_qualif.html:443
+#: templates/thesaurus/page_view_qualif.html:589
 msgid "LexicalTag"
 msgstr "LexicalTag"
 
-#: templates/thesaurus/page_view_desc.html:593
-#: templates/thesaurus/page_view_desc.html:742
-#: templates/thesaurus/page_view_qualif.html:432
-#: templates/thesaurus/page_view_qualif.html:578
+#: templates/thesaurus/page_view_desc.html:627
+#: templates/thesaurus/page_view_desc.html:776
+#: templates/thesaurus/page_view_qualif.html:444
+#: templates/thesaurus/page_view_qualif.html:590
 msgid "RecordPreferredTerm"
 msgstr "Termo preferido do registro"
 
-#: templates/thesaurus/page_view_desc.html:594
-#: templates/thesaurus/page_view_desc.html:743
-#: templates/thesaurus/page_view_qualif.html:433
-#: templates/thesaurus/page_view_qualif.html:579
+#: templates/thesaurus/page_view_desc.html:628
+#: templates/thesaurus/page_view_desc.html:777
+#: templates/thesaurus/page_view_qualif.html:445
+#: templates/thesaurus/page_view_qualif.html:591
 msgid "Entry Version"
 msgstr "Versão de entrada"
 
-#: templates/thesaurus/page_view_desc.html:595
-#: templates/thesaurus/page_view_desc.html:744
-#: templates/thesaurus/page_view_qualif.html:434
-#: templates/thesaurus/page_view_qualif.html:580
+#: templates/thesaurus/page_view_desc.html:629
+#: templates/thesaurus/page_view_desc.html:778
+#: templates/thesaurus/page_view_qualif.html:446
+#: templates/thesaurus/page_view_qualif.html:592
 msgid "DateCreated"
 msgstr "Data de criação"
 
-#: templates/thesaurus/page_view_desc.html:596
-#: templates/thesaurus/page_view_desc.html:745
-#: templates/thesaurus/page_view_qualif.html:435
-#: templates/thesaurus/page_view_qualif.html:581
+#: templates/thesaurus/page_view_desc.html:630
+#: templates/thesaurus/page_view_desc.html:779
+#: templates/thesaurus/page_view_qualif.html:447
+#: templates/thesaurus/page_view_qualif.html:593
 msgid "DateAltered"
 msgstr "Data de alteração"
 
-#: templates/thesaurus/page_view_desc.html:597
-#: templates/thesaurus/page_view_desc.html:746
-#: templates/thesaurus/page_view_qualif.html:436
-#: templates/thesaurus/page_view_qualif.html:582
+#: templates/thesaurus/page_view_desc.html:631
+#: templates/thesaurus/page_view_desc.html:780
+#: templates/thesaurus/page_view_qualif.html:448
+#: templates/thesaurus/page_view_qualif.html:594
 msgid "History annotation"
 msgstr "Anotações de histórico"
 
-#: templates/thesaurus/page_view_desc.html:629
-#: templates/thesaurus/page_view_qualif.html:467
+#: templates/thesaurus/page_view_desc.html:663
+#: templates/thesaurus/page_view_qualif.html:479
 msgid "Narrower"
 msgstr "NRW - Mais específico"
 
-#: templates/thesaurus/page_view_desc.html:633
-#: templates/thesaurus/page_view_qualif.html:471 thesaurus/choices.py:33
+#: templates/thesaurus/page_view_desc.html:667
+#: templates/thesaurus/page_view_qualif.html:483 thesaurus/choices.py:33
 msgid "BRD - Broader"
 msgstr "BRD - Mais amplo"
 
-#: templates/thesaurus/page_view_desc.html:637
-#: templates/thesaurus/page_view_qualif.html:475 thesaurus/choices.py:34
+#: templates/thesaurus/page_view_desc.html:671
+#: templates/thesaurus/page_view_qualif.html:487 thesaurus/choices.py:34
 msgid "REL - Related but not broader or narrower"
 msgstr "REL - Relacionado, mas não mais amplo ou mais específico"
 
-#: templates/thesaurus/page_view_desc.html:657
-#: templates/thesaurus/page_view_qualif.html:495
+#: templates/thesaurus/page_view_desc.html:691
+#: templates/thesaurus/page_view_qualif.html:507
 msgid "Create a new record from this concept"
 msgstr "Criar um novo registro a partir deste conceito"
 
-#: templates/thesaurus/page_view_desc.html:670
-#: templates/thesaurus/page_view_qualif.html:508
+#: templates/thesaurus/page_view_desc.html:704
+#: templates/thesaurus/page_view_qualif.html:520
 msgid "Please set the preferred term for this concept"
 msgstr "Por favor, defina o termo preferido para este conceito"
 
-#: templates/thesaurus/page_view_desc.html:770
-#: templates/thesaurus/page_view_qualif.html:604
+#: templates/thesaurus/page_view_desc.html:804
+#: templates/thesaurus/page_view_qualif.html:616
 msgid "Edit this configurations"
 msgstr "Editar essas configurações"
 
-#: templates/thesaurus/page_view_desc.html:886
-#: templates/thesaurus/page_view_qualif.html:720
+#: templates/thesaurus/page_view_desc.html:920
+#: templates/thesaurus/page_view_qualif.html:732
 msgid "Create this configurations"
 msgstr "Criar estas configurações"
 
-#: templates/thesaurus/page_view_desc.html:988
-#: templates/thesaurus/page_view_qualif.html:820
+#: templates/thesaurus/page_view_desc.html:1022
+#: templates/thesaurus/page_view_qualif.html:832
 #: templates/thesaurus/qualifier_list.html:164
-#: templates/thesaurus/thesaurus_home.html:162
+#: templates/thesaurus/thesaurus_home.html:207
 msgid "No results found"
 msgstr "Nenhum resultado foi encontrado"
 
@@ -5806,18 +5859,18 @@ msgstr ""
 msgid "Abbreviation"
 msgstr "Abreviação"
 
-#: templates/thesaurus/page_view_qualif.html:407
-#: templates/thesaurus/page_view_qualif.html:553
+#: templates/thesaurus/page_view_qualif.html:419
+#: templates/thesaurus/page_view_qualif.html:565
 msgid "Edit qualifier information"
 msgstr "Editar informações do qualificador"
 
-#: templates/thesaurus/page_view_qualif.html:414
-#: templates/thesaurus/page_view_qualif.html:560
+#: templates/thesaurus/page_view_qualif.html:426
+#: templates/thesaurus/page_view_qualif.html:572
 msgid "Move this qualifier to another concept"
 msgstr "Mover este qualificador para outro conceito"
 
-#: templates/thesaurus/page_view_qualif.html:418
-#: templates/thesaurus/page_view_qualif.html:564
+#: templates/thesaurus/page_view_qualif.html:430
+#: templates/thesaurus/page_view_qualif.html:576
 msgid "Create a new record from this qualifier"
 msgstr "Criar um novo registro a partir deste qualificador"
 
@@ -5860,7 +5913,7 @@ msgid "Add new record for Qualifier"
 msgstr "Adicionar novo registro de qualificador"
 
 #: templates/thesaurus/qualifier_list.html:80
-#: templates/thesaurus/thesaurus_home.html:80
+#: templates/thesaurus/thesaurus_home.html:82
 msgid "Fields"
 msgstr "Campos"
 
@@ -5869,7 +5922,7 @@ msgid "All qualifiers concepts"
 msgstr "Todos os qualificadores"
 
 #: templates/thesaurus/qualifier_list.html:84
-#: templates/thesaurus/thesaurus_home.html:84
+#: templates/thesaurus/thesaurus_home.html:87
 msgid "Preferred concepts only"
 msgstr "Apenas conceitos preferidos"
 
@@ -5878,30 +5931,30 @@ msgid "DeCS Qualifier UI"
 msgstr "ID no tesauro"
 
 #: templates/thesaurus/qualifier_list.html:88
-#: templates/thesaurus/thesaurus_home.html:87
+#: templates/thesaurus/thesaurus_home.html:90
 msgid "Tree Number"
 msgstr "Categoria"
 
 #: templates/thesaurus/qualifier_list.html:89
-#: templates/thesaurus/thesaurus_home.html:88
-#: thesaurus/models_descriptors.py:284 thesaurus/models_qualifiers.py:188
+#: templates/thesaurus/thesaurus_home.html:91
+#: thesaurus/models_descriptors.py:298 thesaurus/models_qualifiers.py:185
 msgid "Concept unique Identifier"
 msgstr "ID do conceito"
 
 #: templates/thesaurus/qualifier_list.html:98
-#: templates/thesaurus/thesaurus_home.html:97 thesaurus/choices.py:56
-#: utils/templatetags/app_filters.py:24
+#: templates/thesaurus/thesaurus_home.html:104 thesaurus/choices.py:56
+#: utils/templatetags/app_filters.py:26
 msgid "Historical"
 msgstr "Histórico"
 
 #: templates/thesaurus/qualifier_list.html:99
-#: templates/thesaurus/thesaurus_home.html:98 thesaurus/choices.py:57
-#: utils/templatetags/app_filters.py:25
+#: templates/thesaurus/thesaurus_home.html:105 thesaurus/choices.py:57
+#: utils/templatetags/app_filters.py:27
 msgid "Awaiting translation"
 msgstr "Aguardando tradução"
 
 #: templates/thesaurus/qualifier_list.html:114
-#: templates/thesaurus/thesaurus_home.html:113
+#: templates/thesaurus/thesaurus_home.html:154
 msgid "Exact Match"
 msgstr "Pesquisa exata"
 
@@ -5918,12 +5971,12 @@ msgid "DeCS Qualifer UI"
 msgstr "ID no tesauro"
 
 #: templates/thesaurus/qualifier_list.html:174
-#: templates/thesaurus/thesaurus_home.html:172
+#: templates/thesaurus/thesaurus_home.html:217
 msgid "Last additions"
 msgstr "Últimas inserções"
 
 #: templates/thesaurus/qualifier_list.html:190
-#: templates/thesaurus/thesaurus_home.html:187
+#: templates/thesaurus/thesaurus_home.html:232
 msgid "Last modified"
 msgstr "Últimas alterações"
 
@@ -6024,19 +6077,24 @@ msgstr "Mover para este conceito?"
 msgid "Move qualifier"
 msgstr "Mover qualificador"
 
-#: templates/thesaurus/thesaurus_home.html:52
+#: templates/thesaurus/thesaurus_home.html:53
 msgid "Add new record for Descriptor"
 msgstr "Adiciona novo registro de descritor"
 
-#: templates/thesaurus/thesaurus_home.html:83
+#: templates/thesaurus/thesaurus_home.html:86
 msgid "All descriptor concepts"
 msgstr "Todos os termos"
 
-#: templates/thesaurus/thesaurus_home.html:131
+#: templates/thesaurus/thesaurus_home.html:106
+#: templates/thesaurus/thesaurus_home.html:195
+msgid "Without translation"
+msgstr "Sem tradução"
+
+#: templates/thesaurus/thesaurus_home.html:172
 msgid "Term name"
 msgstr "Nome no termo"
 
-#: templates/thesaurus/thesaurus_home.html:133
+#: templates/thesaurus/thesaurus_home.html:174
 msgid "Concept name"
 msgstr "Nome do conceito"
 
@@ -6049,7 +6107,7 @@ msgstr "Visualizar Título"
 #: templates/title/title_confirm_delete.html:8
 #: templates/title/title_form.html:9 templates/title/title_list.html:4
 #: templates/title/title_list.html:7 templates/title/title_list.html:27
-#: title/models.py:28
+#: title/models.py:33
 msgid "Titles"
 msgstr "Títulos"
 
@@ -6064,126 +6122,131 @@ msgstr "Editar Título"
 msgid "New Title"
 msgstr "Novo Título"
 
-#: templates/title/form_preview.html:212 templates/title/title_form.html:54
-#: title/models.py:224 title/models.py:225
+#: templates/title/form_preview.html:213 templates/title/title_form.html:55
+#: title/models.py:229 title/models.py:230
 msgid "Index range"
 msgstr "Cobertura de indexação"
 
-#: templates/title/form_preview.html:215 templates/title/title_form.html:316
-#: title/models.py:233
+#: templates/title/form_preview.html:216 templates/title/title_form.html:319
+#: title/models.py:238
 msgid "Index source code"
 msgstr "Código da fonte de indexação"
 
-#: templates/title/form_preview.html:216 templates/title/title_form.html:317
-#: title/models.py:73 title/models.py:234
+#: templates/title/form_preview.html:217 templates/title/title_form.html:320
+#: title/models.py:78 title/models.py:239
 msgid "Initial date"
 msgstr "Data inicial"
 
-#: templates/title/form_preview.html:217 templates/title/form_preview.html:332
-#: templates/title/title_form.html:318 templates/title/title_form.html:403
-#: title/models.py:75 title/models.py:184 title/models.py:235
+#: templates/title/form_preview.html:218 templates/title/form_preview.html:333
+#: templates/title/title_form.html:321 templates/title/title_form.html:406
+#: title/models.py:80 title/models.py:189 title/models.py:240
 msgid "Initial volume"
 msgstr "Volume inicial"
 
-#: templates/title/form_preview.html:219 templates/title/title_form.html:320
-#: title/models.py:79 title/models.py:237
+#: templates/title/form_preview.html:219 templates/title/form_preview.html:334
+#: templates/title/title_form.html:322 templates/title/title_form.html:407
+#: title/models.py:82 title/models.py:190 title/models.py:241
+msgid "Initial number"
+msgstr "Número inicial"
+
+#: templates/title/form_preview.html:220 templates/title/title_form.html:323
+#: title/models.py:84 title/models.py:242
 msgid "Final date"
 msgstr "Data final"
 
-#: templates/title/form_preview.html:220 templates/title/title_form.html:321
-#: title/models.py:81 title/models.py:238
+#: templates/title/form_preview.html:221 templates/title/title_form.html:324
+#: title/models.py:86 title/models.py:243
 msgid "Final volume"
 msgstr "Volume final"
 
-#: templates/title/form_preview.html:221 templates/title/title_form.html:322
-#: title/models.py:83 title/models.py:239
+#: templates/title/form_preview.html:222 templates/title/title_form.html:325
+#: title/models.py:88 title/models.py:244
 msgid "Final number"
 msgstr "Número final"
 
-#: templates/title/form_preview.html:222 templates/title/title_form.html:323
-#: templates/title/title_list.html:103 title/models.py:125 title/models.py:240
+#: templates/title/form_preview.html:223 templates/title/title_form.html:326
+#: templates/title/title_list.html:103 title/models.py:130 title/models.py:245
 msgid "Indexer center code"
 msgstr "Código do centro indexador"
 
-#: templates/title/form_preview.html:223 templates/title/title_form.html:324
-#: title/models.py:241
+#: templates/title/form_preview.html:224 templates/title/title_form.html:327
+#: title/models.py:246
 msgid "Copy"
 msgstr "Cópia"
 
-#: templates/title/form_preview.html:224 templates/title/title_form.html:325
-#: title/models.py:242
+#: templates/title/form_preview.html:225 templates/title/title_form.html:328
+#: title/models.py:247
 msgid "To distribute"
 msgstr "À distribuir"
 
-#: templates/title/form_preview.html:225 templates/title/title_form.html:326
-#: title/models.py:243
+#: templates/title/form_preview.html:226 templates/title/title_form.html:329
+#: title/models.py:248
 msgid "Selective"
 msgstr "Seletiva"
 
-#: templates/title/form_preview.html:279 templates/title/title_form.html:55
-#: title/models.py:197
+#: templates/title/form_preview.html:280 templates/title/title_form.html:56
+#: title/models.py:202
 msgid "BVS Specialties"
 msgstr "Especialidades BVS"
 
-#: templates/title/form_preview.html:282 templates/title/title_form.html:364
+#: templates/title/form_preview.html:283 templates/title/title_form.html:367
 msgid "VHL"
 msgstr "BVS"
 
-#: templates/title/form_preview.html:283 templates/title/title_form.html:365
+#: templates/title/form_preview.html:284 templates/title/title_form.html:368
 msgid "VHL Thematic area"
 msgstr "Área Temática BVS"
 
-#: templates/title/form_preview.html:325 templates/title/title_form.html:56
-#: title/models.py:177
+#: templates/title/form_preview.html:326 templates/title/title_form.html:57
+#: title/models.py:182
 msgid "Title variances"
 msgstr "Variações do título"
 
-#: templates/title/form_preview.html:331 templates/title/title_form.html:402
-#: title/models.py:183
+#: templates/title/form_preview.html:332 templates/title/title_form.html:405
+#: title/models.py:188
 msgid "Initial year"
 msgstr "Ano inicial"
 
-#: templates/title/form_preview.html:375 templates/title/title_form.html:57
-#: title/models.py:254 title/models.py:255
+#: templates/title/form_preview.html:376 templates/title/title_form.html:58
+#: title/models.py:259 title/models.py:260
 msgid "Audit"
 msgstr "Auditoria"
 
-#: templates/title/form_preview.html:420 templates/title/title_form.html:58
-#: title/models.py:151
+#: templates/title/form_preview.html:421 templates/title/title_form.html:59
+#: title/models.py:156
 msgid "Online resources"
 msgstr "Recursos online"
 
-#: templates/title/form_preview.html:462 templates/title/title_form.html:59
-#: title/models.py:278 title/models.py:307
+#: templates/title/form_preview.html:463 templates/title/title_form.html:60
+#: title/models.py:283 title/models.py:312
 msgid "Issues"
 msgstr "Novo Recurso"
 
-#: templates/title/form_preview.html:465 templates/title/title_form.html:538
-#: title/models.py:322
-msgid "Year"
-msgstr ""
-
-#: templates/title/form_preview.html:467 templates/title/title_form.html:540
-#: title/models.py:324
+#: templates/title/form_preview.html:468 templates/title/title_form.html:543
+#: title/models.py:329
 msgid "Number"
 msgstr "Número"
 
-#: templates/title/form_preview.html:468 templates/title/title_form.html:541
+#: templates/title/form_preview.html:469 templates/title/title_form.html:544
 msgid "Copies"
 msgstr ""
 
-#: templates/title/form_preview.html:469 templates/title/title_form.html:542
-#: title/models.py:272
+#: templates/title/form_preview.html:470 templates/title/title_form.html:545
+#: title/models.py:277
 msgid "Mask"
 msgstr "código"
 
-#: templates/title/form_preview.html:471 templates/title/title_form.html:544
-#, fuzzy
+#: templates/title/form_preview.html:472 templates/title/title_form.html:547
 #| msgid "Publication type"
 msgid "Publication Type"
 msgstr "Tipo de publicação"
 
-#: templates/title/form_preview.html:513 templates/title/title_list.html:118
+#: templates/title/form_preview.html:514 templates/title/title_form.html:62
+#| msgid "Information Source"
+msgid "Information"
+msgstr "Informação"
+
+#: templates/title/form_preview.html:555 templates/title/title_list.html:118
 msgid "Edit"
 msgstr "Editar"
 
@@ -6193,43 +6256,43 @@ msgstr "Editar"
 msgid "Delete Title"
 msgstr "Apagar Título"
 
-#: templates/title/title_form.html:160
+#: templates/title/title_form.html:163
 msgid "Title created in"
 msgstr "Título criado em"
 
-#: templates/title/title_form.html:512
+#: templates/title/title_form.html:515
 msgid "Period"
 msgstr "Período"
 
-#: templates/title/title_form.html:513
+#: templates/title/title_form.html:516
 msgid "From"
 msgstr "De"
 
-#: templates/title/title_form.html:515
+#: templates/title/title_form.html:518
 msgid "Until"
 msgstr "Até"
 
-#: templates/title/title_form.html:615
+#: templates/title/title_form.html:661
 msgid "Send"
 msgstr "Enviar"
 
-#: templates/title/title_form.html:654
+#: templates/title/title_form.html:715
 msgid "Add specialty"
 msgstr "Adicionar especialidade"
 
-#: templates/title/title_form.html:663
+#: templates/title/title_form.html:724
 msgid "Add variance"
 msgstr "Adicionar variação"
 
-#: templates/title/title_form.html:672
+#: templates/title/title_form.html:733
 msgid "Add index range"
 msgstr "Adicionar cobertura de indexação"
 
-#: templates/title/title_form.html:681
+#: templates/title/title_form.html:742
 msgid "Add audit"
 msgstr "Adicionar auditoria"
 
-#: templates/title/title_form.html:690
+#: templates/title/title_form.html:751
 msgid "Add online resource"
 msgstr "Adicionar recursos online"
 
@@ -6241,15 +6304,15 @@ msgstr "Meus títulos"
 msgid "All titles"
 msgstr "Todos os títulos"
 
-#: templates/title/title_list.html:72 title/models.py:69
+#: templates/title/title_list.html:72 title/models.py:74
 msgid "Shortened title"
 msgstr "Título abreviado"
 
-#: templates/title/title_list.html:81 title/models.py:53
+#: templates/title/title_list.html:81 title/models.py:58
 msgid "SeCS number"
 msgstr "Número SeCS"
 
-#: templates/title/title_list.html:104 title/models.py:127
+#: templates/title/title_list.html:104 title/models.py:132
 msgid "Editor code"
 msgstr "Código do editor"
 
@@ -6302,7 +6365,7 @@ msgstr "Assistente de campo"
 msgid "Leaving this page will cause any unsaved data to be lost"
 msgstr "Sair desta página fará com que os dados não salvos sejam perdidos"
 
-#: text_block/models.py:9 text_block/models.py:51
+#: text_block/models.py:9 text_block/models.py:52
 msgid "Text block"
 msgstr "Bloco de texto"
 
@@ -6318,7 +6381,11 @@ msgstr "Espaço"
 msgid "User profile"
 msgstr "Perfil do usuário"
 
-#: text_block/models.py:17 text_block/models.py:54
+#: text_block/models.py:17
+msgid "Display"
+msgstr ""
+
+#: text_block/models.py:18 text_block/models.py:55
 msgid "Content"
 msgstr "Conteúdo"
 
@@ -6379,26 +6446,26 @@ msgstr "NON - Nenhum"
 msgid "TRD - Trade name"
 msgstr "TRD - Nome comercial"
 
-#: thesaurus/forms.py:31 thesaurus/forms.py:134 thesaurus/forms.py:149
-#: thesaurus/forms.py:171 thesaurus/forms.py:321 thesaurus/forms.py:339
-#: thesaurus/models_descriptors.py:44 thesaurus/models_descriptors.py:370
-#: thesaurus/models_qualifiers.py:40 thesaurus/models_qualifiers.py:272
+#: thesaurus/forms.py:33 thesaurus/forms.py:144 thesaurus/forms.py:155
+#: thesaurus/forms.py:188 thesaurus/forms.py:346 thesaurus/forms.py:357
+#: thesaurus/models_descriptors.py:44 thesaurus/models_descriptors.py:384
+#: thesaurus/models_qualifiers.py:40 thesaurus/models_qualifiers.py:269
 msgid "Date created"
 msgstr "Data de criação"
 
-#: thesaurus/forms.py:33 thesaurus/forms.py:173
+#: thesaurus/forms.py:35 thesaurus/forms.py:190
 #: thesaurus/models_descriptors.py:47 thesaurus/models_qualifiers.py:43
 msgid "Date revised"
 msgstr "Data de revisão"
 
-#: thesaurus/forms.py:35 thesaurus/forms.py:175
+#: thesaurus/forms.py:37 thesaurus/forms.py:192
 #: thesaurus/models_descriptors.py:50 thesaurus/models_qualifiers.py:46
 msgid "Date established"
 msgstr "Data de estabelecimento"
 
-#: thesaurus/forms.py:136 thesaurus/forms.py:151 thesaurus/forms.py:323
-#: thesaurus/forms.py:341 thesaurus/models_descriptors.py:374
-#: thesaurus/models_qualifiers.py:275
+#: thesaurus/forms.py:146 thesaurus/forms.py:157 thesaurus/forms.py:348
+#: thesaurus/forms.py:359 thesaurus/models_descriptors.py:388
+#: thesaurus/models_qualifiers.py:272
 msgid "Date altered"
 msgstr "Data de alteração"
 
@@ -6418,185 +6485,185 @@ msgstr "ID externo"
 msgid "NLM classification number"
 msgstr "Número de classificação da NLM"
 
-#: thesaurus/models_descriptors.py:69
+#: thesaurus/models_descriptors.py:84
 msgid "Descriptions"
 msgstr "Descrições"
 
-#: thesaurus/models_descriptors.py:77 thesaurus/models_qualifiers.py:86
+#: thesaurus/models_descriptors.py:92 thesaurus/models_qualifiers.py:83
 msgid "Annotation"
 msgstr "Nota de indexação"
 
-#: thesaurus/models_descriptors.py:80 thesaurus/models_qualifiers.py:89
+#: thesaurus/models_descriptors.py:95 thesaurus/models_qualifiers.py:86
 msgid "History note"
 msgstr "Nota histórica"
 
-#: thesaurus/models_descriptors.py:83 thesaurus/models_qualifiers.py:92
+#: thesaurus/models_descriptors.py:98 thesaurus/models_qualifiers.py:89
 msgid "Online note"
 msgstr "Nota Online"
 
-#: thesaurus/models_descriptors.py:86
+#: thesaurus/models_descriptors.py:101
 msgid "Public MeSH note"
 msgstr "Nota pública do MESH"
 
-#: thesaurus/models_descriptors.py:89
+#: thesaurus/models_descriptors.py:104
 msgid "Consider also"
 msgstr "Considere também"
 
-#: thesaurus/models_descriptors.py:105
+#: thesaurus/models_descriptors.py:119
 msgid "Tree number for descriptor"
 msgstr "Categoria hierárquica de descritor"
 
-#: thesaurus/models_descriptors.py:106
+#: thesaurus/models_descriptors.py:120
 msgid "Tree numbers for descriptors"
 msgstr "Categorias hierárquicas de descritores"
 
-#: thesaurus/models_descriptors.py:113 thesaurus/models_qualifiers.py:117
+#: thesaurus/models_descriptors.py:127 thesaurus/models_qualifiers.py:114
 msgid "Tree number"
 msgstr "Categoria"
 
-#: thesaurus/models_descriptors.py:128
+#: thesaurus/models_descriptors.py:142
 msgid "Pharmacologicals Action List"
 msgstr "Lista de ação farmacológica"
 
-#: thesaurus/models_descriptors.py:154 thesaurus/models_descriptors.py:155
+#: thesaurus/models_descriptors.py:167 thesaurus/models_descriptors.py:168
 msgid "See Related List"
 msgstr "Ver lista de descritores relacionados"
 
-#: thesaurus/models_descriptors.py:185
+#: thesaurus/models_descriptors.py:197
 msgid "Previous indexing"
 msgstr "Indexação prévia"
 
-#: thesaurus/models_descriptors.py:201 thesaurus/models_descriptors.py:202
-#: thesaurus/models_qualifiers.py:131 thesaurus/models_qualifiers.py:132
+#: thesaurus/models_descriptors.py:213 thesaurus/models_descriptors.py:214
+#: thesaurus/models_qualifiers.py:128 thesaurus/models_qualifiers.py:129
 msgid "Legacy information"
 msgstr "Informações do legado"
 
-#: thesaurus/models_descriptors.py:207 thesaurus/models_qualifiers.py:137
+#: thesaurus/models_descriptors.py:219 thesaurus/models_qualifiers.py:134
 msgid "Pre-codificado"
 msgstr "Pré-codificado"
 
-#: thesaurus/models_descriptors.py:210 thesaurus/models_qualifiers.py:140
+#: thesaurus/models_descriptors.py:222 thesaurus/models_qualifiers.py:137
 msgid "Desastre"
 msgstr "Desastre"
 
-#: thesaurus/models_descriptors.py:213 thesaurus/models_qualifiers.py:143
+#: thesaurus/models_descriptors.py:225 thesaurus/models_qualifiers.py:140
 msgid "Reforma Saude"
 msgstr "Reforma Saúde"
 
-#: thesaurus/models_descriptors.py:216 thesaurus/models_qualifiers.py:146
+#: thesaurus/models_descriptors.py:228 thesaurus/models_qualifiers.py:143
 msgid "Geografico"
 msgstr "Geográfico"
 
-#: thesaurus/models_descriptors.py:219 thesaurus/models_qualifiers.py:149
+#: thesaurus/models_descriptors.py:231 thesaurus/models_qualifiers.py:146
 msgid "MeSH"
 msgstr "MeSH"
 
-#: thesaurus/models_descriptors.py:222 thesaurus/models_qualifiers.py:152
+#: thesaurus/models_descriptors.py:234 thesaurus/models_qualifiers.py:149
 msgid "PT LILACS"
 msgstr "PT LILACS"
 
-#: thesaurus/models_descriptors.py:225 thesaurus/models_qualifiers.py:155
+#: thesaurus/models_descriptors.py:237 thesaurus/models_qualifiers.py:152
 msgid "Nao indexavel"
 msgstr "Nao indexavel"
 
-#: thesaurus/models_descriptors.py:228 thesaurus/models_qualifiers.py:158
+#: thesaurus/models_descriptors.py:240 thesaurus/models_qualifiers.py:155
 msgid "Homeopatia"
 msgstr "Homeopatia"
 
-#: thesaurus/models_descriptors.py:231 thesaurus/models_qualifiers.py:161
+#: thesaurus/models_descriptors.py:243 thesaurus/models_qualifiers.py:158
 msgid "Repidisca"
 msgstr "Repidisca"
 
-#: thesaurus/models_descriptors.py:234 thesaurus/models_qualifiers.py:164
+#: thesaurus/models_descriptors.py:246 thesaurus/models_qualifiers.py:161
 msgid "Saude Publica"
 msgstr "Saúde Pública"
 
-#: thesaurus/models_descriptors.py:237 thesaurus/models_qualifiers.py:167
+#: thesaurus/models_descriptors.py:249 thesaurus/models_qualifiers.py:164
 msgid "Exploded"
 msgstr "Exploded"
 
-#: thesaurus/models_descriptors.py:240 thesaurus/models_qualifiers.py:170
+#: thesaurus/models_descriptors.py:252 thesaurus/models_qualifiers.py:167
 msgid "Geog DeCS"
 msgstr "Geog DeCS"
 
-#: thesaurus/models_descriptors.py:250
+#: thesaurus/models_descriptors.py:262
 msgid "Entry combination List"
 msgstr "Lista de combinações de entradas"
 
-#: thesaurus/models_descriptors.py:251
+#: thesaurus/models_descriptors.py:263
 msgid "Entry combinations List"
 msgstr "Listas de combinações de entradas"
 
-#: thesaurus/models_descriptors.py:255 thesaurus/models_descriptors.py:261
+#: thesaurus/models_descriptors.py:269 thesaurus/models_descriptors.py:275
 msgid "Qualifier string"
 msgstr "Qualificadores"
 
-#: thesaurus/models_descriptors.py:258
+#: thesaurus/models_descriptors.py:272
 msgid "Descriptor string"
 msgstr "Descritores"
 
-#: thesaurus/models_descriptors.py:277 thesaurus/models_qualifiers.py:182
+#: thesaurus/models_descriptors.py:291 thesaurus/models_qualifiers.py:179
 msgid "Concept record"
 msgstr "Registro de conceito"
 
-#: thesaurus/models_descriptors.py:278 thesaurus/models_qualifiers.py:183
+#: thesaurus/models_descriptors.py:292 thesaurus/models_qualifiers.py:180
 msgid "Concept records"
 msgstr "Registro de conceito"
 
-#: thesaurus/models_descriptors.py:290 thesaurus/models_qualifiers.py:194
+#: thesaurus/models_descriptors.py:304 thesaurus/models_qualifiers.py:191
 msgid "Preferred concept"
 msgstr "Conceito preferido"
 
-#: thesaurus/models_descriptors.py:293 thesaurus/models_qualifiers.py:197
+#: thesaurus/models_descriptors.py:307 thesaurus/models_qualifiers.py:194
 msgid "Chemical abstract"
 msgstr "Nome no Chemical Abstracts"
 
-#: thesaurus/models_descriptors.py:296 thesaurus/models_qualifiers.py:200
+#: thesaurus/models_descriptors.py:310 thesaurus/models_qualifiers.py:197
 msgid "Registry number from CAS"
 msgstr "Número de registro do CAS"
 
-#: thesaurus/models_descriptors.py:299 thesaurus/models_descriptors.py:378
-#: thesaurus/models_qualifiers.py:203 thesaurus/models_qualifiers.py:278
+#: thesaurus/models_descriptors.py:313 thesaurus/models_descriptors.py:392
+#: thesaurus/models_qualifiers.py:200 thesaurus/models_qualifiers.py:275
 msgid "Historical annotation"
 msgstr "Nota histórica"
 
-#: thesaurus/models_descriptors.py:321 thesaurus/models_qualifiers.py:223
+#: thesaurus/models_descriptors.py:335 thesaurus/models_qualifiers.py:220
 msgid "Scope note"
 msgstr "Definição"
 
-#: thesaurus/models_descriptors.py:338 thesaurus/models_qualifiers.py:239
+#: thesaurus/models_descriptors.py:352 thesaurus/models_qualifiers.py:236
 msgid "Terms"
 msgstr "Termos"
 
-#: thesaurus/models_descriptors.py:347 thesaurus/models_qualifiers.py:263
+#: thesaurus/models_descriptors.py:361 thesaurus/models_qualifiers.py:260
 msgid "Term unique identifier"
 msgstr "ID do Termo"
 
-#: thesaurus/models_descriptors.py:355 thesaurus/models_qualifiers.py:251
+#: thesaurus/models_descriptors.py:369 thesaurus/models_qualifiers.py:248
 msgid "Concept preferred term"
 msgstr "Termo preferido do conceito"
 
-#: thesaurus/models_descriptors.py:358 thesaurus/models_qualifiers.py:254
+#: thesaurus/models_descriptors.py:372 thesaurus/models_qualifiers.py:251
 msgid "Is permuted term"
 msgstr "É termo permutado"
 
-#: thesaurus/models_descriptors.py:361 thesaurus/models_qualifiers.py:257
+#: thesaurus/models_descriptors.py:375 thesaurus/models_qualifiers.py:254
 msgid "Lexical categories"
 msgstr "Categorias lexicais"
 
-#: thesaurus/models_descriptors.py:364 thesaurus/models_qualifiers.py:260
+#: thesaurus/models_descriptors.py:378 thesaurus/models_qualifiers.py:257
 msgid "Record preferred term"
 msgstr "Termo preferido do registro"
 
-#: thesaurus/models_descriptors.py:367 thesaurus/models_qualifiers.py:269
+#: thesaurus/models_descriptors.py:381 thesaurus/models_qualifiers.py:266
 msgid "Entry version"
 msgstr "Versão de entrada"
 
-#: thesaurus/models_descriptors.py:393 thesaurus/models_descriptors.py:394
+#: thesaurus/models_descriptors.py:407 thesaurus/models_descriptors.py:408
 msgid "Thesaurus occurrence"
 msgstr "Nome do tesauro"
 
-#: thesaurus/models_descriptors.py:399
+#: thesaurus/models_descriptors.py:413
 msgid "Name of a thesaurus where terms occur"
 msgstr "Nome de um tesauro onde os termos ocorrem"
 
@@ -6604,19 +6671,19 @@ msgstr "Nome de um tesauro onde os termos ocorrem"
 msgid "External Qualifier UI"
 msgstr "ID externo"
 
-#: thesaurus/models_qualifiers.py:77
+#: thesaurus/models_qualifiers.py:74
 msgid "Description of Qualifier"
 msgstr "Descrição do qualificador"
 
-#: thesaurus/models_qualifiers.py:78
+#: thesaurus/models_qualifiers.py:75
 msgid "Descriptions of Qualifier"
 msgstr "Descrição do qualificador"
 
-#: thesaurus/models_qualifiers.py:109
+#: thesaurus/models_qualifiers.py:106
 msgid "Tree number for qualifier"
 msgstr "Categoria hierárquica de qualificador"
 
-#: thesaurus/models_qualifiers.py:110
+#: thesaurus/models_qualifiers.py:107
 msgid "Tree numbers for qualifiers"
 msgstr "Categorias hierárquicas de qualificadores"
 
@@ -6644,19 +6711,19 @@ msgstr "Controle sequencial"
 msgid "Sequential number"
 msgstr "Número sequencial"
 
-#: thesaurus/views.py:1112 thesaurus/views.py:1807 thesaurus/views.py:4063
-#: thesaurus/views.py:4801
+#: thesaurus/views.py:1210 thesaurus/views.py:1926 thesaurus/views.py:4224
+#: thesaurus/views.py:4962
 msgid "This Concept already exist!"
 msgstr "Este conceito já existe!"
 
-#: thesaurus/views.py:2066 thesaurus/views.py:2422 thesaurus/views.py:5035
-#: thesaurus/views.py:5385
+#: thesaurus/views.py:2201 thesaurus/views.py:2571 thesaurus/views.py:5200
+#: thesaurus/views.py:5552
 msgid "This configuration already exists for this concept!"
 msgstr "Esta configuração já existe para este conceito!"
 
-#: thesaurus/views.py:2171 thesaurus/views.py:2275 thesaurus/views.py:2465
-#: thesaurus/views.py:2542 thesaurus/views.py:5134 thesaurus/views.py:5223
-#: thesaurus/views.py:5427 thesaurus/views.py:5497
+#: thesaurus/views.py:2308 thesaurus/views.py:2414 thesaurus/views.py:2614
+#: thesaurus/views.py:2694 thesaurus/views.py:5299 thesaurus/views.py:5388
+#: thesaurus/views.py:5594 thesaurus/views.py:5664
 msgid "This Term already exist!"
 msgstr "Este termo já existe!"
 
@@ -6975,243 +7042,261 @@ msgstr ""
 "O campo de tipo é obrigatório quando o valor do campo título ou ISSN não "
 "estiver vazio"
 
-#: title/models.py:15 title/models.py:109
+#: title/models.py:20 title/models.py:114
 msgid "Users"
 msgstr "Usuários"
 
-#: title/models.py:31
+#: title/models.py:36
 msgid "LOCAL"
 msgstr "LOCAL"
 
-#: title/models.py:41
+#: title/models.py:46
 msgid "ID number"
 msgstr "Número de identificação"
 
-#: title/models.py:43
+#: title/models.py:48
 msgid "Local code"
 msgstr "Código local"
 
-#: title/models.py:51
+#: title/models.py:56
 msgid "National code"
 msgstr "Código nacional"
 
-#: title/models.py:55
+#: title/models.py:60
 msgid "Related systems"
 msgstr "Sistemas relacionados"
 
-#: title/models.py:57
+#: title/models.py:62
 msgid "Publish status"
 msgstr "Situação da publicação"
 
-#: title/models.py:61
+#: title/models.py:66
 msgid "Subtitle"
 msgstr "Subtítulo"
 
-#: title/models.py:63
+#: title/models.py:68
 msgid "Section/Part"
 msgstr "Seção/Parte"
 
-#: title/models.py:65
+#: title/models.py:70
 msgid "Section/Part title"
 msgstr "Título da seção/parte"
 
-#: title/models.py:67
+#: title/models.py:72
 msgid "Responsibility Mention"
 msgstr "Menção de responsabilidade"
 
-#: title/models.py:71
+#: title/models.py:76
 msgid "MEDLINE shortened title"
 msgstr "Título abreviado MEDLINE"
 
-#: title/models.py:89
+#: title/models.py:94
 msgid "Publication level"
 msgstr "Nível da publicação"
 
-#: title/models.py:91
+#: title/models.py:96
 msgid "Title alphabet"
 msgstr "Alfabeto do título"
 
-#: title/models.py:95
+#: title/models.py:100
 msgid "Abstract language"
 msgstr "Idioma do resumo"
 
-#: title/models.py:97 title/models.py:276
+#: title/models.py:102 title/models.py:281
 msgid "Frequency"
 msgstr "Frequência"
 
-#: title/models.py:101
+#: title/models.py:106
 msgid "CODEN"
 msgstr "CODEN"
 
-#: title/models.py:103
+#: title/models.py:108
 msgid "MEDLINE code"
 msgstr "Código MEDLINE"
 
-#: title/models.py:105 title/models.py:331
+#: title/models.py:110 title/models.py:336
 msgid "Classification"
 msgstr "Classificação"
 
-#: title/models.py:111
+#: title/models.py:116
 msgid "Acquisition Form"
 msgstr "Forma de aquisição"
 
-#: title/models.py:113
+#: title/models.py:118
 msgid "Acquisition priority"
 msgstr "Prioridade de aquisição"
 
-#: title/models.py:115
+#: title/models.py:120
 msgid "Comercial editor"
 msgstr "Editor comercial"
 
-#: title/models.py:119
+#: title/models.py:124
 msgid "Index - Year/Start (LILACS)"
 msgstr "Indexação - Ano/Início (LILACS)"
 
-#: title/models.py:123
+#: title/models.py:128
 msgid "BIREME notes"
 msgstr "Notas BIREME"
 
-#: title/models.py:129 title/models.py:164 title/models.py:332
+#: title/models.py:134 title/models.py:169 title/models.py:337
 msgid "Creation date"
 msgstr "Data de criação"
 
-#: title/models.py:131 title/models.py:333
+#: title/models.py:136 title/models.py:338
 msgid "Last change date"
 msgstr "Data da última modificação"
 
-#: title/models.py:139 title/models.py:140
+#: title/models.py:144 title/models.py:145
 msgid "Owners List"
 msgstr "Lista de fornecedores"
 
-#: title/models.py:142 title/models.py:155
+#: title/models.py:147 title/models.py:160
 msgid "Owner"
 msgstr "Fornecedor"
 
-#: title/models.py:150
+#: title/models.py:155
 msgid "Online resource"
 msgstr "Recursos online"
 
-#: title/models.py:156
+#: title/models.py:161
 msgid "ISSN online"
 msgstr "ISSN online"
 
-#: title/models.py:157
+#: title/models.py:162
 msgid "ONLINE full text"
 msgstr "Texto completo ONLINE"
 
-#: title/models.py:158
+#: title/models.py:163
 msgid "Unavailable for libraries"
 msgstr "Não disponível para bibliotecas"
 
-#: title/models.py:159
+#: title/models.py:164
 msgid "Allows buying articles"
 msgstr "Permite compra de artigos"
 
-#: title/models.py:160
+#: title/models.py:165
 msgid "Access type"
 msgstr "Tipo de acesso"
 
-#: title/models.py:161
+#: title/models.py:166
 msgid "Access control"
 msgstr "Controle de acesso"
 
-#: title/models.py:162
+#: title/models.py:167
 msgid "Initial period"
 msgstr "Período inicial"
 
-#: title/models.py:163
+#: title/models.py:168
 msgid "Final period"
 msgstr "Período Final"
 
-#: title/models.py:176
+#: title/models.py:181
 msgid "Title variance"
 msgstr "Variação do título"
 
-#: title/models.py:196
+#: title/models.py:201
 msgid "BVS Specialty"
 msgstr "Especialidade BVS"
 
-#: title/models.py:200
+#: title/models.py:205
 msgid "BVS"
 msgstr "BVS"
 
-#: title/models.py:212
+#: title/models.py:217
 msgid "Indexing Code"
 msgstr "Código de Indexação"
 
-#: title/models.py:213
+#: title/models.py:218
 msgid "Indexing Codes"
 msgstr "Códigos de Indexação"
 
-#: title/models.py:228
+#: title/models.py:233
 msgid "MEDLINE Index"
 msgstr "Indexação MEDLINE"
 
-#: title/models.py:229
+#: title/models.py:234
 msgid "MEDLINE Record"
 msgstr "Registro MEDLINE"
 
-#: title/models.py:273
+#: title/models.py:278
 msgid "Masks"
 msgstr "código"
 
-#: title/models.py:275 title/models.py:326
+#: title/models.py:280 title/models.py:331
 #, fuzzy
 #| msgid "Area code"
 msgid "Mask code"
 msgstr "Código Área"
 
-#: title/models.py:277
+#: title/models.py:282
 #, fuzzy
 #| msgid "Volume"
 msgid "Volumes"
 msgstr "Volume"
 
-#: title/models.py:279
+#: title/models.py:284
 #, fuzzy
 #| msgid "Pending"
 msgid "Ascending"
 msgstr "Pendente"
 
-#: title/models.py:280
+#: title/models.py:285
 msgid "Dummy"
 msgstr ""
 
-#: title/models.py:300
+#: title/models.py:305
 msgid "(empty)"
 msgstr ""
 
-#: title/models.py:306
+#: title/models.py:311
 msgid "Issue"
 msgstr "Data de emissão"
 
-#: title/models.py:310
+#: title/models.py:315
 msgid "Present"
 msgstr ""
 
-#: title/models.py:311
+#: title/models.py:316
 msgid "Absent"
 msgstr ""
 
-#: title/models.py:315
+#: title/models.py:320
 #, fuzzy
 #| msgid "Complement"
 msgid "Supplement"
 msgstr "Complemento"
 
-#: title/models.py:316
+#: title/models.py:321
 #, fuzzy
 #| msgid "Sequential number"
 msgid "Special number"
 msgstr "Número sequencial"
 
-#: title/models.py:325
+#: title/models.py:330
 msgid "Number of copies"
 msgstr "Número total de volumes"
 
-#: title/models.py:327
+#: title/models.py:332
 msgid "Status (P/A)"
 msgstr "Status"
+
+#: title/models.py:370
+#| msgid "Legacy information"
+msgid "Public information"
+msgstr "Informação pública"
+
+#: title/models.py:371
+#| msgid "Legacy information"
+msgid "Public informations"
+msgstr "Informações públicas"
+
+#: title/models.py:375
+msgid "Logo image url"
+msgstr "URL da imagem de logotipo"
+
+#: title/models.py:376
+msgid "Logo image file"
+msgstr "Arquivo da imagem de logotipo"
 
 #: utils/forms.py:126
 msgid "Duplicated descriptors are not allowed"
@@ -7257,21 +7342,34 @@ msgstr "Códigos auxiliares"
 msgid "Label"
 msgstr "Rótulo"
 
-#: utils/templatetags/app_filters.py:34
+#: utils/templatetags/app_filters.py:36
 msgid "new"
 msgstr "novo"
 
-#: utils/templatetags/app_filters.py:35
+#: utils/templatetags/app_filters.py:37
 msgid "deleted"
 msgstr "apagado"
 
-#: utils/templatetags/app_filters.py:206
+#: utils/templatetags/app_filters.py:208
 msgid "Record created"
 msgstr "Recurso criado"
 
 #: utils/validators.py:12
 msgid "Year must be greater than 1900"
 msgstr "Ano deve ser maior que 1900"
+
+#, fuzzy
+#~ msgid "Updated"
+#~ msgstr "Atualizar"
+
+#~ msgid "Format: Lastname, Name"
+#~ msgstr "Formato: Sobrenome, Nome"
+
+#~ msgid "End number"
+#~ msgstr "Número final"
+
+#~ msgid "Additional physical form available note"
+#~ msgstr "Nota de disponibilidade de forma física adicional"
 
 #~ msgid "Individual Author and Corporate Autor present simultaneous"
 #~ msgstr "Autor Pessoal e Autor Institucional presentes ao mesmo tempo"
@@ -7359,9 +7457,6 @@ msgstr "Ano deve ser maior que 1900"
 
 #~ msgid "Field Tree number is required!"
 #~ msgstr "Código hierárquico é obrigatório"
-
-#~ msgid "Persons"
-#~ msgstr "Pessoas"
 
 #~ msgid "Phones/Emails"
 #~ msgstr "Telefones/Emails"
@@ -7629,9 +7724,6 @@ msgstr "Ano deve ser maior que 1900"
 
 #~ msgid "Reference Source"
 #~ msgstr "Nova Fonte"
-
-#~ msgid "Update"
-#~ msgstr "Atualizar"
 
 #~ msgid "Submit for Review"
 #~ msgstr "Enviar para Revisão"

@@ -1,15 +1,22 @@
 from django.db import models
+from django.core.cache import cache
 from django.utils.translation import ugettext_lazy as _, get_language
 from tinymce.models import HTMLField
 from main import choices
 
 
 def get_help_fields(source_param):
-    help_fields = []
+    # set/get from cache
+    help_fields_ck = 'help_fields_{}'.format(source_param)
+    help_fields = cache.get(help_fields_ck)
 
-    help_list = Help.objects.filter(source=source_param)
-    if help_list:
-        help_fields = [h.field for h in help_list]
+    if not help_fields:
+        help_list = Help.objects.filter(source=source_param)
+        help_fields = []
+        if help_list:
+            help_fields = [h.field for h in help_list]
+
+        cache.set(help_fields_ck, help_fields)
 
     return help_fields
 

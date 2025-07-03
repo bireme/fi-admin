@@ -43,7 +43,7 @@ class Attachment(Generic, AuditLog):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     attachment_file = models.FileField(_('Select a file'), upload_to=attachment_upload, blank=True)
-    language = models.CharField(_("Language"), max_length=10, choices=LANGUAGES_CHOICES, blank=False)
+    language = models.CharField(_("Language"), max_length=10, blank=False)
     short_url = models.CharField(max_length=25, blank=False)
 
     class Meta:

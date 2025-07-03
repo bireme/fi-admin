@@ -16,6 +16,7 @@ from oer.models import *
 
 import requests
 import urllib
+import json
 
 class OERResource(ModelResource):
     resource_type = fields.CharField(attribute='type', null=True)
@@ -71,8 +72,9 @@ class OERResource(ModelResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        fb = request.GET.get('fb', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -84,14 +86,28 @@ class OERResource(ModelResource):
         else:
             fq = '(status:1 AND django_ct:oer.oer)'
 
+        if id != '':
+            q = 'id:%s' % id
+
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': lang,
-                    'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id,'sort': sort}
+                    'q': q , 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'sort': sort}
 
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
+
+        # Duplicate "response" to "match" element for old compatibility calls
+        if id != '' and response_json:
+            response_json['diaServerResponse'][0]['match'] = response_json['diaServerResponse'][0]['response']
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())

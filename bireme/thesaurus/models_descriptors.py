@@ -264,6 +264,8 @@ class EntryCombinationListDesc(models.Model, AuditLog):
 
     identifier = models.ForeignKey(IdentifierDesc, related_name="entrycombinationlistdesc", blank=True, null=True, on_delete=models.PROTECT)
 
+    language_code = models.CharField(_("Language"), choices=LANGUAGE_CODE_MESH, max_length=10, blank=True)
+
     ecin_qualif = models.CharField(_("Qualifier string"), max_length=250, blank=True)
     ecin_id = models.CharField(_("Identifier"), max_length=250, blank=True)
 

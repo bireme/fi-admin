@@ -95,7 +95,7 @@ class Reference(Generic, AuditLog):
     # field tag 505
     formatted_contents_note = models.TextField(_('Formatted contents note'), blank=True)
     # field tag 530
-    additional_physical_form_available_note = models.TextField(_('Additional physical form available note'), blank=True)
+    additional_physical_form_available_note = models.TextField(_('Note of other available formats'), blank=True)
     # field tag 533
     reproduction_note = models.TextField(_('Reproduction note'), blank=True)
     # field tag 534
@@ -276,11 +276,11 @@ class ReferenceAnalytic(Reference):
     # field tag 13
     english_translated_title = models.CharField(_('English translated title'), max_length=400, blank=True)
     # field tag 14
-    pages = JSONField(_('Pages'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+    pages = JSONField(_('Page identifier'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 49
     thesis_dissertation_analytic_leader = JSONField(_('Leader'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 700
-    clinical_trial_registry_name = JSONField(_('Clinical trial registry name'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
+    clinical_trial_registry_name = JSONField(_('Clinical trial registry'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # field tag 724
     doi_number = models.CharField(_('DOI number'), max_length=150, blank=True)
 

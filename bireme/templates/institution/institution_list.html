@@ -97,6 +97,16 @@
                                     <option value="{{country.0}}" {% if actions.filter_country == country.0|slugify %}selected="true"{% endif %}>{{ country.1 }}</option>
                                 {% endfor %}
                             </select>
+                            <br/>
+                            {% trans "Last update" %}:
+                            <select name="filter_updated">
+                                <option value="">---</option>
+                                <option value="0" {% if actions.filter_updated == '0' %}selected="true"{% endif %}>{% trans "Current year" %}</option>
+                                <option value="1" {% if actions.filter_updated == '1' %}selected="true"{% endif %}>> 1 {% trans "year" %}</option>
+                                <option value="2" {% if actions.filter_updated == '2' %}selected="true"{% endif %}>> 2 {% trans "years" %}</option>
+                                <option value="3" {% if actions.filter_updated == '3' %}selected="true"{% endif %}>> 3 {% trans "years" %}</option>
+                            </select>
+
 
                             <button class="btn" type="submit"><i class='icon-search'></i></button>
                         </form>
@@ -112,6 +122,7 @@
                     <th><a href="#" id="id_title">{% trans "Name" %}</a></th>
                     <th><a href="#" id="id_country">{% trans "Country" %}</a></th>
                     <th><a href="#" id="id_status">{% trans "Status" %}</a></th>
+                    <th><a href="#" id="id_updated">{% trans "Last update" %}</a></th>
                     <th>{% trans "Actions" %}</th>
                 </thead>
                 <tbody>
@@ -126,6 +137,7 @@
                             </td>
                             <td>{{ institution.country }}</a></td>
                             <td>{{ institution.status_label }}</a></td>
+                            <td><span class="{% if institution.get_last_time|days_since > 365 %}status-del{% elif institution.get_last_time|days_since > 180%}status-pending{% endif %}">{{ institution.get_last_time|date:"d/m/Y" }}</span></td>
                             <td>
                                 <a href="{% url 'edit_institution' institution.id %}" class='btn btn-mini'><i class='icon-pencil'></i></a>
                                 {% if user_cc == 'BR1.1' %}

@@ -163,8 +163,8 @@
                                     <ul>
                                         <li>
                                             {% if reference_source.literature_type == 'S' %}
-                                                <strong>{{ reference_source }}</strong>
-                                                <span id="indexed_database_info" class="hide"> <i class="icon-info-sign"></i> {% trans 'Journal usually indexed in' %}: <strong><span id="indexed_database_list"></span></span></strong>
+                                                <a href="{% url 'edit_biblioref_source' reference_source.id %}"><strong>{{ reference_source }}</strong></a><br />
+                                                <span id="indexed_database_info" class="hide">{% trans 'Journal usually indexed in' %}: <strong><span id="indexed_database_list"></span></span></strong>
                                             {% else %}
                                                     <strong>{{ reference_source.title_serial }}</strong>
                                                     {% if reference_source.volume_serial %}
@@ -501,6 +501,7 @@
                 // if new record fill with default values
                 if (new_reference && literature_type[0] == "S" && treatment_level == "as"){
                     $("#id_record_type").val("a");
+                    $("#id_item_form").val("s");
                     $("#id_type_of_journal").val("p");
                 }
                 $("#id_record_type").trigger("change");
@@ -512,6 +513,7 @@
             });
 
             $('#id_indexed_database, #id_publication_type, #id_check_tags').multipleSelect({selectAll: false, minimumCountSelected: 6, filter: true});
+            $('.input_select_text_language').multipleSelect({selectAll: false, single: true, filter: true});
 
             // consult list of indexed databases from TITLE
             var check_title = '{{reference_source.title_serial}}';

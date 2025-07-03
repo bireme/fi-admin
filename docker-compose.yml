@@ -73,6 +73,32 @@ services:
         reservations:
           memory: ${MEMORY_WEBSERVER_RESERVATION}
 
+  cron:
+    container_name: fi-admin-cron
+    restart: unless-stopped
+    image: ${IMAGE_TAG}
+    volumes:
+      - ${LOG_PATH}:/logs
+    depends_on:
+      - fi_admin
+    env_file:
+      - ./conf/app-env
+    user: root
+    command: crond -f -L /dev/stdout
+
+  fi_admin_cache:
+    image: bitnami/memcached:1.6.32
+    container_name: fi-admin-cache
+    restart: unless-stopped
+    depends_on:
+      - fi_admin
+    ports:
+      - 11211:11211
+    environment:
+      - MEMCACHED_CACHE_SIZE=128
+    networks:
+      - nginx-proxy
+
 networks:
   nginx-proxy:
     external: true

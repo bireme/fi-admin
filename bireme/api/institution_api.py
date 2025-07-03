@@ -49,8 +49,9 @@ class InstitutionResource(CustomResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        fb = request.GET.get('fb', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -63,12 +64,19 @@ class InstitutionResource(CustomResource):
             fq = '(django_ct:institution.institution)'
 
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort}
+                         'q': q, 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'id': id, 'sort': sort}
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())

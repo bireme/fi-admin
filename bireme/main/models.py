@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _, get_language
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+
 from django.core.cache import cache
 from log.models import AuditLog
 
@@ -11,6 +12,7 @@ from django.db import models
 
 from utils.models import Generic, Country
 from error_reporting.models import ErrorReport
+from classification.models import Relationship
 
 from main import choices
 
@@ -174,7 +176,7 @@ class ResourceThematic(Generic, AuditLog):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     thematic_area = models.ForeignKey(ThematicArea, related_name='+', on_delete=models.PROTECT)
-    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING, blank=True)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=1, blank=True)
 
     def __str__(self):
         return str(self.thematic_area.name)
@@ -194,7 +196,7 @@ class Descriptor(Generic, AuditLog):
 
     text = models.CharField(_('Descriptor'), max_length=255, blank=True)
     code = models.CharField(_('Code'), max_length=50, blank=True)
-    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=1)
     primary = models.BooleanField(_('Primary?'), default=False)
 
     def __str__(self):
@@ -214,7 +216,7 @@ class Keyword(Generic, AuditLog):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     text = models.CharField(_('Text'), max_length=255, blank=True)
-    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=PENDING)
+    status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=1)
     user_recomendation = models.BooleanField(_('User recomendation?'), default=False)
 
     def __str__(self):
@@ -314,6 +316,7 @@ class Resource(Generic, AuditLog):
     error_reports = GenericRelation(ErrorReport)
     thematics = GenericRelation(ResourceThematic)
     descriptors = GenericRelation(Descriptor)
+    collection = GenericRelation(Relationship)
 
     def get_fields(self):
         return [(field.verbose_name, field.value_to_string(self)) for field in Resource._meta.fields]

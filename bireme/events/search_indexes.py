@@ -16,11 +16,12 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     start_date = indexes.DateTimeField(model_attr='start_date')
     end_date = indexes.DateTimeField(model_attr='end_date')
     contact_email = indexes.CharField(model_attr='contact_email', null=True)
-    contact_info = indexes.CharField()
+    contact_info = indexes.CharField(model_attr='contact_info', null=True)
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
     official_language = indexes.MultiValueField()
     official_language_display = indexes.MultiValueField()
+    event_modality = indexes.CharField(model_attr='event_modality', null=True)
     event_type = indexes.MultiValueField()
     descriptor = indexes.MultiValueField()
     keyword = indexes.MultiValueField()
@@ -28,10 +29,14 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     updated_date = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
     not_regional_event = indexes.CharField(model_attr='not_regional_event')
+    observations = indexes.CharField(model_attr='observations', null=True)
+    target_groups = indexes.CharField(model_attr='target_groups', null=True)
 
     def get_model(self):
         return Event
 
+    def get_updated_field(self):
+        return "updated_time"
 
     def prepare_official_language(self, obj):
         return [ source_language.acronym for source_language in SourceLanguage.objects.filter(event=obj.id) ]
@@ -54,11 +59,6 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_keyword(self, obj):
         return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
 
-    def prepare_contact_info(self, obj):
-        if obj.contact_info:
-            return "<br/>".join(obj.contact_info.split("\n"))
-
-
     def prepare_created_date(self, obj):
         if obj.created_time:
             return obj.created_time.strftime('%Y%m%d')
@@ -66,7 +66,6 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_updated_date(self, obj):
         if obj.updated_time:
             return obj.updated_time.strftime('%Y%m%d')
-
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""

@@ -25,6 +25,8 @@ from events.models import Event
 from suggest.models import *
 from suggest.forms import *
 
+from django.db.models import Q
+
 import os
 import json
 import urllib
@@ -90,7 +92,7 @@ def list_suggestions(request):
     if actions['type'] and actions['type'] == 'keywords':
         suggestions = Keyword.objects.filter(user_recomendation=True, status=0, text__icontains=actions['s'])
     elif actions['type'] == 'events':
-        suggestions = SuggestEvent.objects.filter(title__icontains=actions['s'])
+        suggestions = SuggestEvent.objects.filter(Q(title__icontains=actions['s']) | Q(origin__icontains=actions['s']))
     else:
         suggestions = SuggestResource.objects.filter(title__icontains=actions['s'])
 
@@ -139,7 +141,7 @@ def edit_suggested_resource(request, **kwargs):
             output['alert'] = _("Resource successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('suggest.views.list_suggestions')
+            return redirect('list_suggestions')
     # new/edit
     else:
         form = SuggestResourceForm(instance=resource)
@@ -291,7 +293,7 @@ def edit_suggested_event(request, **kwargs):
             output['alert'] = _("Event successfully edited.")
             output['alerttype'] = "alert-success"
 
-            return redirect('suggest.views.list_suggestions')
+            return redirect('list_suggestions')
     # new/edit
     else:
         form = SuggestEventForm(instance=suggest)

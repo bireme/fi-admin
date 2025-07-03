@@ -48,6 +48,7 @@ ACTIONS = {
 
     'filter_fields': '',
     'filter_status': '',
+    'filter_category': '',
 
     'decs_code': '',
     'tree_number': '',
@@ -667,7 +668,9 @@ class DescRegisterUpdateView(LoginRequiredView, UpdateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -787,8 +790,12 @@ class DescListView(LoginRequiredView, ListView):
                 object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).exclude(status=-3).order_by('term_string')
 
         # term_string
-        if self.actions['s'] and self.actions['filter_fields'] == 'term_string':
-            object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+        if self.actions['filter_fields'] == 'term_string':
+            if self.actions['s']:
+                object_list = TermListDesc.objects.filter( q_term_string ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
+            else:
+                # bring all registers
+                object_list = TermListDesc.objects.all().filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
         if not self.actions['filter_fields'] or self.actions['filter_fields'] == 'term_string':
             # status
@@ -846,28 +853,29 @@ class DescListView(LoginRequiredView, ListView):
         if self.actions['filter_fields'] == 'descriptor_ui':
             id_register = IdentifierDesc.objects.filter(descriptor_ui=self.actions['s'].strip()).values('id')
             if not id_register:
-                object_list = object_list.none()
+                object_list = []
             else:
                 id_register = [obj.get('id') for obj in id_register]
                 id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_register,preferred_concept='Y').distinct().values('id')
                 q_id_concept = Q(identifier_concept_id__in=id_concept)
                 object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-            # status
-            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
-                object_list = object_list.filter(status=self.actions['filter_status'])
+            if object_list:
+                # status
+                if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                    object_list = object_list.filter(status=self.actions['filter_status'])
 
-            # language
-            if self.actions['filter_language']:
-                obj = object_list
-                object_list = object_list.filter(language_code=self.actions['filter_language'])
-                if self.actions['filter_status'] == 'wt':
-                    if object_list:
-                        object_list = object_list.none()
-                    else:
-                        object_list = obj.filter(language_code='en')
-            elif self.actions['filter_status'] == 'wt':
-                object_list = object_list.none()
+                # language
+                if self.actions['filter_language']:
+                    obj = object_list
+                    object_list = object_list.filter(language_code=self.actions['filter_language'])
+                    if self.actions['filter_status'] == 'wt':
+                        if object_list:
+                            object_list = object_list.none()
+                        else:
+                            object_list = obj.filter(language_code='en')
+                elif self.actions['filter_status'] == 'wt':
+                    object_list = object_list.none()
 
 
         # DeCS Descriptor UI - decs_code
@@ -875,7 +883,7 @@ class DescListView(LoginRequiredView, ListView):
         if self.actions['filter_fields'] == 'decs_code':
             id_register = IdentifierDesc.objects.filter(decs_code=self.actions['s'].strip(),thesaurus_id=self.actions['choiced_thesaurus']).values('id')
             if not id_register:
-                object_list = object_list.none()
+                object_list = []
             else:
                 id_register = id_register[0].get('id')
                 id_concept = IdentifierConceptListDesc.objects.filter(identifier_id=id_register,preferred_concept='Y').distinct().values('id')
@@ -886,21 +894,22 @@ class DescListView(LoginRequiredView, ListView):
                     q_id_concept = Q(identifier_concept_id=id_concept)
                     object_list = TermListDesc.objects.filter( q_concept_preferred_term & q_record_preferred_term & q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
-            # status
-            if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
-                object_list = object_list.filter(status=self.actions['filter_status'])
+            if object_list:
+                # status
+                if self.actions['filter_status'] and self.actions['filter_status'] != 'wt':
+                    object_list = object_list.filter(status=self.actions['filter_status'])
 
-            # language
-            if self.actions['filter_language']:
-                obj = object_list
-                object_list = object_list.filter(language_code=self.actions['filter_language'])
-                if self.actions['filter_status'] == 'wt':
-                    if object_list:
-                        object_list = object_list.none()
-                    else:
-                        object_list = obj.filter(language_code='en')
-            elif self.actions['filter_status'] == 'wt':
-                object_list = object_list.none()
+                # language
+                if self.actions['filter_language']:
+                    obj = object_list
+                    object_list = object_list.filter(language_code=self.actions['filter_language'])
+                    if self.actions['filter_status'] == 'wt':
+                        if object_list:
+                            object_list = object_list.none()
+                        else:
+                            object_list = obj.filter(language_code='en')
+                elif self.actions['filter_status'] == 'wt':
+                    object_list = object_list.none()
 
 
         # Tree Number
@@ -941,7 +950,7 @@ class DescListView(LoginRequiredView, ListView):
         if self.actions['filter_fields'] == 'concept_ui':
             concept_identifier_id = IdentifierConceptListDesc.objects.filter(concept_ui=self.actions['s'].strip()).values('identifier_id')
             if not concept_identifier_id:
-                object_list = object_list.none()
+                object_list = []
             else:
                 for i in concept_identifier_id:
                     # concept_identifier_id pode vir com mesmo ConceptUI para outro tesauro, então quando encontra o primeiro sai do loop
@@ -969,6 +978,23 @@ class DescListView(LoginRequiredView, ListView):
                         object_list = obj.filter(language_code='en')
             elif self.actions['filter_status'] == 'wt':
                 object_list = object_list.none()
+
+
+        # Category --------------------------------------------------------------
+        if self.actions['filter_category']:
+            if object_list:
+                if self.actions['filter_category'] == 'H':
+                    id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith='H').exclude(tree_number__startswith='HP').values('identifier_id')
+                elif self.actions['filter_category'] == 'M':
+                    id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith='M').exclude(tree_number__startswith='MT').values('identifier_id')
+                elif self.actions['filter_category'] == 'V':
+                    id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith='V').exclude(tree_number__startswith='VS').values('identifier_id')
+                else:
+                    id_tree_number = TreeNumbersListDesc.objects.filter(tree_number__startswith=self.actions['filter_category'].strip()).values('identifier_id')
+
+                id_concept = IdentifierConceptListDesc.objects.filter(identifier_id__in=id_tree_number).distinct().values('id')
+                q_id_concept = Q(identifier_concept_id__in=id_concept)
+                object_list = object_list.filter( q_id_concept ).filter(term_thesaurus=self.actions['choiced_thesaurus']).order_by('term_string')
 
 
         # order performance -------------------------------------------------------------------------------------
@@ -1913,7 +1939,9 @@ class ConceptListDescCreateView(LoginRequiredView, CreateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -2024,7 +2052,9 @@ class ConceptListDescUpdateView(LoginRequiredView, UpdateView):
         user_cc = user_data['user_cc']
         context['user_cc'] = user_cc
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -2092,7 +2122,9 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -2125,6 +2157,16 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
             record_preferred_term = self.request.POST.get("record_preferred_term")
             identifier_concept_id = self.request.POST.get("identifier_concept_id")
             term_thesaurus = self.request.GET.get("ths")
+
+            _record_preferred_term = self.request.GET.get("record_preferred_term")
+            if _record_preferred_term == 'N':
+                if concept_preferred_term == 'N' and record_preferred_term == 'Y':
+                    record_preferred_term = 'N'
+            else:
+                if concept_preferred_term == 'Y' and record_preferred_term == 'N':
+                    record_preferred_term = 'Y'
+                elif concept_preferred_term == 'N' and record_preferred_term == 'Y':
+                    record_preferred_term = 'N'
 
             if concept_preferred_term == 'Y' and record_preferred_term == 'Y':
                 # Verifica se já não existe configuração para esse conceito com mesmo language_code, concept_preferred_term = "Y" e record_preferred_term = "Y"
@@ -2213,6 +2255,8 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                             self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
 
                         self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+                        self.object.concept_preferred_term = concept_preferred_term
+                        self.object.record_preferred_term  = record_preferred_term
                         self.object = form.save(commit=True)
 
                         formset_toccurrence.instance = self.object
@@ -2318,6 +2362,8 @@ class TermListDescCreateView(LoginRequiredView, CreateView):
                         self.object.date_created = datetime.datetime.now().strftime('%Y-%m-%d')
 
                     self.object.identifier_concept_id = self.request.POST.get("identifier_concept_id")
+                    self.object.concept_preferred_term = concept_preferred_term
+                    self.object.record_preferred_term  = record_preferred_term
                     self.object = form.save(commit=True)
 
                     formset_toccurrence.instance = self.object
@@ -2443,6 +2489,16 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
         record_preferred_term = self.request.POST.get("record_preferred_term")
         identifier_concept_id = self.request.POST.get("identifier_concept_id")
         term_thesaurus = self.request.GET.get("ths")
+
+        _record_preferred_term = self.request.GET.get("record_preferred_term")
+        if _record_preferred_term == 'N':
+            if concept_preferred_term == 'N' and record_preferred_term == 'Y':
+                record_preferred_term = 'N'
+        else:
+            if concept_preferred_term == 'Y' and record_preferred_term == 'N':
+                record_preferred_term = 'Y'
+            elif concept_preferred_term == 'N' and record_preferred_term == 'Y':
+                record_preferred_term = 'N'
 
         # Username
         user_data = additional_user_info(self.request)
@@ -2580,6 +2636,9 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
 
                         self.object.historical_annotation = term_string_historical
 
+                        self.object.concept_preferred_term = concept_preferred_term
+                        self.object.record_preferred_term  = record_preferred_term
+
                         self.object = form.save(commit=True)
 
                         formset_toccurrence.instance = self.object
@@ -2656,6 +2715,9 @@ class TermListDescUpdateView(LoginRequiredView, UpdateView):
                         term_string_historical=term_string_historical + ';' + historical_annotation_old
 
                     self.object.historical_annotation = term_string_historical
+
+                    self.object.concept_preferred_term = concept_preferred_term
+                    self.object.record_preferred_term  = record_preferred_term
 
                     self.object = form.save(commit=True)
 
@@ -2834,7 +2896,9 @@ class PageViewDesc(LoginRequiredView, DetailView):
         user_cc = user_data['user_cc']
         context['user_cc'] = user_cc
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -3009,6 +3073,7 @@ class PageViewDesc(LoginRequiredView, DetailView):
                                                 'ecout_qualif',
                                                 'ecout_qualif_id',
                                                 'identifier_id',
+                                                'language_code',
                                             )
 
 
@@ -3690,7 +3755,9 @@ class QualifRegisterUpdateView(LoginRequiredView, UpdateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -4908,7 +4975,9 @@ class ConceptListQualifCreateView(LoginRequiredView, CreateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -5021,7 +5090,9 @@ class ConceptListQualifUpdateView(LoginRequiredView, UpdateView):
         user_cc = user_data['user_cc']
         context['user_cc'] = user_cc
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -5325,7 +5396,9 @@ class TermListQualifCreateView(LoginRequiredView, CreateView):
         user_data = additional_user_info(self.request)
         user_cc = user_data['user_cc']
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'
@@ -5772,7 +5845,9 @@ class PageViewQualif(LoginRequiredView, DetailView):
         user_cc = user_data['user_cc']
         context['user_cc'] = user_cc
 
-        if user_cc.startswith('CL'):
+        if user_cc.startswith('BR') and user_cc != 'BR1.1':
+            lc = 'pt-br'
+        elif user_cc.startswith('CL'):
             lc = 'es'
         elif user_cc.startswith('ES'):
             lc = 'es-es'

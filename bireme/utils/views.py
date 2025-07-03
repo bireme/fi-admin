@@ -242,7 +242,10 @@ def decs_suggestion(request):
 
     service_url = settings.DECS_HIGHLIGHTER_URL
 
-    headers = {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"}
+    headers = {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'apikey': settings.DECS_HIGHLIGHTER_APIKEY
+        }
 
     for lang, text in text_by_lang.items():
         service_params = {'document': text, 'scanLang': lang, 'pubType': 'h', 'outLang': output_lang}
@@ -253,7 +256,7 @@ def decs_suggestion(request):
             decs_list_response = response_json['positions']
 
             for decs_term in decs_list_response:
-                decs_id = decs_term['id']
+                decs_id = str(int(decs_term['decsId']))
                 if decs_id not in decs_ids:
                     decs_ids.append(decs_id)
                     decs_list_unique.append(decs_term)

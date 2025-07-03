@@ -11,7 +11,7 @@ from tastypie import fields
 
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceAlternateID, ReferenceLocal, ReferenceComplement
 from attachments.models import Attachment
-from related.models import LinkedResource
+from related.models import LinkedResource, LinkedResearchData
 from api.isis_serializer import ISISSerializer
 from api.tastypie_custom import CustomResource
 
@@ -73,8 +73,9 @@ class ReferenceResource(CustomResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        fb = request.GET.get('fb', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -87,11 +88,14 @@ class ReferenceResource(CustomResource):
         else:
             fq = '(status:("-3" OR "0" OR "1") AND django_ct:biblioref.reference*)'
 
+        if id != '':
+            q = 'id:%s' % id
+
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort}
+                         'q': q, 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'sort': sort}
 
         if facet_list:
             search_params['facet.field'] = []
@@ -102,11 +106,19 @@ class ReferenceResource(CustomResource):
                 if facet_field_limit:
                     search_params[facet_limit_param] = facet_field_limit
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
         try:
             response_json = r.json()
         except ValueError:
             response_json = json.loads('{"type": "error", "message": "invalid output"}')
+
+        # Duplicate "response" to "match" element for old compatibility calls
+        if id != '' and response_json:
+            response_json['diaServerResponse'][0]['match'] = response_json['diaServerResponse'][0]['response']
+
 
         self.log_throttled_access(request)
         return self.create_response(request, response_json)
@@ -184,7 +196,8 @@ class ReferenceResource(CustomResource):
         library_records = ReferenceLocal.objects.filter(source=bundle.obj.id)
         complement_data = ReferenceComplement.objects.filter(source=bundle.obj.id)
         related_obj_id = 'biblio-{}'.format(bundle.obj.id)
-        linked_resources = LinkedResource.objects.filter( Q(object_id=bundle.obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
+        related_resources = LinkedResource.objects.filter( Q(object_id=bundle.obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
+        related_research = LinkedResearchData.objects.filter(object_id=bundle.obj.id, content_type=c_type)
 
         # create lists for primary and secundary descriptors
         descriptors_primary = []
@@ -210,25 +223,44 @@ class ReferenceResource(CustomResource):
         indexed_database_list = bundle.obj.indexed_database.all()
         bundle.data['indexed_database'] = [database.acronym for database in indexed_database_list]
 
-        for linked in linked_resources:
-            if linked.object_id == bundle.obj.id:
-                linked_field = 'linked_{}'.format(linked.type.field)
-                bundle.data[linked_field] = {'_m': linked.internal_id, '_u': linked.link, '_t': linked.title}
+        # add related resource
+        related_resource_list = []
+        for related in related_resources:
+            if related.object_id == bundle.obj.id:
+                related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
             else:
-                linked_field = 'linked_{}'.format(linked.type.field_passive.field)
-                linked_id = 'biblio-{}'.format(linked.object_id)
-                bundle.data[linked_field] = {'_m': linked_id}
+                related_id = 'biblio-{}'.format(related.object_id)
+                related_title = Reference.objects.get(pk=related.object_id).reference_title
+                related_dict = {"_i": related.type.field_passive.field, "_t": related_title, "_6": related.link, "_w": related_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
+
+        bundle.data['related_resource'] = related_resource_list
+
+        # add related research
+        related_research_list = []
+        for research in related_research:
+            research_dict = {"_t": research.title, "_6": research.link, "_n": research.description}
+            research_dict_json = self.dict2json(research_dict)
+            related_research_list.append(research_dict_json)
+
+        bundle.data['related_research'] = related_research_list
 
         # check if object has classification (relationship model)
         if bundle.obj.collection.count():
             community_list = []
             collection_list = []
+            community_collection_path = []
 
             collection_all = bundle.obj.collection.all()
             for rel in collection_all:
                 collection_labels = "|".join(rel.collection.get_translations())
                 collection_item = u"{}|{}".format(rel.collection.id, collection_labels)
                 collection_list.append(collection_item)
+                community_collection_path.append(rel.collection.community_collection_path_translations())
+
                 if rel.collection.parent:
                     community_labels = "|".join(rel.collection.parent.get_translations())
                     community_item = u"{}|{}".format(rel.collection.parent.id, community_labels)
@@ -236,6 +268,7 @@ class ReferenceResource(CustomResource):
 
             bundle.data['community'] = community_list
             bundle.data['collection'] = collection_list
+            bundle.data['community_collection_path'] = community_collection_path
 
         # change code of cooperative_center_code to indexer_cc_code at API record export #553
         if bundle.obj.indexer_cc_code:
@@ -279,7 +312,7 @@ class ReferenceResource(CustomResource):
                         field_value = getattr(library, field.name, {})
                         if field_value:
                             # convert lines of database field in list
-                            if field.name == 'database':
+                            if field.name == 'database' or field.name == 'local_descriptors':
                                 field_value = [line.strip() for line in field_value.split('\n') if line.strip()]
 
                             # check if field already in bundle
@@ -312,3 +345,9 @@ class ReferenceResource(CustomResource):
         response = Reference.objects.latest('pk').pk
 
         return self.create_response(request, response)
+
+    def dict2json(self, raw_dict):
+        clean_dict = {k: v for k, v in raw_dict.items() if v}
+        json_out = json.dumps(clean_dict, ensure_ascii=False).encode('utf8')
+
+        return json_out

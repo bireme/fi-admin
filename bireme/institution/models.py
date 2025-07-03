@@ -136,6 +136,11 @@ class Institution(Generic, AuditLog):
         status_dict = dict(STATUS_CHOICES)
         return status_dict.get(self.status)
 
+    def get_last_time(self):
+        last_time = self.updated_time if self.updated_time else self.created_time
+
+        return last_time
+
 
 # Administrative Information
 class Adm(models.Model, AuditLog):

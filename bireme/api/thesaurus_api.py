@@ -63,8 +63,8 @@ class ThesaurusAPIDescResource(CustomResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -78,15 +78,24 @@ class ThesaurusAPIDescResource(CustomResource):
         #     fq = 'django_ct:thesaurus.identifierdesc*'
 
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         # print 'search_url -->',search_url
         # print 'q          -->',q
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort, 'decs_code': decs_code }
+                         'q': q, 'fq': [fq], 'start': int(start), 'count': int(count), 'id': id, 'sort': sort, 'decs_code': decs_code,
+                         'facet': 'false'
+                    }
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
@@ -209,7 +218,7 @@ class ThesaurusAPIDescResource(CustomResource):
         # PharmacologicalActionList
         array_fields = {}
         array_fields_all = []
-        results = PharmacologicalActionList.objects.using('decs_portal').filter(identifier_id=identifier_id)
+        results = PharmacologicalActionList.objects.using('decs_portal').filter(identifier_id=identifier_id,language_code='en')
         for field in results:
             # Armazena campos
             if field.term_string:
@@ -223,6 +232,30 @@ class ThesaurusAPIDescResource(CustomResource):
 
                 # Zera array pra próxima leitura
                 array_fields = {}
+
+                # Recupera termo em todos os idiomas
+                descriptor_ui = field.descriptor_ui
+                id_register = IdentifierDesc.objects.using('decs_portal').filter(descriptor_ui=descriptor_ui).values('id')
+                # IdentifierDesc_decs_code = IdentifierDesc.objects.using('decs_portal').filter(descriptor_ui=field.descriptor_ui).values('decs_code')
+                concepts_of_register = IdentifierConceptListDesc.objects.using('decs_portal').filter(identifier_id__in=id_register,preferred_concept='Y').values('id')
+
+                if concepts_of_register:
+                    array_terms = {}
+                    id_concept = concepts_of_register[0].get('id')
+                    terms_of_concept = TermListDesc.objects.using('decs_portal').filter(identifier_concept_id=id_concept,concept_preferred_term='Y',record_preferred_term='Y',status=1)
+
+                    for term in terms_of_concept:
+                        if term.language_code != 'en':
+                            # array_terms['decs_code'] = IdentifierDesc_decs_code[0].get('decs_code')
+                            array_terms['term_string'] = term.term_string.encode('utf-8')
+                            array_terms['descriptor_ui'] = field.descriptor_ui
+                            array_terms['language_code'] = term.language_code
+
+                            # Armazena array
+                            array_fields_all.append(array_terms)
+
+                            # Zera array pra próxima leitura
+                            array_terms = {}
 
         bundle.data['PharmacologicalActionList'] = array_fields_all
 
@@ -294,17 +327,16 @@ class ThesaurusAPIDescResource(CustomResource):
         # EntryCombinationListDesc
         array_fields = {}
         array_fields_all = []
-        results = EntryCombinationListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id)
+        results = EntryCombinationListDesc.objects.using('decs_portal').filter(identifier_id=identifier_id).values('id', 'ecin_id', 'ecin_qualif', 'ecout_desc', 'ecout_desc_id', 'ecout_qualif', 'ecout_qualif_id')
         for field in results:
             # Armazena campos
-            array_fields["id"] = field.id
-            array_fields["ecin_qualif"] = field.ecin_qualif
-            array_fields["ecin_id"] = field.ecin_id
-
-            array_fields["ecout_desc"] = field.ecout_desc
-            array_fields["ecout_desc_id"] = field.ecout_desc_id
-            array_fields["ecout_qualif"] = field.ecout_qualif
-            array_fields["ecout_qualif_id"] = field.ecout_qualif_id
+            array_fields["id"] = field.get('id')
+            array_fields["ecin_id"] = field.get('ecin_id')
+            array_fields["ecin_qualif"] = field.get('ecin_qualif')
+            array_fields["ecout_desc"] = field.get('ecout_desc')
+            array_fields["ecout_desc_id"] = field.get('ecout_desc_id')
+            array_fields["ecout_qualif"] = field.get('ecout_qualif')
+            array_fields["ecout_qualif_id"] = field.get('ecout_qualif_id')
 
             # Armazena array
             array_fields_all.append(array_fields)
@@ -693,8 +725,8 @@ class ThesaurusAPIQualifResource(CustomResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -708,12 +740,19 @@ class ThesaurusAPIQualifResource(CustomResource):
             fq = '(status:1 AND django_ct:title.title*)'
 
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort, 'decs_code': decs_code }
+                         'q': q, 'fq': [fq], 'start': int(start), 'count': int(count), 'id': id, 'sort': sort, 'decs_code': decs_code }
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())

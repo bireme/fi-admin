@@ -238,17 +238,16 @@ def delete_event(request, event_id):
     if event.created_by_id != user.id:
         return HttpResponse('Unauthorized', status=401)
 
-    # delete search index entry
-    index = EventIndex()
-    index.remove_object(event)
-
-    # delete object
-    event.delete()
-
     # delete associated data
     Descriptor.objects.filter(object_id=event_id, content_type=c_type).delete()
     Keyword.objects.filter(object_id=event_id, content_type=c_type).delete()
     ResourceThematic.objects.filter(object_id=event_id, content_type=c_type).delete()
+
+    # update search index
+    update_search_index(event, delete=True)
+
+    # delete object
+    event.delete()
 
     output['alert'] = _("Event deleted.")
     output['alerttype'] = "alert-success"
@@ -374,11 +373,14 @@ def update_dedup_service(obj):
 
 
 # update search index
-def update_search_index(event):
+def update_search_index(event, delete=False):
     if event.status != 0:
         index = EventIndex()
 
         try:
-            index.update_object(event)
+            if delete:
+                index.remove_object(event)
+            else:
+                index.update_object(event)
         except:
             pass

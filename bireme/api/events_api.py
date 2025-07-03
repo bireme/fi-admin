@@ -1,12 +1,14 @@
 # coding: utf-8
 from django.conf import settings
 from django.urls import re_path
+from django.contrib.contenttypes.models import ContentType
 
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 from tastypie import fields
 
 from  events.models import Event
+from  main.models import Descriptor, ResourceThematic, Keyword
 
 import requests
 import urllib
@@ -46,8 +48,9 @@ class EventResource(ModelResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        fb = request.GET.get('fb', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -59,18 +62,28 @@ class EventResource(ModelResource):
         else:
             fq = '(status:1 AND django_ct:events.event)'
 
+        if id != '':
+            q = 'id:%s' % id
+
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': lang,
-                    'q': q , 'fq': fq,  'start': start, 'count': count, 'id' : id, 'sort': sort}
+                    'q': q , 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'sort': sort}
 
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
         try:
             response_json = r.json()
         except ValueError:
             response_json = json.loads('{"type": "error", "message": "invalid output"}')
+
+        # Duplicate "response" to "match" element for old compatibility calls
+        if id != '' and response_json:
+            response_json['diaServerResponse'][0]['match'] = response_json['diaServerResponse'][0]['response']
 
         self.log_throttled_access(request)
         return self.create_response(request, response_json)
@@ -81,9 +94,11 @@ class EventResource(ModelResource):
         self.throttle_check(request)
 
         fq = request.GET.get('fq', '')
+        fb = request.GET.get('fb', '')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
         sort = request.GET.get('sort', 'start_date asc')
+        count = request.GET.get('count', 0)
 
         # filter result by approved resources (status=1)
         if fq != '':
@@ -94,13 +109,16 @@ class EventResource(ModelResource):
         q = 'start_date:[NOW TO *]'
 
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': 'pt',
-                    'q': q , 'fq': fq, 'sort': sort}
+                    'q': q , 'fq': [fq], 'fb': fb, 'sort': sort, 'count': int(count)}
 
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
         try:
             response_json = r.json()
         except ValueError:
@@ -115,3 +133,18 @@ class EventResource(ModelResource):
         response = Event.objects.latest('pk').pk
 
         return self.create_response(request, response)
+
+
+    def dehydrate(self, bundle):
+        c_type = ContentType.objects.get_for_model(bundle.obj)
+
+        descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        keywords = Keyword.objects.filter(object_id=bundle.obj.id, content_type=c_type)
+        thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+
+        # add fields to output
+        bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
+        bundle.data['keywords'] = [keyword.text for keyword in keywords]
+        bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
+
+        return bundle

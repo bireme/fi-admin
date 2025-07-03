@@ -23,7 +23,7 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
                  'symbol': '68', 'isbn': '69', 'descriptive_information': '38', 'text_language': '40',
                  'conference_sponsoring_institution': '52', 'conference_name': '53', 'conference_date': '54',
                  'conference_normalized_date': '55', 'conference_city': '56', 'project_sponsoring_institution': '58',
-                 'project_name': '59', 'internal_note': '61', 'publication_date': '64', 'publication_country': '67',
+                 'project_name': '59', 'project_number': '60', 'internal_note': '61', 'publication_date': '64', 'publication_country': '67',
                  'publication_date_normalized': '65', 'publication_type': '71', 'total_number_of_references': '72',
                  'time_limits_from': '74', 'time_limits_to': '75', 'check_tags': '76', 'person_as_subject': '78', 'non_decs_region': '82',
                  'abstract': '83', 'transfer_date_to_database': '84', 'author_keyword': '85', 'descriptors_primary': '87',
@@ -34,7 +34,8 @@ field_tag_map = {'cooperative_center_code': '01', 'id': '02', 'call_number': '03
                  'local_descriptors': '653', 'clinical_trial_registry_name': '700', 'doi_number': '724',
                  'source_control': '98', 'export_control_1': '776', 'export_control_2': '778', 'alternate_ids': '779',
                  'created_time': '91', 'created_by': '92', 'updated_time': '93', 'system_version': '899', 'indexed_database': '904',
-                 'linked_ein': '610', 'linked_efr': '611'
+                 'license': '540', 'status': '775', 'related_research': '786', 'related_resource': '787',
+                 'community': '984', 'community_collection_path': '986',
                  }
 
 
@@ -483,8 +484,8 @@ FIELDS_BY_DOCUMENT_TYPE['MSms'] = [indexed_databases,
                                    ]
 
 # Monograph Series (analytic)
-FIELDS_BY_DOCUMENT_TYPE['MSams'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'BIREME_reviewed',
-                                                            'record_type', 'item_form', 'type_of_computer_file',
+FIELDS_BY_DOCUMENT_TYPE['MSams'] = [('general', {'fields': ['source', 'status', 'LILACS_indexed', 'indexed_database',
+                                                            'BIREME_reviewed', 'record_type', 'item_form', 'type_of_computer_file',
                                                             'type_of_cartographic_material', 'type_of_journal',
                                                             'type_of_visual_material', 'specific_designation_of_the_material'],
                                                  'legend': _('General information')}),
@@ -609,7 +610,7 @@ class IndividualAuthorAttributes(colander.MappingSchema):
     countries_choices = get_aux_country_list()
 
     text = colander.SchemaNode(colander.String(), title=_('Personal author'), validator=validate_author,
-                               description=_('Format: Lastname, Name'))
+                               description=_('Format: Lastname, Name. Use "Anonimous Authoship" for anonimous.'))
     _1 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 1'), missing=str(''),)
     _2 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 2'), missing=str(''),)
     _3 = colander.SchemaNode(colander.String(), title=_('Affiliation institution level 3'), missing=str(''),)
@@ -718,8 +719,8 @@ class AuthorKeyword(colander.SequenceSchema):
 
 class PagesAttributes(colander.MappingSchema):
     text = colander.SchemaNode(colander.String(), title=_('Pages'), missing=str(''),)
-    _f = colander.SchemaNode(colander.String(), title=_('Initial number'), missing=str(''),)
-    _l = colander.SchemaNode(colander.String(), title=_('End number'), missing=str(''),)
+    _f = colander.SchemaNode(colander.String(), title=_('Initial page'), missing=str(''),)
+    _l = colander.SchemaNode(colander.String(), title=_('End page'), missing=str(''),)
     _e = colander.SchemaNode(colander.String(), title=_('Electronic location identifier'), missing=str(''),)
 
 

@@ -73,8 +73,9 @@ class TitleResource(CustomResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        fb = request.GET.get('fb', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -82,17 +83,20 @@ class TitleResource(CustomResource):
 
         # filter result by approved resources (status=1)
         if fq != '':
-            fq = '(status:1 AND django_ct:title.title*) AND %s' % fq
+            fq = '(django_ct:title.title*) AND %s' % fq
         else:
-            fq = '(status:1 AND django_ct:title.title*)'
+            fq = '(django_ct:title.title*)'
 
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort}
+                         'q': q, 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'id': id, 'sort': sort}
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
@@ -107,6 +111,7 @@ class TitleResource(CustomResource):
         audits = Audit.objects.filter(title=bundle.obj.id)
         new_url = OnlineResources.objects.filter(title=bundle.obj.id)
         collections = Collection.objects.filter(title=bundle.obj.id)
+        public_info = PublicInfo.objects.filter(title=bundle.obj.id)
 
         # m2m fields
         country = bundle.obj.country.all()
@@ -133,7 +138,9 @@ class TitleResource(CustomResource):
                 text += '^v'+title.initial_volume if title.initial_volume else ''
                 text += '^n'+title.initial_number if title.initial_number else ''
                 text += '^i'+title.issn if title.issn else ''
-                bundle.data[dict(TITLE_VARIANCE_LABELS)[title.type]] += [text]
+
+                if title.type and text:
+                    bundle.data[dict(TITLE_VARIANCE_LABELS)[title.type]] += [text]
 
         # field tag 436
         if bvs_specialties:
@@ -158,6 +165,7 @@ class TitleResource(CustomResource):
                 text += '^h'+str(int(index.distribute)) if index.distribute else '' # boolean field
                 text += '^i'+index.copy if index.copy else ''
                 text += '^j'+str(int(index.selective)) if index.selective else '' # boolean field
+                text += '^n'+index.index_code.name if index.index_code else ''
                 bundle.data['index_range'] += [text]
 
         # field tags 510, 520, 530, 540, 550, 560, 610, 620, 650,
@@ -169,7 +177,9 @@ class TitleResource(CustomResource):
             for audit in audits:
                 text = audit.label if audit.label else ''
                 text += '^i'+audit.issn if audit.issn else ''
-                bundle.data[dict(AUDIT_LABELS)[audit.type]] += [text]
+
+                if audit.type and text:
+                    bundle.data[dict(AUDIT_LABELS)[audit.type]] += [text]
 
         # field tags 880 and 999
         if new_url:
@@ -214,6 +224,17 @@ class TitleResource(CustomResource):
                         bundle.data['collection'] += [line]
             else:
                 bundle.data['collection'] = [collection.collection for collection in collections]
+
+        # public info fields
+        if public_info:
+            public_info_data = public_info[0]
+
+            if public_info_data.description:
+                bundle.data['description'] = public_info_data.description
+            if public_info_data.logo_image_url:
+                bundle.data['logo_image_url'] = public_info_data.logo_image_url
+            if public_info_data.logo_image_file:
+                bundle.data['logo_image_file'] = '%s/%s' % (settings.VIEW_DOCUMENTS_BASE_URL, public_info_data.logo_image_file)
 
         return bundle
 

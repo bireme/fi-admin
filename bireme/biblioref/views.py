@@ -1,10 +1,12 @@
 #! coding: utf-8
 from collections import defaultdict
 from django.urls import reverse_lazy
+from django.core.cache import cache
 from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, get_language
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.db.models.functions import Substr
@@ -29,6 +31,7 @@ from biblioref.forms import *
 
 import json
 import requests
+import asyncio
 
 JOURNALS_FASCICLE = "S"
 
@@ -118,7 +121,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         if document_type:
             literature_type = re.sub('[^A-Z]|[CP]', '', document_type)  # get only uppercase chars excepct CP (congress/project)
             treatment_level = re.sub('[A-Z]', '', document_type)  # get only lowercase chars
-            object_list = object_list.filter(literature_type__startswith=literature_type,
+            object_list = object_list.filter(literature_type__istartswith=literature_type,
                                              treatment_level=treatment_level)
 
         # apply custom order if user filter by journals fascicle in reference list
@@ -150,7 +153,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             filter_owner = '*'
 
         # profile lilacs express editor - restrict by CC code when list sources
-        if document_type and user_role == 'editor_llxp':
+        if view_name == 'list_biblioref_sources' and user_role == 'editor_llxp':
             filter_owner = 'center'
 
         # filter by user
@@ -158,12 +161,20 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             object_list = object_list.filter(created_by=self.request.user)
         # filter by cooperative center
         elif filter_owner == 'center':
-            user_cc = self.request.user.profile.get_attribute('cc')
+            user_cc = user_data.get('user_cc')
             object_list = object_list.filter(cooperative_center_code=user_cc)
         # filter by titles of responsibility of current user CC
         elif filter_owner == 'indexed' or (view_name == 'list_biblioref_sources' and document_type == 'S'):
-            user_cc = self.request.user.profile.get_attribute('cc')
-            titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
+            user_cc = user_data.get('user_cc')
+
+            # set/get titles_indexed_by from cache
+            titles_indexed_ck = 'titles_indexed_by_{}'.format(user_cc)
+
+            titles_indexed = cache.get(titles_indexed_ck)
+            if not titles_indexed:
+                titles_indexed = [t.shortened_title for t in Title.objects.filter(indexrange__indexer_cc_code=user_cc)]
+                cache.set(titles_indexed_ck, titles_indexed)
+
             if titles_indexed:
                 # by default filter by LILACS express status (status = 0)
                 if filter_owner == 'indexed' and self.actions.get('filter_status') == '':
@@ -171,7 +182,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
                 # by default filter by articles (exclude sources of list)
                 if not document_type:
-                    object_list = object_list.filter(literature_type__startswith='S', treatment_level='as')
+                    object_list = object_list.filter(literature_type__istartswith='S', treatment_level='as')
 
                 # filter by serial list indexed by center
                 filter_title_qs = Q()
@@ -192,14 +203,14 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
 
         # filter by records changed by others
         elif filter_owner == 'review':
-            if self.actions['review_type'] == 'user':
-                ref_list = refs_changed_by_other_user(self.request.user)
-            else:
+            if self.actions['review_type'] == 'cc':
                 ref_list = refs_changed_by_other_cc(self.request.user)
+            else:
+                ref_list = refs_changed_by_other_user(self.request.user)
 
             if ref_list:
                 # get only ID's from filter reference list
-                reference_id_list = ref_list.keys
+                reference_id_list = ref_list.keys()
                 object_list = object_list.filter(id__in=reference_id_list)
             else:
                 object_list = object_list.none()
@@ -218,6 +229,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         # apply filter status
         if filter_status != '*':
             object_list = object_list.filter(status=filter_status)
+            # when filter for draft (-1) exclude serial sources #1409
+            if filter_status == '-1' and not document_type:
+                object_list = object_list.exclude(treatment_level='')
 
         return object_list
 
@@ -243,8 +257,24 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         context['source_id'] = self.request.GET.get('source')
         context['user_data'] = user_data
         context['user_role'] = user_role
-        context['indexed_database_list'] = Database.objects.all().order_by('name')
-        context['collection_list'] = Collection.objects.all().order_by('parent_id')
+
+        # set/get additional filters lists from cache
+        lang_code = get_language()
+        indexed_database_list_ck = 'biblioref_indexed_database_list_{}'.format(lang_code)
+
+        indexed_database_list = cache.get(indexed_database_list_ck)
+        if not indexed_database_list:
+            indexed_database_list = Database.objects.all().order_by('name')
+            cache.set(indexed_database_list_ck, indexed_database_list)
+
+        collection_list_ck = 'biblioref_collection_list_{}'.format(lang_code)
+        collection_list = cache.get(collection_list_ck)
+        if not collection_list:
+            collection_list = Collection.objects.all().order_by('parent_id')
+            cache.set(collection_list_ck, collection_list)
+
+        context['indexed_database_list'] = indexed_database_list
+        context['collection_list'] = collection_list
         if source_id:
             context['reference_source'] = ReferenceSource.objects.get(pk=source_id)
 
@@ -372,15 +402,9 @@ class BiblioRefUpdate(LoginRequiredView):
                 form.save()
                 # save many-to-many fields (required because form.save in forms.py use commit=False)
                 form.save_m2m()
-                # update DeDup service
-                update_dedup_service(self.object)
-                # update search index
-                update_search_index(self.object)
 
-                # if record is a serial source update analytics auxiliary field reference_title
-                if self.object.literature_type == 'S' and not hasattr(self.object, 'source'):
-                    update_reference_tite(self.object)
-
+                # run secundary updates (async)
+                asyncio.run(update_services(self.object))
 
                 return HttpResponseRedirect(self.get_success_url())
         else:
@@ -658,6 +682,8 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
         Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ReferenceLocal.objects.filter(source=obj.id).delete()
         ReferenceComplement.objects.filter(source=obj.id).delete()
+        # update search index
+        asyncio.run(update_search_index(obj, delete=True))
 
         return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
 
@@ -704,35 +730,27 @@ def refs_changed_by_other_cc(current_user):
     """
     current_user_cc = current_user.profile.get_attribute('cc')
     result_list = defaultdict(list)
+    log_list = []
 
-    # get last references of current user cooperative center
-    refs_from_cc = Reference.objects.filter(cooperative_center_code=current_user_cc).order_by('-id')[:100]
+     # get last references of current user cooperative center
+    refs_from_cc = Reference.objects.filter(cooperative_center_code=current_user_cc).order_by('-id').values_list('id', flat=True)[:100]
+    refs_from_cc_id_list = list(refs_from_cc)
 
-    for reference in refs_from_cc:
-        # get correct class (source our analytic)
-        c_type = reference.get_content_type_id()
-        # filter by logs of current reference, change type and made by other users
-        log_list = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
-                                   .exclude(user=current_user).order_by('-id')
+    # get from this list objects that was modified from other users
+    log_list = LogEntry.objects.filter(object_id__in=refs_from_cc_id_list, action_flag=2) \
+                                .exclude(user=current_user).order_by('-id')
 
-        if log_list:
-            # exclude from list all changes that was already reviewed (logreview is created)
-            log_list = log_list.exclude(logreview__isnull=False)
-
-        # create list of log users of same cc
-        exclude_user_list = []
+    if log_list:
+        # loop all log entries and add to result_list only logs from different centers
+        checked_users = []
         for log in log_list:
-            log_user_cc = log.user.profile.get_attribute('cc')
-            if log_user_cc == current_user_cc:
-                exclude_user_list.append(log.user)
-        # exclude from log list users from same cc as current user
-        if exclude_user_list:
-            log_list = log_list.exclude(user__in=exclude_user_list)
+            if log.user.id not in checked_users:
+                log_user_cc = log.user.profile.get_attribute('cc')
+                checked_users.append(log.user.id)
+                if log_user_cc != current_user_cc:
+                    # create only one entry for each reference (with multiples updates logs)
+                    result_list[log.object_id] = log
 
-        if log_list:
-            # group result by id (one line for each reference)
-            for log in log_list:
-                result_list[log.object_id] = log
 
     return result_list
 
@@ -744,26 +762,19 @@ def refs_changed_by_other_user(current_user):
     log_list = []
     result_list = defaultdict(list)
 
-    # get references created by current user
-    refs_from_user = Reference.objects.filter(created_by=current_user)
-    for reference in refs_from_user:
-        # get correct class (source our analytic)
-        c_type = reference.get_content_type_id()
-        # filter by logs of current reference, change type and made by other users
-        changed_by_other_user = LogEntry.objects.filter(object_id=reference.id, content_type=c_type, action_flag=2) \
-                                                .exclude(user=current_user).order_by('-id')
-        if changed_by_other_user:
-            # exclude from list all changes that was already reviewed (logreview is created)
-            changed_by_other_user = changed_by_other_user.exclude(logreview__isnull=False)
+    # get last references of current user
+    refs_from_user = Reference.objects.filter(created_by=current_user).order_by('-id').values_list('id', flat=True)[:100]
+    refs_from_user_id_list = list(refs_from_user)
 
-        log_list.extend(changed_by_other_user)
+    # get from this list objects that was modified from other users
+    log_list = LogEntry.objects.filter(object_id__in=refs_from_user_id_list, action_flag=2) \
+                                .exclude(user=current_user).order_by('-id')
 
-    # group result (one line for each reference)
+
     if log_list:
         # group result by id (one line for each reference)
         for log in log_list:
             result_list[log.object_id] = log
-
 
     return result_list
 
@@ -787,7 +798,7 @@ def refs_llxp_for_indexing(current_user):
 
 
 # update DeDup service
-def update_dedup_service(obj):
+async def update_dedup_service(obj):
     if obj.document_type() == 'Sas':
         # send multiple DeDup entries with the same ID for each title #728
         for article_title in obj.title:
@@ -834,23 +845,24 @@ def update_dedup_service(obj):
             except:
                 pass
 
-
-
 # update auxiliary field reference_title
-def update_reference_tite(source):
-    analytic_list = ReferenceAnalytic.objects.filter(source=source.id)
-    for analytic in analytic_list:
-        # try update field on each analytic record
-        try:
-            analytic_title = analytic.title[0]['text']
-            analytic.reference_title = u"{0} | {1}".format(source.reference_title, analytic_title)
-            # update only specific fields to avoid mess up json fields (escape)
-            analytic.save(update_fields=['reference_title', 'updated_time', 'updated_by'])
-        except:
-            pass
+async def update_reference_title(obj):
+    if obj.literature_type == 'S' and not hasattr(obj, 'source'):
+        analytic_list = ReferenceAnalytic.objects.filter(source=obj.id)
+        for analytic in analytic_list:
+            # try update field on each analytic record
+            try:
+                analytic_title = analytic.title[0]['text']
+                analytic.reference_title = u"{0} | {1}".format(obj.reference_title, analytic_title)
+                # update only specific fields to avoid mess up json fields (escape)
+                analytic.save(update_fields=['reference_title', 'updated_time', 'updated_by'])
+            except:
+                pass
+
+    return
 
 # update search index
-def update_search_index(reference):
+async def update_search_index(reference, delete=False):
     if reference.status != -1:
         if hasattr(reference, 'source'):
             index = ReferenceAnalyticIndex()
@@ -858,6 +870,18 @@ def update_search_index(reference):
             index = RefereceSourceIndex()
 
         try:
-            index.update_object(reference)
+            if delete:
+                index.remove_object(reference)
+            else:
+                index.update_object(reference)
         except:
             pass
+
+async def update_services(obj):
+    update_search = asyncio.create_task(update_search_index(obj))
+    update_dedup  = asyncio.create_task(update_dedup_service(obj))
+    update_title  = asyncio.create_task(update_reference_title(obj))
+
+    await asyncio.gather(update_search, update_dedup, update_title)
+
+    return

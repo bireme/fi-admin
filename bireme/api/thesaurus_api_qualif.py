@@ -69,8 +69,8 @@ class ThesaurusResourceQualif(CustomResource):
 
         q = request.GET.get('q', '')
         fq = request.GET.get('fq', '')
-        start = request.GET.get('start', '')
-        count = request.GET.get('count', '')
+        start = request.GET.get('start', 0)
+        count = request.GET.get('count', 0)
         lang = request.GET.get('lang', 'pt')
         op = request.GET.get('op', 'search')
         id = request.GET.get('id', '')
@@ -83,12 +83,19 @@ class ThesaurusResourceQualif(CustomResource):
             fq = '(status:1 AND django_ct:title.title*)'
 
         # url
-        search_url = "%siahx-controller/" % settings.SEARCH_SERVICE_URL
+        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
 
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
-                         'q': q, 'fq': fq, 'start': start, 'count': count, 'id': id, 'sort': sort}
+                         'q': q, 'fq': [fq], 'start': int(start), 'count': int(count), 'id': id, 'sort': sort}
 
-        r = requests.post(search_url, data=search_params)
+        search_params_json = json.dumps(search_params)
+        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
+
+        r = requests.post(search_url, data=search_params_json, headers=request_headers)
+        try:
+            response_json = r.json()
+        except ValueError:
+            response_json = json.loads('{"type": "error", "message": "invalid output"}')
 
         self.log_throttled_access(request)
         return self.create_response(request, r.json())
@@ -101,7 +108,10 @@ class ThesaurusResourceQualif(CustomResource):
         bundle.data['identifier'] = bundle.obj.id
 
         id_concept = IdentifierConceptListQualif.objects.filter(identifier_id=bundle.obj.id,preferred_concept='Y').values('id')
-        id_concept = id_concept[0].get('id')
+        if id_concept:
+            id_concept = id_concept[0].get('id')
+        else:
+            return bundle
 
         # 'term_string_en': '001',
         term_string_en = TermListQualif.objects.filter(identifier_concept_id=id_concept,language_code='en',concept_preferred_term='Y',record_preferred_term='Y',status='1').values('term_string')

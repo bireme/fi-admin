@@ -604,7 +604,7 @@ class ActURL(Generic):
 
     act = models.ForeignKey(Act, null=True, on_delete=models.PROTECT)
     url = models.URLField(_("URL"), max_length=300)
-    language = models.CharField(_("Language"), max_length=10, blank=True, choices=LANGUAGES_CHOICES)
+    language = models.CharField(_("Language"), max_length=10, blank=True)
 
 # Act Alternative ID
 class ActAlternateID(models.Model):

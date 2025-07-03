@@ -18,7 +18,7 @@ from help.models import get_help_fields
 from utils.views import LoginRequiredView, GenericUpdateWithOneFormset
 
 from operator import itemgetter, attrgetter
-from datetime import datetime
+from datetime import datetime as dt, timedelta
 from institution.forms import *
 from institution.search_indexes import *
 
@@ -104,6 +104,17 @@ class InstGenericListView(LoginRequiredView, ListView):
                                             template='%(function)s(%(expressions)s AS %(type)s)',
                                             function='Cast', type='decimal')).annotate(n_code=F('center_code')).order_by('-n_code')
 
+            if self.actions['filter_updated'] != '':
+                years = int(self.actions['filter_updated'])
+                date_since = dt.now().date() - timedelta(days=years*365)
+
+                if years == 0:
+                    current_year = dt.now().year
+                    object_list = object_list.filter(updated_time__year=current_year)
+                else:
+                    object_list = object_list.filter( Q(updated_time__lte=date_since) | Q(updated_time__isnull=True) )
+
+                object_list = object_list.order_by('-updated_time')
             else:
                 # by default order by reverse order of id's
                 object_list = object_list.order_by('-id')

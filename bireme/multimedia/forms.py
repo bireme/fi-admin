@@ -9,8 +9,9 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
+from utils.models import AuxCode
 
-from utils.forms import DescriptorRequired, ResourceThematicRequired
+from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
 
 from multimedia.models import *
 
@@ -64,6 +65,23 @@ class AttachmentForm(forms.ModelForm):
     # change widget from attachment_file field for simple select
     attachment_file = forms.FileField(widget=widgets.FileInput)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # change the default values for the language field for the text_language AuxCode
+        blank_option = [('', '---------')]
+        language_choices = [
+            (lang.code if lang.code != 'pt' else 'pt-br', lang)
+            for lang in AuxCode.objects.filter(field='text_language')
+        ]
+        # replace the auto‐generated CharField with ChoiceField
+        self.fields['language'] = forms.ChoiceField(
+            choices=blank_option + language_choices,
+            widget=forms.Select(attrs={'class': 'input_select_text_language'}),
+            label=self.fields['language'].label,
+            required=self.fields['language'].required,
+        )
+
+
     def clean_attachment_file(self):
         data = self.cleaned_data['attachment_file']
         if data.size > int(settings.MAX_UPLOAD_SIZE):
@@ -77,12 +95,12 @@ class AttachmentForm(forms.ModelForm):
 
 # definition of inline formsets
 
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, exclude=['primary'],
+DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=BaseDescriptorInlineFormSet, exclude=('primary', 'status',),
                                                   can_delete=True, extra=1)
 
-KeywordFormSet = generic_inlineformset_factory(Keyword, fields='__all__', can_delete=True, extra=1)
+KeywordFormSet = generic_inlineformset_factory(Keyword, exclude=('status',), can_delete=True, extra=1)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired,
+ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, exclude=('status',),
                                                         can_delete=True, extra=1)
 
 TypeTranslationFormSet = inlineformset_factory(MediaType, MediaTypeLocal, fields='__all__',

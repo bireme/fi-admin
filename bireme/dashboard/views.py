@@ -46,6 +46,9 @@ def widgets(request):
     output['institution_id'] = institution_id
     output['text_blocks'] = text_blocks
 
+    ip_address = request.META.get("HTTP_X_REAL_IP")
+    print(ip_address)
+
     return render(request, 'dashboard/index.html', output)
 
 

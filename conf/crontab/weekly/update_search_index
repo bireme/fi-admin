@@ -1,0 +1,28 @@
+#!/bin/sh
+DATE=$(date '+%Y-%m-%d')
+
+cd /app
+
+# reindex last week = 168 hours (7*24)
+
+# index biblioref
+python manage.py update_index biblioref.ReferenceSource --nocommit --workers=5 --age 168 > /logs/update_index-weekly-${DATE}.log
+python manage.py update_index biblioref.ReferenceAnalytic --nocommit --workers=5 --age 168 >> /logs/update_index-weekly-${DATE}.log
+
+# index events
+python manage.py update_index events --nocommit --workers=5 --age 168 >> /logs/update_index-weekly-${DATE}.log
+
+# index lis
+python manage.py update_index main.Resource --nocommit --workers=5 --age 168 >> /logs/update_index-weekly-${DATE}.log
+
+# index institution
+python manage.py update_index institution --nocommit --workers=5 --age 168 >> /logs/update_index-weekly-${DATE}.log
+
+# index multimedia
+python manage.py update_index multimedia --nocommit --workers=5 --age 168 >> /logs/update_index-weekly-${DATE}.log
+
+# index leisref
+python manage.py update_index leisref --nocommit --workers=5 --age 168 >> /logs/update_index-weekly-${DATE}.log
+
+# index title
+python manage.py update_index title --nocommit --workers=5 --age 168 >> /logs/update_index-weekly-${DATE}.log

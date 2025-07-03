@@ -3,6 +3,7 @@ from collections import OrderedDict
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.utils.translation import ugettext as __
 from django.utils.text import format_lazy
+from django.core.cache import cache
 from django.forms import inlineformset_factory
 from django.forms.utils import ErrorDict
 from  django.contrib.contenttypes.forms import generic_inlineformset_factory
@@ -74,7 +75,7 @@ class BiblioRefForm(BetterModelForm):
             if self.document_type == 'S':
                 self.fields['issn'].widget = widgets.HiddenInput()
             # analytic
-            else:
+            elif self.document_type == 'Sas':
                 self.fields['record_type'].widget = widgets.HiddenInput()
                 self.fields['item_form'].widget = widgets.HiddenInput()
                 self.fields['type_of_journal'].widget = widgets.HiddenInput()
@@ -91,25 +92,33 @@ class BiblioRefForm(BetterModelForm):
 
 
         if 'publication_country' in self.fields:
-            # divide list of countries in Latin America & Caribbean and Others
-            country_list = [('', '')]
-            country_list_latin_caribbean = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=True)]
-            country_list_other = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=False)]
+            lang_code = get_language()
+            # get/set cache
+            publication_country_ck = 'publication_country_{}'.format(lang_code)
+            publication_country_list = cache.get(publication_country_ck)
 
-            # sort list by translation name
-            country_list_latin_caribbean.sort(key=lambda c: c[1])
-            country_list_other.sort(key=lambda c: c[1])
+            if not publication_country_list:
+                # divide list of countries in Latin America & Caribbean and Others
+                publication_country_list = [('', '')]
+                country_list_latin_caribbean = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=True)]
+                country_list_other = [(c.pk, str(c)) for c in Country.objects.filter(LA_Caribbean=False)]
 
-            separator = "-----------"
-            label_latin_caribbean = separator + __('Latin America & Caribbean') + separator
-            label_other = separator + __('Others') + separator
+                # sort list by translation name
+                country_list_latin_caribbean.sort(key=lambda c: c[1])
+                country_list_other.sort(key=lambda c: c[1])
 
-            country_list.extend([('', label_latin_caribbean)])
-            country_list.extend(country_list_latin_caribbean)
-            country_list.extend([('', label_other)])
-            country_list.extend(country_list_other)
+                separator = "-----------"
+                label_latin_caribbean = separator + __('Latin America & Caribbean') + separator
+                label_other = separator + __('Others') + separator
 
-            self.fields['publication_country'].choices = country_list
+                publication_country_list.extend([('', label_latin_caribbean)])
+                publication_country_list.extend(country_list_latin_caribbean)
+                publication_country_list.extend([('', label_other)])
+                publication_country_list.extend(country_list_other)
+
+                cache.set(publication_country_ck, publication_country_list)
+
+            self.fields['publication_country'].choices = publication_country_list
 
         if 'indexed_database' in self.fields:
             regional_indexes = Database.objects.filter(regional_index=True)
@@ -171,6 +180,11 @@ class BiblioRefForm(BetterModelForm):
 
         if pontuation in value:
             if not pontuation_with_space_after in value:
+                if pontuation == '.':
+                    search_version_info = re.search('(\d+\.)(\d+)', value)
+                    if search_version_info != None:
+                        return
+
                 message = _("Insert space after %s") % pontuation
                 message = format_lazy('{}{}', message_item, message)
                 self.add_error(field, message)
@@ -630,7 +644,7 @@ class BiblioRefForm(BetterModelForm):
 
         if self.is_visiblefield(field) and (status == 1 or self.document_type == 'S'):
             search_year = re.search('[0-9]{4}', data)
-            if search_year == None and data != 's.d' and data != 's.f':
+            if search_year == None:
                 self.add_error(field, _("Date without year"))
 
             if not data:
@@ -646,34 +660,26 @@ class BiblioRefForm(BetterModelForm):
         status = self.cleaned_data.get('status')
 
         if self.is_visiblefield(normalized_field) and (status == 1 or self.document_type == 'S'):
-            if raw_date != 's.d' and raw_date != 's.f':
-                if not normalized_date:
-                    self.add_error(normalized_field, _("Entering information in this field is conditional to filling out publication date field"))
-                else:
-                    if len(normalized_date) != 8:
-                        self.add_error(normalized_field, _("Different of 8 characters"))
-
-                    if self.is_LILACS and int(normalized_date[:4]) < 1982:
-                        self.add_error(normalized_field, _("Incompatible with LILACS"))
-
-                    # extract year from raw date field
-                    search_year = re.search('([0-9]{4})', raw_date)
-                    if search_year != None:
-                        raw_date_year = search_year.group(1)
-
-                        if not normalized_date[0:4] == raw_date_year:
-                            error_message = _("Normalized date year must be '%s'") % raw_date_year
-                            self.add_error(normalized_field, error_message)
-
-                        if len(raw_date) == 4:
-                            incomplete_normalized_date = "%s0000" % raw_date
-                            if not normalized_date == incomplete_normalized_date:
-                                error_message = _("Error in the date, use: %s") % incomplete_normalized_date
-                                self.add_error(normalized_field, error_message)
+            if not normalized_date:
+                self.add_error(normalized_field, _("Entering information in this field is conditional to filling out publication date field"))
             else:
-                if normalized_date:
-                    msg = _("Leave blank, publication date = %s") % raw_date
-                    self.add_error(normalized_field, msg)
+                if len(normalized_date) != 8:
+                    self.add_error(normalized_field, _("Different of 8 characters"))
+
+                # extract year from raw date field
+                search_year = re.search('([0-9]{4})', raw_date)
+                if search_year != None:
+                    raw_date_year = search_year.group(1)
+
+                    if not normalized_date[0:4] == raw_date_year:
+                        error_message = _("Normalized date year must be '%s'") % raw_date_year
+                        self.add_error(normalized_field, error_message)
+
+                    if len(raw_date) == 4:
+                        incomplete_normalized_date = "%s0000" % raw_date
+                        if not normalized_date == incomplete_normalized_date:
+                            error_message = _("Error in the date, use: %s") % incomplete_normalized_date
+                            self.add_error(normalized_field, error_message)
 
         return normalized_date
 
@@ -768,8 +774,7 @@ class BiblioRefForm(BetterModelForm):
 
         if self.is_visiblefield(field) and self.cleaned_data['status'] == 1:
             if not(data):
-                if self.cleaned_data['publication_city'] != 's.l':
-                    self.add_error(field, _('Entering information in this field is conditional to filling out publication city field'))
+                self.add_error(field, _('Entering information in this field is conditional to filling out publication city field'))
             else:
                 if self.is_LILACS:
                     country_list_latin_caribbean = [c for c in Country.objects.filter(LA_Caribbean=True)]
@@ -853,10 +858,14 @@ class BiblioRefForm(BetterModelForm):
 
         if self.document_type[0] == 'S':
             if self.document_type == 'S':
-                obj.reference_title = u"{0}; {1} ({2}), {3}".format(self.cleaned_data['title_serial'],
-                                                                    self.cleaned_data['volume_serial'],
-                                                                    self.cleaned_data['issue_number'],
-                                                                    self.cleaned_data['publication_date_normalized'][:4])
+                issue_number = self.cleaned_data['issue_number']
+                issue_str = " (" + issue_number + ")" if issue_number else ''
+                obj.reference_title = u"{serial}; {volume}{issue}, {year}".format(serial=self.cleaned_data['title_serial'],
+                                                                                   volume=self.cleaned_data['volume_serial'],
+                                                                                   issue=issue_str,
+                                                                                   year=self.cleaned_data['publication_date_normalized'][:4])
+
+
             elif self.document_type == 'Sas':
                 if self.cleaned_data['title']:
                     analytic_title = self.cleaned_data['title']
@@ -926,6 +935,21 @@ class AttachmentForm(forms.ModelForm):
     # change widget from attachment_file field for simple select
     attachment_file = forms.FileField(widget=widgets.FileInput)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # change the default values for the language field for the text_language AuxCode
+        blank_option = [('', '---------')]
+        language_choices = [
+            (lang.code if lang.code != 'pt' else 'pt-br', lang)
+            for lang in AuxCode.objects.filter(field='text_language')
+        ]
+        # replace the auto‐generated CharField with a ChoiceField
+        self.fields['language'] = forms.ChoiceField(
+            choices=blank_option + language_choices,
+            widget=forms.Select(attrs={'class': 'input_select_text_language'}),
+            label=self.fields['language'].label,
+            required=self.fields['language'].required,
+        )
 
 class LibraryForm(forms.ModelForm):
     class Meta:

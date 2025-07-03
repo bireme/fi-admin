@@ -1,12 +1,16 @@
 from django.conf import settings
+from django.db.models import Q
+from django.contrib.contenttypes.models import ContentType
+
 from haystack import indexes
 from haystack.exceptions import SkipDocument
+
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
 from biblioref.models import Reference, ReferenceSource, ReferenceAnalytic, ReferenceLocal
+from related.models import LinkedResource, LinkedResearchData
+from classification.models import Relationship
 from attachments.models import Attachment
 from title.models import Title
-from classification.models import Relationship
-from django.contrib.contenttypes.models import ContentType
 from utils.models import AuxCode
 
 import datetime
@@ -16,6 +20,7 @@ import re
 class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     reference_title = indexes.MultiValueField(null=True)
+    english_title = indexes.CharField(model_attr='english_translated_title')
     author = indexes.MultiValueField(null=True)
     reference_abstract = indexes.MultiValueField()
     abstract_language = indexes.MultiValueField()
@@ -39,8 +44,14 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
     updated_date = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
 
+    related_resources = indexes.MultiValueField()
+    related_research = indexes.MultiValueField()
+
     def get_model(self):
         return ReferenceAnalytic
+
+    def get_updated_field(self):
+        return "updated_time"
 
     def prepare(self, obj):
         self.prepared_data = super(ReferenceAnalyticIndex, self).prepare(obj)
@@ -188,12 +199,59 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.updated_time:
             return obj.updated_time.strftime('%Y%m%d')
 
-    def get_field_values(self, field, attribute = 'text'):
-        value_list = field
-        if type(field) != list:
-            value_list = json.loads(field)
+    def prepare_related_resources(self, obj):
+        related_obj_id = 'biblio-{}'.format(obj.id)
+        c_type = ContentType.objects.get_for_model(ReferenceAnalytic)
+        related_resources = LinkedResource.objects.filter( Q(object_id=obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
 
-        return [occ.get(attribute) for occ in value_list]
+        # add related resource
+        related_resource_list = []
+        for related in related_resources:
+            if related.object_id == obj.id:
+                related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
+            else:
+                related_id = 'biblio-{}'.format(related.object_id)
+                related_title = Reference.objects.get(pk=related.object_id).reference_title
+                related_dict = {"_i": related.type.field_passive.field, "_t": related_title, "_6": related.link, "_w": related_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
+
+        return related_resource_list
+
+    def prepare_related_research(self, obj):
+        c_type = ContentType.objects.get_for_model(ReferenceAnalytic)
+        related_research = LinkedResearchData.objects.filter(object_id=obj.id, content_type=c_type)
+
+        # add related research
+        related_research_list = []
+        for related in related_research:
+            related_dict = {"_t": related.title, "_6": related.link, "_n": related.description}
+            related_dict_json = self.dict2json(related_dict)
+            related_research_list.append(related_dict_json)
+
+        return related_research_list
+
+    def dict2json(self, raw_dict):
+        clean_dict = {k: v for k, v in raw_dict.items() if v}
+        json_out = json.dumps(clean_dict, ensure_ascii=False).encode('utf8')
+
+        return json_out
+
+    def get_field_values(self, field, attribute = 'text'):
+        field_values = []
+        try:
+            value_list = field
+            if type(field) != list:
+                value_list = json.loads(field)
+
+            field_values = [occ.get(attribute) for occ in value_list]
+        except:
+            # ignore json field load error
+            pass
+
+        return field_values
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
@@ -203,6 +261,7 @@ class ReferenceAnalyticIndex(indexes.SearchIndex, indexes.Indexable):
 class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     reference_title = indexes.MultiValueField(null=True)
+    english_title = indexes.CharField()
     author = indexes.MultiValueField(null=True)
     reference_abstract = indexes.MultiValueField()
     abstract_language = indexes.MultiValueField()
@@ -228,8 +287,14 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
     thesis_dissertation_institution = indexes.CharField(model_attr='thesis_dissertation_institution')
     thesis_dissertation_academic_title = indexes.CharField(model_attr='thesis_dissertation_academic_title')
 
+    related_resources = indexes.MultiValueField()
+    related_research = indexes.MultiValueField()
+
     def get_model(self):
         return ReferenceSource
+
+    def get_updated_field(self):
+        return "updated_time"
 
     def prepare(self, obj):
         self.prepared_data = super(RefereceSourceIndex, self).prepare(obj)
@@ -269,6 +334,15 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
             title = self.get_field_values(obj.title_collection)
 
         return title
+
+    def prepare_english_title(self, obj):
+        english_title = ''
+        if obj.english_title_monographic:
+            english_title = obj.english_title_monographic
+        elif obj.english_title_collection:
+            english_title = obj.english_title_collection
+
+        return english_title
 
     def prepare_author(self, obj):
         author_list = []
@@ -319,9 +393,11 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         lang_list = []
         if obj.text_language:
             for code in obj.text_language:
-                aux_code = AuxCode.objects.get(field='text_language', code=code)
-                lang_translations = "|".join(aux_code.get_translations())
-                lang_list.append(lang_translations)
+                aux_code = AuxCode.objects.filter(field='text_language', code=code)
+                if aux_code:
+                    aux_code = aux_code[0]
+                    lang_translations = "|".join(aux_code.get_translations())
+                    lang_list.append(lang_translations)
 
             return lang_list
 
@@ -374,6 +450,40 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.thesis_dissertation_leader:
             return self.get_field_values(obj.thesis_dissertation_leader)
 
+    def prepare_related_resources(self, obj):
+        related_obj_id = 'biblio-{}'.format(obj.id)
+        c_type = ContentType.objects.get_for_model(ReferenceSource)
+        related_resources = LinkedResource.objects.filter( Q(object_id=obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
+
+        # add related resource
+        related_resource_list = []
+        for related in related_resources:
+            if related.object_id == obj.id:
+                related_dict = {"_i": related.type.field, "_t": related.title, "_6": related.link, "_w": related.internal_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
+            else:
+                related_id = 'biblio-{}'.format(related.object_id)
+                related_title = Reference.objects.get(pk=related.object_id).reference_title
+                related_dict = {"_i": related.type.field_passive.field, "_t": related_title, "_6": related.link, "_w": related_id}
+                related_dict_json = self.dict2json(related_dict)
+                related_resource_list.append(related_dict_json)
+
+        return related_resource_list
+
+    def prepare_related_research(self, obj):
+        c_type = ContentType.objects.get_for_model(ReferenceSource)
+        related_research = LinkedResearchData.objects.filter(object_id=obj.id, content_type=c_type)
+
+        # add related research
+        related_research_list = []
+        for related in related_research:
+            related_dict = {"_t": related.title, "_6": related.link, "_n": related.description}
+            related_dict_json = self.dict2json(related_dict)
+            related_research_list.append(related_dict_json)
+
+        return related_research_list
+
     def prepare_created_date(self, obj):
         if obj.created_time:
             return obj.created_time.strftime('%Y%m%d')
@@ -384,11 +494,25 @@ class RefereceSourceIndex(indexes.SearchIndex, indexes.Indexable):
 
 
     def get_field_values(self, field, attribute = 'text'):
-        value_list = field
-        if type(field) != list:
-            value_list = json.loads(field)
+        field_values = []
+        try:
+            value_list = field
+            if type(field) != list:
+                value_list = json.loads(field)
 
-        return [occ.get(attribute) for occ in value_list]
+            field_values = [occ.get(attribute) for occ in value_list]
+        except:
+            # ignore json field load error
+            pass
+
+        return field_values
+
+    def dict2json(self, raw_dict):
+        clean_dict = {k: v for k, v in raw_dict.items() if v}
+        json_out = json.dumps(clean_dict, ensure_ascii=False).encode('utf8')
+
+        return json_out
+
 
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""

@@ -4,6 +4,8 @@ from django.utils.safestring import mark_safe
 from django.utils.html import linebreaks
 from django.core.exceptions import FieldDoesNotExist
 
+from datetime import datetime
+
 from utils.models import AuxCode
 
 import json
@@ -13,7 +15,7 @@ register = template.Library()
 
 def get_status_info(code):
     STATUS = (
-        {'code': -3, 'label': _('Migration'), 'icons': 'icon-upload status-migration', 'label_color': 'important'},
+        {'code': -3, 'label': _('Migration'), 'icons': 'icon-upload status-migration', 'label_color': 'lilac'},
         {'code': -2, 'label': _('Submission'), 'icons': 'icon-upload status-submission', 'label_color': 'inverse'},
         {'code': -1, 'label': _('Draft'), 'icons': 'icon-time status-draft', 'label_color': ''},
         {'code': 0, 'label': 'LILACS-Express', 'icons': 'icon-flag status-pending', 'label_color': 'info'},
@@ -283,3 +285,9 @@ def display_field_label(field_name, class_name):
         field_label = field_name
 
     return field_label.capitalize()
+
+
+@register.filter
+def days_since(date):
+    delta = datetime.now().date() - datetime.date(date)
+    return delta.days

@@ -131,6 +131,8 @@ MIDDLEWARE = [
     'elasticapm.contrib.django.middleware.TracingMiddleware',
     # maintenance mode
     'utils.middleware.MaintenanceModeMiddleware',
+    # secure login from brute force attack
+    'utils.middleware.BruteForceProtectionMiddleware',
 ]
 
 
@@ -275,8 +277,8 @@ TEMPLATE_VISIBLE_SETTINGS = (
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-# set permissions after file upload (444 read only file for security reasons)
-FILE_UPLOAD_PERMISSIONS = 0o444
+# set permissions after file upload (644 write only for the owner)
+FILE_UPLOAD_PERMISSIONS = 0o644
 
 # set max upload size
 # 10MB - 10485760
@@ -299,6 +301,7 @@ BIREMELOGIN_BASE_URL = os.environ.get("BIREMELOGIN_BASE_URL")
 VIEW_DOCUMENTS_BASE_URL = os.environ.get("VIEW_DOCUMENTS_BASE_URL")
 
 SEARCH_SERVICE_URL = os.environ.get("SEARCH_SERVICE_URL")
+SEARCH_SERVICE_APIKEY = os.environ.get("SEARCH_SERVICE_APIKEY")
 SEARCH_INDEX = os.environ.get("SEARCH_INDEX")
 DECS_LOOKUP_SERVICE = os.environ.get("DECS_LOOKUP_SERVICE")
 GOOGLE_ANALYTICS_ID = os.environ.get("GOOGLE_ANALYTICS_ID")
@@ -306,6 +309,7 @@ DEDUP_SERVICE_URL = os.environ.get("DEDUP_SERVICE_URL")
 DEDUP_ARTICLE_DETAIL = os.environ.get("DEDUP_ARTICLE_DETAIL")
 DEDUP_PUT_URL = os.environ.get("DEDUP_PUT_URL")
 DECS_HIGHLIGHTER_URL = os.environ.get("DECS_HIGHLIGHTER_URL")
+DECS_HIGHLIGHTER_APIKEY = os.environ.get("DECS_HIGHLIGHTER_APIKEY")
 
 RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY")
 GOOGLE_MAPS_APIKEY = os.environ.get("GOOGLE_MAPS_APIKEY")
@@ -322,6 +326,9 @@ EMAIL_PORT = os.environ.get("EMAIL_PORT")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_FROM = os.environ.get("EMAIL_FROM")
+
+BRUTE_FORCE_THRESHOLD = int(os.environ.get("BRUTE_FORCE_THRESHOLD", 5))   # Number of failed login attempts
+BRUTE_FORCE_TIMEOUT = int(os.environ.get("BRUTE_FORCE_TIMEOUT", 300))     # Lock the user out for X seconds
 
 # form actions
 ACTIONS = {
@@ -343,6 +350,7 @@ ACTIONS = {
     'filter_category': "",
     'filter_country': "",
     'filter_network': "",
+    'filter_updated': "",
     'document_type': "",
     'review_type': "",
     'results_per_page': "",

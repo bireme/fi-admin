@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 import json
 
+default_app_config = 'utils.apps.UtilsAppConfig'
 
 class NonHtmlDebugToolbarMiddleware(object):
     """

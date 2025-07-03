@@ -1,5 +1,5 @@
 #! coding: utf-8
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import ugettext_lazy as _, get_language, activate
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import User
@@ -77,19 +77,35 @@ class Collection(models.Model, AuditLog):
 
         return parent_list
 
-    def community_collection_path(self):
+    def community_collection_path(self, include_first_parent=True):
         lang_code = get_language()
-        cache_id = "classification_collection_fullpath-{}-{}".format(lang_code, self.id)
+        cache_id = "classification_collection_fullpath-{}-{}-{}".format(lang_code, self.id, include_first_parent)
         full_path = cache.get(cache_id)
 
         if not full_path:
             parent_list = [str(parent) for parent in self.get_parents()]
+            # remove first parent from list
+            if not include_first_parent and parent_list:
+                parent_list = parent_list[1:]
             full_list = parent_list + [str(self)]
             full_path = ' / '.join(full_list)
 
             cache.set(cache_id, full_path, None)
 
         return full_path
+
+    def community_collection_path_translations(self, include_first_parent=True):
+        available_languages = ['pt-br','es','en']
+        translation_list = []
+        for lang in available_languages:
+            # force use of specific language for translations
+            activate(lang)
+            translation_list.extend(["%s^%s" % (lang, self.community_collection_path(include_first_parent))])
+
+        translation_list_pipe = '|'.join(translation_list)
+
+        return translation_list_pipe
+
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

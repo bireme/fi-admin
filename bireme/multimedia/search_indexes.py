@@ -11,8 +11,9 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     title_translated = indexes.CharField(model_attr='title_translated')
     link = indexes.CharField(model_attr='link', null=True)
     description = indexes.CharField(model_attr='description', null=True)
-    authors = indexes.MultiValueField()
+    author = indexes.MultiValueField()
     contributors = indexes.MultiValueField()
+    related_links = indexes.MultiValueField()
     media_collection = indexes.CharField(model_attr='media_collection', null=True)
     item_extension = indexes.CharField(model_attr='item_extension', null=True)
     other_physical_details = indexes.CharField(model_attr='other_physical_details', null=True)
@@ -21,6 +22,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     content_notes = indexes.CharField(model_attr='content_notes', null=True)
     version_notes = indexes.CharField(model_attr='version_notes', null=True)
     publication_date = indexes.CharField(model_attr='publication_date', null=True)
+    publication_year = indexes.CharField()
     language = indexes.MultiValueField()
     language_display = indexes.MultiValueField()
     media_type = indexes.MultiValueField()
@@ -35,6 +37,9 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Media
+
+    def get_updated_field(self):
+        return "updated_time"
 
     '''
     def should_update(self, instance, **kwargs):
@@ -56,11 +61,14 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_language_display(self, obj):
         return [ "|".join( source_language.get_translations() ) for source_language in SourceLanguage.objects.filter(media=obj.id) ]
 
-    def prepare_authors(self, obj):
+    def prepare_author(self, obj):
         return [line.strip() for line in obj.authors.split('\n') if line.strip()]
 
     def prepare_contributors(self, obj):
         return [line.strip() for line in obj.contributors.split('\n') if line.strip()]
+
+    def prepare_related_links(self, obj):
+        return [line.strip() for line in obj.related_links.split('\n') if line.strip()]
 
     def prepare_thematic_area(self, obj):
         return [ rt.thematic_area.acronym for rt in ResourceThematic.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)) ]
@@ -73,6 +81,10 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_keyword(self, obj):
         return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
+
+    def prepare_publication_year(self, obj):
+        if obj.publication_date:
+           return obj.publication_date.year
 
     def prepare_created_date(self, obj):
         if obj.created_time:

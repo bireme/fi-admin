@@ -323,12 +323,14 @@ class ActDeleteView(LoginRequiredView, DeleteView):
         obj = super(ActDeleteView, self).get_object()
         c_type = ContentType.objects.get_for_model(obj)
 
-        # first delete related objects
+        # delete related objects
         ActURL.objects.filter(act=obj).delete()
         ActRelationship.objects.filter(act_related=obj).delete()
         Descriptor.objects.filter(object_id=obj.id, content_type=c_type).delete()
         Attachment.objects.filter(object_id=obj.id, content_type=c_type).delete()
         ResourceThematic.objects.filter(object_id=obj.id, content_type=c_type).delete()
+        # update search index
+        update_search_index(obj, delete=True)
 
         return super(ActDeleteView, self).delete(request, *args, **kwargs)
 
@@ -898,11 +900,14 @@ class ActCollectionDeleteView(LoginRequiredView, DeleteView):
         return obj
 
 # update search index
-def update_search_index(act):
+def update_search_index(act, delete=False):
     if act.status != -1:
         index = LeisRefIndex()
 
         try:
-            index.update_object(act)
+            if delete:
+                index.remove_object(act)
+            else:
+                index.update_object(act)
         except:
             pass

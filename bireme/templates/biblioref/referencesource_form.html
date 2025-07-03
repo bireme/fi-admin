@@ -76,8 +76,10 @@
             {% if form.document_type == 'MS' or form.document_type == 'Mm' or form.document_type.0 == 'N' or form.document_type == 'Mmc' or form.document_type == 'MSms'%}
                 <li><a href="#tab-complement" data-toggle="tab"><i class="icon-inbox"></i> {% trans "Event/Project" %}{% if formset_complement.errors and not formset_complement.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
             {% endif %}
-            <li><a href="#tab-researchdata" data-toggle="tab"><i class="icon-share"></i> {% trans "Rearch data" %}{% if formset_researchdata.errors and not formset_researchdata.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
-            <li><a href="#tab-relatedresource" data-toggle="tab"><i class="icon-file"></i> {% trans "Related resources" %}{% if formset_relatedresource.errors and not formset_relatedresource.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+            {% if form.document_type != 'S' %}
+                <li><a href="#tab-researchdata" data-toggle="tab"><i class="icon-share"></i> {% trans "Rearch data" %}{% if formset_researchdata.errors and not formset_researchdata.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+                <li><a href="#tab-relatedresource" data-toggle="tab"><i class="icon-file"></i> {% trans "Related resources" %}{% if formset_relatedresource.errors and not formset_relatedresource.is_valid %}<span class="mark"> <i class="icon-warning-sign"></i></span>{% endif %}</a></li>
+            {% endif %}
         {% endif %}
     </ul>
 
@@ -557,14 +559,14 @@
               url: "{{ settings.DEDUP_SERVICE_URL }}",
               data: {
                 database: "lilacs_Sas_Source",
-                schema: "LILACS_Sas_Source",
+                schema: "LILACS_Sas_Source_Three",
                 titulo_revista: title_serial,
                 volume_fasciculo: volume,
                 numero_fasciculo: issue_number
               },
               dataType: "json",
               success: function(data) {
-                //console.log(data);
+                console.log(data);
                 var sources = data.result;
                 var duplicates_total = 0;
                 var ref_id = '';
@@ -613,12 +615,6 @@
                     $( '#dedup-results' ).append(
                         $( '<div>', { html: duplicationLink }, '</div>' )
                     );
-                    // if all fields match disable save buttons
-                    if ( title_serial == source['titulo_revista'] && volume == source['volume_fasciculo'] && issue_number == source['numero_fasciculo'] ){
-                        $("button").attr("disabled", true);
-                        $("button").addClass("disabled");
-                    }
-
                   }
                 }
 
