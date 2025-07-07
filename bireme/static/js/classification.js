@@ -89,7 +89,6 @@ function open_annif_suggestions(language){
 
     annif_suggestion_url = '/utils/annif_suggestion/';
     post_params = {'text_to_analyze': text_to_analyze, 'output_lang': lang};
-    console.log(post_params);
 
     open_window_with_post('POST', annif_suggestion_url, post_params, 'annif_suggestions');
     return false;
