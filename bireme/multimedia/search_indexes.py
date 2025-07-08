@@ -23,10 +23,12 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     version_notes = indexes.CharField(model_attr='version_notes', null=True)
     publication_date = indexes.CharField(model_attr='publication_date', null=True)
     publication_year = indexes.CharField()
+    publication_country = indexes.MultiValueField()
     language = indexes.MultiValueField()
     language_display = indexes.MultiValueField()
     media_type = indexes.MultiValueField()
     media_type_filter = indexes.MultiValueField()
+    media_type_display = indexes.MultiValueField()
     thematic_area = indexes.MultiValueField()
     thematic_area_display = indexes.MultiValueField()
     descriptor = indexes.MultiValueField()
@@ -51,6 +53,9 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_media_type(self, obj):
         return [ media_type.acronym for media_type in MediaType.objects.filter(media=obj.id) ]
+
+    def prepare_media_type_display(self, obj):
+        return [ "|".join( media_type.get_translations() ) for media_type in MediaType.objects.filter(media=obj.id) ]
 
     def prepare_media_type_filter(self, obj):
         return [ "|".join( media_type.get_translations() ) for media_type in MediaType.objects.filter(media=obj.id) ]
@@ -86,6 +91,10 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.publication_date:
            return obj.publication_date.year
 
+    def prepare_publication_country(self, obj):
+        if obj.publication_country:
+            return ["|".join(country.get_translations()) for country in obj.publication_country.all()]
+
     def prepare_created_date(self, obj):
         if obj.created_time:
             return obj.created_time.strftime('%Y%m%d')
@@ -98,9 +107,3 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
         """Used when the entire index for model is updated."""
         return self.get_model().objects.filter(created_time__lte=datetime.datetime.now())
 
-'''
-    def prepare_media_type(self, obj):
-        return [ "|".join( event_type.get_translations() ) for event_type in EventType.objects.filter(event=obj.id) ]
-
-
-'''
