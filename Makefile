@@ -39,11 +39,8 @@ dev_sh:
 dev_test:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin make test
 
-dev_add_gettext:
-	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin apk add --no-cache gettext
-
 dev_update_translations:
-	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py makemessages --all
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh -c "apk add --no-cache gettext && python manage.py makemessages --all"
 
 dev_import:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py loaddata $(import_file)
