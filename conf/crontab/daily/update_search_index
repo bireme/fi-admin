@@ -6,23 +6,26 @@ cd /app
 # reindex last day = 24 hours
 
 # index biblioref
-python manage.py update_index biblioref.ReferenceSource --age 24 > /logs/update_index-daily-${DATE}.log
-python manage.py update_index biblioref.ReferenceAnalytic --age 24 >> /logs/update_index-daily-${DATE}.log
+python manage.py update_index biblioref.ReferenceSource --nocommit --age 24 > /logs/update_index-daily-${DATE}.log
+python manage.py update_index biblioref.ReferenceAnalytic --nocommit --age 24 >> /logs/update_index-daily-${DATE}.log
 
 # index events
-python manage.py update_index events --age 24 >> /logs/update_index-daily-${DATE}.log
+python manage.py update_index events --nocommit --age 24 >> /logs/update_index-daily-${DATE}.log
 
 # index lis
-python manage.py update_index main.Resource --age 24 >> /logs/update_index-daily-${DATE}.log
+python manage.py update_index main.Resource --nocommit --age 24 >> /logs/update_index-daily-${DATE}.log
 
 # index institution
-python manage.py update_index institution --age 24 >> /logs/update_index-daily-${DATE}.log
+python manage.py update_index institution --nocommit --age 24 >> /logs/update_index-daily-${DATE}.log
 
 # index multimedia
-python manage.py update_index multimedia --age 24 >> /logs/update_index-daily-${DATE}.log
+python manage.py update_index multimedia --nocommit --age 24 >> /logs/update_index-daily-${DATE}.log
 
 # index leisref
-python manage.py update_index leisref --age 24 >> /logs/update_index-daily-${DATE}.log
+python manage.py update_index leisref --nocommit --age 24 >> /logs/update_index-daily-${DATE}.log
 
 # index title
-python manage.py update_index title --age 24 >> /logs/update_index-daily-${DATE}.log
+python manage.py update_index title --nocommit --age 24 >> /logs/update_index-daily-${DATE}.log
+
+# commit changes
+wget "${HAYSTACK_CONNECTION_URL}/update?commit=true" -O /logs/commit.log

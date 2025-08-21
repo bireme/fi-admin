@@ -27,3 +27,5 @@ python manage.py update_index leisref --nocommit --workers=10 --age 720 >> /logs
 # index title
 python manage.py update_index title --nocommit --workers=10 --age 720 >> /logs/update_index-monthly-${DATE}.log
 
+# commit changes
+wget "${HAYSTACK_CONNECTION_URL}/update?commit=true" -O /logs/commit.log
