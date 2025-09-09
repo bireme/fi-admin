@@ -659,7 +659,7 @@ class BiblioRefForm(BetterModelForm):
         raw_date = self.cleaned_data.get('publication_date')
         status = self.cleaned_data.get('status')
 
-        if self.is_visiblefield(normalized_field) and (status == 1 or self.document_type == 'S'):
+        if self.is_visiblefield(normalized_field):
             if not normalized_date:
                 self.add_error(normalized_field, _("Entering information in this field is conditional to filling out publication date field"))
             else:
