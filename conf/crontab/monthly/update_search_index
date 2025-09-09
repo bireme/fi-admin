@@ -29,3 +29,6 @@ python manage.py update_index title --nocommit --workers=10 --age 720 >> /logs/u
 
 # commit changes
 wget "${HAYSTACK_CONNECTION_URL}/update?commit=true" -O /logs/commit.log
+
+# optimize index
+wget "${HAYSTACK_CONNECTION_URL}/update?optimize=true" -O /logs/optimize.log

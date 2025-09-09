@@ -47,6 +47,11 @@
                                         {% endif %}
                                         {% endspaceless %}
                                     </div>
+                                    {% if field.errors %}
+                                        <div class="help-block error-message">
+                                            {{ field.errors }}
+                                        </div>
+                                    {% endif %}
                                 </td>
                             {% elif field.name != 'DELETE' %}
                                 <td class="span6">
