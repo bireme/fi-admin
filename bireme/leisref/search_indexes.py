@@ -13,6 +13,7 @@ from leisref.models import *
 class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
+    english_translated_title = indexes.CharField(model_attr='english_translated_title')
     reference_title = indexes.CharField()
     status = indexes.IntegerField(model_attr='status')
     scope_region = indexes.CharField()
