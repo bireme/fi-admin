@@ -92,13 +92,14 @@ class WhodidMiddleware(MiddlewareMixin):
     def mark_whodid(self, sender, instance, **kwargs):
         user = get_current_user()
         instance_field_names = self.get_all_field_names(instance)
-        if 'created_by' in instance_field_names and not instance.created_by:
-            instance.created_by = user
-            instance.created_time = timezone.now()
-        else:
-            if 'updated_by' in instance_field_names:
-                instance.updated_by = user
-                instance.updated_time = timezone.now()
+        if user and user.is_authenticated:
+            if 'created_by' in instance_field_names and not instance.created_by:
+                instance.created_by = user
+                instance.created_time = timezone.now()
+            else:
+                if 'updated_by' in instance_field_names:
+                    instance.updated_by = user
+                    instance.updated_time = timezone.now()
 
         # automatically add user cooperative center if present at field names and is not set
         if 'cooperative_center_code' in instance_field_names and not instance.cooperative_center_code:

@@ -1,3 +1,4 @@
+import re
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -121,10 +122,16 @@ class BaseDescriptorInlineFormSet(BaseGenericInlineFormSet):
                 continue
 
             text = form.cleaned_data.get("text")
+            code = form.cleaned_data.get("code")
             if text in descriptors:
                 raise forms.ValidationError(
                     _("Duplicated descriptors are not allowed"), code="invalid"
                 )
+
+            # Check if code starts with "^d" followed by a number
+            if code and not re.match(r'^\^d\d+', code):
+                form.add_error("text", _("Invalid descriptor"))
+                continue
 
             if text is not None and text != "":
                 descriptors.append(text)

@@ -447,7 +447,7 @@ def get_indexcodes(request):
     title_result = Title.objects.filter(shortened_title__iexact=title)
     if title_result:
         title_obj = title_result[0]
-        index_range = IndexRange.objects.filter(title=title_obj.pk).annotate(index_db=F('index_code__name')).values("index_db")
+        index_range = IndexRange.objects.filter(title=title_obj.pk, indexer_cc_code__isnull=False).exclude(indexer_cc_code='').annotate(index_db=F('index_code__name')).values("index_db")
         title_indexcodes = json.dumps(list(index_range), cls=DjangoJSONEncoder)
 
 

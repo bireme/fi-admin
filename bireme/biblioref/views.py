@@ -59,6 +59,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         # identify view and model in use
         view_name = self.view_name
         model_name = self.model.__name__
+        exp_serial = re.compile('[\.\;\(\)\|]')
 
         # getting action parameter
         self.actions = {}
@@ -69,7 +70,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         search_field = self.search_field + lookup_method
 
         # check if user has perform a search
-        search = self.actions['s']
+        search = self.actions['s'].strip() if self.actions['s'] else ''
         if search:
             search_by_field = False
             # check if is a search by field (ex. id:9999)
@@ -82,13 +83,18 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
                 search_field, search = "%s%s" % (search_parts[0], lookup_expr), search_parts[1]
 
             elif settings.FULLTEXT_SEARCH:
+
+                if search.startswith('"') and search.endswith('"'):
+                    # keep search untuched if user use quotes
+                    pass
+
                 # check if user is searching by serial. Ex. Mem. Inst. Oswaldo Cruz; 14 (41)
-                exp_serial = re.compile('[\.\;\(\)\|]')
-                if bool(re.search(exp_serial, search)):
+                elif bool(re.search(exp_serial, search)):
                     # search using quotes
                     search = u'"{}"'.format(search)
+
+                # other cases search using boolean AND
                 else:
-                    # search using boolean AND
                     search = u"+{}".format(search.replace(' ', ' +'))
 
             object_list = self.model.objects.filter(**{search_field: search})

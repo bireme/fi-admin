@@ -123,6 +123,8 @@ class LeisrefResource(ModelResource):
             bundle.data['organ_issuer'] = "|".join(bundle.obj.organ_issuer.get_translations())
         if bundle.obj.source_name:
             bundle.data['source_name'] = "|".join(bundle.obj.source_name.get_translations())
+        if bundle.obj.scope_region:
+            bundle.data['scope_region'] = "|".join(bundle.obj.scope_region.get_translations())
 
 
         # check if object has classification (relationship model)

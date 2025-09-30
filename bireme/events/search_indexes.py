@@ -12,7 +12,7 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     link = indexes.CharField(model_attr='link', null=True)
     address = indexes.CharField(model_attr='address', null=True)
     city = indexes.CharField(model_attr='city', null=True)
-    country = indexes.CharField(model_attr='country', null=True)
+    country = indexes.CharField()
     start_date = indexes.DateTimeField(model_attr='start_date')
     end_date = indexes.DateTimeField(model_attr='end_date')
     contact_email = indexes.CharField(model_attr='contact_email', null=True)
@@ -58,6 +58,10 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_keyword(self, obj):
         return [keyword.text for keyword in Keyword.objects.filter(object_id=obj.id, content_type=ContentType.objects.get_for_model(obj), status=1)]
+
+    def prepare_country(self, obj):
+        if obj.country:
+            return "|".join(obj.country.get_translations())
 
     def prepare_created_date(self, obj):
         if obj.created_time:

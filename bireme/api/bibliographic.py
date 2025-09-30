@@ -301,6 +301,10 @@ class ReferenceResource(CustomResource):
             for field in complement._meta.get_fields():
                 if field.name != 'source' and field.name != 'id':
                     field_value = getattr(complement, field.name, {})
+                    # check if field_value contains '\r\n' and split into list
+                    if isinstance(field_value, str) and '\r\n' in field_value:
+                        field_value = [line.strip() for line in field_value.split('\n') if line.strip()]
+
                     if field_value:
                         bundle.data[field.name] = copy(field_value)
 

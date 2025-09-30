@@ -142,7 +142,7 @@
                             <td><a href="{% url 'events:edit_event' report.object_id %}">{{ report.object_id }}</a></td>
                             <td><span title="{{ report.description }}">{{ report.description|slice:"100" }}{% if report.descriptione|length > 100 %}...{% endif %}</span></td>
                             <td>
-                                {{ resource.created_time|date:"d/m/y@f" }}
+                                {{ report.created_time|date:"d/m/y@f" }}
                             </td>
                             <td>
                                 {% if report.status == 0 %}
