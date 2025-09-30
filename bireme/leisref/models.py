@@ -503,6 +503,8 @@ class Act(Generic, AuditLog):
     act_number = models.CharField(_("Act number"), max_length=125, blank=True)
     # título do ato
     title = models.CharField(_("Title"), max_length=255, blank=True)
+    # título traduzido para o inglês
+    english_translated_title = models.CharField(_('English translated title'), max_length=255, blank=True)
     # denominação do ato
     denomination = models.CharField(_("Denomination"), max_length=255, blank=True)
     # base de dados
