@@ -7,7 +7,7 @@ from django.conf import settings
 from django import forms
 
 from django.utils.translation import ugettext_lazy as _
-from utils.forms import DescriptorRequired, ResourceThematicRequired
+from utils.forms import DescriptorRequired, DescriptorForm, ResourceThematicRequired
 from main.models import Descriptor, Keyword, ResourceThematic
 
 from events.models import *
@@ -56,20 +56,40 @@ class EventForm(forms.ModelForm):
 
 
 class TypeForm(forms.ModelForm):
-
     class Meta:
         model = EventType
         fields = '__all__'
 
 
 # definition of inline formsets
+DescriptorFormSet = generic_inlineformset_factory(
+    Descriptor,
+    form=DescriptorForm,
+    formset=DescriptorRequired,
+    can_delete=True,
+    exclude=('primary',),
+    extra=1
+)
 
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, can_delete=True,
-                                                  exclude=['primary'], extra=1)
+KeywordFormSet = generic_inlineformset_factory(
+    Keyword,
+    exclude=('status',),
+    can_delete=True,
+    extra=1
+)
 
-KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(
+    ResourceThematic,
+    exclude=['status'],
+    formset=ResourceThematicRequired,
+    can_delete=True,
+    extra=1
+)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired, can_delete=True, extra=1)
-
-TypeTranslationFormSet = inlineformset_factory(EventType, EventTypeLocal, can_delete=True,
-                                               fields='__all__', extra=1)
+TypeTranslationFormSet = inlineformset_factory(
+    EventType,
+    EventTypeLocal,
+    can_delete=True,
+    fields='__all__',
+    extra=1
+)

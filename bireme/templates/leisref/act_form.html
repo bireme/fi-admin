@@ -428,7 +428,12 @@
         function decs_search(obj){
             var row = $(obj).parent();
             decs_field = row.find('input').attr('name');
-            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
+            decs_term = row.find('input').attr('value');
+            if (decs_term.indexOf('/') !== -1){
+                decs_term = decs_term.substr(0, decs_term.indexOf('/'));
+            }
+
+            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}&descriptor=' + decs_term, 'decslookup', 'scrollbars=1,width=1010,height=550');
         }
 
         function dismissRelatedLookupPopup(chosenId, chosenLabel) {

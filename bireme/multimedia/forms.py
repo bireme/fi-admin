@@ -11,7 +11,7 @@ from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 from utils.models import AuxCode
 
-from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
+from utils.forms import BaseDescriptorInlineFormSet, DescriptorForm, ResourceThematicRequired
 
 from multimedia.models import *
 
@@ -93,21 +93,49 @@ class AttachmentForm(forms.ModelForm):
         return data
 
 
-# definition of inline formsets
+# Inline formsets
+DescriptorFormSet = generic_inlineformset_factory(
+    Descriptor,
+    form=DescriptorForm,
+    formset=BaseDescriptorInlineFormSet,
+    exclude=('primary', 'status',),
+    can_delete=True,
+    extra=1,
+)
+KeywordFormSet = generic_inlineformset_factory(
+    Keyword,
+    exclude=('status',),
+    can_delete=True,
+    extra=1
+)
 
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=BaseDescriptorInlineFormSet, exclude=('primary', 'status',),
-                                                  can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(
+    ResourceThematic,
+    exclude=('status',),
+    can_delete=True,
+    extra=1
+)
 
-KeywordFormSet = generic_inlineformset_factory(Keyword, exclude=('status',), can_delete=True, extra=1)
+TypeTranslationFormSet = inlineformset_factory(
+    MediaType,
+    MediaTypeLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, exclude=('status',),
-                                                        can_delete=True, extra=1)
+MediaCollectionTranslationFormSet = inlineformset_factory(
+    MediaCollection,
+    MediaCollectionLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-TypeTranslationFormSet = inlineformset_factory(MediaType, MediaTypeLocal, fields='__all__',
-                                               can_delete=True, extra=1)
-
-MediaCollectionTranslationFormSet = inlineformset_factory(MediaCollection, MediaCollectionLocal,
-                                                          fields='__all__', can_delete=True, extra=1)
-
-AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
-                                                  exclude=('short_url',), can_delete=True, extra=1)
+AttachmentFormSet = generic_inlineformset_factory(
+    Attachment,
+    form=AttachmentForm,
+    exclude=('short_url',),
+    can_delete=True,
+    extra=1
+)

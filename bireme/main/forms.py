@@ -9,7 +9,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from main.models import *
 
-from utils.forms import DescriptorRequired, ResourceThematicRequired
+from utils.forms import DescriptorRequired, DescriptorForm, ResourceThematicRequired
 
 import simplejson
 
@@ -99,18 +99,50 @@ class TypeLocalForm(forms.ModelForm):
 
 
 # definition of inline formsets
-DescriptorFormSet = generic_inlineformset_factory(Descriptor, formset=DescriptorRequired, exclude=['primary'],
-                                                  can_delete=True, extra=1)
+DescriptorFormSet = generic_inlineformset_factory(
+    Descriptor,
+    form=DescriptorForm,
+    formset=DescriptorRequired,
+    exclude=('primary',),
+    can_delete=True,
+    extra=1
+)
 
-KeywordFormSet = generic_inlineformset_factory(Keyword, can_delete=True, extra=1)
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, formset=ResourceThematicRequired,
-                                                        can_delete=True, extra=1)
+KeywordFormSet = generic_inlineformset_factory(
+    Keyword,
+    exclude=('status',),
+    can_delete=True,
+    extra=1
+)
 
-ThematicAreaTranslationFormSet = inlineformset_factory(ThematicArea, ThematicAreaLocal,
-                                                       form=ThematicAreaLocalForm, can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(
+    ResourceThematic,
+    exclude=('status',),
+    formset=ResourceThematicRequired,
+    can_delete=True,
+    extra=1
+)
 
-LanguageTranslationFormSet = inlineformset_factory(SourceLanguage, SourceLanguageLocal,
-                                                   fields='__all__', can_delete=True, extra=1)
+ThematicAreaTranslationFormSet = inlineformset_factory(
+    ThematicArea,
+    ThematicAreaLocal,
+    form=ThematicAreaLocalForm,
+    can_delete=True,
+    extra=1
+)
 
-TypeTranslationFormSet = inlineformset_factory(SourceType, SourceTypeLocal, fields='__all__',
-                                               can_delete=True, extra=1)
+LanguageTranslationFormSet = inlineformset_factory(
+    SourceLanguage,
+    SourceLanguageLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
+
+TypeTranslationFormSet = inlineformset_factory(
+    SourceType,
+    SourceTypeLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)

@@ -156,7 +156,6 @@
                     <table class="table table-condensed table-striped span8">
                         <thead>
                             <th>{% trans "Descriptors" %}</th>
-                            <th>{% trans "Status" %}</th>
                             <th></th>
                         </thead>
                         <tbody>
@@ -197,14 +196,13 @@
                                     {% elif field.name == 'text' %}
                                         <td class="span6">
                                             {{ field.as_hidden }}
-                                            <div class="input-large uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}">
+                                            <div class="input-xxlarge uneditable-input {% if field.value == None %}placeholder-style{% endif %}" id="label_{{ field.html_name }}"  onclick="javascript:decs_search(this)">
                                                 {% if field.value == None %}
                                                     {% trans "Select by search" %}
                                                 {% else %}
                                                     {{ field.value}}
                                                 {% endif %}
                                             </div>
-                                            <a href="#" onclick="javascript:decs_search(this)";><i class="icon-search"></i></a>
                                         </td>
                                     {% elif field.name != 'DELETE' %}
                                         <td class="span6">
@@ -226,7 +224,6 @@
                     <table class="table table-condensed table-striped span8">
                         <thead>
                             <th>{% trans "Keywords" %}</th>
-                            <th>{% trans "Status" %}</th>
                             <th>{% trans "Suggestion" %}?</th>
                             <th></th>
                         </thead>
@@ -298,7 +295,6 @@
                     <table class="table table-condensed table-striped span8">
                         <thead>
                             <th>{% trans "Thematic area" %}</th>
-                            <th>{% trans "Status" %}
                             <th>{% trans "Actions" %}</th>
                         </thead>
                         <tbody>
@@ -338,7 +334,6 @@
                                         </td>
                                     {% endif %}
                                 {% endfor %}
-                                <td><!-- status --></td>
                                 <td>
                                     {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                                 </td>
@@ -482,7 +477,12 @@
         function decs_search(obj){
             var row = $(obj).parent();
             decs_field = row.find('input').attr('name');
-            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}', 'decslookup', 'scrollbars=1,width=845,height=550');
+            decs_term = row.find('input').attr('value');
+            if (decs_term.indexOf('/') !== -1){
+                decs_term = decs_term.substr(0, decs_term.indexOf('/'));
+            }
+
+            window.open('{{ settings.DECS_LOOKUP_SERVICE }}&lang={{LANGUAGE_CODE|slice:":2"}}&descriptor=' + decs_term, 'decslookup', 'scrollbars=1,width=1010,height=550');
         }
 
         // watch for change at specific fields for duplicated dectection

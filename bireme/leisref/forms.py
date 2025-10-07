@@ -12,7 +12,7 @@ from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 from utils.models import AuxCode
 
-from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
+from utils.forms import BaseDescriptorInlineFormSet, DescriptorForm, ResourceThematicRequired
 from leisref.models import *
 
 import simplejson
@@ -93,13 +93,6 @@ class ActForm(forms.ModelForm):
         return obj
 
 
-class DescriptorForm(forms.ModelForm):
-    def save(self, *args, **kwargs):
-        obj = super(DescriptorForm, self).save(commit=False)
-        # for legislation default value for descriptor is admited
-        obj.status = 1
-        obj.save()
-
 
 class ThematicForm(forms.ModelForm):
 
@@ -174,40 +167,108 @@ DescriptorFormSet = generic_inlineformset_factory(
     extra=1
 )
 
-AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
-                                                  exclude=('short_url',), can_delete=True, extra=1)
+AttachmentFormSet = generic_inlineformset_factory(
+    Attachment,
+    form=AttachmentForm,
+    exclude=('short_url',),
+    can_delete=True,
+    extra=1
+)
 
-URLFormSet = inlineformset_factory(Act, ActURL, form=URLForm, fields='__all__', can_delete=True, extra=1)
+URLFormSet = inlineformset_factory(
+    Act,
+    ActURL,
+    form=URLForm,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-RelationFormSet = inlineformset_factory(Act, ActRelationship, fields='__all__', fk_name='act_related',
-                                        can_delete=True, extra=1)
+RelationFormSet = inlineformset_factory(
+    Act,
+    ActRelationship,
+    fields='__all__',
+    fk_name='act_related',
+    can_delete=True,
+    extra=1
+)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
-                                                        can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(
+    ResourceThematic,
+    form=ThematicForm,
+    exclude=('status',),
+    can_delete=True,
+    extra=1
+)
 
-CountryRegionTranslationFormSet = inlineformset_factory(ActCountryRegion, ActCountryRegionLocal, fields='__all__',
-                                                        can_delete=True, extra=1)
+CountryRegionTranslationFormSet = inlineformset_factory(
+    ActCountryRegion,
+    ActCountryRegionLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-ActScopeTranslationFormSet = inlineformset_factory(ActScope, ActScopeLocal, fields='__all__',
-                                                   can_delete=True, extra=1)
+ActScopeTranslationFormSet = inlineformset_factory(
+    ActScope,
+    ActScopeLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-ActTypeTranslationFormSet = inlineformset_factory(ActType, ActTypeLocal, fields='__all__',
-                                                  can_delete=True, extra=1)
+ActTypeTranslationFormSet = inlineformset_factory(
+    ActType,
+    ActTypeLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-ActOrganTranslationFormSet = inlineformset_factory(ActOrganIssuer, ActOrganIssuerLocal, fields='__all__',
-                                                   can_delete=True, extra=1)
+ActOrganTranslationFormSet = inlineformset_factory(
+    ActOrganIssuer,
+    ActOrganIssuerLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-ActSourceTranslationFormSet = inlineformset_factory(ActSource, ActSourceLocal, fields='__all__',
-                                                    can_delete=True, extra=1)
+ActSourceTranslationFormSet = inlineformset_factory(
+    ActSource,
+    ActSourceLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-ActRelTypeTranslationFormSet = inlineformset_factory(ActRelationType, ActRelationTypeLocal, fields='__all__',
-                                                     can_delete=True, extra=1)
+ActRelTypeTranslationFormSet = inlineformset_factory(
+    ActRelationType,
+    ActRelationTypeLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-ActStateTranslationFormSet = inlineformset_factory(ActState, ActStateLocal, fields='__all__',
-                                                    can_delete=True, extra=1)
+ActStateTranslationFormSet = inlineformset_factory(
+    ActState,
+    ActStateLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-ActCityTranslationFormSet = inlineformset_factory(ActCity, ActCityLocal, fields='__all__',
-                                                   can_delete=True, extra=1)
+ActCityTranslationFormSet = inlineformset_factory(
+    ActCity,
+    ActCityLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-ActCollectionTranslationFormSet = inlineformset_factory(ActCollection, ActCollectionLocal, fields='__all__',
-                                                         can_delete=True, extra=1)
+ActCollectionTranslationFormSet = inlineformset_factory(
+    ActCollection,
+    ActCollectionLocal,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)

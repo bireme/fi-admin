@@ -11,7 +11,7 @@ from django.template.defaultfilters import filesizeformat
 from main.models import Descriptor, Keyword, ResourceThematic
 from attachments.models import Attachment
 
-from utils.forms import BaseDescriptorInlineFormSet, ResourceThematicRequired
+from utils.forms import BaseDescriptorInlineFormSet, DescriptorForm, ResourceThematicRequired
 from oer.models import *
 
 import simplejson
@@ -71,15 +71,6 @@ class OERForm(forms.ModelForm):
         return obj
 
 
-class DescriptorForm(forms.ModelForm):
-
-    def save(self, *args, **kwargs):
-        obj = super(DescriptorForm, self).save(commit=False)
-        # for legislation default value for descriptor is admited
-        obj.status = 1
-        obj.save()
-
-
 class ThematicForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
@@ -118,13 +109,36 @@ DescriptorFormSet = generic_inlineformset_factory(
     extra=1
 )
 
-AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
-                                                  exclude=('short_url',), can_delete=True, extra=1)
+AttachmentFormSet = generic_inlineformset_factory(
+    Attachment,
+    form=AttachmentForm,
+    exclude=('short_url',),
+    can_delete=True,
+    extra=1
+)
 
-URLFormSet = inlineformset_factory(OER, OERURL, form=URLForm, fields='__all__', can_delete=True, extra=1)
+URLFormSet = inlineformset_factory(
+    OER,
+    OERURL,
+    form=URLForm,
+    fields='__all__',
+    can_delete=True,
+    extra=1
+)
 
-RelationFormSet = inlineformset_factory(OER, Relationship, fields='__all__', fk_name='oer_related',
-                                        can_delete=True, extra=1)
+RelationFormSet = inlineformset_factory(
+    OER,
+    Relationship,
+    fields='__all__',
+    fk_name='oer_related',
+    can_delete=True,
+    extra=1
+)
 
-ResourceThematicFormSet = generic_inlineformset_factory(ResourceThematic, form=ThematicForm,
-                                                        exclude=('status',), can_delete=True, extra=1)
+ResourceThematicFormSet = generic_inlineformset_factory(
+    ResourceThematic,
+    form=ThematicForm,
+    exclude=('status',),
+    can_delete=True,
+    extra=1
+)
