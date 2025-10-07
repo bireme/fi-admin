@@ -58,7 +58,19 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" id="btn_{{ decs.decsId }}_primary" value="{{ decs.decsId }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.decsId|add:"0" }}|ADD|PRIMARY', '{{ decs.decsId }}'); return false">{% trans "Primary descriptor" %}</a>
+                                        <a href="#"
+                                            id="btn_{{ decs.decsId }}_primary"
+                                            value="{{ decs.decsId }}"
+                                            onclick="postMsg({
+                                                text: '{{ decs.descriptor|title }}',
+                                                code: '^d{{ decs.decsId|add:0 }}',
+                                                action: 'ADD',
+                                                type: 'PRIMARY',
+                                                ai_suggestion: true,
+                                                ai_model: '{{ settings.AI_SUGGESTION_MODEL }}'
+                                            }, '{{ decs.decsId }}'); return false">
+                                            {% trans "Primary descriptor" %}
+                                        </a>
                                     </li>
                                     <li>
                                         <a href="#" id="btn_{{ decs.decsId }}_secundary" value="{{ decs.decsId }}" onclick="postMsg('{{ decs.descriptor|title }}|^d{{ decs.decsId|add:"0" }}|ADD', '{{ decs.decsId }}'); return false">{% trans "Secundary descriptor" %}</a>

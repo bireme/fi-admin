@@ -1021,6 +1021,13 @@ class ComplementForm(forms.ModelForm):
 
 
 class DescriptorForm(forms.ModelForm):
+    class Meta:
+        model = Descriptor
+        fields = '__all__'
+        widgets = {
+            "ai_suggestion": forms.HiddenInput(),
+            "ai_model": forms.HiddenInput(),
+        }
     def save(self, *args, **kwargs):
         obj = super(DescriptorForm, self).save(commit=False)
         # for bibliographic default value for descriptor is admited

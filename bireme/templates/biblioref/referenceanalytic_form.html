@@ -436,14 +436,29 @@
 
             // Listen to message from child window
             eventer(messageEvent,function(e) {
-                var decs_data = e.data.split('|');
-                var decs_text = decs_data[0];
-                var decs_code = decs_data[1];
-                var decs_op = decs_data[2];
-                var decs_primary = decs_data[3];
+                const data = e.data;
+                let action = 'REPLACE'; // default action
+                let text = null;
+                let code = null;
+                let type = null;
+                if (typeof data === "string") {
+                    // Legacy case: still handle string messages
+                    const decs_data = data.split('|');
+                    text = decs_data[0];
+                    code = decs_data[1];
+                    action = decs_data[2];
+                    type = decs_data[3];
 
-                //console.log(decs_data);
-                if (decs_op == 'ADD'){
+                    //console.log("Parsed from string:", { text, code, action, type });
+                } else if (typeof data === "object" && data !== null) {
+                    // Preferred case: handle structured object
+                    ({ text, code, action, type, ai_suggestion, ai_model } = data);
+                    //console.log("Parsed from object:", { text, code, action, type, ai_suggestion, ai_model });
+                } else {
+                    console.warn("Unexpected message data type:", data);
+                }
+
+                if (action == 'ADD'){
                     decs_field = null;
                     total_lines = $('#id_main-descriptor-content_type-object_id-TOTAL_FORMS').val();
 
@@ -462,17 +477,23 @@
                         decs_field = total_lines.toString();
                     }
                 }
+                //  Only process if decs_field was set
+                if (decs_field !== null) {
+                    var decs_row = decs_field.replace(/[A-Za-z_$-]/g, '');
 
-                var decs_row = decs_field.replace(/[A-Za-z_$-]/g, '');
-
-                // set code, text and label for the new descriptor
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);
-                if (decs_primary == 'PRIMARY'){
-                    $('#id_main-descriptor-content_type-object_id-' + decs_row + '-primary').prop("checked", true);
+                    // set code, text and label for the new descriptor
+                    $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(code);
+                    $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(text);
+                    if (ai_suggestion){
+                        $('#id_main-descriptor-content_type-object_id-' + decs_row + '-ai_suggestion').val(ai_suggestion);
+                        $('#id_main-descriptor-content_type-object_id-' + decs_row + '-ai_model').val(ai_model);
+                    }
+                    if (type == 'PRIMARY'){
+                        $('#id_main-descriptor-content_type-object_id-' + decs_row + '-primary').prop("checked", true);
+                    }
+                    $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(text);
+                    $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
                 }
-                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(decs_text);
-                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
 
             },false);
 

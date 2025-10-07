@@ -137,6 +137,16 @@ class BaseDescriptorInlineFormSet(BaseGenericInlineFormSet):
                 descriptors.append(text)
 
 
+class DescriptorForm(forms.ModelForm):
+    class Meta:
+        fields = '__all__'
+        widgets = {
+            "status": forms.HiddenInput(),
+            "ai_suggestion": forms.HiddenInput(),
+            "ai_model": forms.HiddenInput(),
+        }
+
+
 class DescriptorRequired(BaseDescriptorInlineFormSet):
     class Meta:
         fields = '__all__'

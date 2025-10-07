@@ -198,6 +198,8 @@ class Descriptor(Generic, AuditLog):
     code = models.CharField(_('Code'), max_length=50, blank=True)
     status = models.SmallIntegerField(_('Status'), choices=STATUS_CHOICES, default=1)
     primary = models.BooleanField(_('Primary?'), default=False)
+    ai_suggestion = models.BooleanField(_('AI Suggestion?'), default=False)
+    ai_model = models.CharField(_('AI Model'), max_length=50, blank=True)
 
     def __str__(self):
         return str(self.text)
