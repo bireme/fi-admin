@@ -441,6 +441,8 @@
                 let text = null;
                 let code = null;
                 let type = null;
+                let ai_model = null;
+                let ai_suggestion = null;
                 if (typeof data === "string") {
                     // Legacy case: still handle string messages
                     const decs_data = data.split('|');
@@ -484,7 +486,7 @@
                     // set code, text and label for the new descriptor
                     $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(code);
                     $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(text);
-                    if (ai_suggestion){
+                    if (ai_suggestion !== null){
                         $('#id_main-descriptor-content_type-object_id-' + decs_row + '-ai_suggestion').val(ai_suggestion);
                         $('#id_main-descriptor-content_type-object_id-' + decs_row + '-ai_model').val(ai_model);
                     }

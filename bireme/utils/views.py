@@ -303,6 +303,7 @@ def annif_suggestion(request):
 
         service_url = "{}projects/ensemble-decs-{}/suggest".format(settings.ANNIF_API_URL, request_lang)
         service_params = {'text': request_text, 'language': request_lang, 'limit': 20}
+        ai_model = settings.AI_SUGGESTION_MODEL
 
         r = requests.post(service_url, data=service_params, headers=headers)
         if r.status_code == 200:
@@ -316,10 +317,11 @@ def annif_suggestion(request):
                 decs_detail = {}
                 decs_detail['decsId'] = decs_id
                 decs_detail['descriptor'] = result['label']
+                decs_detail['ai_model'] = result.get('model', settings.AI_SUGGESTION_MODEL)
                 decs_list.append(decs_detail)
 
     return render_to_response('utils/decs_suggestion.html',
-                              {'decs_list': decs_list})
+                              {'decs_list': decs_list, 'ai_model': ai_model})
 
 
 def custom_page_not_found(request, *args, **argv):
