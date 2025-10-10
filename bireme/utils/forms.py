@@ -115,6 +115,9 @@ class DisableableSelectWidget(forms.Select):
 
 
 class BaseDescriptorInlineFormSet(BaseGenericInlineFormSet):
+    class Meta:
+        fields = '__all__'
+
     def clean(self):
         descriptors = []
         for form in self.forms:
@@ -141,7 +144,6 @@ class DescriptorForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
         widgets = {
-            "status": forms.HiddenInput(),
             "ai_suggestion": forms.HiddenInput(),
             "ai_model": forms.HiddenInput(),
         }

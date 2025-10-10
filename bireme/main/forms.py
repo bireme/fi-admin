@@ -103,7 +103,7 @@ DescriptorFormSet = generic_inlineformset_factory(
     Descriptor,
     form=DescriptorForm,
     formset=DescriptorRequired,
-    exclude=('primary',),
+    exclude=('status', 'primary',),
     can_delete=True,
     extra=1
 )

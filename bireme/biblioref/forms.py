@@ -14,7 +14,7 @@ from form_utils.forms import BetterModelForm, FieldsetCollection
 from django.conf import settings
 
 from main.models import Descriptor
-from utils.forms import BaseDescriptorInlineFormSet
+from utils.forms import BaseDescriptorInlineFormSet, DescriptorForm
 from utils.templatetags.app_filters import fieldtype
 from title.models import Title, IndexRange
 from utils.models import AuxCode
@@ -1020,21 +1020,6 @@ class ComplementForm(forms.ModelForm):
         return data
 
 
-class DescriptorForm(forms.ModelForm):
-    class Meta:
-        model = Descriptor
-        fields = '__all__'
-        widgets = {
-            "ai_suggestion": forms.HiddenInput(),
-            "ai_model": forms.HiddenInput(),
-        }
-    def save(self, *args, **kwargs):
-        obj = super(DescriptorForm, self).save(commit=False)
-        # for bibliographic default value for descriptor is admited
-        obj.status = 1
-        obj.save()
-
-
 class ResearchDataForm(forms.ModelForm):
     class Meta:
         model = LinkedResearchData
@@ -1061,18 +1046,42 @@ DescriptorFormSet = generic_inlineformset_factory(
     extra=1
 )
 
-AttachmentFormSet = generic_inlineformset_factory(Attachment, form=AttachmentForm,
-                                                  exclude=('short_url',), can_delete=True, extra=1)
+AttachmentFormSet = generic_inlineformset_factory(
+    Attachment,
+    form=AttachmentForm,
+    exclude=('short_url',),
+    can_delete=True,
+    extra=1
+)
 
-LibraryFormSet = inlineformset_factory(Reference, ReferenceLocal, form=LibraryForm, extra=1,
-                                       max_num=1, can_delete=False)
+LibraryFormSet = inlineformset_factory(
+    Reference,
+    ReferenceLocal,
+    form=LibraryForm,
+    extra=1,
+    max_num=1,
+    can_delete=False
+)
 
-ComplementFormSet = inlineformset_factory(Reference, ReferenceComplement, form=ComplementForm, extra=1,
-                                          max_num=1, can_delete=False)
+ComplementFormSet = inlineformset_factory(
+    Reference,
+    ReferenceComplement,
+    form=ComplementForm,
+    extra=1,
+    max_num=1,
+    can_delete=False
+)
 
+ResearchDataFormSet = generic_inlineformset_factory(
+    LinkedResearchData,
+    form=ResearchDataForm,
+    extra=1,
+    can_delete=True
+)
 
-ResearchDataFormSet = generic_inlineformset_factory(LinkedResearchData, form=ResearchDataForm, extra=1,
-                                                    can_delete=True)
-
-RelatedResourceFormSet = generic_inlineformset_factory(LinkedResource, form=RelatedResourceForm, extra=1,
-                                                       can_delete=True)
+RelatedResourceFormSet = generic_inlineformset_factory(
+    LinkedResource,
+    form=RelatedResourceForm,
+    extra=1,
+    can_delete=True
+)
