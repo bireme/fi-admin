@@ -20,7 +20,7 @@ services:
       - nginx-proxy
 
   fi_admin_cache:
-    image: bitnami/memcached:1.6.32
+    image: bitnami/memcached:latest
     container_name: fi-admin-cache
     restart: unless-stopped
     ports:
