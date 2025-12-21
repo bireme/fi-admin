@@ -28,6 +28,8 @@ import json
 
 
 class ReferenceResource(CustomResource):
+    _version_cache = None
+
     class Meta:
         queryset = Reference.objects.select_related(
             'created_by', 
@@ -166,9 +168,10 @@ class ReferenceResource(CustomResource):
             bundle.data['source_control'] = 'FONTE'
 
         # Add system version control number
-        version_file = open(os.path.join(settings.BASE_DIR, 'templates/version.txt'))
-        version_number = version_file.readlines()[0]
-        bundle.data['system_version'] = version_number.rstrip()
+        if self._version_cache is None:
+            with open(os.path.join(settings.BASE_DIR, 'templates/version.txt')) as f:
+                self._version_cache = f.readlines()[0].rstrip()
+        bundle.data['system_version'] = self._version_cache
 
         return bundle
 
