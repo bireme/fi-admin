@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.urls import re_path
 from django.db.models import Q
+from django.db.models import Prefetch
 from django.contrib.contenttypes.models import ContentType
 
 from tastypie.serializers import Serializer
@@ -30,7 +31,16 @@ class ReferenceResource(CustomResource):
     _version_cache = None
 
     class Meta:
-        queryset = Reference.objects.prefetch_related('indexed_database', 'created_by', 'updated_by').all()
+        queryset = Reference.objects.select_related(
+            'created_by', 
+            'updated_by'
+        ).prefetch_related(
+            'indexed_database',
+            Prefetch('referencealternateid_set', to_attr='alternate_ids'),
+            Prefetch('referencelocal_set', to_attr='library_records'),
+            Prefetch('referencecomplement_set', to_attr='complement_data'),
+        ).all()
+        
         allowed_methods = ['get']
         serializer = ISISSerializer(formats=['json', 'xml', 'isis_id'], field_tag=field_tag_map)
         resource_name = 'bibliographic'
@@ -132,11 +142,10 @@ class ReferenceResource(CustomResource):
         bundle = super(ReferenceResource, self).full_dehydrate(bundle)
 
         # Check type of Reference to add additional fields to bundle
-        reference_id = bundle.obj.id
         if 'a' in bundle.data['treatment_level']:
-            obj = ReferenceAnalytic.objects.get(pk=reference_id)
+            obj = bundle.obj.referenceanalytic
         else:
-            obj = ReferenceSource.objects.get(pk=reference_id)
+            obj = bundle.obj.referencesource
 
         # Add additional fields to bundle
         bundle = self.add_fields_to_bundle(bundle, obj)
@@ -167,13 +176,14 @@ class ReferenceResource(CustomResource):
         return bundle
 
     def add_fields_to_bundle(self, bundle, obj, import_field_list=[]):
-        for field in obj._meta.get_fields():
+        fields = obj._meta.get_fields()
+        for field in fields:
             field_value = getattr(obj, field.name, {})
 
             # check if field has multiples values (ex. ManyToManyField)
-            if hasattr(field_value, 'all'):
+            if hasattr(field_value, 'exists'):
                 # if field is empty skip to next field
-                if not field_value.all().exists():
+                if not field_value.exists():
                     continue
 
             if field_value:
@@ -193,11 +203,12 @@ class ReferenceResource(CustomResource):
         c_type = ContentType.objects.get_for_model(child_class)
 
         descriptors = Descriptor.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
-        thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
+        thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1).select_related('thematic_area')
         attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
-        alternate_ids = ReferenceAlternateID.objects.filter(reference_id=bundle.obj.id)
-        library_records = ReferenceLocal.objects.filter(source=bundle.obj.id)
-        complement_data = ReferenceComplement.objects.filter(source=bundle.obj.id)
+        alternate_ids = getattr(bundle.obj, 'alternate_ids', [])
+        library_records = getattr(bundle.obj, 'library_records', [])
+        complement_data = getattr(bundle.obj, 'complement_data', [])
+
         related_obj_id = 'biblio-{}'.format(bundle.obj.id)
         related_resources = LinkedResource.objects.filter( Q(object_id=bundle.obj.id, content_type=c_type) | Q(internal_id=related_obj_id) )
         related_research = LinkedResearchData.objects.filter(object_id=bundle.obj.id, content_type=c_type)
