@@ -30,6 +30,7 @@ from api.bibliographic import ReferenceResource
 import json
 import os
 import time
+import traceback
 
 
 class Command(BaseCommand):
@@ -53,6 +54,7 @@ class Command(BaseCommand):
         initial_offset = options['offset']
         outdir = options['outdir']
         os.makedirs(outdir, exist_ok=True)
+        error_log_path = os.path.join(outdir, 'export_errors.log')
 
         total = qs.count()
         if total == 0:
@@ -79,10 +81,21 @@ class Command(BaseCommand):
 
             data = []
             for obj in objects:
-                bundle = resource.build_bundle(obj=obj, request=None)
-                bundle = resource.full_dehydrate(bundle)
-                bundle = resource.dehydrate(bundle)
-                data.append(bundle.data)
+                try:
+                    bundle = resource.build_bundle(obj=obj, request=None)
+                    bundle = resource.full_dehydrate(bundle)
+                    bundle = resource.dehydrate(bundle)
+                    data.append(bundle.data)
+                except Exception as e:
+                    tb = traceback.format_exc()
+                    msg = (
+                        f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] "
+                        f"Erro ao processar Reference id={obj.id}: {e}\n{tb}\n"
+                    )
+                    with open(error_log_path, 'a', encoding='utf-8') as logf:
+                        logf.write(msg)
+
+                    continue
 
             filename = f"references_{slice_from:08d}_{slice_to:08d}.json"
             filepath = os.path.join(outdir, filename)
