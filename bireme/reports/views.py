@@ -57,39 +57,42 @@ class ReportsListView(LoginRequiredView, CSVResponseMixin, ListView):
                 user_list = User.objects.all()
                 user_filter_list = []
 
-                # if is superuser or is a user from BR1.1 (BIREME)
-                #if self.request.user.is_superuser or user_data['user_cc'] == 'BR1.1':
-                if user_data['user_cc'] == 'BR1.1':
-                    user_filter_list = user_list
-                else:
-                    # else filter only users from the same CC as request.user
+                if filter_created_by_cc:
+                    # if filter by CC is set, filter only users from that CC
                     for user in user_list:
-                        if not user.is_superuser:
+                        user_cc = user.profile.get_attribute('cc')
+                        if user_cc == filter_created_by_cc:
+                            user_filter_list.append(user)
+                else:
+                    # if no filter by CC, filter by user's CCs or all if BR1.1
+                    if user_data['user_cc'] == 'BR1.1':
+                        user_filter_list = user_list
+                    else:
+                        for user in user_list:
                             user_cc = user.profile.get_attribute('cc')
                             if user_cc == user_data['user_cc']:
                                 user_filter_list.append(user)
 
+                # Build base queryset with all filters except user (moved outside the loop)
+                base_qs = source.objects.all()
+
+                if filter_status:
+                    base_qs = base_qs.filter(status=filter_status)
+                if filter_thematic:
+                    base_qs = base_qs.filter(thematics__thematic_area=filter_thematic)
+
                 for user in user_filter_list:
+                    # Count created objects
                     if filter_year:
-                        source_list = source.objects.filter(
-                            (Q(created_by=user) & Q(created_time__year=filter_year)) |
-                            (Q(updated_by=user) & Q(updated_time__year=filter_year))
-                        )
+                        created_count = base_qs.filter(created_by=user, created_time__year=filter_year).count()
                     else:
-                        source_list = source.objects.filter(
-                            Q(created_by=user) | Q(updated_by=user)
-                        )
+                        created_count = base_qs.filter(created_by=user).count()
 
-                    if filter_status:
-                        source_list = source_list.filter(status=filter_status)
-                    if filter_created_by_cc:
-                        source_list = source_list.filter(cooperative_center_code=filter_created_by_cc)
-                    if filter_thematic:
-                        source_list = source_list.filter(thematics__thematic_area=filter_thematic)
-
-                    # Counting the number of objects created and updated by the current user separately
-                    created_count = source_list.filter(created_by=user).count()
-                    updated_count = source_list.filter(updated_by=user).count()
+                    # Count updated objects (excluding those already counted as created)
+                    if filter_year:
+                        updated_count = base_qs.filter(updated_by=user, updated_time__year=filter_year).exclude(created_by=user).count()
+                    else:
+                        updated_count = base_qs.filter(updated_by=user).exclude(created_by=user).count()
 
                     user_count = created_count + updated_count
                     if user_count > 0:
