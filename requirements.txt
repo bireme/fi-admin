@@ -1,6 +1,6 @@
 Django==2.2.24
 mysqlclient==1.4.6
-gunicorn==20.1.0
+gunicorn==22.0.0
 django-rosetta==0.9.4
 django-tastypie==0.14.3
 django-haystack==2.8.1
