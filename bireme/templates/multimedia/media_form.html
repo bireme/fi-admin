@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load app_filters %}
 
 {% block title %}{% trans "Edit Media" %}{% endblock %}
 
@@ -86,11 +87,8 @@
                     {% else %}
 
                         <fieldset id="metadata">
-                            {% for hidden in form.hidden_fields %}
-                                {{ hidden }}
-                            {% endfor %}
                             {{ form.non_field_errors }}
-                            {% for field in form.visible_fields %}
+                            {% for field in form %}
                                   {% if field.name == 'media_collection' %}
                                         {{ field.as_hidden }}
                                         <label for="{{ field.auto_id }}">
@@ -113,21 +111,35 @@
                                             </div>
                                         </div>
                                     {% else %}
-                                        <label for="{{ field.auto_id }}">
-                                            {% if field.name in help_fields %}
-                                                <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/multimedia/{{field.name}}/" class="field_with_help">
-                                            {% endif %}
-                                            {% if field.field.required %}
-                                                <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                            {% else %}
-                                                {{ field.label }}
-                                            {% endif %}
-                                            {% if field.name in help_fields %}
-                                                </a>
-                                            {% endif %}
-                                        </label>
+                                        {% if not field.is_hidden or field.field|fieldtype == 'JSONField' %}
+                                            <label for="{{ field.auto_id }}">
+                                                {% if field.name in help_fields %}
+                                                    <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/multimedia/{{field.name}}/" class="field_with_help">
+                                                {% endif %}
+                                                {% if field.field.required %}
+                                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                                {% else %}
+                                                    {{ field.label }}
+                                                {% endif %}
+                                                {% if field.name in help_fields %}
+                                                    </a>
+                                                {% endif %}
+                                            </label>
+                                        {% endif %}
+
                                         <p class="muted">{{ field.help_text }}</p>
+
                                         {{ field.errors }}
+
+                                        {% if field.field|fieldtype == 'JSONField' %}
+                                            <div class="row">
+                                                <a onclick="javascript:field_assist('{{field.html_name}}', '{{field.html_name}}', 'multimedia')" href="javascript:void(0);">
+                                                    <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+
+
                                         {{ field }}
                                     {% endif %}
                             {% endfor %}
@@ -380,6 +392,22 @@
    <script src="{% static 'js/jquery.formset.js' %}"></script>
    <script src="{% static 'js/classification.js' %}"></script>
    <script src="{% static 'js/multiple-select.min.js' %}"></script>
+
+   <script src="{% static 'js/jsrender.min.js' %}"></script>
+   <script src="{% static 'js/field_assist.js' %}"></script>
+   <script src="{% static 'js/field_assist_display.js' %}"></script>
+
+   <script id="itensTemplate" type="text/x-jsrender">
+        <li>
+            [[props tmpl="#keyPropTemplate" /]]
+        </li>
+   </script>
+
+   <script id="keyPropTemplate" type="text/x-jsrender">
+        [[if prop]]
+            <strong>[[>~format(key)]]</strong> [[>prop]]
+        [[/if]]
+   </script>
 
    <script type="text/javascript">
         var decs_field;

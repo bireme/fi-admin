@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.cache import cache
 
 from utils.models import Generic, Country
+from utils.fields import JSONField
 from main.choices import LANGUAGES_CHOICES
 
 from django.contrib.contenttypes.fields import GenericRelation
@@ -112,6 +113,7 @@ class Media(Generic, AuditLog):
     title_translated = models.CharField(_('Translated title'), max_length=455, blank=True)
     link = models.URLField(_('Link'), max_length=255, blank=False)
     description = models.TextField(_("Description"), blank=True)
+    description_translations = JSONField(_('Description translations'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     authors = models.TextField(_('Authors'), blank=True, help_text=_("Enter one per line"))
     contributors = models.TextField(_('Contributors'), blank=True, help_text=_("Enter one per line"))
     language = models.ManyToManyField(SourceLanguage, verbose_name=_("language"), blank=True)

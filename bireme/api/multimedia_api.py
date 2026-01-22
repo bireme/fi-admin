@@ -3,11 +3,11 @@ from django.conf import settings
 from django.urls import re_path
 from django.contrib.contenttypes.models import ContentType
 
-from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 from tastypie.constants import ALL
 from tastypie import fields
+from api.tastypie_custom import CustomResource
 
 from multimedia.models import Media
 
@@ -16,7 +16,7 @@ import requests
 import urllib
 import json
 
-class MediaResource(ModelResource):
+class MediaResource(CustomResource):
 
     class Meta:
         queryset = Media.objects.filter(status=1)
