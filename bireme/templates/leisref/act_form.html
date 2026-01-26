@@ -76,35 +76,40 @@
 
                         <fieldset class="metadata">
                             <ul>
-                              {% for hidden in form.hidden_fields %}
-                                  {{ hidden }}
-                              {% endfor %}
                               {{ form.non_field_errors }}
-                              {% for field in form.visible_fields %}
+                              {% for field in form %}
                                     <li id="field_{{ field.name }}">
                                       {% if field.name not in indexing_fields %}
-                                          {% if field.field|fieldtype == 'BooleanField' %}
-                                                <span>{{ field.label }}</span>
-                                          {% else %}
-                                                <label for="{{ field.auto_id }}">
-                                                    {% if field.name in help_fields %}
-                                                        <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/leisref/{{field.name}}/" class="field_with_help">
-                                                    {% endif %}
-                                                    {% if field.field.required %}
-                                                        <span class="required">{{ field.label }} <span class="mark">*</span></span>
-                                                    {% else %}
-                                                        {{ field.label }}
-                                                    {% endif %}
-                                                    {% if field.name in help_fields %}
-                                                        </a>
-                                                    {% endif %}
-                                                </label>
-                                          {% endif %}
-                                          {% if field.help_text %}
-                                              <p class="muted">{{ field.help_text }}</p>
-                                          {% endif %}
-                                          {{ field.errors }}
-                                          {{ field }}
+                                        {% if not field.is_hidden or field.field|fieldtype == 'JSONField' %}
+                                            <label for="{{ field.auto_id }}">
+                                                {% if field.name in help_fields %}
+                                                    <a href="#" onclick="$('#help_modal_title').html('{{ field.label }}')" data-toggle="modal" data-target="#help_modal" data-remote="/help/view/leisref/{{field.name}}/" class="field_with_help">
+                                                {% endif %}
+                                                {% if field.field.required %}
+                                                    <span class="required">{{ field.label }} <span class="mark">*</span></span>
+                                                {% else %}
+                                                    {{ field.label }}
+                                                {% endif %}
+                                                {% if field.name in help_fields %}
+                                                    </a>
+                                                {% endif %}
+                                            </label>
+                                        {% endif %}
+
+                                        <p class="muted">{{ field.help_text }}</p>
+
+                                        {{ field.errors }}
+
+                                        {% if field.field|fieldtype == 'JSONField' %}
+                                            <div class="row">
+                                                <a onclick="javascript:field_assist('{{field.html_name}}', '{{field.html_name}}', 'leisref')" href="javascript:void(0);">
+                                                    <ul id="id_{{field.html_name}}_display" class="jsonfield_display"></ul>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+
+                                        {{ field }}
+
                                       {% endif %}
                                     </li>
                               {% endfor %}
@@ -306,6 +311,22 @@
    {% if LANGUAGE_CODE != 'en' %}
        <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
    {% endif %}
+
+   <script src="{% static 'js/jsrender.min.js' %}"></script>
+   <script src="{% static 'js/field_assist.js' %}"></script>
+   <script src="{% static 'js/field_assist_display.js' %}"></script>
+
+   <script id="itensTemplate" type="text/x-jsrender">
+        <li>
+            [[props tmpl="#keyPropTemplate" /]]
+        </li>
+   </script>
+
+   <script id="keyPropTemplate" type="text/x-jsrender">
+        [[if prop]]
+            <strong>[[>~format(key)]]</strong> [[>prop]]
+        [[/if]]
+   </script>
 
    <script type="text/javascript">
         var decs_field;

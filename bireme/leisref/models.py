@@ -5,6 +5,7 @@ from django.core.cache import cache
 from django.db import models
 
 from utils.models import Generic
+from utils.fields import JSONField
 from main.choices import LANGUAGES_CHOICES
 from main.models import SourceLanguage
 from log.models import AuditLog
@@ -546,8 +547,10 @@ class Act(Generic, AuditLog):
     act_effectiveness = models.CharField(_("Act effectiveness"), max_length=255, blank=True)
     # ementa oficial
     official_ementa = models.TextField(_("Official ementa"), blank=True)
+    official_ementa_translations = JSONField(_('Official ementa translations'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # ementa não-oficial
     unofficial_ementa = models.TextField(_("Unofficial ementa"), blank=True)
+    unofficial_ementa_translations = JSONField(_('Unofficial ementa translations'), blank=True, null=True, dump_kwargs={'ensure_ascii': False})
     # observações
     notes = models.TextField(_("Notes"), blank=True)
     # instituição como tema
