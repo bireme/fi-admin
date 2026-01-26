@@ -180,10 +180,10 @@ class ReferenceResource(CustomResource):
                 # if import_field_list is present check if field is the list
                 if import_field_list:
                     if field.name in import_field_list:
-                        bundle.data[field.name] = copy(field_value)
+                        bundle.data[field.name] = self.split_multivalue_field(field_value)
                 # check if field is not already in bundle or has no value in bundle.data
                 elif field.name not in bundle.data or not bundle.data.get(field.name):
-                    bundle.data[field.name] = copy(field_value)
+                    bundle.data[field.name] = self.split_multivalue_field(field_value)
 
         return bundle
 
@@ -225,6 +225,15 @@ class ReferenceResource(CustomResource):
         bundle.data['alternate_ids'] = [alt.alternate_id for alt in alternate_ids]
         indexed_database_list = bundle.obj.indexed_database.all()
         bundle.data['indexed_database'] = [database.acronym for database in indexed_database_list]
+
+        # handle multivalue fields that are stored as text with \r\n separator
+        multivalue_fields = ['person_as_subject', 'institution_as_subject', 'non_decs_region']
+        for field_name in multivalue_fields:
+            if field_name in bundle.data:
+                field_value = bundle.data[field_name]
+                field_value_split = self.split_multivalue_field(field_value)
+                bundle.data[field_name] = field_value_split
+
 
         # add related resource
         related_resource_list = []
@@ -318,8 +327,9 @@ class ReferenceResource(CustomResource):
                     if field.name != 'source' and field.name != 'id' and field.name != 'cooperative_center_code':
                         field_value = getattr(library, field.name, {})
                         if field_value:
-                            # convert lines of database field in list
-                            if field.name == 'database' or field.name == 'local_descriptors':
+                            # convert lines of textarea fields
+                            multivalue_fields = ['database', 'local_descriptors', 'inventory_number']
+                            if field.name in multivalue_fields:
                                 field_value = [line.strip() for line in field_value.split('\n') if line.strip()]
 
                             # check if field already in bundle
@@ -358,3 +368,9 @@ class ReferenceResource(CustomResource):
         json_out = json.dumps(clean_dict, ensure_ascii=False).encode('utf8')
 
         return json_out
+
+    def split_multivalue_field(self, field_value):
+        if isinstance(field_value, str) and '\r\n' in field_value:
+            field_value = [line.strip() for line in field_value.split('\n') if line.strip()]
+
+        return field_value
