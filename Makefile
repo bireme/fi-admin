@@ -27,6 +27,9 @@ dev_logs:
 dev_stop:
 	@docker-compose -f $(COMPOSE_FILE_DEV) stop
 
+dev_down:
+	@docker-compose -f $(COMPOSE_FILE_DEV) down
+
 dev_ps:
 	@docker-compose -f $(COMPOSE_FILE_DEV) ps
 
@@ -35,6 +38,12 @@ dev_rm:
 
 dev_sh:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh
+
+dev_makemigrations:
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py makemigrations $(app)
+
+dev_migrate:
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py migrate $(app)
 
 dev_test:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin make test

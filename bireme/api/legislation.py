@@ -8,6 +8,7 @@ from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 from tastypie.constants import ALL
 from tastypie import fields
+from api.tastypie_custom import CustomResource
 
 from main.models import Descriptor, ResourceThematic
 from attachments.models import Attachment
@@ -17,7 +18,7 @@ import requests
 import urllib
 import json
 
-class LeisrefResource(ModelResource):
+class LeisrefResource(CustomResource):
 
     class Meta:
         queryset = Act.objects.filter(status=1)

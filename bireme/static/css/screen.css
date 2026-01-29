@@ -328,6 +328,7 @@ fieldset.metadata input[type=text], fieldset.metadata input[type=url], fieldset.
     height: 80px;
 }
 
+
 #researchdata input[type="url"], #relatedresource input[type="url"]{
     width: 93%;
 }
@@ -393,7 +394,7 @@ span.mark{
 }
 
 .jsonfield_display{
-    width: 90%;
+    width: 560px;
     min-height: 22px;
     padding: 2px;
     margin-left: 30px;
