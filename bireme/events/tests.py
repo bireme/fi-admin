@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.contrib.auth.models import User
 from django.test.client import Client
 from django.contrib.contenttypes.models import ContentType
 
@@ -57,24 +58,26 @@ def complete_form_data():
     return complete_form_data
 
 
-def create_test_objects():
+def create_test_objects(user):
     """
     Create objects for tests
     """
+    user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+    user3 = User.objects.create_user('user3', 'user3@test.com', 'user3')
 
     # Create two objects of different users and same center code
     event_1 = Event.objects.create(status=0, title='Evento de teste (BR1.1)',
                             start_date='2014-01-01', end_date='2014-01-05',
-                            created_by_id=1, cooperative_center_code='BR1.1')
+                            created_by=user, cooperative_center_code='BR1.1')
 
     Event.objects.create(status=0, title='Evento de teste (BR1.1)',
                             start_date='2014-01-01', end_date='2014-01-05',
-                            created_by_id=2, cooperative_center_code='BR1.1')
+                            created_by=user2, cooperative_center_code='BR1.1')
 
     # Create one object of diffent center code
     Event.objects.create(status=0, title='Evento de teste (PY3.1)',
                             start_date='2014-01-01', end_date='2014-01-05',
-                            created_by_id=3, cooperative_center_code='PY3.1')
+                            created_by=user3, cooperative_center_code='PY3.1')
 
 
     # add descriptor and thematic area for event_1
@@ -101,8 +104,8 @@ class EventTest(BaseTestCase):
         """
         Test list view
         """
-        self.login_editor()
-        create_test_objects()
+        user = self.login_editor()
+        create_test_objects(user)
 
         # check for default list (list events of current user = 1)
         response = self.client.get('/events/')
@@ -150,8 +153,8 @@ class EventTest(BaseTestCase):
         """
         Test edit view
         """
-        self.login_editor()
-        create_test_objects()
+        user = self.login_editor()
+        create_test_objects(user)
 
         event_test = Event.objects.all()[0]
         url = '/event/edit/{0}'.format(event_test.id)
@@ -171,8 +174,8 @@ class EventTest(BaseTestCase):
         """
         Tests delete event
         """
-        self.login_editor()
-        create_test_objects()
+        user = self.login_editor()
+        create_test_objects(user)
 
         form_data = {'delete_id': '1'}
 

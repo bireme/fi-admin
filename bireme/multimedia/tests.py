@@ -1,7 +1,8 @@
 #-*- coding: utf-8 -*-
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.test.client import Client
-from model_mommy import mommy
+from model_bakery import baker
 
 from .models import *
 from main.models import Descriptor, ResourceThematic, ThematicArea
@@ -59,14 +60,15 @@ def complete_form_data():
     return complete_form_data
 
 
-def create_media_object():
+def create_media_object(user):
     '''
     Create media object for tests
     '''
+    user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
 
     # Create a Media object and test that is present on list
     media1 = Media.objects.create(status=0,title='Midia de teste (BR1.1)',
-                            media_type_id=1, link='http://bvsalud.org', created_by_id=1,
+                            media_type_id=1, link='http://bvsalud.org', created_by=user,
                             cooperative_center_code='BR1.1')
 
     media_ct = ContentType.objects.get_for_model(media1)
@@ -74,7 +76,7 @@ def create_media_object():
     thematic = ResourceThematic.objects.create(object_id=1, content_type=media_ct, thematic_area_id=1)
 
     media2 = Media.objects.create(status=0,title='Media de prueba (PY3.1)',
-                            media_type_id=1, link='http://bvsalud.org', created_by_id=2,
+                            media_type_id=1, link='http://bvsalud.org', created_by=user2,
                             cooperative_center_code='PY3.1')
 
 
@@ -95,8 +97,8 @@ class MultimediaTest(BaseTestCase):
         """
         Test list media
         """
-        self.login_editor()
-        create_media_object()
+        user = self.login_editor()
+        create_media_object(user)
 
         response = self.client.get('/multimedia/')
         self.assertContains(response, "Midia de teste (BR1.1")
@@ -136,8 +138,8 @@ class MultimediaTest(BaseTestCase):
         """
         Tests edit media
         """
-        self.login_editor()
-        create_media_object()
+        user = self.login_editor()
+        create_media_object(user)
 
         media_test = Media.objects.all()[0]
         url = '/multimedia/edit/{0}'.format(media_test.id)
@@ -165,8 +167,8 @@ class MultimediaTest(BaseTestCase):
         """
         Tests delete media
         """
-        self.login_editor()
-        create_media_object()
+        user = self.login_editor()
+        create_media_object(user)
 
         response = self.client.get('/multimedia/delete/1')
         self.assertContains(response, "Você tem certeza que deseja apagar?")
@@ -233,20 +235,22 @@ class MultimediaTest(BaseTestCase):
         """
         Tests list of media collection
         """
-        self.login_editor()
+        user = self.login_editor()
+        user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+        user3 = User.objects.create_user('user3', 'user3@test.com', 'user3')
 
         # Create a media collection object and test that is present on list
         MediaCollection.objects.create(name='Coleção 1',
                                         description='Coleção de teste 1',
-                                        created_by_id=1, cooperative_center_code='BR1.1')
+                                        created_by=user, cooperative_center_code='BR1.1')
 
         MediaCollection.objects.create(name='Coleção 2',
                                         description='Coleção de teste 2',
-                                        created_by_id=2, cooperative_center_code='BR1.1')
+                                        created_by=user2, cooperative_center_code='BR1.1')
 
         MediaCollection.objects.create(name='Coleção 3',
                                         description='Coleção de teste 3',
-                                        created_by_id=3, cooperative_center_code='PY3.8')
+                                        created_by=user3, cooperative_center_code='PY3.8')
 
 
         response = self.client.get('/multimedia/collections')
@@ -283,10 +287,10 @@ class MultimediaSearchTest(BaseTestCase):
     def test_search_id(self):
         self.login_editor()
 
-        mt = mommy.make("MediaType")
-        mommy.make("Media", media_type=mt, id=1)
-        mommy.make("Media", media_type=mt, id=2)
-        mommy.make("Media", media_type=mt, id=3)
+        mt = baker.make("MediaType")
+        baker.make("Media", media_type=mt, id=1)
+        baker.make("Media", media_type=mt, id=2)
+        baker.make("Media", media_type=mt, id=3)
 
         resp1 = self.client.get("/multimedia/", {"s": "id:1", "filter_owner": "*"})
         self.assertEqual(200, resp1.status_code)

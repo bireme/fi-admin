@@ -8,8 +8,8 @@ import simplejson
 
 def additional_user_info(request):
 
-    user = request.user
-    user_info = ''
+    user = getattr(request, 'user', None)
+    user_info = {}
     user_role = ''
     user_type = ''
     user_cc = ''
@@ -19,9 +19,9 @@ def additional_user_info(request):
     service_list = []
     ccs_by_network = []
 
-    if user.is_authenticated:
+    if user and user.is_authenticated:
         user_info_ck = 'user_info_{}'.format(user.id)
-        user_info = cache.get(user_info_ck)
+        user_info = cache.get(user_info_ck) or {}
 
         if not user_info:
             if user.profile.data:

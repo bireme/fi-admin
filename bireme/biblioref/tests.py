@@ -3,7 +3,7 @@ from unittest import skip
 
 from django.contrib.contenttypes.models import ContentType
 from django.test.client import Client
-from model_mommy import mommy
+from model_bakery import baker
 
 from biblioref.models import *
 from database.models import Database
@@ -400,8 +400,8 @@ class BiblioRefListGet(BaseTestCase):
 
     def test_search_by_status(self):
         """ Must return only references which have the selected status """
-        mommy.make("ReferenceSource", id=1)
-        mommy.make(
+        baker.make("ReferenceSource", id=1)
+        baker.make(
             "Reference", id=1, reference_title="Test Migration", status=-3,
             created_time="1970-01-01 00:00", literature_type="TEST"
         )
@@ -414,11 +414,11 @@ class BiblioRefListGet(BaseTestCase):
 
     def test_exclude_deleted_sources_from_results(self):
         """ Must exclude from the result list source references with deleted status """
-        mommy.make(
+        baker.make(
             "ReferenceSource", id=1, title_serial="Revista Test", reference_title="Test Source", status=3,
             created_time="1970-01-01 00:00", literature_type="S"
         )
-        mommy.make(
+        baker.make(
             "ReferenceAnalytic", source_id=1, title=[{'text': 'Test Analytic'}], status=3,
             created_time="1970-01-01 00:00", literature_type="S", treatment_level="as"
         )

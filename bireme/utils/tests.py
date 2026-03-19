@@ -39,6 +39,7 @@ class BaseTestCase(TestCase):
         user_doc.profile.save()
 
         self.client.login(username='doc', password='doc')
+        return user_doc
 
     def login_editor(self):
         user_editor = User.objects.create_user('editor', 'user@test.com', 'editor')
@@ -60,6 +61,7 @@ class BaseTestCase(TestCase):
         user_editor.profile.save()
 
         self.client.login(username='editor', password='editor')
+        return user_editor
 
     def login_editor_llxp(self):
         user_editor = User.objects.create_user('editor_llxp', 'user@test.com', 'editor_llxp')
@@ -78,12 +80,31 @@ class BaseTestCase(TestCase):
         user_editor.profile.save()
 
         self.client.login(username='editor_llxp', password='editor_llxp')
-
+        return user_editor
 
     def login_admin(self):
         # only superuser can edit lists
         user_admin = User.objects.create_superuser('admin', 'admin@test.com', 'admin')
+        user_admin.profile.data = '''
+        {
+            "cc" : "BR1.1",
+            "user_id" : 1,
+            "service_role": [
+                                {"LIS" : "admin"},
+                                {"DirEVE" : "admin"},
+                                {"Multimedia" : "admin"},
+                                {"LILDBI" : "admin"},
+                                {"LeisRef" : "admin"},
+                                {"DirIns" : "admin"}
+                            ],
+            "user_name" : "Admin",
+            "ccs" : ["BR1.1"],
+            "networks" : ["NETWORK 1"]
+        }
+        '''
+        user_admin.profile.save()
         self.client.login(username='admin', password='admin')
+        return user_admin
 
 
 class DescriptorFormSetTest(BaseTestCase):

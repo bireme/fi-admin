@@ -1,5 +1,5 @@
 from django.shortcuts import resolve_url as r
-from model_mommy import mommy
+from model_bakery import baker
 
 from utils.tests import BaseTestCase
 
@@ -9,7 +9,7 @@ class LeisRefFormTest(BaseTestCase):
         self.login_admin()
 
     def test_help_text_in_creation_form(self):
-        mommy.make("Help", source="leisref", field="status", help_text="Help message")
+        baker.make("Help", source="leisref", field="status", help_text="Help message")
 
         response = self.client.get(r("create_legislation"))
 
@@ -21,9 +21,9 @@ class LeisRefFormTest(BaseTestCase):
         )
 
     def test_help_text_in_edit_form(self):
-        mommy.make("Act", id=1)
-        mommy.make("Help", source="leisref", field="denomination", help_text="Help message")
-        mommy.make("Help", source="leisref", field="fascicle_number", help_text="Help message")
+        baker.make("Act", id=1)
+        baker.make("Help", source="leisref", field="denomination", help_text="Help message")
+        baker.make("Help", source="leisref", field="fascicle_number", help_text="Help message")
 
         response = self.client.get(r("edit_legislation", 1))
 
@@ -44,7 +44,7 @@ class LeisRefFormTest(BaseTestCase):
         )
 
     def test_no_help_text_on_edit_form_when_there_is_no_help_object(self):
-        mommy.make("Act", id=1)
+        baker.make("Act", id=1)
 
         response = self.client.get(r("edit_legislation", 1))
 

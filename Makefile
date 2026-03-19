@@ -11,6 +11,8 @@ export IMAGE_TAG=$(IMAGE_NAME):$(APP_VERSION)
 tag:
 	@echo "IMAGE TAG:" $(IMAGE_TAG)
 
+
+
 ## docker-compose desenvolvimento
 dev_build:
 	@docker-compose -f $(COMPOSE_FILE_DEV) build
@@ -46,7 +48,12 @@ dev_migrate:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py migrate $(app)
 
 dev_test:
-	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin make test
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh run_tests.sh
+
+dev_test_coverage:
+	@cd bireme && coverage run manage.py test -v 1 main events suggest multimedia biblioref leisref institution oer title classification attachments help database text_block thesaurus related biremelogin dashboard error_reporting utils api
+	@cd bireme && coverage report
+	@cd bireme && coverage html
 
 dev_update_translations:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh -c "apk add --no-cache gettext && python manage.py makemessages --all"

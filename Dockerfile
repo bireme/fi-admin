@@ -2,8 +2,8 @@
 FROM python:3.7.8-alpine AS base
 
 # set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # copy base requirements
 COPY ./requirements.txt /app/
@@ -26,6 +26,9 @@ WORKDIR /app
 
 ########### DEV STAGE ###########
 FROM base AS dev
+
+# install dev system dependencies
+RUN apk add --no-cache make
 
 # copy dev requirements
 COPY ./requirements-dev.txt /app/

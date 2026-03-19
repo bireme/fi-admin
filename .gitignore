@@ -18,3 +18,5 @@ uploads/
 .vscode/
 .env*
 conf/app-env*
+
+CLAUDE.md

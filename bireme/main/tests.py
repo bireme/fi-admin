@@ -1,7 +1,8 @@
 # coding: utf-8
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.test.client import Client
-from model_mommy import mommy
+from model_bakery import baker
 
 from main.models import *
 from utils.models import Country
@@ -62,24 +63,26 @@ def complete_form_data():
     return complete_form_data
 
 
-def create_resource_object():
+def create_resource_object(user):
     """
     Create resource object for tests
     """
+    user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+    user3 = User.objects.create_user('user3', 'user3@test.com', 'user3')
 
     # Create two objects of different users and same center code
     Resource.objects.create(status=0, title='Recurso de teste (BR1.1)',
                             link='http://bvsalud.org', originator='BIREME',
-                            created_by_id=1, cooperative_center_code='BR1.1')
+                            created_by=user, cooperative_center_code='BR1.1')
 
     Resource.objects.create(status=0, title='Recurso de teste (BR1.1)',
                             link='http://bvsalud.org', originator='BIREME',
-                            created_by_id=2, cooperative_center_code='BR1.1')
+                            created_by=user2, cooperative_center_code='BR1.1')
 
     # Create one object of diffent center code
     Resource.objects.create(status=0, title='Recurso de teste (PY3.1)',
                             link='http://bvsalud.org', originator='BIREME',
-                            created_by_id=3, cooperative_center_code='PY3.1')
+                            created_by=user3, cooperative_center_code='PY3.1')
 
 
     # add descriptor and thematic area for resource pk 1
@@ -107,8 +110,8 @@ class ResourceTest(BaseTestCase):
         """
         Test list resources
         """
-        self.login_editor()
-        create_resource_object()
+        user = self.login_editor()
+        create_resource_object(user)
 
         # check for default list (list resources of current user = 1)
         response = self.client.get('/resources/')
@@ -157,8 +160,8 @@ class ResourceTest(BaseTestCase):
         """
         Tests edit resource
         """
-        self.login_editor()
-        create_resource_object()
+        user = self.login_editor()
+        create_resource_object(user)
 
         resource_test = Resource.objects.all()[0]
         url = '/resource/edit/{0}'.format(resource_test.id)
@@ -178,8 +181,8 @@ class ResourceTest(BaseTestCase):
         """
         Tests delete resource
         """
-        self.login_editor()
-        create_resource_object()
+        user = self.login_editor()
+        create_resource_object(user)
 
         form_data = {'delete_id': '1'}
 
@@ -291,7 +294,7 @@ class ResourceTest(BaseTestCase):
 
     def test_search_by_id(self):
         self.login_documentalist()
-        mommy.make(Resource, id=1)
+        baker.make(Resource, id=1)
 
         response = self.client.get("/resources", {"s": "id:1", "filter_owner": "*"})
 
