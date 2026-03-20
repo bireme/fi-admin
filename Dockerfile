@@ -56,7 +56,7 @@ RUN addgroup -S appuser && adduser -S appuser -G appuser
 RUN mkdir /app/static_files
 
 # copy project
-COPY --chown=appuser:appuser ./bireme/ /app/
+COPY --chown=appuser:appuser ./src/ /app/
 
 # change to the app user
 USER appuser

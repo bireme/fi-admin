@@ -1,5 +1,3 @@
-version: '3.4'
-
 services:
   fi_admin:
     container_name: fi-admin
@@ -13,7 +11,7 @@ services:
     volumes:
       - ${LOG_PATH}:/logs
       - ${UPLOAD_PATH}:/app/uploads
-      - ./bireme/fixtures/import/:/app/fixtures/import
+      - ./src/fixtures/import/:/app/fixtures/import
       - static_files:/app/static_files
     env_file:
       - ./conf/app-env
@@ -87,7 +85,7 @@ services:
     command: crond -f -L /dev/stdout
 
   fi_admin_cache:
-    image: bitnami/memcached:1.6.32
+    image: memcached:1.6.32
     container_name: fi-admin-cache
     restart: unless-stopped
     depends_on:

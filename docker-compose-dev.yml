@@ -12,7 +12,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./bireme/:/app/
+      - ./src/:/app/
     env_file:
       - ./conf/app-env-dev
     command: python manage.py runserver 0.0.0.0:8000
