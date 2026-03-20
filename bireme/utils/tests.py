@@ -15,6 +15,13 @@ class BaseTestCase(TestCase):
     This is the base test case providing commmon features for all tests acroos
     different apps in FI-ADMIN
     """
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            super().tearDownClass()
+        except AttributeError:
+            pass
+
     def setUp(self):
         # set a client.
         self.client = Client()

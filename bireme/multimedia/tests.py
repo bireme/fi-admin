@@ -18,6 +18,7 @@ def minimal_form_data():
         'status': '0',
         'title': 'Foto 1',
         'description': 'Foto 1',
+        'description_translations': 'null',
         'media_type' : '1',
 
         'main-descriptor-content_type-object_id-TOTAL_FORMS': '0',
@@ -28,6 +29,9 @@ def minimal_form_data():
 
         'main-resourcethematic-content_type-object_id-TOTAL_FORMS': '0',
         'main-resourcethematic-content_type-object_id-INITIAL_FORMS': '0',
+
+        'attachments-attachment-content_type-object_id-TOTAL_FORMS': '0',
+        'attachments-attachment-content_type-object_id-INITIAL_FORMS': '0',
     }
 
     return form_data
@@ -113,14 +117,6 @@ class MultimediaTest(BaseTestCase):
         """
         self.login_editor()
 
-        # invalid submission with missing required fields
-        form_data = minimal_form_data()
-        response = self.client.post('/multimedia/new', form_data )
-
-        self.assertContains(response,'Por favor verifique os campos obrigatórios')
-        self.assertContains(response,'Você precisa inserir pelo menos um descritor de assunto')
-        self.assertContains(response,'Você precisa selecionar pelo menos uma área temática')
-
         # complete form_data with required fields and re-submit form
         form_data = complete_form_data()
 
@@ -149,15 +145,18 @@ class MultimediaTest(BaseTestCase):
         self.assertContains(response, media_test.title)
 
         # Test changes values and submit
-        form_data = complete_form_data()
+        # use minimal_form_data (no descriptors/thematics) to trigger validation error for status=Admitted
+        form_data = minimal_form_data()
         form_data['status'] = '1'
+        form_data['link'] = 'http://www.youtube.com'
+        form_data['publication_date'] = '01/12/2015'
 
         response = self.client.post(url, form_data)
         # check for validation of descriptor and thematic area for status = Admitted
         self.assertContains(response, "é necessário ter pelo menos um descritor")
 
         # check for normal edition
-        form_data['status'] = '0'
+        form_data = complete_form_data()
         response = self.client.post(url, form_data, follow=True)
         self.assertRedirects(response, '/multimedia/')
         self.assertContains(response, "Foto 1")

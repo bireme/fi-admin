@@ -239,6 +239,9 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
             if filter_status == '-1' and not document_type:
                 object_list = object_list.exclude(treatment_level='')
 
+        # exclude deleted sources from results
+        object_list = object_list.exclude(status=3, treatment_level='')
+
         return object_list
 
     def get_context_data(self, **kwargs):

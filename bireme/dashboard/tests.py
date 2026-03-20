@@ -38,9 +38,6 @@ class DashboardGet(BaseTestCase):
             self.assertContains(resp, "O serviço DeDup está indisponível!")
 
     def test_alert_dedup_unavailable_not_br11(self):
-        for user in User.objects.all():
-            user.delete()
-
         self.login_editor_llxp()
 
         with requests_mock.mock() as m:
