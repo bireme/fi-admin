@@ -1,7 +1,6 @@
 *.log
 *.pot
 *.pyc
-*.sh
 *.csv
 Guardfile
 settings_local.py
@@ -18,5 +17,8 @@ uploads/
 .vscode/
 .env*
 conf/app-env*
+
+.coverage
+src/htmlcov
 
 CLAUDE.md

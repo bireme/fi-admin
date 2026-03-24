@@ -3,9 +3,6 @@
 
 APPS="main events multimedia biblioref leisref institution oer title thesaurus suggest classification error_reporting"
 
-for app in $APPS
-do
-    echo "Running tests from [$app]"
-    python -W ignore manage.py test -v 1 $app
-done
-
+coverage run manage.py test -v 1 $APPS
+coverage report -m
+coverage html

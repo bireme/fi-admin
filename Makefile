@@ -54,9 +54,7 @@ dev_test_app:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python -W ignore manage.py test -v 1 $(app)
 
 dev_test_coverage:
-	@cd src && coverage run manage.py test -v 1 main events suggest multimedia biblioref leisref institution oer title classification attachments help database text_block thesaurus related biremelogin dashboard error_reporting utils api
-	@cd src && coverage report
-	@cd src && coverage html
+	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh run_coverage.sh
 
 dev_update_translations:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh -c "apk add --no-cache gettext && python manage.py makemessages --all"

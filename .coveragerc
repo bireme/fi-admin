@@ -1,0 +1,19 @@
+[run]
+source = .
+omit =
+    */migrations/*
+    */tests/*
+    */tests.py
+    fi-admin/settings.py
+    fi-admin/wsgi.py
+    manage.py
+    run_tests.sh
+
+[report]
+show_missing = True
+skip_covered = False
+precision = 1
+fail_under = 0
+
+[html]
+directory = htmlcov
