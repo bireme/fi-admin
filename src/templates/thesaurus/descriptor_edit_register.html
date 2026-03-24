@@ -576,13 +576,13 @@
 
 
 {% block extrajs %}
-   <script src="{% static '/js/jquery.formset.js' %}"></script>
-   <script src="{% static '/js/bootstrap-datepicker.min.js' %}"></script>
-   <script src="{% static '/js/bootstrap-collapse.js' %}"></script>
-   <script src="{% static '/js/multiple-select.min.js' %}"></script>
+   <script src="{% static 'js/jquery.formset.js' %}"></script>
+   <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap-collapse.js' %}"></script>
+   <script src="{% static 'js/multiple-select.min.js' %}"></script>
 
    {% if LANGUAGE_CODE != 'en' %}
-       <script src="{% static ''%}/js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
+       <script src="{% static ''%}js/bootstrap-datepicker.{{LANGUAGE_CODE}}.min.js"></script>
    {% endif %}
 
    <script type="text/javascript">
