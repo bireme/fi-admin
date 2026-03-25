@@ -282,6 +282,304 @@ class MultimediaTest(BaseTestCase):
         self.assertContains(response, "Coleção nova")
 
 
+class MultimediaListViewTest(BaseTestCase):
+    """
+    Tests for multimedia list view filtering, search, ordering, and context data
+    """
+
+    def setUp(self):
+        super(MultimediaListViewTest, self).setUp()
+        self.media_type = MediaType.objects.create(acronym='video', name='Video')
+        self.thematic_area = ThematicArea.objects.create(acronym='LISBR1.1', name='Teste')
+
+    # -- Owner filtering --
+
+    def test_media_list_default_filters_by_user(self):
+        user = self.login_editor()
+        user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+
+        Media.objects.create(
+            status=0, title='Media do editor', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+        Media.objects.create(
+            status=0, title='Media do user2', media_type=self.media_type,
+            link='http://example.com', created_by=user2, cooperative_center_code='BR1.1',
+        )
+
+        response = self.client.get('/multimedia/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Media do editor')
+        self.assertNotContains(response, 'Media do user2')
+
+    def test_media_list_filter_owner_all(self):
+        user = self.login_editor()
+        user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+
+        Media.objects.create(
+            status=0, title='Media do editor', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+        Media.objects.create(
+            status=0, title='Media do user2', media_type=self.media_type,
+            link='http://example.com', created_by=user2, cooperative_center_code='PY3.1',
+        )
+
+        response = self.client.get('/multimedia/', {'filter_owner': '*'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'].count(), 2)
+
+    # -- Status filtering --
+
+    def test_media_list_filter_by_status(self):
+        user = self.login_editor()
+
+        Media.objects.create(
+            status=0, title='Pending media', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+        Media.objects.create(
+            status=1, title='Admitted media', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+
+        response = self.client.get('/multimedia/', {'filter_status': '1', 'filter_owner': '*'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'].count(), 1)
+        self.assertContains(response, 'Admitted media')
+        self.assertNotContains(response, 'Pending media')
+
+    # -- Thematic area filtering --
+
+    def test_media_list_filter_by_thematic_area(self):
+        user = self.login_editor()
+
+        media1 = Media.objects.create(
+            status=0, title='Media with thematic', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+        media2 = Media.objects.create(
+            status=0, title='Media without thematic', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+
+        media1_ct = ContentType.objects.get_for_model(media1)
+        ResourceThematic.objects.create(
+            object_id=media1.id, content_type=media1_ct,
+            thematic_area=self.thematic_area,
+        )
+
+        response = self.client.get('/multimedia/', {
+            'filter_thematic': str(self.thematic_area.id),
+            'filter_owner': '*',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'].count(), 1)
+        self.assertContains(response, 'Media with thematic')
+        self.assertNotContains(response, 'Media without thematic')
+
+    # -- Created by user filtering --
+
+    def test_media_list_filter_by_created_by_user(self):
+        user = self.login_editor()
+        user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+
+        Media.objects.create(
+            status=0, title='Media do editor', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+        Media.objects.create(
+            status=0, title='Media do user2', media_type=self.media_type,
+            link='http://example.com', created_by=user2, cooperative_center_code='BR1.1',
+        )
+
+        response = self.client.get('/multimedia/', {
+            'filter_created_by_user': str(user2.id),
+            'filter_owner': '*',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'].count(), 1)
+        self.assertContains(response, 'Media do user2')
+        self.assertNotContains(response, 'Media do editor')
+
+    # -- Cooperative center filtering --
+
+    def test_media_list_filter_by_cc(self):
+        user = self.login_editor()
+        user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+
+        Media.objects.create(
+            status=0, title='Media BR', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+        Media.objects.create(
+            status=0, title='Media PY', media_type=self.media_type,
+            link='http://example.com', created_by=user2, cooperative_center_code='PY3.1',
+        )
+
+        response = self.client.get('/multimedia/', {
+            'filter_created_by_cc': 'BR1.1',
+            'filter_owner': '*',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'].count(), 1)
+        self.assertContains(response, 'Media BR')
+        self.assertNotContains(response, 'Media PY')
+
+    # -- Search --
+
+    def test_media_list_search_by_title(self):
+        user = self.login_editor()
+
+        Media.objects.create(
+            status=0, title='Malaria video', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+        Media.objects.create(
+            status=0, title='Dengue video', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+
+        response = self.client.get('/multimedia/', {'s': 'Malaria', 'filter_owner': '*'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'].count(), 1)
+        self.assertContains(response, 'Malaria video')
+        self.assertNotContains(response, 'Dengue video')
+
+    def test_media_list_search_by_field(self):
+        user = self.login_editor()
+
+        Media.objects.create(
+            status=0, title='Unique title here', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+        Media.objects.create(
+            status=0, title='Another media', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+
+        response = self.client.get('/multimedia/', {'s': 'title:Unique', 'filter_owner': '*'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'].count(), 1)
+        self.assertContains(response, 'Unique title here')
+        self.assertNotContains(response, 'Another media')
+
+    # -- Ordering --
+
+    def test_media_list_ordering(self):
+        user = self.login_editor()
+
+        Media.objects.create(
+            status=0, title='Alpha media', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+        Media.objects.create(
+            status=0, title='Zeta media', media_type=self.media_type,
+            link='http://example.com', created_by=user, cooperative_center_code='BR1.1',
+        )
+
+        response = self.client.get('/multimedia/', {
+            'order': '-', 'orderby': 'title', 'filter_owner': '*',
+        })
+        self.assertEqual(response.status_code, 200)
+        titles = list(response.context['object_list'].values_list('title', flat=True))
+        self.assertEqual(titles, ['Zeta media', 'Alpha media'])
+
+    # -- Context data --
+
+    def test_media_list_context_data(self):
+        self.login_editor()
+
+        response = self.client.get('/multimedia/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('actions', response.context)
+        self.assertIn('cc_filter_list', response.context)
+        self.assertIn('thematic_list', response.context)
+        self.assertIn('collection_list', response.context)
+        self.assertIn('show_advaced_filters', response.context)
+
+    # -- Access control --
+
+    def test_media_list_unauthenticated_redirects(self):
+        response = self.client.get('/multimedia/')
+        self.assertEqual(response.status_code, 302)
+
+    # -- MediaType list view --
+
+    def test_media_type_list_requires_superuser(self):
+        self.login_editor()
+        response = self.client.get('/multimedia/media-types/')
+        self.assertEqual(response.status_code, 403)
+
+    def test_media_type_list_superuser_access(self):
+        self.login_admin()
+        MediaType.objects.create(acronym='foto', name='Foto')
+
+        response = self.client.get('/multimedia/media-types/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Foto')
+
+    def test_media_type_list_no_user_restriction(self):
+        admin = self.login_admin()
+        user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+
+        MediaType.objects.create(acronym='foto', name='Foto', created_by=admin)
+        MediaType.objects.create(acronym='audio', name='Audio', created_by=user2)
+
+        response = self.client.get('/multimedia/media-types/')
+        self.assertEqual(response.status_code, 200)
+        # restrict_by_user=False, so all types should appear (+ the one from setUp)
+        self.assertTrue(response.context['object_list'].count() >= 2)
+
+    # -- MediaCollection list view --
+
+    def test_media_collection_list_filter_by_cc(self):
+        self.login_editor()
+        user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+
+        MediaCollection.objects.create(name='Col BR', description='test', created_by=user2, cooperative_center_code='BR1.1')
+        MediaCollection.objects.create(name='Col PY', description='test', created_by=user2, cooperative_center_code='PY3.1')
+
+        response = self.client.get('/multimedia/collections/', {'filter_created_by_cc': 'BR1.1'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'].count(), 1)
+        self.assertContains(response, 'Col BR')
+        self.assertNotContains(response, 'Col PY')
+
+    def test_media_collection_list_search(self):
+        self.login_editor()
+
+        MediaCollection.objects.create(name='Fotos antigas', description='test', cooperative_center_code='BR1.1')
+        MediaCollection.objects.create(name='Videos recentes', description='test', cooperative_center_code='BR1.1')
+
+        response = self.client.get('/multimedia/collections/', {'s': 'Fotos'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['object_list'].count(), 1)
+        self.assertContains(response, 'Fotos antigas')
+        self.assertNotContains(response, 'Videos recentes')
+
+    def test_media_collection_list_no_user_restriction(self):
+        user = self.login_editor()
+        user2 = User.objects.create_user('user2', 'user2@test.com', 'user2')
+
+        MediaCollection.objects.create(name='Col editor', description='test', created_by=user, cooperative_center_code='BR1.1')
+        MediaCollection.objects.create(name='Col user2', description='test', created_by=user2, cooperative_center_code='PY3.1')
+
+        response = self.client.get('/multimedia/collections/')
+        self.assertEqual(response.status_code, 200)
+        # restrict_by_user=False, so all collections should appear
+        self.assertEqual(response.context['object_list'].count(), 2)
+
+    # -- Advanced filters flag --
+
+    def test_show_advanced_filters(self):
+        self.login_editor()
+
+        response = self.client.get('/multimedia/', {'apply_filters': '1'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['show_advaced_filters'])
+
+
 class MultimediaSearchTest(BaseTestCase):
     def test_search_id(self):
         self.login_editor()

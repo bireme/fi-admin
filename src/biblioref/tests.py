@@ -1,8 +1,10 @@
 # coding: utf-8
 from unittest import skip
 
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.test.client import Client
+from django.test.utils import override_settings
 from model_bakery import baker
 
 from biblioref.models import *
@@ -428,3 +430,353 @@ class BiblioRefListGet(BaseTestCase):
         )
 
         self.assertContains(response, '<span class="badge badge-info">1</span>')
+
+    def test_filter_owner_user(self):
+        """ Default filter must show only current user's records """
+        current_user = User.objects.get(username='doc')
+        other_user = User.objects.create_user('other', 'other@test.com', 'other')
+
+        baker.make(
+            "ReferenceSource", reference_title="My Record", status=-1,
+            created_by=current_user, created_time="1970-01-01 00:00",
+            literature_type="S", treatment_level="as"
+        )
+        baker.make(
+            "ReferenceSource", reference_title="Other Record", status=-1,
+            created_by=other_user, created_time="1970-01-01 00:00",
+            literature_type="S", treatment_level="as"
+        )
+
+        response = self.client.get("/bibliographic/")
+
+        self.assertContains(response, "My Record")
+        self.assertNotContains(response, "Other Record")
+
+    def test_filter_owner_center(self):
+        """ Filter by cooperative center must show only records from user's CC """
+        baker.make(
+            "ReferenceSource", reference_title="BR1.1 Record", status=-1,
+            cooperative_center_code="BR1.1", created_time="1970-01-01 00:00",
+            literature_type="S", treatment_level="as"
+        )
+        baker.make(
+            "ReferenceSource", reference_title="PY3.1 Record", status=-1,
+            cooperative_center_code="PY3.1", created_time="1970-01-01 00:00",
+            literature_type="S", treatment_level="as"
+        )
+
+        response = self.client.get(
+            "/bibliographic/", {"filter_owner": "center"}
+        )
+
+        self.assertContains(response, "BR1.1 Record")
+        self.assertNotContains(response, "PY3.1 Record")
+
+    def test_filter_owner_all(self):
+        """ Filter owner=* must show all records """
+        current_user = User.objects.get(username='doc')
+        other_user = User.objects.create_user('other', 'other@test.com', 'other')
+
+        baker.make(
+            "ReferenceSource", reference_title="Record A", status=-1,
+            created_by=current_user, created_time="1970-01-01 00:00",
+            literature_type="S", treatment_level="as"
+        )
+        baker.make(
+            "ReferenceSource", reference_title="Record B", status=-1,
+            created_by=other_user, created_time="1970-01-01 00:00",
+            literature_type="S", treatment_level="as"
+        )
+
+        response = self.client.get(
+            "/bibliographic/", {"filter_owner": "*"}
+        )
+
+        self.assertContains(response, "Record A")
+        self.assertContains(response, "Record B")
+
+    def test_filter_by_document_type(self):
+        """ Must filter records by document type (literature_type + treatment_level) """
+        baker.make(
+            "ReferenceSource", reference_title="Serial Source", status=-1,
+            literature_type="S", treatment_level="", title_serial="Revista X",
+            volume_serial="1", issue_number="2", publication_date_normalized="20200101",
+            created_time="1970-01-01 00:00"
+        )
+        baker.make(
+            "ReferenceSource", reference_title="Monograph Source", status=-1,
+            literature_type="M", treatment_level="m",
+            title_monographic=[{"text": "Monograph Source", "_i": "en"}],
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/sources", {"document_type": "Mm", "filter_owner": "*"}
+        )
+
+        self.assertContains(response, "Monograph Source")
+        self.assertNotContains(response, "Serial Source")
+
+    def test_filter_by_analytic_document_type(self):
+        """ Must filter analytic records by document type Sas """
+        source = baker.make(
+            "ReferenceSource", title_serial="Revista Test",
+            volume_serial="1", issue_number="2", publication_date_normalized="20200101",
+            created_time="1970-01-01 00:00", literature_type="S"
+        )
+        baker.make(
+            "ReferenceAnalytic", source=source, reference_title="Serial Analytic",
+            title=[{"text": "Serial Analytic", "_i": "en"}],
+            status=-1, literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/analytics", {"document_type": "Sas", "filter_owner": "*"}
+        )
+
+        self.assertContains(response, "Serial Analytic")
+
+    def test_filter_status_draft(self):
+        """ Must return only draft records and exclude serial sources """
+        baker.make(
+            "ReferenceSource", reference_title="Draft Analytic", status=-1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+        baker.make(
+            "ReferenceSource", reference_title="Published Record", status=1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+        # serial source with empty treatment_level should be excluded from draft filter
+        baker.make(
+            "ReferenceSource", reference_title="Draft Serial Source", status=-1,
+            literature_type="S", treatment_level="",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/", {"filter_status": "-1", "filter_owner": "*"}
+        )
+
+        self.assertContains(response, "Draft Analytic")
+        self.assertNotContains(response, "Published Record")
+        self.assertNotContains(response, "Draft Serial Source")
+
+    def test_filter_status_published(self):
+        """ Must return only published records """
+        baker.make(
+            "ReferenceSource", reference_title="Published Record", status=1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+        baker.make(
+            "ReferenceSource", reference_title="Draft Record", status=-1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/", {"filter_status": "1", "filter_owner": "*"}
+        )
+
+        self.assertContains(response, "Published Record")
+        self.assertNotContains(response, "Draft Record")
+
+    @override_settings(FULLTEXT_SEARCH=False)
+    def test_search_by_title(self):
+        """ Must return only records matching the search term """
+        baker.make(
+            "ReferenceSource", reference_title="Malaria Treatment Study", status=-1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+        baker.make(
+            "ReferenceSource", reference_title="Dengue Prevention", status=-1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/", {"s": "Malaria", "filter_owner": "*"}
+        )
+
+        self.assertContains(response, "Malaria Treatment Study")
+        self.assertNotContains(response, "Dengue Prevention")
+
+    @override_settings(FULLTEXT_SEARCH=False)
+    def test_search_by_field_id(self):
+        """ Must return the exact record when searching by id field """
+        ref = baker.make(
+            "ReferenceSource", reference_title="Specific Record", status=-1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/", {"s": "id:{}".format(ref.id), "filter_owner": "*"}
+        )
+
+        self.assertContains(response, "Specific Record")
+
+    def test_context_contains_expected_keys(self):
+        """ Must include all expected keys in the template context """
+        response = self.client.get("/bibliographic/")
+
+        self.assertIn('actions', response.context)
+        self.assertIn('document_type', response.context)
+        self.assertIn('source_id', response.context)
+        self.assertIn('user_data', response.context)
+        self.assertIn('user_role', response.context)
+        self.assertIn('indexed_database_list', response.context)
+        self.assertIn('collection_list', response.context)
+
+    def test_unauthenticated_user_redirected(self):
+        """ Must redirect unauthenticated users to the login page """
+        self.client.logout()
+
+        response = self.client.get("/bibliographic/")
+
+        self.assertEqual(302, response.status_code)
+
+    def test_custom_ordering(self):
+        """ Must order records by specified field in descending order """
+        baker.make(
+            "ReferenceSource", reference_title="Alpha Record", status=-1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+        baker.make(
+            "ReferenceSource", reference_title="Zeta Record", status=-1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/",
+            {"order": "-", "orderby": "reference_title", "filter_owner": "*"}
+        )
+
+        content = response.content.decode()
+        pos_zeta = content.find("Zeta Record")
+        pos_alpha = content.find("Alpha Record")
+        self.assertTrue(pos_zeta < pos_alpha, "Zeta should appear before Alpha in descending order")
+
+    def test_draft_filter_excludes_serial_sources(self):
+        """ Draft filter must exclude sources with empty treatment_level """
+        source = baker.make(
+            "ReferenceSource", reference_title="Draft Source", status=-1,
+            literature_type="S", treatment_level="",
+            created_time="1970-01-01 00:00"
+        )
+        baker.make(
+            "ReferenceAnalytic", source=source, reference_title="Draft Analytic", status=-1,
+            literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/", {"filter_status": "-1", "filter_owner": "*"}
+        )
+
+        self.assertNotContains(response, "Draft Source")
+        self.assertContains(response, "Draft Analytic")
+
+
+class BiblioRefSourceListGet(BaseTestCase):
+    def setUp(self):
+        super(BiblioRefSourceListGet, self).setUp()
+        self.login_documentalist()
+
+    def test_list_sources_view(self):
+        """ Must return status code 200 for sources list """
+        response = self.client.get("/bibliographic/sources")
+        self.assertEqual(200, response.status_code)
+
+    def test_editor_llxp_sources_filtered_by_center(self):
+        """ LLXP editor must only see sources from their cooperative center """
+        from django.core.cache import cache
+        cache.clear()
+
+        self.client.logout()
+        self.login_editor_llxp()
+
+        baker.make(
+            "ReferenceSource", reference_title="BR772 Source", status=-1,
+            cooperative_center_code="BR772", literature_type="S",
+            treatment_level="", title_serial="Revista BR772",
+            volume_serial="1", issue_number="1", publication_date_normalized="20200101",
+            created_time="1970-01-01 00:00"
+        )
+        baker.make(
+            "ReferenceSource", reference_title="BR1.1 Source", status=-1,
+            cooperative_center_code="BR1.1", literature_type="S",
+            treatment_level="", title_serial="Revista BR1.1",
+            volume_serial="1", issue_number="1", publication_date_normalized="20200101",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get("/bibliographic/sources")
+
+        self.assertContains(response, "Revista BR772")
+        self.assertNotContains(response, "Revista BR1.1")
+
+
+class BiblioRefAnalyticListGet(BaseTestCase):
+    def setUp(self):
+        super(BiblioRefAnalyticListGet, self).setUp()
+        self.login_documentalist()
+
+    def test_list_analytics_view(self):
+        """ Must return status code 200 for analytics list """
+        source = baker.make(
+            "ReferenceSource", title_serial="Revista Test",
+            volume_serial="1", issue_number="2", publication_date_normalized="20200101",
+            created_time="1970-01-01 00:00", literature_type="S"
+        )
+        baker.make(
+            "ReferenceAnalytic", source=source, reference_title="Test Analytic",
+            title=[{"text": "Test Analytic", "_i": "en"}],
+            status=-1, literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/analytics", {"source": source.id}
+        )
+
+        self.assertEqual(200, response.status_code)
+        self.assertContains(response, "Test Analytic")
+
+    def test_list_analytics_filtered_by_source(self):
+        """ Must show only analytics from the specified source """
+        source1 = baker.make(
+            "ReferenceSource", title_serial="Revista A",
+            volume_serial="1", issue_number="1", publication_date_normalized="20200101",
+            created_time="1970-01-01 00:00", literature_type="S"
+        )
+        source2 = baker.make(
+            "ReferenceSource", title_serial="Revista B",
+            volume_serial="2", issue_number="1", publication_date_normalized="20200101",
+            created_time="1970-01-01 00:00", literature_type="S"
+        )
+        baker.make(
+            "ReferenceAnalytic", source=source1, reference_title="Analytic From A",
+            title=[{"text": "Analytic From A", "_i": "en"}],
+            status=-1, literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+        baker.make(
+            "ReferenceAnalytic", source=source2, reference_title="Analytic From B",
+            title=[{"text": "Analytic From B", "_i": "en"}],
+            status=-1, literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+
+        response = self.client.get(
+            "/bibliographic/analytics", {"source": source1.id}
+        )
+
+        self.assertContains(response, "Analytic From A")
+        self.assertNotContains(response, "Analytic From B")
