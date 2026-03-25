@@ -130,6 +130,9 @@ prod_ps:
 prod_rm:
 	@docker-compose --compatibility rm -f
 
+prod_down:
+	@docker-compose --compatibility down
+
 prod_list_images:
 	@docker images $(IMAGE_NAME}
 

@@ -53,7 +53,7 @@ RUN chmod +x /etc/periodic/monthly/*
 RUN addgroup -S appuser && adduser -S appuser -G appuser
 
 # create directory for collectstatic command
-RUN mkdir /app/static_files
+RUN mkdir /app/static_files && chown appuser:appuser /app/static_files
 
 # copy project
 COPY --chown=appuser:appuser ./src/ /app/
