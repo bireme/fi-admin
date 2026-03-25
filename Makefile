@@ -108,6 +108,10 @@ prod_build:
 	@docker-compose --compatibility build
 	@docker tag $(IMAGE_TAG) $(TAG_LATEST)
 
+prod_build_no_cache:
+	@docker-compose --compatibility build --no-cache
+	@docker tag $(IMAGE_TAG) $(TAG_LATEST)
+
 prod_up:
 	@docker-compose --compatibility up -d
 
