@@ -38,7 +38,7 @@ services:
       - fi_admin
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
-      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+      - LETSENCRYPT_HOST=${VIRTUAL_HOST}
     networks:
       - nginx-proxy
     deploy:
@@ -61,7 +61,7 @@ services:
       - fi_admin
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST_DOCS}
-      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST_DOCS}
+      - LETSENCRYPT_HOST=${VIRTUAL_HOST_DOCS}
     networks:
       - nginx-proxy
     deploy:
