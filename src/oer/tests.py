@@ -192,6 +192,191 @@ class OERTest(BaseTestCase):
         self.assertRedirects(response, '/oer/')
 
 
+class OERListViewTest(BaseTestCase):
+    """
+    Tests for OERGenericListView filtering, search, ordering and context
+    """
+
+    def setUp(self):
+        super(OERListViewTest, self).setUp()
+
+        self.oer_type = Type.objects.create(name='Curso', language='pt-br')
+        self.language = SourceLanguage.objects.create(acronym='pt', name='Portugues',
+                                                      language='pt-br')
+        self.license = License.objects.create(name='CC BY', language='pt-br')
+        self.learning_context = LearningContext.objects.create(name='Ensino superior',
+                                                               language='pt-br')
+        self.thematic_area = ThematicArea.objects.create(acronym='LISBR1.1', name='Teste')
+
+    def _create_oer(self, user, title='Test OER', status=-1, cc='BR1.1', cvsp_node=''):
+        """Helper to create a single OER with given attributes"""
+        return OER.objects.create(
+            status=status, title=title,
+            type=self.oer_type, language=self.language,
+            license=self.license, learning_context=self.learning_context,
+            created_by=user, cooperative_center_code=cc, cvsp_node=cvsp_node
+        )
+
+    # --- 1. Owner filtering ---
+
+    def test_list_default_filters_by_user(self):
+        """Default list filters by current user (filter_owner='user')"""
+        admin = self.login_admin()
+        other_user = User.objects.create_user('other', 'other@test.com', 'other')
+
+        self._create_oer(admin, title='Admin OER')
+        self._create_oer(other_user, title='Other OER')
+
+        response = self.client.get('/oer/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Admin OER')
+        self.assertNotContains(response, 'Other OER')
+
+    def test_list_filter_owner_center(self):
+        """filter_owner=center filters by cooperative center code"""
+        admin = self.login_admin()
+        other_user = User.objects.create_user('other', 'other@test.com', 'other')
+
+        self._create_oer(admin, title='BR1.1 OER', cc='BR1.1')
+        self._create_oer(other_user, title='PY3.1 OER', cc='PY3.1')
+
+        response = self.client.get('/oer/', {'filter_owner': 'center'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'BR1.1 OER')
+        self.assertNotContains(response, 'PY3.1 OER')
+
+    def test_list_filter_owner_all(self):
+        """filter_owner=* shows all records regardless of creator"""
+        admin = self.login_admin()
+        other_user = User.objects.create_user('other', 'other@test.com', 'other')
+
+        self._create_oer(admin, title='Admin OER')
+        self._create_oer(other_user, title='Other OER')
+
+        response = self.client.get('/oer/', {'filter_owner': '*'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Admin OER')
+        self.assertContains(response, 'Other OER')
+
+    # --- 2. Status filtering ---
+
+    def test_list_filter_by_status(self):
+        """filter_status filters OERs by status field"""
+        user = self.login_admin()
+
+        self._create_oer(user, title='Draft OER', status=-1)
+        self._create_oer(user, title='Published OER', status=1)
+
+        response = self.client.get('/oer/', {'filter_status': '1', 'filter_owner': '*'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Published OER')
+        self.assertNotContains(response, 'Draft OER')
+
+    # --- 3. Country/CVSP node filtering ---
+
+    def test_list_filter_by_country(self):
+        """filter_country filters OERs by cvsp_node"""
+        user = self.login_admin()
+
+        self._create_oer(user, title='BR OER', cvsp_node='BR')
+        self._create_oer(user, title='PY OER', cvsp_node='PY')
+
+        response = self.client.get('/oer/', {
+            'filter_country': 'BR', 'filter_owner': '*'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'BR OER')
+        self.assertNotContains(response, 'PY OER')
+
+    # --- 4. Search functionality ---
+
+    def test_list_search_by_title(self):
+        """Search matches title via icontains"""
+        user = self.login_admin()
+
+        self._create_oer(user, title='Unique Educational Resource')
+        self._create_oer(user, title='Other Record')
+
+        response = self.client.get('/oer/', {'s': 'Unique Educational', 'filter_owner': '*'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Unique Educational Resource')
+        self.assertNotContains(response, 'Other Record')
+
+    def test_list_search_by_field_prefix(self):
+        """Search with field:value syntax uses icontains on specified field"""
+        user = self.login_admin()
+
+        self._create_oer(user, title='Target Title')
+        self._create_oer(user, title='Other Title')
+
+        response = self.client.get('/oer/', {'s': 'title:Target', 'filter_owner': '*'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Target Title')
+        self.assertNotContains(response, 'Other Title')
+
+    def test_list_empty_search_returns_all(self):
+        """Empty search string returns all records"""
+        user = self.login_admin()
+
+        self._create_oer(user, title='OER One')
+        self._create_oer(user, title='OER Two')
+
+        response = self.client.get('/oer/', {'s': '', 'filter_owner': '*'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'OER One')
+        self.assertContains(response, 'OER Two')
+
+    # --- 5. Ordering ---
+
+    def test_list_ordering(self):
+        """order=- with orderby applies descending sort"""
+        user = self.login_admin()
+
+        self._create_oer(user, title='AAA OER')
+        self._create_oer(user, title='ZZZ OER')
+
+        response = self.client.get('/oer/', {
+            'order': '-', 'orderby': 'title', 'filter_owner': '*'
+        })
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        pos_zzz = content.find('ZZZ OER')
+        pos_aaa = content.find('AAA OER')
+        self.assertGreater(pos_zzz, -1)
+        self.assertGreater(pos_aaa, -1)
+        self.assertLess(pos_zzz, pos_aaa)
+
+    # --- 6. Context data ---
+
+    def test_list_context_data(self):
+        """Context contains expected keys"""
+        self.login_admin()
+
+        response = self.client.get('/oer/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('actions', response.context)
+        self.assertIn('user_role', response.context)
+        self.assertIn('cvsp_node_list', response.context)
+        self.assertIn('show_advaced_filters', response.context)
+
+    # --- 7. Access control ---
+
+    def test_list_unauthenticated_redirects(self):
+        """Unauthenticated access redirects to login"""
+        response = self.client.get('/oer/')
+        self.assertEqual(response.status_code, 302)
+
+    # --- 8. Advanced filters flag ---
+
+    def test_show_advanced_filters(self):
+        """apply_filters parameter sets show_advaced_filters in context"""
+        self.login_admin()
+
+        response = self.client.get('/oer/', {'apply_filters': '1'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['show_advaced_filters'])
+
+
 class OERSearchTest(BaseTestCase):
     def test_search_id(self):
         self.login_admin()
