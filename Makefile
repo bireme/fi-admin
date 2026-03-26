@@ -17,6 +17,9 @@ tag:
 dev_build:
 	@docker-compose -f $(COMPOSE_FILE_DEV) build
 
+dev_build_no_cache:
+	@docker-compose -f $(COMPOSE_FILE_DEV) build --no-cache
+
 dev_up:
 	@docker-compose -f $(COMPOSE_FILE_DEV) up -d
 
