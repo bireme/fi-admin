@@ -188,6 +188,140 @@ class TitleTest(BaseTestCase):
         self.assertRedirects(response, '/title/')
 
 
+class TitleListViewTest(BaseTestCase):
+    """
+    Tests for TitleListView filtering, search, ordering and context
+    """
+
+    def setUp(self):
+        super(TitleListViewTest, self).setUp()
+        self.country = Country.objects.create(code='BR', name='Brasil')
+
+    def _create_title(self, user, title='Test Title', id_number='1',
+                      shortened_title='Test', issn='', secs_number='',
+                      cc='BR1.1'):
+        """Helper to create a single Title with given attributes"""
+        obj = Title.objects.create(
+            id_number=id_number, status='C', title=title,
+            shortened_title=shortened_title, creation_date='20200101',
+            created_by=user, cooperative_center_code=cc,
+            issn=issn, secs_number=secs_number
+        )
+        obj.country.add(self.country)
+        return obj
+
+    # --- 1. Search functionality ---
+
+    def test_list_search_by_title(self):
+        """Search ?s= matches title via icontains"""
+        user = self.login_admin()
+
+        self._create_title(user, title='Unique Medical Journal', id_number='1')
+        self._create_title(user, title='Other Record', id_number='2')
+
+        response = self.client.get('/title/', {'s': 'Unique Medical'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Unique Medical Journal')
+        self.assertNotContains(response, 'Other Record')
+
+    def test_list_search_by_short_title(self):
+        """Search ?short_title= matches shortened_title via icontains"""
+        user = self.login_admin()
+
+        self._create_title(user, title='Journal A', shortened_title='J. Med. A',
+                           id_number='1')
+        self._create_title(user, title='Journal B', shortened_title='J. Sci. B',
+                           id_number='2')
+
+        response = self.client.get('/title/', {'short_title': 'Med'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Journal A')
+        self.assertNotContains(response, 'Journal B')
+
+    def test_list_search_by_issn(self):
+        """Search ?issn= filters by exact ISSN"""
+        user = self.login_admin()
+
+        self._create_title(user, title='ISSN Match', issn='1234-5678', id_number='1')
+        self._create_title(user, title='ISSN No Match', issn='8765-4321', id_number='2')
+
+        response = self.client.get('/title/', {'issn': '1234-5678'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'ISSN Match')
+        self.assertNotContains(response, 'ISSN No Match')
+
+    def test_list_search_by_secs_number(self):
+        """Search ?secs_number= filters by exact secs_number"""
+        user = self.login_admin()
+
+        self._create_title(user, title='SECS Match', secs_number='S001', id_number='1')
+        self._create_title(user, title='SECS No Match', secs_number='S002', id_number='2')
+
+        response = self.client.get('/title/', {'secs_number': 'S001'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'SECS Match')
+        self.assertNotContains(response, 'SECS No Match')
+
+    def test_list_search_by_id_number(self):
+        """Search ?id= filters by id_number"""
+        user = self.login_admin()
+
+        self._create_title(user, title='ID Match', id_number='100')
+        self._create_title(user, title='ID No Match', id_number='200')
+
+        response = self.client.get('/title/', {'id': '100'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'ID Match')
+        self.assertNotContains(response, 'ID No Match')
+
+    def test_list_empty_search_returns_all(self):
+        """Empty search string returns all records"""
+        user = self.login_admin()
+
+        self._create_title(user, title='Title One', id_number='1')
+        self._create_title(user, title='Title Two', id_number='2')
+
+        response = self.client.get('/title/', {'s': ''})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Title One')
+        self.assertContains(response, 'Title Two')
+
+    # --- 2. Ordering ---
+
+    def test_list_ordering(self):
+        """order=- with orderby applies descending sort"""
+        user = self.login_admin()
+
+        self._create_title(user, title='AAA Journal', id_number='1')
+        self._create_title(user, title='ZZZ Journal', id_number='2')
+
+        response = self.client.get('/title/', {'order': '-', 'orderby': 'title'})
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        pos_zzz = content.find('ZZZ Journal')
+        pos_aaa = content.find('AAA Journal')
+        self.assertGreater(pos_zzz, -1)
+        self.assertGreater(pos_aaa, -1)
+        self.assertLess(pos_zzz, pos_aaa)
+
+    # --- 3. Context data ---
+
+    def test_list_context_data(self):
+        """Context contains expected keys"""
+        self.login_admin()
+
+        response = self.client.get('/title/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('actions', response.context)
+
+    # --- 4. Access control ---
+
+    def test_list_unauthenticated_redirects(self):
+        """Unauthenticated access redirects to login"""
+        response = self.client.get('/title/')
+        self.assertEqual(response.status_code, 302)
+
+
 class TitleSearchTest(BaseTestCase):
     def test_search_id(self):
         self.login_admin()
