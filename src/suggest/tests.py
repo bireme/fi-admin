@@ -41,7 +41,7 @@ class SuggestTest(BaseTestCase):
         # check for default list (list events of current user = 1)
         response = self.client.get('/suggested-resources/')
         self.assertContains(response, "Sugestão de recurso")
-        self.assertEquals(response.context['suggestions'].count(), 1)
+        self.assertEqual(response.context['suggestions'].count(), 1)
 
 
     # Turn off ReCaptcha validation for tests
@@ -104,7 +104,7 @@ class SuggestTest(BaseTestCase):
         # check for default list (list events of current user = 1)
         response = self.client.get('/suggested-resources/?type=events')
         self.assertContains(response, "Sugestão de evento")
-        self.assertEquals(response.context['suggestions'].count(), 1)
+        self.assertEqual(response.context['suggestions'].count(), 1)
 
 
     # Turn off ReCaptcha validation for tests

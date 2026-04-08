@@ -143,7 +143,7 @@ class OERTest(BaseTestCase):
         self.assertContains(response, "Recurso educacional de teste")
 
         # check if cooperative center code is set from user profile (admin = BR1.1)
-        self.assertEquals(OER.objects.all()[0].cooperative_center_code, "BR1.1")
+        self.assertEqual(OER.objects.all()[0].cooperative_center_code, "BR1.1")
 
     def test_edit_oer(self):
         """

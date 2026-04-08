@@ -116,7 +116,7 @@ class ResourceTest(BaseTestCase):
         # check for default list (list resources of current user = 1)
         response = self.client.get('/resources/')
         self.assertContains(response, "Recurso de teste (BR1.1)")
-        self.assertEquals(response.context['resources'].count(), 1)
+        self.assertEqual(response.context['resources'].count(), 1)
 
         # default list don't show resources from other users
         self.assertNotContains(response, "Recurso de teste (PY3.1)")
@@ -124,7 +124,7 @@ class ResourceTest(BaseTestCase):
         # check for list of all resources
         response = self.client.get('/resources/?filter_owner=*')
         total_of_resources = Resource.objects.all().count()
-        self.assertEquals(response.context['resources'].count(), total_of_resources)
+        self.assertEqual(response.context['resources'].count(), total_of_resources)
 
 
     def test_add_resource(self):
@@ -153,7 +153,7 @@ class ResourceTest(BaseTestCase):
         self.assertContains(response, "Recurso de teste")
 
         # check if is set cooperative center code of user (editor = BR1.1)
-        self.assertEquals(Resource.objects.all()[0].cooperative_center_code, "BR1.1")
+        self.assertEqual(Resource.objects.all()[0].cooperative_center_code, "BR1.1")
 
 
     def test_edit_resource(self):

@@ -128,7 +128,7 @@ class MultimediaTest(BaseTestCase):
         self.assertContains(response, "Foto 1")
 
         # check if is set cooperative center code of user (editor = BR1.1)
-        self.assertEquals(Media.objects.all()[0].cooperative_center_code, "BR1.1")
+        self.assertEqual(Media.objects.all()[0].cooperative_center_code, "BR1.1")
 
     def test_edit_media(self):
         """
@@ -255,11 +255,11 @@ class MultimediaTest(BaseTestCase):
         response = self.client.get('/multimedia/collections')
         # check if only one collection is returned (restrict by user)
         self.assertContains(response, "Coleção 1")
-        self.assertEquals(response.context['object_list'].count(), 3)
+        self.assertEqual(response.context['object_list'].count(), 3)
 
         # check if return only colections from cooperative center BR1.1
         response = self.client.get('/multimedia/collections/?filter_created_by_cc=BR1.1')
-        self.assertEquals(response.context['object_list'].count(), 2)
+        self.assertEqual(response.context['object_list'].count(), 2)
 
 
     def test_add_media_collection(self):

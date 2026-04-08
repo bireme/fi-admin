@@ -133,7 +133,7 @@ class LeisRefTest(BaseTestCase):
         self.assertContains(response, "Ato de teste")
 
         # check if cooperative center code is set from user profile (admin = BR1.1)
-        self.assertEquals(Act.objects.all()[0].cooperative_center_code, "BR1.1")
+        self.assertEqual(Act.objects.all()[0].cooperative_center_code, "BR1.1")
 
     def test_edit_act(self):
         """

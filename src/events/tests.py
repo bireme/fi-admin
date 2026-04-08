@@ -110,7 +110,7 @@ class EventTest(BaseTestCase):
         # check for default list (list events of current user = 1)
         response = self.client.get('/events/')
         self.assertContains(response, "Evento de teste (BR1.1)")
-        self.assertEquals(response.context['events'].count(), 1)
+        self.assertEqual(response.context['events'].count(), 1)
 
         # default list don't show events from other users
         self.assertNotContains(response, "Evento de teste (PY3.1)")
@@ -118,7 +118,7 @@ class EventTest(BaseTestCase):
         # check for list of all events
         response = self.client.get('/events/?filter_owner=*')
         total_of_events = Event.objects.all().count()
-        self.assertEquals(response.context['events'].count(), total_of_events)
+        self.assertEqual(response.context['events'].count(), total_of_events)
 
     def test_add_event(self):
         """
@@ -146,7 +146,7 @@ class EventTest(BaseTestCase):
         self.assertContains(response, "Evento de teste")
 
         # check if is set cooperative center code of user (editor = BR1.1)
-        self.assertEquals(Event.objects.all()[0].cooperative_center_code, "BR1.1")
+        self.assertEqual(Event.objects.all()[0].cooperative_center_code, "BR1.1")
 
 
     def test_edit_event(self):
