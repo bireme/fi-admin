@@ -14,16 +14,16 @@ The fi-admin project runs Django 2.2.24 on Python 3.7.8 — both are EOL. The go
 **Goal**: Build a regression safety net before any Django changes.
 
 ### 1.1 — Improve test infrastructure (keep Django unittest, add coverage)
-- [ ] Add `coverage` to `requirements-dev.txt`
-- [ ] Add `.coveragerc` for coverage configuration
-- [ ] Update `bireme/run_tests.sh` to run ALL apps (not just 5)
-- [ ] Add Makefile target `dev_coverage` for coverage reports
+- [x] Add `coverage` to `requirements-dev.txt`
+- [x] Add `.coveragerc` for coverage configuration
+- [x] Update `bireme/run_tests.sh` to run ALL apps (not just 5)
+- [x] Add Makefile target `dev_coverage` for coverage reports
 - Keep existing `BaseTestCase` and `manage.py test` as the test runner
 
 ### 1.2 — Replace `model-mommy` with `model-bakery`
-- [ ] Replace `model-mommy==2.0.0` → `model-bakery` in `requirements-dev.txt`
-- [ ] Update imports in test files: `from model_mommy import mommy` → `from model_bakery import baker`
-- [ ] Update calls: `mommy.make(...)` → `baker.make(...)`
+- [x] Replace `model-mommy==2.0.0` → `model-bakery` in `requirements-dev.txt`
+- [x] Update imports in test files: `from model_mommy import mommy` → `from model_bakery import baker`
+- [x] Update calls: `mommy.make(...)` → `baker.make(...)`
 - **Files**: `biblioref/tests.py`, `leisref/tests.py`, `multimedia/tests.py`, `main/tests.py`
 
 ### 1.3 — Write smoke tests for untested apps
@@ -51,18 +51,18 @@ Each app test should cover at minimum:
 - Unauthenticated access returns redirect/403
 
 ### 1.4 — Write API endpoint tests
-- [ ] Create/expand `bireme/api/tests.py`
-- [ ] Test GET list + GET detail for main Tastypie resources
-- [ ] Resources to test: bibliographic, events, multimedia, oer, legislation, title, institution, classification
+- [x] Create/expand `bireme/api/tests.py`
+- [x] Test GET list + GET detail for main Tastypie resources
+- [x] Resources to test: bibliographic, events, multimedia, oer, legislation, title, institution, classification
 
 ### 1.5 — Fix `assertEquals` → `assertEqual`
-- **Files**: `events/tests.py`, `main/tests.py`, `suggest/tests.py`, `multimedia/tests.py`
+- [x] **Files**: `events/tests.py`, `main/tests.py`, `suggest/tests.py`, `multimedia/tests.py`, `title/tests.py`, `oer/tests.py`, `leisref/tests.py`
 
 ### 1.6 — Run baseline coverage report
 - [ ] Run full test suite with coverage
 - [ ] Document baseline coverage percentage per app
 
-**Verification**: `python manage.py test` passes for all apps, coverage report generated.
+**Verification**: `make dev_test` passes for all apps, coverage report generated.
 
 ---
 
@@ -107,7 +107,7 @@ Each app test should cover at minimum:
 - Remove: `default_app_config = 'utils.apps.UtilsAppConfig'`
 - Deprecated in Django 3.2, removed in 5.0. Safe to remove now.
 
-**Verification**: Full test suite passes, no deprecation warnings with `python -Wd manage.py test`.
+**Verification**: Full test suite passes, no deprecation warnings with `make dev_test`.
 
 ---
 
@@ -156,7 +156,7 @@ Each app test should cover at minimum:
 
 **Verification**:
 - [ ] All tests pass
-- [ ] `python manage.py check --deploy` — no critical errors
+- [ ] `make dev_test` — no critical errors
 - [ ] `python manage.py migrate` — no errors
 - [ ] All Tastypie API endpoints return correct data
 - [ ] Form submissions work (biblioref, events, suggest)
