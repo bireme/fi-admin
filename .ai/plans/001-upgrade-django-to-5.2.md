@@ -59,8 +59,8 @@ Each app test should cover at minimum:
 - [x] **Files**: `events/tests.py`, `main/tests.py`, `suggest/tests.py`, `multimedia/tests.py`, `title/tests.py`, `oer/tests.py`, `leisref/tests.py`
 
 ### 1.6 — Run baseline coverage report
-- [ ] Run full test suite with coverage
-- [ ] Document baseline coverage percentage per app
+- [x] Run full test suite with coverage
+- [x] Document baseline coverage percentage per app (see `.ai/logs/2026-04-08-baseline-coverage-report.md`) — **55% overall**
 
 **Verification**: `make dev_test` passes for all apps, coverage report generated.
 
