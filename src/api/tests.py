@@ -174,6 +174,18 @@ class LeisrefApiTests(ApiTestBase):
         response = self.client.post(self.url, data='{}', content_type='application/json')
         self.assertEqual(response.status_code, 405)
 
+    def test_filter_by_indexed_database(self):
+        db = baker.make('leisref.Database', acronym='LILACS', name='LILACS')
+        act_indexed = baker.make('leisref.Act', status=1)
+        act_indexed.indexed_database.add(db)
+        act_not_indexed = baker.make('leisref.Act', status=1)
+
+        response = self.client.get('{}?indexed_database=LILACS'.format(self.url))
+        payload = self.assert_list_envelope(response)
+        returned_ids = [obj['id'] for obj in payload['objects']]
+        self.assertIn(act_indexed.pk, returned_ids)
+        self.assertNotIn(act_not_indexed.pk, returned_ids)
+
 
 # ---------------------------------------------------------------------------
 # title — /api/title/

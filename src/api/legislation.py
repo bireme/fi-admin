@@ -12,7 +12,7 @@ from api.tastypie_custom import CustomResource
 
 from main.models import Descriptor, ResourceThematic
 from attachments.models import Attachment
-from leisref.models import Act, ActURL
+from leisref.models import Act, ActURL, Database
 
 import requests
 import urllib
@@ -29,6 +29,7 @@ class LeisrefResource(CustomResource):
             'update_date': ('gte', 'lte'),
             'status': 'exact',
             'collection': ALL,
+            'indexed_database': ALL,
         }
         include_resource_uri = False
         max_limit = settings.MAX_EXPORT_API_LIMIT
@@ -39,6 +40,11 @@ class LeisrefResource(CustomResource):
         if 'collection' in filters:
             filter_col_id = filters['collection']
             orm_filters['collection__collection_id'] = filter_col_id
+
+        if 'indexed_database' in filters:
+            filter_db = filters['indexed_database']
+            filter_db_id = Database.objects.get(acronym=filter_db)
+            orm_filters['indexed_database__exact'] = filter_db_id
 
         return orm_filters
 
