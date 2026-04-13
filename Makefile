@@ -71,6 +71,10 @@ api_build:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility build
 	@docker tag $(IMAGE_TAG) $(TAG_LATEST)
 
+api_build_no_cache:
+	@docker-compose -f $(COMPOSE_FILE_API) --compatibility build --no-cache
+	@docker tag $(IMAGE_TAG) $(TAG_LATEST)
+
 api_up:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility up -d
 
