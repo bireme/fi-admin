@@ -7,6 +7,9 @@ from django.contrib.sessions.backends.db import SessionStore
 import requests
 import json
 
+USER_AGENT = "fi-admin/2.3 (+https://fi-admin.bvsalud.org)"
+
+
 class EmailModelBackend(object):
 
     def authenticate(self, request, username=None, password=None):
@@ -24,7 +27,7 @@ class EmailModelBackend(object):
         api_uri = "%s/api/auth/login/" % settings.BIREMELOGIN_BASE_URL
 
         data = {'username': username, 'password': password, 'format': 'json', 'service': settings.BIREMELOGIN_SERVICE}
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'User-Agent': USER_AGENT}
 
         r = requests.post(api_uri, data=json.dumps(data), headers=headers, verify=False)
         response = json.loads(r.text)
