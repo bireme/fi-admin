@@ -1,23 +1,16 @@
 # Current Feature
 
-Add `indexed_database` filter to Legislation (LeisRef) API
-
 ## Status
 
-Completed
+Not Started
 
 ## Goals
 
-- Add `indexed_database` filtering support to `LeisrefResource` in `src/api/legislation.py`
-- Follow the same pattern used in `ReferenceResource` in `src/api/bibliographic.py` (lines 52-55)
-- Allow filtering legislation records by database acronym via the API query parameter `indexed_database`
+<!-- Add goals here -->
 
 ## Notes
 
-- **Reference implementation**: `src/api/bibliographic.py` lines 37-44 (Meta filtering) and 52-55 (`build_filters` method)
-- In `bibliographic.py`, the filter looks up a `Database` object by acronym and filters the queryset by `indexed_database__exact`
-- Need to verify that the `Act` model in `leisref` has an `indexed_database` field/relationship
-- Uses `database.models.Database` for the acronym-to-id lookup
+<!-- Add notes here -->
 
 ## Detailed plan
 
@@ -25,5 +18,5 @@ Completed
 
 ## History
 
-- 2026-04-13: Starting Add `indexed_database` filter to Legislation (LeisRef) API
-
+- 2026-04-13: Completed "Add indexed_database filter to LeisRef API" — filter legislation by database acronym via ?indexed_database param
+- 2026-04-14: Completed "Add User-Agent header to EmailModelBackend" — hardcoded `fi-admin/2.3` UA in `src/biremelogin/authenticate.py` to avoid proxy blocks
