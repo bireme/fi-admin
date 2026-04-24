@@ -118,10 +118,12 @@ class LeisrefResource(CustomResource):
         thematic_areas = ResourceThematic.objects.filter(object_id=bundle.obj.id, content_type=c_type, status=1)
         attachments = Attachment.objects.filter(object_id=bundle.obj.id, content_type=c_type)
         urls = ActURL.objects.filter(act_id=bundle.obj.id)
+        indexed_database_list = bundle.obj.indexed_database.all()
 
         # add fields to output
         bundle.data['descriptors'] = [{'text': descriptor.text, 'code': descriptor.code} for descriptor in descriptors]
         bundle.data['thematic_areas'] = [{'code': thematic.thematic_area.acronym, 'text': thematic.thematic_area.name} for thematic in thematic_areas]
+        bundle.data['indexed_database'] = [database.acronym for database in indexed_database_list]
 
         # add fields to output
         if bundle.obj.act_type:
@@ -132,7 +134,8 @@ class LeisrefResource(CustomResource):
             bundle.data['source_name'] = "|".join(bundle.obj.source_name.get_translations())
         if bundle.obj.scope_region:
             bundle.data['scope_region'] = "|".join(bundle.obj.scope_region.get_translations())
-
+        if bundle.obj.language:
+            bundle.data['language'] = bundle.obj.language.acronym
 
         # check if object has classification (relationship model)
         if bundle.obj.collection.exists():
