@@ -1,6 +1,8 @@
 # coding: utf-8
+import os
 from unittest import skip
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.test.client import Client
@@ -164,6 +166,23 @@ primary_descriptor = {
         'main-descriptor-content_type-object_id-0-status': '1',
 
 }
+
+
+class BiblioRefDeCSMessageReceiverTest(BaseTestCase):
+    def test_reference_source_receiver_processes_ai_metadata(self):
+        template_path = os.path.join(
+            settings.BASE_DIR,
+            "templates",
+            "biblioref",
+            "referencesource_form.html"
+        )
+
+        with open(template_path) as template_file:
+            template = template_file.read()
+
+        self.assertIn("js/decs_message_receiver.js", template)
+        self.assertIn("FiAdminDeCSMessages.registerDescriptorReceiver();", template)
+        self.assertNotIn("supportAiMetadata: false", template)
 
 
 @skip("Figure out why these tests are broken!")

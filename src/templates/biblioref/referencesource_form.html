@@ -233,6 +233,7 @@
    <script src="{% static 'js/biblioref.js' %}"></script>
    <script src="{% static 'js/classification.js' %}"></script>
    <script src="{% static 'js/multiple-select.min.js' %}"></script>
+   <script src="{% static 'js/decs_message_receiver.js' %}"></script>
    {% if form.document_type == 'S' %}
    <script src="{% static 'js/jquery-ui.js' %}"></script>
    {% endif %}
@@ -349,51 +350,7 @@
                     prefix: '{{ formset_relatedresource.prefix }}'
             });
 
-            var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-            var eventer = window[eventMethod];
-            var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
-
-
-            // Listen to message from child window
-            eventer(messageEvent,function(e) {
-                var decs_data = e.data.split('|');
-                var decs_text = decs_data[0];
-                var decs_code = decs_data[1];
-                var decs_op = decs_data[2];
-                var decs_primary = decs_data[3];
-
-                if (decs_op == 'ADD'){
-                    decs_field = null;
-                    total_lines = $('#id_main-descriptor-content_type-object_id-TOTAL_FORMS').val();
-
-                    for (var count = 1; count < total_lines; count++){
-                        // found first empty line
-                        descriptor_row = $('#id_main-descriptor-content_type-object_id-' + count + '-code');
-                        if ( descriptor_row.val() == '' ){
-                            decs_field = count.toString()
-                            break;
-                        }
-                    }
-                    if (decs_field == null){
-                        // add new line
-                        var btn_add_descriptor = $('#descriptors .icon-plus-sign');
-                        btn_add_descriptor.click();
-                        decs_field = total_lines.toString();
-                    }
-                }
-
-                var decs_row = decs_field.replace(/[A-Za-z_$-]/g, '');
-
-                // set code, text and label for the new descriptor
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-code').val(decs_code);
-                $('#id_main-descriptor-content_type-object_id-' + decs_row + '-text').val(decs_text);
-                if (decs_primary == 'PRIMARY'){
-                    $('#id_main-descriptor-content_type-object_id-' + decs_row + '-primary').prop("checked", true);
-                }
-                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').html(decs_text);
-                $('#label_main-descriptor-content_type-object_id-' + decs_row + '-text').removeClass("placeholder-style");
-
-            },false);
+            FiAdminDeCSMessages.registerDescriptorReceiver();
 
             $(document).on("click", "a.add_error_report", function(){
                 $("#error_report_modal").modal("show");
