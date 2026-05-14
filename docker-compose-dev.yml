@@ -13,6 +13,8 @@ services:
       - 8000:8000
     volumes:
       - ./src/:/app/
+      - ./proc/:/app/proc/
+      - ./conf/:/app/conf/
     env_file:
       - ./conf/app-env-dev
     command: python manage.py runserver 0.0.0.0:8000

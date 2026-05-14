@@ -62,9 +62,15 @@ dev_test_coverage:
 dev_update_translations:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh -c "apk add --no-cache gettext && python manage.py makemessages --all"
 
-dev_import:
+dev_loaddata:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py loaddata $(import_file)
 
+# import data to fi-admin
+import:
+	@docker-compose --compatibility exec -T fi_admin sh -c "cd /app/proc/import && sh import2FIAdmin.sh"
+
+import2prod:
+	@docker-compose --compatibility exec -T fi_admin sh -c "set -a && . /app/conf/app-env-prod && set +a &&	cd /app/proc/import && sh import2FIAdmin.sh"
 
 ## docker-compose API
 api_build:
@@ -154,7 +160,7 @@ prod_exec_shell:
 prod_exec_collectstatic:
 	@docker-compose --compatibility exec -T fi_admin python manage.py collectstatic --noinput
 
-prod_import:
+prod_loaddata:
 	@docker-compose --compatibility exec -T fi_admin python manage.py loaddata $(import_file)
 
 prod_exec_webserver:
