@@ -65,13 +65,6 @@ dev_update_translations:
 dev_loaddata:
 	@docker-compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py loaddata $(import_file)
 
-# import data to fi-admin
-import:
-	@docker-compose --compatibility exec -T fi_admin sh -c "cd /app/proc/import && sh import2FIAdmin.sh"
-
-import2prod:
-	@docker-compose --compatibility exec -T fi_admin sh -c "set -a && . /app/conf/app-env-prod && set +a &&	cd /app/proc/import && sh import2FIAdmin.sh"
-
 ## docker-compose API
 api_build:
 	@docker-compose -f $(COMPOSE_FILE_API) --compatibility build
@@ -168,3 +161,11 @@ prod_exec_webserver:
 
 prod_make_test:
 	@docker-compose --compatibility exec -T fi_admin make test
+
+# import data to fi-admin
+import:
+	@docker-compose --compatibility exec -T fi_admin sh -c "cd /app/proc/import && sh import2FIAdmin.sh"
+
+# import data to fi-admin using prod-db.env
+import2prod:
+	@docker-compose --compatibility exec -T fi_admin sh -c "set -a && . /app/proc/prod-db.env && set +a &&	cd /app/proc/import && sh import2FIAdmin.sh"

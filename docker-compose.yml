@@ -11,6 +11,7 @@ services:
     volumes:
       - ${LOG_PATH}:/logs
       - ${UPLOAD_PATH}:/app/uploads
+      - ./proc/:/app/proc/
       - static_files:/app/static_files
     env_file:
       - ./conf/app-env
