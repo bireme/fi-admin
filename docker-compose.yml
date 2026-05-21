@@ -28,7 +28,7 @@ services:
   www-static:
     container_name: fi-admin-www-static
     restart: unless-stopped
-    image: nginx:1.18-alpine
+    image: nginx:1.30-alpine
     expose:
       - 80
     volumes:
@@ -51,7 +51,7 @@ services:
   www-docs:
     container_name: fi-admin-www-docs
     restart: unless-stopped
-    image: nginx:1.18-alpine
+    image: nginx:1.30-alpine
     expose:
       - 80
     volumes:
