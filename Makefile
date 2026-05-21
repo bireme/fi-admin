@@ -1,3 +1,6 @@
+#!/bin/bash
+
+# Makefile for managing Docker Compose environments for fi-admin application
 IMAGE_NAME=bireme/fi-admin
 APP_VERSION?=$(shell git describe --tags --long --always | sed 's/-g[a-z0-9]\{7\}//' | sed 's/-/\./')
 TAG_LATEST=$(IMAGE_NAME):latest
@@ -6,7 +9,7 @@ COMPOSE_FILE_DEV=docker-compose-dev.yml
 COMPOSE_FILE_API=docker-compose-api.yml
 
 # Use 'docker compose' if available (Docker 20.10+), otherwise fall back to 'docker-compose'
-DOCKER_COMPOSE := $(shell command -v docker-compose 2>/dev/null && echo docker-compose || echo docker) compose
+DOCKER_COMPOSE := $(shell if docker compose version >/dev/null 2>&1; then echo "docker compose"; elif command -v docker-compose >/dev/null 2>&1; then echo "docker-compose"; else echo "docker compose"; fi)
 
 ## variable used in docker-compose for tag the build image
 export IMAGE_TAG=$(IMAGE_NAME):$(APP_VERSION)
