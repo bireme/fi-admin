@@ -1,8 +1,6 @@
 from django.http import HttpResponse
 import json
 
-default_app_config = 'utils.apps.UtilsAppConfig'
-
 class NonHtmlDebugToolbarMiddleware(object):
     """
     The Django Debug Toolbar usually only works for views that return HTML.

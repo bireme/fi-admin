@@ -7,7 +7,7 @@ from django.forms import widgets
 from django.conf import settings
 from django import forms
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from title.models import *
 from main.models import Descriptor, Keyword
 

@@ -1,5 +1,5 @@
 #! coding: utf-8
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import gettext_lazy as _, get_language
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.cache import cache
 from django.db import models

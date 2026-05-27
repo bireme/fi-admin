@@ -1,6 +1,6 @@
 # coding: utf-8
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext as __
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as __
 from main.models import SourceLanguage
 from utils.models import AuxCode, Country
 

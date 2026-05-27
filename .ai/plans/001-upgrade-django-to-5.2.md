@@ -257,13 +257,13 @@ Each app test should cover at minimum:
 
 | Branch | Content | Merges to |
 |--------|---------|-----------|
-| `upgrade-django/tests` | Phase 1 — test foundation | `master` (safe, no Django changes) |
-| `upgrade-django/deprecations` | Phase 2 — deprecation fixes | `master` (backward-compatible) |
-| `upgrade-django/3.2` | Phase 3 — Django 3.2 | `master` |
-| `upgrade-django/4.2` | Phase 4 — Django 4.2 | `master` |
-| `upgrade-django/5.2` | Phase 5 — Django 5.2 | `master` |
+| `rc/2.4` | Phase 1 — test foundation | `main` (safe, no Django changes) |
+| `rc/2.5` | Phase 2 — deprecation fixes | `main` (backward-compatible) |
+| `rc/2.6` | Phase 3 — Django 3.2 | `main` |
+| `rc/2.7` | Phase 4 — Django 4.2 | `main` |
+| `rc/2.8` | Phase 5 — Django 5.2 | `main` |
 
-Phases 1 and 2 can be merged to `master` immediately since all changes are backward-compatible with Django 2.2.
+Phases 1 and 2 can be merged to `main` immediately since all changes are backward-compatible with Django 2.2.
 
 ---
 

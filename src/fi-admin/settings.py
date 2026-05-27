@@ -175,7 +175,6 @@ INSTALLED_APPS = [
     'haystack',
     'tastypie',
     'rosetta',
-    'form_utils',
     'tinymce',
 
     'biremelogin',

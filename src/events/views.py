@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.utils.functional import curry
 
 from django.http import Http404, HttpResponse

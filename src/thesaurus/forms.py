@@ -7,7 +7,7 @@ from thesaurus.models_thesaurus import Thesaurus
 from thesaurus.models_qualifiers import *
 from thesaurus.models_descriptors import *
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 from django.forms import widgets

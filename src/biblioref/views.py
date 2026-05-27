@@ -3,7 +3,7 @@ from collections import defaultdict
 from django.urls import reverse_lazy
 from django.core.cache import cache
 from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _, get_language
+from django.utils.translation import gettext as _, get_language
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.models import User

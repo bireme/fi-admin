@@ -2,7 +2,7 @@
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView

@@ -5,7 +5,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.shortcuts import render, render_to_response
 from deform.exception import ValidationFailure
 

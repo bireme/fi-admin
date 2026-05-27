@@ -2,7 +2,6 @@
 
 from django import forms
 
-from django.utils.encoding import smart_text
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.forms.utils import ValidationError
 from django.core.serializers.json import DjangoJSONEncoder

@@ -15,9 +15,12 @@ Custom prepend_urls endpoints that call external search services
 import json
 
 from django.contrib.auth.models import User
+from django.test import TestCase
+from lxml.etree import tostring
 from model_bakery import baker
 from tastypie.models import ApiKey
 
+from api.ws_decs_serializer import WsDecsSerializer
 from utils.tests import BaseTestCase
 
 
@@ -291,3 +294,55 @@ class ThesaurusApiTests(ApiTestBase):
 
     def test_ths_endpoint_responds(self):
         self._assert_responds('/api/ths/thesaurus/')
+
+
+# ---------------------------------------------------------------------------
+# WsDecsSerializer — validates six/force_text removal
+# ---------------------------------------------------------------------------
+class WsDecsSerializerTest(TestCase):
+
+    def setUp(self):
+        self.serializer = WsDecsSerializer()
+
+    def test_to_etree_string_value(self):
+        element = self.serializer.to_etree('hello', name='term')
+        self.assertEqual(element.tag, 'term')
+        self.assertEqual(element.text, 'hello')
+
+    def test_to_etree_integer_value(self):
+        element = self.serializer.to_etree(42, name='count')
+        self.assertEqual(element.tag, 'count')
+        self.assertEqual(element.text, '42')
+
+    def test_to_etree_none_value(self):
+        element = self.serializer.to_etree(None, name='empty')
+        self.assertEqual(element.tag, 'empty')
+        self.assertIsNone(element.text)
+
+    def test_to_etree_unicode_value(self):
+        element = self.serializer.to_etree(u'café é', name='term')
+        self.assertEqual(element.text, u'café é')
+
+    def test_to_etree_dict(self):
+        data = {'name': 'test', 'value': 'abc'}
+        element = self.serializer.to_etree(data, name='root', depth=1)
+        self.assertEqual(element.tag, 'root')
+        children = {child.tag: child.text for child in element}
+        self.assertEqual(children['name'], 'test')
+        self.assertEqual(children['value'], 'abc')
+
+    def test_to_etree_list(self):
+        data = ['a', 'b']
+        element = self.serializer.to_etree(data, name='items')
+        self.assertEqual(element.tag, 'items')
+        self.assertEqual(len(element), 2)
+
+    def test_to_etree_dict_with_attr_key(self):
+        data = {'attr': {'lang': 'en'}, 'text': 'hello'}
+        element = self.serializer.to_etree(data, name='item', depth=1)
+        self.assertEqual(element.get('lang'), 'en')
+
+    def test_to_etree_boolean_value(self):
+        element = self.serializer.to_etree(True, name='flag')
+        self.assertEqual(element.tag, 'flag')
+        self.assertEqual(element.text, 'True')
