@@ -75,7 +75,7 @@ class MultipleAuxiliaryChoiceField(models.Field):
 
         return value
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         return self.to_python(value)
 
     def get_db_prep_value(self, value, connection, prepared=False):

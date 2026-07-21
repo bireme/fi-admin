@@ -1,6 +1,6 @@
 #! coding: utf-8
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import render, render_to_response, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 
 from django.views.generic.list import ListView

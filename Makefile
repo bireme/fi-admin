@@ -173,4 +173,4 @@ import:
 
 # import data to fi-admin using prod-db.env
 import2prod:
-	@$(DOCKER_COMPOSE) --compatibility exec -T fi_admin sh -c "set -a && . /app/proc/prod-db.env && set +a &&	cd /app/proc/import && sh import2FIAdmin.sh"
+	@$(DOCKER_COMPOSE) --compatibility exec -T fi_admin sh -c "set -a && . /app/proc/import/prod-db.env && set +a && cd /app/proc/import && sh import2FIAdmin.sh"

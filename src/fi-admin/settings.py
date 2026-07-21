@@ -16,6 +16,9 @@ MANAGERS = ADMINS
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Keep integer AutoField primary keys (Django 3.2+ defaults to BigAutoField)
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 DATABASES = {
      'default': {
          'ENGINE': os.environ.get("DATABASE_ENGINE", 'django.db.backends.sqlite3'),

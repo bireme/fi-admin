@@ -575,7 +575,7 @@ class Act(Generic, AuditLog):
             act_title = self.title
         else:
             if self.issue_date:
-                act_date = _date(self.issue_date, "d \d\e F \d\e Y")
+                act_date = _date(self.issue_date, r"d \d\e F \d\e Y")
                 act_title = u"{0} Nº {1} - {2}".format(self.act_type, self.act_number, act_date)
             else:
                 act_title = u"{0} Nº {1}".format(self.act_type, self.act_number)

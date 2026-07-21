@@ -8,7 +8,6 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 from django.core.exceptions import PermissionDenied
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
-from django.shortcuts import render_to_response
 
 from utils.context_processors import additional_user_info
 from attachments.models import Attachment

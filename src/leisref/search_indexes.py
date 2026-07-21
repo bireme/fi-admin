@@ -62,7 +62,7 @@ class LeisRefIndex(indexes.SearchIndex, indexes.Indexable):
                     act_type_lang = act_type.split('^')[0]
                     act_type_label = act_type.split('^')[1]
                     activate(act_type_lang)
-                    act_date = _date(obj.issue_date, "d \d\e F \d\e Y")
+                    act_date = _date(obj.issue_date, r"d \d\e F \d\e Y")
 
                     act_title = u"{0} Nº {1} - {2}".format(act_type_label, obj.act_number, act_date)
                     ref_title_list.append(act_title)

@@ -181,7 +181,7 @@ class BiblioRefForm(BetterModelForm):
         if pontuation in value:
             if not pontuation_with_space_after in value:
                 if pontuation == '.':
-                    search_version_info = re.search('(\d+\.)(\d+)', value)
+                    search_version_info = re.search(r'(\d+\.)(\d+)', value)
                     if search_version_info != None:
                         return
 

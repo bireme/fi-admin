@@ -11,7 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.db.models.functions import Substr
 
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from utils.context_processors import additional_user_info
@@ -59,7 +59,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         # identify view and model in use
         view_name = self.view_name
         model_name = self.model.__name__
-        exp_serial = re.compile('[\.\;\(\)\|]')
+        exp_serial = re.compile(r'[\.\;\(\)\|]')
 
         # getting action parameter
         self.actions = {}

@@ -8,7 +8,7 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.contenttypes.models import ContentType
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 
 from pkg_resources import resource_filename
 from utils.views import get_class
@@ -384,7 +384,7 @@ def field_assist(request, **kwargs):
             # new reference
             rendered = form.render()
 
-    return render_to_response('biblioref/field_assist.html', {
+    return render(request, 'biblioref/field_assist.html', {
         'form': rendered,
         'field_json': field_json,
         'field_name': field_name,
