@@ -64,7 +64,16 @@ class BibliographicApiTests(ApiTestBase):
 
     @override_settings(APP_VERSION="9.8.7-test")
     def test_detail_reports_system_version_from_settings(self):
-        reference = baker.make('biblioref.ReferenceSource', treatment_level='m', status=1)
+        # literature_type/publication_date_normalized are read by
+        # ReferenceSource.__str__ during serialization
+        reference = baker.make(
+            'biblioref.ReferenceSource',
+            treatment_level='m',
+            literature_type='S',
+            title_serial='API test serial',
+            publication_date_normalized='20260101',
+            status=1,
+        )
 
         response = self.client.get('{}{}/'.format(self.url, reference.pk))
         self.assertEqual(response.status_code, 200)
