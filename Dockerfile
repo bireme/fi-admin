@@ -1,9 +1,13 @@
 ########### BASE STAGE ###########
 FROM python:3.10-alpine AS base
 
+# application version (informed by the Makefile at build time)
+ARG APP_VERSION=unknown
+
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV APP_VERSION=${APP_VERSION}
 
 # copy base requirements
 COPY ./requirements.txt /app/

@@ -15,7 +15,7 @@ Custom prepend_urls endpoints that call external search services
 import json
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from lxml.etree import tostring
 from model_bakery import baker
 from tastypie.models import ApiKey
@@ -61,6 +61,16 @@ class BibliographicApiTests(ApiTestBase):
     def test_post_not_allowed(self):
         response = self.client.post(self.url, data='{}', content_type='application/json')
         self.assertEqual(response.status_code, 405)
+
+    @override_settings(APP_VERSION="9.8.7-test")
+    def test_detail_reports_system_version_from_settings(self):
+        reference = baker.make('biblioref.ReferenceSource', treatment_level='m', status=1)
+
+        response = self.client.get('{}{}/'.format(self.url, reference.pk))
+        self.assertEqual(response.status_code, 200)
+
+        payload = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(payload['system_version'], '9.8.7-test')
 
 
 # ---------------------------------------------------------------------------

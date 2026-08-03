@@ -20,15 +20,12 @@ from database.models import Database
 from biblioref.field_definitions import field_tag_map
 from copy import copy
 
-import os
 import requests
 import urllib
 import json
 
 
 class ReferenceResource(CustomResource):
-    _version_cache = None
-
     class Meta:
         queryset = Reference.objects.prefetch_related('indexed_database', 'created_by', 'updated_by').all()
         allowed_methods = ['get']
@@ -159,10 +156,7 @@ class ReferenceResource(CustomResource):
             bundle.data['source_control'] = 'FONTE'
 
         # Add system version control number
-        if self._version_cache is None:
-            with open(os.path.join(settings.BASE_DIR, 'templates/version.txt')) as f:
-                self._version_cache = f.readlines()[0].rstrip()
-        bundle.data['system_version'] = self._version_cache
+        bundle.data['system_version'] = settings.APP_VERSION
 
         return bundle
 

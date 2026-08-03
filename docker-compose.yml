@@ -5,6 +5,8 @@ services:
     build:
       context: .
       target: prod
+      args:
+        APP_VERSION: ${APP_VERSION:-unknown}
     image: ${IMAGE_TAG}
     expose:
       - 8000
