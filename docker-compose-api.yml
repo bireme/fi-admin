@@ -50,12 +50,12 @@ services:
         reservations:
           memory: ${MEMORY_WEBSERVER_RESERVATION}
 
-  fi_admin_cache:
-    container_name: fi-admin-cache
+  cache:
+    container_name: fi-admin-api-cache
     restart: unless-stopped
     image: memcached:1.6.32
     ports:
-      - 11211:11211
+      - 11212:11211
     environment:
       - MEMCACHED_CACHE_SIZE=128
     networks:
