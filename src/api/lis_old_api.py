@@ -1,7 +1,5 @@
 #! coding: utf-8
 import os
-import json
-import requests
 import math
 import re
 
@@ -20,6 +18,7 @@ from datetime import datetime
 from main.models import Resource, Keyword
 
 from urllib import unquote
+from api.search_service import search_service_request
 
 @csrf_exempt
 def search(request):
@@ -66,18 +65,10 @@ def search(request):
     else:
         fq = '(status:1 AND django_ct:main.resource)'
 
-    # url
-    search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
-
     search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': 'pt',
                      'q': q , 'fq': [fq],  'start': int(start), 'count': int(count), 'id' : id,'sort': sort}
 
-    search_params_json = json.dumps(search_params)
-    request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
-
-    r = requests.post(search_url, data=search_params_json, headers=request_headers)
-
-    result = r.json()
+    result = search_service_request(search_params)
     total = result['diaServerResponse'][0]['response']['numFound']
 
     pages_count = 10

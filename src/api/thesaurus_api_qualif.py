@@ -19,9 +19,8 @@ from api.tastypie_custom import CustomResource
 from thesaurus.field_definitions_qualif import field_tag_map
 from thesaurus.models import *
 
-import requests
 import urllib
-import json
+from api.search_service import search_service_request
 
 
 class ThesaurusResourceQualif(CustomResource):
@@ -82,23 +81,13 @@ class ThesaurusResourceQualif(CustomResource):
         else:
             fq = '(status:1 AND django_ct:title.title*)'
 
-        # url
-        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
-
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
                          'q': q, 'fq': [fq], 'start': int(start), 'count': int(count), 'id': id, 'sort': sort}
 
-        search_params_json = json.dumps(search_params)
-        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
-
-        r = requests.post(search_url, data=search_params_json, headers=request_headers)
-        try:
-            response_json = r.json()
-        except ValueError:
-            response_json = json.loads('{"type": "error", "message": "invalid output"}')
+        response_json = search_service_request(search_params)
 
         self.log_throttled_access(request)
-        return self.create_response(request, r.json())
+        return self.create_response(request, response_json)
 
 
 

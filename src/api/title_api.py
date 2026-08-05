@@ -15,9 +15,8 @@ from main.models import Descriptor
 from title.models import *
 from title.field_definitions import field_tag_map, issue_field_tag_map
 
-import requests
 import urllib
-import json
+from api.search_service import search_service_request
 
 TITLE_VARIANCE_LABELS = (
     ('230', 'parallel_titles'),
@@ -87,19 +86,13 @@ class TitleResource(CustomResource):
         else:
             fq = '(django_ct:title.title*)'
 
-        # url
-        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
-
         search_params = {'site': settings.SEARCH_INDEX, 'op': op, 'output': 'site', 'lang': lang,
                          'q': q, 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'id': id, 'sort': sort}
 
-        search_params_json = json.dumps(search_params)
-        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
-
-        r = requests.post(search_url, data=search_params_json, headers=request_headers)
+        response_json = search_service_request(search_params)
 
         self.log_throttled_access(request)
-        return self.create_response(request, r.json())
+        return self.create_response(request, response_json)
 
     def dehydrate(self, bundle):
         c_type = ContentType.objects.get_for_model(bundle.obj)

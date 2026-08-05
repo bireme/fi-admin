@@ -14,9 +14,8 @@ from main.models import Descriptor, ResourceThematic
 from attachments.models import Attachment
 from leisref.models import Act, ActURL, Database
 
-import requests
 import urllib
-import json
+from api.search_service import search_service_request, duplicate_response_to_match
 
 class LeisrefResource(CustomResource):
 
@@ -79,9 +78,6 @@ class LeisrefResource(CustomResource):
         if id != '':
             q = 'id:%s' % id
 
-        # url
-        search_url = "%s/search_json" % settings.SEARCH_SERVICE_URL
-
         search_params = {'site': settings.SEARCH_INDEX, 'op': op,'output': 'site', 'lang': lang,
                          'q': q, 'fq': [fq], 'fb': fb, 'start': int(start), 'count': int(count), 'sort': sort}
 
@@ -95,18 +91,11 @@ class LeisrefResource(CustomResource):
                     search_params[facet_limit_param] = facet_field_limit
 
 
-        search_params_json = json.dumps(search_params)
-        request_headers = {'apikey': settings.SEARCH_SERVICE_APIKEY}
-
-        r = requests.post(search_url, data=search_params_json, headers=request_headers)
-        try:
-            response_json = r.json()
-        except ValueError:
-            response_json = json.loads('{"type": "error", "message": "invalid output"}')
+        response_json = search_service_request(search_params)
 
         # Duplicate "response" to "match" element for old compatibility calls
-        if id != '' and response_json:
-            response_json['diaServerResponse'][0]['match'] = response_json['diaServerResponse'][0]['response']
+        if id != '':
+            response_json = duplicate_response_to_match(response_json)
 
         self.log_throttled_access(request)
         return self.create_response(request, response_json)
