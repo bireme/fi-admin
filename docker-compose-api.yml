@@ -18,7 +18,7 @@ services:
     networks:
       - nginx-proxy
     depends_on:
-      - fi_admin_cache
+      - cache
     deploy:
       resources:
         limits:
