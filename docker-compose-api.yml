@@ -8,6 +8,8 @@ services:
       args:
         APP_VERSION: ${APP_VERSION:-unknown}
     image: ${IMAGE_TAG}
+    depends_on:
+      - fi_admin_cache
     volumes:
       - ${LOG_PATH}:/logs
       - static_files:/app/static_files
@@ -18,7 +20,7 @@ services:
     networks:
       - nginx-proxy
     depends_on:
-      - cache
+      - fi_admin_api_cache
     deploy:
       resources:
         limits:
@@ -50,7 +52,7 @@ services:
         reservations:
           memory: ${MEMORY_WEBSERVER_RESERVATION}
 
-  cache:
+  fi_admin_api_cache:
     container_name: fi-admin-api-cache
     restart: unless-stopped
     image: memcached:1.6.32
