@@ -17,6 +17,8 @@ services:
     command: gunicorn --bind unix:/tmp/gunicorn.sock fi-admin.wsgi ${GUNICORN_PARAMS}
     networks:
       - nginx-proxy
+    depends_on:
+      - fi_admin_cache
     deploy:
       resources:
         limits:
@@ -47,6 +49,17 @@ services:
           memory: ${MEMORY_WEBSERVER_LIMIT}
         reservations:
           memory: ${MEMORY_WEBSERVER_RESERVATION}
+
+  fi_admin_cache:
+    container_name: fi-admin-cache
+    restart: unless-stopped
+    image: memcached:1.6.32
+    ports:
+      - 11211:11211
+    environment:
+      - MEMCACHED_CACHE_SIZE=128
+    networks:
+      - nginx-proxy
 
 networks:
   nginx-proxy:
