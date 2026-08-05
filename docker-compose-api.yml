@@ -9,7 +9,7 @@ services:
         APP_VERSION: ${APP_VERSION:-unknown}
     image: ${IMAGE_TAG}
     depends_on:
-      - fi_admin_cache
+      - fi_admin_api_cache
     volumes:
       - ${LOG_PATH}:/logs
       - static_files:/app/static_files
@@ -19,8 +19,6 @@ services:
     command: gunicorn --bind unix:/tmp/gunicorn.sock fi-admin.wsgi ${GUNICORN_PARAMS}
     networks:
       - nginx-proxy
-    depends_on:
-      - fi_admin_api_cache
     deploy:
       resources:
         limits:
@@ -56,8 +54,6 @@ services:
     container_name: fi-admin-api-cache
     restart: unless-stopped
     image: memcached:1.6.32
-    ports:
-      - 11212:11211
     environment:
       - MEMCACHED_CACHE_SIZE=128
     networks:
