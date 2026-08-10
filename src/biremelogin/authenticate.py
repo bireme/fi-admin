@@ -29,7 +29,7 @@ class EmailModelBackend(object):
         data = {'username': username, 'password': password, 'format': 'json', 'service': settings.BIREMELOGIN_SERVICE}
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain', 'User-Agent': USER_AGENT}
 
-        r = requests.post(api_uri, data=json.dumps(data), headers=headers, verify=False)
+        r = requests.post(api_uri, data=json.dumps(data), headers=headers)
         response = json.loads(r.text)
 
         if 'success' in response and response['success'] == True:

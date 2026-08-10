@@ -58,6 +58,9 @@ dev_rm:
 dev_sh:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh
 
+dev_exec:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin $(cmd)
+
 dev_makemigrations:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py makemigrations $(app)
 
