@@ -39,7 +39,7 @@ class BruteForceProtectionMiddleware:
                 ip_address = request.META.get('REMOTE_ADDR')
 
             # debug
-            print(ip_address)
+            # print(ip_address)
 
             # Increment the failed login attempt count for this IP address
             cache_key = f"login_attempts:{ip_address}"
@@ -47,7 +47,7 @@ class BruteForceProtectionMiddleware:
             login_attempts = cache.get(cache_key, 0)
 
             # debug
-            print(login_attempts + 1)
+            # print(login_attempts + 1)
 
             # Save attemp in cache if user is not being redirect to app main page (login OK - status 302)
             if response.status_code != 302:
