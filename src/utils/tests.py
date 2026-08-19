@@ -251,3 +251,48 @@ class DescriptorFormSetTest(BaseTestCase):
 
         formset = self.DescriptorFormSet(data)
         self.assertTrue(formset.is_valid())
+
+
+class GetFieldDisplayTest(TestCase):
+    """Regression tests for the get_field_display template tag (SelectMultiple branch)"""
+
+    def setUp(self):
+        from title.models import Title
+        from utils.models import Country
+
+        self.brazil = Country.objects.create(code='BR', name='Brazil')
+        self.chile = Country.objects.create(code='CL', name='Chile')
+        self.peru = Country.objects.create(code='PE', name='Peru')
+
+        class CountryForm(forms.ModelForm):
+            class Meta:
+                model = Title
+                fields = ('country',)
+
+        self.CountryForm = CountryForm
+
+    def _render(self, form, sep=', '):
+        from django.template import Context, Template
+
+        template = Template(
+            "{% load app_filters %}{% get_field_display form.instance field sep %}"
+        )
+        field = form['country']
+        return template.render(Context({'form': form, 'field': field, 'sep': sep}))
+
+    def test_display_selected_options(self):
+        """Only the selected options should be displayed, separated by sep"""
+        form = self.CountryForm(data={'country': [str(self.brazil.pk), str(self.peru.pk)]})
+        self.assertTrue(form.is_valid())
+        out = self._render(form)
+        self.assertEqual(out, '%s, %s' % (self.brazil, self.peru))
+        self.assertNotIn(str(self.chile), out)
+
+    def test_display_single_selected_option(self):
+        form = self.CountryForm(data={'country': [str(self.chile.pk)]})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(self._render(form), str(self.chile))
+
+    def test_display_no_selection(self):
+        form = self.CountryForm(data={'country': []})
+        self.assertEqual(self._render(form), '')

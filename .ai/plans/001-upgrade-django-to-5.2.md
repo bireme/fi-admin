@@ -155,15 +155,15 @@ Each app test should cover at minimum:
 - Run `python -Wd manage.py test` and fix warnings
 
 **Verification**:
-- [ ] All tests pass
-- [ ] `make dev_test` — no critical errors
-- [ ] `python manage.py migrate` — no errors
-- [ ] All Tastypie API endpoints return correct data
-- [ ] Form submissions work (biblioref, events, suggest)
-- [ ] Admin interface loads
-- [ ] Login/authentication works
-- [ ] Haystack search indexes rebuild without errors
-- [ ] Rosetta translation interface works
+- [x] All tests pass
+- [x] `make dev_test` — no critical errors
+- [x] `python manage.py migrate` — no errors
+- [x] All Tastypie API endpoints return correct data
+- [x] Form submissions work (biblioref, events, suggest)
+- [x] Admin interface loads
+- [x] Login/authentication works
+- [x] Haystack search indexes rebuild without errors
+- [x] Rosetta translation interface works
 
 ---
 
