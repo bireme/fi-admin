@@ -67,6 +67,9 @@ dev_makemigrations:
 dev_migrate:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py migrate $(app)
 
+dev_check:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py check
+
 dev_test:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh run_tests.sh
 

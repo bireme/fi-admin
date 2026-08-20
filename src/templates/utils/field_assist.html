@@ -1,58 +1,50 @@
-{% extends "base.html" %}
+{% extends "utils/field_assist_base.html" %}
 {% load i18n %}
 {% load static %}
 
-{% block top %}{% endblock %}
-
-{% block title %}{% trans "Field assist" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Field assist" %} | {% trans "FI Administration" %}{% endblock %}
 
 {% block extrahead %}
-    <!-- include deform dependencies -->
-    <link rel="stylesheet" href="{% static 'deform/css/bootstrap.min.css' %}" type="text/css"/>
-    <link rel="stylesheet" href="{% static 'deform/css/form.css' %}" type="text/css"/>
-    {% for css in deform_dependencies.css %}
-        <link rel="stylesheet" href="{% static css %}" type="text/css"/>
-    {% endfor %}
-    <script type="text/javascript" src="{% static 'deform/scripts/jquery-2.0.3.min.js' %}"></script>
-    {% for js in deform_dependencies.js %}
-        <script type="text/javascript" src="{% static js %}"></script>
-    {% endfor %}
-
     <style>
-        .panel-heading{
-            display: none !important;
-        }
+        /* deform renders the sequence items through templates/deform/mapping_item.pt,
+           which wraps each field in a plain <ul><li> */
         ul{
             list-style: none;
             margin: 0;
-        }
-        input[type="text"]{
-            height: initial;
-            line-height: initial;
+            padding-left: 0;
         }
         li.error{
             color: #b94a48;
             background-color: #f2dede;
             border-color: #ebccd1;
         }
-        .desc[for="deformField1"]{
-            display: none;
-        }
-        .panel{
-            border: 0px;
-        }
-        .panel-footer{
-            border: 0;
-            padding: 0;
-            background-color: initial;
-        }
         .req{
             color: red;
         }
+        /* hide the description of the top level sequence */
+        .desc[for="deformField1"]{
+            display: none;
+        }
+        /* drag and drop reorder is not intuitive here, so the handle is hidden.
+           !important is required: deform.js toggles this button with jQuery
+           .toggle(), which writes an inline display style */
+        .deform-order-button{
+            display: none !important;
+        }
+        /* deform >= 3.0 renders the panels of Bootstrap 3 as cards of Bootstrap 5 */
+        .card-header{
+            display: none !important;
+        }
+        .card{
+            border: 0px;
+        }
+        .card-footer{
+            border: 0;
+            padding: 0;
+            background-color: transparent;
+        }
     </style>
 {% endblock %}
-
-{% block breadcrumb_wrap %}{% endblock %}
 
 {% block content %}
 
@@ -85,10 +77,6 @@
 </div>
 
 {% endblock %}
-
-{% block footer %}{% endblock %}
-
-{% block basejs %}{% endblock %}
 
 {% block extrajs %}
 <script type="text/javascript">

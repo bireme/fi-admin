@@ -1,0 +1,43 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>{% block title %}{% trans "Field assist" %}{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+
+        <!--
+            Standalone base for the field assist popup.
+
+            It deliberately does NOT extend base.html: that template loads
+            Bootstrap 2, whose element level rules on form controls
+            (`select, input[type="file"] { height: 28px; line-height: 28px }`)
+            clip the Bootstrap 5 markup rendered by deform >= 3.0.
+            Only the Bootstrap 5 bundled with deform is loaded here.
+        -->
+        <link rel="stylesheet" href="{% static 'deform/css/bootstrap.min.css' %}" type="text/css"/>
+        <link rel="stylesheet" href="{% static 'deform/css/bootstrap-icons.min.css' %}" type="text/css"/>
+        <link rel="stylesheet" href="{% static 'deform/css/form.css' %}" type="text/css"/>
+        {% for css in deform_dependencies.css %}
+            <link rel="stylesheet" href="{% static css %}" type="text/css"/>
+        {% endfor %}
+
+        <script type="text/javascript" src="{% static 'deform/scripts/jquery-2.0.3.min.js' %}"></script>
+        {% for js in deform_dependencies.js %}
+            <script type="text/javascript" src="{% static js %}"></script>
+        {% endfor %}
+
+        {% block extrahead %}{% endblock %}
+    </head>
+
+    <body>
+        <div class="container-fluid py-3">
+            {% block content %}{% endblock %}
+        </div>
+
+        {% block extrajs %}{% endblock %}
+    </body>
+</html>
