@@ -61,10 +61,13 @@
 
     <div class="card-footer">
       <a href="#"
+         tal:define="subitem_title field.children[0].title|title"
          class="btn btn-secondary deform-seq-add"
          id="${field.oid}-seqAdd"
+         title="${add_subitem_text}"
          onclick="javascript: return deform.appendSequenceItem(this);">
-        <small id="${field.oid}-addtext">${add_subitem_text}</small>
+        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        <small id="${field.oid}-addtext">${subitem_title}</small>
       </a>
 
       <script type="text/javascript">

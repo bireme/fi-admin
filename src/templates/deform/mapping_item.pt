@@ -23,7 +23,7 @@
                         id="req-${oid}">*</span>
   </label>
   <!-- help text -->
-  <p class="muted">${description}</p>
+  <div class="text-body-secondary">${description}</div>
 
   <span tal:replace="structure field.serialize(cstruct)"/>
 

@@ -20,6 +20,10 @@ form .required:after {
     display:inline;
 }
 
+li .field{
+    margin-bottom: 17px;
+}
+
 /* Required input marker on label, based on the 'required' attributes */
 label.form-label:has(+ input[required]):after {
   content: ' *';
