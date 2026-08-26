@@ -1,0 +1,48 @@
+<!--!
+  Override of deform/templates/sequence_item.pt (deform 3.0.1).
+
+  Changes: `type="button"` on both buttons, and btn-secondary on the remove
+  button.
+
+  Upstream renders the reorder and remove buttons without a `type` attribute,
+  so inside <form id="deform"> they default to type="submit": clicking the
+  reorder handle (or finishing a drag on it) submits the form and reloads the
+  popup, discarding the new order. Only `type="button"` was added.
+-->
+<div tal:omit-tag="field.widget.hidden"
+     tal:define="hidden hidden|field.widget.hidden;
+                 description description|field.description;
+                 title title|field.title;
+                 oid oid|field.oid"
+     title="${description}"
+     class="mb-3 row deform-seq-item ${field.widget.item_css_class or ''} ${field.default_item_css_class()}"
+     i18n:domain="deform">
+  <div class="row">
+    <span tal:replace="structure field.serialize(cstruct)"/>
+    <tal:errors condition="field.error and not hidden"
+                define="errstr 'error-%s' % oid"
+                repeat="msg field.error.messages()">
+      <p tal:condition="msg"
+         id="${errstr if repeat.msg.index==0 else '%s-%s' % (errstr, repeat.msg.index)}"
+         class="form-text invalid-feedback"
+         i18n:translate="">${msg}</p>
+    </tal:errors>
+  </div>
+  <div class="row">
+    <!-- sequence_item -->
+    <button type="button"
+          class="deform-order-button btn bi bi-arrows-vertical"
+          id="${oid}-order"
+          tal:condition="not hidden"
+          title="Reorder (via drag and drop)"
+          i18n:attributes="title"></button>
+    <button type="button"
+       class="deform-close-button btn bi bi-trash3"
+       id="${oid}-close"
+       tal:condition="not field.widget.hidden"
+       title="Remove"
+       i18n:attributes="title"
+       onclick="javascript:deform.removeSequenceItem(this);"></button>
+  </div>
+  <!-- /sequence_item -->
+</div>

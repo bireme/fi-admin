@@ -1,9 +1,3 @@
-.deform-seq-add{
-    color: #fff;
-    background-color: #204d74 !important;
-    border-color: #122b40;
-}
-
 .deform-seq-add:visited {
    color: blue;
 }
@@ -26,8 +20,18 @@ form .required:after {
     display:inline;
 }
 
-/* ugh, terrible selector coming up */
+li .field{
+    margin-bottom: 17px;
+}
 
+/* Required input marker on label, based on the 'required' attributes */
+label.form-label:has(+ input[required]):after {
+  content: ' *';
+  color: red;
+}
+
+
+/* ugh, terrible selector coming up */
 .hasDatepicker[readonly] {
     cursor: pointer !important;
 }
@@ -40,36 +44,11 @@ form .deform-readonly-text {
 .btn-file {
     background-color: #f2f2f2;
 }
+
 .btn-file:hover {
     background-color: #ededed;
 }
+
 .upload-filename[readonly] {
     background-color: #fdfdfd;
-}
-
-
-/**
- * Accordion styling
- *
- * http://stackoverflow.com/a/18568997/315168
- */
-
-
-.deform-collapse-heading > a {
-    display: block; /* Make target area more touch friendly */
-    text-decoration: none;
-}
-
-
-.deform-collapse-heading > a:after {
-    /* symbol for "opening" panels */
-    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-    float: right;        /* adjust as needed */
-    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
-
-}
-
-.deform-collapse-heading > a[aria-expanded="true"]:after {
-    /* symbol for "collapsed" panels */
-    content: "\e114";
 }
