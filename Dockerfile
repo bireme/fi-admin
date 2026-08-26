@@ -1,9 +1,13 @@
 ########### BASE STAGE ###########
-FROM python:3.7.8-alpine AS base
+FROM python:3.10-alpine AS base
+
+# application version (informed by the Makefile at build time)
+ARG APP_VERSION=unknown
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV APP_VERSION=${APP_VERSION}
 
 # copy base requirements
 COPY ./requirements.txt /app/
@@ -15,7 +19,8 @@ RUN apk add --no-cache --virtual .build-deps \
     libxml2-dev \
     libxslt-dev \
     python3-dev \
-    && apk add --no-cache py-lxml mariadb-dev \
+    pkgconf \
+    && apk add --no-cache mariadb-dev \
     && pip install --upgrade pip setuptools && pip install --no-cache-dir -r /app/requirements.txt \
     && apk del .build-deps
 

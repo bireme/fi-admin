@@ -3,7 +3,7 @@ from collections import defaultdict
 from django.urls import reverse_lazy
 from django.core.cache import cache
 from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _, get_language
+from django.utils.translation import gettext as _, get_language
 from django.views.generic.list import ListView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.models import User
@@ -11,7 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.db.models.functions import Substr
 
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from utils.context_processors import additional_user_info
@@ -31,7 +31,6 @@ from biblioref.forms import *
 
 import json
 import requests
-import asyncio
 
 JOURNALS_FASCICLE = "S"
 
@@ -59,7 +58,7 @@ class BiblioRefGenericListView(LoginRequiredView, ListView):
         # identify view and model in use
         view_name = self.view_name
         model_name = self.model.__name__
-        exp_serial = re.compile('[\.\;\(\)\|]')
+        exp_serial = re.compile(r'[\.\;\(\)\|]')
 
         # getting action parameter
         self.actions = {}
@@ -412,8 +411,8 @@ class BiblioRefUpdate(LoginRequiredView):
                 # save many-to-many fields (required because form.save in forms.py use commit=False)
                 form.save_m2m()
 
-                # run secundary updates (async)
-                asyncio.run(update_services(self.object))
+                # run secundary updates
+                update_services(self.object)
 
                 return HttpResponseRedirect(self.get_success_url())
         else:
@@ -692,7 +691,7 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
         ReferenceLocal.objects.filter(source=obj.id).delete()
         ReferenceComplement.objects.filter(source=obj.id).delete()
         # update search index
-        asyncio.run(update_search_index(obj, delete=True))
+        update_search_index(obj, delete=True)
 
         return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
 
@@ -807,7 +806,7 @@ def refs_llxp_for_indexing(current_user):
 
 
 # update DeDup service
-async def update_dedup_service(obj):
+def update_dedup_service(obj):
     if obj.document_type() == 'Sas':
         # send multiple DeDup entries with the same ID for each title #728
         for article_title in obj.title:
@@ -855,7 +854,7 @@ async def update_dedup_service(obj):
                 pass
 
 # update auxiliary field reference_title
-async def update_reference_title(obj):
+def update_reference_title(obj):
     if obj.literature_type == 'S' and not hasattr(obj, 'source'):
         analytic_list = ReferenceAnalytic.objects.filter(source=obj.id)
         for analytic in analytic_list:
@@ -871,7 +870,7 @@ async def update_reference_title(obj):
     return
 
 # update search index
-async def update_search_index(reference, delete=False):
+def update_search_index(reference, delete=False):
     if reference.status != -1:
         if hasattr(reference, 'source'):
             index = ReferenceAnalyticIndex()
@@ -886,11 +885,12 @@ async def update_search_index(reference, delete=False):
         except:
             pass
 
-async def update_services(obj):
-    update_search = asyncio.create_task(update_search_index(obj))
-    update_dedup  = asyncio.create_task(update_dedup_service(obj))
-    update_title  = asyncio.create_task(update_reference_title(obj))
-
-    await asyncio.gather(update_search, update_dedup, update_title)
+def update_services(obj):
+    # these updates use the Django ORM (search index serialization, related fields and
+    # update of the analytics reference_title), so they must run on a sync context.
+    # running them as coroutines raises SynchronousOnlyOperation (see #biblioref tests)
+    update_search_index(obj)
+    update_dedup_service(obj)
+    update_reference_title(obj)
 
     return

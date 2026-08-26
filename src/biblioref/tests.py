@@ -1,6 +1,6 @@
 # coding: utf-8
 import os
-from unittest import skip
+from unittest import mock, skip
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -799,3 +799,54 @@ class BiblioRefAnalyticListGet(BaseTestCase):
 
         self.assertContains(response, "Analytic From A")
         self.assertNotContains(response, "Analytic From B")
+
+
+class UpdateServicesTest(BaseTestCase):
+    """
+    Tests for the secondary updates (search index, DeDup and reference_title)
+    executed after saving a bibliographic record (#SynchronousOnlyOperation)
+    """
+
+    def setUp(self):
+        super(UpdateServicesTest, self).setUp()
+
+        self.source = baker.make(
+            "ReferenceSource", reference_title="Rev. Enfermagem; 10 (2), 2015",
+            title_serial="Rev. Enfermagem", volume_serial="10", issue_number="2",
+            publication_date_normalized="20150501", issn="0000-XXXXX",
+            status=-1, literature_type="S", treatment_level="",
+            created_time="1970-01-01 00:00"
+        )
+        self.analytic = baker.make(
+            "ReferenceAnalytic", source=self.source, reference_title="Primeira analitica",
+            title=[{"text": "Primeira analitica", "_i": "pt"}],
+            status=-1, literature_type="S", treatment_level="as",
+            created_time="1970-01-01 00:00"
+        )
+
+    def test_update_reference_title_of_analytics(self):
+        """
+        update_services must be able to query/update the analytics of a source.
+        Running it from an async context raises SynchronousOnlyOperation
+        """
+        # imported inside the test because biblioref.views hits the database at import time
+        from biblioref.views import update_services
+
+        with mock.patch("biblioref.views.requests.post") as mocked_post:
+            mocked_post.return_value = None
+            update_services(self.source)
+
+        self.analytic.refresh_from_db()
+        self.assertEqual(
+            self.analytic.reference_title,
+            "Rev. Enfermagem; 10 (2), 2015 | Primeira analitica"
+        )
+
+    def test_update_search_index_delete_of_source(self):
+        """
+        update_search_index (used on delete) also touches the database
+        (source relation and indexed fields) and must run on a sync context
+        """
+        from biblioref.views import update_search_index
+
+        update_search_index(self.analytic, delete=True)

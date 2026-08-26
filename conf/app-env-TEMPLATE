@@ -29,7 +29,7 @@ HAYSTACK_CONNECTION_ENGINE=haystack.backends.solr_backend.SolrEngine
 HAYSTACK_CONNECTION_URL=
 
 # CACHE
-CACHE_BACKEND=django.core.cache.backends.memcached.MemcachedCache
+CACHE_BACKEND=django.core.cache.backends.memcached.PyMemcacheCache
 CACHE_LOCATION=
 
 SEARCH_SERVICE_URL=http://srv.bvsalud.org/

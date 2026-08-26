@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.cache import cache
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import gettext_lazy as _, get_language
 from tinymce.models import HTMLField
 from main import choices
 

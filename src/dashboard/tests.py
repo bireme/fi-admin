@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 import requests_mock
 from django.contrib.auth import get_user_model
+from django.test import override_settings
 from requests.exceptions import ConnectionError
 
 from utils.tests import BaseTestCase
@@ -49,3 +50,10 @@ class DashboardGet(BaseTestCase):
             m.get(requests_mock.ANY, status_code=200)
             response = self.client.get("/")
             self.assertNotContains(response, "O serviço DeDup está indisponível!")
+
+    @override_settings(APP_VERSION="9.8.7-test")
+    def test_footer_shows_app_version(self):
+        with requests_mock.mock() as m:
+            m.get(requests_mock.ANY, status_code=200)
+            response = self.client.get("/")
+            self.assertContains(response, "v9.8.7-test")

@@ -1,14 +1,13 @@
 #! coding: utf-8
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.core.exceptions import PermissionDenied
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
-from django.shortcuts import render_to_response
 
 from utils.context_processors import additional_user_info
 from attachments.models import Attachment

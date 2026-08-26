@@ -1,7 +1,7 @@
 from django.db import models
 from utils.models import Generic
 from django.contrib.admin.models import LogEntry
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.forms.models import model_to_dict
 
 REVISION_CHOICES = (

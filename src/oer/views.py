@@ -1,14 +1,14 @@
 #! coding: utf-8
 from django.urls import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.contenttypes.models import ContentType
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 
 from pkg_resources import resource_filename
 from utils.views import get_class
@@ -384,7 +384,7 @@ def field_assist(request, **kwargs):
             # new reference
             rendered = form.render()
 
-    return render_to_response('biblioref/field_assist.html', {
+    return render(request, 'biblioref/field_assist.html', {
         'form': rendered,
         'field_json': field_json,
         'field_name': field_name,

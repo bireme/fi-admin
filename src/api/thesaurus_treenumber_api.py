@@ -1,5 +1,5 @@
 from django.db.models.functions import Length, Substr
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 

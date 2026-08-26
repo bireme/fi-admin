@@ -1,11 +1,11 @@
-version: '3.4'
-
 services:
   fi_admin:
     container_name: fi-admin
     build:
       context: .
       target: dev
+      args:
+        APP_VERSION: ${APP_VERSION:-unknown}
     depends_on:
       - fi_admin_cache
     restart: unless-stopped

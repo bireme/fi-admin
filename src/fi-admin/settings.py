@@ -16,6 +16,12 @@ MANAGERS = ADMINS
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# application version, informed at image build time (see Makefile/Dockerfile)
+APP_VERSION = os.environ.get("APP_VERSION", "unknown")
+
+# Keep integer AutoField primary keys (Django 3.2+ defaults to BigAutoField)
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 DATABASES = {
      'default': {
          'ENGINE': os.environ.get("DATABASE_ENGINE", 'django.db.backends.sqlite3'),
@@ -175,7 +181,6 @@ INSTALLED_APPS = [
     'haystack',
     'tastypie',
     'rosetta',
-    'form_utils',
     'tinymce',
 
     'biremelogin',
@@ -273,6 +278,7 @@ TEMPLATE_VISIBLE_SETTINGS = (
     'GOOGLE_ANALYTICS_ID',
     'SITE_URL',
     'LANGUAGE_CODE',
+    'APP_VERSION',
 )
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'

@@ -12,6 +12,7 @@ bireme/templates/version.txt
 fixtures/
 static_files/
 uploads/
+backups/
 **/*.db
 .DS_Store
 .vscode/

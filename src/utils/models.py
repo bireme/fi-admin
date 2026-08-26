@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms.models import model_to_dict
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import gettext_lazy as _, get_language
 from django.contrib.auth.models import User
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.contrib.contenttypes.models import ContentType

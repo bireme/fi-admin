@@ -5,8 +5,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
-from django.utils.translation import ugettext as _
-from django.shortcuts import render, render_to_response
+from django.utils.translation import gettext as _
+from django.shortcuts import render
 from deform.exception import ValidationFailure
 
 from main.decorators import *
@@ -265,8 +265,8 @@ def decs_suggestion(request):
     # sort final list
     decs_list = sorted(decs_list_unique, key=lambda k: k['descriptor'])
 
-    return render_to_response('utils/decs_suggestion.html',
-                              {'decs_list': decs_list})
+    return render(request, 'utils/decs_suggestion.html',
+                  {'decs_list': decs_list})
 
 
 @csrf_exempt
@@ -320,8 +320,8 @@ def annif_suggestion(request):
                 decs_detail['ai_model'] = result.get('model', settings.AI_SUGGESTION_MODEL)
                 decs_list.append(decs_detail)
 
-    return render_to_response('utils/decs_suggestion.html',
-                              {'decs_list': decs_list, 'ai_model': ai_model})
+    return render(request, 'utils/decs_suggestion.html',
+                  {'decs_list': decs_list, 'ai_model': ai_model})
 
 
 def custom_page_not_found(request, *args, **argv):

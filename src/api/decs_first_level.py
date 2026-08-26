@@ -1,12 +1,12 @@
 # coding: utf-8
 
 from django.utils import translation
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 def category_translated(category, language):
 	with translation.override(language):
-		return translation.ugettext(category)
+		return translation.gettext(category)
 
 
 def first_level_list(language):

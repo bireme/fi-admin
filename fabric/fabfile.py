@@ -78,17 +78,6 @@ def restart_app():
         run("./restart.sh")
 
 @task
-def update_version_file():
-    """
-    update application version.txt based on git describe command
-    """
-
-    with cd(env.root_path):
-        run("git describe --tags | cut -f 1,2 -d - > templates/version.txt")
-        # traz o arquivo gerado da versão para minha máquina, e implementa a versão localmente
-        get("templates/version.txt", "../bireme/templates")
-
-@task
 def full_update():
     """
     update requirements, execute git pull, touch application.wsgi
@@ -98,7 +87,6 @@ def full_update():
 
     requirements()
     migrate()
-    update_version_file()
     restart_app()
 
 @task
@@ -107,10 +95,8 @@ def update():
     execute git pull and restart application
     """
     with cd(env.git_path):
-        run("git checkout bireme/templates/version.txt")
         run("git pull")
 
-    update_version_file()
     restart_app()
 
 @task

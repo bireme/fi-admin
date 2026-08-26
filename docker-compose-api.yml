@@ -5,7 +5,11 @@ services:
     build:
       context: .
       target: prod
+      args:
+        APP_VERSION: ${APP_VERSION:-unknown}
     image: ${IMAGE_TAG}
+    depends_on:
+      - fi_admin_api_cache
     volumes:
       - ${LOG_PATH}:/logs
       - static_files:/app/static_files
@@ -45,6 +49,15 @@ services:
           memory: ${MEMORY_WEBSERVER_LIMIT}
         reservations:
           memory: ${MEMORY_WEBSERVER_RESERVATION}
+
+  fi_admin_api_cache:
+    container_name: fi-admin-api-cache
+    restart: unless-stopped
+    image: memcached:1.6.32
+    environment:
+      - MEMCACHED_CACHE_SIZE=128
+    networks:
+      - nginx-proxy
 
 networks:
   nginx-proxy:

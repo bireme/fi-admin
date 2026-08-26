@@ -1,7 +1,7 @@
 #! coding: utf-8
 from collections import OrderedDict
-from django.utils.translation import ugettext_lazy as _, get_language
-from django.utils.translation import ugettext as __
+from django.utils.translation import gettext_lazy as _, get_language
+from django.utils.translation import gettext as __
 from django.utils.text import format_lazy
 from django.core.cache import cache
 from django.forms import inlineformset_factory
@@ -10,7 +10,7 @@ from  django.contrib.contenttypes.forms import generic_inlineformset_factory
 
 from django.forms import widgets
 from django import forms
-from form_utils.forms import BetterModelForm, FieldsetCollection
+from utils.betterforms import BetterModelForm, FieldsetCollection
 from django.conf import settings
 
 from main.models import Descriptor
@@ -181,7 +181,7 @@ class BiblioRefForm(BetterModelForm):
         if pontuation in value:
             if not pontuation_with_space_after in value:
                 if pontuation == '.':
-                    search_version_info = re.search('(\d+\.)(\d+)', value)
+                    search_version_info = re.search(r'(\d+\.)(\d+)', value)
                     if search_version_info != None:
                         return
 

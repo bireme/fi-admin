@@ -1,6 +1,6 @@
 #! coding: utf-8
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import render, render_to_response, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 
 from django.views.generic.list import ListView
@@ -23,7 +23,7 @@ from thesaurus.forms import *
 from django.db.models import Prefetch
 from django.db.models import Q
 
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import gettext_lazy as _, get_language
 from django.core.paginator import Paginator
 
 

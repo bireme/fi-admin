@@ -92,13 +92,11 @@ def get_field_display(object, field, sep=' '):
         else:
             out = getattr(object, 'get_%s_display' % field.name)()
     elif widget == 'SelectMultiple':
-        list = []
-        obj = field.form[field.name][0]
-        for value in [obj.data.get('value')]:
-            list += [dict(field.field.choices)[int(value)]]
-        # query = getattr(object, field.name).all()
-        # out = sep.join(str(i) for i in query)
-        out = sep.join(list)
+        # read the labels of the selected options directly from the bound widgets
+        # (the option value is a ModelChoiceIteratorValue, not the raw pk)
+        selected = [str(subwidget.data['label']) for subwidget in field.form[field.name]
+                    if subwidget.data.get('selected')]
+        out = sep.join(selected)
 
     return out
 

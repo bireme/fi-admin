@@ -1,7 +1,6 @@
 """Add user created_by and modified_by foreign key refs to any model automatically.
    Almost entirely taken from https://github.com/Atomidata/django-audit-log/blob/master/audit_log/middleware.py"""
 from django.db.models import signals
-from django.utils.functional import curry
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType

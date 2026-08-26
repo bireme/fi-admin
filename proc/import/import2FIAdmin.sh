@@ -24,10 +24,10 @@ HISTORICO
 
 # -------------------------------------------------------------------------- #
 
-INSUMO="import"
+INSUMO="fixtures"
 echo
 echo "ATENCAO! Esse processo fara a inclusao de conteudo no FI-Admin"
-echo "Esta lendo o insumo de fixtures/$INSUMO/"
+echo "Esta lendo o insumo de $INSUMO/"
 echo
 echo "Se houver duvida digite CTRL+c, ou Enter para continuar."
 # read #pausa até que o ENTER seja pressionado
@@ -45,10 +45,8 @@ echo "[TIME-STAMP] `date '+%Y.%m.%d %H:%M:%S'` [:INI:] Processa ${0} ${1} ${3} $
 echo ""
 # ------------------------------------------------------------------------- #
 
-INSUMO="import"
-
 # Acessando diretorio dos arquivos json
-cd fixtures/$INSUMO
+cd $INSUMO
 
 # criando lista de diretorios
 ls -l | grep "^d" | awk {' print $9 '} > json_dir.lst
@@ -71,7 +69,7 @@ do
 
     echo "Importando: $json_dir/$json_arq ( $contador de $numero_arquivos )"
 
-    python ../manage.py loaddata $json_arq
+    python /app/manage.py loaddata $json_arq
     if [ "$?" -ne 0 ]
     then
       echo "Houve erro na importacao! - ver arquivo: $json_dir/fix_import_$json_arq"
@@ -99,7 +97,7 @@ then
 else
   ls */fix_* > fix.txt
   echo " ** Ocorreu problema em alguns arquivos"
-  echo "    Checar fixtures/$INSUMO/fix.txt"
+  echo "    Checar $INSUMO/fix.txt"
   echo
 fi
 
