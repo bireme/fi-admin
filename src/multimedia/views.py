@@ -276,8 +276,8 @@ class MediaDeleteView(LoginRequiredView, DeleteView):
 
         return obj
 
-    def delete(self, request, *args, **kwargs):
-        obj = super(MediaDeleteView, self).get_object()
+    def form_valid(self, form):
+        obj = self.object
         c_type = ContentType.objects.get_for_model(obj)
 
         # delete associated data
@@ -290,7 +290,7 @@ class MediaDeleteView(LoginRequiredView, DeleteView):
         index = MediaIndex()
         index.remove_object(obj)
 
-        return super(MediaDeleteView, self).delete(request, *args, **kwargs)
+        return super(MediaDeleteView, self).form_valid(form)
 
 
 # ========================= MEDIA TYPE ===================================================

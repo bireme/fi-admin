@@ -76,6 +76,9 @@ dev_test:
 dev_test_app:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python -W ignore manage.py test -v 1 $(app)
 
+dev_test_deprecations:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python -Wd manage.py test -v 1 $(app)
+
 dev_test_coverage:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin sh run_coverage.sh
 

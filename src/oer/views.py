@@ -305,8 +305,8 @@ class OERDeleteView(LoginRequiredView, DeleteView):
 
         return obj
 
-    def delete(self, request, *args, **kwargs):
-        obj = super(OERDeleteView, self).get_object()
+    def form_valid(self, form):
+        obj = self.object
         c_type = ContentType.objects.get_for_model(obj)
 
         # delete associated data
@@ -318,7 +318,7 @@ class OERDeleteView(LoginRequiredView, DeleteView):
         index = OERIndex()
         index.remove_object(obj)
 
-        return super(OERDeleteView, self).delete(request, *args, **kwargs)
+        return super(OERDeleteView, self).form_valid(form)
 
 @csrf_exempt
 def field_assist(request, **kwargs):
