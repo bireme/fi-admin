@@ -364,8 +364,8 @@ class InstDeleteView(LoginRequiredView, DeleteView):
         return super(InstDeleteView, self).dispatch(*args, **kwargs)
 
 
-    def delete(self, request, *args, **kwargs):
-        obj = super(InstDeleteView, self).get_object()
+    def form_valid(self, form):
+        obj = self.object
         c_type = ContentType.objects.get_for_model(obj)
 
         # delete associated data
@@ -374,7 +374,7 @@ class InstDeleteView(LoginRequiredView, DeleteView):
         Adm.objects.filter(institution_id=obj.id).delete()
         InstitutionAdhesion.objects.filter(institution_id=obj.id).delete()
 
-        return super(InstDeleteView, self).delete(request, *args, **kwargs)
+        return super(InstDeleteView, self).form_valid(form)
 
 
 @login_required

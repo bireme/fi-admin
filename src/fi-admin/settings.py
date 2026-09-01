@@ -72,10 +72,6 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale.
-USE_L10N = True
-
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
@@ -119,6 +115,11 @@ STATICFILES_FINDERS = (
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y')
+
+# Django >= 4.0 sends Cross-Origin-Opener-Policy: same-origin by default, which
+# breaks window.opener (and postMessage) for cross-origin popups like the DeCS
+# lookup service used by decs_search() in the forms.
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 
 MIDDLEWARE = [
@@ -397,7 +398,6 @@ class DisableMigrations(object):
 if 'test' in sys.argv:
     logging.disable(logging.CRITICAL)
     DEBUG = False
-    TEMPLATE_DEBUG = False
     TESTS_IN_PROGRESS = True
     MIGRATION_MODULES = DisableMigrations()
     HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.BaseSignalProcessor'

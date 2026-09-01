@@ -680,8 +680,8 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
 
         return super(BiblioRefDeleteView, self).dispatch(request, *args, **kwargs)
 
-    def delete(self, request, *args, **kwargs):
-        obj = super(BiblioRefDeleteView, self).get_object()
+    def form_valid(self, form):
+        obj = self.object
         child_class = obj.child_class()
         c_type = ContentType.objects.get_for_model(child_class)
 
@@ -693,7 +693,7 @@ class BiblioRefDeleteView(LoginRequiredView, DeleteView):
         # update search index
         update_search_index(obj, delete=True)
 
-        return super(BiblioRefDeleteView, self).delete(request, *args, **kwargs)
+        return super(BiblioRefDeleteView, self).form_valid(form)
 
 
 @csrf_exempt
