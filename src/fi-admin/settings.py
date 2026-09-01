@@ -116,6 +116,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DATE_INPUT_FORMATS = ('%d/%m/%Y')
 
+# Django >= 4.0 sends Cross-Origin-Opener-Policy: same-origin by default, which
+# breaks window.opener (and postMessage) for cross-origin popups like the DeCS
+# lookup service used by decs_search() in the forms.
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
