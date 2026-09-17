@@ -9,6 +9,7 @@ from django.test.client import Client
 from django.test.utils import override_settings
 from model_bakery import baker
 
+from attachments.models import Attachment
 from biblioref.models import *
 from database.models import Database
 from main.models import Descriptor, ResourceThematic, ThematicArea
@@ -850,3 +851,80 @@ class UpdateServicesTest(BaseTestCase):
         from biblioref.views import update_search_index
 
         update_search_index(self.analytic, delete=True)
+
+
+class BiblioRefDeleteViewTest(BaseTestCase):
+    """
+    Tests for BiblioRefDeleteView
+    """
+
+    def setUp(self):
+        super(BiblioRefDeleteViewTest, self).setUp()
+
+        self.user = self.login_documentalist()
+
+        self.source = baker.make(
+            "ReferenceSource", reference_title="Fonte de teste", title_serial="Rev. Enfermagem",
+            status=-1, literature_type="S", treatment_level="m", created_by=self.user
+        )
+        self.source_ct = ContentType.objects.get_for_model(ReferenceSource)
+
+        self.descriptor = baker.make(
+            Descriptor, object_id=self.source.id, content_type=self.source_ct, text="malaria"
+        )
+        self.attachment = baker.make(
+            Attachment, object_id=self.source.id, content_type=self.source_ct
+        )
+        self.reference_local = baker.make(ReferenceLocal, source=self.source)
+        self.reference_complement = baker.make(ReferenceComplement, source=self.source)
+
+    def test_delete_reference(self):
+        """
+        Must delete the reference and its related objects (descriptors, attachments,
+        reference local and reference complement)
+        """
+        response = self.client.get('/bibliographic/delete/{0}'.format(self.source.id))
+        self.assertEqual(200, response.status_code)
+
+        response = self.client.post('/bibliographic/delete/{0}'.format(self.source.id))
+        self.assertRedirects(response, '/bibliographic/')
+
+        self.assertEqual(Reference.objects.filter(id=self.source.id).count(), 0)
+        self.assertEqual(ReferenceSource.objects.filter(id=self.source.id).count(), 0)
+
+        self.assertEqual(
+            Descriptor.objects.filter(object_id=self.source.id, content_type=self.source_ct).count(), 0
+        )
+        self.assertEqual(
+            Attachment.objects.filter(object_id=self.source.id, content_type=self.source_ct).count(), 0
+        )
+        self.assertEqual(ReferenceLocal.objects.filter(source=self.source.id).count(), 0)
+        self.assertEqual(ReferenceComplement.objects.filter(source=self.source.id).count(), 0)
+
+    def test_delete_reference_of_another_user_not_allowed(self):
+        """
+        Must not allow delete of record created by another user
+        """
+        other_source = baker.make(
+            "ReferenceSource", reference_title="Fonte de outro usuario", status=-1,
+            literature_type="S", treatment_level="m", created_by=baker.make(User)
+        )
+
+        response = self.client.post('/bibliographic/delete/{0}'.format(other_source.id))
+
+        self.assertEqual(401, response.status_code)
+        self.assertEqual(Reference.objects.filter(id=other_source.id).count(), 1)
+
+    def test_delete_source_with_analytics_not_allowed(self):
+        """
+        Must not allow delete of source that has analytic records
+        """
+        baker.make(
+            "ReferenceAnalytic", source=self.source, reference_title="Analitica de teste",
+            status=-1, literature_type="S", treatment_level="as", created_by=self.user
+        )
+
+        response = self.client.post('/bibliographic/delete/{0}'.format(self.source.id))
+
+        self.assertTemplateUsed(response, 'biblioref/delete_analytics_first.html')
+        self.assertEqual(Reference.objects.filter(id=self.source.id).count(), 1)

@@ -67,6 +67,9 @@ dev_makemigrations:
 dev_migrate:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py migrate $(app)
 
+dev_sqlmigrate:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py sqlmigrate $(app) $(migration)
+
 dev_check:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py check
 
@@ -75,6 +78,9 @@ dev_test:
 
 dev_test_app:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python -W ignore manage.py test -v 1 $(app)
+
+dev_test_deprecations:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python -Wd manage.py test -v 1 $(app)
 
 dev_test_coverage:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin sh run_coverage.sh

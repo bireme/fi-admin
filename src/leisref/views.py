@@ -318,8 +318,8 @@ class ActDeleteView(LoginRequiredView, DeleteView):
 
         return obj
 
-    def delete(self, request, *args, **kwargs):
-        obj = super(ActDeleteView, self).get_object()
+    def form_valid(self, form):
+        obj = self.object
         c_type = ContentType.objects.get_for_model(obj)
 
         # delete related objects
@@ -331,7 +331,7 @@ class ActDeleteView(LoginRequiredView, DeleteView):
         # update search index
         update_search_index(obj, delete=True)
 
-        return super(ActDeleteView, self).delete(request, *args, **kwargs)
+        return super(ActDeleteView, self).form_valid(form)
 
 
 def check_duplication(request, act_type, act_number):

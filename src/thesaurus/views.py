@@ -8,6 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
 
 from django.contrib.auth.decorators import login_required
+from django.forms import Form
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.contenttypes.models import ContentType
 
@@ -322,6 +323,19 @@ class DescDeleteView(DescUpdate, DeleteView):
     """
     model = IdentifierDesc
     template_name = 'thesaurus/descriptor_confirm_delete.html'
+    # override form attributes inherited from DescUpdate so the
+    # form-based DeleteView (Django 4+) performs the deletion
+    form_class = Form
+
+    def get_form_kwargs(self):
+        kwargs = super(DescDeleteView, self).get_form_kwargs()
+        kwargs.pop('ths', None)
+        return kwargs
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.delete()
+        return HttpResponseRedirect(success_url)
 
     def get_success_url(self):
         # messages.success(self.request, 'is deleted')
@@ -3453,6 +3467,19 @@ class QualifDeleteView(QualifUpdate, DeleteView):
     """
     model = IdentifierQualif
     template_name = 'thesaurus/qualifier_confirm_delete.html'
+    # override form attributes inherited from QualifUpdate so the
+    # form-based DeleteView (Django 4+) performs the deletion
+    form_class = Form
+
+    def get_form_kwargs(self):
+        kwargs = super(QualifDeleteView, self).get_form_kwargs()
+        kwargs.pop('ths', None)
+        return kwargs
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.delete()
+        return HttpResponseRedirect(success_url)
 
     def get_success_url(self):
         ths = '?ths=' + self.request.GET.get("ths")
