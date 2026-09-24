@@ -1,3 +1,4 @@
+import json
 import datetime
 from haystack import indexes
 from main.models import Descriptor, Keyword, SourceLanguage, SourceType, ResourceThematic
@@ -11,6 +12,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     title_translated = indexes.CharField(model_attr='title_translated')
     link = indexes.CharField(model_attr='link', null=True)
     description = indexes.CharField(model_attr='description', null=True)
+    description_translations = indexes.MultiValueField()
     author = indexes.MultiValueField()
     contributors = indexes.MultiValueField()
     related_links = indexes.MultiValueField()
@@ -95,6 +97,20 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.publication_country:
             return ["|".join(country.get_translations()) for country in obj.publication_country.all()]
 
+    def prepare_description_translations(self, obj):
+        # export a field with language identification (pt, es, en) and abstract text separate by pipe |
+        if obj.description_translations:
+            desc_list = obj.description_translations
+            desc_lang = list()
+            if type(desc_list) != list:
+                desc_list = json.loads(obj.description_translations)
+
+            for desc in desc_list:
+                 desc_lang.append(u"{}|{}".format(desc.get('_i'), desc.get('text')))
+
+            return desc_lang
+
+
     def prepare_created_date(self, obj):
         if obj.created_time:
             return obj.created_time.strftime('%Y%m%d')
@@ -106,4 +122,3 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
         return self.get_model().objects.filter(created_time__lte=datetime.datetime.now())
-
