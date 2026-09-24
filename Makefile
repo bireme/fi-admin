@@ -188,6 +188,9 @@ prod_exec_webserver:
 prod_make_test:
 	@docker compose exec -T fi_admin make test
 
+prod_migrate:
+	@docker compose exec fi_admin python manage.py migrate $(app)
+
 # import data to fi-admin
 import:
 	@docker compose exec -T fi_admin sh -c "cd /app/proc/import && sh import2FIAdmin.sh"
