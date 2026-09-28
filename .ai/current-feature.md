@@ -1,4 +1,4 @@
-# Current Feature: Django Upgrade Phase 4 — Django 3.2 → 4.2 LTS (Python 3.12)
+# Current Feature: Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2
 
 ## Status
 
@@ -6,29 +6,31 @@ In Progress
 
 ## Goals
 
-- Upgrade Django 3.2.25 → 4.2.x (latest patch) LTS with Python 3.10 → 3.12 (`python:3.12-alpine`)
-- Bump the two Django-pinned outliers: `jsonfield` 3.1.0 → 3.2.0, `django-rosetta` 0.9.9 → newest 4.2-compatible (0.10.x+)
-- Remove `USE_L10N = True` and the dead `TEMPLATE_DEBUG = False` from settings — **after** the Django bump
-- `makemigrations` produces no unexpected migrations for local apps; `make dev_migrate` runs clean
-- Full test suite passes: `make dev_test` in the rebuilt Python 3.12 image (automated tests only — manual checks deferred to validation environment)
-- JSONField behavior unchanged after the jsonfield bump (covered by biblioref/oer/leisref tests)
-- Remaining Django 5.x deprecation warnings (`python -Wd manage.py test`) logged to `.ai/logs/` for Phase 5
+- `make dev_test_deprecations` (all apps) shows **zero** `RemovedInDjango` warnings, and no naive-datetime `RuntimeWarning` or `UnorderedObjectListWarning`
+- Only remaining warning: deform's `pkg_resources` UserWarning, documented as a known upstream issue
+- Logout is a POST `<form>` with `{% csrf_token %}` in `menu.html`, styled like the old link, covered by a new test (POST → redirect to `/`, user anonymous)
+- `django-tastypie` 0.14.7 → 0.15.1, and the `api` tests pass
+- `django-debug-toolbar` 4.3.0 → latest 5.2.x; it still works in dev with `DEBUG_TOOLBAR=1`, and is disabled whenever `test` is in `sys.argv`
+- setuptools pinned `<81` in the Dockerfile, and the image builds (`make dev_build`)
+- Institution list per-user branch has explicit `order_by('-id')`
+- Full suite passes (`make dev_test`), ≥ 223 tests plus new ones
+- Plan `001-upgrade-django-to-5.2.md` updated (5.0 item ticked; logout/tastypie/toolbar marked done early), and a log written in `.ai/logs/`
 
 ## Notes
 
-- Branch: `setup/django-4.2`, created from `main` (already contains Phase 3 commit `c0ba51a`)
-- Plan task 4.1 (migrate to native `django.db.models.JSONField`) is **dropped** — jsonfield 3.2.0 declares Django 4.2–5.2 / Python 3.10–3.13, so `utils.fields.JSONField` stays on the library through Phase 5
-- MySQL 5.7 drop in 4.2 is not a blocker: prod fi-admin and DeCS databases are already on MySQL 8+
-- No Django 4.0/4.1 hard breakers found in code (no `conf.urls.url`, `ifequal`, `is_ajax()`, `NullBooleanField`, `pytz`, `ugettext`, `index_together`); cache is already `PyMemcacheCache`
-- Most pins already support 4.2 (tastypie 0.14.7, haystack 3.3.0, tinymce 4.1.0, multiselectfield 1.0.1, crum 0.7.9, pymemcache 4.0.0, mysqlclient 2.2.8, debug-toolbar 4.3.0, model-bakery 1.17.0)
-- Risks: jsonfield minor bump could shift serialization; rosetta 0.10.x has no test coverage; tests are SQLite-only so MySQL 8 behavior is proven only in validation
-- Spec: `.ai/features/005-upgrade-django-phase4-django-4.2.md`
+- Spec: [006-upgrade-django-phase5.0-fix-deprecations.md](.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md)
+- Branch: `setup/django-5.2` (current). Django stays on 4.2.x in this feature
+- Baseline (2026-09-28): 223 tests OK (skipped=5). The warnings were tastypie `datetime_safe`, form `default.html` (from debug-toolbar 4.3.0 only, not app code), deform `pkg_resources`, naive datetime in `biblioref/tests.py`, and unordered pagination in `institution/views.py`. GET logout (`menu.html:130`) is not hit by any test
+- Disable the toolbar at `src/fi-admin/settings.py:9` (`… and 'test' not in sys.argv`), because the `if 'test'` block runs after the toolbar is registered at line 379. `urls.py:102` reads the same flag
+- Gate is a manual check (no strict Makefile target), per the user's decision
+- After requirement/Dockerfile changes: `make dev_build && make dev_up`
+- Implementation order: toolbar off in tests → biblioref datetimes + institution ordering → POST logout + test → setuptools pin, debug-toolbar bump, tastypie bump (last, to isolate API regressions) → verify, update plan, write log
+- Out of scope: the Django 5.2 bump, the Python 3.13/3.14 image, `RemovedInDjango60Warning` items, replacing deform, and changing the password hasher
 
 ## Detailed Plan
 
-- [018-upgrade-django-phase4-django-4.2.md](.ai/plans/018-upgrade-django-phase4-django-4.2.md) (approved 2026-08-27)
-- `.ai/features/005-upgrade-django-phase4-django-4.2.md` (detailed spec with tasks 4.1–4.4 and implementation order)
-- `.ai/plans/001-upgrade-django-to-5.2.md` (Phase 4 section — note the plan deviation on task 4.1)
+- `.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md` (spec with tasks A–H)
+- `.ai/plans/001-upgrade-django-to-5.2.md` (Phase 5, task 5.0)
 
 ## History
 
@@ -39,3 +41,6 @@ In Progress
 - 2026-07-17: Starting "Django Upgrade Phase 3 — Django 2.2 → 3.2 LTS" — following spec [004-upgrade-django-phase3-django-3.2.md](.ai/features/004-upgrade-django-phase3-django-3.2.md)
 - 2026-08-27: Completed "Django Upgrade Phase 3 — Django 2.2 → 3.2 LTS" — merged to `main`; commit `c0ba51a`
 - 2026-08-27: Starting "Django Upgrade Phase 4 — Django 3.2 → 4.2 LTS" — following plan [018-upgrade-django-phase4-django-4.2.md](.ai/plans/018-upgrade-django-phase4-django-4.2.md)
+- 2026-09-28: Phase 4 "Django 3.2 → 4.2 LTS" implemented; commit `5d2e234a` is on `validation` (not yet merged to `main`)
+- 2026-09-28: Loaded "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" — following spec [006-upgrade-django-phase5.0-fix-deprecations.md](.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md)
+- 2026-09-28: Starting "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" on `setup/django-5.2` — following spec [006-upgrade-django-phase5.0-fix-deprecations.md](.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md)

@@ -127,8 +127,12 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_user"><i class="icon-user icon-white"></i>{{ user_name|truncatechars:20 }} ({{ user_cc }})
                                 </a>
                                 <ul class="dropdown-menu" role="user_menu" aria-labelledby="menu_user">
-                                    <li><a href="{% url 'auth_logout' %}" title="Logout">
-                                    {% trans 'Logout' %}</a></li>
+                                    <li>
+                                        <form class="logout-form" method="post" action="{% url 'auth_logout' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" title="Logout">{% trans 'Logout' %}</button>
+                                        </form>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

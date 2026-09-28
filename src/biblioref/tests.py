@@ -1,5 +1,6 @@
 # coding: utf-8
 import os
+from datetime import datetime, timezone
 from unittest import mock, skip
 
 from django.conf import settings
@@ -16,6 +17,9 @@ from main.models import Descriptor, ResourceThematic, ThematicArea
 from title.models import Title
 from utils.models import AuxCode
 from utils.tests import BaseTestCase
+
+# timezone-aware fixed timestamp for records created in tests (USE_TZ = True)
+EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 
 form_data = {}
 
@@ -425,7 +429,7 @@ class BiblioRefListGet(BaseTestCase):
         baker.make("ReferenceSource", id=1)
         baker.make(
             "Reference", id=1, reference_title="Test Migration", status=-3,
-            created_time="1970-01-01 00:00", literature_type="TEST"
+            created_time=EPOCH, literature_type="TEST"
         )
 
         response = self.client.get(
@@ -438,11 +442,11 @@ class BiblioRefListGet(BaseTestCase):
         """ Must exclude from the result list source references with deleted status """
         baker.make(
             "ReferenceSource", id=1, title_serial="Revista Test", reference_title="Test Source", status=3,
-            created_time="1970-01-01 00:00", literature_type="S"
+            created_time=EPOCH, literature_type="S"
         )
         baker.make(
             "ReferenceAnalytic", source_id=1, title=[{'text': 'Test Analytic'}], status=3,
-            created_time="1970-01-01 00:00", literature_type="S", treatment_level="as"
+            created_time=EPOCH, literature_type="S", treatment_level="as"
         )
 
         response = self.client.get(
@@ -458,12 +462,12 @@ class BiblioRefListGet(BaseTestCase):
 
         baker.make(
             "ReferenceSource", reference_title="My Record", status=-1,
-            created_by=current_user, created_time="1970-01-01 00:00",
+            created_by=current_user, created_time=EPOCH,
             literature_type="S", treatment_level="as"
         )
         baker.make(
             "ReferenceSource", reference_title="Other Record", status=-1,
-            created_by=other_user, created_time="1970-01-01 00:00",
+            created_by=other_user, created_time=EPOCH,
             literature_type="S", treatment_level="as"
         )
 
@@ -476,12 +480,12 @@ class BiblioRefListGet(BaseTestCase):
         """ Filter by cooperative center must show only records from user's CC """
         baker.make(
             "ReferenceSource", reference_title="BR1.1 Record", status=-1,
-            cooperative_center_code="BR1.1", created_time="1970-01-01 00:00",
+            cooperative_center_code="BR1.1", created_time=EPOCH,
             literature_type="S", treatment_level="as"
         )
         baker.make(
             "ReferenceSource", reference_title="PY3.1 Record", status=-1,
-            cooperative_center_code="PY3.1", created_time="1970-01-01 00:00",
+            cooperative_center_code="PY3.1", created_time=EPOCH,
             literature_type="S", treatment_level="as"
         )
 
@@ -499,12 +503,12 @@ class BiblioRefListGet(BaseTestCase):
 
         baker.make(
             "ReferenceSource", reference_title="Record A", status=-1,
-            created_by=current_user, created_time="1970-01-01 00:00",
+            created_by=current_user, created_time=EPOCH,
             literature_type="S", treatment_level="as"
         )
         baker.make(
             "ReferenceSource", reference_title="Record B", status=-1,
-            created_by=other_user, created_time="1970-01-01 00:00",
+            created_by=other_user, created_time=EPOCH,
             literature_type="S", treatment_level="as"
         )
 
@@ -521,13 +525,13 @@ class BiblioRefListGet(BaseTestCase):
             "ReferenceSource", reference_title="Serial Source", status=-1,
             literature_type="S", treatment_level="", title_serial="Revista X",
             volume_serial="1", issue_number="2", publication_date_normalized="20200101",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         baker.make(
             "ReferenceSource", reference_title="Monograph Source", status=-1,
             literature_type="M", treatment_level="m",
             title_monographic=[{"text": "Monograph Source", "_i": "en"}],
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -542,13 +546,13 @@ class BiblioRefListGet(BaseTestCase):
         source = baker.make(
             "ReferenceSource", title_serial="Revista Test",
             volume_serial="1", issue_number="2", publication_date_normalized="20200101",
-            created_time="1970-01-01 00:00", literature_type="S"
+            created_time=EPOCH, literature_type="S"
         )
         baker.make(
             "ReferenceAnalytic", source=source, reference_title="Serial Analytic",
             title=[{"text": "Serial Analytic", "_i": "en"}],
             status=-1, literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -562,18 +566,18 @@ class BiblioRefListGet(BaseTestCase):
         baker.make(
             "ReferenceSource", reference_title="Draft Analytic", status=-1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         baker.make(
             "ReferenceSource", reference_title="Published Record", status=1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         # serial source with empty treatment_level should be excluded from draft filter
         baker.make(
             "ReferenceSource", reference_title="Draft Serial Source", status=-1,
             literature_type="S", treatment_level="",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -589,12 +593,12 @@ class BiblioRefListGet(BaseTestCase):
         baker.make(
             "ReferenceSource", reference_title="Published Record", status=1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         baker.make(
             "ReferenceSource", reference_title="Draft Record", status=-1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -610,12 +614,12 @@ class BiblioRefListGet(BaseTestCase):
         baker.make(
             "ReferenceSource", reference_title="Malaria Treatment Study", status=-1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         baker.make(
             "ReferenceSource", reference_title="Dengue Prevention", status=-1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -631,7 +635,7 @@ class BiblioRefListGet(BaseTestCase):
         ref = baker.make(
             "ReferenceSource", reference_title="Specific Record", status=-1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -665,12 +669,12 @@ class BiblioRefListGet(BaseTestCase):
         baker.make(
             "ReferenceSource", reference_title="Alpha Record", status=-1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         baker.make(
             "ReferenceSource", reference_title="Zeta Record", status=-1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -688,12 +692,12 @@ class BiblioRefListGet(BaseTestCase):
         source = baker.make(
             "ReferenceSource", reference_title="Draft Source", status=-1,
             literature_type="S", treatment_level="",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         baker.make(
             "ReferenceAnalytic", source=source, reference_title="Draft Analytic", status=-1,
             literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -727,14 +731,14 @@ class BiblioRefSourceListGet(BaseTestCase):
             cooperative_center_code="BR772", literature_type="S",
             treatment_level="", title_serial="Revista BR772",
             volume_serial="1", issue_number="1", publication_date_normalized="20200101",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         baker.make(
             "ReferenceSource", reference_title="BR1.1 Source", status=-1,
             cooperative_center_code="BR1.1", literature_type="S",
             treatment_level="", title_serial="Revista BR1.1",
             volume_serial="1", issue_number="1", publication_date_normalized="20200101",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get("/bibliographic/sources")
@@ -753,13 +757,13 @@ class BiblioRefAnalyticListGet(BaseTestCase):
         source = baker.make(
             "ReferenceSource", title_serial="Revista Test",
             volume_serial="1", issue_number="2", publication_date_normalized="20200101",
-            created_time="1970-01-01 00:00", literature_type="S"
+            created_time=EPOCH, literature_type="S"
         )
         baker.make(
             "ReferenceAnalytic", source=source, reference_title="Test Analytic",
             title=[{"text": "Test Analytic", "_i": "en"}],
             status=-1, literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -774,24 +778,24 @@ class BiblioRefAnalyticListGet(BaseTestCase):
         source1 = baker.make(
             "ReferenceSource", title_serial="Revista A",
             volume_serial="1", issue_number="1", publication_date_normalized="20200101",
-            created_time="1970-01-01 00:00", literature_type="S"
+            created_time=EPOCH, literature_type="S"
         )
         source2 = baker.make(
             "ReferenceSource", title_serial="Revista B",
             volume_serial="2", issue_number="1", publication_date_normalized="20200101",
-            created_time="1970-01-01 00:00", literature_type="S"
+            created_time=EPOCH, literature_type="S"
         )
         baker.make(
             "ReferenceAnalytic", source=source1, reference_title="Analytic From A",
             title=[{"text": "Analytic From A", "_i": "en"}],
             status=-1, literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         baker.make(
             "ReferenceAnalytic", source=source2, reference_title="Analytic From B",
             title=[{"text": "Analytic From B", "_i": "en"}],
             status=-1, literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
         response = self.client.get(
@@ -816,13 +820,13 @@ class UpdateServicesTest(BaseTestCase):
             title_serial="Rev. Enfermagem", volume_serial="10", issue_number="2",
             publication_date_normalized="20150501", issn="0000-XXXXX",
             status=-1, literature_type="S", treatment_level="",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
         self.analytic = baker.make(
             "ReferenceAnalytic", source=self.source, reference_title="Primeira analitica",
             title=[{"text": "Primeira analitica", "_i": "pt"}],
             status=-1, literature_type="S", treatment_level="as",
-            created_time="1970-01-01 00:00"
+            created_time=EPOCH
         )
 
     def test_update_reference_title_of_analytics(self):

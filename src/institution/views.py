@@ -85,7 +85,7 @@ class InstGenericListView(LoginRequiredView, ListView):
 
         # filter by user institution
         if self.actions['filter_owner'] != "*" or user_cc != 'BR1.1':
-            object_list = object_list.filter(cc_code=user_cc)
+            object_list = object_list.filter(cc_code=user_cc).order_by('-id')
         else:
             if self.actions['filter_status'] != '':
                 object_list = object_list.filter(status=self.actions['filter_status'])

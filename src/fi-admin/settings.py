@@ -6,7 +6,8 @@ import re
 import logging
 
 DEBUG = int(os.environ.get("DEBUG", 0))
-DEBUG_TOOLBAR = int(os.environ.get("DEBUG_TOOLBAR", 0))
+# debug toolbar is always disabled when running tests
+DEBUG_TOOLBAR = int(os.environ.get("DEBUG_TOOLBAR", 0)) and 'test' not in sys.argv
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
