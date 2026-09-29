@@ -4,6 +4,9 @@ DEBUG_TOOLBAR=0
 EXPOSE_API_ONLY=0
 SECRET_KEY=
 DJANGO_ALLOWED_HOSTS=
+# Comma-separated origins including https://, without a trailing slash.
+# Example: https://fi-admin.teste.bvsalud.org
+DJANGO_CSRF_TRUSTED_ORIGINS=
 
 SITE_URL=
 
