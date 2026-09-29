@@ -167,31 +167,25 @@ Each app test should cover at minimum:
 
 ---
 
-## Phase 4: Django 3.2 → 4.2 LTS (Python 3.9 → 3.10)
+## Phase 4: Django 3.2 → 4.2 LTS (Python 3.10 → 3.12)
 
 **Goal**: Second major version jump.
 
-### 4.1 — Pre-upgrade: Migrate `jsonfield` to native `JSONField` (keep TEXT storage)
-- Django 3.1+ includes `django.db.models.JSONField`
-- **File**: `bireme/utils/fields.py` — change `JSONField` to inherit from `django.db.models.JSONField`
-- Override `get_internal_type()` to return `"TextField"` — keeps MySQL TEXT columns, zero data migration risk
-- Preserve custom `formfield()` and `dumps_for_display()` methods
-- Remove `jsonfield==3.1.0` from `requirements.txt`
+### 4.1 — Keep `jsonfield`, bump to 3.2.0 (decision 2026-08-26, supersedes native-JSONField migration)
+- Original plan (migrate to `django.db.models.JSONField`) dropped: `jsonfield==3.2.0` officially declares Django 4.2–5.2 and Python 3.10–3.13 support
+- `utils.fields.JSONField` and all `dump_kwargs` usage stay unchanged
+- `requirements.txt`: `jsonfield==3.1.0` → `jsonfield==3.2.0`
 
 ### 4.2 — Update Python version
-- **File**: `Dockerfile` — `FROM python:3.10-alpine`
+- **File**: `Dockerfile` — `FROM python:3.12-alpine`
 
 ### 4.3 — Update dependency versions
 
 | Package | From (3.2) | To (4.2) | Notes |
 |---------|-----------|----------|-------|
 | Django | 3.2.25 | 4.2.x (latest) | Target LTS |
-| mysqlclient | 2.1.x | 2.2.x | |
-| django-haystack | 3.2.1 | 3.3.0 | |
 | django-rosetta | 0.10.0 | 0.10.1 | |
-| django-tinymce | 3.5.0 | 3.7.x | |
-| django-debug-toolbar | 3.8.x | 4.2.x | |
-| elastic-apm | 6.15.x | 6.22.x | |
+
 
 ### 4.4 — Fix Django 4.x breaking changes
 - [ ] Remove `USE_L10N` from settings (always True in Django 4.0+)
@@ -205,7 +199,7 @@ Each app test should cover at minimum:
 
 ---
 
-## Phase 5: Django 4.2 → 5.2 LTS (stay Python 3.10+)
+## Phase 5: Django 4.2 → 5.2 LTS (Python 3.12 → 3.14)
 
 **Goal**: Final upgrade to target version.
 
@@ -245,7 +239,7 @@ Each app test should cover at minimum:
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | `django-tastypie` incompatible with Django 5.x | **HIGH** | Test early; have fork/DRF migration plan ready |
-| `jsonfield` → native JSONField data loss (MySQL TEXT→JSON) | **HIGH** | Test with production data copy; write reversible migration |
+| ~~`jsonfield` → native JSONField data loss~~ (obsolete — jsonfield kept, see task 4.1) | ~~HIGH~~ | jsonfield 3.2.0 supports Django 4.2–5.2; no migration needed |
 | `django-form-utils` replacement breaks biblioref forms | **MEDIUM** | Only 1 file uses it; thorough fieldset testing |
 | `django-haystack` incompatible with 5.x | **MEDIUM** | 8 search index files; check compatibility early |
 | Test coverage gaps hide regressions | **HIGH** | Phase 1 test expansion is the foundation |

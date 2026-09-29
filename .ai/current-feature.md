@@ -1,4 +1,4 @@
-# Current Feature: Django Upgrade Phase 3 — Django 2.2 → 3.2 LTS (Python 3.10)
+# Current Feature: Django Upgrade Phase 4 — Django 3.2 → 4.2 LTS (Python 3.12)
 
 ## Status
 
@@ -6,26 +6,29 @@ In Progress
 
 ## Goals
 
-- Upgrade Django 2.2.24 → 3.2.25 LTS with Python 3.7.8 → 3.10 (`python:3.10-alpine`)
-- Bump all packages (prod + dev) to newest versions compatible with Django 3.2 (latest-compatible strategy)
-- Fix Django 3.0 hard breakers before the bump: `from_db_value` signature, `{% load staticfiles %}` in 11 templates, `render_to_response` calls/imports in 7 views files
-- Add `DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'` to settings (preserve integer PKs)
-- Switch `python-memcached` → `pymemcache` (`PyMemcacheCache`) in requirements and conf env files
-- `makemigrations` produces no unexpected migrations for local apps
-- Full test suite passes: `make dev_test` in the rebuilt Python 3.10 image (automated tests only — manual checks deferred to validation environment)
+- Upgrade Django 3.2.25 → 4.2.x (latest patch) LTS with Python 3.10 → 3.12 (`python:3.12-alpine`)
+- Bump the two Django-pinned outliers: `jsonfield` 3.1.0 → 3.2.0, `django-rosetta` 0.9.9 → newest 4.2-compatible (0.10.x+)
+- Remove `USE_L10N = True` and the dead `TEMPLATE_DEBUG = False` from settings — **after** the Django bump
+- `makemigrations` produces no unexpected migrations for local apps; `make dev_migrate` runs clean
+- Full test suite passes: `make dev_test` in the rebuilt Python 3.12 image (automated tests only — manual checks deferred to validation environment)
+- JSONField behavior unchanged after the jsonfield bump (covered by biblioref/oer/leisref tests)
+- Remaining Django 5.x deprecation warnings (`python -Wd manage.py test`) logged to `.ai/logs/` for Phase 5
 
 ## Notes
 
-- Branch: `rc/3.2` (already exists, contains Phase 2 commit `4ee052a`); PR to `main` bundles Phase 2 + Phase 3
-- Plan task 3.4 (`EXPOSE_API_ONLY` bug) already fixed at `src/fi-admin/settings.py:293` — no work needed
-- `jsonfield==3.1.0` stays — native JSONField migration is Phase 4
-- django-tastypie fallback if latest doesn't support 3.2: `0.14.7`
-- Spec: `.ai/features/004-upgrade-django-phase3-django-3.2.md`
+- Branch: `setup/django-4.2`, created from `main` (already contains Phase 3 commit `c0ba51a`)
+- Plan task 4.1 (migrate to native `django.db.models.JSONField`) is **dropped** — jsonfield 3.2.0 declares Django 4.2–5.2 / Python 3.10–3.13, so `utils.fields.JSONField` stays on the library through Phase 5
+- MySQL 5.7 drop in 4.2 is not a blocker: prod fi-admin and DeCS databases are already on MySQL 8+
+- No Django 4.0/4.1 hard breakers found in code (no `conf.urls.url`, `ifequal`, `is_ajax()`, `NullBooleanField`, `pytz`, `ugettext`, `index_together`); cache is already `PyMemcacheCache`
+- Most pins already support 4.2 (tastypie 0.14.7, haystack 3.3.0, tinymce 4.1.0, multiselectfield 1.0.1, crum 0.7.9, pymemcache 4.0.0, mysqlclient 2.2.8, debug-toolbar 4.3.0, model-bakery 1.17.0)
+- Risks: jsonfield minor bump could shift serialization; rosetta 0.10.x has no test coverage; tests are SQLite-only so MySQL 8 behavior is proven only in validation
+- Spec: `.ai/features/005-upgrade-django-phase4-django-4.2.md`
 
-## Detailed plan
+## Detailed Plan
 
-- `.ai/plans/001-upgrade-django-to-5.2.md` (Phase 3 section)
-- `.ai/features/004-upgrade-django-phase3-django-3.2.md` (detailed spec with implementation order)
+- [018-upgrade-django-phase4-django-4.2.md](.ai/plans/018-upgrade-django-phase4-django-4.2.md) (approved 2026-08-27)
+- `.ai/features/005-upgrade-django-phase4-django-4.2.md` (detailed spec with tasks 4.1–4.4 and implementation order)
+- `.ai/plans/001-upgrade-django-to-5.2.md` (Phase 4 section — note the plan deviation on task 4.1)
 
 ## History
 
@@ -34,3 +37,5 @@ In Progress
 - 2026-05-27: Starting "Django Upgrade Phase 2 — Deprecation Fixes" — following spec [003-upgrade-django-phase2-deprecation-fixes.md](.ai/features/003-upgrade-django-phase2-deprecation-fixes.md)
 - 2026-07-17: Completed "Django Upgrade Phase 2 — Deprecation Fixes" — merged into `rc/3.2` flow; commit `4ee052a`
 - 2026-07-17: Starting "Django Upgrade Phase 3 — Django 2.2 → 3.2 LTS" — following spec [004-upgrade-django-phase3-django-3.2.md](.ai/features/004-upgrade-django-phase3-django-3.2.md)
+- 2026-08-27: Completed "Django Upgrade Phase 3 — Django 2.2 → 3.2 LTS" — merged to `main`; commit `c0ba51a`
+- 2026-08-27: Starting "Django Upgrade Phase 4 — Django 3.2 → 4.2 LTS" — following plan [018-upgrade-django-phase4-django-4.2.md](.ai/plans/018-upgrade-django-phase4-django-4.2.md)

@@ -42,7 +42,6 @@ if 'test' in sys.argv:
         'django.contrib.auth.hashers.MD5PasswordHasher',
     )
     DEBUG = False
-    TEMPLATE_DEBUG = False
     TESTS_IN_PROGRESS = True
     MIGRATION_MODULES = DisableMigrations()
     # Turn off HAYSTACK (SOLR) integration

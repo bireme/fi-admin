@@ -415,15 +415,15 @@ class TitleDeleteView(LoginRequiredView, DeleteView):
 
         return obj
 
-    def delete(self, request, *args, **kwargs):
-        obj = super(TitleDeleteView, self).get_object()
+    def form_valid(self, form):
+        obj = self.object
         c_type = ContentType.objects.get_for_model(obj)
 
         # delete associated data
         Descriptor.objects.filter(object_id=obj.id, content_type=c_type).delete()
         Keyword.objects.filter(object_id=obj.id, content_type=c_type).delete()
 
-        return super(TitleDeleteView, self).delete(request, *args, **kwargs)
+        return super(TitleDeleteView, self).form_valid(form)
 
 
 def search_title(request):
