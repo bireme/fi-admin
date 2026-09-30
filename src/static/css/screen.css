@@ -897,3 +897,28 @@ tr.relation-row .row_order input{
 .btn-filter {
     display: inline-block;
 }
+
+/* logout is a POST form (Django 5); render its button like a dropdown link */
+.logout-form {
+    margin: 0;
+}
+
+.logout-form button {
+    display: block;
+    width: 100%;
+    padding: 3px 15px;
+    clear: both;
+    font-weight: normal;
+    line-height: 18px;
+    color: #333;
+    white-space: nowrap;
+    text-align: left;
+    background: none;
+    border: 0;
+}
+
+.logout-form button:hover {
+    color: #fff;
+    text-decoration: none;
+    background-color: #08c;
+}

@@ -21,7 +21,8 @@ RUN apk add --no-cache --virtual .build-deps \
     python3-dev \
     pkgconf \
     && apk add --no-cache mariadb-dev \
-    && pip install --upgrade pip setuptools && pip install --no-cache-dir -r /app/requirements.txt \
+    # setuptools<81: deform 3.0.1 imports pkg_resources, removed in setuptools 81
+    && pip install --upgrade pip "setuptools<81" && pip install --no-cache-dir -r /app/requirements.txt \
     && apk del .build-deps
 
 EXPOSE 8000

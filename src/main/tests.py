@@ -303,3 +303,23 @@ class ResourceTest(BaseTestCase):
 
         response = self.client.get("/resources", {"s": "id:2", "filter_owner": "*"})
         self.assertNotContains(response, '<a href="/resource/edit/1">1</a')
+
+
+class LogoutTest(BaseTestCase):
+    """
+    Logout must use POST (logout via GET was removed in Django 5.0)
+    """
+    def test_menu_logout_is_post_form(self):
+        self.login_editor()
+
+        response = self.client.get('/resources/')
+        self.assertContains(response, '<form class="logout-form" method="post" action="/logout/">')
+        self.assertNotContains(response, '<a href="/logout/"')
+
+    def test_post_logout(self):
+        self.login_editor()
+        self.assertIn('_auth_user_id', self.client.session)
+
+        response = self.client.post('/logout/')
+        self.assertRedirects(response, '/', fetch_redirect_response=False)
+        self.assertNotIn('_auth_user_id', self.client.session)
