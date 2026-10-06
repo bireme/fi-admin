@@ -296,3 +296,84 @@ class GetFieldDisplayTest(TestCase):
     def test_display_no_selection(self):
         form = self.CountryForm(data={'country': []})
         self.assertEqual(self._render(form), '')
+
+
+class JSONFieldTest(TestCase):
+    """Pin the behaviour of utils.fields.JSONField (jsonfield 3.2.0 subclass, kept through Django 5.2)"""
+
+    def setUp(self):
+        from multimedia.models import Media, MediaType
+
+        self.Media = Media
+        self.field = Media._meta.get_field('description_translations')
+        self.media_type = MediaType.objects.create(acronym='video', name='Video')
+
+    def _create(self, value):
+        media = self.Media.objects.create(title='JSONField test', link='http://example.com',
+                                          media_type=self.media_type, description_translations=value)
+        media.refresh_from_db()
+        return media
+
+    def _raw_value(self, media):
+        from django.db import connection
+
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT %s FROM %s WHERE id = %%s' % (
+                connection.ops.quote_name(self.field.column),
+                connection.ops.quote_name(self.Media._meta.db_table)), [media.pk])
+            return cursor.fetchone()[0]
+
+    def test_roundtrip_list(self):
+        value = [{'text': 'Ação em saúde', '_i': 'pt'}, {'text': 'Health action', '_i': 'en'}]
+        self.assertEqual(self._create(value).description_translations, value)
+
+    def test_roundtrip_dict(self):
+        value = {'text': 'Acción', '_i': 'es', 'nested': {'a': [1, 2]}}
+        self.assertEqual(self._create(value).description_translations, value)
+
+    def test_roundtrip_none(self):
+        media = self._create(None)
+        self.assertIsNone(media.description_translations)
+        self.assertIsNone(self._raw_value(media))
+
+    def test_roundtrip_empty_string(self):
+        media = self._create('')
+        self.assertEqual(media.description_translations, '')
+        self.assertEqual(self._raw_value(media), '""')
+
+    def test_storage_is_compact_text_without_ascii_escaping(self):
+        raw = self._raw_value(self._create([{'text': 'Ação', '_i': 'pt'}]))
+        self.assertEqual(raw, '[{"text": "Ação", "_i": "pt"}]')
+
+    def test_formfield_is_hidden_without_indentation(self):
+        formfield = self.field.formfield()
+        self.assertIsInstance(formfield.widget, forms.HiddenInput)
+        self.assertEqual(formfield.widget.attrs['class'], 'jsonfield')
+        self.assertIsNone(formfield.dump_kwargs['indent'])
+
+        value = [{'text': 'Ação', '_i': 'pt'}, {'text': 'Action', '_i': 'en'}]
+        prepared = formfield.prepare_value(value)
+        self.assertNotIn('\n', prepared)
+        self.assertIn('Ação', prepared)
+
+        html = formfield.widget.render('description_translations', prepared)
+        self.assertIn('type="hidden"', html)
+        self.assertIn('class="jsonfield"', html)
+
+    def test_formfield_deconstruct_matches_migrations(self):
+        """formfield() sets indent=None on the model field's dump_kwargs; migrations depend on it"""
+        self.field.formfield()
+        kwargs = self.field.deconstruct()[3]
+        self.assertEqual(kwargs['dump_kwargs'], {'ensure_ascii': False, 'indent': None})
+
+    def test_dumps_for_display(self):
+        self.assertIsNone(self.field.dumps_for_display(None))
+        self.assertIsNone(self.field.dumps_for_display('null'))
+        self.assertIsNone(self.field.dumps_for_display(''))
+        self.assertEqual(self.field.dumps_for_display([{'text': 'Ação'}]), '[{"text": "Ação"}]')
+        self.assertEqual(self.field.dumps_for_display('[{"text": "x"}]'), '[{"text": "x"}]')
+
+    def test_api_field_mapping(self):
+        from api.tastypie_custom import CustomResource, JSONApiField
+
+        self.assertIs(CustomResource.api_field_from_django_field(self.field), JSONApiField)
