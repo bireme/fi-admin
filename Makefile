@@ -76,6 +76,13 @@ dev_sqlmigrate:
 dev_check:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py check
 
+dev_check_deploy:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py check --deploy
+
+## haystack: update the search index (e.g. make dev_update_index args="--age=24 biblioref")
+dev_update_index:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py update_index $(args)
+
 dev_test:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh run_tests.sh
 
