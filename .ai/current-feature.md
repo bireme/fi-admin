@@ -1,4 +1,4 @@
-# Current Feature: Django Upgrade Phases 5.2 & 5.3 — Python 3.14 + Django 5.2 dependency bumps
+# Current Feature: Django Upgrade Phases 5.4, 5.5 & 5.6 — Django 5.x breaking changes, tastypie checks, migrations
 
 ## Status
 
@@ -6,32 +6,38 @@ In Progress
 
 ## Goals
 
-- `Dockerfile` default `ARG PYTHON_VERSION` changed from `3.12` to `3.14`; dev and prod images build on `python:3.14-alpine` (task 5.2)
-- `Django` bumped from 4.2.30 to the latest 5.2.x (≥ 5.2.8, needed for Python 3.14)
-- Remaining packages in the 5.3 table bumped to Django 5.2 / Python 3.14 compatible versions, **one at a time** with `make dev_test` after each:
-  - `django-haystack` 3.3.0 → 3.4.0 / latest (confirm 5.2 support)
-  - `django-tinymce` 4.1.0 → 5.0.0
-  - `model-bakery` (dev) 1.17.0 → latest 1.x (1.24.2)
-  - `mysqlclient` stays 2.2.8 (already latest 2.2.x); `lxml` 6.1.1 → 6.1.3
-  - `django-rosetta` 0.10.3 and `django-multiselectfield` 1.0.1 have no newer release → keep, smoke-test
-- `jsonfield==3.2.0`, `django-tastypie==0.15.1` and `django-debug-toolbar==5.2.0` stay as they are
-- `make dev_test` on Python 3.14 + Django 5.2 shows no failures beyond the Django-5.2 baseline; baseline failures (task 5.4 breaking changes) are **recorded, not fixed** (decided 2026-10-06)
-- Plan `001-upgrade-django-to-5.2.md` tasks 5.2/5.3 updated with the final versions and dates, and a log written in `.ai/logs/`
+- **5.4 — Django 5.x breaking changes** reviewed in code (tests don't cover them) and fixed where needed:
+  - Password hashers: `MD5PasswordHasher` kept (still in 5.2); later switch to `PBKDF2PasswordHasher` with MD5 fallback documented
+  - Forms: div-based default rendering (5.0) checked in templates using `{{ form }}` / `{{ form.as_table }}` and the biblioref `BetterModelForm` fieldsets
+  - No positional-arg `Model.save(True, …)` calls left (5.1 deprecation)
+  - No `index_together` left, including old migrations (converted to `indexes`)
+  - No removed APIs: `assertQuerysetEqual`, `length_is`, `django.utils.timezone.utc`, `pytz`, `get_storage_class`, old `assertFormError` signature
+  - Settings: `USE_L10N` / `DEFAULT_FILE_STORAGE` / `STATICFILES_STORAGE` not set (`STORAGES` if needed)
+  - `DisableMigrations` in test settings still works
+- **5.5 — django-tastypie 0.15.1** on Django 5.2: `src/api/tests.py` passes and a manual GET on every resource works; if anything breaks, prefer a local patch/monkeypatch in `api/`, then a fork (DRF migration out of scope)
+- **5.6 — Migrations and test**:
+  - `makemigrations --check` yields only no-op migrations (committed, as in Phase 4)
+  - `make dev_test` with coverage, compared against the 55% baseline
+  - `python manage.py rebuild_index` (Haystack 3.4.0) runs without errors
+- Verification items from the plan ticked where checkable locally (login/POST logout, admin/Rosetta/TinyMCE/DeCS popup load, `check --deploy`); items needing production data or a prod-like deploy recorded as pending
+- Plan `001-upgrade-django-to-5.2.md` tasks 5.4–5.6 ticked with dates/results, and a log written in `.ai/logs/`
 
 ## Notes
 
-- Source: plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md), sections "5.2 — Update Python version" and "5.3 — Update dependency versions"
-- Builds on 5.1 (branch `feature/django-upgrade-phase-5.1-keep-jsonfield`, commit `b50cc6c3`), which added `ARG PYTHON_VERSION` to the `Dockerfile` and `make dev_test_py PY=…`, and confirmed the image (incl. mysqlclient/lxml) builds on 3.14 with utils tests passing on Django 5.2.18
-- The 5.3 table targets / 5.1 PyPI-watch tick were committed as `45e8f1dc`; `feature/django-upgrade-phase-5.2-5.3` branches off 5.1 (PR #1579), so its PR stacks on 5.1
-- Version pins live in `requirements.txt` and `requirements-dev.txt`
-- Out of scope: task 5.4 breaking-change fixes (forms rendering, `index_together`, removed APIs, settings) beyond what's needed to make the test suite pass; 5.5 tastypie manual checks; 5.6 migrations/`rebuild_index`/coverage comparison — note any blockers found for those tasks
-- Use Makefile targets for all build/test commands (add new ones if needed)
-- Result 2026-10-06: Python 3.14.8 + Django 5.2.18, `make dev_test` fully green (247 tests, 5 skipped); the only Django-5.2 baseline errors (3 in biblioref) came from model-bakery 1.17.0 and were fixed by 1.24.2; `django-multiselectfield` turned out to be imported but unused
-- Log: [2026-10-06-python-3.14-django-5.2-deps-phase5.2-5.3.md](.ai/logs/2026-10-06-python-3.14-django-5.2-deps-phase5.2-5.3.md)
+- Source: plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md), sections "5.4 — Fix Django 5.x breaking changes", "5.5 — Handle `django-tastypie` compatibility", "5.6 — Migrations and test" and the Phase 5 "Verification" list
+- Builds on 5.2/5.3 (branch `feature/django-upgrade-phase-5.2-5.3`, commit `39b95b46`): Python 3.14.8 + Django 5.2.18, `make dev_test` green (247 tests, 5 skipped) — no test failures caused by Django 5.2, so 5.4 is mostly a code audit
+- Logout via GET (5.4) was already done in 5.0 (`menu.html` POST form + `main.tests.LogoutTest`)
+- Dev DB is MyISAM: `atomic()` rollbacks don't undo writes; keep this in mind for manual checks and `rebuild_index`
+- Decisions 2026-10-06: `rebuild_index` will be checked manually by the user after implementation (shared test Solr); the `{{ form }}` div rendering is kept unless the visual check shows breakage
+- Out of scope: switching the password hasher (plan only), DRF migration, JSONField round-trip against production data copy, prod deployment test and performance comparison (record as pending)
+- Use Makefile targets for all build/test/manage commands (add new ones if needed, e.g. for `makemigrations --check`, coverage, `rebuild_index`, `check --deploy`)
+- Result 2026-10-06: audit found no 5.x breaking changes left except `title.Mask.save(self)` not forwarding args (fixed + `MaskTest`); tastypie 0.15.1: 53 API tests OK and every resource GET → 200, no patch needed; `makemigrations --check` no changes; coverage 60% (249 tests, 5 skipped) vs 55% baseline; `check --deploy` no errors, only proxy/dev warnings
+- Pending manual checks by the user: `rebuild_index`, browser smoke (select-document-type div form, biblioref fieldsets, admin, Rosetta, TinyMCE, DeCS popup, login/logout); new risk: `deform` needs `pkg_resources` (setuptools unpinned, 80.10.2)
+- Log: [2026-10-06-django-5.2-breaking-changes-phase5.4-5.6.md](.ai/logs/2026-10-06-django-5.2-breaking-changes-phase5.4-5.6.md)
 
 ## Detailed Plan
 
-[020-upgrade-python-3.14-django-5.2-deps.md](.ai/plans/020-upgrade-python-3.14-django-5.2-deps.md) (implements tasks 5.2 and 5.3 of [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md))
+[021-django-5.2-breaking-changes-tastypie-migrations.md](.ai/plans/021-django-5.2-breaking-changes-tastypie-migrations.md) (implements tasks 5.4–5.6 of [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md))
 
 ## History
 
@@ -50,3 +56,6 @@ In Progress
 - 2026-10-06: Starting "Django Upgrade Phase 5.1 — Keep jsonfield" — following plan [019-keep-jsonfield-django-5.2.md](.ai/plans/019-keep-jsonfield-django-5.2.md)
 - 2026-10-06: Loaded "Django Upgrade Phases 5.2 & 5.3 — Python 3.14 + Django 5.2 dependency bumps" — following plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md) tasks 5.2 and 5.3
 - 2026-10-06: Starting "Django Upgrade Phases 5.2 & 5.3 — Python 3.14 + Django 5.2 dependency bumps" — following plan [020-upgrade-python-3.14-django-5.2-deps.md](.ai/plans/020-upgrade-python-3.14-django-5.2-deps.md)
+- 2026-10-06: Phases 5.2 & 5.3 "Python 3.14 + Django 5.2 dependency bumps" implemented; commit `39b95b46` on `feature/django-upgrade-phase-5.2-5.3` (not yet merged)
+- 2026-10-06: Loaded "Django Upgrade Phases 5.4, 5.5 & 5.6 — Django 5.x breaking changes, tastypie checks, migrations" — following plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md) tasks 5.4–5.6
+- 2026-10-06: Starting "Django Upgrade Phases 5.4, 5.5 & 5.6 — Django 5.x breaking changes, tastypie checks, migrations" — following plan [021-django-5.2-breaking-changes-tastypie-migrations.md](.ai/plans/021-django-5.2-breaking-changes-tastypie-migrations.md)
