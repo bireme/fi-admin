@@ -1,4 +1,4 @@
-# Current Feature: Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2
+# Current Feature: Django Upgrade Phase 5.1 — Keep `jsonfield`
 
 ## Status
 
@@ -6,31 +6,28 @@ In Progress
 
 ## Goals
 
-- `make dev_test_deprecations` (all apps) shows **zero** `RemovedInDjango` warnings, and no naive-datetime `RuntimeWarning` or `UnorderedObjectListWarning`
-- Only remaining warning: deform's `pkg_resources` UserWarning, documented as a known upstream issue
-- Logout is a POST `<form>` with `{% csrf_token %}` in `menu.html`, styled like the old link, covered by a new test (POST → redirect to `/`, user anonymous)
-- `django-tastypie` 0.14.7 → 0.15.1, and the `api` tests pass
-- `django-debug-toolbar` 4.3.0 → latest 5.2.x; it still works in dev with `DEBUG_TOOLBAR=1`, and is disabled whenever `test` is in `sys.argv`
-- setuptools pinned `<81` in the Dockerfile, and the image builds (`make dev_build`)
-- Institution list per-user branch has explicit `order_by('-id')`
-- Full suite passes (`make dev_test`), ≥ 223 tests plus new ones
-- Plan `001-upgrade-django-to-5.2.md` updated (5.0 item ticked; logout/tastypie/toolbar marked done early), and a log written in `.ai/logs/`
+- `jsonfield==3.2.0` stays; **no** migration to native `models.JSONField`; `src/utils/fields.py` left unchanged; storage stays TEXT
+- `makemigrations --check --dry-run` reports no changes to any JSONField column (via a Makefile target)
+- Tests that save and reload a model with a `utils.fields.JSONField` for list, dict, `None` and `''` values, asserting the round-trip result
+- Test that the form field renders as a hidden input with class `jsonfield` and serializes without indentation/newlines (`indent=None`)
+- Those tests pass on the current image (Python 3.12) **and** under Python 3.14; if they fail on 3.14, record the decision to target `python:3.13-alpine` in plan task 5.2
+- Plan `001-upgrade-django-to-5.2.md` task 5.1 checkboxes updated (PyPI watch item left open with the date checked), and a log written in `.ai/logs/`
 
 ## Notes
 
-- Spec: [006-upgrade-django-phase5.0-fix-deprecations.md](.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md)
-- Branch: `setup/django-5.2` (current). Django stays on 4.2.x in this feature
-- Baseline (2026-09-28): 223 tests OK (skipped=5). The warnings were tastypie `datetime_safe`, form `default.html` (from debug-toolbar 4.3.0 only, not app code), deform `pkg_resources`, naive datetime in `biblioref/tests.py`, and unordered pagination in `institution/views.py`. GET logout (`menu.html:130`) is not hit by any test
-- Disable the toolbar at `src/fi-admin/settings.py:9` (`… and 'test' not in sys.argv`), because the `if 'test'` block runs after the toolbar is registered at line 379. `urls.py:102` reads the same flag
-- Gate is a manual check (no strict Makefile target), per the user's decision
-- After requirement/Dockerfile changes: `make dev_build && make dev_up`
-- Implementation order: toolbar off in tests → biblioref datetimes + institution ordering → POST logout + test → setuptools pin, debug-toolbar bump, tastypie bump (last, to isolate API regressions) → verify, update plan, write log
-- Out of scope: the Django 5.2 bump, the Python 3.13/3.14 image, `RemovedInDjango60Warning` items, replacing deform, and changing the password hasher
+- Source: plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md), section "5.1 — Keep `jsonfield`" (decision 2026-09-28, continues task 4.1)
+- Branch: `feature/django-upgrade-phase-5.1-keep-jsonfield` (from `main`, which already contains `setup/django-5.2`). Django stays on 4.2.x; the Python 3.14 image switch itself is task 5.2 (out of scope here except for a throwaway test run)
+- JSONField is used in models of `biblioref`, `leisref`, `oer`, `multimedia`, `title`, `related`, plus `biblioref/forms.py`, `api/tastypie_custom.py` and `utils/templatetags/app_filters.py`
+- `dumps_for_display()` returns `None` for `None`/`'null'`/`''`, JSON-dumps lists, and returns strings unchanged — tests should cover these branches
+- No existing tests reference JSONField directly
+- Running under 3.14 needs a temporary image (e.g. a build arg for the base Python version, or a one-off Makefile target); keep any new command in the Makefile
+- PyPI checked 2026-10-06: jsonfield 3.2.0 still latest (declares up to 3.13, marked Inactive), but tests pass on 3.14 + Django 5.2.18 via `make dev_test_py`
+- Log: [2026-10-06-keep-jsonfield-phase5.1.md](.ai/logs/2026-10-06-keep-jsonfield-phase5.1.md)
+- Out of scope: the Django 5.2 bump, other dependency bumps, and changing the Dockerfile base image permanently
 
 ## Detailed Plan
 
-- `.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md` (spec with tasks A–H)
-- `.ai/plans/001-upgrade-django-to-5.2.md` (Phase 5, task 5.0)
+[019-keep-jsonfield-django-5.2.md](.ai/plans/019-keep-jsonfield-django-5.2.md) (implements task 5.1 of [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md))
 
 ## History
 
@@ -44,3 +41,6 @@ In Progress
 - 2026-09-28: Phase 4 "Django 3.2 → 4.2 LTS" implemented; commit `5d2e234a` is on `validation` (not yet merged to `main`)
 - 2026-09-28: Loaded "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" — following spec [006-upgrade-django-phase5.0-fix-deprecations.md](.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md)
 - 2026-09-28: Starting "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" on `setup/django-5.2` — following spec [006-upgrade-django-phase5.0-fix-deprecations.md](.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md)
+- 2026-10-06: Completed "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" — merged to `main` (PR #1578); commit `cf369f75`
+- 2026-10-06: Loaded "Django Upgrade Phase 5.1 — Keep jsonfield" — following plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md) task 5.1
+- 2026-10-06: Starting "Django Upgrade Phase 5.1 — Keep jsonfield" — following plan [019-keep-jsonfield-django-5.2.md](.ai/plans/019-keep-jsonfield-django-5.2.md)

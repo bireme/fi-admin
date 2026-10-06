@@ -64,6 +64,9 @@ dev_exec:
 dev_makemigrations:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py makemigrations $(app)
 
+dev_makemigrations_check:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py makemigrations --check --dry-run $(app)
+
 dev_migrate:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py migrate $(app)
 
@@ -84,6 +87,18 @@ dev_test_deprecations:
 
 dev_test_coverage:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin sh run_coverage.sh
+
+## run tests in a throwaway image built with another python version (default: utils app on 3.14 + Django 5.2)
+## needs the dev cache running (make dev_up)
+PY ?= 3.14
+PY_DJANGO ?= Django>=5.2.8,<5.3
+dev_test_py:
+	@docker build --target dev --build-arg PYTHON_VERSION=$(PY) -t $(IMAGE_NAME):py$(PY)-test .
+	@# docker run --env-file keeps inline "# comments" (compose strips them), so strip them into a temp file
+	@envf=$$(mktemp) && sed -E 's/[[:space:]]+#.*$$//' conf/app-env-dev > $$envf; \
+	docker run --rm --network nginx-proxy -v ./src:/app --env-file $$envf $(IMAGE_NAME):py$(PY)-test \
+		sh -c 'pip install -q --root-user-action=ignore "$(PY_DJANGO)" && python --version && python -m django --version && python -W ignore manage.py test -v 1 $(or $(app),utils)'; \
+	rc=$$?; rm -f $$envf; exit $$rc
 
 dev_update_translations:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh -c "apk add --no-cache gettext && python manage.py makemessages --all"

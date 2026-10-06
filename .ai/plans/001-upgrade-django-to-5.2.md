@@ -214,13 +214,14 @@ Each app test should cover at minimum:
 - `jsonfield==3.2.0` officially supports Django 4.2–5.2, so there is **no migration to native `models.JSONField`**
 - `src/utils/fields.py` (`JSONField` subclass, `formfield()`/`dump_kwargs`, `dumps_for_display()`) stays unchanged
 - Storage stays TEXT: no schema or data migration needed
-- [ ] `makemigrations --check --dry-run` shows no changes to JSONField columns
-- [ ] Add/confirm tests that save and reload a model with a JSONField (list, dict, `None`, `''` values) and render its form (hidden widget, `indent=None`)
-- [ ] Run those tests under Python 3.14. jsonfield declares support only up to 3.13; if the tests fail, target `python:3.13-alpine` instead (Django 5.2 supports 3.10–3.14)
-- [ ] Watch PyPI for a jsonfield release declaring Python 3.14 and bump to it when available
+- [x] `makemigrations --check --dry-run` shows no changes to JSONField columns (done 2026-10-06, `make dev_makemigrations_check`: "No changes detected")
+- [x] Add/confirm tests that save and reload a model with a JSONField (list, dict, `None`, `''` values) and render its form (hidden widget, `indent=None`) (done 2026-10-06, `utils.tests.JSONFieldTest`, plan `019`; `utils` added to `run_tests.sh`/`run_coverage.sh`)
+- [x] Run those tests under Python 3.14. jsonfield declares support only up to 3.13; if the tests fail, target `python:3.13-alpine` instead (Django 5.2 supports 3.10–3.14) (done 2026-10-06: `make dev_test_py` → Python 3.14.8 + Django 5.2.18, all 22 `utils` tests pass; the image incl. mysqlclient/lxml builds on 3.14 → **keep 3.14 as the target**)
+- [ ] Watch PyPI for a jsonfield release declaring Python 3.14 and bump to it when available (checked 2026-10-06: 3.2.0 of 2025-07-04 is still the latest; the project is marked "Inactive")
+- **Note — `dump_kwargs` coupling**: jsonfield's `formfield()` hands the model field's own `dump_kwargs` dict to the form field, and `utils.fields.JSONField.formfield()` sets `indent=None` on it. That mutation is why every migration records `dump_kwargs={'ensure_ascii': False, 'indent': None}`; `makemigrations` stays clean only because ModelForms are built (URL checks) before the autodetector runs. `JSONFieldTest.test_formfield_deconstruct_matches_migrations` guards it
 
 ### 5.2 — Update Python version
-- **File**: `Dockerfile` — `FROM python:3.12-alpine` → `FROM python:3.14-alpine` (or 3.13; see 5.1)
+- **File**: `Dockerfile` — change the default of `ARG PYTHON_VERSION=3.12` (added in 5.1) to `3.14`. 3.14 confirmed in 5.1 with `make dev_test_py` (utils tests on Django 5.2.18); the 3.13 fallback is not needed
 
 ### 5.3 — Update dependency versions
 
@@ -279,7 +280,7 @@ Bump one package at a time and run `make dev_test` after each.
 | ~~`jsonfield` → native JSONField data loss~~ (obsolete — jsonfield kept, see task 4.1) | ~~HIGH~~ | jsonfield 3.2.0 supports Django 4.2–5.2; no migration needed |
 | `django-form-utils` replacement breaks biblioref forms | **MEDIUM** | Only 1 file uses it; thorough fieldset testing |
 | `django-haystack` incompatible with 5.x | **MEDIUM** | 8 search index files; check compatibility early |
-| `jsonfield` on Python 3.14 (declared up to 3.13) | **MEDIUM** | Run jsonfield round-trip tests on 3.14; fall back to `python:3.13-alpine` if they fail (task 5.1) |
+| `jsonfield` on Python 3.14 (declared up to 3.13) | ~~MEDIUM~~ LOW | Round-trip tests pass on 3.14 + Django 5.2 (task 5.1, 2026-10-06); fallback `python:3.13-alpine` kept in reserve |
 | DB server below MySQL 8.0.11 / MariaDB 10.5 | **HIGH** | Check `default` and `decs_portal` versions before starting Phase 5 (task 5.0) |
 | Test coverage gaps hide regressions | **HIGH** | Phase 1 test expansion is the foundation |
 | Third-party package version conflicts | **MEDIUM** | Test each package upgrade individually when possible |
