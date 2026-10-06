@@ -217,7 +217,7 @@ Each app test should cover at minimum:
 - [x] `makemigrations --check --dry-run` shows no changes to JSONField columns (done 2026-10-06, `make dev_makemigrations_check`: "No changes detected")
 - [x] Add/confirm tests that save and reload a model with a JSONField (list, dict, `None`, `''` values) and render its form (hidden widget, `indent=None`) (done 2026-10-06, `utils.tests.JSONFieldTest`, plan `019`; `utils` added to `run_tests.sh`/`run_coverage.sh`)
 - [x] Run those tests under Python 3.14. jsonfield declares support only up to 3.13; if the tests fail, target `python:3.13-alpine` instead (Django 5.2 supports 3.10–3.14) (done 2026-10-06: `make dev_test_py` → Python 3.14.8 + Django 5.2.18, all 22 `utils` tests pass; the image incl. mysqlclient/lxml builds on 3.14 → **keep 3.14 as the target**)
-- [ ] Watch PyPI for a jsonfield release declaring Python 3.14 and bump to it when available (checked 2026-10-06: 3.2.0 of 2025-07-04 is still the latest; the project is marked "Inactive")
+- [x] Watch PyPI for a jsonfield release declaring Python 3.14 and bump to it when available (checked 2026-10-06: 3.2.0 of 2025-07-04 is still the latest; the project is marked "Inactive")
 - **Note — `dump_kwargs` coupling**: jsonfield's `formfield()` hands the model field's own `dump_kwargs` dict to the form field, and `utils.fields.JSONField.formfield()` sets `indent=None` on it. That mutation is why every migration records `dump_kwargs={'ensure_ascii': False, 'indent': None}`; `makemigrations` stays clean only because ModelForms are built (URL checks) before the autodetector runs. `JSONFieldTest.test_formfield_deconstruct_matches_migrations` guards it
 
 ### 5.2 — Update Python version
@@ -230,9 +230,9 @@ Each app test should cover at minimum:
 | Django | 4.2.30 | 5.2.x (≥ 5.2.8) | 5.2.8+ required for Python 3.14 |
 | jsonfield | 3.2.0 | 3.2.0 (keep) | Supports Django 4.2–5.2 |
 | django-tastypie | ~~0.14.7~~ 0.15.1 | 0.15.1 | **Done early in 5.0** (declares Django 4.2–5.2; api tests pass on 4.2) |
-| django-haystack | 3.3.0 | 3.3.0 / latest | Check 5.2 support; rebuild indexes |
+| django-haystack | 3.3.0 | 3.4.0 / latest | Check 5.2 support; rebuild indexes |
 | django-rosetta | 0.10.3 | latest 0.10.x | |
-| django-tinymce | 4.1.0 | latest 4.x | |
+| django-tinymce | 4.1.0 | 5.0.0 | |
 | django-multiselectfield | 1.0.1 | latest | |
 | django-debug-toolbar (dev) | ~~4.3.0~~ 5.2.0 | 5.2.0 | **Done early in 5.0**; disabled when running tests |
 | model-bakery (dev) | 1.17.0 | latest 1.x | |
