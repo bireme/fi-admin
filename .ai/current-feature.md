@@ -1,4 +1,4 @@
-# Current Feature: Django Upgrade Phase 5.1 — Keep `jsonfield`
+# Current Feature: Django Upgrade Phases 5.2 & 5.3 — Python 3.14 + Django 5.2 dependency bumps
 
 ## Status
 
@@ -6,28 +6,32 @@ In Progress
 
 ## Goals
 
-- `jsonfield==3.2.0` stays; **no** migration to native `models.JSONField`; `src/utils/fields.py` left unchanged; storage stays TEXT
-- `makemigrations --check --dry-run` reports no changes to any JSONField column (via a Makefile target)
-- Tests that save and reload a model with a `utils.fields.JSONField` for list, dict, `None` and `''` values, asserting the round-trip result
-- Test that the form field renders as a hidden input with class `jsonfield` and serializes without indentation/newlines (`indent=None`)
-- Those tests pass on the current image (Python 3.12) **and** under Python 3.14; if they fail on 3.14, record the decision to target `python:3.13-alpine` in plan task 5.2
-- Plan `001-upgrade-django-to-5.2.md` task 5.1 checkboxes updated (PyPI watch item left open with the date checked), and a log written in `.ai/logs/`
+- `Dockerfile` default `ARG PYTHON_VERSION` changed from `3.12` to `3.14`; dev and prod images build on `python:3.14-alpine` (task 5.2)
+- `Django` bumped from 4.2.30 to the latest 5.2.x (≥ 5.2.8, needed for Python 3.14)
+- Remaining packages in the 5.3 table bumped to Django 5.2 / Python 3.14 compatible versions, **one at a time** with `make dev_test` after each:
+  - `django-haystack` 3.3.0 → 3.4.0 / latest (confirm 5.2 support)
+  - `django-tinymce` 4.1.0 → 5.0.0
+  - `model-bakery` (dev) 1.17.0 → latest 1.x (1.24.2)
+  - `mysqlclient` stays 2.2.8 (already latest 2.2.x); `lxml` 6.1.1 → 6.1.3
+  - `django-rosetta` 0.10.3 and `django-multiselectfield` 1.0.1 have no newer release → keep, smoke-test
+- `jsonfield==3.2.0`, `django-tastypie==0.15.1` and `django-debug-toolbar==5.2.0` stay as they are
+- `make dev_test` on Python 3.14 + Django 5.2 shows no failures beyond the Django-5.2 baseline; baseline failures (task 5.4 breaking changes) are **recorded, not fixed** (decided 2026-10-06)
+- Plan `001-upgrade-django-to-5.2.md` tasks 5.2/5.3 updated with the final versions and dates, and a log written in `.ai/logs/`
 
 ## Notes
 
-- Source: plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md), section "5.1 — Keep `jsonfield`" (decision 2026-09-28, continues task 4.1)
-- Branch: `feature/django-upgrade-phase-5.1-keep-jsonfield` (from `main`, which already contains `setup/django-5.2`). Django stays on 4.2.x; the Python 3.14 image switch itself is task 5.2 (out of scope here except for a throwaway test run)
-- JSONField is used in models of `biblioref`, `leisref`, `oer`, `multimedia`, `title`, `related`, plus `biblioref/forms.py`, `api/tastypie_custom.py` and `utils/templatetags/app_filters.py`
-- `dumps_for_display()` returns `None` for `None`/`'null'`/`''`, JSON-dumps lists, and returns strings unchanged — tests should cover these branches
-- No existing tests reference JSONField directly
-- Running under 3.14 needs a temporary image (e.g. a build arg for the base Python version, or a one-off Makefile target); keep any new command in the Makefile
-- PyPI checked 2026-10-06: jsonfield 3.2.0 still latest (declares up to 3.13, marked Inactive), but tests pass on 3.14 + Django 5.2.18 via `make dev_test_py`
-- Log: [2026-10-06-keep-jsonfield-phase5.1.md](.ai/logs/2026-10-06-keep-jsonfield-phase5.1.md)
-- Out of scope: the Django 5.2 bump, other dependency bumps, and changing the Dockerfile base image permanently
+- Source: plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md), sections "5.2 — Update Python version" and "5.3 — Update dependency versions"
+- Builds on 5.1 (branch `feature/django-upgrade-phase-5.1-keep-jsonfield`, commit `b50cc6c3`), which added `ARG PYTHON_VERSION` to the `Dockerfile` and `make dev_test_py PY=…`, and confirmed the image (incl. mysqlclient/lxml) builds on 3.14 with utils tests passing on Django 5.2.18
+- The 5.3 table targets / 5.1 PyPI-watch tick were committed as `45e8f1dc`; `feature/django-upgrade-phase-5.2-5.3` branches off 5.1 (PR #1579), so its PR stacks on 5.1
+- Version pins live in `requirements.txt` and `requirements-dev.txt`
+- Out of scope: task 5.4 breaking-change fixes (forms rendering, `index_together`, removed APIs, settings) beyond what's needed to make the test suite pass; 5.5 tastypie manual checks; 5.6 migrations/`rebuild_index`/coverage comparison — note any blockers found for those tasks
+- Use Makefile targets for all build/test commands (add new ones if needed)
+- Result 2026-10-06: Python 3.14.8 + Django 5.2.18, `make dev_test` fully green (247 tests, 5 skipped); the only Django-5.2 baseline errors (3 in biblioref) came from model-bakery 1.17.0 and were fixed by 1.24.2; `django-multiselectfield` turned out to be imported but unused
+- Log: [2026-10-06-python-3.14-django-5.2-deps-phase5.2-5.3.md](.ai/logs/2026-10-06-python-3.14-django-5.2-deps-phase5.2-5.3.md)
 
 ## Detailed Plan
 
-[019-keep-jsonfield-django-5.2.md](.ai/plans/019-keep-jsonfield-django-5.2.md) (implements task 5.1 of [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md))
+[020-upgrade-python-3.14-django-5.2-deps.md](.ai/plans/020-upgrade-python-3.14-django-5.2-deps.md) (implements tasks 5.2 and 5.3 of [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md))
 
 ## History
 
@@ -44,3 +48,5 @@ In Progress
 - 2026-10-06: Completed "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" — merged to `main` (PR #1578); commit `cf369f75`
 - 2026-10-06: Loaded "Django Upgrade Phase 5.1 — Keep jsonfield" — following plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md) task 5.1
 - 2026-10-06: Starting "Django Upgrade Phase 5.1 — Keep jsonfield" — following plan [019-keep-jsonfield-django-5.2.md](.ai/plans/019-keep-jsonfield-django-5.2.md)
+- 2026-10-06: Loaded "Django Upgrade Phases 5.2 & 5.3 — Python 3.14 + Django 5.2 dependency bumps" — following plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md) tasks 5.2 and 5.3
+- 2026-10-06: Starting "Django Upgrade Phases 5.2 & 5.3 — Python 3.14 + Django 5.2 dependency bumps" — following plan [020-upgrade-python-3.14-django-5.2-deps.md](.ai/plans/020-upgrade-python-3.14-django-5.2-deps.md)

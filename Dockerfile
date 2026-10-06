@@ -1,5 +1,5 @@
 # python version of the base image (override with --build-arg, e.g. make dev_test_py)
-ARG PYTHON_VERSION=3.12
+ARG PYTHON_VERSION=3.14
 
 ########### BASE STAGE ###########
 FROM python:${PYTHON_VERSION}-alpine AS base
