@@ -69,7 +69,7 @@ do
 
     echo "Importando: $json_dir/$json_arq ( $contador de $numero_arquivos )"
 
-    python /app/manage.py loaddata $json_arq
+    uv run python /app/manage.py loaddata $json_arq
     if [ "$?" -ne 0 ]
     then
       echo "Houve erro na importacao! - ver arquivo: $json_dir/fix_import_$json_arq"

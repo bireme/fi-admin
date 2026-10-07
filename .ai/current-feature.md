@@ -1,4 +1,4 @@
-# Current Feature: Django Upgrade Phases 5.4, 5.5 & 5.6 — Django 5.x breaking changes, tastypie checks, migrations
+# Current Feature: Replace pip with uv as package manager
 
 ## Status
 
@@ -6,38 +6,35 @@ In Progress
 
 ## Goals
 
-- **5.4 — Django 5.x breaking changes** reviewed in code (tests don't cover them) and fixed where needed:
-  - Password hashers: `MD5PasswordHasher` kept (still in 5.2); later switch to `PBKDF2PasswordHasher` with MD5 fallback documented
-  - Forms: div-based default rendering (5.0) checked in templates using `{{ form }}` / `{{ form.as_table }}` and the biblioref `BetterModelForm` fieldsets
-  - No positional-arg `Model.save(True, …)` calls left (5.1 deprecation)
-  - No `index_together` left, including old migrations (converted to `indexes`)
-  - No removed APIs: `assertQuerysetEqual`, `length_is`, `django.utils.timezone.utc`, `pytz`, `get_storage_class`, old `assertFormError` signature
-  - Settings: `USE_L10N` / `DEFAULT_FILE_STORAGE` / `STATICFILES_STORAGE` not set (`STORAGES` if needed)
-  - `DisableMigrations` in test settings still works
-- **5.5 — django-tastypie 0.15.1** on Django 5.2: `src/api/tests.py` passes and a manual GET on every resource works; if anything breaks, prefer a local patch/monkeypatch in `api/`, then a fork (DRF migration out of scope)
-- **5.6 — Migrations and test**:
-  - `makemigrations --check` yields only no-op migrations (committed, as in Phase 4)
-  - `make dev_test` with coverage, compared against the 55% baseline
-  - `python manage.py rebuild_index` (Haystack 3.4.0) runs without errors
-- Verification items from the plan ticked where checkable locally (login/POST logout, admin/Rosetta/TinyMCE/DeCS popup load, `check --deploy`); items needing production data or a prod-like deploy recorded as pending
-- Plan `001-upgrade-django-to-5.2.md` tasks 5.4–5.6 ticked with dates/results, and a log written in `.ai/logs/`
+- `src/pyproject.toml` + `src/uv.lock` replace `requirements.txt` / `requirements-dev.txt` (deleted): compatible-release ranges `~=X.Y.Z` on the current versions (exact versions in the lock; `make dev_lock_upgrade` to bump), `"setuptools<81"` declared (needed by `pkg_resources` in deform, `utils/views.py`, `oer/views.py`), dev deps in `[dependency-groups] dev`, `[tool.uv] package = false`, resolved top-level versions unchanged
+- `Dockerfile` has no `pip`: uv copied from `ghcr.io/astral-sh/uv:latest`; Python pinned to 3.14 (`requires-python = "==3.14.*"` + `src/.python-version`)
+  - prod: `uv sync --frozen --no-dev --no-install-project` bakes `/app/.venv` (BuildKit cache mount), build deps removed, readable/usable by `appuser`
+  - dev: build deps kept (runtime compile of `mysqlclient`/`lxml`), no baked venv
+- uv defaults kept: venv is `.venv` next to `pyproject.toml` (no `UV_PROJECT_ENVIRONMENT`); in dev it lives on the host as `src/.venv`, created only inside the container
+- Plain `uv run` everywhere (dev image `UV_FROZEN=1` auto-syncs, prod image `UV_NO_SYNC=1`) — compose files (runserver/gunicorn), Makefile targets, `run_tests.sh`, `run_coverage.sh`, crontab `update_search_index` scripts, `proc/import/import2FIAdmin.sh`
+- New Makefile targets `dev_sync` (`uv sync`) and `dev_lock` (`uv lock`) run in the dev container
+- `.gitignore` gets `src/.venv/`; new `.dockerignore` (at least `src/.venv`, `.git`, `.ai`, `backups`)
+- `fabric/fabfile.py` `requirements` task uses `uv sync --frozen --no-dev` in `src/` (untested, pending)
+- Verified: `make dev_build`/`dev_up` creates `src/.venv` and runserver starts; `make dev_test` green (249 tests, 5 skipped), coverage ≈ 60%; `make dev_check` clean; `prod_build`/`api_build` succeed, gunicorn runs as `appuser`, crontab script runs; image size/build time compared with pip build
+- Log written in `.ai/logs/2026-10-06-replace-pip-with-uv.md`
 
 ## Notes
 
-- Source: plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md), sections "5.4 — Fix Django 5.x breaking changes", "5.5 — Handle `django-tastypie` compatibility", "5.6 — Migrations and test" and the Phase 5 "Verification" list
-- Builds on 5.2/5.3 (branch `feature/django-upgrade-phase-5.2-5.3`, commit `39b95b46`): Python 3.14.8 + Django 5.2.18, `make dev_test` green (247 tests, 5 skipped) — no test failures caused by Django 5.2, so 5.4 is mostly a code audit
-- Logout via GET (5.4) was already done in 5.0 (`menu.html` POST form + `main.tests.LogoutTest`)
-- Dev DB is MyISAM: `atomic()` rollbacks don't undo writes; keep this in mind for manual checks and `rebuild_index`
-- Decisions 2026-10-06: `rebuild_index` will be checked manually by the user after implementation (shared test Solr); the `{{ form }}` div rendering is kept unless the visual check shows breakage
-- Out of scope: switching the password hasher (plan only), DRF migration, JSONField round-trip against production data copy, prod deployment test and performance comparison (record as pending)
-- Use Makefile targets for all build/test/manage commands (add new ones if needed, e.g. for `makemigrations --check`, coverage, `rebuild_index`, `check --deploy`)
-- Result 2026-10-06: audit found no 5.x breaking changes left except `title.Mask.save(self)` not forwarding args (fixed + `MaskTest`); tastypie 0.15.1: 53 API tests OK and every resource GET → 200, no patch needed; `makemigrations --check` no changes; coverage 60% (249 tests, 5 skipped) vs 55% baseline; `check --deploy` no errors, only proxy/dev warnings
-- Pending manual checks by the user: `rebuild_index`, browser smoke (select-document-type div form, biblioref fieldsets, admin, Rosetta, TinyMCE, DeCS popup, login/logout); new risk: `deform` needs `pkg_resources` (setuptools unpinned, 80.10.2)
-- Log: [2026-10-06-django-5.2-breaking-changes-phase5.4-5.6.md](.ai/logs/2026-10-06-django-5.2-breaking-changes-phase5.4-5.6.md)
+- Spec: [007-replace-pip-with-uv.md](.ai/features/007-replace-pip-with-uv.md) (decisions table, acceptance criteria, risks)
+- Never run `uv sync` on the Arch host: image is Alpine/musl, host venv would be glibc and unusable in the container
+- `src/.venv` sits in Dropbox (exclude with `attr -s com.dropbox.ignored -V 1 src/.venv`) and is root-owned (remove via container or sudo)
+- First `make dev_up` may be slow (compiles `mysqlclient`/`lxml`)
+- If `uv run --no-sync` as `appuser` needs a writable cache, set `UV_CACHE_DIR`/`UV_NO_CACHE` for runtime only
+- Out of scope: Alpine → Debian switch, replacing `pkg_resources`/upgrading `deform`, running the fabfile against servers, dependency upgrades
+- Use Makefile targets for all build/test/manage commands (CLAUDE.md)
+- Result 2026-10-07: implemented; 249 tests OK (5 skipped), coverage 60%; runtime versions identical to pip build; prod build 36s vs 1m21s (pip), image 481MB vs 469MB; gunicorn/cron/api_build OK; `dev_lock` needs `env -u UV_FROZEN`
+- Pending: `make dev_check` + runserver start (dev DB 172.17.1.20 unreachable on 2026-10-07), fabfile on servers (needs uv), Dropbox ignore for `src/.venv`
+- Log: [2026-10-06-replace-pip-with-uv.md](.ai/logs/2026-10-06-replace-pip-with-uv.md)
+- Decision 2026-10-06 (plan): uv behavior set per Docker stage via env — dev `UV_FROZEN=1`, prod `UV_NO_SYNC=1` — so every command is a plain `uv run …`; fabfile uses `uv sync --frozen --no-dev --active` in the server virtualenv
 
 ## Detailed Plan
 
-[021-django-5.2-breaking-changes-tastypie-migrations.md](.ai/plans/021-django-5.2-breaking-changes-tastypie-migrations.md) (implements tasks 5.4–5.6 of [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md))
+[022-replace-pip-with-uv.md](.ai/plans/022-replace-pip-with-uv.md)
 
 ## History
 
@@ -59,3 +56,6 @@ In Progress
 - 2026-10-06: Phases 5.2 & 5.3 "Python 3.14 + Django 5.2 dependency bumps" implemented; commit `39b95b46` on `feature/django-upgrade-phase-5.2-5.3` (not yet merged)
 - 2026-10-06: Loaded "Django Upgrade Phases 5.4, 5.5 & 5.6 — Django 5.x breaking changes, tastypie checks, migrations" — following plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md) tasks 5.4–5.6
 - 2026-10-06: Starting "Django Upgrade Phases 5.4, 5.5 & 5.6 — Django 5.x breaking changes, tastypie checks, migrations" — following plan [021-django-5.2-breaking-changes-tastypie-migrations.md](.ai/plans/021-django-5.2-breaking-changes-tastypie-migrations.md)
+- 2026-10-06: Phases 5.4–5.6 "Django 5.x breaking changes, tastypie checks, migrations" implemented; commit `2f3d95a3` on `validation` (pending manual checks: `rebuild_index`, browser smoke)
+- 2026-10-06: Loaded "Replace pip with uv as package manager" — following spec [007-replace-pip-with-uv.md](.ai/features/007-replace-pip-with-uv.md)
+- 2026-10-07: Starting "Replace pip with uv as package manager" — following plan [022-replace-pip-with-uv.md](.ai/plans/022-replace-pip-with-uv.md)

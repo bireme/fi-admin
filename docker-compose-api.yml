@@ -16,7 +16,7 @@ services:
       - gunisock:/tmp
     env_file:
       - ./conf/app-env-api
-    command: gunicorn --bind unix:/tmp/gunicorn.sock fi-admin.wsgi ${GUNICORN_PARAMS}
+    command: uv run gunicorn --bind unix:/tmp/gunicorn.sock fi-admin.wsgi ${GUNICORN_PARAMS}
     networks:
       - nginx-proxy
     deploy:

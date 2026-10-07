@@ -17,7 +17,7 @@ services:
       - static_files:/app/static_files
     env_file:
       - ./conf/app-env
-    command: gunicorn --bind 0.0.0.0:8000 fi-admin.wsgi ${GUNICORN_PARAMS}
+    command: uv run gunicorn --bind 0.0.0.0:8000 fi-admin.wsgi ${GUNICORN_PARAMS}
     networks:
       - nginx-proxy
     deploy:

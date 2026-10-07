@@ -61,45 +61,58 @@ dev_sh:
 dev_exec:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin $(cmd)
 
+## uv: regenerate src/uv.lock after editing src/pyproject.toml (works without a running container)
+dev_lock:
+	@docker compose -f $(COMPOSE_FILE_DEV) run --rm --no-deps fi_admin env -u UV_FROZEN uv lock
+
+## uv: upgrade src/uv.lock to the newest versions allowed by src/pyproject.toml
+## (all packages, or one with: make dev_lock_upgrade package=django)
+dev_lock_upgrade:
+	@docker compose -f $(COMPOSE_FILE_DEV) run --rm --no-deps fi_admin env -u UV_FROZEN uv lock $(if $(package),--upgrade-package $(package),--upgrade)
+
+## uv: sync src/.venv with src/uv.lock (never run uv sync on the host: the venv is musl/Alpine)
+dev_sync:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv sync
+
 dev_makemigrations:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py makemigrations $(app)
+	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin uv run python manage.py makemigrations $(app)
 
 dev_makemigrations_check:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py makemigrations --check --dry-run $(app)
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python manage.py makemigrations --check --dry-run $(app)
 
 dev_migrate:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin python manage.py migrate $(app)
+	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin uv run python manage.py migrate $(app)
 
 dev_sqlmigrate:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py sqlmigrate $(app) $(migration)
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python manage.py sqlmigrate $(app) $(migration)
 
 dev_check:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py check
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python manage.py check
 
 dev_check_deploy:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py check --deploy
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python manage.py check --deploy
 
 ## haystack: update the search index (e.g. make dev_update_index args="--age=24 biblioref")
 dev_update_index:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py update_index $(args)
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python manage.py update_index $(args)
 
 dev_test:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh run_tests.sh
 
 dev_test_app:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python -W ignore manage.py test -v 1 $(app)
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python -W ignore manage.py test -v 1 $(app)
 
 dev_test_deprecations:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python -Wd manage.py test -v 1 $(app)
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python -Wd manage.py test -v 1 $(app)
 
 dev_test_coverage:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin sh run_coverage.sh
 
 dev_update_translations:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh -c "apk add --no-cache gettext && python manage.py makemessages --all"
+	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh -c "apk add --no-cache gettext && uv run python manage.py makemessages --all"
 
 dev_loaddata:
-	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin python manage.py loaddata $(import_file)
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python manage.py loaddata $(import_file)
 
 ## docker-compose API
 api_build:
@@ -137,7 +150,7 @@ api_exec_shell:
 	@docker compose -f $(COMPOSE_FILE_API) exec fi_admin_api sh
 
 api_exec_collectstatic:
-	@docker compose -f $(COMPOSE_FILE_API) exec -T fi_admin_api python manage.py collectstatic --noinput
+	@docker compose -f $(COMPOSE_FILE_API) exec -T fi_admin_api uv run python manage.py collectstatic --noinput
 
 api_exec_webserver:
 	@docker compose -f $(COMPOSE_FILE_API) exec webserver sh
@@ -187,10 +200,10 @@ prod_exec_shell:
 	@docker compose exec fi_admin sh
 
 prod_exec_collectstatic:
-	@docker compose exec -T fi_admin python manage.py collectstatic --noinput
+	@docker compose exec -T fi_admin uv run python manage.py collectstatic --noinput
 
 prod_loaddata:
-	@docker compose exec -T fi_admin python manage.py loaddata $(import_file)
+	@docker compose exec -T fi_admin uv run python manage.py loaddata $(import_file)
 
 prod_exec_webserver:
 	@docker compose exec webserver sh
@@ -199,7 +212,7 @@ prod_test:
 	@docker compose exec fi_admin sh run_tests.sh
 
 prod_migrate:
-	@docker compose exec fi_admin python manage.py migrate $(app)
+	@docker compose exec fi_admin uv run python manage.py migrate $(app)
 
 # import data to fi-admin
 import:

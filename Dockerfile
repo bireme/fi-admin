@@ -12,21 +12,11 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV APP_VERSION=${APP_VERSION}
 
-# copy base requirements
-COPY ./requirements.txt /app/
+# uv package manager (dependencies in src/pyproject.toml + src/uv.lock)
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# install base dependencies
-RUN apk add --no-cache --virtual .build-deps \
-    gcc \
-    musl-dev \
-    libxml2-dev \
-    libxslt-dev \
-    python3-dev \
-    pkgconf \
-    && apk add --no-cache mariadb-dev \
-    # setuptools<81: deform 3.0.1 imports pkg_resources, removed in setuptools 81
-    && pip install --upgrade pip "setuptools<81" && pip install --no-cache-dir -r /app/requirements.txt \
-    && apk del .build-deps
+# install runtime system dependencies
+RUN apk add --no-cache mariadb-dev
 
 EXPOSE 8000
 
@@ -36,18 +26,43 @@ WORKDIR /app
 ########### DEV STAGE ###########
 FROM base AS dev
 
-# install dev system dependencies
-RUN apk add --no-cache make
+# uv run syncs /app/.venv (src/.venv on the host) from the lock before running
+ENV UV_FROZEN=1
+# the uv cache and the bind-mounted venv are on different filesystems
+ENV UV_LINK_MODE=copy
 
-# copy dev requirements
-COPY ./requirements-dev.txt /app/
-
-# install dev dependencies
-RUN pip install --no-cache-dir -r /app/requirements-dev.txt
+# install dev system dependencies; build deps stay installed because the venv is
+# created at runtime inside the container (compiles mysqlclient and lxml)
+RUN apk add --no-cache \
+    make \
+    gcc \
+    musl-dev \
+    libxml2-dev \
+    libxslt-dev \
+    python3-dev \
+    pkgconf
 
 
 ########### PRODUCTION STAGE ###########
 FROM base AS prod
+
+# uv run uses the venv baked into the image as is
+ENV UV_NO_SYNC=1
+
+# copy dependency files
+COPY ./src/pyproject.toml ./src/uv.lock /app/
+
+# install python dependencies into /app/.venv
+RUN --mount=type=cache,target=/root/.cache/uv \
+    apk add --no-cache --virtual .build-deps \
+    gcc \
+    musl-dev \
+    libxml2-dev \
+    libxslt-dev \
+    python3-dev \
+    pkgconf \
+    && UV_LINK_MODE=copy uv sync --frozen --no-dev --no-install-project \
+    && apk del .build-deps
 
 # copy crontab scripts
 COPY ./conf/crontab/daily/* /etc/periodic/daily/

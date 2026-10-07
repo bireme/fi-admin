@@ -21,5 +21,6 @@ conf/app-env*
 
 .coverage
 src/htmlcov
+src/.venv/
 
 CLAUDE.md

@@ -1,0 +1,8 @@
+.git
+.ai
+backups
+docs
+src/.venv
+src/htmlcov
+**/__pycache__
+.coverage
