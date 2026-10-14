@@ -29,10 +29,15 @@ services:
   webserver:
     container_name: fi-admin-api-webserver
     restart: unless-stopped
-    image: nginx:1.18-alpine
+    image: nginx:1.30-alpine
     expose:
       - 80
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
     volumes:
+      - ./conf/nginx/nginx-base.conf:/etc/nginx/nginx.conf:ro
       - ./conf/nginx/api:/etc/nginx/conf.d
       - static_files:/app/static_files
       - gunisock:/tmp

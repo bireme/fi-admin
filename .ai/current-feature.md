@@ -1,4 +1,4 @@
-# Current Feature: Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2
+# Current Feature: Fix nginx API webserver file descriptor exhaustion
 
 ## Status
 
@@ -6,31 +6,27 @@ In Progress
 
 ## Goals
 
-- `make dev_test_deprecations` (all apps) shows **zero** `RemovedInDjango` warnings, and no naive-datetime `RuntimeWarning` or `UnorderedObjectListWarning`
-- Only remaining warning: deform's `pkg_resources` UserWarning, documented as a known upstream issue
-- Logout is a POST `<form>` with `{% csrf_token %}` in `menu.html`, styled like the old link, covered by a new test (POST → redirect to `/`, user anonymous)
-- `django-tastypie` 0.14.7 → 0.15.1, and the `api` tests pass
-- `django-debug-toolbar` 4.3.0 → latest 5.2.x; it still works in dev with `DEBUG_TOOLBAR=1`, and is disabled whenever `test` is in `sys.argv`
-- setuptools pinned `<81` in the Dockerfile, and the image builds (`make dev_build`)
-- Institution list per-user branch has explicit `order_by('-id')`
-- Full suite passes (`make dev_test`), ≥ 223 tests plus new ones
-- Plan `001-upgrade-django-to-5.2.md` updated (5.0 item ticked; logout/tastypie/toolbar marked done early), and a log written in `.ai/logs/`
+- `fi-admin-api-webserver` no longer logs `[crit] accept4() failed (24: No file descriptors available)` under normal and peak API load
+- Scope is the nginx layer only. Gunicorn workers and timeouts are unchanged
+- New main config `conf/nginx/nginx-base.conf` (mounted at `/etc/nginx/nginx.conf`): `worker_rlimit_nofile 65535`, `worker_connections 16384`, shorter client keepalive and header/body timeouts, and `reset_timedout_connection on`
+- `docker-compose-api.yml` webserver: `ulimits.nofile` 65535 and image `nginx:1.30-alpine`
+- `conf/nginx/nginx-base.conf` is shared: `docker-compose.yml` `www-static` and `www-docs` also mount it, with the same `ulimits.nofile`
+- `conf/nginx/api/app.conf`: `proxy_ignore_client_abort` removed, read timeout 300s, connect 10s, send and `send_timeout` 60s
+- Makefile targets `api_webserver_test`, `prod_webserver_test` (`nginx -t`) and `api_webserver_limits` work
+- A log is written in `.ai/logs/`
 
 ## Notes
 
-- Spec: [006-upgrade-django-phase5.0-fix-deprecations.md](.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md)
-- Branch: `setup/django-5.2` (current). Django stays on 4.2.x in this feature
-- Baseline (2026-09-28): 223 tests OK (skipped=5). The warnings were tastypie `datetime_safe`, form `default.html` (from debug-toolbar 4.3.0 only, not app code), deform `pkg_resources`, naive datetime in `biblioref/tests.py`, and unordered pagination in `institution/views.py`. GET logout (`menu.html:130`) is not hit by any test
-- Disable the toolbar at `src/fi-admin/settings.py:9` (`… and 'test' not in sys.argv`), because the `if 'test'` block runs after the toolbar is registered at line 379. `urls.py:102` reads the same flag
-- Gate is a manual check (no strict Makefile target), per the user's decision
-- After requirement/Dockerfile changes: `make dev_build && make dev_up`
-- Implementation order: toolbar off in tests → biblioref datetimes + institution ordering → POST logout + test → setuptools pin, debug-toolbar bump, tastypie bump (last, to isolate API regressions) → verify, update plan, write log
-- Out of scope: the Django 5.2 bump, the Python 3.13/3.14 image, `RemovedInDjango60Warning` items, replacing deform, and changing the password hasher
+- Error source: the `webserver` service (`fi-admin-api-webserver`, `nginx:1.18-alpine`) in `docker-compose-api.yml`. Only `conf/nginx/api/` is mounted at `/etc/nginx/conf.d`, which is included inside `http {}`. So `worker_rlimit_nofile` and `events { worker_connections }` cannot be set there. A full `nginx.conf` has to be mounted at `/etc/nginx/nginx.conf`
+- Errno 24 is EMFILE, the per-process fd limit. Each proxied request uses about 2 fds (the client socket and the upstream socket). The image default is `worker_connections 1024`, and the container nofile soft limit may be as low as 1024
+- Likely root cause is upstream saturation, not the fd limit itself. Gunicorn runs 2 sync workers (`.env` `GUNICORN_PARAMS=--workers 2 --timeout 1000`). Slow API calls hold the workers for a long time. Meanwhile nginx keeps client connections open for up to 600s, and `proxy_ignore_client_abort on` keeps upstream connections open even after the client leaves. Raising limits alone only delays the failure
+- Out of scope (user decision): gunicorn tuning such as `--workers`/`--threads`/`--timeout`. Candidate for a follow-up feature
+- Also check whether the external `nginx-proxy` container logs the same error, because that one is out of this repo's control
+- Deploy: `make api_up`. Compose recreates the webserver because its config changed (ulimits, image, new mount)
 
 ## Detailed Plan
 
-- `.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md` (spec with tasks A–H)
-- `.ai/plans/001-upgrade-django-to-5.2.md` (Phase 5, task 5.0)
+[019-fix-nginx-api-fd-exhaustion.md](.ai/plans/019-fix-nginx-api-fd-exhaustion.md)
 
 ## History
 
@@ -44,3 +40,6 @@ In Progress
 - 2026-09-28: Phase 4 "Django 3.2 → 4.2 LTS" implemented; commit `5d2e234a` is on `validation` (not yet merged to `main`)
 - 2026-09-28: Loaded "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" — following spec [006-upgrade-django-phase5.0-fix-deprecations.md](.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md)
 - 2026-09-28: Starting "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" on `setup/django-5.2` — following spec [006-upgrade-django-phase5.0-fix-deprecations.md](.ai/features/006-upgrade-django-phase5.0-fix-deprecations.md)
+- 2026-10-14: Completed "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" — merged to `main` via PR #1578; commit `2b9f4542`
+- 2026-10-14: Loaded "Fix nginx API webserver file descriptor exhaustion" — inline description
+- 2026-10-14: Starting "Fix nginx API webserver file descriptor exhaustion" on `feature/fix-nginx-api-webserver-file-descriptor-exhaustion` — following plan [019-fix-nginx-api-fd-exhaustion.md](.ai/plans/019-fix-nginx-api-fd-exhaustion.md)

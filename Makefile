@@ -132,6 +132,12 @@ api_exec_collectstatic:
 api_exec_webserver:
 	@docker compose -f $(COMPOSE_FILE_API) exec webserver sh
 
+api_webserver_test:
+	@docker compose -f $(COMPOSE_FILE_API) run --rm --no-deps webserver nginx -t
+
+api_webserver_limits:
+	@docker compose -f $(COMPOSE_FILE_API) exec webserver sh -c 'for p in $$(pgrep nginx); do echo "pid $$p: $$(tr "\0" " " < /proc/$$p/cmdline)"; grep "Max open files" /proc/$$p/limits; done'
+
 api_make_test:
 	@docker compose -f $(COMPOSE_FILE_API) exec -T fi_admin_api make test
 
@@ -184,6 +190,10 @@ prod_loaddata:
 
 prod_exec_webserver:
 	@docker compose exec webserver sh
+
+prod_webserver_test:
+	@docker compose run --rm --no-deps --entrypoint sh www-static -c 'echo "127.0.0.1 fi_admin" >> /etc/hosts && nginx -t'
+	@docker compose run --rm --no-deps www-docs nginx -t
 
 prod_make_test:
 	@docker compose exec -T fi_admin make test

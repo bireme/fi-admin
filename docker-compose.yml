@@ -33,7 +33,12 @@ services:
     image: nginx:1.30-alpine
     expose:
       - 80
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
     volumes:
+      - ./conf/nginx/nginx-base.conf:/etc/nginx/nginx.conf:ro
       - ./conf/nginx/app:/etc/nginx/conf.d
       - static_files:/app/static_files
     depends_on:
@@ -56,7 +61,12 @@ services:
     image: nginx:1.30-alpine
     expose:
       - 80
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
     volumes:
+      - ./conf/nginx/nginx-base.conf:/etc/nginx/nginx.conf:ro
       - ./conf/nginx/docs:/etc/nginx/conf.d
       - ${UPLOAD_PATH}:/app/uploads
     depends_on:
