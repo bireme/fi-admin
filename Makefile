@@ -88,8 +88,8 @@ dev_test_deprecations:
 dev_test_coverage:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin sh run_coverage.sh
 
-## run tests in a throwaway image built with another python version (default: utils app on 3.14 + Django 5.2)
-## needs the dev cache running (make dev_up)
+## run tests in a throwaway image built with another python/Django version (e.g. make dev_test_py PY=3.13 app=main)
+## defaults match the image (python 3.14 + Django 5.2); needs the dev cache running (make dev_up)
 PY ?= 3.14
 PY_DJANGO ?= Django>=5.2.8,<5.3
 dev_test_py:

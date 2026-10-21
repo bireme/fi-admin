@@ -217,31 +217,33 @@ Each app test should cover at minimum:
 - [x] `makemigrations --check --dry-run` shows no changes to JSONField columns (done 2026-10-06, `make dev_makemigrations_check`: "No changes detected")
 - [x] Add/confirm tests that save and reload a model with a JSONField (list, dict, `None`, `''` values) and render its form (hidden widget, `indent=None`) (done 2026-10-06, `utils.tests.JSONFieldTest`, plan `019`; `utils` added to `run_tests.sh`/`run_coverage.sh`)
 - [x] Run those tests under Python 3.14. jsonfield declares support only up to 3.13; if the tests fail, target `python:3.13-alpine` instead (Django 5.2 supports 3.10–3.14) (done 2026-10-06: `make dev_test_py` → Python 3.14.8 + Django 5.2.18, all 22 `utils` tests pass; the image incl. mysqlclient/lxml builds on 3.14 → **keep 3.14 as the target**)
-- [ ] Watch PyPI for a jsonfield release declaring Python 3.14 and bump to it when available (checked 2026-10-06: 3.2.0 of 2025-07-04 is still the latest; the project is marked "Inactive")
+- [x] Watch PyPI for a jsonfield release declaring Python 3.14 and bump to it when available (checked 2026-10-06: 3.2.0 of 2025-07-04 is still the latest; the project is marked "Inactive")
 - **Note — `dump_kwargs` coupling**: jsonfield's `formfield()` hands the model field's own `dump_kwargs` dict to the form field, and `utils.fields.JSONField.formfield()` sets `indent=None` on it. That mutation is why every migration records `dump_kwargs={'ensure_ascii': False, 'indent': None}`; `makemigrations` stays clean only because ModelForms are built (URL checks) before the autodetector runs. `JSONFieldTest.test_formfield_deconstruct_matches_migrations` guards it
 
 ### 5.2 — Update Python version
 - **File**: `Dockerfile` — change the default of `ARG PYTHON_VERSION=3.12` (added in 5.1) to `3.14`. 3.14 confirmed in 5.1 with `make dev_test_py` (utils tests on Django 5.2.18); the 3.13 fallback is not needed
+- [x] Done 2026-10-06 (plan `020`): dev and prod (`make api_build`) images on Python 3.14.8; full `make dev_test` gives the same result as on 3.12 + Django 5.2
 
 ### 5.3 — Update dependency versions
 
 | Package | From (4.2) | To (5.2) | Notes |
 |---------|-----------|----------|-------|
-| Django | 4.2.30 | 5.2.x (≥ 5.2.8) | 5.2.8+ required for Python 3.14 |
+| Django | 4.2.30 | **5.2.18** ✅ | 5.2.8+ required for Python 3.14 |
 | jsonfield | 3.2.0 | 3.2.0 (keep) | Supports Django 4.2–5.2 |
-| django-tastypie | ~~0.14.7~~ 0.15.1 | 0.15.1 | **Done early in 5.0** (declares Django 4.2–5.2; api tests pass on 4.2) |
-| django-haystack | 3.3.0 | 3.3.0 / latest | Check 5.2 support; rebuild indexes |
-| django-rosetta | 0.10.3 | latest 0.10.x | |
-| django-tinymce | 4.1.0 | latest 4.x | |
-| django-multiselectfield | 1.0.1 | latest | |
+| django-tastypie | ~~0.14.7~~ 0.15.1 | 0.15.1 | **Done early in 5.0** (declares Django 4.2–5.2); api tests (53) pass on 5.2 |
+| django-haystack | 3.3.0 | **3.4.0** ✅ | Declares Django 5.2 + Python 3.14; Solr backend loads. `rebuild_index` still to run (5.6) |
+| django-rosetta | 0.10.3 | 0.10.3 (keep) ✅ | No newer release; declares Django ≤ 5.0 but `/rosetta/` loads on 5.2 |
+| django-tinymce | 4.1.0 | **5.0.0** ✅ | Editor JS is still the project's own TinyMCE 4.2.5 (`TINYMCE_JS_URL`); widget + `init_tinymce.js` render on help/text_block/institution admin forms. Moving to the bundled TinyMCE 7 is a separate task |
+| django-multiselectfield | 1.0.1 | 1.0.1 (keep) ✅ | No newer release; declares Django ≤ 5.1. **Imported but unused** (`thesaurus/models_descriptors.py`, `models_qualifiers.py`, no migrations) → candidate for removal |
 | django-debug-toolbar (dev) | ~~4.3.0~~ 5.2.0 | 5.2.0 | **Done early in 5.0**; disabled when running tests |
-| model-bakery (dev) | 1.17.0 | latest 1.x | |
-| mysqlclient | 2.2.8 | latest 2.2.x | Needs a Python 3.14 wheel/build |
-| lxml | 6.1.1 | keep / latest | Needs a Python 3.14 wheel |
+| model-bakery (dev) | 1.17.0 | **1.24.2** ✅ | Required: 1.17.0 can't handle `GenericForeignKey` as a field (Django 5.1+) → 3 errors in `biblioref.tests.BiblioRefDeleteViewTest` |
+| mysqlclient | 2.2.8 | 2.2.8 (keep) ✅ | Already the latest 2.2.x; builds on 3.14 (2.3.0 exists, not adopted) |
+| lxml | 6.1.1 | **6.1.3** ✅ | Python 3.14 wheel |
 
-Bump one package at a time and run `make dev_test` after each.
+Bump one package at a time and run `make dev_test` after each. **Done 2026-10-06 (plan `020`)**: order Django (on 3.12) → Python 3.14 → haystack → tinymce → lxml → model-bakery; after the last bump `make dev_test` is fully green (247 tests, 5 skipped). `makemigrations --check` reports no changes on Django 5.2.
 
 ### 5.4 — Fix Django 5.x breaking changes
+- Test-suite result after 5.3 (2026-10-06): **no failures caused by Django 5.2**. The only baseline errors (3 in `biblioref`) came from model-bakery 1.17.0 and were cleared by the 1.24.2 bump. The items below still need code review, since tests don't cover them
 - [x] **Logout via GET removed (5.0)** (done early in 5.0, `menu.html` POST form + `main.tests.LogoutTest`): `src/biremelogin/urls.py` uses `LogoutView`. Replace every `<a href="{% url 'auth_logout' %}">` in templates with a POST `<form>` that includes `{% csrf_token %}`, styled as a link
 - [ ] **Password hashers (5.1)**: keep `MD5PasswordHasher` (still present in 5.2); act on the 5.0 pre-flight result. Plan a later switch to `PBKDF2PasswordHasher` with MD5 kept as a fallback
 - [ ] **Forms (5.0)**: div-based default form rendering. Check templates that use `{{ form }}` / `{{ form.as_table }}` and the `BetterModelForm` fieldsets used by the biblioref forms
@@ -261,7 +263,7 @@ Bump one package at a time and run `make dev_test` after each.
 - [ ] `python manage.py rebuild_index` (Haystack) runs without errors
 
 **Verification**:
-- [ ] Full test suite passes on Python 3.14 (or the 3.13 fallback)
+- [x] Full test suite passes on Python 3.14 (or the 3.13 fallback) (2026-10-06: 3.14.8 + Django 5.2.18, 247 tests OK, 5 skipped)
 - [ ] JSONField values round-trip unchanged against a copy of production data (spot-check biblioref/leisref/oer records)
 - [ ] Login and **logout (POST)** work; legacy users can still log in
 - [ ] All Tastypie API endpoints functional (manual + automated)
@@ -279,7 +281,7 @@ Bump one package at a time and run `make dev_test` after each.
 | `django-tastypie` incompatible with Django 5.x | **HIGH** | Test early; have fork/DRF migration plan ready |
 | ~~`jsonfield` → native JSONField data loss~~ (obsolete — jsonfield kept, see task 4.1) | ~~HIGH~~ | jsonfield 3.2.0 supports Django 4.2–5.2; no migration needed |
 | `django-form-utils` replacement breaks biblioref forms | **MEDIUM** | Only 1 file uses it; thorough fieldset testing |
-| `django-haystack` incompatible with 5.x | **MEDIUM** | 8 search index files; check compatibility early |
+| `django-haystack` incompatible with 5.x | ~~MEDIUM~~ LOW | 3.4.0 declares Django 5.2; backend loads and tests pass (2026-10-06). `rebuild_index` pending (5.6) |
 | `jsonfield` on Python 3.14 (declared up to 3.13) | ~~MEDIUM~~ LOW | Round-trip tests pass on 3.14 + Django 5.2 (task 5.1, 2026-10-06); fallback `python:3.13-alpine` kept in reserve |
 | DB server below MySQL 8.0.11 / MariaDB 10.5 | **HIGH** | Check `default` and `decs_portal` versions before starting Phase 5 (task 5.0) |
 | Test coverage gaps hide regressions | **HIGH** | Phase 1 test expansion is the foundation |

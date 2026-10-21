@@ -1,4 +1,4 @@
-model-bakery==1.17.0
+model-bakery==1.24.2
 requests_mock==1.12.1
 django-debug-toolbar==5.2.0
 coverage==7.15.2
