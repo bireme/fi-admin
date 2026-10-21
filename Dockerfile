@@ -1,5 +1,8 @@
+# python version of the base image (override with --build-arg, e.g. make dev_test_py)
+ARG PYTHON_VERSION=3.12
+
 ########### BASE STAGE ###########
-FROM python:3.12-alpine AS base
+FROM python:${PYTHON_VERSION}-alpine AS base
 
 # application version (informed by the Makefile at build time)
 ARG APP_VERSION=unknown
