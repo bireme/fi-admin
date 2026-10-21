@@ -245,32 +245,33 @@ Bump one package at a time and run `make dev_test` after each. **Done 2026-10-06
 ### 5.4 — Fix Django 5.x breaking changes
 - Test-suite result after 5.3 (2026-10-06): **no failures caused by Django 5.2**. The only baseline errors (3 in `biblioref`) came from model-bakery 1.17.0 and were cleared by the 1.24.2 bump. The items below still need code review, since tests don't cover them
 - [x] **Logout via GET removed (5.0)** (done early in 5.0, `menu.html` POST form + `main.tests.LogoutTest`): `src/biremelogin/urls.py` uses `LogoutView`. Replace every `<a href="{% url 'auth_logout' %}">` in templates with a POST `<form>` that includes `{% csrf_token %}`, styled as a link
-- [ ] **Password hashers (5.1)**: keep `MD5PasswordHasher` (still present in 5.2); act on the 5.0 pre-flight result. Plan a later switch to `PBKDF2PasswordHasher` with MD5 kept as a fallback
-- [ ] **Forms (5.0)**: div-based default form rendering. Check templates that use `{{ form }}` / `{{ form.as_table }}` and the `BetterModelForm` fieldsets used by the biblioref forms
-- [ ] **`Model.save()` positional args (5.1 deprecation)**: switch any `save(True, …)` calls to keyword args
-- [ ] Remove `index_together` if present (including in old migrations; squash or edit to `indexes`)
-- [ ] Check removed APIs: `assertQuerysetEqual` → `assertQuerySetEqual`, `length_is` filter, `django.utils.timezone.utc`, `pytz`, `get_storage_class`, old `assertFormError` signature
-- [ ] Settings: confirm `USE_L10N` / `DEFAULT_FILE_STORAGE` / `STATICFILES_STORAGE` are not set (use `STORAGES` if needed)
-- [ ] `DisableMigrations` in test settings still works
+- [x] **Password hashers (5.1)**: keep `MD5PasswordHasher` (still present in 5.2); act on the 5.0 pre-flight result. Plan a later switch to `PBKDF2PasswordHasher` with MD5 kept as a fallback (2026-10-06: kept MD5-only; follow-up: set `PASSWORD_HASHERS = (PBKDF2PasswordHasher, MD5PasswordHasher)` so legacy hashes upgrade on next login)
+- [x] **Forms (5.0)**: div-based default form rendering. Check templates that use `{{ form }}` / `{{ form.as_table }}` and the `BetterModelForm` fieldsets used by the biblioref forms (2026-10-06: only `biblioref/select_document_type.html` uses bare `{{ form }}`; div rendering kept. Visual check of that page and of the biblioref fieldsets is pending a **manual browser check**)
+- [x] **`Model.save()` positional args (5.1 deprecation)**: switch any `save(True, …)` calls to keyword args (2026-10-06: none found; `title.Mask.save(self)` didn't accept/forward `*args, **kwargs` → fixed, `title.tests.MaskTest`)
+- [x] Remove `index_together` if present (including in old migrations; squash or edit to `indexes`) (2026-10-06: none)
+- [x] Check removed APIs: `assertQuerysetEqual` → `assertQuerySetEqual`, `length_is` filter, `django.utils.timezone.utc`, `pytz`, `get_storage_class`, old `assertFormError` signature (2026-10-06: none; `biblioref/tests.py` uses the stdlib `datetime.timezone.utc`)
+- [x] Settings: confirm `USE_L10N` / `DEFAULT_FILE_STORAGE` / `STATICFILES_STORAGE` are not set (use `STORAGES` if needed) (2026-10-06: none set)
+- [x] `DisableMigrations` in test settings still works (2026-10-06: full suite runs with it)
 
 ### 5.5 — Handle `django-tastypie` compatibility
 - 0.15.1 installed in 5.0 and the API tests pass on Django 4.2. Still to do after the 5.2 bump: the API test suite (`src/api/tests.py`) plus a manual GET on every resource
+- [x] 2026-10-06 on Django 5.2.18: `make dev_test_app app=api` 53 tests OK; GET (`format=json&limit=1`) on all 12 model resources, 8 `/search/` endpoints and the 7 thesaurus endpoints (with `ths=1` / `tree_id`) → all 200 against `fi_admin_tst`/`decs_portal`. No patch needed. (Old quirk, not caused by 5.x: the 6 thesaurus resources share `resource_name='thesaurus'`, so their `meta.next` links all reverse to `/api/qualif/index/thesaurus/`)
 - If it breaks, the order of preference is: (1) a small local patch or monkeypatch in `api/`, (2) pin a fork, (3) a DRF migration as its own project (out of scope for this phase)
 
 ### 5.6 — Migrations and test
-- [ ] `makemigrations --check`: expect no-op migrations only (commit them like Phase 4 did)
-- [ ] `make dev_test` with coverage; compare with the 55% baseline
-- [ ] `python manage.py rebuild_index` (Haystack) runs without errors
+- [x] `makemigrations --check`: expect no-op migrations only (commit them like Phase 4 did) (2026-10-06: "No changes detected")
+- [x] `make dev_test` with coverage; compare with the 55% baseline (2026-10-06: `make dev_test_coverage`, 249 tests OK, **60% overall**; `api` added to `run_coverage.sh`)
+- [ ] `python manage.py rebuild_index` (Haystack) runs without errors (pending: **manual check by the user** against the shared test Solr; helper `make dev_update_index args=…` added)
 
 **Verification**:
 - [x] Full test suite passes on Python 3.14 (or the 3.13 fallback) (2026-10-06: 3.14.8 + Django 5.2.18, 247 tests OK, 5 skipped)
 - [ ] JSONField values round-trip unchanged against a copy of production data (spot-check biblioref/leisref/oer records)
-- [ ] Login and **logout (POST)** work; legacy users can still log in
-- [ ] All Tastypie API endpoints functional (manual + automated)
-- [ ] Admin, Rosetta and TinyMCE load; DeCS popup still works
+- [ ] Login and **logout (POST)** work; legacy users can still log in (automated: `main.tests.LogoutTest` + login tests pass; manual browser check pending)
+- [x] All Tastypie API endpoints functional (manual + automated) (2026-10-06, see 5.5)
+- [ ] Admin, Rosetta and TinyMCE load; DeCS popup still works (pending: manual browser check)
 - [ ] Production-like environment deployment test (`make prod_migrate`)
 - [ ] Performance comparison with baseline
-- [ ] `python manage.py check --deploy` clean
+- [x] `python manage.py check --deploy` clean (2026-10-06, `make dev_check_deploy`: no errors; 6 warnings W004/W008/W009/W012/W016/W018, all HTTPS/cookie/HSTS handled at the proxy or caused by dev `DEBUG`/`SECRET_KEY`; none specific to 5.x)
 
 ---
 
@@ -278,10 +279,11 @@ Bump one package at a time and run `make dev_test` after each. **Done 2026-10-06
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| `django-tastypie` incompatible with Django 5.x | **HIGH** | Test early; have fork/DRF migration plan ready |
+| `django-tastypie` incompatible with Django 5.x | ~~HIGH~~ LOW | 0.15.1 passes 53 API tests and every resource GET returns 200 on Django 5.2.18 (2026-10-06); fork/DRF plan no longer needed for 5.2 |
 | ~~`jsonfield` → native JSONField data loss~~ (obsolete — jsonfield kept, see task 4.1) | ~~HIGH~~ | jsonfield 3.2.0 supports Django 4.2–5.2; no migration needed |
 | `django-form-utils` replacement breaks biblioref forms | **MEDIUM** | Only 1 file uses it; thorough fieldset testing |
-| `django-haystack` incompatible with 5.x | ~~MEDIUM~~ LOW | 3.4.0 declares Django 5.2; backend loads and tests pass (2026-10-06). `rebuild_index` pending (5.6) |
+| `django-haystack` incompatible with 5.x | ~~MEDIUM~~ LOW | 3.4.0 declares Django 5.2; backend loads and tests pass, all `/search/` API endpoints return 200 (2026-10-06). `rebuild_index` pending manual check (5.6) |
+| `deform` 3.0.1 imports `pkg_resources` (removed in setuptools ≥ 81) | **MEDIUM** | setuptools is unpinned (80.10.2 in the image). Pin `setuptools<81` or upgrade/replace deform before the base image moves on |
 | `jsonfield` on Python 3.14 (declared up to 3.13) | ~~MEDIUM~~ LOW | Round-trip tests pass on 3.14 + Django 5.2 (task 5.1, 2026-10-06); fallback `python:3.13-alpine` kept in reserve |
 | DB server below MySQL 8.0.11 / MariaDB 10.5 | **HIGH** | Check `default` and `decs_portal` versions before starting Phase 5 (task 5.0) |
 | Test coverage gaps hide regressions | **HIGH** | Phase 1 test expansion is the foundation |
