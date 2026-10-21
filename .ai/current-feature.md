@@ -1,4 +1,4 @@
-# Current Feature: Django Upgrade Phase 5.1 — Keep `jsonfield`
+# Current Feature: Replace pip with uv as package manager
 
 ## Status
 
@@ -6,28 +6,35 @@ In Progress
 
 ## Goals
 
-- `jsonfield==3.2.0` stays; **no** migration to native `models.JSONField`; `src/utils/fields.py` left unchanged; storage stays TEXT
-- `makemigrations --check --dry-run` reports no changes to any JSONField column (via a Makefile target)
-- Tests that save and reload a model with a `utils.fields.JSONField` for list, dict, `None` and `''` values, asserting the round-trip result
-- Test that the form field renders as a hidden input with class `jsonfield` and serializes without indentation/newlines (`indent=None`)
-- Those tests pass on the current image (Python 3.12) **and** under Python 3.14; if they fail on 3.14, record the decision to target `python:3.13-alpine` in plan task 5.2
-- Plan `001-upgrade-django-to-5.2.md` task 5.1 checkboxes updated (PyPI watch item left open with the date checked), and a log written in `.ai/logs/`
+- `src/pyproject.toml` + `src/uv.lock` replace `requirements.txt` / `requirements-dev.txt` (deleted): compatible-release ranges `~=X.Y.Z` on the current versions (exact versions in the lock; `make dev_lock_upgrade` to bump), `"setuptools<81"` declared (needed by `pkg_resources` in deform, `utils/views.py`, `oer/views.py`), dev deps in `[dependency-groups] dev`, `[tool.uv] package = false`, resolved top-level versions unchanged
+- `Dockerfile` has no `pip`: uv copied from `ghcr.io/astral-sh/uv:latest`; Python pinned to 3.14 (`requires-python = "==3.14.*"` + `src/.python-version`)
+  - prod: `uv sync --frozen --no-dev --no-install-project` bakes `/app/.venv` (BuildKit cache mount), build deps removed, readable/usable by `appuser`
+  - dev: build deps kept (runtime compile of `mysqlclient`/`lxml`), no baked venv
+- uv defaults kept: venv is `.venv` next to `pyproject.toml` (no `UV_PROJECT_ENVIRONMENT`); in dev it lives on the host as `src/.venv`, created only inside the container
+- Plain `uv run` everywhere (dev image `UV_FROZEN=1` auto-syncs, prod image `UV_NO_SYNC=1`) — compose files (runserver/gunicorn), Makefile targets, `run_tests.sh`, `run_coverage.sh`, crontab `update_search_index` scripts, `proc/import/import2FIAdmin.sh`
+- New Makefile targets `dev_sync` (`uv sync`) and `dev_lock` (`uv lock`) run in the dev container
+- `.gitignore` gets `src/.venv/`; new `.dockerignore` (at least `src/.venv`, `.git`, `.ai`, `backups`)
+- `fabric/fabfile.py` `requirements` task uses `uv sync --frozen --no-dev` in `src/` (untested, pending)
+- Verified: `make dev_build`/`dev_up` creates `src/.venv` and runserver starts; `make dev_test` green (249 tests, 5 skipped), coverage ≈ 60%; `make dev_check` clean; `prod_build`/`api_build` succeed, gunicorn runs as `appuser`, crontab script runs; image size/build time compared with pip build
+- Log written in `.ai/logs/2026-10-06-replace-pip-with-uv.md`
 
 ## Notes
 
-- Source: plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md), section "5.1 — Keep `jsonfield`" (decision 2026-09-28, continues task 4.1)
-- Branch: `feature/django-upgrade-phase-5.1-keep-jsonfield` (from `main`, which already contains `setup/django-5.2`). Django stays on 4.2.x; the Python 3.14 image switch itself is task 5.2 (out of scope here except for a throwaway test run)
-- JSONField is used in models of `biblioref`, `leisref`, `oer`, `multimedia`, `title`, `related`, plus `biblioref/forms.py`, `api/tastypie_custom.py` and `utils/templatetags/app_filters.py`
-- `dumps_for_display()` returns `None` for `None`/`'null'`/`''`, JSON-dumps lists, and returns strings unchanged — tests should cover these branches
-- No existing tests reference JSONField directly
-- Running under 3.14 needs a temporary image (e.g. a build arg for the base Python version, or a one-off Makefile target); keep any new command in the Makefile
-- PyPI checked 2026-10-06: jsonfield 3.2.0 still latest (declares up to 3.13, marked Inactive), but tests pass on 3.14 + Django 5.2.18 via `make dev_test_py`
-- Log: [2026-10-06-keep-jsonfield-phase5.1.md](.ai/logs/2026-10-06-keep-jsonfield-phase5.1.md)
-- Out of scope: the Django 5.2 bump, other dependency bumps, and changing the Dockerfile base image permanently
+- Spec: [007-replace-pip-with-uv.md](.ai/features/007-replace-pip-with-uv.md) (decisions table, acceptance criteria, risks)
+- Never run `uv sync` on the Arch host: image is Alpine/musl, host venv would be glibc and unusable in the container
+- `src/.venv` sits in Dropbox (exclude with `attr -s com.dropbox.ignored -V 1 src/.venv`) and is root-owned (remove via container or sudo)
+- First `make dev_up` may be slow (compiles `mysqlclient`/`lxml`)
+- If `uv run --no-sync` as `appuser` needs a writable cache, set `UV_CACHE_DIR`/`UV_NO_CACHE` for runtime only
+- Out of scope: Alpine → Debian switch, replacing `pkg_resources`/upgrading `deform`, running the fabfile against servers, dependency upgrades
+- Use Makefile targets for all build/test/manage commands (CLAUDE.md)
+- Result 2026-10-07: implemented; 249 tests OK (5 skipped), coverage 60%; runtime versions identical to pip build; prod build 36s vs 1m21s (pip), image 481MB vs 469MB; gunicorn/cron/api_build OK; `dev_lock` needs `env -u UV_FROZEN`
+- Pending: `make dev_check` + runserver start (dev DB 172.17.1.20 unreachable on 2026-10-07), fabfile on servers (needs uv), Dropbox ignore for `src/.venv`
+- Log: [2026-10-06-replace-pip-with-uv.md](.ai/logs/2026-10-06-replace-pip-with-uv.md)
+- Decision 2026-10-06 (plan): uv behavior set per Docker stage via env — dev `UV_FROZEN=1`, prod `UV_NO_SYNC=1` — so every command is a plain `uv run …`; fabfile uses `uv sync --frozen --no-dev --active` in the server virtualenv
 
 ## Detailed Plan
 
-[019-keep-jsonfield-django-5.2.md](.ai/plans/019-keep-jsonfield-django-5.2.md) (implements task 5.1 of [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md))
+[022-replace-pip-with-uv.md](.ai/plans/022-replace-pip-with-uv.md)
 
 ## History
 
@@ -44,3 +51,11 @@ In Progress
 - 2026-10-06: Completed "Django Upgrade Phase 5.0 — Fix Django 5.x Deprecations on 4.2" — merged to `main` (PR #1578); commit `cf369f75`
 - 2026-10-06: Loaded "Django Upgrade Phase 5.1 — Keep jsonfield" — following plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md) task 5.1
 - 2026-10-06: Starting "Django Upgrade Phase 5.1 — Keep jsonfield" — following plan [019-keep-jsonfield-django-5.2.md](.ai/plans/019-keep-jsonfield-django-5.2.md)
+- 2026-10-06: Loaded "Django Upgrade Phases 5.2 & 5.3 — Python 3.14 + Django 5.2 dependency bumps" — following plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md) tasks 5.2 and 5.3
+- 2026-10-06: Starting "Django Upgrade Phases 5.2 & 5.3 — Python 3.14 + Django 5.2 dependency bumps" — following plan [020-upgrade-python-3.14-django-5.2-deps.md](.ai/plans/020-upgrade-python-3.14-django-5.2-deps.md)
+- 2026-10-06: Phases 5.2 & 5.3 "Python 3.14 + Django 5.2 dependency bumps" implemented; commit `39b95b46` on `feature/django-upgrade-phase-5.2-5.3` (not yet merged)
+- 2026-10-06: Loaded "Django Upgrade Phases 5.4, 5.5 & 5.6 — Django 5.x breaking changes, tastypie checks, migrations" — following plan [001-upgrade-django-to-5.2.md](.ai/plans/001-upgrade-django-to-5.2.md) tasks 5.4–5.6
+- 2026-10-06: Starting "Django Upgrade Phases 5.4, 5.5 & 5.6 — Django 5.x breaking changes, tastypie checks, migrations" — following plan [021-django-5.2-breaking-changes-tastypie-migrations.md](.ai/plans/021-django-5.2-breaking-changes-tastypie-migrations.md)
+- 2026-10-06: Phases 5.4–5.6 "Django 5.x breaking changes, tastypie checks, migrations" implemented; commit `2f3d95a3` on `validation` (pending manual checks: `rebuild_index`, browser smoke)
+- 2026-10-06: Loaded "Replace pip with uv as package manager" — following spec [007-replace-pip-with-uv.md](.ai/features/007-replace-pip-with-uv.md)
+- 2026-10-07: Starting "Replace pip with uv as package manager" — following plan [022-replace-pip-with-uv.md](.ai/plans/022-replace-pip-with-uv.md)

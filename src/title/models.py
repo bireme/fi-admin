@@ -284,7 +284,7 @@ class Mask(Generic):
     ascending = models.BooleanField(_('Ascending'), default=False)
     dummy = models.BooleanField(_('Dummy'), default=False)
 
-    def save(self):
+    def save(self, *args, **kwargs):
         self.mask = ''
 
         if self.frequency:
@@ -299,7 +299,7 @@ class Mask(Generic):
         if self.dummy:
             self.mask = 'DUMMY'
 
-        super(Mask, self).save()
+        super(Mask, self).save(*args, **kwargs)
 
     def __str__(self):
         return u"%s" % (self.mask if self.mask else _('(empty)'))

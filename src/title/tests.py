@@ -342,3 +342,17 @@ class TitleSearchTest(BaseTestCase):
         self.assertContains(resp2, '200')
         self.assertNotContains(resp2, '<a href="/title/edit/{0}">100</a'.format(t1.id))
         self.assertNotContains(resp2, '<a href="/title/edit/{0}">300</a'.format(t3.id))
+
+
+class MaskTest(BaseTestCase):
+    def test_save_builds_mask(self):
+        mask = Mask.objects.create(frequency='M', volumes='1', issues='12', ascending=True)
+        self.assertEqual(mask.mask, 'M1V12F+')
+
+    def test_save_accepts_update_fields(self):
+        """save() forwards Django's keyword args (e.g. update_fields) to Model.save()"""
+        mask = Mask.objects.create(frequency='M')
+        mask.volumes = '2'
+        mask.save(update_fields=['volumes', 'mask'])
+        mask.refresh_from_db()
+        self.assertEqual(mask.mask, 'M2V')

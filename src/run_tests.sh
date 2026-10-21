@@ -6,6 +6,6 @@ APPS="main utils events multimedia biblioref leisref institution oer title thesa
 for app in $APPS
 do
     echo "Running tests from [$app]"
-    python -W ignore manage.py test -v 1 $app
+    uv run python -W ignore manage.py test -v 1 $app
 done
 

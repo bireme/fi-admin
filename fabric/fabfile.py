@@ -56,9 +56,10 @@ def requirements():
     """
     install/update requirements
     """
-    with cd(env.git_path):
+    with cd(env.root_path):
         with prefix('. %s/bin/activate' % env.virtualenv):
-            run('pip install -r requirements.txt')
+            # src/pyproject.toml + src/uv.lock, installed into the active virtualenv (needs uv on the server)
+            run('uv sync --frozen --no-dev --active')
 
 @task
 def migrate():
