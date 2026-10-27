@@ -207,7 +207,7 @@ Each status has a base hue (for tints and borders), a **deep** text shade that p
 
 ## Layout
 
-The page has two columns. A fixed sidebar on the left is 224px wide expanded and 56px collapsed, and the collapsed choice is remembered per browser. Everything else (the `.wrap` content and the footer) shifts right by the sidebar width. In that column, a breadcrumb strip is fused to the top of a single white content panel (20px margins). A deep indigo footer (at least 80px tall) sits at the bottom. Below 768px, the sidebar becomes an off-canvas drawer behind a 48px deep-green mobile bar. The breadcrumb and panel read as one object: the breadcrumb drops its bottom radius and the panel drops its top border.
+The page has two columns. A fixed sidebar on the left is 224px wide expanded and 56px collapsed, and the collapsed choice is remembered per browser. Everything else (the `.wrap` content and the footer) shifts right by the sidebar width. In that column, a breadcrumb strip is fused to the top of a single white content panel (20px margins). A deep indigo footer (at least 80px tall) sits at the bottom: the body is a flex column and `.wrap` grows to fill the space, so on short pages the footer meets the bottom edge of the viewport with no gap. Below 768px, the sidebar becomes an off-canvas drawer behind a 48px deep-green mobile bar. The breadcrumb and panel read as one object: the breadcrumb drops its bottom radius and the panel drops its top border.
 
 Inside the panel, Bootstrap 2's fluid 12-column grid (`container-fluid`, `row-fluid`, `spanN`) is the layout tool. Pages follow one of three shapes:
 

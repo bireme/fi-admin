@@ -1,8 +1,18 @@
 html,
 body {
-    height: 100%;
     margin: 0;
     padding: 0;
+}
+
+html {
+    height: 100%;
+}
+
+/* sticky footer: the content grows, the footer stays at the bottom edge */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
 }
 
 /* Palette: soft indigo, after Velzon */
@@ -58,11 +68,11 @@ form#setlang {
 .spacer {
     clear:both;
 }
-/* Wrapper for page content to push down footer */
+/* Wrapper for page content; fills the space above the footer */
 .wrap {
+    flex: 1 0 auto;
     padding: 0 0 30px;
     position: relative;
-    min-height: 84%;
     border: solid 1px transparent;
 }
 ul.alert {
@@ -75,6 +85,7 @@ ul.alert {
     height: 90px;
 }
 #footer {
+    flex: none;
     background: var(--footer-bg);
     left:0px;
     bottom:0px;
