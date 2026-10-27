@@ -15,7 +15,7 @@ body {
     min-height: 100%;
 }
 
-/* Palette: soft indigo, after Velzon */
+/* Palette: soft indigo, after the admin template */
 :root {
     --primary: #405189;
     --primary-deep: #364574;
@@ -1663,7 +1663,7 @@ select {
     background-color: var(--surface);
 }
 
-/* Velzon .form-control: 13px text, 8px/14px padding, 37.5px tall, 4px corners.
+/* Admin template .form-control: 13px text, 8px/14px padding, 37.5px tall, 4px corners.
    Content-box is kept so the input-mini..xxlarge widths keep their typing room. */
 input:not([type]),
 input[type="text"],

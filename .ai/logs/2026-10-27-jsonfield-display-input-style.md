@@ -1,6 +1,6 @@
 # JSON field display styled as an input
 
-`.jsonfield_display` is the read-only box for JSONField values on bibliographic, title, institution, multimedia, legislation and OER forms. It is a `<ul>` inside a link that opens the field assistant. It now matches the Velzon-style text inputs.
+`.jsonfield_display` is the read-only box for JSONField values on bibliographic, title, institution, multimedia, legislation and OER forms. It is a `<ul>` inside a link that opens the field assistant. It now matches the admin-template-style text inputs.
 
 ## Changes (`src/static/css/screen.css`)
 - White fill (was the gray Tray), `#ced4da` border, 4px corners, 8px × 14px padding, 13px text on 19.5px lines. Its 560px content width now ends at the same edge as the 560px inputs and textareas (590px outer). The 30px left offset is kept because it compensates for the `.row` wrapper.

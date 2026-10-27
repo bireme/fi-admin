@@ -1,6 +1,6 @@
-# Soft indigo palette (Velzon reference)
+# Soft indigo palette (admin template reference)
 
-Softened the application colors using the Velzon admin theme (themesbrand.com/velzon) as reference. The user chose to adopt Velzon's indigo for the sidebar and primary color in place of BIREME green.
+Softened the application colors using the admin template as reference. The user chose to adopt the admin template's indigo for the sidebar and primary color in place of BIREME green.
 
 ## `src/static/css/screen.css`
 - New color tokens as CSS custom properties on `:root` (indigo #405189, ground #f3f3f9, borders #e9ebec, muted #686d80, soft status hues with `-deep` text and `-fill` button shades). House rules now use the variables instead of hex literals.

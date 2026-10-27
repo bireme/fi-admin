@@ -140,7 +140,7 @@ components:
 
 **Creative North Star: "The Cataloguer's Desk"**
 
-FI-ADMIN is a dependable desk for long sessions of record entry. There is a cool, pale lavender-gray ground. Each task gets one white panel with a faint border and a whisper of shadow. A soft indigo sidebar runs down the left edge, and a deep indigo band at the foot carries BIREME's mark. The palette follows the Velzon admin theme: low-contrast chrome, tinted rather than saturated status fills. The design never competes with the record. Documentalists and editors spend hours on dense, tabbed, methodology-bound forms in three languages, so the system favors legibility, predictability, and familiar controls over expression.
+FI-ADMIN is a dependable desk for long sessions of record entry. There is a cool, pale lavender-gray ground. Each task gets one white panel with a faint border and a whisper of shadow. A soft indigo sidebar runs down the left edge, and a deep indigo band at the foot carries BIREME's mark. The palette follows the admin template: low-contrast chrome, tinted rather than saturated status fills. The design never competes with the record. Documentalists and editors spend hours on dense, tabbed, methodology-bound forms in three languages, so the system favors legibility, predictability, and familiar controls over expression.
 
 The system is Bootstrap 2.0.4 with a thin house layer (`src/static/css/screen.css`). The house layer is where identity lives: the indigo sidebar, the cool ground, the panel-with-breadcrumb-cap layout, and the status colors that mark a record's lifecycle. Everything else is Bootstrap 2 idiom. Center staff across the network already know these controls, and that familiarity is a feature.
 
@@ -148,7 +148,7 @@ The direction from here is **flatten gradually**. Keep every structure users rel
 
 **Key Characteristics:**
 - Cool #f3f3f9 ground with white working panels; one panel per page.
-- One indigo carries both the sidebar and the primary action, as in Velzon. Everything else is neutral or tinted.
+- One indigo carries both the sidebar and the primary action, as in the admin template. Everything else is neutral or tinted.
 - Bootstrap 2's gradients are replaced by a flat skin in `screen.css`: solid buttons, soft tinted labels and alerts, quiet focus rings.
 - 13px/18px Helvetica Neue body at high density, built for field-heavy forms.
 - Gentle 3–5px corners throughout, with no sharp edges and no pills except badges.
@@ -157,7 +157,7 @@ The direction from here is **flatten gradually**. Keep every structure users rel
 
 ## Colors
 
-A soft indigo palette after the Velzon admin theme: cool neutral surfaces, one indigo for identity and action, and desaturated status colors shown mostly as tints. All tokens live as CSS custom properties on `:root` in `src/static/css/screen.css`; new rules use the variables, never literals.
+A soft indigo palette after the admin template: cool neutral surfaces, one indigo for identity and action, and desaturated status colors shown mostly as tints. All tokens live as CSS custom properties on `:root` in `src/static/css/screen.css`; new rules use the variables, never literals.
 
 ### Primary
 - **Indigo** (`--primary`, `--sidebar-bg`): The sidebar and mobile bar fill, links, primary buttons, active tabs, pagination and checkbox accent. White on it reaches 7.6:1.
@@ -260,8 +260,8 @@ Familiar Bootstrap 2 buttons, moving toward flat.
 - **Internal Padding:** 10px top, 30px bottom, with grid gutters at the sides.
 
 ### Inputs / Fields
-- **Style:** Velzon `.form-control` metrics: white field, 1px Input Border, 4px corners, 13px text on a 19.5px line, 8px × 14px padding, 37.5px tall. Text inputs and single selects stay `content-box`, so the `input-mini`…`input-xxlarge` classes and fixed px widths keep their typing room, and an input and a select of the same width end at the same edge. Multi-selects keep their own height. The multiple-select plugin trigger (`.ms-choice`) is sized to match.
-- **Focus:** the border turns Focus Border (`#b3b9d0`, Velzon's soft primary) and the 3px indigo focus ring appears. Velzon's own ring is invalid CSS and never renders; the ring is kept because a border change alone is not a visible focus indicator.
+- **Style:** Admin template `.form-control` metrics: white field, 1px Input Border, 4px corners, 13px text on a 19.5px line, 8px × 14px padding, 37.5px tall. Text inputs and single selects stay `content-box`, so the `input-mini`…`input-xxlarge` classes and fixed px widths keep their typing room, and an input and a select of the same width end at the same edge. Multi-selects keep their own height. The multiple-select plugin trigger (`.ms-choice`) is sized to match.
+- **Focus:** the border turns Focus Border (`#b3b9d0`, the admin template's soft primary) and the 3px indigo focus ring appears. The admin template's own ring is invalid CSS and never renders; the ring is kept because a border change alone is not a visible focus indicator.
 - **Error:** Django errorlists are converted to `alert alert-error` blocks (red text on a pale red fill) above the field.
 - **Required:** a red asterisk (`span.mark`, `#e32`) and a bold black label.
 - **Help:** labels with help use a dotted underline and a help cursor (`.field_with_help`) and open a help modal.
