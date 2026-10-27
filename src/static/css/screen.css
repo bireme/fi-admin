@@ -201,7 +201,6 @@ ul.alert {
 
 .header {
     padding: 0 0 9px 0;
-    border-bottom: 1px solid var(--border);
     margin: 10px 0 30px 0;
 }
 h3.header {
@@ -303,6 +302,10 @@ fieldset a.icon-plus-sign, fieldset a.add-button {
 
 #metadata input[type=text], #metadata textarea, #metadata select {
     width: 560px;
+}
+
+#metadata select[multiple] {
+    width: 590px;
 }
 
 fieldset.metadata input[type=text], fieldset.metadata input[type=url], fieldset.metadata textarea, fieldset.metadata select {
