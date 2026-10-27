@@ -6,7 +6,7 @@ colors:
   indigo-deep: "#364574"
   indigo-soft: "rgba(64, 81, 137, 0.1)"
   sidebar-text: "#c3cdf0"
-  focus-border: "#a0a8c4"
+  focus-border: "#b3b9d0"
   ground: "#f3f3f9"
   panel-white: "#ffffff"
   tray: "#f3f6f9"
@@ -82,12 +82,12 @@ components:
     backgroundColor: "{colors.panel-white}"
     textColor: "{colors.ink}"
     rounded: "{rounded.md}"
-    padding: "4px 10px"
+    padding: "8px 14px"
   button-primary:
     backgroundColor: "{colors.indigo}"
     textColor: "{colors.panel-white}"
     rounded: "{rounded.md}"
-    padding: "4px 10px"
+    padding: "8px 14px"
   button-primary-hover:
     backgroundColor: "{colors.indigo-deep}"
     textColor: "{colors.panel-white}"
@@ -98,13 +98,13 @@ components:
     backgroundColor: "{colors.danger-fill}"
     textColor: "{colors.panel-white}"
     rounded: "{rounded.md}"
-    padding: "4px 10px"
+    padding: "8px 14px"
   input:
     backgroundColor: "{colors.panel-white}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.sm}"
-    padding: "4px"
-    height: "18px"
+    rounded: "{rounded.md}"
+    padding: "8px 14px"
+    height: "37.5px"
   sidebar:
     backgroundColor: "{colors.indigo}"
     textColor: "{colors.panel-white}"
@@ -241,7 +241,7 @@ Corners are gently softened everywhere and never sharp or fully round: 3px on in
 ### Buttons
 Familiar Bootstrap 2 buttons, moving toward flat.
 - **Shape:** gently rounded (4px; 5px for large).
-- **Default:** flat white with Ink text and an Input Border outline; hover fills with Tray. This is the most common button.
+- **Default:** flat white with Ink text and an Input Border outline; hover fills with Tray. Same 37.5px height as inputs (8px × 14px padding), so buttons sit level with the fields beside them. Small and mini keep the Bootstrap 2 sizes; large stays 9px × 14px at 15px.
 - **Primary:** Indigo, white text, Indigo Deep on hover. It marks the single main action of a form or header (Save, New record).
 - **Danger:** Danger Red, used for delete and confirm-delete only.
 - **Large:** the standard size for form-submit bars and header actions (it appears 127 times in the templates).
@@ -260,8 +260,8 @@ Familiar Bootstrap 2 buttons, moving toward flat.
 - **Internal Padding:** 10px top, 30px bottom, with grid gutters at the sides.
 
 ### Inputs / Fields
-- **Style:** white field, 1px `#ccc` border, 3px corners, 13px text, 28px tall (`select`).
-- **Focus:** the border turns light blue and a soft blue glow appears (see Shadow Vocabulary).
+- **Style:** Velzon `.form-control` metrics: white field, 1px Input Border, 4px corners, 13px text on a 19.5px line, 8px × 14px padding, 37.5px tall. Text inputs and single selects stay `content-box`, so the `input-mini`…`input-xxlarge` classes and fixed px widths keep their typing room, and an input and a select of the same width end at the same edge. Multi-selects keep their own height. The multiple-select plugin trigger (`.ms-choice`) is sized to match.
+- **Focus:** the border turns Focus Border (`#b3b9d0`, Velzon's soft primary) and the 3px indigo focus ring appears. Velzon's own ring is invalid CSS and never renders; the ring is kept because a border change alone is not a visible focus indicator.
 - **Error:** Django errorlists are converted to `alert alert-error` blocks (red text on a pale red fill) above the field.
 - **Required:** a red asterisk (`span.mark`, `#e32`) and a bold black label.
 - **Help:** labels with help use a dotted underline and a help cursor (`.field_with_help`) and open a help modal.

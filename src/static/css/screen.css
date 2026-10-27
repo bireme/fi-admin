@@ -20,7 +20,7 @@ body {
     --primary: #405189;
     --primary-deep: #364574;
     --primary-soft: rgba(64, 81, 137, 0.1);
-    --focus-border: #a0a8c4;
+    --focus-border: #b3b9d0;
     --focus-ring: 0 0 0 3px rgba(64, 81, 137, 0.15);
     --sidebar-bg: #405189;
     --sidebar-text: #c3cdf0;
@@ -141,12 +141,6 @@ ul.alert {
     max-width: 300px;
     padding: 19px 29px 29px;
     margin: 0 auto;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-    box-shadow: var(--shadow-card);
 }
 .form-signin-heading{
     text-align: center;
@@ -1526,6 +1520,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn {
+    padding: 8px 14px;
+    line-height: 19.5px;
     background: var(--surface);
     border: 1px solid var(--input-border);
     border-radius: 4px;
@@ -1534,6 +1530,25 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: none;
     filter: none;
     transition: background-color 0.15s ease-out, border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+/* Bootstrap 2 size modifiers, restated after the base padding above */
+.btn-large {
+    padding: 9px 14px;
+    font-size: 15px;
+    line-height: normal;
+}
+
+.btn-small {
+    padding: 5px 9px;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+.btn-mini {
+    padding: 2px 6px;
+    font-size: 11px;
+    line-height: 14px;
 }
 
 .btn:hover,
@@ -1612,6 +1627,97 @@ textarea,
 
 select {
     background-color: var(--surface);
+}
+
+/* Velzon .form-control: 13px text, 8px/14px padding, 37.5px tall, 4px corners.
+   Content-box is kept so the input-mini..xxlarge widths keep their typing room. */
+input:not([type]),
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="time"],
+input[type="color"],
+textarea,
+.uneditable-input {
+    padding: 8px 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    background-color: var(--surface);
+    box-shadow: none;
+    font-size: 13px;
+    line-height: 19.5px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input:not([type]),
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="time"],
+input[type="color"],
+.uneditable-input {
+    height: 19.5px;
+}
+
+/* content-box like the text inputs, so a select and an input of the same width end together */
+select:not([multiple]):not([size]) {
+    box-sizing: content-box;
+    height: 19.5px;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 19.5px;
+}
+
+select[multiple],
+select[size] {
+    padding: 6px 8px;
+    border-radius: 4px;
+}
+
+.input-append input,
+.input-prepend input,
+.input-append .uneditable-input,
+.input-prepend .uneditable-input {
+    border-radius: 0 4px 4px 0;
+}
+
+.input-append input,
+.input-append .uneditable-input {
+    border-radius: 4px 0 0 4px;
+}
+
+.input-append .add-on,
+.input-prepend .add-on {
+    height: 19.5px;
+    padding: 8px 12px;
+    line-height: 19.5px;
+}
+
+.input-prepend .add-on {
+    border-radius: 4px 0 0 4px;
+}
+
+.input-append .add-on {
+    border-radius: 0 4px 4px 0;
 }
 
 input:not([type=checkbox]):not([type=radio]):focus,
@@ -1844,4 +1950,26 @@ select:focus:required:invalid {
     border-color: var(--danger);
     color: var(--ink);
     box-shadow: 0 0 0 3px rgba(240, 101, 72, 0.15);
+}
+
+/* multiple-select plugin trigger, sized like a select */
+.ms-parent .ms-choice {
+    height: 37.5px;
+    border-color: var(--input-border);
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 35.5px;
+}
+
+.ms-parent .ms-choice > span {
+    padding-left: 14px;
+}
+
+.ms-parent .ms-choice > span.placeholder {
+    color: var(--muted);
+}
+
+.ms-parent .ms-choice > div.icon-caret {
+    right: 14px;
+    border-top-color: var(--heading);
 }
