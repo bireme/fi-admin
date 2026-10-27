@@ -265,7 +265,7 @@ Familiar Bootstrap 2 buttons, moving toward flat.
 - **Error:** Django errorlists are converted to `alert alert-error` blocks (red text on a pale red fill) above the field.
 - **Required:** a red asterisk (`span.mark`, `#e32`) and a bold black label.
 - **Help:** labels with help use a dotted underline and a help cursor (`.field_with_help`) and open a help modal.
-- **Read-only JSON display:** a gray inset box (`.jsonfield_display`) that opens a context menu for editing.
+- **Read-only JSON display:** `.jsonfield_display` (a `<ul>` inside a link that opens the field assistant) is styled as a text input: white, Input Border, 4px corners, 8px × 14px padding, 19.5px lines, 560px content width so it ends with the 560px inputs and textareas. Each JSON item is one line, with keys in bold Heading. Hover shifts the border to Focus Border, and keyboard focus on the link shows the focus ring. Empty, it reads as a blank field.
 
 ### Navigation
 - **Sidebar:** fixed on the left, Indigo, 224px expanded and 56px collapsed (icons only). From top to bottom:

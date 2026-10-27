@@ -426,18 +426,52 @@ span.mark{
 
 }
 
+/* read-only JSON field: styled as a text input, opens the field assistant on click */
 .jsonfield_display{
     width: 560px;
-    min-height: 22px;
-    padding: 2px;
-    margin-left: 30px;
+    min-height: 19.5px;
+    padding: 8px 14px;
+    margin: 0 0 9px 30px;
     border: 1px solid var(--input-border);
-    background-color: var(--tray);
-    cursor: context-menu;
+    border-radius: 4px;
+    background-color: var(--surface);
+    color: var(--ink);
+    list-style: none;
+    font-size: 13px;
+    line-height: 19.5px;
+    cursor: pointer;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .jsonfield_display li{
-    margin: 3px;
+    margin: 0;
+}
+
+.jsonfield_display li + li{
+    margin-top: 4px;
+}
+
+.jsonfield_display strong{
+    color: var(--heading);
+}
+
+a:has(> .jsonfield_display){
+    display: inline-block;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+a:has(> .jsonfield_display):focus{
+    outline: 0;
+}
+
+a:hover > .jsonfield_display{
+    border-color: var(--focus-border);
+}
+
+a:focus-visible > .jsonfield_display{
+    border-color: var(--focus-border);
+    box-shadow: var(--focus-ring);
 }
 
 .advanced_filters{
