@@ -38,7 +38,7 @@
                         <li><a class="app-sidebar-link" href="{% url 'list_biblioref' %}"><i class="icon-book" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Bibliographic records" %}</span></a></li>
                     {% endif %}
                     {% if service_role.TITLE and user_cc == 'BR1.1' %}
-                        <li><a class="app-sidebar-link" href="{% url 'list_title' %}"><i class="icon-bookmark" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Journals" %}</span></a></li>
+                        <li><a class="app-sidebar-link" href="{% url 'list_title' %}"><i class="icon-barcode" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Journals" %}</span></a></li>
                     {% endif %}
                     {% if service_role.TesauroDeCS %}
                         {% if user_cc|slice:":2" == 'BR' or user_cc|slice:":2" == 'CL' or user_cc|slice:":2" == 'ES' or user_cc|slice:":2" == 'FR' %}
