@@ -25,8 +25,8 @@
 
                 <p class="app-sidebar-section">{% trans "Information Source" %}</p>
                 <ul class="app-sidebar-list">
-                    {% if service_role.LIS %}
-                        <li><a class="app-sidebar-link" href="{% url 'main:list_resources' %}"><i class="icon-link" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Internet resources" %}</span></a></li>
+                    {% if service_role.LILDBI %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_biblioref' %}"><i class="icon-book" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Bibliographic records" %}</span></a></li>
                     {% endif %}
                     {% if service_role.DirEve %}
                         <li><a class="app-sidebar-link" href="{% url 'events:list_events' %}"><i class="icon-calendar" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Events" %}</span></a></li>
@@ -34,8 +34,17 @@
                     {% if service_role.Multimedia %}
                         <li><a class="app-sidebar-link" href="{% url 'list_media' %}"><i class="icon-camera" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Multimedia" %}</span></a></li>
                     {% endif %}
-                    {% if service_role.LILDBI %}
-                        <li><a class="app-sidebar-link" href="{% url 'list_biblioref' %}"><i class="icon-book" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Bibliographic records" %}</span></a></li>
+                    {% if service_role.LIS %}
+                        <li><a class="app-sidebar-link" href="{% url 'main:list_resources' %}"><i class="icon-link" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Internet resources" %}</span></a></li>
+                    {% endif %}
+                    {% if service_role.LeisRef %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_legislation' %}"><i class="icon-legal" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Legislation" %}</span></a></li>
+                    {% endif %}
+                    {% if user_type == 'advanced' and service_role.DirIns %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_institution' %}"><i class="icon-building" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Institutions" %}</span></a></li>
+                    {% endif %}
+                    {% if service_role.OER %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_oer' %}"><i class="icon-lightbulb" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Educational resources" %}</span></a></li>
                     {% endif %}
                     {% if service_role.TITLE and user_cc == 'BR1.1' %}
                         <li><a class="app-sidebar-link" href="{% url 'list_title' %}"><i class="icon-barcode" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Journals" %}</span></a></li>
@@ -47,15 +56,6 @@
                     {% endif %}
                     {% if service_role.TesauroFUNASA == 'edi' %}
                         <li><a class="app-sidebar-link" href="{% url 'list_descriptor' %}?ths=2"><i class="icon-tag" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Thesaurus FUNASA" %}</span></a></li>
-                    {% endif %}
-                    {% if service_role.LeisRef %}
-                        <li><a class="app-sidebar-link" href="{% url 'list_legislation' %}"><i class="icon-legal" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Legislation" %}</span></a></li>
-                    {% endif %}
-                    {% if user_type == 'advanced' and service_role.DirIns %}
-                        <li><a class="app-sidebar-link" href="{% url 'list_institution' %}"><i class="icon-building" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Institutions" %}</span></a></li>
-                    {% endif %}
-                    {% if service_role.OER %}
-                        <li><a class="app-sidebar-link" href="{% url 'list_oer' %}"><i class="icon-lightbulb" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Educational resources" %}</span></a></li>
                     {% endif %}
                 </ul>
 
