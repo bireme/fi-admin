@@ -111,6 +111,9 @@ dev_test_coverage:
 dev_update_translations:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh -c "apk add --no-cache gettext && uv run python manage.py makemessages --all"
 
+dev_compile_translations:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec fi_admin sh -c "apk add --no-cache gettext && uv run python manage.py compilemessages --ignore=.venv"
+
 dev_loaddata:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python manage.py loaddata $(import_file)
 

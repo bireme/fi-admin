@@ -2,7 +2,11 @@
 {% load static %}
 {% load i18n %}
 
-{% block "title" %}{% trans "Dashboard" %} | {{ block.super }}{% endblock %}
+{% block title %}{% trans "Dashboard" %} | {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "Dashboard" %}</li>
+{% endblock %}
 
 {% block content %}
     <!-- block alert -->
@@ -15,73 +19,79 @@
     {% endif %}
 
     <!--  header -->
-    <div class='header'>
-        <h2><i class='icon-dashboard'></i> {% trans "Dashboard" %} <small>{{ user.username }} ({{ user_cc }}) {% if networks|length > 0 %} - {% trans 'Networks' %}: {{ networks|join:", " }}{% endif %} </small></h2>
+    <div class="header">
+        <h3><i class="icon-dashboard"></i> {% trans "Dashboard" %}</h3>
+        <p class="dashboard-meta">{{ user.username }} ({{ user_cc }}){% if networks|length > 0 %} · {% trans 'Networks' %}: {{ networks|join:", " }}{% endif %}</p>
     </div>
 
     {% if user_cc == "BR1.1" and dedup_is_unavailable %}
-    <div class="row">
-        <div class="span12">
-            <div class="alert alert-error">
-                <strong>O serviço DeDup está indisponível!</strong>
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-            </div>
+        <div class="alert alert-error">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>O serviço DeDup está indisponível!</strong>
         </div>
-    </div>
     {% endif %}
 
-    <div class="row">
+    <div class="row-fluid dashboard">
         <div class="span6">
-            <div class="well sidebar-nav">
-                <h3>{% trans "Recent actions" %}</h3>
+            <section class="dashboard-widget" aria-labelledby="title_last_actions">
+                <div class="dashboard-widget-head">
+                    <h3 id="title_last_actions">{% trans "Recent actions" %}</h3>
+                </div>
+                <div class="dashboard-widget-body" id="last_actions" aria-live="polite"></div>
+            </section>
 
-                <div id="last_actions"></div>
-            </div>
-
-            <div class="well sidebar-nav">
-                <h3>{% trans "Changed by other users" %}</h3>
-
-                <a href="javascript:changed_by_other_user();">{% trans "check" %}</a>
-                <div id="changed_by_other_user"></div>
-            </div>
+            <section class="dashboard-widget" aria-labelledby="title_changed_by_other_user">
+                <div class="dashboard-widget-head">
+                    <h3 id="title_changed_by_other_user">{% trans "Changed by other users" %}</h3>
+                    <button type="button" class="btn btn-small" onclick="changed_by_other_user()">{% trans "check" %}</button>
+                </div>
+                <div class="dashboard-widget-body" id="changed_by_other_user" aria-live="polite"></div>
+            </section>
         </div>
 
         <div class="span6">
             {% for text_block in text_blocks %}
-                <div class="well sidebar-nav">
-                    <h3>{{ text_block.get_title }}</h3>
-                    {{ text_block.get_content|safe }}
-                </div>
+                <section class="dashboard-widget">
+                    <div class="dashboard-widget-head">
+                        <h3>{{ text_block.get_title }}</h3>
+                    </div>
+                    <div class="dashboard-widget-body">
+                        {{ text_block.get_content|safe }}
+                    </div>
+                </section>
             {% endfor %}
 
-            <div class="well sidebar-nav">
-                <h3>{% trans "Changed by other cooperative center" %}</h3>
-
-                <a href="javascript:changed_by_other_cc();">{% trans "check" %}</a>
-                <div id="changed_by_other_cc"></div>
-            </div>
+            <section class="dashboard-widget" aria-labelledby="title_changed_by_other_cc">
+                <div class="dashboard-widget-head">
+                    <h3 id="title_changed_by_other_cc">{% trans "Changed by other cooperative center" %}</h3>
+                    <button type="button" class="btn btn-small" onclick="changed_by_other_cc()">{% trans "check" %}</button>
+                </div>
+                <div class="dashboard-widget-body" id="changed_by_other_cc" aria-live="polite"></div>
+            </section>
 
             {% if service_role.LILDBI == 'doc' or service_role.LILDBI == 'edi' %}
-                <div class="well sidebar-nav">
-                    <h3>{% trans "LILACS-Express records for indexing" %}</h3>
-
-                    <a href="javascript:llxp_indexed_by_cc();">{% trans "check" %}</a>
-                    <div id="llxp_indexed_by_cc"></div>
-                </div>
+                <section class="dashboard-widget" aria-labelledby="title_llxp_indexed_by_cc">
+                    <div class="dashboard-widget-head">
+                        <h3 id="title_llxp_indexed_by_cc">{% trans "LILACS-Express records for indexing" %}</h3>
+                        <button type="button" class="btn btn-small" onclick="llxp_indexed_by_cc()">{% trans "check" %}</button>
+                    </div>
+                    <div class="dashboard-widget-body" id="llxp_indexed_by_cc" aria-live="polite"></div>
+                </section>
             {% endif %}
 
             {% if service_role.DirIns %}
-            <div class="well sidebar-nav">
-                <h3>{% trans "Institutional" %}</h3>
-                <ul>
-                    <li><a href="{% url 'list_institution' %}">{% trans "Update your institution information" %}</a></li>
-                    {% if institution_id %}
-                        <li><a href="#" onclick="javascript:open_adhesionterm('{{institution_id}}')">{% trans "Review adhesion term" %}</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+                <section class="dashboard-widget" aria-labelledby="title_institutional">
+                    <div class="dashboard-widget-head">
+                        <h3 id="title_institutional">{% trans "Institutional" %}</h3>
+                    </div>
+                    <ul class="dashboard-list">
+                        <li><i class="icon-home" aria-hidden="true"></i><a class="dashboard-list-title" href="{% url 'list_institution' %}">{% trans "Update your institution information" %}</a></li>
+                        {% if institution_id %}
+                            <li><i class="icon-file" aria-hidden="true"></i><a class="dashboard-list-title" href="#" onclick="open_adhesionterm('{{institution_id}}'); return false;">{% trans "Review adhesion term" %}</a></li>
+                        {% endif %}
+                    </ul>
+                </section>
             {% endif %}
-
         </div>
     </div>
 {% endblock %}
@@ -89,19 +99,20 @@
 {% block extrajs %}
 <script src="{% static 'js/adhesionterm.js' %}"></script>
 
+{% trans "Could not load this list. Try again." as load_error_message %}
 <script type="text/javascript">
     $(function() {
         load_widget_content('/dashboard/last_actions', '#last_actions')
     })
 
     function changed_by_other_cc(){
-       load_widget_content('/dashboard/changed_by_others/cc/', '#changed_by_other_cc');
-       return false; 
+        load_widget_content('/dashboard/changed_by_others/cc/', '#changed_by_other_cc');
+        return false;
     }
 
     function changed_by_other_user(){
         load_widget_content('/dashboard/changed_by_others/user/', '#changed_by_other_user');
-        return false; 
+        return false;
     }
 
     function llxp_indexed_by_cc(){
@@ -110,14 +121,22 @@
     }
 
     function load_widget_content(widget_url, target_div){
+        var target = $(target_div);
+
         $.ajax({
             type: 'GET',
             url: widget_url,
             beforeSend: function() {
-                $(target_div).html('<img src="{% static "image/loading.gif" %}"/>');
+                target.attr('aria-busy', 'true').html('<img src="{% static "image/loading.gif" %}" alt="">');
             },
-            success: function(response) { // on success..
-                $(target_div).html(response); // update the DIV
+            success: function(response) {
+                target.html(response);
+            },
+            error: function() {
+                target.html('<p class="dashboard-error">{{ load_error_message|escapejs }}</p>');
+            },
+            complete: function() {
+                target.removeAttr('aria-busy');
             }
         });
     }

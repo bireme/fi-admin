@@ -1,11 +1,11 @@
 {% load i18n %}
 
 {% if reference_list %}
-    {% for reference in reference_list %}
-        <p>
-            <a href="{% url 'edit_biblioref_analytic' reference.id %}">{{ reference }}</a>
-        </p>
-    {% endfor %}
+    <ul class="dashboard-list">
+        {% for reference in reference_list %}
+            <li><a class="dashboard-list-title" href="{% url 'edit_biblioref_analytic' reference.id %}">{{ reference }}</a></li>
+        {% endfor %}
+    </ul>
 {% else %}
-    {% trans "No records found" %}
+    <p class="dashboard-empty">{% trans "No records found" %}</p>
 {% endif %}
