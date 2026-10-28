@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load static %}
+{% load versioned_static %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,7 +13,7 @@
         <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
         <link href="{% static "bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet">
         <link href="{% static "fort-awesome/css/font-awesome.css" %}" rel="stylesheet">
-        <link href="{% static "css/screen.css" %}" rel="stylesheet">
+        <link href="{% versioned_static "css/screen.css" %}" rel="stylesheet">
 
         <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
     </head>
