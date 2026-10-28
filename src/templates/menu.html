@@ -2,144 +2,123 @@
 
 {% block menu %}
     {% if user.is_authenticated %}
-        <div class="navbar navbar-fixed-top" id="menu">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <div class="row-fluid top">
+        <div class="app-mobilebar">
+            <button type="button" class="app-mobilebar-toggle" aria-controls="app-sidebar" aria-expanded="false" aria-label="{% trans 'Open menu' %}">
+                <i class="icon-reorder" aria-hidden="true"></i>
+            </button>
+            <a href="{% url 'dashboard:widgets' %}" class="app-mobilebar-brand">FI-ADMIN</a>
+        </div>
+        <div class="app-sidebar-scrim" aria-hidden="true"></div>
 
-                        <a href="{% url 'dashboard:widgets' %}" title="{% trans "Dashboard" %}" class="brand">FI-ADMIN</a>
-
-                        <ul class="nav pull-left">
-                            {% if service_list|length > 3 %}
-                                <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_sources">
-                                        <i class="icon-list"></i>
-                                        {% trans "Information Source"%}
-                                        <i class="icon-caret-down"></i>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu_sources">
-                            {% endif %}
-                            {% if service_role.LIS %}
-                                <li><a href="{% url 'main:list_resources' %}" title=""><i class="icon-star"></i> {% trans "Internet resources" %}</a></li>
-                            {% endif %}
-
-                            {% if service_role.DirEve %}
-                                <li><a href="{% url 'events:list_events' %}" title=""><i class="icon-calendar"></i> {% trans "Events" %}</a></li>
-                            {% endif %}
-
-                            {% if service_role.Multimedia %}
-                                <li><a href="{% url 'list_media' %}" title=""><i class="icon-camera"></i> {% trans "Multimedia" %}</a></li>
-                            {% endif %}
-
-                            {% if service_role.LILDBI %}
-                                <li><a href="{% url 'list_biblioref' %}" title=""><i class="icon-book"></i> {% trans "Bibliographic records" %}</a></li>
-                            {% endif %}
-
-                            {% if service_role.TITLE and user_cc == 'BR1.1' %}
-                                <li><a href="{% url 'list_title' %}" title=""><i class="icon-book"></i> {% trans "Journals" %}</a></li>
-                            {% endif %}
-
-                            {% if service_role.TesauroDeCS %}
-                                {% if user_cc|slice:":2" == 'BR' or user_cc|slice:":2" == 'CL' or user_cc|slice:":2" == 'ES' or user_cc|slice:":2" == 'FR' %}
-                                    <li><a href="{% url 'list_descriptor' %}?ths=1" title=""><i class="icon-book"></i> {% trans "Thesaurus DeCS" %}</a></li>
-                                {% endif %}
-                            {% endif %}
-
-                            {% if service_role.TesauroFUNASA == 'edi' %}
-                                <li><a href="{% url 'list_descriptor' %}?ths=2" title=""><i class="icon-book"></i> {% trans "Thesaurus FUNASA" %}</a></li>
-                            {% endif %}
-
-                            {% if service_role.LeisRef %}
-                                <li><a href="{% url 'list_legislation' %}" title=""><i class="icon-book"></i> {% trans "Legislation" %}</a></li>
-                            {% endif %}
-
-                            {% if user_type == 'advanced' and service_role.DirIns %}
-                                <li><a href="{% url 'list_institution' %}" title=""><i class="icon-home"></i> {% trans "Institutions" %}</a></li>
-                            {% endif %}
-
-                            {% if service_role.OER %}
-                                <li><a href="{% url 'list_oer' %}" title=""><i class="icon-share"></i> {% trans "Educational resources" %}</a></li>
-                            {% endif %}
-
-                            {% if service_role|length > 3 %}
-                                    </ul>
-                                </li>
-                            {% endif %}
-
-                            {% if service_role.DirEve or service_role.LIS %}
-                                <li><a href="{% url 'list_suggestions' %}" title=""><i class="icon-thumbs-up"></i> {% trans "Suggestions" %}</a></li>
-                            {% endif %}
-
-                            {% if service_role.DirEve == 'edi' or service_role.LIS == 'edi' or service_role.LILDBI == 'edi' %}
-                                <li><a href="{% url 'error_reporting:list_error_report' %}" title=""><i class="icon-warning-sign"></i> {% trans "Error reports" %}</a></li>
-                                <li><a href="{% url 'reports:list_reports' %}" title=""><i class="icon-file"></i> {% trans "Reports" %}</a></li>
-                            {% endif %}
-
-                            {% if user.is_superuser %}
-                                <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_control_tables">
-                                        <i class="icon-list"></i>
-                                        {% trans "Controlled lists"%}
-                                        <i class="icon-caret-down"></i>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu_control_tables">
-                                        <li><a href="{% url 'main:list_thematics' %}" title=""><i class="icon-tag"></i> {% trans "Thematic areas" %}</a></li>
-                                        <li><a href="{% url 'main:list_types' %}" title=""><i class="icon-sitemap"></i> {% trans "Source types" %}</a></li>
-                                        <li><a href="{% url 'events:list_types' %}" title=""><i class="icon-calendar"></i> {% trans "Event types" %}</a></li>
-                                        <li><a href="{% url 'main:list_languages' %}" title=""><i class="icon-flag"></i> {% trans "Languages" %}</a></li>
-                                        <li><a href="{% url 'list_mediatypes' %}" title=""><i class="icon-camera"></i> {% trans "Media types" %}</a></li>
-
-                                        <li><a href="{% url 'list_country_region' %}" title=""><i class="icon-globe"></i> {% trans "Act Country/Region" %}</a></li>
-                                        <li><a href="{% url 'list_act_collection' %}" title=""><i class="icon-folder-open"></i> {% trans "Act Collection" %}</a></li>
-                                        <li><a href="{% url 'list_act_scope' %}" title=""><i class="icon-sitemap"></i> {% trans "Act Scope" %}</a></li>
-                                        <li><a href="{% url 'list_act_type' %}" title=""><i class="icon-tag"></i> {% trans "Act Type" %}</a></li>
-                                        <li><a href="{% url 'list_act_organ' %}" title=""><i class="icon-briefcase"></i> {% trans "Act Organ Issuer" %}</a></li>
-                                        <li><a href="{% url 'list_act_source' %}" title=""><i class="icon-home"></i> {% trans "Act Source" %}</a></li>
-                                        <li><a href="{% url 'list_act_reltype' %}" title=""><i class="icon-retweet"></i> {% trans "Act Relation Type" %}</a></li>
-                                        <li><a href="{% url 'list_act_state' %}" title=""><i class="icon-globe"></i> {% trans "Act scope state" %}</a></li>
-                                        <li><a href="{% url 'list_act_city' %}" title=""><i class="icon-globe"></i> {% trans "Act scope city" %}</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="{% url 'admin:index' %}" title=""><i class="icon-lock"></i> {% trans "Admin" %}</a></li>
-                            {% endif %}
-                        </ul>
-
-                        <ul class="nav pull-right">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_language">
-                                    <i class="icon-flag"></i>
-                                    <i class="icon-caret-down"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu_language">
-                                    {% if LANGUAGE_CODE != "en" %}<li><a href="javascript: change_language('en')" title="{% trans 'English' %}">{% trans 'English'|capfirst %}</a></li>{% endif %}
-                                    {% if LANGUAGE_CODE != "pt-br" %}<li><a href="javascript: change_language('pt-BR')" title="{% trans 'Portuguese' %}">{% trans 'Portuguese'|capfirst %}</a></li>{% endif %}
-                                    {% if LANGUAGE_CODE != "es" %}<li><a href="javascript: change_language('es')" title="{% trans 'Spanish' %}">{% trans 'Spanish'|capfirst %}</a></li>{% endif %}
-                                </ul>
-                            </li>
-                            <!--
-                            <li>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_profile">
-                                    <i class="icon-user"></i><i class="icon-caret-down"></i>
-                                </a>
-                            </li>
-                            -->
-                            <li class="dropdow">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="menu_user"><i class="icon-user icon-white"></i>{{ user_name|truncatechars:20 }} ({{ user_cc }})
-                                </a>
-                                <ul class="dropdown-menu" role="user_menu" aria-labelledby="menu_user">
-                                    <li>
-                                        <form class="logout-form" method="post" action="{% url 'auth_logout' %}">
-                                            {% csrf_token %}
-                                            <button type="submit" title="Logout">{% trans 'Logout' %}</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+        <nav class="app-sidebar" id="app-sidebar" aria-label="{% trans 'Main menu' %}">
+            <div class="app-sidebar-head">
+                <a href="{% url 'dashboard:widgets' %}" class="app-sidebar-brand" title="{% trans 'Dashboard' %}">
+                    <span class="app-sidebar-brand-full">FI-ADMIN</span>
+                    <span class="app-sidebar-brand-short" aria-hidden="true">FI</span>
+                </a>
             </div>
 
-        </div>
+            <div class="app-sidebar-body">
+                <ul class="app-sidebar-list">
+                    <li><a class="app-sidebar-link" href="{% url 'dashboard:widgets' %}"><i class="icon-dashboard" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Dashboard" %}</span></a></li>
+                </ul>
+
+                <p class="app-sidebar-section">{% trans "Information Source" %}</p>
+                <ul class="app-sidebar-list">
+                    {% if service_role.LILDBI %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_biblioref' %}"><i class="icon-book" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Bibliographic records" %}</span></a></li>
+                    {% endif %}
+                    {% if service_role.DirEve %}
+                        <li><a class="app-sidebar-link" href="{% url 'events:list_events' %}"><i class="icon-calendar" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Events" %}</span></a></li>
+                    {% endif %}
+                    {% if service_role.Multimedia %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_media' %}"><i class="icon-camera" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Multimedia" %}</span></a></li>
+                    {% endif %}
+                    {% if service_role.LIS %}
+                        <li><a class="app-sidebar-link" href="{% url 'main:list_resources' %}"><i class="icon-link" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Internet resources" %}</span></a></li>
+                    {% endif %}
+                    {% if service_role.LeisRef %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_legislation' %}"><i class="icon-legal" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Legislation" %}</span></a></li>
+                    {% endif %}
+                    {% if user_type == 'advanced' and service_role.DirIns %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_institution' %}"><i class="icon-building" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Institutions" %}</span></a></li>
+                    {% endif %}
+                    {% if service_role.OER %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_oer' %}"><i class="icon-lightbulb" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Educational resources" %}</span></a></li>
+                    {% endif %}
+                    {% if service_role.TITLE and user_cc == 'BR1.1' %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_title' %}"><i class="icon-barcode" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Journals" %}</span></a></li>
+                    {% endif %}
+                    {% if service_role.TesauroDeCS %}
+                        {% if user_cc|slice:":2" == 'BR' or user_cc|slice:":2" == 'CL' or user_cc|slice:":2" == 'ES' or user_cc|slice:":2" == 'FR' %}
+                            <li><a class="app-sidebar-link" href="{% url 'list_descriptor' %}?ths=1"><i class="icon-tags" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Thesaurus DeCS" %}</span></a></li>
+                        {% endif %}
+                    {% endif %}
+                    {% if service_role.TesauroFUNASA == 'edi' %}
+                        <li><a class="app-sidebar-link" href="{% url 'list_descriptor' %}?ths=2"><i class="icon-tag" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Thesaurus FUNASA" %}</span></a></li>
+                    {% endif %}
+                </ul>
+
+                {% if service_role.DirEve or service_role.LIS or service_role.LILDBI == 'edi' %}
+                    <ul class="app-sidebar-list app-sidebar-list-divided">
+                        {% if service_role.DirEve or service_role.LIS %}
+                            <li><a class="app-sidebar-link" href="{% url 'list_suggestions' %}"><i class="icon-thumbs-up" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Suggestions" %}</span></a></li>
+                        {% endif %}
+                        {% if service_role.DirEve == 'edi' or service_role.LIS == 'edi' or service_role.LILDBI == 'edi' %}
+                            <li><a class="app-sidebar-link" href="{% url 'error_reporting:list_error_report' %}"><i class="icon-warning-sign" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Error reports" %}</span></a></li>
+                            <li><a class="app-sidebar-link" href="{% url 'reports:list_reports' %}"><i class="icon-bar-chart" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Reports" %}</span></a></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+
+                {% if user.is_superuser %}
+                    <ul class="app-sidebar-list app-sidebar-list-divided">
+                        <li class="app-sidebar-group">
+                            <button type="button" class="app-sidebar-link app-sidebar-group-toggle" aria-expanded="false" aria-controls="app-sidebar-controlled-lists">
+                                <i class="icon-list" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Controlled lists" %}</span><i class="icon-angle-down app-sidebar-caret" aria-hidden="true"></i>
+                            </button>
+                            <ul class="app-sidebar-sublist" id="app-sidebar-controlled-lists" hidden>
+                                <li><a class="app-sidebar-link" href="{% url 'main:list_thematics' %}"><span class="app-sidebar-label">{% trans "Thematic areas" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'main:list_types' %}"><span class="app-sidebar-label">{% trans "Source types" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'events:list_types' %}"><span class="app-sidebar-label">{% trans "Event types" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'main:list_languages' %}"><span class="app-sidebar-label">{% trans "Languages" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_mediatypes' %}"><span class="app-sidebar-label">{% trans "Media types" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_country_region' %}"><span class="app-sidebar-label">{% trans "Act Country/Region" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_act_collection' %}"><span class="app-sidebar-label">{% trans "Act Collection" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_act_scope' %}"><span class="app-sidebar-label">{% trans "Act Scope" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_act_type' %}"><span class="app-sidebar-label">{% trans "Act Type" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_act_organ' %}"><span class="app-sidebar-label">{% trans "Act Organ Issuer" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_act_source' %}"><span class="app-sidebar-label">{% trans "Act Source" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_act_reltype' %}"><span class="app-sidebar-label">{% trans "Act Relation Type" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_act_state' %}"><span class="app-sidebar-label">{% trans "Act scope state" %}</span></a></li>
+                                <li><a class="app-sidebar-link" href="{% url 'list_act_city' %}"><span class="app-sidebar-label">{% trans "Act scope city" %}</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a class="app-sidebar-link" href="{% url 'admin:index' %}"><i class="icon-lock" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Admin" %}</span></a></li>
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="app-sidebar-foot">
+                <div class="app-sidebar-lang" role="group" aria-label="{% trans 'Language' %}">
+                    <button type="button" class="app-sidebar-lang-option" lang="en" onclick="change_language('en')" title="English"{% if LANGUAGE_CODE == "en" %} aria-current="true"{% endif %}>EN</button>
+                    <button type="button" class="app-sidebar-lang-option" lang="pt-BR" onclick="change_language('pt-BR')" title="Português"{% if LANGUAGE_CODE == "pt-br" %} aria-current="true"{% endif %}>PT</button>
+                    <button type="button" class="app-sidebar-lang-option" lang="es" onclick="change_language('es')" title="Español"{% if LANGUAGE_CODE == "es" %} aria-current="true"{% endif %}>ES</button>
+                </div>
+
+                <div class="app-sidebar-user">
+                    <i class="icon-user" aria-hidden="true"></i>
+                    <span class="app-sidebar-label app-sidebar-user-name" title="{{ user_name }} ({{ user_cc }})">{{ user_name }} <span class="app-sidebar-user-cc">{{ user_cc }}</span></span>
+                </div>
+                <form class="logout-form" method="post" action="{% url 'auth_logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="app-sidebar-link"><i class="icon-signout" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Logout" %}</span></button>
+                </form>
+
+                <button type="button" class="app-sidebar-link app-sidebar-collapse" aria-controls="app-sidebar" aria-expanded="true" data-label-collapse="{% trans 'Collapse menu' %}" data-label-expand="{% trans 'Expand menu' %}">
+                    <i class="icon-angle-left" aria-hidden="true"></i><span class="app-sidebar-label">{% trans "Collapse menu" %}</span>
+                </button>
+            </div>
+        </nav>
     {% endif %}
 {% endblock %}

@@ -1,0 +1,407 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-27T13:15:16.415091+00:00",
+  "title": "Design System: FI-ADMIN",
+  "extensions": {
+    "colorMeta": {
+      "bireme-green": {
+        "role": "primary",
+        "displayName": "BIREME Green",
+        "canonical": "oklch(70.0% 0.144 166.8)",
+        "tonalRamp": [
+          "#001404",
+          "#00341c",
+          "#005638",
+          "#007b57",
+          "#00a277",
+          "#40c99c",
+          "#81e9c1",
+          "#adffe1"
+        ]
+      },
+      "action-blue": {
+        "role": "secondary",
+        "displayName": "Action Blue",
+        "canonical": "oklch(60.0% 0.141 241.6)",
+        "tonalRamp": [
+          "#000a2d",
+          "#002953",
+          "#00497d",
+          "#006da9",
+          "#2591d3",
+          "#67b7ef",
+          "#99d9ff",
+          "#c1f6ff"
+        ]
+      },
+      "action-blue-deep": {
+        "role": "secondary",
+        "displayName": "Action Blue Deep"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "oklch(97.4% 0.007 80.7)",
+        "tonalRamp": [
+          "#0c0b0a",
+          "#272625",
+          "#464543",
+          "#676663",
+          "#8b8986",
+          "#b0aeaa",
+          "#d3d1cc",
+          "#f1eee9"
+        ]
+      },
+      "panel-white": {
+        "role": "neutral",
+        "displayName": "Panel White"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(32.1% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#aeaeae",
+          "#d1d1d1",
+          "#eeeeee"
+        ]
+      },
+      "charcoal": {
+        "role": "neutral",
+        "displayName": "Charcoal",
+        "canonical": "oklch(37.5% 0 0)"
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline"
+      },
+      "rule-soft": {
+        "role": "neutral",
+        "displayName": "Rule Soft"
+      },
+      "filter-tray": {
+        "role": "neutral",
+        "displayName": "Filter Tray"
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted"
+      },
+      "danger-red": {
+        "role": "tertiary",
+        "displayName": "Danger Red",
+        "canonical": "oklch(55.6% 0.145 24.0)",
+        "tonalRamp": [
+          "#280000",
+          "#500007",
+          "#7a1f21",
+          "#a73e3d",
+          "#cc6662",
+          "#eb928c",
+          "#ffbbb5",
+          "#ffddd8"
+        ]
+      },
+      "success-green": {
+        "role": "tertiary",
+        "displayName": "Success Green",
+        "canonical": "oklch(56.7% 0.118 144.1)",
+        "tonalRamp": [
+          "#001200",
+          "#003103",
+          "#1b521e",
+          "#387639",
+          "#5e9a5e",
+          "#8bbd8a",
+          "#b5deb3",
+          "#d7fad6"
+        ]
+      },
+      "warning-amber": {
+        "role": "tertiary",
+        "displayName": "Warning Amber",
+        "canonical": "oklch(75.5% 0.170 64.0)",
+        "tonalRamp": [
+          "#210000",
+          "#471500",
+          "#6f3200",
+          "#9a5000",
+          "#c77100",
+          "#f69303",
+          "#ffbb61",
+          "#ffdc92"
+        ]
+      },
+      "info-steel": {
+        "role": "tertiary",
+        "displayName": "Info Steel",
+        "canonical": "oklch(59.2% 0.095 233.1)",
+        "tonalRamp": [
+          "#000d20",
+          "#002b43",
+          "#024b68",
+          "#266e91",
+          "#4b92b7",
+          "#7db7d6",
+          "#a9d9f3",
+          "#cef5ff"
+        ]
+      },
+      "pending-orange": {
+        "role": "tertiary",
+        "displayName": "Pending Orange",
+        "canonical": "oklch(67.1% 0.174 51.3)",
+        "tonalRamp": [
+          "#270000",
+          "#4f0500",
+          "#792600",
+          "#a64400",
+          "#d56400",
+          "#fa8d46",
+          "#ffb77e",
+          "#ffd9aa"
+        ]
+      },
+      "notice-mint": {
+        "role": "primary",
+        "displayName": "Notice Mint"
+      },
+      "bireme-green-deep": {
+        "role": "primary",
+        "displayName": "BIREME Green Deep",
+        "canonical": "#00704f",
+        "tonalRamp": [
+          "#001404",
+          "#00341c",
+          "#005638",
+          "#00704f",
+          "#00a277",
+          "#40c99c",
+          "#81e9c1",
+          "#adffe1"
+        ]
+      },
+      "bireme-green-ink": {
+        "role": "primary",
+        "displayName": "BIREME Green Ink"
+      },
+      "sidebar-mint": {
+        "role": "primary",
+        "displayName": "Sidebar Mint"
+      },
+      "muted-text": {
+        "role": "neutral",
+        "displayName": "Muted Text"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Standalone pages such as errors and sign-in."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Dashboard and report section titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Page header on list and edit pages, normal weight."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Group headings in forms and previews."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Labels, inputs, table cells, help text."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Status labels, badges, version string, eyebrows."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "FI-ADMIN brand text in the top bar only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "panel-lift",
+        "value": "0 2px 5px rgba(0, 0, 0, 0.2)",
+        "purpose": "Main content panel only."
+      },
+      {
+        "name": "whisper",
+        "value": "0 1px 2px rgba(0, 0, 0, 0.05)",
+        "purpose": "Sign-in form."
+      },
+      {
+        "name": "focus-glow",
+        "value": "inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6)",
+        "purpose": "Focused text inputs."
+      }
+    ],
+    "motion": [
+      {
+        "name": "input-focus",
+        "value": "border linear .2s, box-shadow linear .2s",
+        "purpose": "Bootstrap 2 input focus transition."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "480px"
+      },
+      {
+        "name": "tablet",
+        "value": "767px"
+      },
+      {
+        "name": "desktop",
+        "value": "980px"
+      },
+      {
+        "name": "large",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "Most common button; secondary actions, cancel, filters.",
+      "html": "<button class=\"ds-btn\">Cancel</button>",
+      "css": ".ds-btn{font:13px/18px \"Helvetica Neue\", Helvetica, Arial, sans-serif;color:#333;background:#f5f5f5;border:1px solid #ccc;border-bottom-color:#b3b3b3;border-radius:4px;padding:4px 10px;cursor:pointer;transition:background .15s} .ds-btn:hover{background:#e6e6e6} .ds-btn:focus-visible{outline:2px solid rgba(82,168,236,.8);outline-offset:1px} .ds-btn:active{background:#d9d9d9}"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single main action of a form or page header (flat target treatment).",
+      "html": "<button class=\"ds-btn-primary\">Save</button>",
+      "css": ".ds-btn-primary{font:13px/18px \"Helvetica Neue\", Helvetica, Arial, sans-serif;color:#fff;background:#0088cc;border:1px solid #0074b0;border-radius:4px;padding:4px 10px;cursor:pointer;transition:background .15s} .ds-btn-primary:hover{background:#0055cc} .ds-btn-primary:focus-visible{outline:2px solid rgba(82,168,236,.8);outline-offset:1px}"
+    },
+    {
+      "name": "Large Primary Button",
+      "kind": "button",
+      "refersTo": "button-large",
+      "description": "Standard size in form-submit bars and header actions.",
+      "html": "<button class=\"ds-btn-lg\">New record</button>",
+      "css": ".ds-btn-lg{font:15px/20px \"Helvetica Neue\", Helvetica, Arial, sans-serif;color:#fff;background:#0088cc;border:1px solid #0074b0;border-radius:5px;padding:9px 14px;cursor:pointer;transition:background .15s} .ds-btn-lg:hover{background:#0055cc} .ds-btn-lg:focus-visible{outline:2px solid rgba(82,168,236,.8);outline-offset:1px}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Delete and confirm-delete only.",
+      "html": "<button class=\"ds-btn-danger\">Delete</button>",
+      "css": ".ds-btn-danger{font:13px/18px \"Helvetica Neue\", Helvetica, Arial, sans-serif;color:#fff;background:#b94a48;border:1px solid #953b39;border-radius:4px;padding:4px 10px;cursor:pointer;transition:background .15s} .ds-btn-danger:hover{background:#953b39} .ds-btn-danger:focus-visible{outline:2px solid rgba(82,168,236,.8);outline-offset:1px}"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Form field with blue focus glow.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Title\">",
+      "css": ".ds-input{font:13px/18px \"Helvetica Neue\", Helvetica, Arial, sans-serif;color:#555;background:#fff;border:1px solid #ccc;border-radius:3px;padding:4px;height:18px;width:260px;box-shadow:inset 0 1px 1px rgba(0,0,0,.075);transition:border .2s,box-shadow .2s} .ds-input::placeholder{color:#999} .ds-input:focus{outline:0;border-color:rgba(82,168,236,.8);box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(82,168,236,.6)}"
+    },
+    {
+      "name": "Sidebar",
+      "kind": "nav",
+      "refersTo": "sidebar",
+      "description": "Fixed left navigation in deep BIREME green; collapses to a 56px icon rail.",
+      "html": "<nav class=\"ds-side\"><div class=\"ds-side-brand\">FI-ADMIN</div><a class=\"ds-side-link on\" href=\"#\" aria-current=\"page\"><svg class=\"ds-ico\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><rect x=\"2\" y=\"2\" width=\"12\" height=\"12\" rx=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>Dashboard</a><p class=\"ds-side-sec\">Information Source</p><a class=\"ds-side-link\" href=\"#\"><svg class=\"ds-ico\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><rect x=\"2\" y=\"2\" width=\"12\" height=\"12\" rx=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>Bibliographic records</a><a class=\"ds-side-link\" href=\"#\"><svg class=\"ds-ico\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><rect x=\"2\" y=\"2\" width=\"12\" height=\"12\" rx=\"2\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg>Events</a></nav>",
+      "css": ".ds-side{width:224px;padding:0 8px 8px;background:#00704f;color:#fff;font:13px/18px \"Helvetica Neue\", Helvetica, Arial, sans-serif} .ds-side-brand{height:56px;display:flex;align-items:center;margin:0 -8px 8px;padding-left:18px;font-size:20px;font-weight:200;border-bottom:1px solid rgba(255,255,255,.14)} .ds-side-sec{margin:16px 10px 6px;color:#c8f5e6;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase} .ds-side-link{display:flex;align-items:center;gap:10px;min-height:36px;padding:0 10px;border-radius:4px;color:#fff;text-decoration:none} .ds-side-link:hover{background:rgba(255,255,255,.1)} .ds-side-link:focus-visible{outline:2px solid #fff;outline-offset:-2px} .ds-side-link.on{background:#fff;color:#00563a;font-weight:700} .ds-ico{flex:none}"
+    },
+    {
+      "name": "Content Panel with Breadcrumb",
+      "kind": "card",
+      "refersTo": "content-panel",
+      "description": "The single white working panel on the paper ground, capped by the breadcrumb.",
+      "html": "<div class=\"ds-desk\"><div class=\"ds-crumb\">Bibliographic records / Edit</div><div class=\"ds-panel\"><h3 class=\"ds-h\">Edit record</h3><p>Record fields go here.</p></div></div>",
+      "css": ".ds-desk{background:#f9f6f1;padding:20px;font:13px/18px \"Helvetica Neue\", Helvetica, Arial, sans-serif;color:#333} .ds-crumb{background:#f5f5f5;border:1px solid #d6d6d6;border-bottom:0;border-radius:4px 4px 0 0;padding:7px 14px;font-size:11pt} .ds-panel{background:#fff;border:1px solid #d6d6d6;border-top:0;border-radius:0 0 5px 5px;box-shadow:0 2px 5px rgba(0,0,0,.2);padding:10px 20px 30px} .ds-h{font-size:18px;line-height:27px;font-weight:400;margin:10px 0 20px;padding-bottom:9px;border-bottom:1px solid #eee}"
+    },
+    {
+      "name": "Status Labels",
+      "kind": "chip",
+      "refersTo": "status-label",
+      "description": "Semantic record-state labels.",
+      "html": "<span class=\"ds-label ds-ok\">Published</span> <span class=\"ds-label ds-pend\">Pending</span> <span class=\"ds-label ds-del\">Deleted</span> <span class=\"ds-label ds-info\">Info</span>",
+      "css": ".ds-label{display:inline-block;font:700 11px/14px \"Helvetica Neue\", Helvetica, Arial, sans-serif;color:#fff;border-radius:3px;padding:1px 4px 2px;margin-right:4px} .ds-ok{background:#468847} .ds-pend{background:#e66f00} .ds-del{background:#b94a48} .ds-info{background:#3a87ad}"
+    },
+    {
+      "name": "Tabs",
+      "kind": "nav",
+      "description": "Bootstrap nav-tabs splitting long record forms into methodology groups.",
+      "html": "<ul class=\"ds-tabs\"><li class=\"on\"><a href=\"#\">General</a></li><li><a href=\"#\">Descriptors</a></li><li><a href=\"#\">Online resources</a></li></ul>",
+      "css": ".ds-tabs{display:flex;list-style:none;margin:0;padding:0;border-bottom:1px solid #ddd;font:13px/18px \"Helvetica Neue\", Helvetica, Arial, sans-serif} .ds-tabs a{display:block;padding:8px 12px;margin-bottom:-1px;margin-right:2px;color:#0088cc;text-decoration:none;border:1px solid transparent;border-radius:4px 4px 0 0} .ds-tabs a:hover{background:#eee;border-color:#eee #eee #ddd} .ds-tabs a:focus-visible{outline:2px solid rgba(82,168,236,.8)} .ds-tabs .on a{color:#555;background:#fff;border-color:#ddd #ddd transparent}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Cataloguer's Desk",
+    "overview": "FI-ADMIN is a dependable desk for long sessions of record entry. There is a warm paper ground. Each task gets one white panel with a hairline border and a soft lift. A deep-green institutional sidebar runs down the left edge, and a charcoal band at the foot carries BIREME's mark. The design never competes with the record. Documentalists and editors spend hours on dense, tabbed, methodology-bound forms in three languages, so the system favors legibility, predictability, and familiar controls over expression.\n\nThe system is Bootstrap 2.0.4 with a thin house layer (`src/static/css/screen.css`). The house layer is where identity lives: the BIREME green sidebar, the paper background, the panel-with-breadcrumb-cap layout, and the status colors that mark a record's lifecycle. Everything else is Bootstrap 2 idiom. Center staff across the network already know these controls, and that familiarity is a feature.\n\nThe direction from here is **flatten gradually**. Keep every structure users rely on: tabs, modals, striped tables, the panel layout, the button hierarchy. Treat Bootstrap 2's gradients, inset highlights, and text-shadows as dated surface finish. New and reworked pieces render flat, using the same colors, radii, and spacing.",
+    "keyCharacteristics": [
+      "Warm paper ground with white working panels; one panel per page.",
+      "Green marks identity (the left sidebar) and blue marks action. The two never swap roles.",
+      "13px/18px Helvetica Neue body at high density, built for field-heavy forms.",
+      "Gentle 3–5px corners throughout, with no sharp edges and no pills except badges.",
+      "Depth comes from one structural shadow under the content panel, not from layered cards.",
+      "Status is carried by color words (published, pending, deleted, draft), so they must stay consistent."
+    ],
+    "rules": [
+      {
+        "name": "The Two Voices Rule",
+        "body": "Green says \"this is BIREME\", and blue says \"you can act here\". Inside the content panel, green never appears on a button or link, and blue never fills a bar or band. The sidebar is the one green band that holds links.",
+        "section": "colors"
+      },
+      {
+        "name": "The Status Vocabulary Rule",
+        "body": "Status colors mean record states, not decoration. Use Danger Red, Pending Orange, Success Green, or Info Steel only where they report state, alert, or destroy.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Languages Rule",
+        "body": "Every text container must fit Portuguese and Spanish strings, which are often 20–30% longer than English. Never fix a width around an English label.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Desk Rule",
+        "body": "Each page has exactly one white content panel on the paper ground. Group content with tabs, fieldsets, wells, and rules inside it, never with a second floating card.",
+        "section": "layout"
+      },
+      {
+        "name": "The Single Lift Rule",
+        "body": "Only the content panel and true overlays (modal, dropdown, toast alerts) cast shadows. Nothing inside the panel is elevated.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep exactly one white content panel per page on the Paper background, capped by the breadcrumb.",
+      "Do use the green family only for the sidebar, the mobile bar and identity bands. Use Action Blue for links and primary actions inside the panel.",
+      "Do give every sidebar entry its own distinct icon. The collapsed rail is icons only.",
+      "Do build new pieces flat: solid fills, the existing colors and 3–5px radii, with no gradients, inset highlights, or text-shadows.",
+      "Do keep Bootstrap 2 structures (nav-tabs, modals, striped tables, wells, input-append) so center staff never relearn the interface.",
+      "Do size text containers for PT-BR and ES strings, and pass all copy through `{% trans %}`.",
+      "Do report record state with the status colors consistently: published, pending, deleted, draft."
+    ],
+    "donts": [
+      "Don't put BIREME Green on buttons or links inside the panel, or Action Blue on bars and bands.",
+      "Don't put small white text on the bright BIREME Green (2.5:1). Use BIREME Green Deep.",
+      "Don't reintroduce a top navigation bar. Navigation lives in the left sidebar.",
+      "Don't add shadows inside the content panel or nest floating cards in it.",
+      "Don't introduce new fonts. Helvetica Neue / Arial is the only family.",
+      "Don't add new gradient or bevel finishes such as `.btn-decs`. They are legacy to retire, not patterns to extend.",
+      "Don't remove or restyle away the footer's BIREME/PAHO/WHO logo and policy links.",
+      "Don't use semantic status colors decoratively."
+    ]
+  }
+}

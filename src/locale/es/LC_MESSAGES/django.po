@@ -7393,6 +7393,26 @@ msgstr "Registro creado"
 msgid "Year must be greater than 1900"
 msgstr "El año debe ser mayor que 1900"
 
+#: templates/menu.html
+msgid "Main menu"
+msgstr "Menú principal"
+
+#: templates/menu.html
+msgid "Open menu"
+msgstr "Abrir menú"
+
+#: templates/menu.html
+msgid "Collapse menu"
+msgstr "Contraer menú"
+
+#: templates/menu.html
+msgid "Expand menu"
+msgstr "Expandir menú"
+
+#: templates/dashboard/index.html
+msgid "Could not load this list. Try again."
+msgstr "No fue posible cargar esta lista. Inténtelo de nuevo."
+
 #~ msgid "Incompatible with LILACS"
 #~ msgstr "Incompatible con LILACS"
 

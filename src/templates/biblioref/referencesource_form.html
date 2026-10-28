@@ -39,7 +39,7 @@
 {% block content %}
 
 <div class='header'>
-    <h2><i class='icon-file' title="{% if object %}{{ object.document_type }}{% else %}{{ form.document_type }}{% endif %}"></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %}</h2>
+    <h2><i class='icon-book' title="{% if object %}{{ object.document_type }}{% else %}{{ form.document_type }}{% endif %}"></i>{% if not object %}{% trans "New Source" %}{% else %}{% trans "Edit Source" %}{% endif %}</h2>
     {% if object and form.document_type != 'Mc' %}
         <div class='pull-right'>
             <a href="{% url 'list_biblioref_analytics' %}?source={{object.pk}}" class='btn btn-info'><i class='icon-align-justify'></i>{% trans "List analytics" %}</a>
@@ -333,7 +333,7 @@
             $('.researchdata-row').formset({
                     addText : '{% trans "Add research data" %}',
                     deleteText: '{% trans "delete" %}<i class="icon-trash"></i>',
-                    addCssClass : 'icon-plus-sign btn btn-large btn-inverse',
+                    addCssClass : 'icon-plus-sign btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'researchdata_formset',
@@ -343,7 +343,7 @@
             $('.relatedresource-row').formset({
                     addText : '{% trans "Add resource" %}',
                     deleteText: '{% trans "delete" %}<i class="icon-trash"></i>',
-                    addCssClass : 'icon-plus-sign btn btn-large btn-inverse',
+                    addCssClass : 'icon-plus-sign btn',
                     deleteCssClass : 'btn',
                     keepFieldValues: '.keep-field-value',
                     formCssClass: 'relatedresource_formset',

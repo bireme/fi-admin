@@ -1,14 +1,21 @@
 {% load i18n %}
 
-<ul class="unstyled">
-    {% for action in recent_actions %}
-        <li>
-            {% if action.action_flag == 1 %}
-                <i class="icon-file" title="{% trans "Created" %}"></i>
-            {% elif action.action_flag == 2 %}
-                <i class="icon-pencil" title="{% trans "Modified" %}"></i>
-            {% endif %}
-            {{ action.action_time }} - {{ action.object_repr }}
-        </li>
-    {% endfor %}
-</ul>
+{% if recent_actions %}
+    <ul class="dashboard-list">
+        {% for action in recent_actions %}
+            <li>
+                {% if action.action_flag == 1 %}
+                    <i class="icon-file" title="{% trans "Created" %}" aria-label="{% trans "Created" %}"></i>
+                {% elif action.action_flag == 2 %}
+                    <i class="icon-pencil" title="{% trans "Modified" %}" aria-label="{% trans "Modified" %}"></i>
+                {% else %}
+                    <i aria-hidden="true"></i>
+                {% endif %}
+                <span class="dashboard-list-title">{{ action.object_repr }}</span>
+                <time class="dashboard-list-meta" datetime="{{ action.action_time|date:'c' }}">{{ action.action_time|date:"SHORT_DATETIME_FORMAT" }}</time>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="dashboard-empty">{% trans "No records found" %}</p>
+{% endif %}

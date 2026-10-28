@@ -7369,6 +7369,26 @@ msgstr "Recurso criado"
 msgid "Year must be greater than 1900"
 msgstr "Ano deve ser maior que 1900"
 
+#: templates/menu.html
+msgid "Main menu"
+msgstr "Menu principal"
+
+#: templates/menu.html
+msgid "Open menu"
+msgstr "Abrir menu"
+
+#: templates/menu.html
+msgid "Collapse menu"
+msgstr "Recolher menu"
+
+#: templates/menu.html
+msgid "Expand menu"
+msgstr "Expandir menu"
+
+#: templates/dashboard/index.html
+msgid "Could not load this list. Try again."
+msgstr "Não foi possível carregar esta lista. Tente novamente."
+
 #~ msgid "Incompatible with LILACS"
 #~ msgstr "Incompatível com LILACS"
 
