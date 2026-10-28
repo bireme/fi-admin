@@ -1,4 +1,4 @@
-# Current Feature: Replace pip with uv as package manager
+# Current Feature: Cache-busting version parameter for screen.css
 
 ## Status
 
@@ -6,35 +6,29 @@ In Progress
 
 ## Goals
 
-- `src/pyproject.toml` + `src/uv.lock` replace `requirements.txt` / `requirements-dev.txt` (deleted): compatible-release ranges `~=X.Y.Z` on the current versions (exact versions in the lock; `make dev_lock_upgrade` to bump), `"setuptools<81"` declared (needed by `pkg_resources` in deform, `utils/views.py`, `oer/views.py`), dev deps in `[dependency-groups] dev`, `[tool.uv] package = false`, resolved top-level versions unchanged
-- `Dockerfile` has no `pip`: uv copied from `ghcr.io/astral-sh/uv:latest`; Python pinned to 3.14 (`requires-python = "==3.14.*"` + `src/.python-version`)
-  - prod: `uv sync --frozen --no-dev --no-install-project` bakes `/app/.venv` (BuildKit cache mount), build deps removed, readable/usable by `appuser`
-  - dev: build deps kept (runtime compile of `mysqlclient`/`lxml`), no baked venv
-- uv defaults kept: venv is `.venv` next to `pyproject.toml` (no `UV_PROJECT_ENVIRONMENT`); in dev it lives on the host as `src/.venv`, created only inside the container
-- Plain `uv run` everywhere (dev image `UV_FROZEN=1` auto-syncs, prod image `UV_NO_SYNC=1`) — compose files (runserver/gunicorn), Makefile targets, `run_tests.sh`, `run_coverage.sh`, crontab `update_search_index` scripts, `proc/import/import2FIAdmin.sh`
-- New Makefile targets `dev_sync` (`uv sync`) and `dev_lock` (`uv lock`) run in the dev container
-- `.gitignore` gets `src/.venv/`; new `.dockerignore` (at least `src/.venv`, `.git`, `.ai`, `backups`)
-- `fabric/fabfile.py` `requirements` task uses `uv sync --frozen --no-dev` in `src/` (untested, pending)
-- Verified: `make dev_build`/`dev_up` creates `src/.venv` and runserver starts; `make dev_test` green (249 tests, 5 skipped), coverage ≈ 60%; `make dev_check` clean; `prod_build`/`api_build` succeed, gunicorn runs as `appuser`, crontab script runs; image size/build time compared with pip build
-- Log written in `.ai/logs/2026-10-06-replace-pip-with-uv.md`
+- `src/static/css/screen.css` is loaded with a version query parameter (e.g. `css/screen.css?v=<version>`) so browsers fetch the new file whenever the stylesheet changes, instead of serving a stale cached copy
+- All templates that load `screen.css` use the versioned URL: `src/templates/base.html`, `src/templates/suggest/invalid-link.html`, `src/templates/suggest/thanks.html`
+- The version is controlled from one place (no hand-edited `?v=` literals scattered across templates)
+- The version changes on each release/deploy (or when the stylesheet content changes) and stays stable otherwise, so normal caching still works between releases
+- Works in dev (`runserver`) and prod (gunicorn + collected static) without extra manual steps
+- Tests cover the versioned URL rendering; `make dev_test` stays green
+- Log written in `.ai/logs/`
 
 ## Notes
 
-- Spec: [007-replace-pip-with-uv.md](.ai/features/007-replace-pip-with-uv.md) (decisions table, acceptance criteria, risks)
-- Never run `uv sync` on the Arch host: image is Alpine/musl, host venv would be glibc and unusable in the container
-- `src/.venv` sits in Dropbox (exclude with `attr -s com.dropbox.ignored -V 1 src/.venv`) and is root-owned (remove via container or sudo)
-- First `make dev_up` may be slow (compiles `mysqlclient`/`lxml`)
-- If `uv run --no-sync` as `appuser` needs a writable cache, set `UV_CACHE_DIR`/`UV_NO_CACHE` for runtime only
-- Out of scope: Alpine → Debian switch, replacing `pkg_resources`/upgrading `deform`, running the fabfile against servers, dependency upgrades
+- Inline description: "Implement a version parameter to control the load of the screen.css and avoid user cache when changes are made in the stylesheet"
+- Existing hook: `APP_VERSION` (`src/fi-admin/settings.py:21`, from env; set by `Makefile` from branch/tag, passed via Dockerfile `ARG`/`ENV` and the compose files) is already exposed to templates via `TEMPLATE_VISIBLE_SETTINGS` + `utils.context_processors.django_settings` and shown in the footer (`base.html:61`). Reusing it as `?v={{ APP_VERSION }}` is the simplest option
+- Caveat: `APP_VERSION` defaults to `unknown` (dev, or when unset) → constant value, no busting; consider a fallback (e.g. file mtime/content hash) or a dedicated `STATIC_VERSION` setting
+- Alternatives to weigh in `plan`: a small template tag/filter appending a version (hash or mtime) to any static path; Django `ManifestStaticFilesStorage` (hashed filenames for all static files — broader change, needs `collectstatic`, affects every `{% static %}` URL)
+- Other stylesheets/scripts (bootstrap, JS) are out of scope unless the chosen mechanism covers them for free
 - Use Makefile targets for all build/test/manage commands (CLAUDE.md)
-- Result 2026-10-07: implemented; 249 tests OK (5 skipped), coverage 60%; runtime versions identical to pip build; prod build 36s vs 1m21s (pip), image 481MB vs 469MB; gunicorn/cron/api_build OK; `dev_lock` needs `env -u UV_FROZEN`
-- Pending: `make dev_check` + runserver start (dev DB 172.17.1.20 unreachable on 2026-10-07), fabfile on servers (needs uv), Dropbox ignore for `src/.venv`
-- Log: [2026-10-06-replace-pip-with-uv.md](.ai/logs/2026-10-06-replace-pip-with-uv.md)
-- Decision 2026-10-06 (plan): uv behavior set per Docker stage via env — dev `UV_FROZEN=1`, prod `UV_NO_SYNC=1` — so every command is a plain `uv run …`; fabfile uses `uv sync --frozen --no-dev --active` in the server virtualenv
+- Decision 2026-10-28 (plan): custom `{% versioned_static %}` tag (content md5[:8] as `?v=`, no new dependency) instead of `ManifestStaticFilesStorage` — Manifest would break collectstatic on dangling CSS refs (`logo-BIREME.png`, jquery-ui icons, `.map` files), needs collectstatic before gunicorn start and a test storage override; Docker is the only deploy target (fabfile ignored)
+- Result 2026-10-28: implemented; `make dev_test` green (253 tests, 5 skipped); pending: `make dev_check` and browser check (dev DB 172.17.1.20 unreachable)
+- Log: [2026-10-28-versioned-static-screen-css.md](.ai/logs/2026-10-28-versioned-static-screen-css.md)
 
 ## Detailed Plan
 
-[022-replace-pip-with-uv.md](.ai/plans/022-replace-pip-with-uv.md)
+[023-versioned-static-screen-css.md](.ai/plans/023-versioned-static-screen-css.md)
 
 ## History
 
@@ -59,3 +53,6 @@ In Progress
 - 2026-10-06: Phases 5.4–5.6 "Django 5.x breaking changes, tastypie checks, migrations" implemented; commit `2f3d95a3` on `validation` (pending manual checks: `rebuild_index`, browser smoke)
 - 2026-10-06: Loaded "Replace pip with uv as package manager" — following spec [007-replace-pip-with-uv.md](.ai/features/007-replace-pip-with-uv.md)
 - 2026-10-07: Starting "Replace pip with uv as package manager" — following plan [022-replace-pip-with-uv.md](.ai/plans/022-replace-pip-with-uv.md)
+- 2026-10-07: Completed "Replace pip with uv as package manager" — merged to `main` (PR #1584); commit `ab7f7bb5`
+- 2026-10-28: Loaded "Cache-busting version parameter for screen.css" — inline description
+- 2026-10-28: Starting "Cache-busting version parameter for screen.css" on `feature/cache-busting-version-parameter-for-screen-css` (from `feature/sidebar-menu-and-dashboard-polish`) — following plan [023-versioned-static-screen-css.md](.ai/plans/023-versioned-static-screen-css.md)

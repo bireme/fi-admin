@@ -1,14 +1,21 @@
 # coding: utf-8
+import hashlib
+import tempfile
+from unittest import mock
+
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.forms import generic_inlineformset_factory
-from django.test import TestCase
+from django.contrib.staticfiles import finders
+from django.template import Context, Template
+from django.test import SimpleTestCase, TestCase
 from django.test.client import Client
 from django.test.utils import override_settings
 
 from main.models import Descriptor
 from utils.betterforms import BetterModelForm, Fieldset, FieldsetCollection
 from utils.forms import BaseDescriptorInlineFormSet
+from utils.templatetags import versioned_static
 
 
 @override_settings(AUTHENTICATION_BACKENDS=('django.contrib.auth.backends.ModelBackend',))
@@ -377,3 +384,45 @@ class JSONFieldTest(TestCase):
         from api.tastypie_custom import CustomResource, JSONApiField
 
         self.assertIs(CustomResource.api_field_from_django_field(self.field), JSONApiField)
+
+
+class VersionedStaticTest(SimpleTestCase):
+    """
+    {% versioned_static %} appends a content hash to the static URL (cache busting)
+    """
+    def setUp(self):
+        versioned_static.cached_file_hash.cache_clear()
+
+    def render(self, path):
+        template = Template('{%% load versioned_static %%}{%% versioned_static "%s" %%}' % path)
+        return template.render(Context())
+
+    def test_url_has_content_hash(self):
+        with open(finders.find('css/screen.css'), 'rb') as f:
+            digest = hashlib.md5(f.read(), usedforsecurity=False).hexdigest()[:8]
+
+        self.assertEqual(self.render('css/screen.css'), '/static/css/screen.css?v=%s' % digest)
+
+    def test_missing_file_falls_back_to_static_url(self):
+        self.assertEqual(self.render('css/missing.css'), '/static/css/missing.css')
+
+    def test_hash_is_cached_when_not_debug(self):
+        with tempfile.NamedTemporaryFile(suffix='.css') as f, \
+                mock.patch.object(versioned_static.finders, 'find', return_value=f.name):
+            f.write(b'a {}')
+            f.flush()
+            first = self.render('css/screen.css')
+            f.write(b'b {}')
+            f.flush()
+            self.assertEqual(self.render('css/screen.css'), first)
+
+    @override_settings(DEBUG=True)
+    def test_hash_is_recomputed_when_debug(self):
+        with tempfile.NamedTemporaryFile(suffix='.css') as f, \
+                mock.patch.object(versioned_static.finders, 'find', return_value=f.name):
+            f.write(b'a {}')
+            f.flush()
+            first = self.render('css/screen.css')
+            f.write(b'b {}')
+            f.flush()
+            self.assertNotEqual(self.render('css/screen.css'), first)
