@@ -15,6 +15,8 @@ services:
       - ./src/:/app/
     env_file:
       - ./conf/app-env-dev
+    environment:
+      - PYTHONWARNINGS=ignore:pkg_resources is deprecated:UserWarning
     command: uv run python manage.py runserver 0.0.0.0:8000
     networks:
       - nginx-proxy

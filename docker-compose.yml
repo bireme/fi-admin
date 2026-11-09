@@ -17,6 +17,8 @@ services:
       - static_files:/app/static_files
     env_file:
       - ./conf/app-env
+    environment:
+      - PYTHONWARNINGS=ignore:pkg_resources is deprecated:UserWarning
     command: uv run gunicorn --bind 0.0.0.0:8000 fi-admin.wsgi ${GUNICORN_PARAMS}
     networks:
       - nginx-proxy
@@ -83,6 +85,8 @@ services:
       - fi_admin
     env_file:
       - ./conf/app-env
+    environment:
+      - PYTHONWARNINGS=ignore:pkg_resources is deprecated:UserWarning
     user: root
     command: crond -f -L /dev/stdout
 
