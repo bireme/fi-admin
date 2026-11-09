@@ -117,6 +117,9 @@ dev_compile_translations:
 dev_loaddata:
 	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python manage.py loaddata $(import_file)
 
+dev_clearsessions:
+	@docker compose -f $(COMPOSE_FILE_DEV) exec -T fi_admin uv run python manage.py clearsessions
+
 ## docker-compose API
 api_build:
 	@docker compose -f $(COMPOSE_FILE_API) build
@@ -216,6 +219,9 @@ prod_test:
 
 prod_migrate:
 	@docker compose exec fi_admin uv run python manage.py migrate $(app)
+
+prod_clearsessions:
+	@docker compose exec -T fi_admin uv run python manage.py clearsessions
 
 # import data to fi-admin
 import:
