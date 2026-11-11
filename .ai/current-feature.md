@@ -1,4 +1,4 @@
-# Current Feature: Conditional HTTP Basic Auth for Staging
+# Current Feature: Conditional Robots noindex for Staging
 
 ## Status
 
@@ -6,27 +6,26 @@ In Progress
 
 ## Goals
 
-- nginx `www-static` (`docker-compose.yml`, `conf/nginx/app/app.conf`) enforces HTTP Basic Auth on `location /` only when `USE_AUTHENTICATION=true`; any other value (unset/empty/false) leaves it off, so prod `.env` needs no change
-- Same mechanism as iahx-opac (commit `747764d`): `conf/nginx/templates/variables.conf.template` with `map "${USE_AUTHENTICATION}" $auth_enable { default "off"; true "Restrict Access"; }`, rendered by the nginx image's envsubst
-- `/static/` and the `/api/` redirect stay public; `www-docs` and the API stack are untouched
-- Credentials in gitignored `conf/nginx/.htpasswd`, mounted read-only at `/etc/nginx/.htpasswd`; `make htpasswd user=<name>` creates/appends a bcrypt entry via `httpd:2.4-alpine` with an interactive password prompt
-- Rendered `variables.conf` goes to `/etc/nginx` (`NGINX_ENVSUBST_OUTPUT_DIR`), included as `/etc/nginx/variables.conf` from the top of `app.conf` — nothing written into the bind-mounted `conf/nginx/app/` on the host
-- `.gitignore`, `.env-TEMPLATE` and README document `USE_AUTHENTICATION`, `make htpasswd` and `touch conf/nginx/.htpasswd` for hosts without auth
-- Manual staging check: `401` + `WWW-Authenticate: Basic realm="Restrict Access"` without creds; `200`/`302` with creds; `/static/css/screen.css` `200` without creds; no change when the var is unset
-- `make dev_test` stays green; log written in `.ai/logs/`
+- nginx sends `X-Robots-Tag: noindex, nofollow` only when `BLOCK_ROBOTS=true` (exact value); unset/empty/`false` sends no header, so prod `.env` needs no change
+- `BLOCK_ROBOTS` is independent of `USE_AUTHENTICATION` and lives in the root `.env` (compose interpolation)
+- Same conditional mechanism as basic auth (spec 008): new `conf/nginx/templates/robots.conf.template` with `map "${BLOCK_ROBOTS}" $robots_tag { default ""; true "noindex, nofollow"; }`, rendered to `/etc/nginx/robots.conf` by the nginx image's envsubst
+- `www-static` (`conf/nginx/app/app.conf`) and `www-docs` (`conf/nginx/docs/docs.conf`) both `include /etc/nginx/robots.conf;` and set `add_header X-Robots-Tag $robots_tag always;` at server level — covering every path (incl. `/static/`, `/api/` redirect, uploaded PDFs) and error responses
+- `docker-compose.yml`: `BLOCK_ROBOTS=${BLOCK_ROBOTS:-}` on both services; `www-docs` mounts only `robots.conf.template` (not the auth template) and sets `NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx`
+- No `robots.txt`, no HTML meta tags; API stack untouched; existing security headers unchanged
+- Verified locally with throwaway `nginx:1.30-alpine` containers (header present on all paths when on, absent when off, `nginx -t` OK, independent of auth); `docker compose config -q` OK; `make dev_test` green
+- `.env-TEMPLATE` and README updated; log written in `.ai/logs/`; staging curl check after deploy
 
 ## Notes
 
-- Spec: [008-conditional-basic-auth-staging.md](.ai/features/008-conditional-basic-auth-staging.md)
-- Reference: iahx-opac `docker/nginx/templates/variables.conf.template`, `docker/nginx/nginx.conf:285-287`, `docker-compose.yml` webserver service
-- API stack excluded: tastypie `ApiKeyAuthentication` (`src/api/oer_api.py:34`) may use the `Authorization` header, and its nginx is 1.18 (no templates support)
-- `USE_AUTHENTICATION` lives in the root `.env` (compose interpolation), not `conf/app-env`
-- If `conf/nginx/.htpasswd` is missing, Docker creates an empty dir at the mount path — harmless while auth is off
-- Verification is manual on staging (no nginx-check Makefile target, per spec decision 5)
+- Spec: [009-conditional-robots-noindex-staging.md](.ai/features/009-conditional-robots-noindex-staging.md)
+- Builds on spec 008 / PR #1587 — branch from `feature/conditional-http-basic-auth-for-staging`; PR targets it (or `main` once #1587 is merged)
+- nginx omits `add_header` when the value is empty → `default ""` means no header when off
+- `add_header` inheritance: server-level headers apply only to locations without their own `add_header`; currently no location in `app.conf`/`docs.conf` defines any — keep it that way (or repeat the header)
+- Separate template file because `www-docs` doesn't define `USE_AUTHENTICATION`: envsubst would leave `${USE_AUTHENTICATION}` literal and nginx would fail on the unknown variable
+- No `robots.txt`: `Disallow: /` prevents crawlers from seeing `noindex`, so known URLs could stay indexed
 - Use Makefile targets for all build/test/manage commands (CLAUDE.md)
-- Decision 2026-11-11 (start): output dir changed from the spec's `/etc/nginx/vars` to `/etc/nginx` — the nginx entrypoint skips rendering when the output dir doesn't exist (`[ ! -w "$output_dir" ]`), which would leave `$auth_enable` undefined and break nginx startup
-- Result 2026-11-11: implemented; verified locally with throwaway `nginx:1.30-alpine` (401 + realm without/bad creds, pass-through with creds, `/static/` and `/api/` public, off for `false`/empty, missing `.htpasswd` OK when off); `make htpasswd` tested; `make dev_test` green (253 tests, 5 skipped); pending: staging curl check after deploy
-- Log: [2026-11-11-conditional-basic-auth-staging.md](.ai/logs/2026-11-11-conditional-basic-auth-staging.md)
+- Result 2026-11-11: implemented; verified locally (6 auth×robots combinations on app, on/off on docs, header on 200/302/401/404/502, security headers kept); `docker compose config -q` OK; `make dev_test` green (253 tests, 5 skipped); pending: staging curl check after deploy
+- Log: [2026-11-11-conditional-robots-noindex-staging.md](.ai/logs/2026-11-11-conditional-robots-noindex-staging.md)
 
 ## History
 
@@ -57,3 +56,6 @@ In Progress
 - 2026-11-11: Completed "Cache-busting version parameter for screen.css" — `{% versioned_static %}` tag on `main`; log [2026-10-28-versioned-static-screen-css.md](.ai/logs/2026-10-28-versioned-static-screen-css.md)
 - 2026-11-11: Loaded "Conditional HTTP Basic Auth for Staging" — following spec [008-conditional-basic-auth-staging.md](.ai/features/008-conditional-basic-auth-staging.md)
 - 2026-11-11: Starting "Conditional HTTP Basic Auth for Staging" on `feature/conditional-http-basic-auth-for-staging` — following spec [008-conditional-basic-auth-staging.md](.ai/features/008-conditional-basic-auth-staging.md)
+- 2026-11-11: "Conditional HTTP Basic Auth for Staging" implemented; commit `12cb3c48`, PR #1587 opened (pending merge and staging curl check); log [2026-11-11-conditional-basic-auth-staging.md](.ai/logs/2026-11-11-conditional-basic-auth-staging.md)
+- 2026-11-11: Loaded "Conditional Robots noindex for Staging" — following spec [009-conditional-robots-noindex-staging.md](.ai/features/009-conditional-robots-noindex-staging.md)
+- 2026-11-11: Starting "Conditional Robots noindex for Staging" on `feature/conditional-robots-noindex-for-staging` (from `feature/conditional-http-basic-auth-for-staging`) — following spec [009-conditional-robots-noindex-staging.md](.ai/features/009-conditional-robots-noindex-staging.md)

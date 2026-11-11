@@ -34,3 +34,18 @@ to keep a staging/test environment private. `/static/` and the `/api/` redirect 
 - How it works: `conf/nginx/templates/variables.conf.template` maps `USE_AUTHENTICATION` to `$auth_enable`; the
   nginx image renders it to `/etc/nginx/variables.conf` at startup (`NGINX_ENVSUBST_OUTPUT_DIR`), included by
   `conf/nginx/app/app.conf`
+
+Search engine blocking (X-Robots-Tag)
+-------------------------------------
+
+With `BLOCK_ROBOTS=true` in the root `.env`, both `www-static` (app) and `www-docs` (uploaded files) send
+`X-Robots-Tag: noindex, nofollow` on every response, so search engines don't index a staging environment.
+Any other value (unset, empty, `false`) sends no header; it is independent of `USE_AUTHENTICATION`.
+
+- How it works: `conf/nginx/templates/robots.conf.template` maps `BLOCK_ROBOTS` to `$robots_tag` (empty when off,
+  and nginx omits headers with an empty value), rendered to `/etc/nginx/robots.conf` and used by a server-level
+  `add_header X-Robots-Tag $robots_tag always;` in `app.conf` and `docs.conf`
+- Server-level `add_header` is only inherited by locations without their own `add_header`: if you add one to a
+  location, repeat the `X-Robots-Tag` line there
+- There is intentionally no `robots.txt` `Disallow: /`: blocking crawling would keep bots from seeing the
+  `noindex`, so already-known URLs could stay indexed
