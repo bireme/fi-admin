@@ -1,0 +1,6 @@
+# Rendered by the nginx image's envsubst at container start (NGINX_ENVSUBST_OUTPUT_DIR).
+# Only BLOCK_ROBOTS=true sends X-Robots-Tag; an empty value makes nginx omit the header.
+map "${BLOCK_ROBOTS}" $robots_tag {
+    default     "";
+    true        "noindex, nofollow";
+}

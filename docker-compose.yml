@@ -49,6 +49,8 @@ services:
       - USE_AUTHENTICATION=${USE_AUTHENTICATION:-}
       # render templates outside the bind-mounted conf.d (included from app.conf)
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
+      # X-Robots-Tag noindex for staging: only "true" enables it (see conf/nginx/templates)
+      - BLOCK_ROBOTS=${BLOCK_ROBOTS:-}
     networks:
       - nginx-proxy
     deploy:
@@ -66,12 +68,18 @@ services:
       - 80
     volumes:
       - ./conf/nginx/docs:/etc/nginx/conf.d
+      # only the robots template (the auth template needs USE_AUTHENTICATION, not defined here)
+      - ./conf/nginx/templates/robots.conf.template:/etc/nginx/templates/robots.conf.template:ro
       - ${UPLOAD_PATH}:/app/uploads
     depends_on:
       - fi_admin
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST_DOCS}
       - LETSENCRYPT_HOST=${VIRTUAL_HOST_DOCS}
+      # X-Robots-Tag noindex for staging: only "true" enables it (see conf/nginx/templates)
+      - BLOCK_ROBOTS=${BLOCK_ROBOTS:-}
+      # render templates outside the bind-mounted conf.d (included from docs.conf)
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     networks:
       - nginx-proxy
     deploy:
