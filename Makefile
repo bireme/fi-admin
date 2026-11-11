@@ -223,6 +223,21 @@ prod_migrate:
 prod_clearsessions:
 	@docker compose exec -T fi_admin uv run python manage.py clearsessions
 
+## HTTP basic auth for staging (enabled with USE_AUTHENTICATION=true in .env)
+## create/update a user in conf/nginx/.htpasswd: make htpasswd user=<name>
+HTPASSWD_FILE=conf/nginx/.htpasswd
+
+htpasswd:
+	@test -n "$(user)" || { echo "usage: make htpasswd user=<name>"; exit 1; }
+	@test ! -d $(HTPASSWD_FILE) || { echo "$(HTPASSWD_FILE) is a directory (created by docker); remove it first"; exit 1; }
+	@printf 'Password for $(user): '; stty -echo; read pw; stty echo; echo; \
+	printf 'Confirm password: '; stty -echo; read pw2; stty echo; echo; \
+	test -n "$$pw" && test "$$pw" = "$$pw2" || { echo "passwords empty or do not match"; exit 1; }; \
+	entry=$$(printf '%s' "$$pw" | docker run --rm -i httpd:2.4-alpine htpasswd -niB "$(user)" | grep .) || exit 1; \
+	touch $(HTPASSWD_FILE); sed -i "/^$(user):/d" $(HTPASSWD_FILE); \
+	echo "$$entry" >> $(HTPASSWD_FILE); \
+	echo "user '$(user)' saved in $(HTPASSWD_FILE) (restart www-static if it was missing)"
+
 # import data to fi-admin
 import:
 	@docker compose exec -T fi_admin sh -c "cd /app/proc/import && sh import2FIAdmin.sh"

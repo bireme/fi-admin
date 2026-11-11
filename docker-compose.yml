@@ -37,12 +37,18 @@ services:
       - 80
     volumes:
       - ./conf/nginx/app:/etc/nginx/conf.d
+      - ./conf/nginx/templates:/etc/nginx/templates:ro
+      - ./conf/nginx/.htpasswd:/etc/nginx/.htpasswd:ro
       - static_files:/app/static_files
     depends_on:
       - fi_admin
     environment:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
       - LETSENCRYPT_HOST=${VIRTUAL_HOST}
+      # basic auth for staging: only "true" enables it (see conf/nginx/templates)
+      - USE_AUTHENTICATION=${USE_AUTHENTICATION:-}
+      # render templates outside the bind-mounted conf.d (included from app.conf)
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     networks:
       - nginx-proxy
     deploy:
