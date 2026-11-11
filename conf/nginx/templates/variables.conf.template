@@ -1,0 +1,6 @@
+# Rendered by the nginx image's envsubst at container start (NGINX_ENVSUBST_OUTPUT_DIR).
+# Only USE_AUTHENTICATION=true enables HTTP Basic Auth; any other value leaves it off.
+map "${USE_AUTHENTICATION}" $auth_enable {
+    default     "off";
+    true        "Restrict Access";
+}

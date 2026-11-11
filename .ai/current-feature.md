@@ -1,4 +1,4 @@
-# Current Feature: Cache-busting version parameter for screen.css
+# Current Feature: Conditional HTTP Basic Auth for Staging
 
 ## Status
 
@@ -6,29 +6,27 @@ In Progress
 
 ## Goals
 
-- `src/static/css/screen.css` is loaded with a version query parameter (e.g. `css/screen.css?v=<version>`) so browsers fetch the new file whenever the stylesheet changes, instead of serving a stale cached copy
-- All templates that load `screen.css` use the versioned URL: `src/templates/base.html`, `src/templates/suggest/invalid-link.html`, `src/templates/suggest/thanks.html`
-- The version is controlled from one place (no hand-edited `?v=` literals scattered across templates)
-- The version changes on each release/deploy (or when the stylesheet content changes) and stays stable otherwise, so normal caching still works between releases
-- Works in dev (`runserver`) and prod (gunicorn + collected static) without extra manual steps
-- Tests cover the versioned URL rendering; `make dev_test` stays green
-- Log written in `.ai/logs/`
+- nginx `www-static` (`docker-compose.yml`, `conf/nginx/app/app.conf`) enforces HTTP Basic Auth on `location /` only when `USE_AUTHENTICATION=true`; any other value (unset/empty/false) leaves it off, so prod `.env` needs no change
+- Same mechanism as iahx-opac (commit `747764d`): `conf/nginx/templates/variables.conf.template` with `map "${USE_AUTHENTICATION}" $auth_enable { default "off"; true "Restrict Access"; }`, rendered by the nginx image's envsubst
+- `/static/` and the `/api/` redirect stay public; `www-docs` and the API stack are untouched
+- Credentials in gitignored `conf/nginx/.htpasswd`, mounted read-only at `/etc/nginx/.htpasswd`; `make htpasswd user=<name>` creates/appends a bcrypt entry via `httpd:2.4-alpine` with an interactive password prompt
+- Rendered `variables.conf` goes to `/etc/nginx` (`NGINX_ENVSUBST_OUTPUT_DIR`), included as `/etc/nginx/variables.conf` from the top of `app.conf` — nothing written into the bind-mounted `conf/nginx/app/` on the host
+- `.gitignore`, `.env-TEMPLATE` and README document `USE_AUTHENTICATION`, `make htpasswd` and `touch conf/nginx/.htpasswd` for hosts without auth
+- Manual staging check: `401` + `WWW-Authenticate: Basic realm="Restrict Access"` without creds; `200`/`302` with creds; `/static/css/screen.css` `200` without creds; no change when the var is unset
+- `make dev_test` stays green; log written in `.ai/logs/`
 
 ## Notes
 
-- Inline description: "Implement a version parameter to control the load of the screen.css and avoid user cache when changes are made in the stylesheet"
-- Existing hook: `APP_VERSION` (`src/fi-admin/settings.py:21`, from env; set by `Makefile` from branch/tag, passed via Dockerfile `ARG`/`ENV` and the compose files) is already exposed to templates via `TEMPLATE_VISIBLE_SETTINGS` + `utils.context_processors.django_settings` and shown in the footer (`base.html:61`). Reusing it as `?v={{ APP_VERSION }}` is the simplest option
-- Caveat: `APP_VERSION` defaults to `unknown` (dev, or when unset) → constant value, no busting; consider a fallback (e.g. file mtime/content hash) or a dedicated `STATIC_VERSION` setting
-- Alternatives to weigh in `plan`: a small template tag/filter appending a version (hash or mtime) to any static path; Django `ManifestStaticFilesStorage` (hashed filenames for all static files — broader change, needs `collectstatic`, affects every `{% static %}` URL)
-- Other stylesheets/scripts (bootstrap, JS) are out of scope unless the chosen mechanism covers them for free
+- Spec: [008-conditional-basic-auth-staging.md](.ai/features/008-conditional-basic-auth-staging.md)
+- Reference: iahx-opac `docker/nginx/templates/variables.conf.template`, `docker/nginx/nginx.conf:285-287`, `docker-compose.yml` webserver service
+- API stack excluded: tastypie `ApiKeyAuthentication` (`src/api/oer_api.py:34`) may use the `Authorization` header, and its nginx is 1.18 (no templates support)
+- `USE_AUTHENTICATION` lives in the root `.env` (compose interpolation), not `conf/app-env`
+- If `conf/nginx/.htpasswd` is missing, Docker creates an empty dir at the mount path — harmless while auth is off
+- Verification is manual on staging (no nginx-check Makefile target, per spec decision 5)
 - Use Makefile targets for all build/test/manage commands (CLAUDE.md)
-- Decision 2026-10-28 (plan): custom `{% versioned_static %}` tag (content md5[:8] as `?v=`, no new dependency) instead of `ManifestStaticFilesStorage` — Manifest would break collectstatic on dangling CSS refs (`logo-BIREME.png`, jquery-ui icons, `.map` files), needs collectstatic before gunicorn start and a test storage override; Docker is the only deploy target (fabfile ignored)
-- Result 2026-10-28: implemented; `make dev_test` green (253 tests, 5 skipped); pending: `make dev_check` and browser check (dev DB 172.17.1.20 unreachable)
-- Log: [2026-10-28-versioned-static-screen-css.md](.ai/logs/2026-10-28-versioned-static-screen-css.md)
-
-## Detailed Plan
-
-[023-versioned-static-screen-css.md](.ai/plans/023-versioned-static-screen-css.md)
+- Decision 2026-11-11 (start): output dir changed from the spec's `/etc/nginx/vars` to `/etc/nginx` — the nginx entrypoint skips rendering when the output dir doesn't exist (`[ ! -w "$output_dir" ]`), which would leave `$auth_enable` undefined and break nginx startup
+- Result 2026-11-11: implemented; verified locally with throwaway `nginx:1.30-alpine` (401 + realm without/bad creds, pass-through with creds, `/static/` and `/api/` public, off for `false`/empty, missing `.htpasswd` OK when off); `make htpasswd` tested; `make dev_test` green (253 tests, 5 skipped); pending: staging curl check after deploy
+- Log: [2026-11-11-conditional-basic-auth-staging.md](.ai/logs/2026-11-11-conditional-basic-auth-staging.md)
 
 ## History
 
@@ -56,3 +54,6 @@ In Progress
 - 2026-10-07: Completed "Replace pip with uv as package manager" — merged to `main` (PR #1584); commit `ab7f7bb5`
 - 2026-10-28: Loaded "Cache-busting version parameter for screen.css" — inline description
 - 2026-10-28: Starting "Cache-busting version parameter for screen.css" on `feature/cache-busting-version-parameter-for-screen-css` (from `feature/sidebar-menu-and-dashboard-polish`) — following plan [023-versioned-static-screen-css.md](.ai/plans/023-versioned-static-screen-css.md)
+- 2026-11-11: Completed "Cache-busting version parameter for screen.css" — `{% versioned_static %}` tag on `main`; log [2026-10-28-versioned-static-screen-css.md](.ai/logs/2026-10-28-versioned-static-screen-css.md)
+- 2026-11-11: Loaded "Conditional HTTP Basic Auth for Staging" — following spec [008-conditional-basic-auth-staging.md](.ai/features/008-conditional-basic-auth-staging.md)
+- 2026-11-11: Starting "Conditional HTTP Basic Auth for Staging" on `feature/conditional-http-basic-auth-for-staging` — following spec [008-conditional-basic-auth-staging.md](.ai/features/008-conditional-basic-auth-staging.md)
