@@ -29,3 +29,7 @@ With `BLOCK_ROBOTS=true` in the root `.env`, the `www-static` (app) and `www-doc
 ## Pending
 
 - Staging, after deploy with `BLOCK_ROBOTS=true`: `curl -I https://<staging>/` and `curl -I https://<staging-docs>/<file>` show the header. Production shows none.
+
+## Merge
+
+PR #1588 was merged into `feature/conditional-http-basic-auth-for-staging` after that branch had already been squash-merged into `main` (#1587, `8903aad8`), so the robots changes never reached `main`. The robots commit was rebased onto `main` (`git rebase --onto origin/main 12cb3c48`) and merged locally into `main` through the `/feature complete` flow.

@@ -2,7 +2,7 @@
 
 ## Status
 
-In Progress
+Completed
 
 ## Goals
 
@@ -59,3 +59,4 @@ In Progress
 - 2026-11-11: "Conditional HTTP Basic Auth for Staging" implemented; commit `12cb3c48`, PR #1587 opened (pending merge and staging curl check); log [2026-11-11-conditional-basic-auth-staging.md](.ai/logs/2026-11-11-conditional-basic-auth-staging.md)
 - 2026-11-11: Loaded "Conditional Robots noindex for Staging" — following spec [009-conditional-robots-noindex-staging.md](.ai/features/009-conditional-robots-noindex-staging.md)
 - 2026-11-11: Starting "Conditional Robots noindex for Staging" on `feature/conditional-robots-noindex-for-staging` (from `feature/conditional-http-basic-auth-for-staging`) — following spec [009-conditional-robots-noindex-staging.md](.ai/features/009-conditional-robots-noindex-staging.md)
+- 2026-11-11: Completed "Conditional HTTP Basic Auth for Staging" — squash-merged to `main` (PR #1587); commit `8903aad8`
